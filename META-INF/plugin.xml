@@ -1,5 +1,5 @@
 <idea-plugin version="2">
-  <id>mobi.hsz.idea.latex</id>
+  <id>mobi.hsz.idea.gitignore</id>
   <name>.gitignore Plugin</name>
   <version>0.0.1</version>
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
@@ -27,6 +27,9 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <fileTypeFactory implementation="mobi.hsz.idea.gitignore.GitignoreFileTypeFactory" />
+    <lang.parserDefinition language=".gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreParserDefinition" />
+    <lang.syntaxHighlighterFactory key=".gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreSyntaxHighlighterFactory" />
+    <colorSettingsPage implementation="mobi.hsz.idea.gitignore.GitignoreColorSettingsPage" />
   </extensions>
 
   <application-components>
