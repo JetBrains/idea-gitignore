@@ -19,9 +19,13 @@ CRLF= \n|\r|\r\n
 WHITE_SPACE=[\ \t\f]
 FIRST_VALUE_CHARACTER=[^ \n\r\f\\] | "\\"{CRLF} | "\\".
 VALUE_CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
+
 HEADER="###"[^\r\n]*
 SECTION="##"[^#\r\n]*
 COMMENT="#"[^#\r\n]*
+ENTRY_FILE=[^\n\r\f\\] | "\\"{CRLF} | "\\".
+ENTRY_DIRECTORY={ENTRY_FILE}*[/]
+
 SEPARATOR=[:=]
 KEY_CHARACTER=[^:=\ \n\r\t\f\\] | "\\"{CRLF} | "\\".
 
@@ -35,7 +39,11 @@ KEY_CHARACTER=[^:=\ \n\r\t\f\\] | "\\"{CRLF} | "\\".
 
 <YYINITIAL> {COMMENT}                                       { yybegin(YYINITIAL); return GitignoreTypes.COMMENT; }
 
-<YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return GitignoreTypes.KEY; }
+<YYINITIAL> {ENTRY_FILE}                                    { yybegin(YYINITIAL); return GitignoreTypes.ENTRY_FILE; }
+
+<YYINITIAL> {ENTRY_DIRECTORY}                               { yybegin(YYINITIAL); return GitignoreTypes.ENTRY_DIRECTORY; }
+
+//<YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return GitignoreTypes.KEY; }
 
 <YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return GitignoreTypes.SEPARATOR; }
 
