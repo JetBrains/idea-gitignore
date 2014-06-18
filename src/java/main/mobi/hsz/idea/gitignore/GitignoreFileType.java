@@ -19,13 +19,13 @@ public class GitignoreFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "LaTeX file";
+        return ".gitignore file";
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return "LaTeX language file";
+        return ".gitignore file";
     }
 
     @NotNull
