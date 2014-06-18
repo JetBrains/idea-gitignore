@@ -15,6 +15,6 @@
 
 gitignoreFile ::= item_*
 
-private item_ ::= (property|COMMENT|CRLF)
+private item_ ::= (property|HEADER|SECTION|COMMENT|CRLF)
 
 property ::= (KEY? SEPARATOR VALUE?) | KEY

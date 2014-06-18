@@ -23,6 +23,8 @@ import java.io.Reader;
 
 public class GitignoreParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
+    public static final TokenSet HEADERS = TokenSet.create(GitignoreTypes.HEADER);
+    public static final TokenSet SECTIONS = TokenSet.create(GitignoreTypes.SECTION);
     public static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
 
     public static final IFileElementType FILE = new IFileElementType(Language.<GitignoreLanguage>findInstance(GitignoreLanguage.class));
@@ -47,6 +49,16 @@ public class GitignoreParserDefinition implements ParserDefinition {
     @Override
     public TokenSet getWhitespaceTokens() {
         return WHITE_SPACES;
+    }
+
+    @NotNull
+    public TokenSet getHeaderTokens() {
+        return HEADERS;
+    }
+
+    @NotNull
+    public TokenSet getSectionTokens() {
+        return SECTIONS;
     }
 
     @NotNull

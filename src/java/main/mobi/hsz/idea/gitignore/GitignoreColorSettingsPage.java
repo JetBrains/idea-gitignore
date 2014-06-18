@@ -14,6 +14,8 @@ import java.util.Map;
 
 public class GitignoreColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
+            new AttributesDescriptor("Header", GitignoreSyntaxHighlighter.HEADER),
+            new AttributesDescriptor("Section", GitignoreSyntaxHighlighter.SECTION),
             new AttributesDescriptor("Comment", GitignoreSyntaxHighlighter.COMMENT),
     };
 

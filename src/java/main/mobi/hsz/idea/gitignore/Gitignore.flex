@@ -19,7 +19,9 @@ CRLF= \n|\r|\r\n
 WHITE_SPACE=[\ \t\f]
 FIRST_VALUE_CHARACTER=[^ \n\r\f\\] | "\\"{CRLF} | "\\".
 VALUE_CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
+HEADER="###"[^\r\n]*
+SECTION="##"[^#\r\n]*
+COMMENT="#"[^#\r\n]*
 SEPARATOR=[:=]
 KEY_CHARACTER=[^:=\ \n\r\t\f\\] | "\\"{CRLF} | "\\".
 
@@ -27,7 +29,11 @@ KEY_CHARACTER=[^:=\ \n\r\t\f\\] | "\\"{CRLF} | "\\".
 
 %%
 
-<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return GitignoreTypes.COMMENT; }
+<YYINITIAL> {HEADER}                                        { yybegin(YYINITIAL); return GitignoreTypes.HEADER; }
+
+<YYINITIAL> {SECTION}                                       { yybegin(YYINITIAL); return GitignoreTypes.SECTION; }
+
+<YYINITIAL> {COMMENT}                                       { yybegin(YYINITIAL); return GitignoreTypes.COMMENT; }
 
 <YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return GitignoreTypes.KEY; }
 
