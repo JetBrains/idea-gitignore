@@ -40,7 +40,10 @@
     <!-- Add your project components here -->
   </project-components>
 
-  <actions>
-    <!-- Add your actions here -->
+    <actions>
+      <action id="Gitignore.NewGitignoreFile" class="mobi.hsz.idea.gitignore.actions.NewGitignoreFileAction"
+              text=".gitignore" description="Create new .gitignore file" icon="/mobi/hsz/idea/gitignore/icons/icon16.png">
+        <add-to-group group-id="NewGroup" anchor="first" />
+      </action>
   </actions>
 </idea-plugin>

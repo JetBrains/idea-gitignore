@@ -11,6 +11,7 @@ import javax.swing.*;
 public class GitignoreFileType extends LanguageFileType {
     public static final GitignoreFileType INSTANCE = new GitignoreFileType();
     public static final String EXTENSION = "gitignore";
+    public static final String FILENAME = ".gitignore";
 
     private GitignoreFileType() {
         super(GitignoreLanguage.INSTANCE);
