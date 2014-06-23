@@ -7,15 +7,16 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.util.IncorrectOperationException;
 import mobi.hsz.idea.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.util.GitignoreIcons;
 
 public class GitignoreTemplatesFactory implements FileTemplateGroupDescriptorFactory {
-    private static final String FILE_NAME = "bash-script.sh";
+    private static final String TEXT = "### Created by http://gitignore.hsz.mobi\n\n";
     private final FileTemplateGroupDescriptor templateGroup;
 
     public GitignoreTemplatesFactory() {
-        templateGroup = new FileTemplateGroupDescriptor("xxxx", GitignoreIcons.FILE);
-        templateGroup.addTemplate(FILE_NAME);
+        templateGroup = new FileTemplateGroupDescriptor(GitignoreLanguage.NAME, GitignoreIcons.FILE);
+        templateGroup.addTemplate(GitignoreLanguage.FILENAME);
     }
 
     @Override
@@ -23,12 +24,9 @@ public class GitignoreTemplatesFactory implements FileTemplateGroupDescriptorFac
         return templateGroup;
     }
 
-    public static PsiFile createFromTemplate(final PsiDirectory directory, final String name, String fileName) throws IncorrectOperationException {
-        final String text = "#!/bin/bash\n";
+    public static PsiFile createFromTemplate(final PsiDirectory directory) throws IncorrectOperationException {
         final PsiFileFactory factory = PsiFileFactory.getInstance(directory.getProject());
-
-        final PsiFile file = factory.createFileFromText(fileName, GitignoreFileType.INSTANCE, text);
-
+        final PsiFile file = factory.createFileFromText(GitignoreLanguage.FILENAME, GitignoreFileType.INSTANCE, TEXT);
         return (PsiFile) directory.add(file);
     }
 }

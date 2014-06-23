@@ -31,7 +31,7 @@ public class NewGitignoreFileAction extends AnAction {
 
         PsiFile file = directory.findFile(GitignoreFileType.FILENAME);
         if (file == null) {
-            file = directory.createFile(GitignoreFileType.FILENAME);
+            file = GitignoreTemplatesFactory.createFromTemplate(directory);
         } else {
             Messages.showInfoMessage(project, "Gitignore file already exists.", "Gitignore Plugin");
         }
