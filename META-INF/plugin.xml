@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>mobi.hsz.idea.gitignore</id>
   <name>.gitignore Plugin</name>
-  <version>0.0.1</version>
+  <version>0.1</version>
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
   <description><![CDATA[
@@ -12,7 +12,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      <strong>0.0.1</strong> Initial version
+      <strong>0.1</strong> Initial version
     ]]>
   </change-notes>
 
