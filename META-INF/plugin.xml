@@ -1,33 +1,33 @@
 <idea-plugin version="2">
   <id>mobi.hsz.idea.gitignore</id>
-  <name>.gitignore Plugin</name>
-  <version>0.1</version>
+  <name>.gitignore support</name>
+  <version>0.2</version>
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
   <description><![CDATA[
-      <h1>.gitignore Plugin for IntelliJ IDEA</h1>
+      <h1>.gitignore support plugin for IntelliJ IDEA</h1>
       <br/>
       <a href="https://github.com/hsz/idea-gitignore">GitHub</a> | <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a>
       <br/>
+      <br/>
+      If you are using <a href="http://plugins.jetbrains.com/plugin/3033">Git Integration</a> plugin, you have to manually
+      remove <b>.gitignore</b> entry from <b>Settings > File types > Text files</b> section.
     ]]></description>
 
   <change-notes><![CDATA[
-      <strong>0.1</strong> Initial version
+      <ul>
+        <li><strong>0.2</strong> Syntax highlight</li>
+        <li><strong>0.1</strong> Initial version</li>
+      </ul>
     ]]>
   </change-notes>
 
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
   <idea-version since-build="131" />
-
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
-  -->
 
   <extensions defaultExtensionNs="com.intellij">
     <colorSettingsPage implementation="mobi.hsz.idea.gitignore.GitignoreColorSettingsPage" />
-    <fileTypeFactory implementation="mobi.hsz.idea.gitignore.GitignoreFileTypeFactory" />
+    <fileTypeFactory implementation="mobi.hsz.idea.gitignore.GitignoreFileTypeFactory" order="first" />
     <lang.parserDefinition language=".gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreParserDefinition" />
     <lang.syntaxHighlighterFactory key=".gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreSyntaxHighlighterFactory" />
   </extensions>
@@ -40,10 +40,10 @@
     <!-- Add your project components here -->
   </project-components>
 
-    <actions>
-      <action id="Gitignore.NewGitignoreFile" class="mobi.hsz.idea.gitignore.actions.NewGitignoreFileAction"
-              text=".gitignore" description="Create new .gitignore file" icon="/mobi/hsz/idea/gitignore/icons/icon16.png">
-        <add-to-group group-id="NewGroup" anchor="first" />
-      </action>
+  <actions>
+    <action id="Gitignore.NewGitignoreFile" class="mobi.hsz.idea.gitignore.actions.NewGitignoreFileAction"
+            text=".gitignore" description="Create new .gitignore file" icon="/mobi/hsz/idea/gitignore/icons/icon16.png">
+      <add-to-group group-id="NewGroup" anchor="first" />
+    </action>
   </actions>
 </idea-plugin>

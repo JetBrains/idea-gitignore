@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
-import mobi.hsz.idea.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
 
 public class NewGitignoreFileAction extends AnAction {
     @Override
@@ -29,7 +29,7 @@ public class NewGitignoreFileAction extends AnAction {
             return;
         }
 
-        PsiFile file = directory.findFile(GitignoreFileType.FILENAME);
+        PsiFile file = directory.findFile(GitignoreLanguage.FILENAME);
         if (file == null) {
             file = GitignoreTemplatesFactory.createFromTemplate(directory);
         } else {

@@ -1,4 +1,4 @@
 idea-gitignore
 ==============
 
-.gitignore plugin for IntelliJ IDEA
+.gitignore support plugin for IntelliJ IDEA

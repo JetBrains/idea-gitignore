@@ -10,8 +10,6 @@ import javax.swing.*;
 
 public class GitignoreFileType extends LanguageFileType {
     public static final GitignoreFileType INSTANCE = new GitignoreFileType();
-    public static final String EXTENSION = "gitignore";
-    public static final String FILENAME = ".gitignore";
 
     private GitignoreFileType() {
         super(GitignoreLanguage.INSTANCE);
@@ -20,19 +18,19 @@ public class GitignoreFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return ".gitignore file";
+        return GitignoreLanguage.NAME + " file";
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return ".gitignore file";
+        return GitignoreLanguage.NAME + " file";
     }
 
     @NotNull
     @Override
     public String getDefaultExtension() {
-        return EXTENSION;
+        return GitignoreLanguage.EXTENSION;
     }
 
     @Nullable
