@@ -15,15 +15,15 @@ import static com.intellij.psi.TokenType.*;
 %eof{  return;
 %eof}
 
-CRLF = \n|\r|\r\n
+CRLF        = \n|\r|\r\n
 WHITE_SPACE = [\ \t\f]
 
-COMMENT = "#"[^#\r\n][^\r\n]*
-SECTION = "#"{COMMENT}
-HEADER = "##"{COMMENT}
-CHARACTER = [^\n\r\f]
-NEGATION = [!]
-SLASH = [/]
+COMMENT     = "#"[^#\r\n][^\r\n]*
+SECTION     = "#"{COMMENT}
+HEADER      = "##"{COMMENT}
+CHARACTER   = [^\n\r\f]
+NEGATION    = [!]
+SLASH       = [/]
 
 %state IN_ENTRY
 %state WAITING_VALUE
