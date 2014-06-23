@@ -17,12 +17,10 @@ import com.intellij.psi.TokenType;
 
 CRLF= \n|\r|\r\n
 WHITE_SPACE=[\ \t\f]
-FIRST_VALUE_CHARACTER=[^ \n\r\f\\] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
 
-HEADER="###"[^\r\n]*
-SECTION="##"[^#\r\n]*
 COMMENT="#"[^#\r\n]*
+SECTION="#"{COMMENT}
+HEADER="##"{COMMENT}
 CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
 
 %state WAITING_VALUE
@@ -42,8 +40,6 @@ CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
 <WAITING_VALUE> {CRLF}                                      { yybegin(YYINITIAL); return GitignoreTypes.CRLF; }
 
 <WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-
-<WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return GitignoreTypes.VALUE; }
 
 {CRLF}                                                      { yybegin(YYINITIAL); return GitignoreTypes.CRLF; }
 
