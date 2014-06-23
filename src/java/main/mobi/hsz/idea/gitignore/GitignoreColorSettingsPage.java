@@ -17,6 +17,7 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Header", GitignoreSyntaxHighlighter.HEADER),
             new AttributesDescriptor("Section", GitignoreSyntaxHighlighter.SECTION),
             new AttributesDescriptor("Comment", GitignoreSyntaxHighlighter.COMMENT),
+            new AttributesDescriptor("Negation", GitignoreSyntaxHighlighter.NEGATION),
             new AttributesDescriptor("File", GitignoreSyntaxHighlighter.ENTRY_FILE),
             new AttributesDescriptor("Directory", GitignoreSyntaxHighlighter.ENTRY_DIRECTORY),
     };

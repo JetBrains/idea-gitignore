@@ -2,8 +2,8 @@ package mobi.hsz.idea.gitignore;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import mobi.hsz.idea.gitignore.psi.GitignoreTypes;
-import com.intellij.psi.TokenType;
+import static mobi.hsz.idea.gitignore.psi.GitignoreTypes.*;
+import static com.intellij.psi.TokenType.*;
 
 %%
 
@@ -15,34 +15,43 @@ import com.intellij.psi.TokenType;
 %eof{  return;
 %eof}
 
-CRLF= \n|\r|\r\n
-WHITE_SPACE=[\ \t\f]
+CRLF = \n|\r|\r\n
+WHITE_SPACE = [\ \t\f]
 
-COMMENT="#"[^#\r\n]*
-SECTION="#"{COMMENT}
-HEADER="##"{COMMENT}
-CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
+COMMENT = "#"[^#\r\n][^\r\n]*
+SECTION = "#"{COMMENT}
+HEADER = "##"{COMMENT}
+CHARACTER = [^\n\r\f]
+NEGATION = [!]
+SLASH = [/]
 
+%state IN_ENTRY
 %state WAITING_VALUE
 
 %%
 
-<YYINITIAL> {HEADER}                                        { yybegin(YYINITIAL); return GitignoreTypes.HEADER; }
+<YYINITIAL> {
+  {WHITE_SPACE}+      { yybegin(YYINITIAL); return WHITE_SPACE; }
 
-<YYINITIAL> {SECTION}                                       { yybegin(YYINITIAL); return GitignoreTypes.SECTION; }
+  {HEADER}            { yybegin(YYINITIAL); return HEADER; }
+  {SECTION}           { yybegin(YYINITIAL); return SECTION; }
+  {COMMENT}           { yybegin(YYINITIAL); return COMMENT; }
+  {NEGATION}          { yybegin(IN_ENTRY); return NEGATION; }
+  {CHARACTER}         { yypushback(1); yybegin(IN_ENTRY); }
 
-<YYINITIAL> {COMMENT}                                       { yybegin(YYINITIAL); return GitignoreTypes.COMMENT; }
+	.                   { yybegin(YYINITIAL); return BAD_CHARACTER; }
+}
 
-<YYINITIAL> {CHARACTER}*[/]                                 { yybegin(YYINITIAL); return GitignoreTypes.ENTRY_DIRECTORY; }
+<IN_ENTRY> {
+  {CHARACTER}+{SLASH} { yybegin(WAITING_VALUE); return ENTRY_DIRECTORY; }
+  {CHARACTER}+        { yybegin(WAITING_VALUE); return ENTRY_FILE; }
+}
 
-<YYINITIAL> {CHARACTER}*                                    { yybegin(YYINITIAL); return GitignoreTypes.ENTRY_FILE; }
+<WAITING_VALUE> {
+  {CRLF}              { yybegin(YYINITIAL); return CRLF; }
+  {WHITE_SPACE}+      { yybegin(WAITING_VALUE); return WHITE_SPACE; }
+}
 
-<WAITING_VALUE> {CRLF}                                      { yybegin(YYINITIAL); return GitignoreTypes.CRLF; }
-
-<WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-
-{CRLF}                                                      { yybegin(YYINITIAL); return GitignoreTypes.CRLF; }
-
-{WHITE_SPACE}+                                              { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-
-.                                                           { return TokenType.BAD_CHARACTER; }
+{CRLF}                { yybegin(YYINITIAL); return CRLF; }
+{WHITE_SPACE}+        { yybegin(YYINITIAL); return WHITE_SPACE; }
+.                     { return BAD_CHARACTER; }

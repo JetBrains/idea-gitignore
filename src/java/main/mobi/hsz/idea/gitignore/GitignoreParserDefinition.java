@@ -26,6 +26,7 @@ public class GitignoreParserDefinition implements ParserDefinition {
     public static final TokenSet HEADERS = TokenSet.create(GitignoreTypes.HEADER);
     public static final TokenSet SECTIONS = TokenSet.create(GitignoreTypes.SECTION);
     public static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
+    public static final TokenSet NEGATIONS = TokenSet.create(GitignoreTypes.NEGATION);
     public static final TokenSet ENTRY_FILES = TokenSet.create(GitignoreTypes.ENTRY_FILE);
     public static final TokenSet ENTRY_DIRECTORIES = TokenSet.create(GitignoreTypes.ENTRY_DIRECTORY);
 
@@ -61,6 +62,11 @@ public class GitignoreParserDefinition implements ParserDefinition {
     @NotNull
     public TokenSet getSectionTokens() {
         return SECTIONS;
+    }
+
+    @NotNull
+    public TokenSet getNegationTokens() {
+        return NEGATIONS;
     }
 
     @NotNull

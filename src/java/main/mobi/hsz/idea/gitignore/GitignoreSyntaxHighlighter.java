@@ -17,12 +17,14 @@ public class GitignoreSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey HEADER = createTextAttributesKey("HEADER", DefaultLanguageHighlighterColors.MARKUP_ENTITY);
     public static final TextAttributesKey SECTION = createTextAttributesKey("SECTION", DefaultLanguageHighlighterColors.MARKUP_TAG);
     public static final TextAttributesKey COMMENT = createTextAttributesKey("COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+    public static final TextAttributesKey NEGATION = createTextAttributesKey("NEGATION", DefaultLanguageHighlighterColors.CONSTANT);
     public static final TextAttributesKey ENTRY_FILE = createTextAttributesKey("ENTRY_FILE", DefaultLanguageHighlighterColors.CLASS_NAME);
     public static final TextAttributesKey ENTRY_DIRECTORY = createTextAttributesKey("ENTRY_DIRECTORY", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
 
     private static final TextAttributesKey[] HEADER_KEYS = new TextAttributesKey[]{HEADER};
     private static final TextAttributesKey[] SECTION_KEYS = new TextAttributesKey[]{SECTION};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
+    private static final TextAttributesKey[] NEGATION_KEYS = new TextAttributesKey[]{NEGATION};
     private static final TextAttributesKey[] ENTRY_FILE_KEYS = new TextAttributesKey[]{ENTRY_FILE};
     private static final TextAttributesKey[] ENTRY_DIRECTORY_KEYS = new TextAttributesKey[]{ENTRY_DIRECTORY};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
@@ -42,6 +44,8 @@ public class GitignoreSyntaxHighlighter extends SyntaxHighlighterBase {
             return SECTION_KEYS;
         } else if (tokenType.equals(GitignoreTypes.COMMENT)) {
             return COMMENT_KEYS;
+        } else if (tokenType.equals(GitignoreTypes.NEGATION)) {
+            return NEGATION_KEYS;
         } else if (tokenType.equals(GitignoreTypes.ENTRY_FILE)) {
             return ENTRY_FILE_KEYS;
         } else if (tokenType.equals(GitignoreTypes.ENTRY_DIRECTORY)) {
