@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>mobi.hsz.idea.gitignore</id>
   <name>.gitignore support</name>
-  <version>0.2</version>
+  <version>0.2.1</version>
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
   <description><![CDATA[
@@ -10,12 +10,13 @@
       <a href="https://github.com/hsz/idea-gitignore">GitHub</a> | <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a>
       <br/>
       <br/>
-      If you are using <a href="http://plugins.jetbrains.com/plugin/3033">Git Integration</a> plugin, you have to manually
-      remove <b>.gitignore</b> entry from <b>Settings > File types > Text files</b> section.
+      This plugin allows you to highlight <pre>.gitignore</pre> files syntax. Future features will allow you to auto-generate
+      its content using <a href="https://github.com/github/gitignore">GitHub's collection of .gitignore file templates</a>.
     ]]></description>
 
   <change-notes><![CDATA[
       <ul>
+        <li><strong>0.2.1</strong> Syntax highlight fix, Color Settings Page sample</li>
         <li><strong>0.2</strong> Syntax highlight</li>
         <li><strong>0.1</strong> Initial version</li>
       </ul>
@@ -26,6 +27,7 @@
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
+    <internalFileTemplate name="Gitignore File" />
     <colorSettingsPage implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage" />
     <fileTypeFactory implementation="mobi.hsz.idea.gitignore.GitignoreFileTypeFactory" />
     <lang.parserDefinition language="Gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreParserDefinition" />

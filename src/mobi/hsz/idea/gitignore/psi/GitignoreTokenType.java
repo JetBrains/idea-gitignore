@@ -12,6 +12,6 @@ public class GitignoreTokenType extends IElementType {
 
     @Override
     public String toString() {
-        return "GitignoreTokenType." + super.toString();
+        return GitignoreLanguage.NAME + "TokenType." + super.toString();
     }
 }

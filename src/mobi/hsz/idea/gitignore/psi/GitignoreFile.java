@@ -23,7 +23,7 @@ public class GitignoreFile extends PsiFileBase {
 
     @Override
     public String toString() {
-        return "Gitignore file";
+        return GitignoreLanguage.NAME + " file";
     }
 
     @Nullable
