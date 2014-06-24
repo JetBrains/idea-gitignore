@@ -1,4 +1,4 @@
-package mobi.hsz.idea.gitignore;
+package mobi.hsz.idea.gitignore.lexer;
 
 import com.intellij.lexer.FlexAdapter;
 

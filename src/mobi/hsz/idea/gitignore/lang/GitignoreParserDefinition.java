@@ -1,10 +1,9 @@
-package mobi.hsz.idea.gitignore;
+package mobi.hsz.idea.gitignore.lang;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
-import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
@@ -13,13 +12,12 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lexer.GitignoreLexerAdapter;
 import mobi.hsz.idea.gitignore.parser.GitignoreParser;
 import mobi.hsz.idea.gitignore.psi.GitignoreFile;
 import mobi.hsz.idea.gitignore.psi.GitignoreTypes;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.Reader;
 
 public class GitignoreParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
@@ -35,7 +33,7 @@ public class GitignoreParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return new FlexAdapter(new GitignoreLexer((Reader) null));
+        return new GitignoreLexerAdapter();
     }
 
     @Override

@@ -1,7 +1,6 @@
-package mobi.hsz.idea.gitignore.lang;
+package mobi.hsz.idea.gitignore.psi;
 
 import com.intellij.psi.tree.TokenSet;
-import mobi.hsz.idea.gitignore.psi.GitignoreTypes;
 
 public interface GitignoreTokenTypeSets extends GitignoreTypes {
 

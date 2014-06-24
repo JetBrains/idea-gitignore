@@ -1,6 +1,6 @@
 package mobi.hsz.idea.gitignore.util;
 
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
 
 import java.io.File;
 import java.io.FileFilter;

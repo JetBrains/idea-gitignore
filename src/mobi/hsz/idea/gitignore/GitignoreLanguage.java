@@ -1,4 +1,4 @@
-package mobi.hsz.idea.gitignore.lang;
+package mobi.hsz.idea.gitignore;
 
 import com.intellij.lang.Language;
 

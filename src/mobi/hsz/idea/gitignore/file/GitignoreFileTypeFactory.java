@@ -1,9 +1,9 @@
-package mobi.hsz.idea.gitignore;
+package mobi.hsz.idea.gitignore.file;
 
 import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
 public class GitignoreFileTypeFactory extends FileTypeFactory {

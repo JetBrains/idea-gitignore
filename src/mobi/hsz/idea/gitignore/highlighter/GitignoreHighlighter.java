@@ -4,8 +4,8 @@ import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
-import mobi.hsz.idea.gitignore.GitignoreLexerAdapter;
-import mobi.hsz.idea.gitignore.lang.GitignoreTokenTypeSets;
+import mobi.hsz.idea.gitignore.lexer.GitignoreLexerAdapter;
+import mobi.hsz.idea.gitignore.psi.GitignoreTokenTypeSets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

@@ -5,8 +5,8 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
-import mobi.hsz.idea.gitignore.util.GitignoreIcons;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Resources;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +40,7 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
     @Nullable
     @Override
     public Icon getIcon() {
-        return GitignoreIcons.FILE;
+        return Icons.FILE;
     }
 
     @NotNull

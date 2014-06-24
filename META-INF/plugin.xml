@@ -29,8 +29,8 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <colorSettingsPage implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage" />
-    <fileTypeFactory implementation="mobi.hsz.idea.gitignore.GitignoreFileTypeFactory" />
-    <lang.parserDefinition language="Gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreParserDefinition" />
+    <fileTypeFactory implementation="mobi.hsz.idea.gitignore.file.GitignoreFileTypeFactory" />
+    <lang.parserDefinition language="Gitignore" implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreParserDefinition" />
     <lang.syntaxHighlighterFactory key="Gitignore" implementationClass="mobi.hsz.idea.gitignore.highlighter.GitignoreHighlighterFactory" />
     <additionalTextAttributes scheme="Default" file="colorSchemes/GitignoreDefault.xml" />
     <additionalTextAttributes scheme="Darcula" file="colorSchemes/GitignoreDarcula.xml" />

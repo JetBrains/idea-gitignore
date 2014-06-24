@@ -7,7 +7,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.file.GitignoreTemplatesFactory;
 import mobi.hsz.idea.gitignore.util.Resources;
 
 public class NewGitignoreFileAction extends AnAction {

@@ -1,8 +1,8 @@
-package mobi.hsz.idea.gitignore;
+package mobi.hsz.idea.gitignore.file;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
-import mobi.hsz.idea.gitignore.util.GitignoreIcons;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,6 +36,6 @@ public class GitignoreFileType extends LanguageFileType {
     @Nullable
     @Override
     public Icon getIcon() {
-        return GitignoreIcons.FILE;
+        return Icons.FILE;
     }
 }

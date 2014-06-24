@@ -1,7 +1,7 @@
 package mobi.hsz.idea.gitignore.psi;
 
 import com.intellij.psi.tree.IElementType;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 

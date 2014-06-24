@@ -3,8 +3,8 @@ package mobi.hsz.idea.gitignore.psi;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
-import mobi.hsz.idea.gitignore.GitignoreFileType;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.file.GitignoreFileType;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
