@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 public class GitignoreFileTypeFactory extends FileTypeFactory {
     @Override
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {
-        FileTypeFactory[] foo = FILE_TYPE_FACTORY_EP.getExtensions();
         consumer.consume(GitignoreFileType.INSTANCE, GitignoreLanguage.EXTENSION);
     }
 }
