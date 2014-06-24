@@ -8,6 +8,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.util.Resources;
 
 public class NewGitignoreFileAction extends AnAction {
     @Override
@@ -37,5 +38,7 @@ public class NewGitignoreFileAction extends AnAction {
         }
 
         FileEditorManager.getInstance(project).openFile(file.getVirtualFile(), true);
+
+        Resources.getTemplates();
     }
 }

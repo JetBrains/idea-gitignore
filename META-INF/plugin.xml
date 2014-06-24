@@ -26,10 +26,10 @@
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <colorSettingsPage implementation="mobi.hsz.idea.gitignore.GitignoreColorSettingsPage" />
+    <colorSettingsPage implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage" />
     <fileTypeFactory implementation="mobi.hsz.idea.gitignore.GitignoreFileTypeFactory" />
-    <lang.parserDefinition language=".gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreParserDefinition" />
-    <lang.syntaxHighlighterFactory key="Gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreSyntaxHighlighterFactory" />
+    <lang.parserDefinition language="Gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreParserDefinition" />
+    <lang.syntaxHighlighterFactory key="Gitignore" implementationClass="mobi.hsz.idea.gitignore.highlighter.GitignoreHighlighterFactory" />
   </extensions>
 
   <application-components>

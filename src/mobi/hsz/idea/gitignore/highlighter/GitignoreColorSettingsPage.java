@@ -1,10 +1,11 @@
-package mobi.hsz.idea.gitignore;
+package mobi.hsz.idea.gitignore.highlighter;
 
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
+import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.util.GitignoreIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,12 +15,12 @@ import java.util.Map;
 
 public class GitignoreColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("Header", GitignoreSyntaxHighlighter.HEADER),
-            new AttributesDescriptor("Section", GitignoreSyntaxHighlighter.SECTION),
-            new AttributesDescriptor("Comment", GitignoreSyntaxHighlighter.COMMENT),
-            new AttributesDescriptor("Negation", GitignoreSyntaxHighlighter.NEGATION),
-            new AttributesDescriptor("File", GitignoreSyntaxHighlighter.ENTRY_FILE),
-            new AttributesDescriptor("Directory", GitignoreSyntaxHighlighter.ENTRY_DIRECTORY),
+            new AttributesDescriptor("Header", GitignoreHighlighterColors.HEADER_ATTR_KEY),
+            new AttributesDescriptor("Section", GitignoreHighlighterColors.SECTION_ATTR_KEY),
+            new AttributesDescriptor("Comment", GitignoreHighlighterColors.COMMENT_ATTR_KEY),
+            new AttributesDescriptor("Negation", GitignoreHighlighterColors.NEGATION_ATTR_KEY),
+            new AttributesDescriptor("File", GitignoreHighlighterColors.ENTRY_FILE_ATTR_KEY),
+            new AttributesDescriptor("Directory", GitignoreHighlighterColors.ENTRY_DIRECTORY_ATTR_KEY),
     };
 
     @Nullable
@@ -31,7 +32,7 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public SyntaxHighlighter getHighlighter() {
-        return new GitignoreSyntaxHighlighter();
+        return new GitignoreHighlighter();
     }
 
     @NotNull
@@ -61,6 +62,6 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDisplayName() {
-        return "Gitignore";
+        return GitignoreLanguage.NAME;
     }
 }
