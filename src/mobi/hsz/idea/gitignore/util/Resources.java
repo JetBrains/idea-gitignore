@@ -5,6 +5,7 @@ import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class Resources {
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<String>();
 
-        for (File template : getFiles()) {
-            templates.add(template.getName());
+        for (File file : getGitignoreFiles()) {
+            templates.add(file.getName());
         }
 
 //        InputStream foo = Resources.class.getResourceAsStream("/gitignore/Ada.gitignore");
@@ -31,9 +32,9 @@ public class Resources {
      *
      * @return Template files
      */
-    protected static File[] getFiles() {
+    protected static File[] getGitignoreFiles() {
         if (files == null) {
-            files = getDirectory().listFiles(new FileFilter() {
+            files = getResource("/gitignore").listFiles(new FileFilter() {
                 @Override
                 public boolean accept(File pathname) {
                     return pathname.getName().endsWith(GitignoreLanguage.FILENAME);
@@ -48,9 +49,11 @@ public class Resources {
      *
      * @return Resources directory
      */
-    public static File getDirectory() {
+    public static File getResource(String path) {
         if (directory == null) {
-            directory = new File(Resources.class.getResource("/gitignore/").getPath());
+            URL resource = Resources.class.getResource(path);
+            assert resource != null;
+            directory = new File(resource.getPath());
         }
         return directory;
     }
@@ -61,7 +64,7 @@ public class Resources {
      * @param path Resource path
      * @return Content
      */
-    public static String getTemplate(String path) {
+    public static String getResourceContent(String path) {
         return convertStreamToString(Resources.class.getResourceAsStream(path));
     }
 

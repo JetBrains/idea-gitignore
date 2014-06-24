@@ -52,7 +52,7 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDemoText() {
-        return loadSampleGitignore();
+        return SAMPLE_GITIGNORE;
     }
 
     @Nullable
@@ -88,6 +88,6 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
      * @see #SAMPLE_GITIGNORE
      */
     protected static String loadSampleGitignore() {
-        return Resources.getTemplate(SAMPLE_GITIGNORE_PATH);
+        return Resources.getResourceContent(SAMPLE_GITIGNORE_PATH);
     }
 }
