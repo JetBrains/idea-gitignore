@@ -10,7 +10,7 @@
       <a href="https://github.com/hsz/idea-gitignore">GitHub</a> | <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a>
       <br/>
       <br/>
-      This plugin allows you to highlight <pre>.gitignore</pre> files syntax. Future features will allow you to auto-generate
+      This plugin allows you to highlight <i>.gitignore</i> files syntax. Future features will allow you to auto-generate
       its content using <a href="https://github.com/github/gitignore">GitHub's collection of .gitignore file templates</a>.
     ]]></description>
 
@@ -46,7 +46,7 @@
 
   <actions>
     <action id="Gitignore.NewGitignoreFile" class="mobi.hsz.idea.gitignore.actions.NewGitignoreFileAction"
-            text=".gitignore" description="Create new .gitignore file" icon="/mobi/hsz/idea/gitignore/icons/icon16.png">
+            text=".gitignore" description="Create new .gitignore file" icon="/icons/icon16.png">
       <add-to-group group-id="NewGroup" anchor="first" />
     </action>
   </actions>
