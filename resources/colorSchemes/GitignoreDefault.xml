@@ -1,0 +1,37 @@
+<?xml version='1.0'?>
+<list>
+    <option name="GITIGNORE.COMMENT">
+        <value>
+            <option name="FOREGROUND" value="808080" />
+        </value>
+    </option>
+    <option name="GITIGNORE.SECTION">
+        <value>
+            <option name="FOREGROUND" value="808080" />
+            <option name="BACKGROUND" value="ECFAEB" />
+        </value>
+    </option>
+    <option name="GITIGNORE.HEADER">
+        <value>
+            <option name="FOREGROUND" value="808080" />
+            <option name="BACKGROUND" value="ECFAEB" />
+            <option name="FONT_TYPE" value="1" />
+        </value>
+    </option>
+    <option name="GITIGNORE.NEGATION">
+        <value>
+            <option name="FOREGROUND" value="FFFFFF" />
+            <option name="BACKGROUND" value="FF0000" />
+        </value>
+    </option>
+    <option name="GITIGNORE.ENTRY_FILE">
+        <value>
+            <option name="FOREGROUND" value="5C9F30" />
+        </value>
+    </option>
+    <option name="GITIGNORE.ENTRY_DIRECTORY">
+        <value>
+            <option name="FOREGROUND" value="1A16BA" />
+        </value>
+    </option>
+</list>

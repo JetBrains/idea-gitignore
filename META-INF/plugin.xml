@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>mobi.hsz.idea.gitignore</id>
   <name>.gitignore support</name>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
   <description><![CDATA[
@@ -16,6 +16,7 @@
 
   <change-notes><![CDATA[
       <ul>
+        <li><strong>0.2.2</strong> Custom color schemes for Default and Darcula</li>
         <li><strong>0.2.1</strong> Syntax highlight fix, Color Settings Page sample</li>
         <li><strong>0.2</strong> Syntax highlight</li>
         <li><strong>0.1</strong> Initial version</li>
@@ -27,11 +28,12 @@
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <internalFileTemplate name="Gitignore File" />
     <colorSettingsPage implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage" />
     <fileTypeFactory implementation="mobi.hsz.idea.gitignore.GitignoreFileTypeFactory" />
     <lang.parserDefinition language="Gitignore" implementationClass="mobi.hsz.idea.gitignore.GitignoreParserDefinition" />
     <lang.syntaxHighlighterFactory key="Gitignore" implementationClass="mobi.hsz.idea.gitignore.highlighter.GitignoreHighlighterFactory" />
+    <additionalTextAttributes scheme="Default" file="colorSchemes/GitignoreDefault.xml" />
+    <additionalTextAttributes scheme="Darcula" file="colorSchemes/GitignoreDarcula.xml" />
   </extensions>
 
   <application-components>

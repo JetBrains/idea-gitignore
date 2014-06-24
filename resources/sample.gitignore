@@ -2,7 +2,7 @@
 
 ## First section
 *.jar
-*.war # Inline comment
+*.war
 *.ear
 out/
 
