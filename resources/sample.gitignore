@@ -1,0 +1,15 @@
+### Header element
+
+## First section
+*.jar
+*.war # Inline comment
+*.ear
+out/
+
+## Second section
+.gradle/
+build/
+
+# .gitignore negations
+!out/foo.txt
+!bar/

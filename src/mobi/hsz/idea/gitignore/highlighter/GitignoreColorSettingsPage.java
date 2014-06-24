@@ -7,6 +7,8 @@ import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.util.GitignoreIcons;
+import mobi.hsz.idea.gitignore.util.Resources;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,6 +16,18 @@ import javax.swing.*;
 import java.util.Map;
 
 public class GitignoreColorSettingsPage implements ColorSettingsPage {
+
+    /** The path to the sample .gitignore file */
+    @NonNls
+    protected static final String SAMPLE_GITIGNORE_PATH = "/sample.gitignore";
+
+    /**
+     * The sample .gitignore document shown in the colors settings dialog
+     *
+     * @see #loadSampleGitignore()
+     */
+    protected static final String SAMPLE_GITIGNORE = loadSampleGitignore();
+
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor("Header", GitignoreHighlighterColors.HEADER_ATTR_KEY),
             new AttributesDescriptor("Section", GitignoreHighlighterColors.SECTION_ATTR_KEY),
@@ -38,7 +52,7 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDemoText() {
-        return "foo";
+        return loadSampleGitignore();
     }
 
     @Nullable
@@ -63,5 +77,17 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
     @Override
     public String getDisplayName() {
         return GitignoreLanguage.NAME;
+    }
+
+    /**
+     * Loads sample .gitignore file
+     *
+     * @return the text loaded from {@link #SAMPLE_GITIGNORE_PATH}
+     * @see #getDemoText()
+     * @see #SAMPLE_GITIGNORE_PATH
+     * @see #SAMPLE_GITIGNORE
+     */
+    protected static String loadSampleGitignore() {
+        return Resources.getTemplate(SAMPLE_GITIGNORE_PATH);
     }
 }
