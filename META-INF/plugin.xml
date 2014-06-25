@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>mobi.hsz.idea.gitignore</id>
   <name>.gitignore support</name>
-  <version>0.2.2</version>
+  <version>0.3</version>
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
   <description><![CDATA[
@@ -16,6 +16,7 @@
 
   <change-notes><![CDATA[
       <ul>
+        <li><strong>0.3</strong> Content generator based on .gitignore templates</li>
         <li><strong>0.2.2</strong> Custom color schemes for Default and Darcula</li>
         <li><strong>0.2.1</strong> Syntax highlight fix, Color Settings Page sample</li>
         <li><strong>0.2</strong> Syntax highlight</li>
