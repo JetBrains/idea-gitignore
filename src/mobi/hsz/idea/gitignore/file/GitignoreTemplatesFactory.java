@@ -10,7 +10,7 @@ import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 public class GitignoreTemplatesFactory implements FileTemplateGroupDescriptorFactory {
-    private static final String TEXT = "### Created by http://gitignore.hsz.mobi\n\n";
+    private static final String TEXT = "# Created by .gitignore support plugin (hsz.mobi)";
     private final FileTemplateGroupDescriptor templateGroup;
 
     public GitignoreTemplatesFactory() {
