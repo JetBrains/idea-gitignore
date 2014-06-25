@@ -1,6 +1,7 @@
 package mobi.hsz.idea.gitignore.util;
 
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -11,37 +12,32 @@ import java.util.List;
 
 public class Resources {
 
-    private static File[] files;
-    private static File directory;
+    /**
+     * Returns list of gitignore templates
+     *
+     * @return Gitignore templates list
+     */
+    public static List<Template> getGitignoreTemplates() {
+        List<Template> templates = new ArrayList<Template>();
+        String templatesDirectory = "/gitignore";
 
-    public static List<String> getTemplates() {
-        List<String> templates = new ArrayList<String>();
+        File[] files = getResource(templatesDirectory).listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(GitignoreLanguage.FILENAME);
+            }
+        });
 
-        for (File file : getGitignoreFiles()) {
-            templates.add(file.getName());
+        for (File file : files) {
+            String relativePath = file.getPath().substring(file.getPath().indexOf(templatesDirectory));
+            String content = Resources.getResourceContent(relativePath);
+            templates.add(new Template(file, content));
         }
-
-//        InputStream foo = Resources.class.getResourceAsStream("/gitignore/Ada.gitignore");
 
         return templates;
     }
 
-
-    /**
-     * Returns list of gitignore templates
-     *
-     * @return Template files
-     */
-    protected static File[] getGitignoreFiles() {
-        if (files == null) {
-            files = getResource("/gitignore").listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File pathname) {
-                    return pathname.getName().endsWith(GitignoreLanguage.FILENAME);
-                }
-            });
-        }
-        return files;
+    public Resources() {
     }
 
     /**
@@ -50,12 +46,9 @@ public class Resources {
      * @return Resources directory
      */
     public static File getResource(String path) {
-        if (directory == null) {
-            URL resource = Resources.class.getResource(path);
-            assert resource != null;
-            directory = new File(resource.getPath());
-        }
-        return directory;
+        URL resource = Resources.class.getResource(path);
+        assert resource != null;
+        return new File(resource.getPath());
     }
 
     /**
@@ -77,6 +70,40 @@ public class Resources {
     protected static String convertStreamToString(InputStream inputStream) {
         java.util.Scanner s = new java.util.Scanner(inputStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
+    }
+
+    public static class Template implements Comparable<Template> {
+        private final File file;
+        private final String name;
+        private final String content;
+
+        public Template(File file, String content) {
+            this.file = file;
+            this.name = file.getName().replace(GitignoreLanguage.FILENAME, "");
+            this.content = content;
+        }
+
+        public File getFile() {
+            return file;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        @Override
+        public int compareTo(@NotNull final Template template) {
+            return name.compareTo(template.name);
+        }
     }
 
 }
