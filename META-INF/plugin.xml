@@ -5,22 +5,69 @@
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
   <description><![CDATA[
-      <h1>.gitignore support plugin for IntelliJ IDEA</h1>
+      <h1>.gitignore support plugin</h1>
       <br/>
+
       <a href="https://github.com/hsz/idea-gitignore">GitHub</a> | <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a>
       <br/>
       <br/>
-      This plugin allows you to highlight <i>.gitignore</i> files syntax. Future features will allow you to auto-generate
-      its content using <a href="https://github.com/github/gitignore">GitHub's collection of .gitignore file templates</a>.
+
+      <b>.gitignore support</b> is a plugin for <i>.gitignore</i> files in your Git project.
+      <br/>
+
+      <b>Features</b>
+      <ul>
+        <li><i>.gitignore</i> files syntax highlight</li>
+        <li>Create <i>.gitignore<i> file in currently selected directory</li>
+        <li>Generate Gitignore rules basing on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
+      </ul>
+
+      <b><i>Feature requests:</i></b>
+      <ul>
+        <li><i>Add selected file/directory to the Gitignore rules</i></li>
+        <li><i>Better Gitignore templates filtering and selecting in rules generator</i></li>
+        <li><i>Gitignore rules cleanup (duplicates removing, ...)</i></li>
+        <li><i>Ignored files preview</i></li>
+        <li><i>Mark ignored files in Project tree</i></li>
+        <li><i>Suggesting .gitignore file creation for new project</i></li>
+      </ul>
+
+      <br/>
+      <br/>
+
+      <i>Compiled with Java 1.6</i>
+      <br/>
+      <br/>
+
     ]]></description>
 
   <change-notes><![CDATA[
+      Version 0.3
       <ul>
-        <li><strong>0.3</strong> Content generator based on .gitignore templates</li>
-        <li><strong>0.2.2</strong> Custom color schemes for Default and Darcula</li>
-        <li><strong>0.2.1</strong> Syntax highlight fix, Color Settings Page sample</li>
-        <li><strong>0.2</strong> Syntax highlight</li>
-        <li><strong>0.1</strong> Initial version</li>
+        <li>Content generator based on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
+      </ul>
+
+      Version 0.2.2
+      <ul>
+        <li>Custom color schemes for <i>Default</i> and <i>Darcula</i> themes</li>
+      </ul>
+
+      Version 0.2.1
+      <ul>
+        <li>Color Settings Page sample (<kbd>Settings > Editor > Color & Fonts > Gitignore</kbd>)</li>
+        <li>Syntax highlighting fix</li>
+      </ul>
+
+      Version 0.2
+      <ul>
+        <li>Full syntax highlighting (comment, section, header, file, directory, negation)</li>
+      </ul>
+
+      Version 0.1
+      <ul>
+        <li>Initial version</li>
+        <li><b>.gitignore</b> file support</li>
+        <li>Basic syntax highlighting</li>
       </ul>
     ]]>
   </change-notes>

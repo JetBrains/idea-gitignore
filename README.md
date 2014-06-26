@@ -16,6 +16,8 @@ Introduction
 - WebStorm
 - 0xDBE
 
+*Compiled with Java 1.6*
+
 
 Features
 --------
@@ -106,6 +108,8 @@ Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
   - Go to [`Gitignore.flex`][flex-file] file and **Run JFlex Generator**
     - <kbd>Tools > Run JFlex Generator</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
     - For the first time it will download `JFlex.jar` and `idea-flex.skeleton` files - save them in the root project directory
+- Set *Java Compiler* to **1.6**
+  - Go to <kbd>Settings > Compiler > Java Compiler</kbd> and set *Project bytecode version* to **1.6**
 
 
 Developed By
