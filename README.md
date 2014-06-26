@@ -1,42 +1,131 @@
 .gitignore support
 ==================
 
-IntelliJ (and other JetBrains IDEs) plugin to support `.gitignore` files in your project.
 
-**.gitignore support** allows (or will allow) to highlight syntax, autogenerate `.gitignore` rules based on GitHub gitignore repository.
+Introduction
+------------
+
+**.gitignore support** is a plugin for `.gitignore` files in your Git project. It supports following JetBrains IDEs:
+
+- Android Studio
+- AppCode
+- IntelliJ IDEA
+- PhpStorm
+- PyCharm
+- RubyMine
+- WebStorm
+- 0xDBE
+
+
+Features
+--------
+
+- `.gitignore` files syntax highlight
+- Create `.gitignore` file in currently selected directory
+- Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
+
+*Feature requests:*
+
+- *Add selected file/directory to the Gitignore rules*
+- *Better Gitignore templates filtering and selecting in rules generator*
+- *Gitignore rules cleanup (duplicates removing, ...)*
+- *Ignored files preview*
+- *Mark ignored files in Project tree*
+- *Suggesting `.gitignore` file creation for new project*
+
 
 Installation
 ------------
 
-Using IntelliJ's built-in plugin system:
+- Using IDE built-in plugin system:
+  - <kbd>Preferences > Plugins > Browse repositories... > Search for ".gitignore support" > Install Plugin</kbd>
+- Manually:
+  - Download the [latest release][latest-release] and install it manually using <kbd>Preferences -> Plugins -> Install plugin from disk...</kbd>
+  
+Restart IDE.
 
-`Preferences > Plugins > Browse repositories... > Search for ".gitignore support" > Install Plugin`
-
-or alternatively, download the .jar and install it manually.
 
 Usage
 -----
 
-To generate new `.gitignore` file, just click on `File > New` or use `Alt + Insert` shortcut and select `.gitignore file` element.
+1. Generate new file
+
+To generate new `.gitignore` file, just click on <kbd>File > New</kbd> or use <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut and select `.gitignore file` element.
+
+![Generate new file](http://gitignore.hsz.mobi/usage-01.gif)
+
+Changelog
+---------
+
+Version 0.3
+- Content generator based on [GitHub's templates collection][github-gitignore]
+
+Version 0.2.2
+- Custom color schemes for *Default* and *Darcula* themes
+
+Version 0.2.1
+- Color Settings Page sample (<kbd>Settings > Editor > Color & Fonts > Gitignore</kbd>)
+- Syntax highlighting fix
+
+Version 0.2
+- Full syntax highlighting (comment, section, header, file, directory, negation)
+
+Version 0.1
+- Initial version
+- `.gitignore` file support
+- Basic syntax highlighting
+
+
+Contribution
+------------
+
+Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
+
+### Compiling the source code
+
+- Clone `idea-ignore` project from https://github.com/hsz/idea-gitignore.git
+- [Configure IntelliJ IDEA Plugin SDK][idea-sdk-configuration]
+- Install required plugins:
+  - Plugin DevKit *(bundled)*
+  - [Grammar-Kit][grammar-kit-plugin]
+  - [PsiViewer][psiviewer-plugin]
+  - [JFlex Support][jflex-support-plugin]
+- Create *New Project* as a *IntelliJ Platform Plugin* and set *Project location* to the **idea-gitignore** sources
+  - In <kbd>Project settings > Modules</kbd> section mark:
+    - `gen` as *Sources*
+    - `resources` as *Sources*
+    - `src` as *Sources*
+    - `.idea` as *Excluded*
+    - `out` as *Excluded*
+- Add new *Run/Debug configuration*
+  - <kbd>+</kbd> <kbd>Add new configuration > Plugin</kbd>
+  - Remove `-XX:MaxPermSize=250m` from *VM Options*
+- Generate PSI classes
+  - Go to [`Gitignore.bnf`][bnf-file] file and **Generate Parser Code**
+    - <kbd>Tools > Generate Parser Code</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
+  - Go to [`Gitignore.flex`][flex-file] file and **Run JFlex Generator**
+    - <kbd>Tools > Run JFlex Generator</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
+    - For the first time it will download `JFlex.jar` and `idea-flex.skeleton` files - save them in the root project directory
+
 
 Developed By
 ------------
 
-[Jakub `hsz` Chrzanowski](http://hsz.mobi)
+[**hsz** Jakub Chrzanowski][hsz]
+
 
 License
 -------
 
-    Copyright 2014 hsz
+Copyright (c) 2014 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for license rights and limitations (MIT).
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+    
+[github-gitignore]:       https://github.com/github/gitignore
+[idea-sdk-configuration]: http://confluence.jetbrains.com/display/IntelliJIDEA/Prerequisites
+[grammar-kit-plugin]:     http://plugins.jetbrains.com/plugin/6606
+[psiviewer-plugin]:       http://plugins.jetbrains.com/plugin/227
+[jflex-support-plugin]:   http://plugins.jetbrains.com/plugin/263
+[bnf-file]:               ./resources/bnf/Gitignore.bnf
+[flex-file]:              ./src/mobi/hsz/idea/gitignore/lexer/Gitignore.flex
+[hsz]:                    http://hsz.mobi
+[latest-release]:         https://github.com/hsz/idea-gitignore/releases/latest
