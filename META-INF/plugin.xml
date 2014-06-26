@@ -42,6 +42,13 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      Version 0.3.1
+      <ul>
+        <li>Fixed problem with Java 1.6 (<a href="https://github.com/hsz/idea-gitignore/issues/2">#2</a>,
+            <a href="https://github.com/hsz/idea-gitignore/issues/4">#4</a>)</li>
+        <li>Fixed fetching templates list (<a href="https://github.com/hsz/idea-gitignore/issues/5">#5</a>)</li>
+      </ul>
+
       Version 0.3
       <ul>
         <li>Content generator based on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>

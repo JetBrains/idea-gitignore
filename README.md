@@ -40,9 +40,9 @@ Installation
 ------------
 
 - Using IDE built-in plugin system:
-  - <kbd>Preferences > Plugins > Browse repositories... > Search for ".gitignore support" > Install Plugin</kbd>
+  - <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Browse repositories...</kbd> > <kbd>Search for ".gitignore support"</kbd> > <kbd>Install Plugin</kbd>
 - Manually:
-  - Download the [latest release][latest-release] and install it manually using <kbd>Preferences -> Plugins -> Install plugin from disk...</kbd>
+  - Download the [latest release][latest-release] and install it manually using <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Install plugin from disk...</kbd>
   
 Restart IDE.
 
@@ -52,12 +52,16 @@ Usage
 
 1. Generate new file
 
-To generate new `.gitignore` file, just click on <kbd>File > New</kbd> or use <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut and select `.gitignore file` element.
+To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd> or use <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut and select `.gitignore file` element.
 
 ![Generate new file](http://gitignore.hsz.mobi/usage-01.gif)
 
 Changelog
 ---------
+
+Version 0.3.1
+- Fixed problem with Java 1.6 ([#2](https://github.com/hsz/idea-gitignore/issues/2), [#4](https://github.com/hsz/idea-gitignore/issues/4))
+- Fixed fetching templates list ([#5](https://github.com/hsz/idea-gitignore/issues/5))
 
 Version 0.3
 - Content generator based on [GitHub's templates collection][github-gitignore]
@@ -66,7 +70,7 @@ Version 0.2.2
 - Custom color schemes for *Default* and *Darcula* themes
 
 Version 0.2.1
-- Color Settings Page sample (<kbd>Settings > Editor > Color & Fonts > Gitignore</kbd>)
+- Color Settings Page sample (<kbd>Settings</kbd> > <kbd>Editor</kbd> > <kbd>Color & Fonts</kbd> > <kbd>Gitignore</kbd>)
 - Syntax highlighting fix
 
 Version 0.2
@@ -93,24 +97,24 @@ Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
   - [PsiViewer][psiviewer-plugin]
   - [JFlex Support][jflex-support-plugin]
 - Create *New Project* as a *IntelliJ Platform Plugin* and set *Project location* to the **idea-gitignore** sources
-  - In <kbd>Project settings > Modules</kbd> section mark:
+  - In <kbd>Project settings</kbd> > <kbd>Modules</kbd> section mark:
     - `gen` as *Sources*
     - `resources` as *Sources*
     - `src` as *Sources*
     - `.idea` as *Excluded*
     - `out` as *Excluded*
 - Add new *Run/Debug configuration*
-  - <kbd>+</kbd> <kbd>Add new configuration > Plugin</kbd>
+  - <kbd>+</kbd> <kbd>Add new configuration</kbd> > <kbd>Plugin</kbd>
   - Remove `-XX:MaxPermSize=250m` from *VM Options*
 - Generate PSI classes
   - Go to [`Gitignore.bnf`][bnf-file] file and **Generate Parser Code**
-    - <kbd>Tools > Generate Parser Code</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
+    - <kbd>Tools<kbd> > <kbd>Generate Parser Code</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
   - Go to [`Gitignore.flex`][flex-file] file and **Run JFlex Generator**
-    - <kbd>Tools > Run JFlex Generator</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
+    - <kbd>Tools</kbd> > <kbd>Run JFlex Generator</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
     - For the first time it will download `JFlex.jar` and `idea-flex.skeleton` files - save them in the root project directory
 - Set *Java Compiler* to **1.6**
-  - Go to <kbd>Settings > Compiler > Java Compiler</kbd> and set *Project bytecode version* to **1.6**
-
+  - Go to <kbd>Settings<kbd> > <kbd>Compiler</kbd> > <kbd>Java Compiler</kbd> and set *Project bytecode version* to **1.6**
+- In *Ant Build* add [`build.xml`][build-xml] file and mark **prepare** task as <kbd>Execute on</kbd> > <kbd>Before compilation</kbd>
 
 Developed By
 ------------
@@ -131,5 +135,6 @@ Copyright (c) 2014 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [jflex-support-plugin]:   http://plugins.jetbrains.com/plugin/263
 [bnf-file]:               ./resources/bnf/Gitignore.bnf
 [flex-file]:              ./src/mobi/hsz/idea/gitignore/lexer/Gitignore.flex
+[build-xml]:              ./build.xml
 [hsz]:                    http://hsz.mobi
 [latest-release]:         https://github.com/hsz/idea-gitignore/releases/latest
