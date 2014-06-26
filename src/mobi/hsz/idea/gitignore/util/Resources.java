@@ -3,14 +3,14 @@ package mobi.hsz.idea.gitignore.util;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Resources {
+
+    private static List<Template> templates;
 
     /**
      * Returns list of gitignore templates
@@ -18,22 +18,25 @@ public class Resources {
      * @return Gitignore templates list
      */
     public static List<Template> getGitignoreTemplates() {
-        List<Template> templates = new ArrayList<Template>();
-        String templatesDirectory = "/gitignore";
+        if (templates == null) {
+            templates = new ArrayList<Template>();
 
-        File[] files = getResource(templatesDirectory).listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().endsWith(GitignoreLanguage.FILENAME);
+            try {
+                String list = getResourceContent("/templates.list");
+                BufferedReader br = new BufferedReader(new StringReader(list));
+
+                for (String line; (line = br.readLine()) != null; ) {
+                    line = "/" + line;
+                    File file = getResource(line);
+                    String content = Resources.getResourceContent(line);
+                    templates.add(new Template(file, content));
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
-
-        for (File file : files) {
-            String relativePath = file.getPath().substring(file.getPath().indexOf(templatesDirectory));
-            String content = Resources.getResourceContent(relativePath);
-            templates.add(new Template(file, content));
         }
-
         return templates;
     }
 

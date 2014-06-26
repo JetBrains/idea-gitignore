@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="idea-gitignore">
+
+  <target name="prepare">
+    <exec dir="./resources/gitignore/" executable="git">
+      <arg line="pull" />
+    </exec>
+    <exec dir="./resources/" executable="find">
+      <arg line="gitignore/" />
+      <arg line="-type f" />
+      <arg line="-name '*.gitignore'" />
+      <redirector output="resources/templates.list" />
+    </exec>
+  </target>
+
+</project>
