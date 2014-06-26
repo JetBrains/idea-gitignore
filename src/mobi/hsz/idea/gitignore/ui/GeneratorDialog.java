@@ -102,7 +102,8 @@ public class GeneratorDialog extends JDialog {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 Resources.Template template = (Resources.Template) list.getSelectedValue();
-                preview.setText(template.getContent());
+                String content = template != null ? template.getContent() : "";
+                preview.setText(content);
             }
         });
 
@@ -127,6 +128,7 @@ public class GeneratorDialog extends JDialog {
     }
 
     public void onSearch() {
+        list.clearSelection();
         listModel.filter(search.getText());
     }
 }
