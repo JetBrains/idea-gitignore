@@ -95,6 +95,7 @@ public class GeneratorDialog extends JDialog {
     }
 
     private void createUIComponents() {
+        setTitle("Gitignore file generator");
         listModel = new FilterableListModel<Resources.Template>();
         listModel.setElements(Resources.getGitignoreTemplates());
         list = new JBList(listModel);
