@@ -16,7 +16,7 @@ public class PathCompletionProvider extends CompletionProvider<CompletionParamet
         if (root != null) {
             VirtualFile[] children = root.getVirtualFile().getChildren();
             for (VirtualFile child : children) {
-                result.addElement(new PathLookupElement(child.getName(), child.isDirectory()));
+                result.addElement(new PathLookupElement(child.getName(), child.getFileType(), child.isDirectory()));
             }
         }
     }
