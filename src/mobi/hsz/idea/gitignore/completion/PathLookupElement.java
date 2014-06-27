@@ -26,6 +26,6 @@ public class PathLookupElement extends LookupElement {
     @NotNull
     @Override
     public String getLookupString() {
-        return path;
+        return path + (directory ? "/" : "");
     }
 }
