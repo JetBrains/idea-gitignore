@@ -9,6 +9,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBTextField;
 import mobi.hsz.idea.gitignore.util.Resources;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.*;
+import java.util.Arrays;
 
 public class GeneratorDialog extends JDialog {
     private final PsiFile file;
@@ -68,7 +70,8 @@ public class GeneratorDialog extends JDialog {
 
     private void onOK() {
         String content = "";
-        for (Object object : list.getSelectedValuesList()) {
+
+        for (Object object : getListItems()) {
             Resources.Template template = (Resources.Template) object;
             content += "\n### " + template.getName() + " template\n" + template.getContent();
         }
@@ -131,5 +134,10 @@ public class GeneratorDialog extends JDialog {
     public void onSearch() {
         list.clearSelection();
         listModel.filter(search.getText());
+    }
+
+    @SuppressWarnings("deprecation" )
+    private Iterable<?> getListItems() {
+        return Utils.JAVA_VERSION > 1.6 ? list.getSelectedValuesList() : Arrays.asList(list.getSelectedValues());
     }
 }

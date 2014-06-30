@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>mobi.hsz.idea.gitignore</id>
   <name>.gitignore support</name>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
   <description><![CDATA[
@@ -18,7 +18,7 @@
       <b>Features</b>
       <ul>
         <li><i>.gitignore</i> files syntax highlight</li>
-        <li>Create <i>.gitignore<i> file in currently selected directory</li>
+        <li>Create <i>.gitignore</i> file in currently selected directory</li>
         <li>Generate Gitignore rules basing on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
       </ul>
 
@@ -42,6 +42,11 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      Version 0.3.2
+      <ul>
+        <li>Fixed problem with Java 1.6 and JList - NoSuchMethodError (<a href="https://github.com/hsz/idea-gitignore/issues/7">#7</a>)</li>
+      </ul>
+
       Version 0.3.1
       <ul>
         <li>Fixed problem with Java 1.6 (<a href="https://github.com/hsz/idea-gitignore/issues/2">#2</a>,
