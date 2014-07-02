@@ -2,9 +2,6 @@
 <project name="idea-gitignore">
 
   <target name="prepare">
-    <exec dir="./resources/gitignore/" executable="git">
-      <arg line="pull" />
-    </exec>
     <exec dir="./resources/" executable="find">
       <arg line="gitignore/" />
       <arg line="-type f" />
