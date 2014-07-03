@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>mobi.hsz.idea.gitignore</id>
   <name>.gitignore support</name>
-  <version>0.3.2</version>
+  <version>0.3.3</version>
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
   <description><![CDATA[
@@ -42,6 +42,14 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      Version 0.3.3
+      <ul>
+        <li>Gitignore file creating suggestion if missing</li>
+        <li>Fixed problem with negation (AssertionError) (<a href="https://github.com/hsz/idea-gitignore/issues/10">#10</a>)</li>
+        <li>Replaced icon (<a href="https://github.com/hsz/idea-gitignore/issues/9">#9</a>)</li>
+        <li>New file entry moved to the end of list (<a href="https://github.com/hsz/idea-gitignore/issues/9">#9</a>)</li>
+      </ul>
+
       Version 0.3.2
       <ul>
         <li>Fixed problem with Java 1.6 and JList - NoSuchMethodError (<a href="https://github.com/hsz/idea-gitignore/issues/7">#7</a>)</li>

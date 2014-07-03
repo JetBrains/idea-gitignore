@@ -59,6 +59,12 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.3.3
+- Gitignore file creating suggestion if missing</li>
+- Fixed problem with negation (AssertionError) ([#10](https://github.com/hsz/idea-gitignore/issues/10))</li>
+- Replaced icon ([#9](https://github.com/hsz/idea-gitignore/issues/9))</li>
+- New file entry moved to the end of list ([#9](https://github.com/hsz/idea-gitignore/issues/9))</li>
+
 Version 0.3.2
 - Fixed problem with Java 1.6 and JList - NoSuchMethodError ([#7](https://github.com/hsz/idea-gitignore/issues/7))
 
