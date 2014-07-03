@@ -1,7 +1,6 @@
 package mobi.hsz.idea.gitignore.util;
 
 public class Utils {
-
     public static final double JAVA_VERSION = getJavaVersion();
 
     private static double getJavaVersion() {
@@ -12,5 +11,4 @@ public class Utils {
         }
         return Double.parseDouble(version.substring(0, pos - 1));
     }
-
 }
