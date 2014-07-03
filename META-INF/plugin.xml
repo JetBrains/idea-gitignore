@@ -108,7 +108,7 @@
   <actions>
     <action id="Gitignore.NewGitignoreFile" class="mobi.hsz.idea.gitignore.actions.NewGitignoreFileAction"
             text=".gitignore" description="Create new .gitignore file" icon="/icons/icon16.png">
-      <add-to-group group-id="NewGroup" anchor="first" />
+      <add-to-group group-id="NewGroup" anchor="last" />
     </action>
   </actions>
 </idea-plugin>

@@ -39,12 +39,13 @@ SLASH       = [/]
   {NEGATION}          { yybegin(IN_ENTRY); return NEGATION; }
   {CHARACTER}         { yypushback(1); yybegin(IN_ENTRY); }
 
-	.                   { yybegin(YYINITIAL); return BAD_CHARACTER; }
+  .                   { yybegin(YYINITIAL); return BAD_CHARACTER; }
 }
 
 <IN_ENTRY> {
   {CHARACTER}+{SLASH} { yybegin(WAITING_VALUE); return ENTRY_DIRECTORY; }
   {CHARACTER}+        { yybegin(WAITING_VALUE); return ENTRY_FILE; }
+  {CRLF}              { yybegin(YYINITIAL); return CRLF; }
 }
 
 <WAITING_VALUE> {
