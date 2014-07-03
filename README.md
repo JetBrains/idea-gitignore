@@ -25,6 +25,7 @@ Features
 - `.gitignore` files syntax highlight
 - Create `.gitignore` file in currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
+- Suggesting `.gitignore` file creation for new project
 
 *Feature requests:*
 
@@ -33,7 +34,6 @@ Features
 - *Gitignore rules cleanup (duplicates removing, ...)*
 - *Ignored files preview*
 - *Mark ignored files in Project tree*
-- *Suggesting `.gitignore` file creation for new project*
 
 
 Installation
