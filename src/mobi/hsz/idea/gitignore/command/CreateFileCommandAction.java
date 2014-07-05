@@ -7,12 +7,11 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.file.GitignoreTemplatesFactory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CreateFileCommandAction extends WriteCommandAction<PsiFile> {
     private final PsiDirectory directory;
 
-    public CreateFileCommandAction(@Nullable Project project, @NotNull PsiDirectory directory) {
+    public CreateFileCommandAction(@NotNull Project project, @NotNull PsiDirectory directory) {
         super(project);
         this.directory = directory;
     }

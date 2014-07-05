@@ -1,16 +1,12 @@
 package mobi.hsz.idea.gitignore.ui;
 
-import com.intellij.openapi.application.Result;
-import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBTextField;
+import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
 import mobi.hsz.idea.gitignore.util.Resources;
 import mobi.hsz.idea.gitignore.util.Utils;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -82,19 +78,7 @@ public class GeneratorDialog extends JDialog {
             content += "\n### " + template.getName() + " template\n" + template.getContent();
         }
 
-        if (!content.equals("")) {
-            final String finalContent = content;
-            new WriteCommandAction<PsiFile>(project) {
-                @Override
-                protected void run(@NotNull Result<PsiFile> result) throws Throwable {
-                    Document document = PsiDocumentManager.getInstance(project).getDocument(file);
-                    if (document != null) {
-                        document.insertString(document.getTextLength(), finalContent);
-                        PsiDocumentManager.getInstance(project).commitDocument(document);
-                    }
-                }
-            }.execute();
-        }
+        new AppendFileCommandAction(project, file, content).execute();
         dispose();
     }
 
