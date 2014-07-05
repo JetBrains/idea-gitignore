@@ -115,7 +115,7 @@
   </project-components>
 
   <actions>
-    <action id="Gitignore.New" class="mobi.hsz.idea.gitignore.actions.NewGitignoreFileAction">
+    <action id="Gitignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileAction">
       <add-to-group group-id="NewGroup" anchor="last" />
     </action>
     <action id="Gitignore.Ignore" class="mobi.hsz.idea.gitignore.actions.IgnoreFileAction">

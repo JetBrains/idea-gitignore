@@ -12,8 +12,8 @@ import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
 
-public class NewGitignoreFileAction extends AnAction {
-    public NewGitignoreFileAction() {
+public class NewFileAction extends AnAction {
+    public NewFileAction() {
         super(".gitignore", "Create new .gitignore file", Icons.FILE);
     }
 
