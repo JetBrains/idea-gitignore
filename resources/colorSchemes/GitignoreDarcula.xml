@@ -20,8 +20,8 @@
     </option>
     <option name="GITIGNORE.NEGATION">
         <value>
-            <option name="FOREGROUND" value="A9B7C6" />
-            <option name="BACKGROUND" value="532B2E" />
+            <option name="FOREGROUND" value="CC7832" />
+            <option name="FONT_TYPE" value="1" />
         </value>
     </option>
     <option name="GITIGNORE.ENTRY_FILE">
