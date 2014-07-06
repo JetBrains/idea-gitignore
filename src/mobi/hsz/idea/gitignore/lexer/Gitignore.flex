@@ -12,7 +12,8 @@ import static com.intellij.psi.TokenType.*;
 %unicode
 %function advance
 %type IElementType
-%eof{  return;
+%eof{
+  return;
 %eof}
 
 CRLF        = \n|\r|\r\n
@@ -36,13 +37,14 @@ SLASH       = [/]
   {HEADER}            { yybegin(YYINITIAL); return HEADER; }
   {SECTION}           { yybegin(YYINITIAL); return SECTION; }
   {COMMENT}           { yybegin(YYINITIAL); return COMMENT; }
-  {NEGATION}          { yybegin(IN_ENTRY); return NEGATION; }
-  {CHARACTER}         { yypushback(1); yybegin(IN_ENTRY); }
+  {NEGATION}          { yypushback(1); yybegin(IN_ENTRY); return NEGATED_ENTRY; }
+//  {CHARACTER}         { yybegin(IN_ENTRY); return ENTRY; }
 
   .                   { yybegin(YYINITIAL); return BAD_CHARACTER; }
 }
 
 <IN_ENTRY> {
+  {NEGATION}          { yybegin(IN_ENTRY); return NEGATION; }
   {CHARACTER}+{SLASH} { yybegin(WAITING_VALUE); return ENTRY_DIRECTORY; }
   {CHARACTER}+        { yybegin(WAITING_VALUE); return ENTRY_FILE; }
   {CRLF}              { yybegin(YYINITIAL); return CRLF; }

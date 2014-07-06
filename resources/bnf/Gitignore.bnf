@@ -15,7 +15,8 @@
 
 gitignoreFile     ::= item_*
 negation          ::= "!"
+entry             ::= (ENTRY_FILE | ENTRY_DIRECTORY)
+negated_entry     ::= negation entry
 
-private item_     ::= (entry_ | comment_ | CRLF)
-private entry_    ::= negation? (ENTRY_FILE | ENTRY_DIRECTORY)?
-private comment_  ::= HEADER | SECTION | COMMENT
+private item_     ::= (comment_ | negated_entry | entry | CRLF)
+private comment_  ::= (HEADER | SECTION | COMMENT)

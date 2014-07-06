@@ -26,10 +26,10 @@ Features
 - Create `.gitignore` file in currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
 - Suggesting `.gitignore` file creation for new project
+- *Add selected file/directory to the Gitignore rules*
 
 *Feature requests:*
 
-- *Add selected file/directory to the Gitignore rules*
 - *Better Gitignore templates filtering and selecting in rules generator*
 - *Gitignore rules cleanup (duplicates removing, ...)*
 - *Ignored files preview*
@@ -58,6 +58,11 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 
 Changelog
 ---------
+
+Version 0.4
+- Add selected file/directory to Gitignore rules from popup menu
+- Negation syntax style changed
+- Fixed problem with negation (AssertionError) ([#10](https://github.com/hsz/idea-gitignore/issues/10))
 
 Version 0.3.3
 - Gitignore file creating suggestion if missing
