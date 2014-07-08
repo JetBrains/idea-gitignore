@@ -10,6 +10,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
+import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class MissingGitignoreNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
-    private static final Key<EditorNotificationPanel> KEY = Key.create("Create .gitignore");
+    private static final Key<EditorNotificationPanel> KEY = Key.create(GitignoreBundle.message("daemon.missingGitignore.create"));
     private final Project project;
     private final EditorNotifications notifications;
 
@@ -39,7 +40,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
         if (Properties.getIgnoreMissingGitignore(project)) {
             return null;
         }
-        VirtualFile gitDirectory = project.getBaseDir().findChild(".git");
+        VirtualFile gitDirectory = project.getBaseDir().findChild(GitignoreLanguage.GIT_DIRECTORY);
         if (gitDirectory == null || !gitDirectory.isDirectory()) {
             return null;
         }
@@ -53,8 +54,8 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
 
     private EditorNotificationPanel createPanel(@NotNull final Project project) {
         final EditorNotificationPanel panel = new EditorNotificationPanel();
-        panel.setText("Missing .gitignore file in GIT project");
-        panel.createActionLabel("Create .gitignore", new Runnable() {
+        panel.setText(GitignoreBundle.message("daemon.missingGitignore"));
+        panel.createActionLabel(GitignoreBundle.message("daemon.missingGitignore.create"), new Runnable() {
             @Override
             public void run() {
                 PsiDirectory directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
@@ -65,7 +66,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
                 }
             }
         });
-        panel.createActionLabel("Abort", new Runnable() {
+        panel.createActionLabel(GitignoreBundle.message("global.cancel"), new Runnable() {
             @Override
             public void run() {
                 Properties.setIgnoreMissingGitignore(project, true);

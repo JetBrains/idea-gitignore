@@ -5,6 +5,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
+import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Resources;
@@ -29,12 +30,12 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
     protected static final String SAMPLE_GITIGNORE = loadSampleGitignore();
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("Header", GitignoreHighlighterColors.HEADER_ATTR_KEY),
-            new AttributesDescriptor("Section", GitignoreHighlighterColors.SECTION_ATTR_KEY),
-            new AttributesDescriptor("Comment", GitignoreHighlighterColors.COMMENT_ATTR_KEY),
-            new AttributesDescriptor("Negation", GitignoreHighlighterColors.NEGATION_ATTR_KEY),
-            new AttributesDescriptor("File", GitignoreHighlighterColors.ENTRY_FILE_ATTR_KEY),
-            new AttributesDescriptor("Directory", GitignoreHighlighterColors.ENTRY_DIRECTORY_ATTR_KEY),
+            new AttributesDescriptor(GitignoreBundle.message("highlighter.header"), GitignoreHighlighterColors.HEADER_ATTR_KEY),
+            new AttributesDescriptor(GitignoreBundle.message("highlighter.section"), GitignoreHighlighterColors.SECTION_ATTR_KEY),
+            new AttributesDescriptor(GitignoreBundle.message("highlighter.comment"), GitignoreHighlighterColors.COMMENT_ATTR_KEY),
+            new AttributesDescriptor(GitignoreBundle.message("highlighter.negation"), GitignoreHighlighterColors.NEGATION_ATTR_KEY),
+            new AttributesDescriptor(GitignoreBundle.message("highlighter.file"), GitignoreHighlighterColors.ENTRY_FILE_ATTR_KEY),
+            new AttributesDescriptor(GitignoreBundle.message("highlighter.directory"), GitignoreHighlighterColors.ENTRY_DIRECTORY_ATTR_KEY),
     };
 
     @Nullable

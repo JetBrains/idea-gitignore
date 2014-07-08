@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBTextField;
+import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
 import mobi.hsz.idea.gitignore.util.FilterableListModel;
 import mobi.hsz.idea.gitignore.util.Resources;
@@ -89,7 +90,7 @@ public class GeneratorDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        setTitle("Gitignore file generator");
+        setTitle(GitignoreBundle.message("dialog.generator.title"));
         listModel = new FilterableListModel<Resources.Template>();
         listModel.setElements(Resources.getGitignoreTemplates());
         list = new JBList(listModel);

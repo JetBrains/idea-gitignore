@@ -7,13 +7,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.ui.IgnoredTreeDialog;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 public class ShowIgnoredAction extends DumbAwareAction {
     protected ShowIgnoredAction() {
-        super("Show ignored files", "Show ignored files matched by Gitignore rules", Icons.FILE);
+        super(GitignoreBundle.message("action.showIgnored"), GitignoreBundle.message("action.showIgnored.description"), Icons.FILE);
     }
 
     @Override

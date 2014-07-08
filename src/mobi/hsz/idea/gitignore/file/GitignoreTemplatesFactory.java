@@ -6,11 +6,12 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.util.IncorrectOperationException;
+import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 public class GitignoreTemplatesFactory implements FileTemplateGroupDescriptorFactory {
-    private static final String TEXT = "# Created by .gitignore support plugin (hsz.mobi)";
+    private static final String TEXT = GitignoreBundle.message("file.templateNote");
     private final FileTemplateGroupDescriptor templateGroup;
 
     public GitignoreTemplatesFactory() {

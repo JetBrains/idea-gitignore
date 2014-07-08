@@ -7,6 +7,7 @@ public class GitignoreLanguage extends Language {
     public static final String NAME = "Gitignore";
     public static final String EXTENSION = "gitignore";
     public static final String FILENAME = "." + EXTENSION;
+    public static final String GIT_DIRECTORY = ".git";
 
     private GitignoreLanguage() {
         super(NAME);

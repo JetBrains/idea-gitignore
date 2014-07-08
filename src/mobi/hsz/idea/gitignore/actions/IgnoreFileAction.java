@@ -6,6 +6,7 @@ import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
+import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class IgnoreFileAction extends DumbAwareAction {
     public IgnoreFileAction() {
-        super("Add to .gitignore", "Add this file to .gitignore rules", Icons.FILE);
+        super(GitignoreBundle.message("action.addToGitignore"), GitignoreBundle.message("action.addToGitignore.description"), Icons.FILE);
     }
 
     @Override

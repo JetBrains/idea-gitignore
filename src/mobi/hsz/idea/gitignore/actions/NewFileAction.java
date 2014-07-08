@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
+import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
@@ -14,7 +15,7 @@ import mobi.hsz.idea.gitignore.util.Utils;
 
 public class NewFileAction extends AnAction {
     public NewFileAction() {
-        super(".gitignore", "Create new .gitignore file", Icons.FILE);
+        super(GitignoreBundle.message("action.newFile"), GitignoreBundle.message("action.newFile.description"), Icons.FILE);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class NewFileAction extends AnAction {
         if (file == null) {
             file = new CreateFileCommandAction(project, directory).execute().getResultObject();
         } else {
-            Messages.showInfoMessage(project, "Gitignore file already exists.", "Gitignore Plugin");
+            Messages.showInfoMessage(project, GitignoreBundle.message("action.newFile.exists"), GitignoreBundle.message("action.newFile.title"));
         }
 
         Utils.openFile(project, file);
