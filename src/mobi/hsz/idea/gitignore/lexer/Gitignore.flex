@@ -1,60 +1,59 @@
 package mobi.hsz.idea.gitignore.lexer;
-
-import com.intellij.lexer.FlexLexer;
+import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
 import static mobi.hsz.idea.gitignore.psi.GitignoreTypes.*;
 import static com.intellij.psi.TokenType.*;
-
 %%
-
+ 
+%{
+  public GitignoreLexer() {
+    this((java.io.Reader)null);
+  }
+%}
+ 
+%public
 %class GitignoreLexer
 %implements FlexLexer
-%unicode
 %function advance
 %type IElementType
-%eof{
-  return;
-%eof}
+%unicode
+ 
+CRLF="\r"|"\n"|"\r\n"
+LINE_WS=[\ \t\f]
+WHITE_SPACE=({LINE_WS}*{CRLF}+)+
+ 
+HEADER=###[^\r\n]*
+SECTION=##[^\r\n]*
+COMMENT=#[^\r\n]*
+NEGATION=[!]
+SLASH="/"
 
-CRLF        = \n|\r|\r\n
-WHITE_SPACE = [\ \t\f]
-
-COMMENT     = "#"[^#\r\n][^\r\n]*
-SECTION     = "#"{COMMENT}
-HEADER      = "##"{COMMENT}
-CHARACTER   = [^\n\r\f]
-NEGATION    = [!]
-SLASH       = [/]
+FIRST_CHARACTER=[^!# ]
 
 %state IN_ENTRY
 %state WAITING_VALUE
-
+ 
 %%
-
 <YYINITIAL> {
-  {WHITE_SPACE}+      { yybegin(YYINITIAL); return WHITE_SPACE; }
+    {WHITE_SPACE}+      { yybegin(YYINITIAL); return WHITE_SPACE; }
+ 
+    {HEADER}            { return HEADER; }
+    {SECTION}           { return SECTION; }
+    {COMMENT}           { return COMMENT; }
+ 
+    {NEGATION}          { return NEGATION; }
+    {FIRST_CHARACTER}   { yypushback(1); yybegin(IN_ENTRY); }
 
-  {HEADER}            { yybegin(YYINITIAL); return HEADER; }
-  {SECTION}           { yybegin(YYINITIAL); return SECTION; }
-  {COMMENT}           { yybegin(YYINITIAL); return COMMENT; }
-  {NEGATION}          { yypushback(1); yybegin(IN_ENTRY); return NEGATED_ENTRY; }
-//  {CHARACTER}         { yybegin(IN_ENTRY); return ENTRY; }
-
-  .                   { yybegin(YYINITIAL); return BAD_CHARACTER; }
+    [^]                 { return BAD_CHARACTER; }
 }
 
 <IN_ENTRY> {
-  {NEGATION}          { yybegin(IN_ENTRY); return NEGATION; }
-  {CHARACTER}+{SLASH} { yybegin(WAITING_VALUE); return ENTRY_DIRECTORY; }
-  {CHARACTER}+        { yybegin(WAITING_VALUE); return ENTRY_FILE; }
-  {CRLF}              { yybegin(YYINITIAL); return CRLF; }
+  {WHITE_SPACE}+        { yybegin(YYINITIAL); return WHITE_SPACE; }
+  .+{SLASH}             { yybegin(IN_ENTRY); return ENTRY_DIRECTORY; }
+  .+                    { yybegin(IN_ENTRY); return ENTRY_FILE; }
 }
-
+ 
 <WAITING_VALUE> {
-  {CRLF}              { yybegin(YYINITIAL); return CRLF; }
-  {WHITE_SPACE}+      { yybegin(WAITING_VALUE); return WHITE_SPACE; }
+  {WHITE_SPACE}+        { yybegin(YYINITIAL); return WHITE_SPACE; }
+  [^]                   { return BAD_CHARACTER; }
 }
-
-{CRLF}                { yybegin(YYINITIAL); return CRLF; }
-{WHITE_SPACE}+        { yybegin(YYINITIAL); return WHITE_SPACE; }
-.                     { return BAD_CHARACTER; }
