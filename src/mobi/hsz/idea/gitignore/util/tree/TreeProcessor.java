@@ -25,8 +25,6 @@ public class TreeProcessor {
         for (PsiElement element : file.getChildren()) {
             if (element instanceof GitignoreEntry) {
                 rules.add(new Rule((GitignoreEntry) element));
-            } else if (element instanceof GitignoreNegatedEntry) {
-                rules.add(new Rule((GitignoreNegatedEntry) element));
             }
         }
     }
