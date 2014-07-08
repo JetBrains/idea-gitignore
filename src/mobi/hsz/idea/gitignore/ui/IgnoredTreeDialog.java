@@ -1,7 +1,5 @@
 package mobi.hsz.idea.gitignore.ui;
 
-import com.intellij.openapi.vfs.VFileProperty;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.ui.tree.GitignoreTree;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -78,21 +76,11 @@ public class IgnoredTreeDialog extends JDialog {
     private void createUIComponents() {
         TreeProcessor processor = new TreeProcessor(file);
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(file);
-        buildTree(root, file.getVirtualFile().getParent());
+        DefaultMutableTreeNode root = processor.fetchTree();
 
         DefaultTreeModel model = new DefaultTreeModel(root);
         tree = new GitignoreTree();
         tree.setModel(model);
     }
 
-    private void buildTree(DefaultMutableTreeNode root, VirtualFile file) {
-        for (VirtualFile child : file.getChildren()) {
-            DefaultMutableTreeNode element = new DefaultMutableTreeNode(child);
-            if (child.isDirectory() && !child.is(VFileProperty.SYMLINK)) {
-                buildTree(element, child);
-            }
-            root.add(element);
-        }
-    }
 }

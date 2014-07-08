@@ -26,5 +26,5 @@ gitignoreFile       ::= item_*
 private item_       ::= comment_ | entry_
 private comment_    ::= HEADER | SECTION | COMMENT
 private entry_      ::= NEGATED_ENTRY | ENTRY
-NEGATED_ENTRY       ::= NEGATION (ENTRY_DIRECTORY | ENTRY_FILE)
+NEGATED_ENTRY       ::= NEGATION (ENTRY_DIRECTORY | ENTRY_FILE) {extends="ENTRY"}
 ENTRY               ::= ENTRY_DIRECTORY | ENTRY_FILE

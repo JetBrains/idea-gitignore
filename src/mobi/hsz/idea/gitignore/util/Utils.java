@@ -17,7 +17,7 @@ public class Utils {
     private static double getJavaVersion() {
         String version = System.getProperty("java.version");
         int pos = 0, count = 0;
-        for ( ; pos<version.length() && count < 2; pos++) {
+        for (; pos < version.length() && count < 2; pos++) {
             if (version.charAt(pos) == '.') count++;
         }
         return Double.parseDouble(version.substring(0, pos - 1));
@@ -63,5 +63,109 @@ public class Utils {
 
     public static void openFile(@NotNull Project project, @NotNull VirtualFile file) {
         FileEditorManager.getInstance(project).openFile(file, true);
+    }
+
+    public static String createRegexFromGlob(String glob) {
+        glob = glob.trim();
+        int strLen = glob.length();
+        StringBuilder sb = new StringBuilder(strLen);
+        boolean limit = false;
+
+        // Remove beginning and ending * globs because they're useless
+        if (glob.startsWith("/")) {
+            sb.append("^");
+            glob = glob.substring(1);
+            strLen--;
+        } else {
+            if (glob.startsWith("*")) {
+                glob = glob.substring(1);
+                strLen--;
+            }
+            sb.append(".*?");
+        }
+        if (glob.endsWith("*")) {
+            glob = glob.substring(0, strLen - 1);
+        } else {
+            limit = true;
+        }
+        boolean escaping = false;
+        int inCurlies = 0;
+        for (char currentChar : glob.toCharArray()) {
+            switch (currentChar) {
+                case '*':
+                    if (escaping)
+                        sb.append("\\*");
+                    else
+                        sb.append(".*");
+                    escaping = false;
+                    break;
+                case '?':
+                    if (escaping)
+                        sb.append("\\?");
+                    else
+                        sb.append('.');
+                    escaping = false;
+                    break;
+                case '.':
+                case '(':
+                case ')':
+                case '+':
+                case '|':
+                case '^':
+                case '$':
+                case '@':
+                case '%':
+                    sb.append('\\');
+                    sb.append(currentChar);
+                    escaping = false;
+                    break;
+                case '\\':
+                    if (escaping) {
+                        sb.append("\\\\");
+                        escaping = false;
+                    } else
+                        escaping = true;
+                    break;
+                case '{':
+                    if (escaping) {
+                        sb.append("\\{");
+                    } else {
+                        sb.append('(');
+                        inCurlies++;
+                    }
+                    escaping = false;
+                    break;
+                case '}':
+                    if (inCurlies > 0 && !escaping) {
+                        sb.append(')');
+                        inCurlies--;
+                    } else if (escaping)
+                        sb.append("\\}");
+                    else
+                        sb.append("}");
+                    escaping = false;
+                    break;
+                case ',':
+                    if (inCurlies > 0 && !escaping) {
+                        sb.append('|');
+                    } else if (escaping)
+                        sb.append("\\,");
+                    else
+                        sb.append(",");
+                    break;
+                default:
+                    escaping = false;
+                    sb.append(currentChar);
+            }
+        }
+
+        if (limit) {
+            sb.append("$");
+        } else {
+            sb.append(".");
+            sb.append(glob.endsWith("/") ? "+" : "*");
+        }
+
+        return sb.toString();
     }
 }

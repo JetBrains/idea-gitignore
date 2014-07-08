@@ -1,8 +1,7 @@
 package mobi.hsz.idea.gitignore.ui.tree;
 
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.ui.JBColor;
 import com.intellij.ui.JBDefaultTreeCellRenderer;
-import com.intellij.util.PlatformIcons;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -17,10 +16,15 @@ public class GitignoreTreeCellRenderer extends JBDefaultTreeCellRenderer {
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         GitignoreTreeCellRenderer component = (GitignoreTreeCellRenderer) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-        Object object = ((DefaultMutableTreeNode) value).getUserObject();
-        if (object instanceof VirtualFile) {
-            VirtualFile file = (VirtualFile) object;
-            component.setIcon(file.isDirectory() ? PlatformIcons.FOLDER_ICON : file.getFileType().getIcon());
+        Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+
+        if (userObject instanceof GitignoreTreeObject) {
+            GitignoreTreeObject object = (GitignoreTreeObject) userObject;
+            component.setIcon(object.getIcon());
+
+            if (object.isIgnored()) {
+                component.setForeground(JBColor.GRAY);
+            }
         }
 
         return component;
