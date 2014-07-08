@@ -5,6 +5,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBTextField;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
+import mobi.hsz.idea.gitignore.util.FilterableListModel;
 import mobi.hsz.idea.gitignore.util.Resources;
 import mobi.hsz.idea.gitignore.util.Utils;
 

@@ -33,6 +33,16 @@ public class IgnoreFileAction extends DumbAwareAction {
         }
     }
 
+    @Override
+    public void update(AnActionEvent e) {
+        final VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
+        final Project project = e.getProject();
+
+        if (file == null || project == null || file.equals(project.getBaseDir())) {
+            e.getPresentation().setVisible(false);
+        }
+    }
+
     private String getPath(@NotNull Project project, @NotNull VirtualFile file) {
         String path = Utils.getRelativePath(project.getBaseDir(), file);
         if (file.isDirectory() && !path.endsWith("/")) {
@@ -42,15 +52,5 @@ public class IgnoreFileAction extends DumbAwareAction {
             path = path.substring(1);
         }
         return path;
-    }
-
-    @Override
-    public void update(AnActionEvent e) {
-        final VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
-        final Project project = e.getProject();
-
-        if (file == null || project == null || file.equals(project.getBaseDir())) {
-            e.getPresentation().setVisible(false);
-        }
     }
 }

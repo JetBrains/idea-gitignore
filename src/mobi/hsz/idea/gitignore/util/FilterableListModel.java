@@ -1,4 +1,4 @@
-package mobi.hsz.idea.gitignore.ui;
+package mobi.hsz.idea.gitignore.util;
 
 import javax.swing.*;
 import java.util.ArrayList;
