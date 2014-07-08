@@ -23,17 +23,16 @@ Features
 --------
 
 - `.gitignore` files syntax highlight
+- Show ignored files by specified Gitignore file (right click on `.gitignore` file)
 - Create `.gitignore` file in currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
+- Add selected file/directory to Gitignore rules from popup menu
 - Suggesting `.gitignore` file creation for new project
-- *Add selected file/directory to the Gitignore rules*
 
 *Feature requests:*
 
 - *Better Gitignore templates filtering and selecting in rules generator*
 - *Gitignore rules cleanup (duplicates removing, ...)*
-- *Ignored files preview*
-- *Mark ignored files in Project tree*
 
 
 Installation
@@ -60,9 +59,13 @@ Changelog
 ---------
 
 Version 0.4
+- Show ignored files by specified Gitignore file (right click on `.gitignore` file)
 - Add selected file/directory to Gitignore rules from popup menu
-- Negation syntax style changed
+- Negation syntax style changed (also fixes [#15](https://github.com/hsz/idea-gitignore/issues/15))
 - Fixed problem with negation (AssertionError) ([#10](https://github.com/hsz/idea-gitignore/issues/10))
+- Fixed problem with template's wrong line separator ([#13](https://github.com/hsz/idea-gitignore/issues/13))
+- Fixed NoSuchMethodError if older SDK does not support notification panel's icon ([#14](https://github.com/hsz/idea-gitignore/issues/14))
+- Rewritten BNF and JFlex rules
 
 Version 0.3.3
 - Gitignore file creating suggestion if missing

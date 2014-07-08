@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>mobi.hsz.idea.gitignore</id>
   <name>.gitignore support</name>
-  <version>0.3.3</version>
+  <version>0.4</version>
   <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
   <description><![CDATA[
@@ -18,18 +18,17 @@
       <b>Features</b>
       <ul>
         <li><i>.gitignore</i> files syntax highlight</li>
+        <li>Show ignored files by specified Gitignore file (right click on <i>.gitignore</i> file)</li>
         <li>Create <i>.gitignore</i> file in currently selected directory</li>
         <li>Generate Gitignore rules basing on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
+        <li>Add selected file/directory to Gitignore rules from popup menu</li>
         <li>Suggesting .gitignore file creation for new project</li>
       </ul>
 
       <b><i>Feature requests:</i></b>
       <ul>
-        <li><i>Add selected file/directory to the Gitignore rules</i></li>
         <li><i>Better Gitignore templates filtering and selecting in rules generator</i></li>
         <li><i>Gitignore rules cleanup (duplicates removing, ...)</i></li>
-        <li><i>Ignored files preview</i></li>
-        <li><i>Mark ignored files in Project tree</i></li>
       </ul>
 
       <br/>
@@ -42,6 +41,17 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      Version 0.4
+      <ul>
+        <li>Show ignored files by specified Gitignore file (right click on <i>.gitignore</i> file)</li>
+        <li>Add selected file/directory to Gitignore rules from popup menu</li>
+        <li>Negation syntax style changed (also fixes <a href="https://github.com/hsz/idea-gitignore/issues/15">#15</a>)</li>
+        <li>Fixed problem with negation (AssertionError) (<a href="https://github.com/hsz/idea-gitignore/issues/10">#10</a>)</li>
+        <li>Fixed problem with template's wrong line separator (<a href="https://github.com/hsz/idea-gitignore/issues/13">#13</a>)</li>
+        <li>Fixed NoSuchMethodError if older SDK does not support notification panel's icon (<a href="https://github.com/hsz/idea-gitignore/issues/14">#14</a>)</li>
+        <li>Rewritten BNF and JFlex rules</li>
+      </ul>
+
       Version 0.3.3
       <ul>
         <li>Gitignore file creating suggestion if missing</li>
