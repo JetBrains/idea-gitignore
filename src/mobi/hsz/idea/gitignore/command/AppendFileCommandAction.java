@@ -27,7 +27,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         }
         Document document = PsiDocumentManager.getInstance(project).getDocument(file);
         if (document != null) {
-            document.insertString(document.getTextLength(), "\n" + content);
+            document.insertString(document.getTextLength(), "\n" + content.replace("\r", ""));
             PsiDocumentManager.getInstance(project).commitDocument(document);
         }
     }
