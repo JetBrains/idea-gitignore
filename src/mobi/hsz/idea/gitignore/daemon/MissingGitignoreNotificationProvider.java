@@ -54,7 +54,6 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     private EditorNotificationPanel createPanel(@NotNull final Project project) {
         final EditorNotificationPanel panel = new EditorNotificationPanel();
         panel.setText("Missing .gitignore file in GIT project");
-        panel.icon(Icons.FILE);
         panel.createActionLabel("Create .gitignore", new Runnable() {
             @Override
             public void run() {
@@ -73,6 +72,11 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
                 notifications.updateAllNotifications();
             }
         });
+
+        try { // ignore if older SDK does not support panel icon
+            panel.icon(Icons.FILE);
+        } catch (NoSuchMethodError ignored) {}
+
         return panel;
     }
 }
