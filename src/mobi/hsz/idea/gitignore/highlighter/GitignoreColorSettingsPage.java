@@ -47,7 +47,7 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public SyntaxHighlighter getHighlighter() {
-        return new GitignoreHighlighter();
+        return new GitignoreHighlighter(null, null);
     }
 
     @NotNull

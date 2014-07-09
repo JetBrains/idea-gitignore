@@ -33,7 +33,7 @@ public class GitignoreParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return new GitignoreLexerAdapter();
+        return new GitignoreLexerAdapter(project);
     }
 
     @Override

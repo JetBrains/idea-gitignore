@@ -3,10 +3,13 @@ package mobi.hsz.idea.gitignore.highlighter;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IElementType;
 import mobi.hsz.idea.gitignore.lexer.GitignoreLexerAdapter;
 import mobi.hsz.idea.gitignore.psi.GitignoreTokenTypeSets;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +27,18 @@ public class GitignoreHighlighter extends SyntaxHighlighterBase {
         fillMap(ATTRIBUTES, GitignoreTokenTypeSets.ENTRY_DIRECTORY_SET, GitignoreHighlighterColors.ENTRY_DIRECTORY_ATTR_KEY);
     }
 
+    private final Project project;
+    private final VirtualFile virtualFile;
+
+    public GitignoreHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile) {
+        this.project = project;
+        this.virtualFile = virtualFile;
+    }
+
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new GitignoreLexerAdapter();
+        return new GitignoreLexerAdapter(project, virtualFile);
     }
 
     @NotNull

@@ -11,6 +11,6 @@ public class GitignoreHighlighterFactory extends SyntaxHighlighterFactory {
     @NotNull
     @Override
     public SyntaxHighlighter getSyntaxHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile) {
-        return new GitignoreHighlighter();
+        return new GitignoreHighlighter(project, virtualFile);
     }
 }
