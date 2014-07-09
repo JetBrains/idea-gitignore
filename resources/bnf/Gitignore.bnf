@@ -7,6 +7,7 @@
   psiImplClassSuffix        = "Impl"
   psiPackage                = "mobi.hsz.idea.gitignore.psi"
   psiImplPackage            = "mobi.hsz.idea.gitignore.psi.impl"
+  psiImplUtilClass          = "mobi.hsz.idea.gitignore.psi.GitignorePsiUtil"
 
   elementTypeHolderClass    = "mobi.hsz.idea.gitignore.psi.GitignoreTypes"
   elementTypeClass          = "mobi.hsz.idea.gitignore.psi.GitignoreElementType"
@@ -27,4 +28,4 @@ private item_       ::= comment_ | entry_
 private comment_    ::= HEADER | SECTION | COMMENT
 private entry_      ::= NEGATED_ENTRY | ENTRY
 NEGATED_ENTRY       ::= NEGATION (ENTRY_DIRECTORY | ENTRY_FILE) {extends="ENTRY"}
-ENTRY               ::= ENTRY_DIRECTORY | ENTRY_FILE
+ENTRY               ::= ENTRY_DIRECTORY | ENTRY_FILE { methods=[getEntry] }

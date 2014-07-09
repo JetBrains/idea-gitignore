@@ -68,11 +68,7 @@ public class TreeProcessor {
         public Rule(GitignoreEntry entry) {
             negated = (entry instanceof GitignoreNegatedEntry);
             directory = entry.getEntryDirectory() != null;
-            if (directory) {
-                value = entry.getEntryDirectory().getText();
-            } else {
-                value = entry.getEntryFile() != null ? entry.getEntryFile().getText() : "";
-            }
+            value = entry.getEntry().getText();
             regex = Utils.createRegexFromGlob(value);
         }
 
