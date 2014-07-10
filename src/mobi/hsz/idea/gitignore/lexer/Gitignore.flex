@@ -1,9 +1,12 @@
 package mobi.hsz.idea.gitignore.lexer;
+
 import java.io.File;
+import java.util.List;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import mobi.hsz.idea.gitignore.util.Glob;
 import static mobi.hsz.idea.gitignore.psi.GitignoreTypes.*;
 import static com.intellij.psi.TokenType.*;
 %%
@@ -20,12 +23,13 @@ import static com.intellij.psi.TokenType.*;
 
   private IElementType obtainEntryType(CharSequence entry) {
     if (virtualFile != null) {
-      String filename = entry.toString();
-      if (filename.startsWith("!")) {
-        filename = filename.substring(1);
+      List<File> files = Glob.find(virtualFile.getParent(), entry.toString());
+      for (File file : files) {
+        if (file.isFile()) {
+          return ENTRY_FILE;
+        }
       }
-      VirtualFile file = virtualFile.getParent().findFileByRelativePath(filename);
-      if (file != null && file.isDirectory()) {
+      if (files.size() > 0) {
         return ENTRY_DIRECTORY;
       }
     }
