@@ -143,7 +143,14 @@
       groupKey="codeInspection.group"
       implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreDuplicateEntryInspection"
       key="codeInspection.duplicateEntry"
-      language="Gitignore"/>
+      language="Gitignore" />
+    <localInspection
+      bundle="messages.GitignoreBundle"
+      enabledByDefault="true"
+      groupKey="codeInspection.group"
+      implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreCoverEntryInspection"
+      key="codeInspection.coverEntry"
+      language="Gitignore" />
 
   </extensions>
 
