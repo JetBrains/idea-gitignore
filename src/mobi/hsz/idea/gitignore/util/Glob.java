@@ -10,41 +10,46 @@ public class Glob {
     public static final String EXCLUDE = "!.git/";
 
     public static List<VirtualFile> find(VirtualFile root, String glob) {
-        return find(root, glob, true);
+        return find(root, glob, false);
     }
 
-    public static List<VirtualFile> find(VirtualFile root, String glob, boolean ignoreNested) {
+    public static List<VirtualFile> find(VirtualFile root, String glob, boolean includeNested) {
         List<File> files = new ArrayList<File>();
         String regex = createRegex(glob);
-        return walk(root, root, regex, ignoreNested);
+        return walk(root, root, regex, includeNested);
     }
 
     public static List<String> findAsPaths(VirtualFile root, String glob) {
-        return findAsPaths(root, glob, true);
+        return findAsPaths(root, glob, false);
     }
 
-    public static List<String> findAsPaths(VirtualFile root, String glob, boolean ignoreNested) {
+    public static List<String> findAsPaths(VirtualFile root, String glob, boolean includeNested) {
         List<String> list = new ArrayList<String>();
-        List<VirtualFile> files = find(root, glob, ignoreNested);
+        List<VirtualFile> files = find(root, glob, includeNested);
         for (VirtualFile file : files) {
             list.add(Utils.getRelativePath(root, file));
         }
         return list;
     }
 
-    private static List<VirtualFile> walk(VirtualFile root, VirtualFile directory, String regex, boolean ignoreNested) {
+    private static List<VirtualFile> walk(VirtualFile root, VirtualFile directory, String regex, boolean includeNested) {
         List<VirtualFile> files = new ArrayList<VirtualFile>();
 
         for (VirtualFile file : directory.getChildren()) {
+            boolean matches = false;
             String path = Utils.getRelativePath(root, file);
             if (path.equals("/.git")) {
                 continue;
             }
-            if (path.matches(regex)) {
+            if (regex == null || path.matches(regex)) {
+                matches = true;
                 files.add(file);
             }
-            if (!ignoreNested && file.isDirectory()) {
-                files.addAll(walk(root, file, regex, false));
+            if (file.isDirectory()) {
+                if (includeNested && matches) {
+                    regex = null;
+                }
+                files.addAll(walk(root, file, regex, includeNested));
             }
         }
 
