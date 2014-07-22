@@ -2,10 +2,7 @@ package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElementResolveResult;
-import com.intellij.psi.PsiFileSystemItem;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.ResolveResult;
+import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceHelper;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
@@ -14,6 +11,8 @@ import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class GitReferenceSet extends FileReferenceSet {
@@ -24,6 +23,19 @@ public class GitReferenceSet extends FileReferenceSet {
     @Override
     public FileReference createFileReference(TextRange range, int index, String text) {
         return new GitReference(this, range, index, text);
+    }
+
+    @Override
+    public boolean isEndingSlashNotAllowed() {
+        return false;
+    }
+
+    @NotNull
+    @Override
+    public Collection<PsiFileSystemItem> computeDefaultContexts() {
+        PsiFile containingFile = getElement().getContainingFile();
+        PsiDirectory containingDirectory = containingFile.getParent();
+        return containingDirectory != null ? Collections.<PsiFileSystemItem>singletonList(containingDirectory) : super.computeDefaultContexts();
     }
 
     private class GitReference extends FileReference {
@@ -42,7 +54,10 @@ public class GitReferenceSet extends FileReferenceSet {
                     String regexFromGlob = Utils.createRegexFromGlob(getCanonicalText());
                     for (VirtualFile file : contextVirtualFile.getChildren()) {
                         if (file.getName().matches(regexFromGlob)) {
-                            result.add(new PsiElementResolveResult(FileReferenceHelper.getPsiFileSystemItem(psiManager, file)));
+                            PsiFileSystemItem psiFileSystemItem = FileReferenceHelper.getPsiFileSystemItem(psiManager, file);
+                            if (psiFileSystemItem != null) {
+                                result.add(new PsiElementResolveResult(psiFileSystemItem));
+                            }
                         }
                     }
                 }
