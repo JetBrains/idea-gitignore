@@ -2,8 +2,12 @@ package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElementResolveResult;
+import com.intellij.psi.PsiFileSystemItem;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.ResolveResult;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceHelper;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
@@ -38,14 +42,7 @@ public class GitReferenceSet extends FileReferenceSet {
                     String regexFromGlob = Utils.createRegexFromGlob(getCanonicalText());
                     for (VirtualFile file : contextVirtualFile.getChildren()) {
                         if (file.getName().matches(regexFromGlob)) {
-                            PsiDirectory psiDirectory = psiManager.findDirectory(file);
-                            if (psiDirectory != null) {
-                                result.add(new PsiElementResolveResult(psiDirectory));
-                            }
-                            PsiFile psiFile = psiManager.findFile(file);
-                            if (psiFile != null) {
-                                result.add(new PsiElementResolveResult(psiFile));
-                            }
+                            result.add(new PsiElementResolveResult(FileReferenceHelper.getPsiFileSystemItem(psiManager, file)));
                         }
                     }
                 }
