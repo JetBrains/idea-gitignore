@@ -117,10 +117,6 @@
     <colorSettingsPage
       implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage" />
 
-    <completion.contributor
-      implementationClass="mobi.hsz.idea.gitignore.completion.GitignoreCompletionContributor"
-      language="Gitignore" />
-
     <editorNotificationProvider
       implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider" />
 
