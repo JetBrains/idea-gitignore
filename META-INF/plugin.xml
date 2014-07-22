@@ -134,6 +134,7 @@
       key="Gitignore" />
 
     <psi.referenceContributor implementation="mobi.hsz.idea.gitignore.reference.GitignoreReferenceContributor"/>
+    <lang.elementManipulator forClass="mobi.hsz.idea.gitignore.psi.GitignoreEntry" implementationClass="mobi.hsz.idea.gitignore.psi.GitignoreEntryManipulator"/>
 
     <localInspection
       bundle="messages.GitignoreBundle"
