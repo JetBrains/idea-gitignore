@@ -137,6 +137,8 @@
       implementationClass="mobi.hsz.idea.gitignore.highlighter.GitignoreHighlighterFactory"
       key="Gitignore" />
 
+    <psi.referenceContributor implementation="mobi.hsz.idea.gitignore.reference.GitignoreReferenceContributor"/>
+
     <localInspection
       bundle="messages.GitignoreBundle"
       enabledByDefault="true"
