@@ -1,7 +1,7 @@
 {
   parserClass               = "mobi.hsz.idea.gitignore.parser.GitignoreParser"
 
-  extends                   = "com.intellij.extapi.psi.ASTWrapperPsiElement"
+  extends                   = "mobi.hsz.idea.gitignore.psi.GitignoreElementImpl"
 
   psiClassPrefix            = "Gitignore"
   psiImplClassSuffix        = "Impl"
