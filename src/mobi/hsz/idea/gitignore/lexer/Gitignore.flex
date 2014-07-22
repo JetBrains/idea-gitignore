@@ -23,14 +23,17 @@ import static com.intellij.psi.TokenType.*;
 
   private IElementType obtainEntryType(CharSequence entry) {
     if (virtualFile != null) {
-      List<VirtualFile> files = Glob.find(virtualFile.getParent(), entry.toString());
-      for (VirtualFile file : files) {
-        if (!file.isDirectory()) {
-          return ENTRY_FILE;
+      VirtualFile parent = virtualFile.getParent();
+      if (parent != null) {
+        List<VirtualFile> files = Glob.find(parent, entry.toString());
+        for (VirtualFile file : files) {
+          if (!file.isDirectory()) {
+            return ENTRY_FILE;
+          }
         }
-      }
-      if (files.size() > 0) {
-        return ENTRY_DIRECTORY;
+        if (files.size() > 0) {
+          return ENTRY_DIRECTORY;
+        }
       }
     }
     return ENTRY_FILE;
