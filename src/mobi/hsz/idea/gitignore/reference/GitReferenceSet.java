@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.regex.PatternSyntaxException;
 
 public class GitReferenceSet extends FileReferenceSet {
     public GitReferenceSet(@NotNull GitignoreEntry element) {
@@ -49,12 +50,14 @@ public class GitReferenceSet extends FileReferenceSet {
             if (contextVirtualFile != null) {
                 String regexFromGlob = Utils.createRegexFromGlob(getCanonicalText());
                 for (VirtualFile file : contextVirtualFile.getChildren()) {
-                    if (file.getName().matches(regexFromGlob)) {
-                        PsiFileSystemItem psiFileSystemItem = FileReferenceHelper.getPsiFileSystemItem(psiManager, file);
-                        if (psiFileSystemItem != null) {
-                            result.add(new PsiElementResolveResult(psiFileSystemItem));
+                    try {
+                        if (file.getName().matches(regexFromGlob)) {
+                            PsiFileSystemItem psiFileSystemItem = FileReferenceHelper.getPsiFileSystemItem(psiManager, file);
+                            if (psiFileSystemItem != null) {
+                                result.add(new PsiElementResolveResult(psiFileSystemItem));
+                            }
                         }
-                    }
+                    } catch (PatternSyntaxException ignored) {}
                 }
             }
         }

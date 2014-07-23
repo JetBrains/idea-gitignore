@@ -5,6 +5,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.PatternSyntaxException;
 
 public class Glob {
     public static final String EXCLUDE = "!.git/";
@@ -38,13 +39,20 @@ public class Glob {
         for (VirtualFile file : directory.getChildren()) {
             boolean matches = false;
             String path = Utils.getRelativePath(root, file);
+
             if (path.equals("/.git")) {
                 continue;
             }
-            if (regex == null || path.matches(regex)) {
-                matches = true;
-                files.add(file);
+
+            try {
+                if (regex == null || path.matches(regex)) {
+                    matches = true;
+                    files.add(file);
+                }
+            } catch (PatternSyntaxException ignored) {
+                break;
             }
+
             if (file.isDirectory()) {
                 if (includeNested && matches) {
                     regex = null;
