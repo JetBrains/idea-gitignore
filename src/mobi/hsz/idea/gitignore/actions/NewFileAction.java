@@ -52,15 +52,4 @@ public class NewFileAction extends AnAction {
             e.getPresentation().setVisible(false);
         }
     }
-
-    @Override
-    public void update(AnActionEvent e) {
-        final Project project = e.getData(CommonDataKeys.PROJECT);
-        final IdeView view = e.getData(LangDataKeys.IDE_VIEW);
-
-        final PsiDirectory directory = view != null ? view.getOrChooseDirectory() : null;
-        if (directory == null || project == null) {
-            e.getPresentation().setVisible(false);
-        }
-    }
 }

@@ -6,11 +6,8 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IElementType;
-<<<<<<< HEAD
 import com.intellij.util.containers.ContainerUtil;
-=======
 import mobi.hsz.idea.gitignore.lang.GitignoreParserDefinition;
->>>>>>> brace-matcher
 import mobi.hsz.idea.gitignore.lexer.GitignoreLexerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
