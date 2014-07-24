@@ -1,5 +1,6 @@
 package mobi.hsz.idea.gitignore.inspections;
 
+import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.codeInspection.GitignoreDuplicateEntryInspection;
 
 public class GitignoreDuplicateEntryInspectionTest extends GitignoreInspectionTestCase {
@@ -11,5 +12,9 @@ public class GitignoreDuplicateEntryInspectionTest extends GitignoreInspectionTe
 
     public void testSimpleCase() throws Exception {
         doHighlightingFileTest();
+    }
+    
+    public void testSimpleCaseWithQuickFix() throws Exception {
+        doHighlightingFileTestWithQuickFix(GitignoreBundle.message("quick.fix.remove.entry"));
     }
 }
