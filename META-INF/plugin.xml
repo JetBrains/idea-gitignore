@@ -148,16 +148,26 @@
                 bundle="messages.GitignoreBundle"
                 enabledByDefault="true"
                 groupKey="codeInspection.group"
-                implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreDuplicateEntryInspection"
-                key="codeInspection.duplicateEntry"
-                language="Gitignore"/>
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreCoverEntryInspection"
+                key="codeInspection.coverEntry"
+                language="Gitignore"
+                level="WARNING"/>
         <localInspection
                 bundle="messages.GitignoreBundle"
                 enabledByDefault="true"
                 groupKey="codeInspection.group"
-                implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreCoverEntryInspection"
-                key="codeInspection.coverEntry"
-                language="Gitignore"/>
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreDuplicateEntryInspection"
+                key="codeInspection.duplicateEntry"
+                language="Gitignore"
+                level="ERROR"/>
+        <localInspection
+                bundle="messages.GitignoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreUnusedEntryInspection"
+                key="codeInspection.unusedEntry"
+                language="Gitignore"
+                level="INFO"/>
 
         <psi.referenceContributor
                 language="Gitignore"

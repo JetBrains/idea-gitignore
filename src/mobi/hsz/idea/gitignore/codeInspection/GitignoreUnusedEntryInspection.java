@@ -4,7 +4,6 @@ import com.intellij.codeInspection.InspectionManager;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.Processor;
@@ -20,12 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GitignoreCoverEntryInspection extends LocalInspectionTool {
+public class GitignoreUnusedEntryInspection extends LocalInspectionTool {
     @Nullable
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
         ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
-        final List<Pair<GitignoreEntry, GitignoreEntry>> entries = new ArrayList<Pair<GitignoreEntry, GitignoreEntry>>();
+        final List<GitignoreEntry> entries = new ArrayList<GitignoreEntry>();
 
         if (file instanceof GitignoreFile) {
             new Processor<PsiFile>() {
@@ -41,30 +40,17 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
                         String value = entry.getText();
 
                         List<String> matched = Glob.findAsPaths(file.getVirtualFile().getParent(), value, true);
-
-                        for (GitignoreEntry recent : map.keySet()) {
-                            List<String> recentValues = map.get(recent);
-                            if (recentValues.size() == 0 || matched.size() == 0) {
-                                continue;
-                            }
-                            if (recentValues.containsAll(matched)) {
-                                entries.add(Pair.create(recent, entry));
-                            } else if (matched.containsAll(recentValues)) {
-                                entries.add(Pair.create(entry, recent));
-                            }
+                        if (matched.size() == 0) {
+                            entries.add(entry);
                         }
-
-                        map.put(entry, matched);
                     }
                     return true;
                 }
             }.process(file);
         }
 
-        for (Pair<GitignoreEntry, GitignoreEntry> pair : entries) {
-            GitignoreEntry key = pair.getFirst();
-            GitignoreEntry value = pair.getSecond();
-            problemsHolder.registerProblem(value, GitignoreBundle.message("codeInspection.coverEntry.message", value.getText(), key.getText()));
+        for (GitignoreEntry entry : entries) {
+            problemsHolder.registerProblem(entry, GitignoreBundle.message("codeInspection.unusedEntry.message", entry.getText()));
         }
 
         return problemsHolder.getResultsArray();
