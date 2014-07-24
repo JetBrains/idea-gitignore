@@ -20,7 +20,7 @@ public class NewFileAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent event) {
-        final Project project = event.getData(PlatformDataKeys.PROJECT);
+        final Project project = event.getData(CommonDataKeys.PROJECT);
 
         if (project == null) {
             return;
@@ -45,6 +45,6 @@ public class NewFileAction extends AnAction {
         }
 
         Utils.openFile(project, file);
-        new GeneratorDialog(project, file).showDialog();
+        new GeneratorDialog(project, file).show();
     }
 }
