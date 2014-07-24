@@ -25,4 +25,9 @@ abstract public class GitignoreInspectionTestCase extends LightPlatformCodeInsig
         myFixture.copyDirectoryToProject(getTestName(true), getTestName(true));
         myFixture.testHighlighting(true, false, true, getTestName(true) + "/" + GitignoreLanguage.FILENAME);
     }
+    
+    protected void doHighlightingFileTest() {
+        myFixture.configureByFile(getTestName(true) + GitignoreLanguage.FILENAME);
+        myFixture.testHighlighting(true, false, true);
+    }
 }

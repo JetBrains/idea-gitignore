@@ -1,0 +1,5 @@
+directory1
+directory3
+directory2
+<error descr="'directory1' entry is defined more than once">directory1</error>
+<error descr="'directory3' entry is defined more than once">directory3</error>
