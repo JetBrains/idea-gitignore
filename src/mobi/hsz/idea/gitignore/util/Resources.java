@@ -106,7 +106,7 @@ public class Resources {
 
         @Override
         public int compareTo(@NotNull final Template template) {
-            return name.toLowerCase().compareTo(template.name.toLowerCase());
+            return name.compareToIgnoreCase(template.name);
         }
     }
 
