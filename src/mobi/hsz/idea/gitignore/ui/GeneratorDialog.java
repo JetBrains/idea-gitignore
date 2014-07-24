@@ -28,6 +28,8 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 
 public class GeneratorDialog extends DialogWrapper {
     @NotNull private final Project myProject;
@@ -41,7 +43,9 @@ public class GeneratorDialog extends DialogWrapper {
         myProject = project;
         myFile = file;
 
-        list = new JBList(Resources.getGitignoreTemplates());
+        List<Resources.Template> templatesList = Resources.getGitignoreTemplates();
+        Collections.sort(templatesList);
+        list = new JBList(templatesList);
         previewDocument = EditorFactory.getInstance().createDocument("");
         preview = createPreviewEditor(project, previewDocument);
 
