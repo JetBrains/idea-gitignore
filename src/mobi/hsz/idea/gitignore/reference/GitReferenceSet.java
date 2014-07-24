@@ -47,6 +47,11 @@ public class GitReferenceSet extends FileReferenceSet {
         return lastReference;
     }
 
+    @Override
+    public boolean couldBeConvertedTo(boolean relative) {
+        return false;
+    }
+
     private class GitReference extends FileReference {
         public GitReference(@NotNull FileReferenceSet fileReferenceSet, TextRange range, int index, String text) {
             super(fileReferenceSet, range, index, text);
