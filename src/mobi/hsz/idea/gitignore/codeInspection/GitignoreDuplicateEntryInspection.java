@@ -1,11 +1,13 @@
 package mobi.hsz.idea.gitignore.codeInspection;
 
-import com.intellij.codeInspection.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
+import com.intellij.codeInspection.InspectionManager;
+import com.intellij.codeInspection.LocalInspectionTool;
+import com.intellij.codeInspection.ProblemDescriptor;
+import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.MultiMap;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.actions.GitignoreRemoveEntryFix;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import mobi.hsz.idea.gitignore.psi.GitignoreVisitor;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +37,7 @@ public class GitignoreDuplicateEntryInspection extends LocalInspectionTool {
             iterator.next();
             while (iterator.hasNext()) {
                 GitignoreEntry entry = iterator.next();
-                problemsHolder.registerProblem(entry, GitignoreBundle.message("codeInspection.duplicateEntry.message"), new RemoveEntryFix(entry));
+                problemsHolder.registerProblem(entry, GitignoreBundle.message("codeInspection.duplicateEntry.message"), new GitignoreRemoveEntryFix(entry));
             }
         }
 
@@ -47,28 +49,4 @@ public class GitignoreDuplicateEntryInspection extends LocalInspectionTool {
         return true;
     }
 
-    private static class RemoveEntryFix extends LocalQuickFixOnPsiElement {
-        public RemoveEntryFix(@NotNull GitignoreEntry entry) {
-            super(entry);
-        }
-
-        @NotNull
-        @Override
-        public String getText() {
-            return GitignoreBundle.message("quick.fix.remove.entry");
-        }
-
-        @Override
-        public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
-            if (startElement instanceof GitignoreEntry) {
-                startElement.delete();
-            }
-        }
-
-        @NotNull
-        @Override
-        public String getFamilyName() {
-            return GitignoreBundle.message("codeInspection.group");
-        }
-    }
 }
