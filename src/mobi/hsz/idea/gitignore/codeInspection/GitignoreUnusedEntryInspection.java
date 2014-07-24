@@ -1,58 +1,41 @@
 package mobi.hsz.idea.gitignore.codeInspection;
 
-import com.intellij.codeInspection.InspectionManager;
 import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.util.Processor;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileReference;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
-import mobi.hsz.idea.gitignore.psi.GitignoreFile;
-import mobi.hsz.idea.gitignore.util.Glob;
+import mobi.hsz.idea.gitignore.psi.GitignoreVisitor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class GitignoreUnusedEntryInspection extends LocalInspectionTool {
-    @Nullable
+    @NotNull
     @Override
-    public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
-        final List<GitignoreEntry> entries = new ArrayList<GitignoreEntry>();
-
-        if (file instanceof GitignoreFile) {
-            new Processor<PsiFile>() {
-                @Override
-                public boolean process(PsiFile file) {
-                    Map<GitignoreEntry, List<String>> map = new HashMap<GitignoreEntry, List<String>>();
-                    for (PsiElement child = file.getFirstChild(); child != null; child = child.getNextSibling()) {
-                        if (!(child instanceof GitignoreEntry)) {
-                            continue;
-                        }
-
-                        GitignoreEntry entry = (GitignoreEntry) child;
-                        String value = entry.getText();
-
-                        List<String> matched = Glob.findAsPaths(file.getVirtualFile().getParent(), value, true);
-                        if (matched.size() == 0) {
-                            entries.add(entry);
+    public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
+        return new GitignoreVisitor() {
+            @Override
+            public void visitEntry(@NotNull GitignoreEntry entry) {
+                PsiReference[] references = entry.getReferences();
+                boolean resolved = false;
+                for (PsiReference reference : references) {
+                    if (reference instanceof FileReferenceOwner) {
+                        PsiFileReference lastFileReference = ((FileReferenceOwner) reference).getLastFileReference();
+                        if (lastFileReference != null && lastFileReference.multiResolve(false).length > 0) {
+                            resolved = true;
+                            break;
                         }
                     }
-                    return true;
                 }
-            }.process(file);
-        }
 
-        for (GitignoreEntry entry : entries) {
-            problemsHolder.registerProblem(entry, GitignoreBundle.message("codeInspection.unusedEntry.message", entry.getText()));
-        }
-
-        return problemsHolder.getResultsArray();
+                if (!resolved) {
+                    holder.registerProblem(entry, GitignoreBundle.message("codeInspection.unusedEntry.message"));
+                }
+                
+                super.visitEntry(entry);
+            }
+        };
     }
 }

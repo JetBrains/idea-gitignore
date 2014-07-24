@@ -167,7 +167,7 @@
                 implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreUnusedEntryInspection"
                 key="codeInspection.unusedEntry"
                 language="Gitignore"
-                level="INFO"/>
+                level="WEAK WARNING"/>
 
         <psi.referenceContributor
                 language="Gitignore"
