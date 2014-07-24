@@ -1,135 +1,136 @@
 package mobi.hsz.idea.gitignore.ui;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.CommandProcessor;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.EditorSettings;
+import com.intellij.openapi.editor.colors.EditorColors;
+import com.intellij.openapi.editor.colors.EditorColorsScheme;
+import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.psi.PsiFile;
+import com.intellij.ui.JBSplitter;
+import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.components.JBList;
-import com.intellij.ui.components.JBTextField;
+import com.intellij.ui.speedSearch.ListWithFilter;
+import com.intellij.util.Function;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
-import mobi.hsz.idea.gitignore.util.FilterableListModel;
+import mobi.hsz.idea.gitignore.file.GitignoreFileType;
 import mobi.hsz.idea.gitignore.util.Resources;
-import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.*;
-import java.util.Arrays;
+import java.awt.*;
 
-public class GeneratorDialog extends JDialog {
-    private final PsiFile file;
-    private final Project project;
+public class GeneratorDialog extends DialogWrapper {
+    @NotNull private final Project myProject;
+    @NotNull private final PsiFile myFile;
+    @NotNull private final Editor preview;
+    @NotNull private final JBList list;
+    @NotNull private final Document previewDocument;
 
-    private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton buttonCancel;
-    private JTextField search;
-    private JList list;
-    private FilterableListModel<Resources.Template> listModel;
-    private JTextArea preview;
+    public GeneratorDialog(@NotNull Project project, @NotNull PsiFile file) {
+        super(project, false);
+        myProject = project;
+        myFile = file;
 
-    public GeneratorDialog(Project project, PsiFile file) {
-        this.project = project;
-        this.file = file;
+        list = new JBList(Resources.getGitignoreTemplates());
+        previewDocument = EditorFactory.getInstance().createDocument("");
+        preview = createPreviewEditor(project, previewDocument);
 
-        setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
-
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-    public void showDialog() {
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
-
-    private void onOK() {
-        String content = "";
-
-        for (Object object : getListItems()) {
-            Resources.Template template = (Resources.Template) object;
-            content += "\n### " + template.getName() + " template\n" + template.getContent();
-        }
-
-        new AppendFileCommandAction(project, file, content).execute();
-        dispose();
-    }
-
-    private void onCancel() {
-        // add your code here if necessary
-        dispose();
-    }
-
-    private void createUIComponents() {
         setTitle(GitignoreBundle.message("dialog.generator.title"));
-        listModel = new FilterableListModel<Resources.Template>();
-        listModel.setElements(Resources.getGitignoreTemplates());
-        list = new JBList(listModel);
+        setOKButtonText(GitignoreBundle.message("global.generate"));
+        init();
+    }
+
+    @NotNull
+    private static Editor createPreviewEditor(@NotNull Project project, @NotNull Document document) {
+        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, project, GitignoreFileType.INSTANCE, true);
+        final EditorSettings settings = editor.getSettings();
+        settings.setLineNumbersShown(false);
+        settings.setAdditionalLinesCount(1);
+        settings.setAdditionalColumnsCount(1);
+        settings.setRightMarginShown(false);
+        settings.setFoldingOutlineShown(false);
+        settings.setLineMarkerAreaShown(false);
+        settings.setIndentGuidesShown(false);
+        settings.setVirtualSpace(false);
+        settings.setWheelFontChangeEnabled(false);
+        editor.setCaretEnabled(false);
+
+        EditorColorsScheme colorsScheme = editor.getColorsScheme();
+        colorsScheme.setColor(EditorColors.CARET_ROW_COLOR, null);
+        return editor;
+    }
+
+    @Nullable
+    @Override
+    public JComponent getPreferredFocusedComponent() {
+        return list;
+    }
+
+    @Override
+    protected void dispose() {
+        EditorFactory.getInstance().releaseEditor(preview);
+        super.dispose();
+    }
+
+    @Override
+    protected void doOKAction() {
+        if (isOKActionEnabled()) {
+            Object selectedValue = list.getSelectedValue();
+            if (selectedValue != null) {
+                Resources.Template template = (Resources.Template) selectedValue;
+                String content = "### " + template.getName() + " template\n" + template.getContent();
+                new AppendFileCommandAction(myProject, myFile, content).execute();
+            }
+            super.doOKAction();
+        }
+    }
+
+    @Nullable
+    @Override
+    protected JComponent createCenterPanel() {
+        list.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                Resources.Template template = (Resources.Template) list.getSelectedValue();
-                String content = template != null ? template.getContent() : "";
-                preview.setText(content);
+                final Resources.Template template = (Resources.Template) list.getSelectedValue();
+                ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        CommandProcessor.getInstance().runUndoTransparentAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                previewDocument.replaceString(0, previewDocument.getTextLength(), template != null ? template.getContent() : "");
+                            }
+                        });
+                    }
+                });
             }
         });
 
-        search = new JBTextField();
-        search.getDocument().addDocumentListener(new DocumentListener() {
+        JComponent listComponent = ListWithFilter.wrap(list, ScrollPaneFactory.createScrollPane(list), new Function<Resources.Template, String>() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                onSearch();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                onSearch();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                onSearch();
+            public String fun(Resources.Template template) {
+                return template.getName();
             }
         });
-        preview = new JTextArea();
-    }
 
-    public void onSearch() {
-        list.clearSelection();
-        listModel.filter(search.getText());
-    }
+        JBSplitter splitter = new JBSplitter(0.3f);
+        splitter.setFirstComponent(listComponent);
+        splitter.setSecondComponent(preview.getComponent());
 
-    @SuppressWarnings("deprecation" )
-    private Iterable<?> getListItems() {
-        return Utils.JAVA_VERSION > 1.6 ? list.getSelectedValuesList() : Arrays.asList(list.getSelectedValues());
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.add(splitter, BorderLayout.CENTER);
+        centerPanel.setPreferredSize(new Dimension(700, 300));
+        return centerPanel;
     }
 }
