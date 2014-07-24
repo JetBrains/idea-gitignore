@@ -3,6 +3,7 @@ package mobi.hsz.idea.gitignore.util;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
@@ -24,18 +25,9 @@ public class Utils {
         return Double.parseDouble(version.substring(0, pos - 1));
     }
 
-//    @Nullable
-//    public static String getRelativePath(@NotNull VirtualFile directory, @NotNull VirtualFile file) {
-//        return VfsUtilCore.getRelativePath(directory, file, '/');
-//    }
-
+    @Nullable
     public static String getRelativePath(@NotNull VirtualFile directory, @NotNull VirtualFile file) {
-        String filePath = file.getCanonicalPath();
-        String directoryPath = directory.getCanonicalPath();
-        if (filePath == null || directoryPath == null) {
-            return filePath;
-        }
-        return filePath.replace(directoryPath, "");
+        return VfsUtilCore.getRelativePath(file, directory, '/');
     }
 
     @Nullable
