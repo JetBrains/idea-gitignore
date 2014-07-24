@@ -8,10 +8,14 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.util.CommonProcessors;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
     public static final double JAVA_VERSION = getJavaVersion();
@@ -165,5 +169,31 @@ public class Utils {
         }
 
         return sb.toString();
+    }
+
+    public static List<VirtualFile> getGitignoreFiles(Project project) {
+        final List<VirtualFile> files = new ArrayList<VirtualFile>();
+        VfsUtilCore.processFilesRecursively(project.getBaseDir(), new CommonProcessors.FindProcessor<VirtualFile>() {
+            @Override
+            protected boolean accept(VirtualFile virtualFile) {
+                if (GitignoreLanguage.FILENAME.equals(virtualFile.getName())) {
+                    files.add(virtualFile);
+                }
+                return false;
+            }
+        });
+        return files;
+    }
+
+    public static List<VirtualFile> getSuitableGitignoreFiles(Project project, VirtualFile file) {
+        List<VirtualFile> files = new ArrayList<VirtualFile>();
+        do {
+            file = file.getParent();
+            VirtualFile gitignore = file.findChild(GitignoreLanguage.FILENAME);
+            if (gitignore != null) {
+                files.add(gitignore);
+            }
+        } while (!file.equals(project.getBaseDir()));
+        return files;
     }
 }

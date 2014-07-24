@@ -187,8 +187,13 @@
         <action id="Gitignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileAction">
             <add-to-group group-id="NewGroup" anchor="last"/>
         </action>
+        <group id="Gitignore.IgnoreGroup" class="mobi.hsz.idea.gitignore.actions.IgnoreFileGroupAction" >
+          <add-to-group group-id="EditorPopupMenu"/>
+          <add-to-group group-id="ProjectViewPopupMenu"/>
+          <add-to-group group-id="EditorTabPopupMenu"/>
+          <add-to-group group-id="ConsoleEditorPopupMenu"/>
+        </group>
         <group>
-            <action id="Gitignore.Ignore" class="mobi.hsz.idea.gitignore.actions.IgnoreFileAction"/>
             <action id="Gitignore.ShowIgnored" class="mobi.hsz.idea.gitignore.actions.ShowIgnoredAction"/>
             <add-to-group group-id="EditorPopupMenu"/>
             <add-to-group group-id="ProjectViewPopupMenu"/>

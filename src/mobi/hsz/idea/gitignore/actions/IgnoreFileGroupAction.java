@@ -1,0 +1,69 @@
+package mobi.hsz.idea.gitignore.actions;
+
+import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.ModificationTracker;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.util.CachedValueProvider;
+import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class IgnoreFileGroupAction extends ComputableActionGroup {
+    private final List<VirtualFile> files = new ArrayList<VirtualFile>();
+    private VirtualFile baseDir;
+
+    public IgnoreFileGroupAction() {
+        super(true);
+        Presentation p = getTemplatePresentation();
+        p.setText(GitignoreBundle.message("action.addToGitignore"));
+        p.setDescription(GitignoreBundle.message("action.addToGitignore.description"));
+        p.setIcon(Icons.FILE);
+    }
+
+    @Override
+    public void update(AnActionEvent e) {
+        final VirtualFile file = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE);
+        final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
+        files.clear();
+        files.addAll(Utils.getSuitableGitignoreFiles(project, file));
+        Collections.reverse(files);
+        baseDir = project.getBaseDir();
+        setPopup(files.size() > 1);
+    }
+
+    @NotNull
+    @Override
+    protected CachedValueProvider<AnAction[]> createChildrenProvider(@NotNull final ActionManager actionManager) {
+        return new CachedValueProvider<AnAction[]>() {
+            @Nullable
+            @Override
+            public Result<AnAction[]> compute() {
+                AnAction[] actions;
+                int size = files.size();
+                if (size == 0) {
+                    actions = new AnAction[]{ new IgnoreFileAction(null) };
+                } else {
+                    actions = new AnAction[size];
+                    for (int i = 0; i < files.size(); i++) {
+                        VirtualFile file = files.get(i);
+                        IgnoreFileAction action = new IgnoreFileAction(file);
+                        actions[i] = action;
+
+                        if (size > 1) {
+                            String name = Utils.getRelativePath(baseDir, file);
+                            action.getTemplatePresentation().setText(name);
+                        }
+                    }
+                }
+                return Result.create(actions, ModificationTracker.EVER_CHANGED);
+            }
+        };
+    }
+}
