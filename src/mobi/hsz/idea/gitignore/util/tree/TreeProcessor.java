@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class TreeProcessor {
     private final PsiFile file;
-    private final ArrayList<Rule> rules = new ArrayList<Rule>();;
+    private final ArrayList<Rule> rules = new ArrayList<Rule>();
     private final VirtualFile rootDirectory;
 
     public TreeProcessor(@NotNull final PsiFile file) {
@@ -59,7 +59,7 @@ public class TreeProcessor {
         }
     }
 
-    private class Rule {
+    private static class Rule {
         private final boolean negated;
         private final boolean directory;
         private final String value;

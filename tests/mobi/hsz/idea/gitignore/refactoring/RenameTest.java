@@ -23,7 +23,7 @@ public class RenameTest extends LightPlatformCodeInsightFixtureTestCase {
         doTest("./*/fi<caret>le.txt", "newFile", "./*/fi<caret>le.txt");
     }
 
-    private void doTest(@NotNull String beforeText, @NotNull String newName, @NotNull String afterText) throws IOException {
+    private void doTest(@NotNull String beforeText, @NotNull String newName, @NotNull String afterText) {
         myFixture.configureByText(GitignoreFileType.INSTANCE, beforeText);
         myFixture.renameElementAtCaret(newName);
         myFixture.checkResult(afterText);

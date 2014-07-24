@@ -15,7 +15,7 @@ public class GitignoreReferenceContributor extends PsiReferenceContributor {
         psiReferenceRegistrar.registerReferenceProvider(psiElement().inFile(psiFile(GitignoreFile.class)), new GitignoreReferenceProvider());
     }
 
-    public static class GitignoreReferenceProvider extends PsiReferenceProvider {
+    private static class GitignoreReferenceProvider extends PsiReferenceProvider {
         @NotNull
         @Override
         public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {

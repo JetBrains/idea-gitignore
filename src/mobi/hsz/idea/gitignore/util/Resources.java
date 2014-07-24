@@ -41,7 +41,7 @@ public class Resources {
         return templates;
     }
 
-    public Resources() {
+    private Resources() {
     }
 
     /**

@@ -22,8 +22,7 @@ import org.jetbrains.annotations.NotNull;
 public class GitignoreParserDefinition implements ParserDefinition {
     private static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     private static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
-
-    public static final IFileElementType FILE = new IFileElementType(Language.findInstance(GitignoreLanguage.class));
+    private static final IFileElementType FILE = new IFileElementType(Language.findInstance(GitignoreLanguage.class));
 
     @NotNull
     @Override

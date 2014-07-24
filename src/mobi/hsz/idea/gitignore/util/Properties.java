@@ -6,11 +6,11 @@ import com.intellij.openapi.project.Project;
 public class Properties {
     private static final String PROP_IGNORE_MISSING_GITIGNORE = "ignore_missing_gitignore";
 
-    public static boolean getIgnoreMissingGitignore(Project project) {
+    public static boolean isIgnoreMissingGitignore(Project project) {
         return PropertiesComponent.getInstance(project).getBoolean(PROP_IGNORE_MISSING_GITIGNORE, false);
     }
 
-    public static void setIgnoreMissingGitignore(Project project, boolean value) {
-        PropertiesComponent.getInstance(project).setValue(PROP_IGNORE_MISSING_GITIGNORE, String.valueOf(value));
+    public static void setIgnoreMissingGitignore(Project project) {
+        PropertiesComponent.getInstance(project).setValue(PROP_IGNORE_MISSING_GITIGNORE, Boolean.TRUE.toString());
     }
 }

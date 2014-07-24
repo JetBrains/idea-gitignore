@@ -6,17 +6,17 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.lexer.GitignoreLexerAdapter;
 import mobi.hsz.idea.gitignore.psi.GitignoreTokenTypeSets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class GitignoreHighlighter extends SyntaxHighlighterBase {
 
-    protected static final Map<IElementType, TextAttributesKey> ATTRIBUTES = new HashMap<IElementType, TextAttributesKey>();
+    private static final Map<IElementType, TextAttributesKey> ATTRIBUTES = ContainerUtil.newHashMap();
 
     static {
         fillMap(ATTRIBUTES, GitignoreTokenTypeSets.COMMENT_SET, GitignoreHighlighterColors.COMMENT_ATTR_KEY);
