@@ -116,12 +116,14 @@ Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
 - Create *New Project* as a *IntelliJ Platform Plugin* and set *Project location* to the **idea-gitignore** sources
   - In <kbd>Project settings</kbd> > <kbd>Modules</kbd> section mark:
     - `gen` as *Sources*
-    - `resources` as *Sources*
+    - `resources` as *Resources*
     - `src` as *Sources*
+    - `tests` as *Test Sources*
     - `.idea` as *Excluded*
     - `out` as *Excluded*
 - Add new *Run/Debug configuration*
   - <kbd>+</kbd> <kbd>Add new configuration</kbd> > <kbd>Plugin</kbd>
+  - Add `-Didea.is.internal=true` to *VM Options* (it will allow you run internal actions like `View PSI structure` action)
   - Remove `-XX:MaxPermSize=250m` from *VM Options*
 - Generate PSI classes
   - Go to [`Gitignore.bnf`][bnf-file] file and **Generate Parser Code**
