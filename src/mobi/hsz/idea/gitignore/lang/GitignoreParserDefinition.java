@@ -20,15 +20,10 @@ import mobi.hsz.idea.gitignore.psi.GitignoreTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class GitignoreParserDefinition implements ParserDefinition {
-    public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
-    public static final TokenSet HEADERS = TokenSet.create(GitignoreTypes.HEADER);
-    public static final TokenSet SECTIONS = TokenSet.create(GitignoreTypes.SECTION);
-    public static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
-    public static final TokenSet NEGATIONS = TokenSet.create(GitignoreTypes.NEGATION);
-    public static final TokenSet ENTRY_FILES = TokenSet.create(GitignoreTypes.ENTRY_FILE);
-    public static final TokenSet ENTRY_DIRECTORIES = TokenSet.create(GitignoreTypes.ENTRY_DIRECTORY);
+    private static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
+    private static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
 
-    public static final IFileElementType FILE = new IFileElementType(Language.<GitignoreLanguage>findInstance(GitignoreLanguage.class));
+    public static final IFileElementType FILE = new IFileElementType(Language.findInstance(GitignoreLanguage.class));
 
     @NotNull
     @Override
@@ -50,31 +45,6 @@ public class GitignoreParserDefinition implements ParserDefinition {
     @Override
     public TokenSet getWhitespaceTokens() {
         return WHITE_SPACES;
-    }
-
-    @NotNull
-    public TokenSet getHeaderTokens() {
-        return HEADERS;
-    }
-
-    @NotNull
-    public TokenSet getSectionTokens() {
-        return SECTIONS;
-    }
-
-    @NotNull
-    public TokenSet getNegationTokens() {
-        return NEGATIONS;
-    }
-
-    @NotNull
-    public TokenSet getFileTokens() {
-        return ENTRY_FILES;
-    }
-
-    @NotNull
-    public TokenSet getDirectoryTokens() {
-        return ENTRY_DIRECTORIES;
     }
 
     @NotNull
