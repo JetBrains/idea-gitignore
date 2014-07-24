@@ -5,7 +5,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileSystemItem;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
-import mobi.hsz.idea.gitignore.psi.GitignoreNegatedEntry;
+import mobi.hsz.idea.gitignore.psi.GitignoreEntryDirectory;
 import mobi.hsz.idea.gitignore.ui.tree.GitignoreTreeObject;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -66,9 +66,9 @@ public class TreeProcessor {
         private final String regex;
 
         public Rule(GitignoreEntry entry) {
-            negated = (entry instanceof GitignoreNegatedEntry);
-            directory = entry.getEntryDirectory() != null;
-            value = entry.getEntry().getText();
+            negated = entry.getNegation() != null;
+            directory = entry instanceof GitignoreEntryDirectory;
+            value = entry.getText();
             regex = Utils.createRegexFromGlob(value);
         }
 

@@ -19,9 +19,39 @@ import mobi.hsz.idea.gitignore.psi.GitignoreTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class GitignoreParserDefinition implements ParserDefinition {
+<<<<<<< HEAD
     private static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     private static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
     private static final IFileElementType FILE = new IFileElementType(GitignoreLanguage.INSTANCE);
+=======
+
+    public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
+
+
+    // Regular comment started with #
+    public static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
+
+    // Section comment started with ##
+    public static final TokenSet SECTIONS = TokenSet.create(GitignoreTypes.SECTION);
+
+    // Header comment started with ###
+    public static final TokenSet HEADERS = TokenSet.create(GitignoreTypes.HEADER);
+
+    // Negation element - ! in the beginning of the entry
+    public static final TokenSet NEGATIONS = TokenSet.create(GitignoreTypes.NEGATION);
+
+    // Brackets []
+    public static final TokenSet BRACKETS = TokenSet.create(GitignoreTypes.BRACKET_LEFT, GitignoreTypes.BRACKET_RIGHT);
+
+    // Slashes /
+    public static final TokenSet SLASHES = TokenSet.create(GitignoreTypes.SLASH);
+
+    // All values - parts of paths
+    public static final TokenSet VALUES = TokenSet.create(GitignoreTypes.VALUE);
+
+
+    public static final IFileElementType FILE = new IFileElementType(Language.<GitignoreLanguage>findInstance(GitignoreLanguage.class));
+>>>>>>> brace-matcher
 
     @NotNull
     @Override
@@ -46,6 +76,39 @@ public class GitignoreParserDefinition implements ParserDefinition {
     }
 
     @NotNull
+<<<<<<< HEAD
+=======
+    public TokenSet getHeaderTokens() {
+        return HEADERS;
+    }
+
+    @NotNull
+    public TokenSet getSectionTokens() {
+        return SECTIONS;
+    }
+
+    @NotNull
+    public TokenSet getNegationTokens() {
+        return NEGATIONS;
+    }
+
+    @NotNull
+    public TokenSet getBracketTokens() {
+        return BRACKETS;
+    }
+
+    @NotNull
+    public TokenSet getSlashTokens() {
+        return SLASHES;
+    }
+
+    @NotNull
+    public TokenSet getValueTokens() {
+        return VALUES;
+    }
+
+    @NotNull
+>>>>>>> brace-matcher
     @Override
     public TokenSet getCommentTokens() {
         return COMMENTS;

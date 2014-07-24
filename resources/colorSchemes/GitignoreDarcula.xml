@@ -24,14 +24,20 @@
             <option name="FONT_TYPE" value="1" />
         </value>
     </option>
-    <option name="GITIGNORE.ENTRY_FILE">
+    <option name="GITIGNORE.BRACKET">
         <value>
-            <option name="FOREGROUND" value="629755" />
+            <option name="FOREGROUND" value="CC7832" />
+            <option name="FONT_TYPE" value="1" />
         </value>
     </option>
-    <option name="GITIGNORE.ENTRY_DIRECTORY">
+    <option name="GITIGNORE.SLASH">
         <value>
-            <option name="FOREGROUND" value="6897BB" />
+            <option name="FOREGROUND" value="808080" />
+        </value>
+    </option>
+    <option name="GITIGNORE.VALUE">
+        <value>
+            <option name="FOREGROUND" value="629755" />
         </value>
     </option>
 </list>

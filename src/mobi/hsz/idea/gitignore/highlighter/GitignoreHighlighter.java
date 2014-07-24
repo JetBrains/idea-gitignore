@@ -6,9 +6,12 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IElementType;
+<<<<<<< HEAD
 import com.intellij.util.containers.ContainerUtil;
+=======
+import mobi.hsz.idea.gitignore.lang.GitignoreParserDefinition;
+>>>>>>> brace-matcher
 import mobi.hsz.idea.gitignore.lexer.GitignoreLexerAdapter;
-import mobi.hsz.idea.gitignore.psi.GitignoreTokenTypeSets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,12 +22,13 @@ public class GitignoreHighlighter extends SyntaxHighlighterBase {
     private static final Map<IElementType, TextAttributesKey> ATTRIBUTES = ContainerUtil.newHashMap();
 
     static {
-        fillMap(ATTRIBUTES, GitignoreTokenTypeSets.COMMENT_SET, GitignoreHighlighterColors.COMMENT_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreTokenTypeSets.SECTION_SET, GitignoreHighlighterColors.SECTION_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreTokenTypeSets.HEADER_SET, GitignoreHighlighterColors.HEADER_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreTokenTypeSets.NEGATION_SET, GitignoreHighlighterColors.NEGATION_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreTokenTypeSets.ENTRY_FILE_SET, GitignoreHighlighterColors.ENTRY_FILE_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreTokenTypeSets.ENTRY_DIRECTORY_SET, GitignoreHighlighterColors.ENTRY_DIRECTORY_ATTR_KEY);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.COMMENTS, GitignoreHighlighterColors.COMMENT_ATTR_KEY);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.SECTIONS, GitignoreHighlighterColors.SECTION_ATTR_KEY);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.HEADERS, GitignoreHighlighterColors.HEADER_ATTR_KEY);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.NEGATIONS, GitignoreHighlighterColors.NEGATION_ATTR_KEY);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.BRACKETS, GitignoreHighlighterColors.BRACKET_ATTR_KEY);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.SLASHES, GitignoreHighlighterColors.SLASH_ATTR_KEY);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.VALUES, GitignoreHighlighterColors.VALUE_ATTR_KEY);
     }
 
     private final Project project;

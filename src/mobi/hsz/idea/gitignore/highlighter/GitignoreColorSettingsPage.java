@@ -34,8 +34,9 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor(GitignoreBundle.message("highlighter.section"), GitignoreHighlighterColors.SECTION_ATTR_KEY),
             new AttributesDescriptor(GitignoreBundle.message("highlighter.comment"), GitignoreHighlighterColors.COMMENT_ATTR_KEY),
             new AttributesDescriptor(GitignoreBundle.message("highlighter.negation"), GitignoreHighlighterColors.NEGATION_ATTR_KEY),
-            new AttributesDescriptor(GitignoreBundle.message("highlighter.file"), GitignoreHighlighterColors.ENTRY_FILE_ATTR_KEY),
-            new AttributesDescriptor(GitignoreBundle.message("highlighter.directory"), GitignoreHighlighterColors.ENTRY_DIRECTORY_ATTR_KEY),
+            new AttributesDescriptor(GitignoreBundle.message("highlighter.brackets"), GitignoreHighlighterColors.BRACKET_ATTR_KEY),
+            new AttributesDescriptor(GitignoreBundle.message("highlighter.slash"), GitignoreHighlighterColors.SLASH_ATTR_KEY),
+            new AttributesDescriptor(GitignoreBundle.message("highlighter.value"), GitignoreHighlighterColors.VALUE_ATTR_KEY),
     };
 
     @Nullable
