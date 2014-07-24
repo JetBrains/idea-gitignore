@@ -18,4 +18,14 @@ public class GitignoreEntryManipulator extends AbstractElementManipulator<Gitign
         assert newEntry != null;
         return (GitignoreEntry) entry.replace(newEntry);
     }
+
+    @NotNull
+    @Override
+    public TextRange getRangeInElement(@NotNull GitignoreEntry element) {
+        GitignoreNegation negation = element.getNegation();
+        if (negation != null) {
+            return TextRange.create(negation.getStartOffsetInParent() + negation.getTextLength(), element.getTextLength());
+        }
+        return super.getRangeInElement(element);
+    }
 }

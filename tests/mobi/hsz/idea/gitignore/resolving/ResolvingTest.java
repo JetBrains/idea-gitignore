@@ -49,6 +49,11 @@ public class ResolvingTest extends LightPlatformCodeInsightFixtureTestCase {
         doTest("glob/fileN(<caret>.txt");
     }
 
+    public void testNegation() throws IOException {
+        myFixture.getTempDirFixture().createFile("fileName.txt");
+        doTest("!fileNa<caret>me.txt", "fileName.txt");
+    }
+    
     private void doTest(@NotNull String beforeText, String... expectedResolve) {
         myFixture.configureByText(GitignoreFileType.INSTANCE, beforeText);
         PsiPolyVariantReference reference = ((PsiPolyVariantReference) myFixture.getReferenceAtCaretPosition());
