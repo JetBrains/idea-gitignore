@@ -12,31 +12,8 @@ import static com.intellij.psi.TokenType.*;
 %%
 
 %{
-  private Project project;
-  private VirtualFile virtualFile;
-
-  public GitignoreLexer(Project project, VirtualFile virtualFile) {
-    this((java.io.Reader) null);
-    this.project = project;
-    this.virtualFile = virtualFile;
-  }
-
-  private IElementType obtainEntryType(CharSequence entry) {
-    if (virtualFile != null) {
-      VirtualFile parent = virtualFile.getParent();
-      if (parent != null) {
-        List<VirtualFile> files = Glob.find(parent, entry.toString());
-        for (VirtualFile file : files) {
-          if (!file.isDirectory()) {
-            return ENTRY_FILE;
-          }
-        }
-        if (files.size() > 0) {
-          return ENTRY_DIRECTORY;
-        }
-      }
-    }
-    return ENTRY_FILE;
+  public GitignoreLexer() {
+    this((java.io.Reader)null);
   }
 %}
 
