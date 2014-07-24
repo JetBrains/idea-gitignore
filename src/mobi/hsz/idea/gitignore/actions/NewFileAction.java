@@ -1,7 +1,10 @@
 package mobi.hsz.idea.gitignore.actions;
 
 import com.intellij.ide.IdeView;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiDirectory;
@@ -20,17 +23,8 @@ public class NewFileAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent event) {
-        final Project project = event.getData(PlatformDataKeys.PROJECT);
-
-        if (project == null) {
-            return;
-        }
-
-        DataContext dataContext = event.getDataContext();
-        IdeView view = LangDataKeys.IDE_VIEW.getData(dataContext);
-        if (view == null) {
-            return;
-        }
+        final Project project = event.getRequiredData(CommonDataKeys.PROJECT);
+        final IdeView view = event.getRequiredData(LangDataKeys.IDE_VIEW);
 
         final PsiDirectory directory = view.getOrChooseDirectory();
         if (directory == null) {
@@ -46,5 +40,16 @@ public class NewFileAction extends AnAction {
 
         Utils.openFile(project, file);
         new GeneratorDialog(project, file).showDialog();
+    }
+
+    @Override
+    public void update(AnActionEvent e) {
+        final Project project = e.getData(CommonDataKeys.PROJECT);
+        final IdeView view = e.getData(LangDataKeys.IDE_VIEW);
+
+        final PsiDirectory directory = view != null ? view.getOrChooseDirectory() : null;
+        if (directory == null || project == null) {
+            e.getPresentation().setVisible(false);
+        }
     }
 }

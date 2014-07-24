@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
@@ -19,12 +20,8 @@ public class IgnoreFileAction extends DumbAwareAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        final VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
-        final Project project = e.getProject();
-
-        if (file == null || project == null) {
-            return;
-        }
+        final VirtualFile file = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE);
+        final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
         PsiFile gitignore = Utils.getGitignoreFile(project);
         if (gitignore != null) {
@@ -44,14 +41,11 @@ public class IgnoreFileAction extends DumbAwareAction {
         }
     }
 
-    private String getPath(@NotNull Project project, @NotNull VirtualFile file) {
-        String path = Utils.getRelativePath(project.getBaseDir(), file);
+    private static String getPath(@NotNull Project project, @NotNull VirtualFile file) {
+        String path = StringUtil.notNullize(Utils.getRelativePath(project.getBaseDir(), file));
         if (file.isDirectory() && !path.endsWith("/")) {
-            path = path + "/";
+            path += "/";
         }
-        if (path.startsWith("/")) {
-            path = path.substring(1);
-        }
-        return path;
+        return StringUtil.trimStart(path, "/");
     }
 }
