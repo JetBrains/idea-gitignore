@@ -7,6 +7,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileReference;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.actions.GitignoreRemoveEntryFix;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import mobi.hsz.idea.gitignore.psi.GitignoreVisitor;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +32,7 @@ public class GitignoreUnusedEntryInspection extends LocalInspectionTool {
                 }
 
                 if (!resolved) {
-                    holder.registerProblem(entry, GitignoreBundle.message("codeInspection.unusedEntry.message"));
+                    holder.registerProblem(entry, GitignoreBundle.message("codeInspection.unusedEntry.message"), new GitignoreRemoveEntryFix(entry));
                 }
                 
                 super.visitEntry(entry);
