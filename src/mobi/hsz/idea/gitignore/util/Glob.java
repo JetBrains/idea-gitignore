@@ -1,23 +1,27 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.containers.ContainerUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class Glob {
-    public static final String EXCLUDE = "!.git/";
-
     public static List<VirtualFile> find(VirtualFile root, String glob) {
         return find(root, glob, false);
     }
 
     public static List<VirtualFile> find(VirtualFile root, String glob, boolean includeNested) {
-        List<File> files = new ArrayList<File>();
-        String regex = createRegex(glob);
-        return walk(root, root, regex, includeNested);
+        Pattern pattern = createPattern(glob);
+        if (pattern == null) {
+            return Collections.emptyList();
+        }
+        return walk(root, root, pattern, includeNested);
     }
 
     public static List<String> findAsPaths(VirtualFile root, String glob) {
@@ -33,9 +37,8 @@ public class Glob {
         return list;
     }
 
-    private static List<VirtualFile> walk(VirtualFile root, VirtualFile directory, String regex, boolean includeNested) {
-        List<VirtualFile> files = new ArrayList<VirtualFile>();
-
+    private static List<VirtualFile> walk(VirtualFile root, VirtualFile directory, @Nullable Pattern pattern, boolean includeNested) {
+        List<VirtualFile> files = ContainerUtil.newArrayList();
         for (VirtualFile file : directory.getChildren()) {
             boolean matches = false;
             String path = Utils.getRelativePath(root, file);
@@ -44,24 +47,28 @@ public class Glob {
                 continue;
             }
 
-            try {
-                if (regex == null || path.matches(regex)) {
-                    matches = true;
-                    files.add(file);
-                }
-            } catch (PatternSyntaxException ignored) {
-                break;
+            if (pattern == null || pattern.matcher(path).matches()) {
+                matches = true;
+                files.add(file);
             }
 
             if (file.isDirectory()) {
                 if (includeNested && matches) {
-                    regex = null;
+                    pattern = null;
                 }
-                files.addAll(walk(root, file, regex, includeNested));
+                files.addAll(walk(root, file, pattern, includeNested));
             }
         }
 
         return files;
+    }
+    
+    public static Pattern createPattern(@NotNull String glob) {
+        try {
+            return Pattern.compile(createRegex(glob));
+        } catch (PatternSyntaxException e) {
+            return null;
+        }
     }
 
     public static String createRegex(String glob) {

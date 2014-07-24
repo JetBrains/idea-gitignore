@@ -26,10 +26,22 @@ public class CompletionTest extends LightPlatformCodeInsightFixtureTestCase {
         myFixture.getTempDirFixture().findOrCreateDir(".hidden").createChildData(this, "fileName.txt");
         doTest(".hidden/fileN<caret>", ".hidden/fileName.txt<caret>");
     }
+        
+    public void testInGlobDirectory() throws IOException {
+        myFixture.getTempDirFixture().findOrCreateDir("glob1").createChildData(this, "fileName1.txt");
+        myFixture.getTempDirFixture().findOrCreateDir("glob2").createChildData(this, "fileName2.txt");
+        doTestVariants("*/fileN<caret>", "fileName1.txt", "fileName2.txt");
+    }
 
     private void doTest(@NotNull String beforeText, @NotNull String afterText) {
         myFixture.configureByText(GitignoreFileType.INSTANCE, beforeText);
         myFixture.completeBasic();
         myFixture.checkResult(afterText);
+    }
+    
+    private void doTestVariants(@NotNull String beforeText, String... variants) {
+        myFixture.configureByText(GitignoreFileType.INSTANCE, beforeText);
+        myFixture.completeBasic();
+        assertContainsElements(myFixture.getLookupElementStrings(), variants);
     }
 }
