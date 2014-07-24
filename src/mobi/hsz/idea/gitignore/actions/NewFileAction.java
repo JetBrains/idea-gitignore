@@ -1,12 +1,14 @@
 package mobi.hsz.idea.gitignore.actions;
 
 import com.intellij.ide.IdeView;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
@@ -35,7 +37,9 @@ public class NewFileAction extends AnAction {
         if (file == null) {
             file = new CreateFileCommandAction(project, directory).execute().getResultObject();
         } else {
-            Messages.showInfoMessage(project, GitignoreBundle.message("action.newFile.exists"), GitignoreBundle.message("action.newFile.title"));
+            Notifications.Bus.notify(new Notification(GitignoreLanguage.NAME,
+                    GitignoreBundle.message("action.newFile.exists"), "in " + file.getVirtualFile().getPath(),
+                    NotificationType.INFORMATION), project);
         }
 
         Utils.openFile(project, file);
