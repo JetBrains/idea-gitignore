@@ -1,7 +1,6 @@
 package mobi.hsz.idea.gitignore.lang;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 public class GitignoreParserDefinition implements ParserDefinition {
     private static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     private static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
-    private static final IFileElementType FILE = new IFileElementType(Language.findInstance(GitignoreLanguage.class));
+    private static final IFileElementType FILE = new IFileElementType(GitignoreLanguage.INSTANCE);
 
     @NotNull
     @Override
