@@ -18,10 +18,14 @@ public class GitignoreHighlighterColors {
     /** Default style for negation element - ! in the beginning of the entry */
     public static final TextAttributesKey NEGATION_ATTR_KEY = TextAttributesKey.createTextAttributesKey("GITIGNORE.NEGATION", DefaultLanguageHighlighterColors.KEYWORD);
 
-    /** Default style for regular entry */
-    public static final TextAttributesKey ENTRY_FILE_ATTR_KEY = TextAttributesKey.createTextAttributesKey("GITIGNORE.ENTRY_FILE", DefaultLanguageHighlighterColors.STRING);
+    /** Default style for negation element - ! in the beginning of the entry */
+    public static final TextAttributesKey BRACKET_ATTR_KEY = TextAttributesKey.createTextAttributesKey("GITIGNORE.BRACKET", DefaultLanguageHighlighterColors.KEYWORD);
 
-    /** Default style for directory entry - ends with / */
-    public static final TextAttributesKey ENTRY_DIRECTORY_ATTR_KEY = TextAttributesKey.createTextAttributesKey("GITIGNORE.ENTRY_DIRECTORY", DefaultLanguageHighlighterColors.NUMBER);
+    /** Default style for negation element - ! in the beginning of the entry */
+    public static final TextAttributesKey SLASH_ATTR_KEY = TextAttributesKey.createTextAttributesKey("GITIGNORE.SLASH", DefaultLanguageHighlighterColors.COMMA);
+
+    /** Default style for negation element - ! in the beginning of the entry */
+    public static final TextAttributesKey VALUE_ATTR_KEY = TextAttributesKey.createTextAttributesKey("GITIGNORE.VALUE", DefaultLanguageHighlighterColors.STRING);
+
 
 }

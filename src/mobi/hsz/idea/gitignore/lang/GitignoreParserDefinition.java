@@ -20,13 +20,31 @@ import mobi.hsz.idea.gitignore.psi.GitignoreTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class GitignoreParserDefinition implements ParserDefinition {
+
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
-    public static final TokenSet HEADERS = TokenSet.create(GitignoreTypes.HEADER);
-    public static final TokenSet SECTIONS = TokenSet.create(GitignoreTypes.SECTION);
+
+
+    // Regular comment started with #
     public static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
+
+    // Section comment started with ##
+    public static final TokenSet SECTIONS = TokenSet.create(GitignoreTypes.SECTION);
+
+    // Header comment started with ###
+    public static final TokenSet HEADERS = TokenSet.create(GitignoreTypes.HEADER);
+
+    // Negation element - ! in the beginning of the entry
     public static final TokenSet NEGATIONS = TokenSet.create(GitignoreTypes.NEGATION);
-    public static final TokenSet ENTRY_FILES = TokenSet.create(GitignoreTypes.ENTRY_FILE);
-    public static final TokenSet ENTRY_DIRECTORIES = TokenSet.create(GitignoreTypes.ENTRY_DIRECTORY);
+
+    // Brackets []
+    public static final TokenSet BRACKETS = TokenSet.create(GitignoreTypes.BRACKET_LEFT, GitignoreTypes.BRACKET_RIGHT);
+
+    // Slashes /
+    public static final TokenSet SLASHES = TokenSet.create(GitignoreTypes.SLASH);
+
+    // All values - parts of paths
+    public static final TokenSet VALUES = TokenSet.create(GitignoreTypes.VALUE);
+
 
     public static final IFileElementType FILE = new IFileElementType(Language.<GitignoreLanguage>findInstance(GitignoreLanguage.class));
 
@@ -68,13 +86,18 @@ public class GitignoreParserDefinition implements ParserDefinition {
     }
 
     @NotNull
-    public TokenSet getFileTokens() {
-        return ENTRY_FILES;
+    public TokenSet getBracketTokens() {
+        return BRACKETS;
     }
 
     @NotNull
-    public TokenSet getDirectoryTokens() {
-        return ENTRY_DIRECTORIES;
+    public TokenSet getSlashTokens() {
+        return SLASHES;
+    }
+
+    @NotNull
+    public TokenSet getValueTokens() {
+        return VALUES;
     }
 
     @NotNull

@@ -43,7 +43,7 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
                         }
 
                         GitignoreEntry entry = (GitignoreEntry) child;
-                        String value = entry.getEntry().getText();
+                        String value = entry.getText();
 
                         List<String> matched = Glob.findAsPaths(file.getVirtualFile().getParent(), value, true);
 
@@ -69,7 +69,7 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
         for (Map.Entry set: entries.entrySet()) {
             GitignoreEntry key = (GitignoreEntry) set.getKey();
             GitignoreEntry value = (GitignoreEntry) set.getValue();
-            problemsHolder.registerProblem(value, GitignoreBundle.message("codeInspection.coverEntry.message", value.getEntry().getText(), key.getEntry().getText()));
+            problemsHolder.registerProblem(value, GitignoreBundle.message("codeInspection.coverEntry.message", value.getText(), key.getText()));
         }
 
         return problemsHolder.getResultsArray();

@@ -42,7 +42,7 @@ public class GitignoreDuplicateEntryInspection extends LocalInspectionTool {
                             continue;
                         }
                         GitignoreEntry entry = (GitignoreEntry) child;
-                        String value = entry.getEntry().getText();
+                        String value = entry.getText();
 
                         if (map.containsKey(value)) {
                             entries.add(entry);
@@ -57,7 +57,7 @@ public class GitignoreDuplicateEntryInspection extends LocalInspectionTool {
         }
 
         for (GitignoreEntry entry : entries) {
-            problemsHolder.registerProblem(entry, GitignoreBundle.message("codeInspection.duplicateEntry.message", entry.getEntry().getText()));
+            problemsHolder.registerProblem(entry, GitignoreBundle.message("codeInspection.duplicateEntry.message", entry.getText()));
         }
 
         return problemsHolder.getResultsArray();

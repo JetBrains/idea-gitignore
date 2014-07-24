@@ -123,18 +123,21 @@
     <fileTypeFactory
       implementation="mobi.hsz.idea.gitignore.file.GitignoreFileTypeFactory" />
 
+    <lang.braceMatcher
+       implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreBraceMatcher"
+       language="Gitignore" />
     <lang.commenter
       implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreCommenter"
       language="Gitignore" />
+    <lang.elementManipulator
+      forClass="mobi.hsz.idea.gitignore.psi.GitignoreEntry"
+      implementationClass="mobi.hsz.idea.gitignore.psi.GitignoreEntryManipulator" />
     <lang.parserDefinition
       implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreParserDefinition"
       language="Gitignore" />
     <lang.syntaxHighlighterFactory
       implementationClass="mobi.hsz.idea.gitignore.highlighter.GitignoreHighlighterFactory"
       key="Gitignore" />
-
-    <psi.referenceContributor implementation="mobi.hsz.idea.gitignore.reference.GitignoreReferenceContributor"/>
-    <lang.elementManipulator forClass="mobi.hsz.idea.gitignore.psi.GitignoreEntry" implementationClass="mobi.hsz.idea.gitignore.psi.GitignoreEntryManipulator"/>
 
     <localInspection
       bundle="messages.GitignoreBundle"
@@ -150,6 +153,9 @@
       implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreCoverEntryInspection"
       key="codeInspection.coverEntry"
       language="Gitignore" />
+
+    <psi.referenceContributor
+      implementation="mobi.hsz.idea.gitignore.reference.GitignoreReferenceContributor" />
 
   </extensions>
 
