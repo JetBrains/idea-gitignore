@@ -32,6 +32,11 @@ public class CompletionTest extends LightPlatformCodeInsightFixtureTestCase {
         myFixture.getTempDirFixture().findOrCreateDir("glob2").createChildData(this, "fileName2.txt");
         doTestVariants("*/fileN<caret>", "fileName1.txt", "fileName2.txt");
     }
+    
+    public void testNegation() throws IOException {
+        myFixture.getTempDirFixture().createFile("fileName.txt");
+        doTest("!fileNa<caret>", "!fileName.txt<caret>");
+    }
 
     private void doTest(@NotNull String beforeText, @NotNull String afterText) {
         myFixture.configureByText(GitignoreFileType.INSTANCE, beforeText);
