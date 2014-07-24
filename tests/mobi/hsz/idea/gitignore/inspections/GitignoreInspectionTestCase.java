@@ -3,6 +3,7 @@ package mobi.hsz.idea.gitignore.inspections;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -29,5 +30,12 @@ abstract public class GitignoreInspectionTestCase extends LightPlatformCodeInsig
     protected void doHighlightingFileTest() {
         myFixture.configureByFile(getTestName(true) + GitignoreLanguage.FILENAME);
         myFixture.testHighlighting(true, false, true);
+    }
+    
+    protected void doHighlightingFileTestWithQuickFix(@NotNull String quickFixName) {
+        myFixture.configureByFile(getTestName(true) + GitignoreLanguage.FILENAME);
+        myFixture.testHighlighting(true, false, true);
+        myFixture.launchAction(myFixture.findSingleIntention(quickFixName));
+        myFixture.checkResultByFile(getTestName(true) +"-after" + GitignoreLanguage.FILENAME);
     }
 }
