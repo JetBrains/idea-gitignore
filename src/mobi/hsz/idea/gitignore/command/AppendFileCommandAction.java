@@ -22,7 +22,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
 
     @Override
     protected void run(@NotNull Result<PsiFile> result) throws Throwable {
-        if (content.equals("") || content.equals("\n")) {
+        if (content.isEmpty() || content.equals("\n")) {
             return;
         }
         Document document = PsiDocumentManager.getInstance(project).getDocument(file);

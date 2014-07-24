@@ -15,7 +15,7 @@ public class GitignoreTreeObject {
     private final boolean directory;
     private final boolean symlink;
     private boolean ignored;
-    private String path;
+    private final String path;
 
     public GitignoreTreeObject(PsiFileSystemItem psiFile, VirtualFile rootDirectory) {
         VirtualFile file = psiFile.getVirtualFile();

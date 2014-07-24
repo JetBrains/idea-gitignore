@@ -37,7 +37,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     @Nullable
     @Override
     public EditorNotificationPanel createNotificationPanel(VirtualFile file, FileEditor fileEditor) {
-        if (Properties.getIgnoreMissingGitignore(project)) {
+        if (Properties.isIgnoreMissingGitignore(project)) {
             return null;
         }
         VirtualFile gitDirectory = project.getBaseDir().findChild(GitignoreLanguage.GIT_DIRECTORY);
@@ -69,7 +69,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
         panel.createActionLabel(GitignoreBundle.message("global.cancel"), new Runnable() {
             @Override
             public void run() {
-                Properties.setIgnoreMissingGitignore(project, true);
+                Properties.setIgnoreMissingGitignore(project);
                 notifications.updateAllNotifications();
             }
         });

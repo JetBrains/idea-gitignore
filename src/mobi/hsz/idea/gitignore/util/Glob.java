@@ -42,8 +42,11 @@ public class Glob {
         for (VirtualFile file : directory.getChildren()) {
             boolean matches = false;
             String path = Utils.getRelativePath(root, file);
+            if (path == null) {
+                continue;
+            }
 
-            if (path.equals("/.git")) {
+            if ("/.git".equals(path)) {
                 continue;
             }
 

@@ -20,14 +20,14 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
 
     /** The path to the sample .gitignore file */
     @NonNls
-    protected static final String SAMPLE_GITIGNORE_PATH = "/sample.gitignore";
+    private static final String SAMPLE_GITIGNORE_PATH = "/sample.gitignore";
 
     /**
      * The sample .gitignore document shown in the colors settings dialog
      *
      * @see #loadSampleGitignore()
      */
-    protected static final String SAMPLE_GITIGNORE = loadSampleGitignore();
+    private static final String SAMPLE_GITIGNORE = loadSampleGitignore();
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor(GitignoreBundle.message("highlighter.header"), GitignoreHighlighterColors.HEADER_ATTR_KEY),
@@ -88,7 +88,7 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
      * @see #SAMPLE_GITIGNORE_PATH
      * @see #SAMPLE_GITIGNORE
      */
-    protected static String loadSampleGitignore() {
+    private static String loadSampleGitignore() {
         return Resources.getResourceContent(SAMPLE_GITIGNORE_PATH);
     }
 }

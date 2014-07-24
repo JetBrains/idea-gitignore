@@ -14,7 +14,6 @@ import java.awt.event.*;
 
 public class IgnoredTreeDialog extends JDialog {
     private final PsiFile file;
-    private final String filePath;
 
     private JPanel contentPane;
     private JButton buttonOK;
@@ -23,7 +22,7 @@ public class IgnoredTreeDialog extends JDialog {
 
     public IgnoredTreeDialog(@NotNull final PsiFile file) {
         this.file = file;
-        this.filePath = Utils.getRelativePath(file.getProject().getBaseDir(), file.getVirtualFile());
+        String filePath = Utils.getRelativePath(file.getProject().getBaseDir(), file.getVirtualFile());
 
         setContentPane(contentPane);
         setModal(true);

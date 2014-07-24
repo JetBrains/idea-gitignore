@@ -19,12 +19,8 @@ public class ShowIgnoredAction extends DumbAwareAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        final VirtualFile virtualFile = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
-        final Project project = e.getProject();
-
-        if (virtualFile == null || project == null) {
-            return;
-        }
+        final VirtualFile virtualFile = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE);
+        final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
         PsiFile file = PsiManager.getInstance(project).findFile(virtualFile);
         if (file == null || !file.getLanguage().equals(GitignoreLanguage.INSTANCE)) {
@@ -36,8 +32,9 @@ public class ShowIgnoredAction extends DumbAwareAction {
 
     @Override
     public void update(AnActionEvent e) {
-        final VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
-        if (file == null || !file.getName().equals(GitignoreLanguage.FILENAME)) {
+        final Project project = e.getData(CommonDataKeys.PROJECT);
+        final VirtualFile file = e.getData(CommonDataKeys.VIRTUAL_FILE);
+        if (project == null || file == null || !file.getName().equals(GitignoreLanguage.FILENAME)) {
             e.getPresentation().setVisible(false);
         }
     }
