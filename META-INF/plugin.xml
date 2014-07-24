@@ -117,7 +117,7 @@
 
         <codeInsight.lineMarkerProvider
                 language="Gitignore"
-                implementationClass="mobi.hsz.idea.gitignore.daemon.GitignoreLineMarkerProvider"/>
+                implementationClass="mobi.hsz.idea.gitignore.daemon.GitignoreDirectoryMarkerProvider"/>
 
         <colorSettingsPage
                 implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage"/>
