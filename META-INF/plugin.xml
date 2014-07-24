@@ -114,6 +114,11 @@
                 file="colorSchemes/GitignoreDarcula.xml"
                 scheme="Darcula"/>
 
+
+        <codeInsight.lineMarkerProvider
+                language="Gitignore"
+                implementationClass="mobi.hsz.idea.gitignore.daemon.GitignoreLineMarkerProvider"/>
+
         <colorSettingsPage
                 implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage"/>
 
