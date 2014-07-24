@@ -63,11 +63,10 @@ FIRST_CHARACTER = [^!# ]
 VALUE           = ("\\\["|"\\\]"|"\\\/"|[^\[\]\r\n\/])+
 
 %state IN_ENTRY
-%state WAITING_VALUE
 
 %%
 <YYINITIAL> {
-    {WHITE_SPACE}+      { yybegin(YYINITIAL); return WHITE_SPACE; }
+    {WHITE_SPACE}+      { yybegin(YYINITIAL); return CRLF; }
 
     {HEADER}            { return HEADER; }
     {SECTION}           { return SECTION; }
@@ -80,16 +79,10 @@ VALUE           = ("\\\["|"\\\]"|"\\\/"|[^\[\]\r\n\/])+
 }
 
 <IN_ENTRY> {
-  {WHITE_SPACE}+        { yybegin(YYINITIAL); return WHITE_SPACE; }
+  {WHITE_SPACE}+        { yybegin(YYINITIAL); return CRLF; }
   {BRACKET_LEFT}        { yybegin(IN_ENTRY); return BRACKET_LEFT; }
   {BRACKET_RIGHT}       { yybegin(IN_ENTRY); return BRACKET_RIGHT; }
   {SLASH}               { yybegin(IN_ENTRY); return SLASH; }
 
   {VALUE}               { yybegin(IN_ENTRY); return VALUE; }
-//  .+                    { yybegin(IN_ENTRY); return obtainEntryType(yytext()); }
-}
-
-<WAITING_VALUE> {
-  {WHITE_SPACE}+        { yybegin(YYINITIAL); return WHITE_SPACE; }
-  [^]                   { return BAD_CHARACTER; }
 }
