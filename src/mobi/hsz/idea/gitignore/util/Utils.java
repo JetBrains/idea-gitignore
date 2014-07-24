@@ -2,6 +2,8 @@ package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
@@ -23,13 +25,10 @@ public class Utils {
         return Double.parseDouble(version.substring(0, pos - 1));
     }
 
+    
+    @Nullable
     public static String getRelativePath(@NotNull VirtualFile directory, @NotNull VirtualFile file) {
-        String filePath = file.getCanonicalPath();
-        String directoryPath = directory.getCanonicalPath();
-        if (filePath == null || directoryPath == null) {
-            return filePath;
-        }
-        return filePath.replace(directoryPath, "");
+        return VfsUtilCore.getRelativePath(directory, file, '/');
     }
 
     @Nullable
@@ -72,18 +71,18 @@ public class Utils {
         boolean limit = false;
 
         // Remove beginning and ending * globs because they're useless
-        if (glob.startsWith("/")) {
+        if (StringUtil.startsWithChar(glob, '/')) {
             sb.append("^");
             glob = glob.substring(1);
             strLen--;
         } else {
-            if (glob.startsWith("*")) {
+            if (StringUtil.startsWithChar(glob, '*')) {
                 glob = glob.substring(1);
                 strLen--;
             }
             sb.append(".*?");
         }
-        if (glob.endsWith("*")) {
+        if (StringUtil.endsWithChar(glob, '*')) {
             glob = glob.substring(0, strLen - 1);
         } else {
             limit = true;
@@ -163,7 +162,7 @@ public class Utils {
             sb.append("$");
         } else {
             sb.append(".");
-            sb.append(glob.endsWith("/") ? "+" : "*");
+            sb.append(StringUtil.endsWithChar(glob, '/') ? "+" : "*");
         }
 
         return sb.toString();

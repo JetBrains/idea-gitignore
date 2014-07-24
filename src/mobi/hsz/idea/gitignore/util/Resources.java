@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Resources {
 
@@ -28,7 +29,7 @@ public class Resources {
                 for (String line; (line = br.readLine()) != null; ) {
                     line = "/" + line;
                     File file = getResource(line);
-                    String content = Resources.getResourceContent(line);
+                    String content = getResourceContent(line);
                     templates.add(new Template(file, content));
                 }
             } catch (FileNotFoundException e) {
@@ -71,7 +72,7 @@ public class Resources {
      * @return Content
      */
     protected static String convertStreamToString(InputStream inputStream) {
-        java.util.Scanner s = new java.util.Scanner(inputStream).useDelimiter("\\A");
+        Scanner s = new Scanner(inputStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
 
