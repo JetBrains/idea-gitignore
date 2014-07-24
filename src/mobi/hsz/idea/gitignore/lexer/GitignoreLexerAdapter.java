@@ -11,6 +11,6 @@ public class GitignoreLexerAdapter extends FlexAdapter {
     }
 
     public GitignoreLexerAdapter(Project project, @Nullable VirtualFile virtualFile) {
-        super(new GitignoreLexer(project, virtualFile));
+        super(new GitignoreLexer());
     }
 }

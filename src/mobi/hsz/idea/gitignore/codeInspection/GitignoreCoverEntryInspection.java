@@ -5,6 +5,7 @@ import com.intellij.codeInspection.InspectionManager;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.Processor;
@@ -15,6 +16,7 @@ import mobi.hsz.idea.gitignore.util.Glob;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
         ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
-        final Map<GitignoreEntry, GitignoreEntry> entries = new HashMap<GitignoreEntry, GitignoreEntry>();
+        final List<Pair<GitignoreEntry, GitignoreEntry>> entries = new ArrayList<Pair<GitignoreEntry, GitignoreEntry>>();
 
         if (file instanceof GitignoreFile) {
             new Processor<PsiFile>() {
@@ -53,9 +55,9 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
                                 continue;
                             }
                             if (recentValues.containsAll(matched)) {
-                                entries.put(recent, entry);
+                                entries.add(Pair.create(recent, entry));
                             } else if (matched.containsAll(recentValues)) {
-                                entries.put(entry, recent);
+                                entries.add(Pair.create(entry, recent));
                             }
                         }
 
@@ -66,9 +68,9 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
             }.process(file);
         }
 
-        for (Map.Entry set: entries.entrySet()) {
-            GitignoreEntry key = (GitignoreEntry) set.getKey();
-            GitignoreEntry value = (GitignoreEntry) set.getValue();
+        for (Pair<GitignoreEntry, GitignoreEntry> pair: entries) {
+            GitignoreEntry key = pair.getFirst();
+            GitignoreEntry value = pair.getSecond();
             problemsHolder.registerProblem(value, GitignoreBundle.message("codeInspection.coverEntry.message", value.getText(), key.getText()));
         }
 

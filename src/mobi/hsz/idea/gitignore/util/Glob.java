@@ -56,10 +56,7 @@ public class Glob {
             }
 
             if (file.isDirectory()) {
-                if (includeNested && matches) {
-                    pattern = null;
-                }
-                files.addAll(walk(root, file, pattern, includeNested));
+                files.addAll(walk(root, file, includeNested && matches ? null : pattern, includeNested));
             }
         }
 
