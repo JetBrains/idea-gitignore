@@ -1,10 +1,10 @@
 <idea-plugin version="2">
-  <id>mobi.hsz.idea.gitignore</id>
-  <name>.gitignore support</name>
-  <version>0.4</version>
-  <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
+    <id>mobi.hsz.idea.gitignore</id>
+    <name>.gitignore support</name>
+    <version>0.4</version>
+    <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
-  <description><![CDATA[
+    <description><![CDATA[
       <h1>.gitignore support plugin</h1>
       <br/>
 
@@ -40,7 +40,7 @@
 
     ]]></description>
 
-  <change-notes><![CDATA[
+    <change-notes><![CDATA[
       Version 0.4
       <ul>
         <li>Show ignored files by specified Gitignore file (right click on <i>.gitignore</i> file)</li>
@@ -100,84 +100,85 @@
         <li>Basic syntax highlighting</li>
       </ul>
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <idea-version since-build="131"/>
-  <depends>com.intellij.modules.lang</depends>
+    <idea-version since-build="131"/>
+    <depends>com.intellij.modules.lang</depends>
 
-  <extensions defaultExtensionNs="com.intellij">
+    <extensions defaultExtensionNs="com.intellij">
 
-    <additionalTextAttributes
-      file="colorSchemes/GitignoreDefault.xml"
-      scheme="Default" />
-    <additionalTextAttributes
-      file="colorSchemes/GitignoreDarcula.xml"
-      scheme="Darcula" />
+        <additionalTextAttributes
+                file="colorSchemes/GitignoreDefault.xml"
+                scheme="Default"/>
+        <additionalTextAttributes
+                file="colorSchemes/GitignoreDarcula.xml"
+                scheme="Darcula"/>
 
-    <colorSettingsPage
-      implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage" />
+        <colorSettingsPage
+                implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage"/>
 
-    <editorNotificationProvider
-      implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider" />
+        <editorNotificationProvider
+                implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider"/>
 
-    <fileTypeFactory
-      implementation="mobi.hsz.idea.gitignore.file.GitignoreFileTypeFactory" />
+        <fileTypeFactory
+                implementation="mobi.hsz.idea.gitignore.file.GitignoreFileTypeFactory"/>
 
-    <lang.braceMatcher
-       implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreBraceMatcher"
-       language="Gitignore" />
-    <lang.commenter
-      implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreCommenter"
-      language="Gitignore" />
-    <lang.elementManipulator
-      forClass="mobi.hsz.idea.gitignore.psi.GitignoreEntry"
-      implementationClass="mobi.hsz.idea.gitignore.psi.GitignoreEntryManipulator" />
-    <lang.parserDefinition
-      implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreParserDefinition"
-      language="Gitignore" />
-    <lang.syntaxHighlighterFactory
-      implementationClass="mobi.hsz.idea.gitignore.highlighter.GitignoreHighlighterFactory"
-      key="Gitignore" />
+        <lang.braceMatcher
+                implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreBraceMatcher"
+                language="Gitignore"/>
+        <lang.commenter
+                implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreCommenter"
+                language="Gitignore"/>
+        <lang.elementManipulator
+                forClass="mobi.hsz.idea.gitignore.psi.GitignoreEntry"
+                implementationClass="mobi.hsz.idea.gitignore.psi.GitignoreEntryManipulator"/>
+        <lang.parserDefinition
+                implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreParserDefinition"
+                language="Gitignore"/>
+        <lang.syntaxHighlighterFactory
+                implementationClass="mobi.hsz.idea.gitignore.highlighter.GitignoreHighlighterFactory"
+                key="Gitignore"/>
 
-    <localInspection
-      bundle="messages.GitignoreBundle"
-      enabledByDefault="true"
-      groupKey="codeInspection.group"
-      implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreDuplicateEntryInspection"
-      key="codeInspection.duplicateEntry"
-      language="Gitignore" />
-    <localInspection
-      bundle="messages.GitignoreBundle"
-      enabledByDefault="true"
-      groupKey="codeInspection.group"
-      implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreCoverEntryInspection"
-      key="codeInspection.coverEntry"
-      language="Gitignore" />
+        <localInspection
+                bundle="messages.GitignoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreDuplicateEntryInspection"
+                key="codeInspection.duplicateEntry"
+                language="Gitignore"/>
+        <localInspection
+                bundle="messages.GitignoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreCoverEntryInspection"
+                key="codeInspection.coverEntry"
+                language="Gitignore"/>
 
-    <psi.referenceContributor
-      implementation="mobi.hsz.idea.gitignore.reference.GitignoreReferenceContributor" />
+        <psi.referenceContributor
+                language="Gitignore"
+                implementation="mobi.hsz.idea.gitignore.reference.GitignoreReferenceContributor"/>
 
-  </extensions>
+    </extensions>
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
 
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
 
-  <actions>
-    <action id="Gitignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileAction">
-      <add-to-group group-id="NewGroup" anchor="last"/>
-    </action>
-    <group>
-      <action id="Gitignore.Ignore" class="mobi.hsz.idea.gitignore.actions.IgnoreFileAction"/>
-      <action id="Gitignore.ShowIgnored" class="mobi.hsz.idea.gitignore.actions.ShowIgnoredAction"/>
-      <add-to-group group-id="EditorPopupMenu"/>
-      <add-to-group group-id="ProjectViewPopupMenu"/>
-      <add-to-group group-id="EditorTabPopupMenu"/>
-      <add-to-group group-id="ConsoleEditorPopupMenu"/>
-    </group>
-  </actions>
+    <actions>
+        <action id="Gitignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileAction">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
+        <group>
+            <action id="Gitignore.Ignore" class="mobi.hsz.idea.gitignore.actions.IgnoreFileAction"/>
+            <action id="Gitignore.ShowIgnored" class="mobi.hsz.idea.gitignore.actions.ShowIgnoredAction"/>
+            <add-to-group group-id="EditorPopupMenu"/>
+            <add-to-group group-id="ProjectViewPopupMenu"/>
+            <add-to-group group-id="EditorTabPopupMenu"/>
+            <add-to-group group-id="ConsoleEditorPopupMenu"/>
+        </group>
+    </actions>
 </idea-plugin>
