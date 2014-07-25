@@ -180,11 +180,13 @@ public class Utils {
 
     public static List<VirtualFile> getSuitableGitignoreFiles(@NotNull Project project, @NotNull VirtualFile file) {
         List<VirtualFile> files = new ArrayList<VirtualFile>();
-        do {
-            file = file.getParent();
-            VirtualFile gitignore = file.findChild(GitignoreLanguage.FILENAME);
-            ContainerUtil.addIfNotNull(gitignore, files);
-        } while (!file.equals(project.getBaseDir()));
+        if (!project.getBaseDir().equals(file)) {
+            do {
+                file = file.getParent();
+                VirtualFile gitignore = file.findChild(GitignoreLanguage.FILENAME);
+                ContainerUtil.addIfNotNull(gitignore, files);
+            } while (!file.equals(project.getBaseDir()));
+        }
         return files;
     }
 }
