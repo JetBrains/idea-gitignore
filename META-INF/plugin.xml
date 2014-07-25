@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.gitignore support</name>
-    <version>0.4</version>
+    <version>0.5</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -23,6 +23,10 @@
         <li>Generate Gitignore rules basing on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
         <li>Add selected file/directory to Gitignore rules from popup menu</li>
         <li>Suggesting .gitignore file creation for new project</li>
+        <li>Entries inspection (duplicated, covered, unused)</li>
+        <li>Comments and brackets support</li>
+        <li>Navigation to entries in Project view</li>
+        <li>Renaming entries from Gitignore file</li>
       </ul>
 
       <b><i>Feature requests:</i></b>
@@ -41,6 +45,26 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      Version 0.5
+      <br/>
+      <i>Many thanks to [@zolotov](https://github.com/zolotov) for his great support.</i>
+
+      <ul>
+        <li>Comments support with <kbd>Ctrl</kbd> + <kbd>/</kbd> shortcut</li>
+        <li>Brackets support</li>
+        <li>Generator dialog enhancement (<a href="https://github.com/zolotov">@zolotov</a>)</li>
+        <li>Duplicate entry inspection</li>
+        <li>Cover entry inspection (checks if entry includes another one)</li>
+        <li>Unused entry inspection</li>
+        <li>Entry reference navigation with <kbd>Ctrl</kbd> + <kbd>click</kbd> (<a href="https://github.com/zolotov">@zolotov</a>)</li>
+        <li>Rename entry refactoring (<a href="https://github.com/zolotov">@zolotov</a>)</li>
+        <li>Color schemes update (introduced bracket, value, slash; removed file, directory)</li>
+        <li>Directory line marker</li>
+        <li>Multi-gitignore files support for adding from context menu</li>
+        <li>Prevent adding duplicate entries (<a href="https://github.com/hsz/idea-gitignore/issues/17">#17</a>)</li>
+        <li><i>and many more...</i></li>
+      </ul>
+
       Version 0.4
       <ul>
         <li>Show ignored files by specified Gitignore file (right click on <i>.gitignore</i> file)</li>
