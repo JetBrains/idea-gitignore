@@ -58,6 +58,24 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.5
+
+*Many thanks to [@zolotov](https://github.com/zolotov) for his great support.*
+
+- Comments support with <kbd>Ctrl</kbd> + <kbd>/</kbd> shortcut
+- Brackets support
+- Generator dialog enhancement ([@zolotov](https://github.com/zolotov))
+- Duplicate entry inspection
+- Cover entry inspection (checks if entry includes another one)
+- Unused entry inspection
+- Entry reference navigation with <kbd>Ctrl</kbd> + <kbd>click</kbd> ([@zolotov](https://github.com/zolotov))
+- Rename entry refactoring ([@zolotov](https://github.com/zolotov))
+- Color schemes update (introduced bracket, value, slash; removed file, directory)
+- Directory line marker
+- Multi-gitignore files support for adding from context menu
+- Prevent adding duplicate entries ([#17](https://github.com/hsz/idea-gitignore/issues/17))
+- *and many more...*
+
 Version 0.4
 - Show ignored files by specified Gitignore file (right click on `.gitignore` file)
 - Add selected file/directory to Gitignore rules from popup menu
@@ -138,7 +156,14 @@ Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
 Developed By
 ------------
 
-[**hsz** Jakub Chrzanowski][hsz]
+[**@hsz** Jakub Chrzanowski][hsz]
+
+
+**Contributors**
+
+[**@zolotov** Alexander Zolotov](https://github.com/zolotov)
+
+
 
 
 License
