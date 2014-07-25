@@ -18,6 +18,10 @@ import org.jetbrains.annotations.Nullable;
 public class IgnoreFileAction extends DumbAwareAction {
     VirtualFile gitignoreFile;
 
+    public IgnoreFileAction() {
+        this(null);
+    }
+
     public IgnoreFileAction(@Nullable VirtualFile virtualFile) {
         super(GitignoreBundle.message("action.addToGitignore"), GitignoreBundle.message("action.addToGitignore.description"), Icons.FILE);
         gitignoreFile = virtualFile;

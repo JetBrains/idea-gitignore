@@ -20,7 +20,6 @@ public class IgnoreFileGroupAction extends ComputableActionGroup {
     private VirtualFile baseDir;
 
     public IgnoreFileGroupAction() {
-        super(true);
         Presentation p = getTemplatePresentation();
         p.setText(GitignoreBundle.message("action.addToGitignore"));
         p.setDescription(GitignoreBundle.message("action.addToGitignore.description"));
@@ -32,7 +31,7 @@ public class IgnoreFileGroupAction extends ComputableActionGroup {
         final VirtualFile file = e.getData(CommonDataKeys.VIRTUAL_FILE);
         final Project project = e.getData(CommonDataKeys.PROJECT);
         files.clear();
-        if (project != null && baseDir != null) {
+        if (project != null && file != null) {
             files.addAll(Utils.getSuitableGitignoreFiles(project, file));
             Collections.reverse(files);
             baseDir = project.getBaseDir();
@@ -42,30 +41,35 @@ public class IgnoreFileGroupAction extends ComputableActionGroup {
 
     @NotNull
     @Override
-    protected CachedValueProvider<AnAction[]> createChildrenProvider(@NotNull final ActionManager actionManager) {
+    protected final CachedValueProvider<AnAction[]> createChildrenProvider(@NotNull final ActionManager actionManager) {
         return new CachedValueProvider<AnAction[]>() {
             @Nullable
             @Override
             public Result<AnAction[]> compute() {
-                AnAction[] actions;
-                int size = files.size();
-                if (size == 0) {
-                    actions = new AnAction[]{ new IgnoreFileAction(null) };
-                } else {
-                    actions = new AnAction[size];
-                    for (int i = 0; i < files.size(); i++) {
-                        VirtualFile file = files.get(i);
-                        IgnoreFileAction action = new IgnoreFileAction(file);
-                        actions[i] = action;
-
-                        if (size > 1) {
-                            String name = Utils.getRelativePath(baseDir, file);
-                            action.getTemplatePresentation().setText(name);
-                        }
-                    }
-                }
-                return Result.create(actions, ModificationTracker.EVER_CHANGED);
+                return Result.create(computeChildren(actionManager), ModificationTracker.EVER_CHANGED);
             }
         };
+    }
+
+    @NotNull
+    protected AnAction[] computeChildren(@NotNull ActionManager manager) {
+        AnAction[] actions;
+        int size = files.size();
+        if (size == 0) {
+            actions = new AnAction[]{ new IgnoreFileAction() };
+        } else {
+            actions = new AnAction[size];
+            for (int i = 0; i < files.size(); i++) {
+                VirtualFile file = files.get(i);
+                IgnoreFileAction action = new IgnoreFileAction(file);
+                actions[i] = action;
+
+                if (size > 1) {
+                    String name = Utils.getRelativePath(baseDir, file);
+                    action.getTemplatePresentation().setText(name);
+                }
+            }
+        }
+        return actions;
     }
 }
