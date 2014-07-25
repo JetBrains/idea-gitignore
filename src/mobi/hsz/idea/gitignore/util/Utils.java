@@ -8,13 +8,16 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.util.CommonProcessors;
+import com.intellij.psi.search.FilenameIndex;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Utils {
@@ -171,28 +174,16 @@ public class Utils {
         return sb.toString();
     }
 
-    public static List<VirtualFile> getGitignoreFiles(Project project) {
-        final List<VirtualFile> files = new ArrayList<VirtualFile>();
-        VfsUtilCore.processFilesRecursively(project.getBaseDir(), new CommonProcessors.FindProcessor<VirtualFile>() {
-            @Override
-            protected boolean accept(VirtualFile virtualFile) {
-                if (GitignoreLanguage.FILENAME.equals(virtualFile.getName())) {
-                    files.add(virtualFile);
-                }
-                return false;
-            }
-        });
-        return files;
+    public static Collection<VirtualFile> getGitignoreFiles(@NotNull Project project) {
+        return FilenameIndex.getVirtualFilesByName(project, GitignoreLanguage.FILENAME, GlobalSearchScope.projectScope(project));
     }
 
-    public static List<VirtualFile> getSuitableGitignoreFiles(Project project, VirtualFile file) {
+    public static List<VirtualFile> getSuitableGitignoreFiles(@NotNull Project project, @NotNull VirtualFile file) {
         List<VirtualFile> files = new ArrayList<VirtualFile>();
         do {
             file = file.getParent();
             VirtualFile gitignore = file.findChild(GitignoreLanguage.FILENAME);
-            if (gitignore != null) {
-                files.add(gitignore);
-            }
+            ContainerUtil.addIfNotNull(gitignore, files);
         } while (!file.equals(project.getBaseDir()));
         return files;
     }
