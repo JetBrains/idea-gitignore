@@ -29,9 +29,9 @@
 gitignoreFile           ::= item_ *
 private item_           ::= HEADER | SECTION | COMMENT | ENTRY_DIRECTORY | ENTRY_FILE | CRLF
 NEGATION                ::= "!"
-ENTRY_FILE              ::= NEGATION ? <<list_macro value_>> { extends="ENTRY" }
-ENTRY_DIRECTORY         ::= NEGATION ? <<list_macro value_>> SLASH { extends="ENTRY_FILE" }
-ENTRY                   ::= NEGATION ? <<list_macro value_>>
+ENTRY_FILE              ::= NEGATION ? SLASH ? <<list_macro value_>> { extends="ENTRY" }
+ENTRY_DIRECTORY         ::= NEGATION ? SLASH ? <<list_macro value_>> SLASH { extends="ENTRY_FILE" }
+ENTRY                   ::= NEGATION ? SLASH ? <<list_macro value_>>
 
 private meta bvalue_    ::= BRACKET_LEFT VALUE BRACKET_RIGHT { pin="BRACKET_LEFT" }
 private meta value_     ::= bvalue_ | VALUE
