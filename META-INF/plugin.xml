@@ -46,9 +46,9 @@
 
     <change-notes><![CDATA[
       Version 0.5
-      <br/>
-      <i>Many thanks to [@zolotov](https://github.com/zolotov) for his great support.</i>
-
+      <br/><br/>
+      <i>Many thanks to <a href="https://github.com/zolotov">@zolotov</a> for his great support.</i>
+      <br/><br/>
       <ul>
         <li>Comments support with <kbd>Ctrl</kbd> + <kbd>/</kbd> shortcut</li>
         <li>Brackets support</li>
