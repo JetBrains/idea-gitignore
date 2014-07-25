@@ -56,6 +56,7 @@
         <li>Duplicate entry inspection</li>
         <li>Cover entry inspection (checks if entry includes another one)</li>
         <li>Unused entry inspection</li>
+        <li>Remove entry quick fix (<a href="https://github.com/zolotov">@zolotov</a>)</li>
         <li>Entry reference navigation with <kbd>Ctrl</kbd> + <kbd>click</kbd> (<a href="https://github.com/zolotov">@zolotov</a>)</li>
         <li>Rename entry refactoring (<a href="https://github.com/zolotov">@zolotov</a>)</li>
         <li>Color schemes update (introduced bracket, value, slash; removed file, directory)</li>

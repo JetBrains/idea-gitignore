@@ -68,6 +68,7 @@ Version 0.5
 - Duplicate entry inspection
 - Cover entry inspection (checks if entry includes another one)
 - Unused entry inspection
+- Remove entry quick fix ([@zolotov](https://github.com/zolotov))
 - Entry reference navigation with <kbd>Ctrl</kbd> + <kbd>click</kbd> ([@zolotov](https://github.com/zolotov))
 - Rename entry refactoring ([@zolotov](https://github.com/zolotov))
 - Color schemes update (introduced bracket, value, slash; removed file, directory)
