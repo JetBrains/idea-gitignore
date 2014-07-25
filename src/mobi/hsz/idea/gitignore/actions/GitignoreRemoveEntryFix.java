@@ -24,9 +24,12 @@ public class GitignoreRemoveEntryFix extends LocalQuickFixOnPsiElement {
     @Override
     public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         if (startElement instanceof GitignoreEntry) {
-            LeafPsiElement next = (LeafPsiElement) startElement.getNextSibling();
-            if (next.getElementType().equals(GitignoreTypes.CRLF)) {
-                next.delete();
+            LeafPsiElement crlf = (LeafPsiElement) startElement.getNextSibling();
+            if (crlf == null || !crlf.getElementType().equals(GitignoreTypes.CRLF)) {
+                crlf = (LeafPsiElement) startElement.getPrevSibling();
+            }
+            if (crlf != null && crlf.getElementType().equals(GitignoreTypes.CRLF)) {
+                crlf.delete();
             }
             startElement.delete();
         }
