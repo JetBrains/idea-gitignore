@@ -15,35 +15,50 @@ import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
     private final Project project;
     private final PsiFile file;
-    private final String content;
+    private final List<String> content;
 
-    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull String content) {
+    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull List<String> content) {
         super(project, file);
         this.project = project;
         this.file = file;
         this.content = content;
     }
 
+    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull final String content) {
+        super(project, file);
+        this.project = project;
+        this.file = file;
+        this.content = new ArrayList<String>();
+        if (!content.isEmpty()) {
+            this.content.add(content);
+        }
+    }
+
     @Override
     protected void run(@NotNull Result<PsiFile> result) throws Throwable {
-        if (content.isEmpty() || content.equals("\n")) {
+        if (content.isEmpty()) {
             return;
         }
         Document document = PsiDocumentManager.getInstance(project).getDocument(file);
         if (document != null) {
             for (PsiElement element : file.getChildren()) {
-                if (content.equals(element.getText())) {
+                if (content.contains(element.getText())) {
                     Notifications.Bus.notify(new Notification(GitignoreLanguage.NAME,
-                            GitignoreBundle.message("action.appendFile.entryExists", content),
+                            GitignoreBundle.message("action.appendFile.entryExists", element.getText()),
                             "in " + Utils.getRelativePath(project.getBaseDir(), file.getVirtualFile()),
                             NotificationType.WARNING), project);
-                    return;
+                    content.remove(element.getText());
                 }
             }
-            document.insertString(document.getTextLength(), "\n" + content.replace("\r", ""));
+            for (String entry : content) {
+                document.insertString(document.getTextLength(), "\n" + entry.replace("\r", ""));
+            }
             PsiDocumentManager.getInstance(project).commitDocument(document);
         }
     }
