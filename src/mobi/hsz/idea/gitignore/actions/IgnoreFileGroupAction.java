@@ -29,12 +29,14 @@ public class IgnoreFileGroupAction extends ComputableActionGroup {
 
     @Override
     public void update(AnActionEvent e) {
-        final VirtualFile file = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE);
-        final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
+        final VirtualFile file = e.getData(CommonDataKeys.VIRTUAL_FILE);
+        final Project project = e.getData(CommonDataKeys.PROJECT);
         files.clear();
-        files.addAll(Utils.getSuitableGitignoreFiles(project, file));
-        Collections.reverse(files);
-        baseDir = project.getBaseDir();
+        if (project != null && baseDir != null) {
+            files.addAll(Utils.getSuitableGitignoreFiles(project, file));
+            Collections.reverse(files);
+            baseDir = project.getBaseDir();
+        }
         setPopup(files.size() > 1);
     }
 
