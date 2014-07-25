@@ -1,0 +1,5 @@
+subdir/
+subdir
+<weak_warning descr="'foo' entry is never used">foo</weak_warning>
+<weak_warning descr="'foo/' entry is never used">foo/</weak_warning>
+<weak_warning descr="'foo/*' entry is never used">foo/*</weak_warning>

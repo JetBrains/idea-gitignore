@@ -4,55 +4,49 @@ import com.intellij.codeInspection.InspectionManager;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.util.Processor;
+import com.intellij.util.containers.MultiMap;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.actions.GitignoreRemoveEntryFix;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
-import mobi.hsz.idea.gitignore.psi.GitignoreFile;
+import mobi.hsz.idea.gitignore.psi.GitignoreVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 public class GitignoreDuplicateEntryInspection extends LocalInspectionTool {
     @Nullable
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
-        final List<GitignoreEntry> entries = new ArrayList<GitignoreEntry>();
+        final ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
+        final MultiMap<String, GitignoreEntry> entries = MultiMap.create();
 
-        if (file instanceof GitignoreFile) {
-            new Processor<PsiFile>() {
-                @Override
-                public boolean process(PsiFile file) {
-                    Map<String, GitignoreEntry> map = new HashMap<String, GitignoreEntry>();
-                    for (PsiElement child = file.getFirstChild(); child != null; child = child.getNextSibling()) {
-                        if (!(child instanceof GitignoreEntry)) {
-                            continue;
-                        }
-                        GitignoreEntry entry = (GitignoreEntry) child;
-                        String value = entry.getText();
+        file.acceptChildren(new GitignoreVisitor() {
+            @Override
+            public void visitEntry(@NotNull GitignoreEntry entry) {
+                entries.putValue(entry.getText(), entry);
+                super.visitEntry(entry);
+            }
+        });
 
-                        if (map.containsKey(value)) {
-                            entries.add(entry);
-                        } else {
-                            map.put(value, entry);
-                        }
-                    }
-
-                    return true;
-                }
-            }.process(file);
-        }
-
-        for (GitignoreEntry entry : entries) {
-            problemsHolder.registerProblem(entry, GitignoreBundle.message("codeInspection.duplicateEntry.message", entry.getText()));
+        for (Map.Entry<String, Collection<GitignoreEntry>> stringCollectionEntry : entries.entrySet()) {
+            Iterator<GitignoreEntry> iterator = stringCollectionEntry.getValue().iterator();
+            iterator.next();
+            while (iterator.hasNext()) {
+                GitignoreEntry entry = iterator.next();
+                problemsHolder.registerProblem(entry, GitignoreBundle.message("codeInspection.duplicateEntry.message"), new GitignoreRemoveEntryFix(entry));
+            }
         }
 
         return problemsHolder.getResultsArray();
     }
+
+    @Override
+    public boolean runForWholeFile() {
+        return true;
+    }
+
 }

@@ -9,6 +9,7 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import mobi.hsz.idea.gitignore.util.Glob;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -35,6 +36,20 @@ public class GitReferenceSet extends FileReferenceSet {
         PsiFile containingFile = getElement().getContainingFile();
         PsiDirectory containingDirectory = containingFile.getParent();
         return containingDirectory != null ? Collections.<PsiFileSystemItem>singletonList(containingDirectory) : super.computeDefaultContexts();
+    }
+
+    @Nullable
+    public FileReference getLastReference() {
+        FileReference lastReference = super.getLastReference();
+        if (lastReference != null && lastReference.getCanonicalText().isEmpty()) {
+            return this.myReferences != null && this.myReferences.length > 1 ? this.myReferences[this.myReferences.length - 2] : null;
+        }
+        return lastReference;
+    }
+
+    @Override
+    public boolean couldBeConvertedTo(boolean relative) {
+        return false;
     }
 
     private class GitReference extends FileReference {
