@@ -19,8 +19,8 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class IgnoreFileAction extends DumbAwareAction {
     VirtualFile gitignoreFile;
@@ -48,7 +48,7 @@ public class IgnoreFileAction extends DumbAwareAction {
         }
 
         if (gitignore != null) {
-            List<String> paths = new ArrayList<String>();
+            Set<String> paths = new HashSet<String>();
             for (VirtualFile file : files) {
                 String path = getPath(gitignore.getVirtualFile().getParent(), file);
                 if (path.isEmpty()) {
@@ -67,17 +67,18 @@ public class IgnoreFileAction extends DumbAwareAction {
 
     @Override
     public void update(AnActionEvent e) {
-        final VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
+        final VirtualFile[] files = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
         final Project project = e.getProject();
 
-        if (file == null || project == null || file.equals(project.getBaseDir())) {
+        if (project == null || (files.length == 1 && files[0].equals(project.getBaseDir()))) {
             e.getPresentation().setVisible(false);
         }
     }
 
     private static String getPath(@NotNull VirtualFile root, @NotNull VirtualFile file) {
         String path = StringUtil.notNullize(Utils.getRelativePath(root, file));
-        path = path.replaceAll("\\[", "\\\\[").replaceAll("\\]", "\\\\]");
+        path = StringUtil.escapeChar(path, '[');
+        path = StringUtil.escapeChar(path, ']');
         return StringUtil.trimStart(path, "/");
     }
 }

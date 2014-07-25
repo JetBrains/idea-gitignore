@@ -15,15 +15,15 @@ import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
     private final Project project;
     private final PsiFile file;
-    private final List<String> content;
+    private final Set<String> content;
 
-    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull List<String> content) {
+    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull Set<String> content) {
         super(project, file);
         this.project = project;
         this.file = file;
@@ -34,7 +34,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         super(project, file);
         this.project = project;
         this.file = file;
-        this.content = new ArrayList<String>();
+        this.content = new HashSet<String>();
         if (!content.isEmpty()) {
             this.content.add(content);
         }
