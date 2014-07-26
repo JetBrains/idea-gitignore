@@ -14,6 +14,7 @@
       <redirector output="resources/templates.list" error="NUL" />
     </exec>
     <replace file="resources/templates.list" token="${basedir}\resources\" value="" />
+    <replace file="resources/templates.list" token="\" value="/" />
   </target>
 
 </project>
