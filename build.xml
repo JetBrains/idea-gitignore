@@ -2,12 +2,18 @@
 <project name="idea-gitignore">
 
   <target name="prepare">
-    <exec dir="./resources/" executable="find">
+    <exec dir="./resources/" executable="find" osfamily="unix">
       <arg line="gitignore/" />
       <arg line="-type f" />
       <arg line="-name '*.gitignore'" />
       <redirector output="resources/templates.list" />
     </exec>
+    <exec dir="resources" executable="cmd.exe" osfamily="windows">
+      <arg line="/c" />
+      <arg line="'dir /S /B gitignore\\*.gitignore' &amp; exit 0" />
+      <redirector output="resources/templates.list" error="NUL" />
+    </exec>
+    <replace file="resources/templates.list" token="${basedir}\resources\" value="" />
   </target>
 
 </project>
