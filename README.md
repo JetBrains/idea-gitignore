@@ -58,6 +58,12 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.5.1
+
+- Reference resolving fixes (me and [@zolotov](https://github.com/zolotov)) ([#26](https://github.com/hsz/idea-gitignore/issues/26), [#33](https://github.com/hsz/idea-gitignore/issues/33))
+- Build script for Windows ([@bedla](https://github.com/bedla))
+- NPE in Utils ([#30](https://github.com/hsz/idea-gitignore/issues/30), [#32](https://github.com/hsz/idea-gitignore/issues/32), [#34](https://github.com/hsz/idea-gitignore/issues/34))
+
 Version 0.5
 
 *Many thanks to [@zolotov](https://github.com/zolotov) for his great support.*
@@ -163,8 +169,7 @@ Developed By
 **Contributors**
 
 [**@zolotov** Alexander Zolotov](https://github.com/zolotov)
-
-
+[**@bedla** Ivo Šmíd](https://github.com/bedla)
 
 
 License

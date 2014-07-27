@@ -17,6 +17,11 @@ Author
 - GitHub: [@hsz](http://github.com/hsz)
 - e-mail: jakub *at* hsz *dot* mobi
 
+**Contributors**
+
+[**@zolotov** Alexander Zolotov](https://github.com/zolotov)
+[**@bedla** Ivo Šmíd](https://github.com/bedla)
+
 License
 -------
 

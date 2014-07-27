@@ -45,6 +45,13 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      Version 0.5.1
+      <ul>
+        <li>Reference resolving fixes (me and <a href="https://github.com/zolotov">@zolotov</a>) (<a href="https://github.com/hsz/idea-gitignore/issues/26">#26</a>, <a href="https://github.com/hsz/idea-gitignore/issues/33">#33</a>)</li>
+        <li>Build script for Windows (<a href="https://github.com/bedla">@bedla</a>)</li>
+        <li>NPE in Utils (<a href="https://github.com/hsz/idea-gitignore/issues/30">#30</a>, <a href="https://github.com/hsz/idea-gitignore/issues/32">#32</a>, <a href="https://github.com/hsz/idea-gitignore/issues/34">#34</a>)</li>
+      </ul>
+
       Version 0.5
       <br/><br/>
       <i>Many thanks to <a href="https://github.com/zolotov">@zolotov</a> for his great support.</i>
