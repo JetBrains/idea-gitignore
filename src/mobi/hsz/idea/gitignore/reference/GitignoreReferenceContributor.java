@@ -20,7 +20,7 @@ public class GitignoreReferenceContributor extends PsiReferenceContributor {
         @Override
         public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {
             if (psiElement instanceof GitignoreEntry) {
-                return new GitReferenceSet((GitignoreEntry) psiElement).getAllReferences();
+                return new GitignoreReferenceSet((GitignoreEntry) psiElement).getAllReferences();
             }
             return PsiReference.EMPTY_ARRAY;
         }

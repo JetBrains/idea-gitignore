@@ -1,6 +1,7 @@
 package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VFileProperty;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
@@ -15,8 +16,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
-public class GitReferenceSet extends FileReferenceSet {
-    public GitReferenceSet(@NotNull GitignoreEntry element) {
+public class GitignoreReferenceSet extends FileReferenceSet {
+    public GitignoreReferenceSet(@NotNull GitignoreEntry element) {
         super(element);
     }
 
@@ -60,19 +61,27 @@ public class GitReferenceSet extends FileReferenceSet {
         @Override
         protected void innerResolveInContext(@NotNull String text, @NotNull PsiFileSystemItem context, Collection<ResolveResult> result, boolean caseSensitive) {
             super.innerResolveInContext(text, context, result, caseSensitive);
-            PsiManager psiManager = getElement().getManager();
             VirtualFile contextVirtualFile = context.getVirtualFile();
             if (contextVirtualFile != null) {
                 Pattern pattern = Glob.createPattern(getCanonicalText());
                 if (pattern != null) {
-                    for (VirtualFile file : contextVirtualFile.getChildren()) {
-                        if (pattern.matcher(file.getName()).matches()) {
-                            PsiFileSystemItem psiFileSystemItem = FileReferenceHelper.getPsiFileSystemItem(psiManager, file);
-                            if (psiFileSystemItem != null) {
-                                result.add(new PsiElementResolveResult(psiFileSystemItem));
-                            }
-                        }
+                    walk(result, pattern, contextVirtualFile);
+                }
+            }
+        }
+
+        private void walk(Collection<ResolveResult> result, Pattern pattern, VirtualFile directory) {
+            PsiManager psiManager = getElement().getManager();
+            for (VirtualFile file : directory.getChildren()) {
+                if (pattern.matcher(file.getName()).matches()) {
+                    PsiFileSystemItem psiFileSystemItem = FileReferenceHelper.getPsiFileSystemItem(psiManager, file);
+                    if (psiFileSystemItem != null) {
+                        result.add(new PsiElementResolveResult(psiFileSystemItem));
                     }
+                }
+
+                if (file.isDirectory() && !file.is(VFileProperty.SYMLINK)) {
+                    walk(result, pattern, file);
                 }
             }
         }

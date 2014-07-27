@@ -53,6 +53,12 @@ public class ResolvingTest extends LightPlatformCodeInsightFixtureTestCase {
         myFixture.getTempDirFixture().createFile("fileName.txt");
         doTest("!fileNa<caret>me.txt", "fileName.txt");
     }
+
+    public void testNested() throws IOException {
+        myFixture.getTempDirFixture().findOrCreateDir("dir1").createChildData(this, "fileName.txt");
+        myFixture.getTempDirFixture().findOrCreateDir("dir2").createChildData(this, "fileName.txt");
+        doTest("file<caret>Name.txt", "dir1/fileName.txt", "dir2/fileName.txt");
+    }
     
     private void doTest(@NotNull String beforeText, String... expectedResolve) {
         myFixture.configureByText(GitignoreFileType.INSTANCE, beforeText);
