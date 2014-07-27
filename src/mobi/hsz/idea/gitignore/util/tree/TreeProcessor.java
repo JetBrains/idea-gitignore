@@ -7,11 +7,12 @@ import com.intellij.psi.PsiFileSystemItem;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntryDirectory;
 import mobi.hsz.idea.gitignore.ui.tree.GitignoreTreeObject;
-import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.Glob;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class TreeProcessor {
     private final PsiFile file;
@@ -63,13 +64,13 @@ public class TreeProcessor {
         private final boolean negated;
         private final boolean directory;
         private final String value;
-        private final String regex;
+        private final Pattern pattern;
 
         public Rule(GitignoreEntry entry) {
             negated = entry.getNegation() != null;
             directory = entry instanceof GitignoreEntryDirectory;
             value = entry.getText();
-            regex = Utils.createRegexFromGlob(value);
+            pattern = Glob.createPattern(value);
         }
 
         public boolean isNegated() {
@@ -84,12 +85,12 @@ public class TreeProcessor {
             return value;
         }
 
-        public String getRegex() {
-            return regex;
+        public Pattern getPattern() {
+            return pattern;
         }
 
         public boolean match(String path) {
-            return path.matches(regex);
+            return pattern != null && pattern.matcher(path).matches();
         }
     }
 }

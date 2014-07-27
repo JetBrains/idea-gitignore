@@ -77,9 +77,9 @@ public class Glob {
         sb.append("^");
         if (!glob.startsWith("/")) {
             if (!glob.startsWith("*")) {
-                sb.append(".*");
+                sb.append(".*?");
             }
-            sb.append("(/[^/]*)*");
+            sb.append("/([^/]*/)*");
         }
 
         boolean escape = false, star = false, bracket = false;
