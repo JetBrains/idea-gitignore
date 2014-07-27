@@ -76,17 +76,30 @@ public class Glob {
 
         sb.append("^");
         if (!glob.startsWith("/")) {
-            if (!glob.startsWith("*")) {
-                sb.append(".*?");
+            if (!glob.startsWith("**")) {
+                if (glob.indexOf('/') == -1) {
+                    sb.append("([^/]*?/)*");
+                } else {
+                    sb.append("[^/]*?");
+                }
             }
-            sb.append("/([^/]*/)*");
+        } else {
+            glob = glob.substring(1);
         }
 
-        boolean escape = false, star = false, bracket = false;
+        boolean escape = false, star = false, doubleStar = false, bracket = false;
         for (char ch : glob.toCharArray()) {
             if (bracket && ch != ']') {
                 sb.append(ch);
                 continue;
+            } else if (doubleStar) {
+                doubleStar = false;
+                if (ch == '/') {
+                    sb.append("([^/]*/)*?");
+                    continue;
+                } else {
+                    sb.append("[^/]*?");
+                }
             }
 
             if (ch == '*') {
@@ -95,7 +108,12 @@ public class Glob {
                     escape = false;
                     star = false;
                 } else if (star) {
-                    sb.append("(/[^/]*)*?");
+                    char prev = sb.charAt(sb.length() - 1);
+                    if (prev == '^' || prev == '/') {
+                        doubleStar = true;
+                    } else {
+                        sb.append("[^/]*?");
+                    }
                     star = false;
                 } else {
                     star = true;
