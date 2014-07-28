@@ -67,10 +67,10 @@ public class IgnoreFileAction extends DumbAwareAction {
 
     @Override
     public void update(AnActionEvent e) {
-        final VirtualFile[] files = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
+        final VirtualFile[] files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
         final Project project = e.getProject();
 
-        if (project == null || (files.length == 1 && files[0].equals(project.getBaseDir()))) {
+        if (project == null || files == null || (files.length == 1 && files[0].equals(project.getBaseDir()))) {
             e.getPresentation().setVisible(false);
         }
     }
