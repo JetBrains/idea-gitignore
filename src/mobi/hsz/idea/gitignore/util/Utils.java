@@ -2,6 +2,7 @@ package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
@@ -73,8 +74,11 @@ public class Utils {
         return FilenameIndex.getVirtualFilesByName(project, GitignoreLanguage.FILENAME, GlobalSearchScope.projectScope(project));
     }
 
-    public static List<VirtualFile> getSuitableGitignoreFiles(@NotNull Project project, @NotNull VirtualFile file) {
+    public static List<VirtualFile> getSuitableGitignoreFiles(@NotNull Project project, @NotNull VirtualFile file) throws ExternalFileException {
         List<VirtualFile> files = new ArrayList<VirtualFile>();
+        if (file.getCanonicalPath() == null || !StringUtil.startsWith(file.getCanonicalPath(), project.getBasePath())) {
+            throw new ExternalFileException();
+        }
         if (!project.getBaseDir().equals(file)) {
             do {
                 file = file.getParent();

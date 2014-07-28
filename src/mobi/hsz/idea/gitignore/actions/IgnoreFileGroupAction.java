@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.util.ExternalFileException;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -30,9 +31,15 @@ public class IgnoreFileGroupAction extends ActionGroup {
         final Project project = e.getData(CommonDataKeys.PROJECT);
         files.clear();
         if (project != null && file != null) {
-            files.addAll(Utils.getSuitableGitignoreFiles(project, file));
-            Collections.reverse(files);
-            baseDir = project.getBaseDir();
+            try {
+                files.addAll(Utils.getSuitableGitignoreFiles(project, file));
+                e.getPresentation().setVisible(true);
+                Collections.reverse(files);
+                baseDir = project.getBaseDir();
+            } catch (ExternalFileException e1) {
+                e.getPresentation().setVisible(false);
+                e1.printStackTrace();
+            }
         }
         setPopup(files.size() > 1);
     }
