@@ -2,9 +2,7 @@ package mobi.hsz.idea.gitignore.actions;
 
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.ModificationTracker;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.util.CachedValueProvider;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -15,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class IgnoreFileGroupAction extends ComputableActionGroup {
+public class IgnoreFileGroupAction extends ActionGroup {
     private final List<VirtualFile> files = new ArrayList<VirtualFile>();
     private VirtualFile baseDir;
 
@@ -41,18 +39,7 @@ public class IgnoreFileGroupAction extends ComputableActionGroup {
 
     @NotNull
     @Override
-    protected final CachedValueProvider<AnAction[]> createChildrenProvider(@NotNull final ActionManager actionManager) {
-        return new CachedValueProvider<AnAction[]>() {
-            @Nullable
-            @Override
-            public Result<AnAction[]> compute() {
-                return Result.create(computeChildren(actionManager), ModificationTracker.EVER_CHANGED);
-            }
-        };
-    }
-
-    @NotNull
-    protected AnAction[] computeChildren(@NotNull ActionManager manager) {
+    public AnAction[] getChildren(@Nullable AnActionEvent e) {
         AnAction[] actions;
         int size = files.size();
         if (size == 0) {
