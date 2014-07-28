@@ -185,7 +185,7 @@ public class Glob {
         }
 
         if (star) {
-            sb.append(".*");
+            sb.append("[^/]*");
         }
         if (glob.endsWith("/")) {
             sb.append("?");

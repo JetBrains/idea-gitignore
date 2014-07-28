@@ -36,6 +36,6 @@ abstract public class GitignoreInspectionTestCase extends LightPlatformCodeInsig
         myFixture.configureByFile(getTestName(true) + GitignoreLanguage.FILENAME);
         myFixture.testHighlighting(true, false, true);
         myFixture.launchAction(myFixture.findSingleIntention(quickFixName));
-        myFixture.checkResultByFile(getTestName(true) +"-after" + GitignoreLanguage.FILENAME);
+        myFixture.checkResultByFile(getTestName(true) + "-after" + GitignoreLanguage.FILENAME);
     }
 }

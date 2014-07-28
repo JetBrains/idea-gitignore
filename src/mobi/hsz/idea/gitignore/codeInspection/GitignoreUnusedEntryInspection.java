@@ -4,6 +4,7 @@ import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveResult;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileReference;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
@@ -20,14 +21,12 @@ public class GitignoreUnusedEntryInspection extends LocalInspectionTool {
             @Override
             public void visitEntry(@NotNull GitignoreEntry entry) {
                 PsiReference[] references = entry.getReferences();
-                boolean resolved = false;
+                boolean resolved = true;
                 for (PsiReference reference : references) {
                     if (reference instanceof FileReferenceOwner) {
-                        PsiFileReference lastFileReference = ((FileReferenceOwner) reference).getLastFileReference();
-                        if (lastFileReference != null && lastFileReference.multiResolve(false).length > 0) {
-                            resolved = true;
-                            break;
-                        }
+                        PsiFileReference fileReference = (PsiFileReference) reference;
+                        ResolveResult[] result = fileReference.multiResolve(false);
+                        resolved = resolved && (result.length > 0 || "*".equals(reference.getCanonicalText()));
                     }
                 }
 
