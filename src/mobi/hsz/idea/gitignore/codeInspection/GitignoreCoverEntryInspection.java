@@ -6,7 +6,7 @@ import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.util.Couple;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
@@ -33,7 +33,7 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
         }
 
         final ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
-        final List<Couple<GitignoreEntry>> entries = ContainerUtil.newArrayList();
+        final List<Pair<GitignoreEntry, GitignoreEntry>> entries = ContainerUtil.newArrayList();
         final Map<GitignoreEntry, Set<String>> map = ContainerUtil.newHashMap();
 
         file.acceptChildren(new GitignoreVisitor() {
@@ -63,9 +63,9 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
                      * position in file.
                      */
                     if (recentValues.containsAll(matched)) {
-                        entries.add(Couple.newOne(recent, entry));
+                        entries.add(Pair.create(recent, entry));
                     } else if (matched.containsAll(recentValues)) {
-                        entries.add(Couple.newOne(entry, recent));
+                        entries.add(Pair.create(entry, recent));
                     }
                 }
 
@@ -73,9 +73,9 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
             }
         });
 
-        for (Couple<GitignoreEntry> couple : entries) {
-            problemsHolder.registerProblem(couple.second, message(couple.first, virtualFile, isOnTheFly), 
-                    new GitignoreRemoveEntryFix(couple.second));
+        for (Pair<GitignoreEntry, GitignoreEntry> pair : entries) {
+            problemsHolder.registerProblem(pair.second, message(pair.first, virtualFile, isOnTheFly),
+                    new GitignoreRemoveEntryFix(pair.second));
         }
 
         return problemsHolder.getResultsArray();
