@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.gitignore support</name>
-    <version>0.5.1</version>
+    <version>0.5.2</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -45,6 +45,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      Version 0.5.2
+      <ul>
+        <li>Fixed few errors (<a href="https://github.com/hsz/idea-gitignore/issues/35">#35</a>, <a href="https://github.com/hsz/idea-gitignore/issues/36">#36</a>, <a href="https://github.com/hsz/idea-gitignore/issues/37">#37</a>)
+        <li>Fixed "Show ignored files" action (<a href="https://github.com/hsz/idea-gitignore/issues/38">#38</a>)
+      </ul>
+
       Version 0.5.1
       <ul>
         <li>Reference resolving fixes (me and <a href="https://github.com/zolotov">@zolotov</a>) (<a href="https://github.com/hsz/idea-gitignore/issues/26">#26</a>, <a href="https://github.com/hsz/idea-gitignore/issues/33">#33</a>)</li>

@@ -58,6 +58,11 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.5.2
+
+- Fixed few errors ([#35](https://github.com/hsz/idea-gitignore/issues/35), [#36](https://github.com/hsz/idea-gitignore/issues/36), [#37](https://github.com/hsz/idea-gitignore/issues/37))
+- Fixed "Show ignored files" action ([#38](https://github.com/hsz/idea-gitignore/issues/38))
+
 Version 0.5.1
 
 - Reference resolving fixes (me and [@zolotov](https://github.com/zolotov)) ([#26](https://github.com/hsz/idea-gitignore/issues/26), [#33](https://github.com/hsz/idea-gitignore/issues/33))
