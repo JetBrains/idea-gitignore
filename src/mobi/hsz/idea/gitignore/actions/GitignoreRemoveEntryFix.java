@@ -1,10 +1,11 @@
 package mobi.hsz.idea.gitignore.actions;
 
 import com.intellij.codeInspection.LocalQuickFixOnPsiElement;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
+import com.intellij.psi.impl.source.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import mobi.hsz.idea.gitignore.psi.GitignoreTypes;
@@ -24,12 +25,12 @@ public class GitignoreRemoveEntryFix extends LocalQuickFixOnPsiElement {
     @Override
     public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         if (startElement instanceof GitignoreEntry) {
-            LeafPsiElement crlf = (LeafPsiElement) startElement.getNextSibling();
-            if (crlf == null || !crlf.getElementType().equals(GitignoreTypes.CRLF)) {
-                crlf = (LeafPsiElement) startElement.getPrevSibling();
+            ASTNode crlf = TreeUtil.findSibling(startElement.getNode(), GitignoreTypes.CRLF);
+            if (crlf == null) {
+                crlf = TreeUtil.findSiblingBackward(startElement.getNode(), GitignoreTypes.CRLF);
             }
-            if (crlf != null && crlf.getElementType().equals(GitignoreTypes.CRLF)) {
-                crlf.delete();
+            if (crlf != null) {
+                crlf.getPsi().delete();
             }
             startElement.delete();
         }
