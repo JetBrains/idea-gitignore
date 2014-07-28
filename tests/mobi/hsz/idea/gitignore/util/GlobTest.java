@@ -50,8 +50,10 @@ public class GlobTest {
         Assert.assertTrue(pattern.matcher("dir/subdir/foo/file.txt").matches());
         Assert.assertTrue(pattern.matcher("dir/file.txt").matches());
 
-
-
+        pattern = Glob.createPattern("dir/*");
+        Assert.assertTrue(pattern.matcher("dir/file.txt").matches());
+        Assert.assertTrue(pattern.matcher("dir/subdir/file.txt").matches());
+        Assert.assertFalse(pattern.matcher("dir/").matches());
     }
 
 }

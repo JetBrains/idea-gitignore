@@ -21,7 +21,7 @@ public class TreeProcessor {
 
     public TreeProcessor(@NotNull final PsiFile file) {
         this.file = file;
-        this.rootDirectory = file.getVirtualFile() != null ? file.getVirtualFile() : file.getProject().getBaseDir();
+        this.rootDirectory = file.getVirtualFile() != null ? file.getVirtualFile().getParent() : file.getProject().getBaseDir();
 
         for (PsiElement element : file.getChildren()) {
             if (element instanceof GitignoreEntry) {

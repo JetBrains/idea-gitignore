@@ -79,8 +79,6 @@ public class Glob {
             if (!glob.startsWith("**")) {
                 if (glob.indexOf('/') == -1) {
                     sb.append("([^/]*?/)*");
-                } else {
-                    sb.append("[^/]*?");
                 }
             }
         } else {
@@ -184,11 +182,17 @@ public class Glob {
             }
         }
 
-        if (star) {
-            sb.append("[^/]*");
-        }
-        if (glob.endsWith("/")) {
-            sb.append("?");
+        if (sb.charAt(sb.length() - 1) == '/') {
+            if (star) {
+                sb.append(".+");
+            } else {
+                sb.append("?");
+            }
+        } else {
+            if (star) {
+                sb.append("[^/]*");
+            }
+            sb.append("/?");
         }
         if (escape) {
             // should not be alone
