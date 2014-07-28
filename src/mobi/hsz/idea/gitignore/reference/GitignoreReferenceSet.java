@@ -5,7 +5,6 @@ import com.intellij.openapi.vfs.VFileProperty;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceHelper;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import mobi.hsz.idea.gitignore.util.Glob;
@@ -23,7 +22,7 @@ public class GitignoreReferenceSet extends FileReferenceSet {
 
     @Override
     public FileReference createFileReference(TextRange range, int index, String text) {
-        return new GitReference(this, range, index, text);
+        return new GitignoreReference(this, range, index, text);
     }
 
     @Override
@@ -53,8 +52,8 @@ public class GitignoreReferenceSet extends FileReferenceSet {
         return false;
     }
 
-    private class GitReference extends FileReference {
-        public GitReference(@NotNull FileReferenceSet fileReferenceSet, TextRange range, int index, String text) {
+    private class GitignoreReference extends FileReference {
+        public GitignoreReference(@NotNull FileReferenceSet fileReferenceSet, TextRange range, int index, String text) {
             super(fileReferenceSet, range, index, text);
         }
 
@@ -71,10 +70,10 @@ public class GitignoreReferenceSet extends FileReferenceSet {
         }
 
         private void walk(Collection<ResolveResult> result, Pattern pattern, VirtualFile directory) {
-            PsiManager psiManager = getElement().getManager();
+            PsiManager manager = getElement().getManager();
             for (VirtualFile file : directory.getChildren()) {
                 if (pattern.matcher(file.getName()).matches()) {
-                    PsiFileSystemItem psiFileSystemItem = FileReferenceHelper.getPsiFileSystemItem(psiManager, file);
+                    PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
                     if (psiFileSystemItem != null) {
                         result.add(new PsiElementResolveResult(psiFileSystemItem));
                     }
@@ -84,6 +83,10 @@ public class GitignoreReferenceSet extends FileReferenceSet {
                     walk(result, pattern, file);
                 }
             }
+        }
+
+        private PsiFileSystemItem getPsiFileSystemItem(PsiManager manager, @NotNull VirtualFile file) {
+            return file.isDirectory() ? manager.findDirectory(file) : manager.findFile(file);
         }
     }
 }
