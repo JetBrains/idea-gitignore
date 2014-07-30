@@ -11,6 +11,7 @@ import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.JBSplitter;
 import com.intellij.ui.ScrollPaneFactory;
@@ -113,7 +114,8 @@ public class GeneratorDialog extends DialogWrapper {
                         CommandProcessor.getInstance().runUndoTransparentAction(new Runnable() {
                             @Override
                             public void run() {
-                                previewDocument.replaceString(0, previewDocument.getTextLength(), template != null ? template.getContent() : "");
+                                String content = template != null ? StringUtil.replaceChar(template.getContent(), '\r', '\0') : "";
+                                previewDocument.replaceString(0, previewDocument.getTextLength(), content);
                             }
                         });
                     }

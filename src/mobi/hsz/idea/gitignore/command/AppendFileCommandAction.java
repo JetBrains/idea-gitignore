@@ -7,6 +7,7 @@ import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -57,7 +58,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                 }
             }
             for (String entry : content) {
-                document.insertString(document.getTextLength(), "\n" + entry.replace("\r", ""));
+                document.insertString(document.getTextLength(), "\n" + StringUtil.replaceChar(entry, '\r', '\0'));
             }
             PsiDocumentManager.getInstance(project).commitDocument(document);
         }
