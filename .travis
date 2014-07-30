@@ -1,0 +1,7 @@
+# Configuration for CI build at https://travis-ci.org/hsz/idea-gitignore
+
+language: java
+
+jdk:
+  - oraclejdk6
+  - openjdk6
