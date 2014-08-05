@@ -38,3 +38,5 @@ idea-gitignore.jar
 resources/templates.list
 build-tools/
 build/
+build.properties
+junit*.properties
