@@ -33,10 +33,10 @@ com_crashlytics_export_strings.xml
 
 ### idea-gitignore
 
-# Flex
-idea-flex.skeleton
-JFlex.jar
-
 # Release package
 idea-gitignore.jar
 resources/templates.list
+build-tools/
+build/
+build.properties
+junit*.properties
