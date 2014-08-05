@@ -8,7 +8,9 @@
       <h1>.gitignore support plugin</h1>
       <br/>
 
-      <a href="https://github.com/hsz/idea-gitignore">GitHub</a> | <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a>
+      <a href="https://github.com/hsz/idea-gitignore">GitHub</a> |
+      <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a> |
+      <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL">Donate</a>
       <br/>
       <br/>
 
@@ -23,7 +25,7 @@
         <li>Generate Gitignore rules basing on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
         <li>Add selected file/directory to Gitignore rules from popup menu</li>
         <li>Suggesting .gitignore file creation for new project</li>
-        <li>Entries inspection (duplicated, covered, unused)</li>
+        <li>Entries inspection (duplicated, covered, unused) with fix actions</li>
         <li>Comments and brackets support</li>
         <li>Navigation to entries in Project view</li>
         <li>Renaming entries from Gitignore file</li>
@@ -32,7 +34,8 @@
       <b><i>Feature requests:</i></b>
       <ul>
         <li><i>Better Gitignore templates filtering and selecting in rules generator</i></li>
-        <li><i>Gitignore rules cleanup (duplicates removing, ...)</i></li>
+        <li><i>Better ignored files list</i></li>
+        <li><i>Optional suggestion to add .gitignore file</i></li>
       </ul>
 
       <br/>

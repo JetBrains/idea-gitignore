@@ -163,7 +163,7 @@ Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
     - For the first time it will download `JFlex.jar` and `idea-flex.skeleton` files - save them in the root project directory
 - Set *Java Compiler* to **1.6**
   - Go to <kbd>Settings<kbd> > <kbd>Compiler</kbd> > <kbd>Java Compiler</kbd> and set *Project bytecode version* to **1.6**
-- In *Ant Build* add [`build.xml`][build-xml] file and mark **prepare** task as <kbd>Execute on</kbd> > <kbd>Before compilation</kbd>
+- In *Ant Build* add [`build.xml`][build-xml] file and mark **generate-templates-list** task as <kbd>Execute on</kbd> > <kbd>Before compilation</kbd>
 
 Developed By
 ------------
