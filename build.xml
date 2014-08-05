@@ -117,7 +117,7 @@
 
     <!-- Run tests -->
     <target name="test" depends="test-compile" description="Run tests" unless="skipTests">
-        <junit printsummary="yes" haltonfailure="yes" showoutput="yes" fork="yes" forkmode="once" reloading="no">
+        <junit printsummary="yes" haltonfailure="false" showoutput="yes" fork="yes" forkmode="once" reloading="no" failureproperty="failureFound">
             <classpath refid="test.classpath"/>
             <formatter type="brief" usefile="false"/>
             <batchtest todir="${project.build.test}" haltonerror="true" haltonfailure="false">
@@ -125,6 +125,11 @@
             </batchtest>
         </junit>
     </target>
+
+    <target name="test-check" if="failureFound" depends="test">
+        <fail message="Test failure"/>
+    </target>
+
 
     <target name="clean">
         <delete dir="${project.build}"/>
@@ -139,5 +144,5 @@
         </jar>
     </target>
 
-    <target name="all" depends="clean, test, package"/>
+    <target name="all" depends="clean, test-check, package" description="Build all"/>
 </project>
