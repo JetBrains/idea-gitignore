@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="idea-gitignore">
+<project name="idea-gitignore" default="all">
     <property file="build.properties"/>
 
     <dirname property="project.basedir" file="${ant.file}"/>
@@ -120,7 +120,7 @@
         <junit printsummary="yes" haltonfailure="yes" showoutput="yes" fork="yes" forkmode="once" reloading="no">
             <classpath refid="test.classpath"/>
             <formatter type="brief" usefile="false"/>
-            <batchtest todir="${project.build.tests}" haltonerror="true" haltonfailure="false">
+            <batchtest todir="${project.build.test}" haltonerror="true" haltonfailure="false">
                 <fileset dir="${project.tests}" includes="**/*Test.java"/>
             </batchtest>
         </junit>
@@ -133,11 +133,11 @@
         <delete dir="${idea-gitignore.jar}"/>
     </target>
 
-    <target name="dist" depends="compile" description="Build plugin archive">
+    <target name="package" depends="compile" description="Build plugin archive">
         <jar destfile="${idea-gitignore.jar}">
             <zipfileset dir="${project.build.classes}"/>
         </jar>
     </target>
 
-    <target name="all" depends="clean, test, dist"/>
+    <target name="all" depends="clean, test, package"/>
 </project>
