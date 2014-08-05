@@ -1,20 +1,186 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="idea-gitignore">
 
-  <target name="prepare">
-    <exec dir="./resources/" executable="find" osfamily="unix">
-      <arg line="gitignore/" />
-      <arg line="-type f" />
-      <arg line="-name '*.gitignore'" />
-      <redirector output="resources/templates.list" />
-    </exec>
-    <exec dir="resources" executable="cmd.exe" osfamily="windows">
-      <arg line="/c" />
-      <arg line="'dir /S /B gitignore\\*.gitignore' &amp; exit 0" />
-      <redirector output="resources/templates.list" error="NUL" />
-    </exec>
-    <replace file="resources/templates.list" token="${basedir}\resources\" value="" />
-    <replace file="resources/templates.list" token="\" value="/" />
-  </target>
+    <property name="idea.version" value="IC-13.1.4b"/>
+    <property name="grammar-kit.version" value="15139"/>
+
+    <dirname property="project.basedir" file="${ant.file}"/>
+    <property name="project.build-tools" value="${project.basedir}/build-tools"/>
+    <property name="project.gen" value="${project.basedir}/gen"/>
+    <property name="project.src" value="${project.basedir}/src"/>
+    <property name="project.tests" value="${project.basedir}/tests"/>
+
+    <property name="project.build" value="${project.basedir}/build"/>
+    <property name="project.build.classes" value="${project.build}/classes"/>
+    <property name="project.build.test" value="${project.build}/test"/>
+    <property name="project.build.dist" value="${project.build}/dist"/>
+
+    <property name="project.resources" value="${project.basedir}/resources"/>
+    <property name="project.resources.test" value="${project.basedir}/testData"/>
+
+    <property name="idea.home" value="${project.build-tools}/idea"/>
+    <property name="grammar-kit.jar" value="${project.build-tools}/grammar-kit.jar"/>
+    <property name="JFlex.jar" value="${project.basedir}/JFlex.jar"/>
+    <property name="idea-flex.skeleton" value="${project.basedir}/idea-flex.skeleton"/>
+
+    <mkdir dir="${project.build-tools}"/>
+
+
+    <path id="compile.classpath">
+        <pathelement location="${project.build.classes}"/>
+        <fileset dir="${java.home}/../lib" includes="**/*.jar" />
+        <fileset dir="${idea.home}" includes="**/*.jar">
+            <exclude name="lib/ant/lib/*"/>
+        </fileset>
+    </path>
+
+    <path id="test.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement location="${project.build.test}"/>
+        <pathelement location="${idea.home}/lib/junit-*.jar" />
+    </path>
+
+
+    <!-- Check if IDEA SDK is present -->
+    <target name="check-idea">
+        <available file="${idea.home}" property="idea.present"/>
+    </target>
+
+    <!-- Download IDEA -->
+    <target name="download-idea" description="Download and unpack IDEA" depends="check-idea" unless="idea.present">
+        <property name="idea.package" value="idea${idea.version}.tar.gz"/>
+        <property name="idea.url" value="http://download.jetbrains.com/idea/${idea.package}"/>
+        <mkdir dir="${idea.home}"/>
+
+        <get src="${idea.url}" dest="${project.build-tools}" skipexisting="true"/>
+        <untar src="${project.build-tools}/${idea.package}" dest="${idea.home}">
+            <regexpmapper from="[^/]*/(.*)" to="\1"/>
+        </untar>
+    </target>
+
+    <!-- Check if Grammar-Kit is present -->
+    <target name="check-grammar-kit">
+        <available file="${grammar-kit.jar}" property="grammar-kit.present"/>
+    </target>
+
+    <!-- Download Grammar-Kit -->
+    <target name="download-grammar-kit" description="Download and unpack Grammar-Kit" depends="check-grammar-kit"
+            unless="grammar-kit.present">
+        <property name="grammar-kit.package" value="GrammarKit.zip"/>
+        <property name="grammar-kit.url"
+                  value="http://plugins.jetbrains.com/plugin/download?pr=&amp;updateId=${grammar-kit.version}"/>
+
+        <get src="${grammar-kit.url}" dest="${project.build-tools}/${grammar-kit.package}" skipexisting="true"/>
+        <unzip src="${project.build-tools}/${grammar-kit.package}" dest="${project.build-tools}">
+            <regexpmapper from="[^/]*/lib/(.*)" to="\1"/>
+        </unzip>
+    </target>
+
+    <target name="dependencies" depends="download-grammar-kit,download-idea"/>
+
+
+    <!-- Generate parser using Grammar-Kit -->
+    <target name="generate-parser" depends="dependencies" description="Generate parser">
+        <java classname="org.intellij.grammar.Main">
+            <classpath>
+                <fileset dir="${idea.home}/lib" includes="*.jar"/>
+                <pathelement location="${grammar-kit.jar}"/>
+            </classpath>
+            <arg value="${project.gen}"/>
+            <arg value="${project.resources}/bnf/Gitignore.bnf"/>
+        </java>
+    </target>
+
+    <!-- Generate lexer using jFlex -->
+    <target name="generate-lexer" depends="dependencies" description="Generate lexer">
+        <java jar="${JFlex.jar}" fork="true">
+            <arg value="--skel"/>
+            <arg value="${idea-flex.skeleton}"/>
+            <arg value="--charat"/>
+            <arg value="--nobak"/>
+            <arg value="${project.src}/mobi/hsz/idea/gitignore/lexer/Gitignore.flex"/>
+            <arg value="-d"/>
+            <arg value="${project.gen}/mobi/hsz/idea/gitignore/lexer/"/>
+        </java>
+    </target>
+
+    <target name="generate-sources" depends="generate-lexer,generate-parser" description="Generate sources"/>
+
+
+    <!-- Pull GitHub templates from git repository -->
+    <target name="pull-resources" description="Pull GitHub templates">
+        <exec executable="git" dir="${project.resources}/gitignore">
+            <arg value="pull"/>
+        </exec>
+    </target>
+
+    <!-- Generate templates list -->
+    <target name="generate-templates-list" description="Generate templates list">
+        <exec dir="./resources/" executable="find" osfamily="unix">
+            <arg line="gitignore/"/>
+            <arg line="-type f"/>
+            <arg line="-name '*.gitignore'"/>
+            <redirector output="resources/templates.list"/>
+        </exec>
+        <exec dir="resources" executable="cmd.exe" osfamily="windows">
+            <arg line="/c"/>
+            <arg line="'dir /S /B gitignore\\*.gitignore' &amp; exit 0"/>
+            <redirector error="NUL" output="resources/templates.list"/>
+        </exec>
+        <replace file="resources/templates.list" token="${basedir}\resources\" value=""/>
+        <replace file="resources/templates.list" token="\" value="/"/>
+    </target>
+
+    <target name="generate-resources" depends="pull-resources,generate-templates-list" description="Generate resources"/>
+
+
+    <!-- Compile sources -->
+    <target name="compile" depends="dependencies,generate-resources,generate-sources" description="Compile sources">
+        <mkdir dir="${project.build.classes}"/>
+
+        <javac source="1.6" target="1.6" destdir="${project.build.classes}" includeantruntime="false" fork="true">
+            <classpath refid="compile.classpath"/>
+            <src location="${project.src}"/>
+            <src location="${project.gen}"/>
+        </javac>
+
+        <copy todir="${project.build.classes}/META-INF">
+            <fileset dir="${project.basedir}/META-INF"/>
+        </copy>
+
+        <copy todir="${project.build.classes}">
+            <fileset dir="${project.resources}"/>
+        </copy>
+    </target>
+
+    <!-- Compile test sources -->
+    <target name="test-compile" depends="compile" description="Compile test sources" unless="skipTests">
+        <mkdir dir="${project.build.test}"/>
+        <javac source="1.6" target="1.6" srcdir="${project.tests}" destdir="${project.build.test}" includeantruntime="false" fork="true">
+            <classpath refid="test.classpath"/>
+        </javac>
+    </target>
+
+    <!-- Run tests -->
+    <target name="test" depends="test-compile" description="Run tests" unless="skipTests">
+        <junit printsummary="yes" haltonfailure="yes" showoutput="yes" fork="yes" forkmode="once" reloading="no">
+            <classpath refid="test.classpath"/>
+            <batchtest todir="${project.build.tests}" haltonerror="true" haltonfailure="false">
+                <formatter type="brief" usefile="false"/>
+                <fileset dir="${project.tests}" includes="**/*Test.java"/>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="clean">
+        <delete dir="${project.build}"/>
+        <delete dir="${project.gen}"/>
+        <delete dir="${project.resources}/templates.list"/>
+    </target>
+
+    <target name="clean-all" depends="clean">
+        <delete dir="${project.build-tools}"/>
+    </target>
+
 
 </project>

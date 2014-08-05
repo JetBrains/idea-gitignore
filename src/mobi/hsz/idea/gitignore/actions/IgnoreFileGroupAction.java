@@ -38,7 +38,6 @@ public class IgnoreFileGroupAction extends ActionGroup {
                 baseDir = project.getBaseDir();
             } catch (ExternalFileException e1) {
                 e.getPresentation().setVisible(false);
-                e1.printStackTrace();
             }
         }
         setPopup(files.size() > 1);

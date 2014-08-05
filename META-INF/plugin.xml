@@ -140,7 +140,7 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="131"/>
+    <idea-version since-build="123.72"/>
     <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
