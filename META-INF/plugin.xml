@@ -144,7 +144,7 @@
     </change-notes>
 
     <idea-version since-build="123.72"/>
-    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.all</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
