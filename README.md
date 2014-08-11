@@ -58,6 +58,13 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.5.3
+
+- Added "Add template..." action to the "Generate" context menu under <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut
+- Travis integration
+- Donation button - if you find my plugin helpful, just donate it
+- Fixed wrong line separators errors ([#41](https://github.com/hsz/idea-gitignore/issues/41))
+
 Version 0.5.2
 
 - Fixed few errors ([#35](https://github.com/hsz/idea-gitignore/issues/35), [#36](https://github.com/hsz/idea-gitignore/issues/36), [#37](https://github.com/hsz/idea-gitignore/issues/37))

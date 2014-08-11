@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.gitignore support</name>
-    <version>0.5.2</version>
+    <version>0.5.3</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -48,6 +48,15 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+      Version 0.5.3
+      <ul>
+        <li>Added "Add template..." action to the "Generate" context menu under <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut</li>
+        <li>Travis integration</li>
+        <li>Donation button - if you find my plugin helpful, just donate it</li>
+        <li>Fixed wrong line separators errors (<a href="https://github.com/hsz/idea-gitignore/issues/41">#41</a>)</li>
+      </ul>
+
       Version 0.5.2
       <ul>
         <li>Fixed few errors (<a href="https://github.com/hsz/idea-gitignore/issues/35">#35</a>, <a href="https://github.com/hsz/idea-gitignore/issues/36">#36</a>, <a href="https://github.com/hsz/idea-gitignore/issues/37">#37</a>)
