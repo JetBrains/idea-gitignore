@@ -153,9 +153,7 @@
     </change-notes>
 
     <idea-version since-build="123.72"/>
-    <depends>com.intellij</depends>
     <depends>com.intellij.modules.lang</depends>
-    <depends>com.intellij.modules.platform</depends>
     <resource-bundle>messages.GitignoreBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
