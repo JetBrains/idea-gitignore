@@ -24,9 +24,9 @@ public class NewFileAction extends AnAction {
     }
 
     @Override
-    public void actionPerformed(AnActionEvent event) {
-        final Project project = event.getRequiredData(CommonDataKeys.PROJECT);
-        final IdeView view = event.getRequiredData(LangDataKeys.IDE_VIEW);
+    public void actionPerformed(AnActionEvent e) {
+        final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
+        final IdeView view = e.getRequiredData(LangDataKeys.IDE_VIEW);
 
         final PsiDirectory directory = view.getOrChooseDirectory();
         if (directory == null) {
