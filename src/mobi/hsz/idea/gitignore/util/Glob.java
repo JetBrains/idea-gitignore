@@ -194,9 +194,8 @@ public class Glob {
             sb.append("[^/]+");
         } else if (sb.charAt(sb.length() - 1) == '/') {
             sb.append("?");
-        } else {
-            sb.append("/?");
         }
+        sb.append("/?");
 
         if (escape) {
             // should not be alone
