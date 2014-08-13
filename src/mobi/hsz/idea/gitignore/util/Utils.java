@@ -78,7 +78,8 @@ public class Utils {
         if (file.getCanonicalPath() == null || !VfsUtilCore.isAncestor(project.getBaseDir(), file, true)) {
             throw new ExternalFileException();
         }
-        if (!project.getBaseDir().equals(file)) {
+        VirtualFile baseDir = project.getBaseDir();
+        if (baseDir != null && !baseDir.equals(file)) {
             do {
                 file = file.getParent();
                 VirtualFile gitignore = file.findChild(GitignoreLanguage.FILENAME);
