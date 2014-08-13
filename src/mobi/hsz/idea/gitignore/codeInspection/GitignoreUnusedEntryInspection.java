@@ -26,14 +26,17 @@ public class GitignoreUnusedEntryInspection extends LocalInspectionTool {
                     if (reference instanceof FileReferenceOwner) {
                         PsiFileReference fileReference = (PsiFileReference) reference;
                         ResolveResult[] result = fileReference.multiResolve(false);
-                        resolved = resolved && (result.length > 0 || "*".equals(reference.getCanonicalText()));
+                        resolved = result.length > 0 || "*".equals(reference.getCanonicalText());
+                    }
+                    if (!resolved) {
+                        break;
                     }
                 }
 
                 if (!resolved) {
                     holder.registerProblem(entry, GitignoreBundle.message("codeInspection.unusedEntry.message"), new GitignoreRemoveEntryFix(entry));
                 }
-                
+
                 super.visitEntry(entry);
             }
         };

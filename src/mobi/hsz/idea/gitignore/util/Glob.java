@@ -7,11 +7,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class Glob {
+    private static final HashMap<String, String> cache = new HashMap<String, String>();
+
     public static List<VirtualFile> find(VirtualFile root, String glob) {
         return find(root, glob, false);
     }
@@ -72,6 +75,11 @@ public class Glob {
     }
 
     public static String createRegex(String glob) {
+        String cached = cache.get(glob);
+        if (cached != null) {
+            return cached;
+        }
+
         StringBuilder sb = new StringBuilder();
 
         sb.append("^");
@@ -182,22 +190,20 @@ public class Glob {
             }
         }
 
-        if (sb.charAt(sb.length() - 1) == '/') {
-            if (star) {
-                sb.append(".+");
-            } else {
-                sb.append("?");
-            }
+        if (star || doubleStar) {
+            sb.append("[^/]+");
+        } else if (sb.charAt(sb.length() - 1) == '/') {
+            sb.append("?");
         } else {
-            if (star) {
-                sb.append("[^/]*");
-            }
             sb.append("/?");
         }
+
         if (escape) {
             // should not be alone
         }
         sb.append('$');
+
+        cache.put(glob, sb.toString());
 
         return sb.toString();
     }

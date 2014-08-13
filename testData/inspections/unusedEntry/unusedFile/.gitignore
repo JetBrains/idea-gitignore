@@ -1,5 +1,8 @@
 subdir/foo.txt
 subdir/foo*
+subdir/dir/
+subdir/**/biz.a
+<weak_warning descr="'subdir/*/biz.a' entry is never used">subdir/*/biz.a</weak_warning>
 <weak_warning descr="'subdir/bar*' entry is never used">subdir/bar*</weak_warning>
 <weak_warning descr="'subdir/bar.txt' entry is never used">subdir/bar.txt</weak_warning>
 <weak_warning descr="'bar.txt' entry is never used">bar.txt</weak_warning>
