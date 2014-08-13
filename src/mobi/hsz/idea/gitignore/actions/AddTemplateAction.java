@@ -29,9 +29,9 @@ public class AddTemplateAction extends AnAction {
 
     @Override
     public void update(AnActionEvent e) {
-        final PsiFile file = e.getRequiredData(CommonDataKeys.PSI_FILE);
+        final PsiFile file = e.getData(CommonDataKeys.PSI_FILE);
 
-        if (!(file instanceof GitignoreFile)) {
+        if (file != null && !(file instanceof GitignoreFile)) {
             e.getPresentation().setVisible(false);
         }
     }
