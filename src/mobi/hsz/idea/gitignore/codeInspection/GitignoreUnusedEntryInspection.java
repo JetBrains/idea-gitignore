@@ -22,11 +22,13 @@ public class GitignoreUnusedEntryInspection extends LocalInspectionTool {
             public void visitEntry(@NotNull GitignoreEntry entry) {
                 PsiReference[] references = entry.getReferences();
                 boolean resolved = true;
+                int previous = Integer.MAX_VALUE;
                 for (PsiReference reference : references) {
                     if (reference instanceof FileReferenceOwner) {
                         PsiFileReference fileReference = (PsiFileReference) reference;
                         ResolveResult[] result = fileReference.multiResolve(false);
-                        resolved = result.length > 0 || "*".equals(reference.getCanonicalText());
+                        resolved = result.length > 0 || (previous > 0 && reference.getCanonicalText().endsWith("/*"));
+                        previous = result.length;
                     }
                     if (!resolved) {
                         break;
