@@ -51,8 +51,8 @@ public class NewFileAction extends AnAction {
         final Project project = e.getData(CommonDataKeys.PROJECT);
         final IdeView view = e.getData(LangDataKeys.IDE_VIEW);
 
-        final PsiDirectory directory = view != null ? view.getOrChooseDirectory() : null;
-        if (directory == null || project == null) {
+        final PsiDirectory[] directory = view != null ? view.getDirectories() : null;
+        if (directory == null || directory.length == 0 || project == null) {
             e.getPresentation().setVisible(false);
         }
     }
