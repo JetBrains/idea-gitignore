@@ -17,7 +17,6 @@ import java.util.regex.PatternSyntaxException;
 
 public class Glob {
     private static final HashMap<String, String> cache = new HashMap<String, String>();
-    private static final char SLASH = '/';
 
     public static List<VirtualFile> find(VirtualFile root, String glob) {
         return find(root, glob, false);
@@ -38,7 +37,7 @@ public class Glob {
                 Pattern pattern = getCurrentValue();
                 String path = Utils.getRelativePath(root, file);
 
-                if (path == null || path.startsWith(GitignoreLanguage.GIT_DIRECTORY + SLASH)) {
+                if (path == null || path.startsWith(GitignoreLanguage.GIT_DIRECTORY + VfsUtil.VFS_PATH_SEPARATOR)) {
                     return false;
                 }
 
@@ -235,10 +234,6 @@ public class Glob {
         sb.append('$');
 
         cache.put(glob, sb.toString());
-
-        System.out.println(glob);
-        System.out.println(sb.toString());
-        System.out.println("---");
 
         return sb.toString();
     }
