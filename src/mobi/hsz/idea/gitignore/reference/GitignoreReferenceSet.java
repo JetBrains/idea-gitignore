@@ -2,8 +2,9 @@ package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VFileProperty;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
@@ -103,35 +104,29 @@ public class GitignoreReferenceSet extends FileReferenceSet {
         }
 
         @Override
-        protected void innerResolveInContext(@NotNull String text, @NotNull PsiFileSystemItem context, Collection<ResolveResult> result, boolean caseSensitive) {
+        protected void innerResolveInContext(@NotNull String text, @NotNull PsiFileSystemItem context, final Collection<ResolveResult> result, boolean caseSensitive) {
             super.innerResolveInContext(text, context, result, caseSensitive);
             VirtualFile contextVirtualFile = context.getVirtualFile();
             if (contextVirtualFile != null) {
-                Pattern pattern = Glob.createPattern(getCanonicalText());
+                final Pattern pattern = Glob.createPattern(getCanonicalText());
                 if (pattern != null) {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
-                    VirtualFile root = null;
-                    if (parent != null) {
-                        root = parent.getVirtualFile();
-                    }
-                    walk(result, pattern, root, contextVirtualFile);
-                }
-            }
-        }
+                    final VirtualFile root = (parent != null) ? parent.getVirtualFile() : null;
+                    final PsiManager manager = getElement().getManager();
 
-        private void walk(Collection<ResolveResult> result, Pattern pattern, @Nullable VirtualFile root, VirtualFile directory) {
-            PsiManager manager = getElement().getManager();
-            for (VirtualFile file : directory.getChildren()) {
-                String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
-                if (pattern.matcher(name).matches()) {
-                    PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
-                    if (psiFileSystemItem != null) {
-                        result.add(new PsiElementResolveResult(psiFileSystemItem));
-                    }
-                }
-
-                if (file.isDirectory() && !file.is(VFileProperty.SYMLINK)) {
-                    walk(result, pattern, root, file);
+                    VfsUtil.visitChildrenRecursively(contextVirtualFile, new VirtualFileVisitor(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
+                        @Override
+                        public boolean visitFile(@NotNull VirtualFile file) {
+                            String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
+                            if (pattern.matcher(name).matches()) {
+                                PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
+                                if (psiFileSystemItem != null) {
+                                    result.add(new PsiElementResolveResult(psiFileSystemItem));
+                                }
+                            }
+                            return true;
+                        }
+                    });
                 }
             }
         }

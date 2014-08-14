@@ -1,7 +1,10 @@
 package mobi.hsz.idea.gitignore.util;
 
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,17 +17,44 @@ import java.util.regex.PatternSyntaxException;
 
 public class Glob {
     private static final HashMap<String, String> cache = new HashMap<String, String>();
+    private static final char SLASH = '/';
 
     public static List<VirtualFile> find(VirtualFile root, String glob) {
         return find(root, glob, false);
     }
 
-    public static List<VirtualFile> find(VirtualFile root, String glob, boolean includeNested) {
+    public static List<VirtualFile> find(final VirtualFile root, String glob, final boolean includeNested) {
         Pattern pattern = createPattern(glob);
         if (pattern == null) {
             return Collections.emptyList();
         }
-        return walk(root, root, pattern, includeNested);
+
+        final List<VirtualFile> files = ContainerUtil.newArrayList();
+
+        VirtualFileVisitor<Pattern> visitor = new VirtualFileVisitor<Pattern>(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
+            @Override
+            public boolean visitFile(@NotNull VirtualFile file) {
+                boolean matches = false;
+                Pattern pattern = getCurrentValue();
+                String path = Utils.getRelativePath(root, file);
+
+                if (path == null || path.startsWith(GitignoreLanguage.GIT_DIRECTORY + SLASH)) {
+                    return false;
+                }
+
+                if (pattern == null || pattern.matcher(path).matches()) {
+                    matches = true;
+                    files.add(file);
+                }
+
+                setValueForChildren(includeNested && matches ? null : pattern);
+                return true;
+            }
+        };
+        visitor.setValueForChildren(pattern);
+        VfsUtil.visitChildrenRecursively(root, visitor);
+
+        return files;
     }
 
     public static List<String> findAsPaths(VirtualFile root, String glob) {
@@ -80,6 +110,7 @@ public class Glob {
             return cached;
         }
 
+        char[] chars;
         StringBuilder sb = new StringBuilder();
 
         sb.append("^");
@@ -89,12 +120,13 @@ public class Glob {
                     sb.append("([^/]*?/)*");
                 }
             }
+            chars = glob.toCharArray();
         } else {
-            glob = glob.substring(1);
+            chars = glob.substring(1).toCharArray();
         }
 
         boolean escape = false, star = false, doubleStar = false, bracket = false;
-        for (char ch : glob.toCharArray()) {
+        for (char ch : chars) {
             if (bracket && ch != ']') {
                 sb.append(ch);
                 continue;
@@ -203,6 +235,10 @@ public class Glob {
         sb.append('$');
 
         cache.put(glob, sb.toString());
+
+        System.out.println(glob);
+        System.out.println(sb.toString());
+        System.out.println("---");
 
         return sb.toString();
     }
