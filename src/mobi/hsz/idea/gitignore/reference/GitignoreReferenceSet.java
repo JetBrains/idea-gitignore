@@ -110,18 +110,19 @@ public class GitignoreReferenceSet extends FileReferenceSet {
                 Pattern pattern = Glob.createPattern(getCanonicalText());
                 if (pattern != null) {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
+                    VirtualFile root = null;
                     if (parent != null) {
-                        VirtualFile root = parent.getVirtualFile();
-                        walk(result, pattern, root, contextVirtualFile);
+                        root = parent.getVirtualFile();
                     }
+                    walk(result, pattern, root, contextVirtualFile);
                 }
             }
         }
 
-        private void walk(Collection<ResolveResult> result, Pattern pattern, VirtualFile root, VirtualFile directory) {
+        private void walk(Collection<ResolveResult> result, Pattern pattern, @Nullable VirtualFile root, VirtualFile directory) {
             PsiManager manager = getElement().getManager();
             for (VirtualFile file : directory.getChildren()) {
-                String name = Utils.getRelativePath(root, file);
+                String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
                 if (pattern.matcher(name).matches()) {
                     PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
                     if (psiFileSystemItem != null) {
