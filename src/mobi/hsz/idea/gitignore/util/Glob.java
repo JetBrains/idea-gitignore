@@ -17,6 +17,9 @@ import java.util.regex.PatternSyntaxException;
 public class Glob {
     private static final HashMap<String, String> cache = new HashMap<String, String>();
 
+    private Glob() {
+    }
+
     public static List<VirtualFile> find(VirtualFile root, String glob) {
         return find(root, glob, false);
     }

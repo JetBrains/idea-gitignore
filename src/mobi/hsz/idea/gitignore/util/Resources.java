@@ -13,6 +13,9 @@ public class Resources {
 
     private static List<Template> templates;
 
+    private Resources() {
+    }
+
     /**
      * Returns list of gitignore templates
      *
@@ -39,9 +42,6 @@ public class Resources {
             }
         }
         return templates;
-    }
-
-    private Resources() {
     }
 
     /**

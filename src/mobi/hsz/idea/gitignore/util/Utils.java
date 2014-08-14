@@ -23,6 +23,9 @@ import java.util.List;
 public class Utils {
     public static final double JAVA_VERSION = getJavaVersion();
 
+    private Utils() {
+    }
+
     private static double getJavaVersion() {
         String version = System.getProperty("java.version");
         int pos = 0, count = 0;
@@ -91,6 +94,6 @@ public class Utils {
     }
 
     public static boolean isGitDirectory(String path) {
-        return path.startsWith(GitignoreLanguage.GIT_DIRECTORY + VfsUtil.VFS_PATH_SEPARATOR);
+        return path.equals(GitignoreLanguage.GIT_DIRECTORY) || path.startsWith(GitignoreLanguage.GIT_DIRECTORY + VfsUtil.VFS_PATH_SEPARATOR);
     }
 }

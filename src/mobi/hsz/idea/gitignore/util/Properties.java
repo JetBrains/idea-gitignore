@@ -6,6 +6,9 @@ import com.intellij.openapi.project.Project;
 public class Properties {
     private static final String PROP_IGNORE_MISSING_GITIGNORE = "ignore_missing_gitignore";
 
+    private Properties() {
+    }
+
     public static boolean isIgnoreMissingGitignore(Project project) {
         return PropertiesComponent.getInstance(project).getBoolean(PROP_IGNORE_MISSING_GITIGNORE, false);
     }
