@@ -27,5 +27,8 @@ public class GitignoreHighlighterColors {
     /** Default style for negation element - ! in the beginning of the entry */
     public static final TextAttributesKey VALUE_ATTR_KEY = TextAttributesKey.createTextAttributesKey("GITIGNORE.VALUE", DefaultLanguageHighlighterColors.STRING);
 
+    /** Default style for unused entry */
+    public static final TextAttributesKey UNUSED_ENTRY_ATTR_KEY = TextAttributesKey.createTextAttributesKey("GITIGNORE.UNUSED_ENTRY", DefaultLanguageHighlighterColors.DOC_COMMENT);
+
 
 }

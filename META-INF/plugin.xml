@@ -218,11 +218,14 @@
                 implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreUnusedEntryInspection"
                 key="codeInspection.unusedEntry"
                 language="Gitignore"
-                level="WEAK WARNING"/>
+                level="GITIGNORE.UNUSED_ENTRY"/>
 
         <psi.referenceContributor
                 language="Gitignore"
                 implementation="mobi.hsz.idea.gitignore.reference.GitignoreReferenceContributor"/>
+
+        <severitiesProvider
+                implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
     </extensions>
 
