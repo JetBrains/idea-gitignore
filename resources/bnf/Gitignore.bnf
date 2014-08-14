@@ -24,15 +24,16 @@
   ]
 
   mixin("ENTRY")            = "mobi.hsz.idea.gitignore.psi.impl.GitignoreEntryExtImpl"
+  name("ENTRY.*")           = "entry"
 }
  
 gitignoreFile           ::= item_ *
 private item_           ::= HEADER | SECTION | COMMENT | ENTRY_DIRECTORY | ENTRY_FILE | CRLF
 NEGATION                ::= "!"
-ENTRY_FILE              ::= NEGATION ? SLASH ? <<list_macro value_>> { extends="ENTRY" }
-ENTRY_DIRECTORY         ::= NEGATION ? SLASH ? <<list_macro value_>> SLASH { extends="ENTRY_FILE" }
+ENTRY_FILE              ::= NEGATION ? SLASH ? <<list_macro value_>>        { extends="ENTRY" }
+ENTRY_DIRECTORY         ::= NEGATION ? SLASH ? <<list_macro value_>> SLASH  { extends="ENTRY_FILE" }
 ENTRY                   ::= NEGATION ? SLASH ? <<list_macro value_>>
 
-private meta bvalue_    ::= BRACKET_LEFT VALUE BRACKET_RIGHT { pin="BRACKET_LEFT" }
+private meta bvalue_    ::= BRACKET_LEFT VALUE BRACKET_RIGHT                { pin="BRACKET_LEFT" }
 private meta value_     ::= bvalue_ | VALUE
 private meta list_macro ::= <<p>> + (SLASH <<p>> +) *
