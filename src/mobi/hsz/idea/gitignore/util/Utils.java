@@ -1,10 +1,15 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
@@ -13,12 +18,15 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
+import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Utils {
     public static final double JAVA_VERSION = getJavaVersion();
@@ -95,5 +103,48 @@ public class Utils {
 
     public static boolean isGitDirectory(String path) {
         return path.equals(GitignoreLanguage.GIT_DIRECTORY) || path.startsWith(GitignoreLanguage.GIT_DIRECTORY + VfsUtil.VFS_PATH_SEPARATOR);
+    }
+
+    public static List<VirtualFile> getExcludedRoots(@NotNull Project project) {
+        List<VirtualFile> roots = new ArrayList<VirtualFile>();
+        ModuleManager manager = ModuleManager.getInstance(project);
+        for (Module module : manager.getModules()) {
+            ModifiableRootModel model = ModuleRootManager.getInstance(module).getModifiableModel();
+            Collections.addAll(roots, model.getExcludeRoots());
+            model.dispose();
+        }
+        return roots;
+    }
+
+    public static boolean isEntryExcluded(GitignoreEntry entry, Project project) {
+        final Pattern pattern = Glob.createPattern(entry.getText());
+        if (pattern == null) {
+            return false;
+        }
+
+        final VirtualFile projectRoot = project.getBaseDir();
+        final List<VirtualFile> matched = new ArrayList<VirtualFile>();
+        for (final VirtualFile root : getExcludedRoots(project)) {
+            VfsUtil.visitChildrenRecursively(root, new VirtualFileVisitor() {
+                @Override
+                public boolean visitFile(@NotNull VirtualFile file) {
+                    String path = getRelativePath(projectRoot, root);
+                    if (path == null) {
+                        return false;
+                    }
+                    if (pattern.matcher(path).matches()) {
+                        matched.add(file);
+                        return false;
+                    }
+                    return true;
+                }
+            });
+
+            if (matched.size() > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

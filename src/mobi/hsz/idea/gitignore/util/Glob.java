@@ -96,7 +96,8 @@ public class Glob {
 
         return files;
     }
-    
+
+    @Nullable
     public static Pattern createPattern(@NotNull String glob) {
         try {
             return Pattern.compile(createRegex(glob));
@@ -114,15 +115,15 @@ public class Glob {
         char[] chars;
         StringBuilder sb = new StringBuilder();
 
-        sb.append("^");
         if (!glob.startsWith("/")) {
             if (!glob.startsWith("**")) {
-                if (glob.indexOf('/') == -1) {
+//                if (glob.indexOf('/') == -1) {
                     sb.append("([^/]*?/)*");
-                }
+//                }
             }
             chars = glob.toCharArray();
         } else {
+            sb.append("^");
             chars = glob.substring(1).toCharArray();
         }
 
@@ -147,8 +148,8 @@ public class Glob {
                     escape = false;
                     star = false;
                 } else if (star) {
-                    char prev = sb.charAt(sb.length() - 1);
-                    if (prev == '^' || prev == '/') {
+                    char prev = sb.length() > 0 ? sb.charAt(sb.length() - 1) : '\0';
+                    if (prev == '\0' || prev == '^' || prev == '/') {
                         doubleStar = true;
                     } else {
                         sb.append("[^/]*?");

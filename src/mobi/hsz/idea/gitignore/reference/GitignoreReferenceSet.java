@@ -121,11 +121,12 @@ public class GitignoreReferenceSet extends FileReferenceSet {
                             if (name == null || Utils.isGitDirectory(name)) {
                                 return false;
                             }
+                            PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
+                            if (psiFileSystemItem == null) {
+                                return false;
+                            }
                             if (pattern.matcher(name).matches()) {
-                                PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
-                                if (psiFileSystemItem != null) {
-                                    result.add(new PsiElementResolveResult(psiFileSystemItem));
-                                }
+                                result.add(new PsiElementResolveResult(psiFileSystemItem));
                             }
                             return true;
                         }

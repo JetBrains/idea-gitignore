@@ -11,6 +11,7 @@ import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.actions.GitignoreRemoveEntryFix;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import mobi.hsz.idea.gitignore.psi.GitignoreVisitor;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 public class GitignoreUnusedEntryInspection extends LocalInspectionTool {
@@ -36,7 +37,9 @@ public class GitignoreUnusedEntryInspection extends LocalInspectionTool {
                 }
 
                 if (!resolved) {
-                    holder.registerProblem(entry, GitignoreBundle.message("codeInspection.unusedEntry.message"), new GitignoreRemoveEntryFix(entry));
+                    if (!Utils.isEntryExcluded(entry, holder.getProject())) {
+                        holder.registerProblem(entry, GitignoreBundle.message("codeInspection.unusedEntry.message"), new GitignoreRemoveEntryFix(entry));
+                    }
                 }
 
                 super.visitEntry(entry);

@@ -29,7 +29,8 @@ public class GlobTest {
 
         pattern = Glob.createPattern("dir/file.txt");
         Assert.assertTrue(pattern.matcher("dir/file.txt").matches());
-        Assert.assertFalse(pattern.matcher("xdir/dir/file.txt").matches());
+        Assert.assertTrue(pattern.matcher("xdir/dir/file.txt").matches());
+        Assert.assertFalse(pattern.matcher("xdir/file.txt").matches());
 
         pattern = Glob.createPattern("/file.txt");
         Assert.assertTrue(pattern.matcher("file.txt").matches());
