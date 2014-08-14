@@ -118,6 +118,9 @@ public class GitignoreReferenceSet extends FileReferenceSet {
                         @Override
                         public boolean visitFile(@NotNull VirtualFile file) {
                             String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
+                            if (name == null || Utils.isGitDirectory(name)) {
+                                return false;
+                            }
                             if (pattern.matcher(name).matches()) {
                                 PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
                                 if (psiFileSystemItem != null) {
