@@ -4,7 +4,6 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.util.containers.ContainerUtil;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +36,7 @@ public class Glob {
                 Pattern pattern = getCurrentValue();
                 String path = Utils.getRelativePath(root, file);
 
-                if (path == null || path.startsWith(GitignoreLanguage.GIT_DIRECTORY + VfsUtil.VFS_PATH_SEPARATOR)) {
+                if (path == null || Utils.isGitDirectory(path)) {
                     return false;
                 }
 

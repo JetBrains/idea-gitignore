@@ -2,6 +2,7 @@ package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
@@ -87,5 +88,9 @@ public class Utils {
             } while (!file.equals(project.getBaseDir()));
         }
         return files;
+    }
+
+    public static boolean isGitDirectory(String path) {
+        return path.startsWith(GitignoreLanguage.GIT_DIRECTORY + VfsUtil.VFS_PATH_SEPARATOR);
     }
 }
