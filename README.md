@@ -58,6 +58,15 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.5.4
+
+- Better entries completion and references
+- Unused entry inspection style changed to grayed ([#47](https://github.com/hsz/idea-gitignore/issues/47))
+- Fixed AddTemplateAction NPE ([#48](https://github.com/hsz/idea-gitignore/issues/48))
+- Select Destination dialog problem fixed in Android Studio ([#36](https://github.com/hsz/idea-gitignore/issues/36))
+- Handling excluded directories in inspection ([#47](https://github.com/hsz/idea-gitignore/issues/47))
+- Inspection warning messages clarification
+
 Version 0.5.3
 
 - Added "Add template..." action to the "Generate" context menu under <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.gitignore support</name>
-    <version>0.5.3</version>
+    <version>0.5.4</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -48,6 +48,16 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+      Version 0.5.4
+      <ul>
+        <li>Better entries completion and references</li>
+        <li>Unused entry inspection style changed to grayed (<a href="https://github.com/hsz/idea-gitignore/issues/47">#47</a>)</li>
+        <li>Fixed AddTemplateAction NPE (<a href="https://github.com/hsz/idea-gitignore/issues/48">#48</a>)</li>
+        <li>Select Destination dialog problem fixed in Android Studio (<a href="https://github.com/hsz/idea-gitignore/issues/36">#36</a>)</li>
+        <li>Handling excluded directories in inspection (<a href="https://github.com/hsz/idea-gitignore/issues/47">#47</a>)</li>
+        <li>Inspection warning messages clarification</li>
+      </ul>
 
       Version 0.5.3
       <ul>
