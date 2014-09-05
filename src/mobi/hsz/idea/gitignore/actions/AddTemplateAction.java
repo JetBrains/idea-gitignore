@@ -2,12 +2,12 @@ package mobi.hsz.idea.gitignore.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.psi.GitignoreFile;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
+import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 public class AddTemplateAction extends AnAction {
