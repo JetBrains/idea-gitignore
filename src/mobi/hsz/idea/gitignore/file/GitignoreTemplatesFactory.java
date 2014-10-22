@@ -25,6 +25,10 @@ public class GitignoreTemplatesFactory implements FileTemplateGroupDescriptorFac
     }
 
     public static PsiFile createFromTemplate(final PsiDirectory directory) throws IncorrectOperationException {
+        final PsiFile currentFile = directory.findFile(GitignoreLanguage.FILENAME);
+        if (currentFile != null) {
+            return currentFile;
+        }
         final PsiFileFactory factory = PsiFileFactory.getInstance(directory.getProject());
         final PsiFile file = factory.createFileFromText(GitignoreLanguage.FILENAME, GitignoreFileType.INSTANCE, TEXT);
         return (PsiFile) directory.add(file);
