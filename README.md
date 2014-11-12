@@ -23,16 +23,24 @@ Features
 --------
 
 - `.gitignore` files syntax highlight
+- Gitignore templates filtering and selecting in rules generator by name and content
 - Show ignored files by specified Gitignore file (right click on `.gitignore` file)
 - Create `.gitignore` file in currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
 - Add selected file/directory to Gitignore rules from popup menu
 - Suggesting `.gitignore` file creation for new project
+- Entries inspection (duplicated, covered, unused) with fix actions
+- Comments and brackets support
+- Navigation to entries in Project view
+- Renaming entries from Gitignore file
 
 *Feature requests:*
 
-- *Better Gitignore templates filtering and selecting in rules generator*
-- *Gitignore rules cleanup (duplicates removing, ...)*
+- *Better ignored files list*
+- *Optional suggestion to add .gitignore file*
+- *User custom ignore templates*
+- *Node Packaged Modules support*
+- *Mercurial support*
 
 
 Installation
@@ -57,6 +65,15 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 
 Changelog
 ---------
+
+Version 0.6
+
+- Reimplemented templates generator (tree structure, checkboxes allow to add many templates at once)
+- Find template by its content
+- "Add template..." option in context menu
+- Fixed no search input by default ([#27](https://github.com/hsz/idea-gitignore/issues/27))
+- Fixed CommonDataKeys NoClassDefFoundError ([#51](https://github.com/hsz/idea-gitignore/issues/51))
+- Fixed "Cannot create .gitignore, file already exists." ([#55](https://github.com/hsz/idea-gitignore/issues/55))
 
 Version 0.5.4
 

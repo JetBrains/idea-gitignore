@@ -6,6 +6,7 @@ import org.jetbrains.annotations.PropertyKey;
 import java.util.ResourceBundle;
 
 public class GitignoreBundle {
+    public static final String VERSION = "0.6";
     private static final String BUNDLE_NAME = "messages.GitignoreBundle";
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.gitignore support</name>
-    <version>0.5.4</version>
+    <version>0.6</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -20,6 +20,7 @@
       <b>Features</b>
       <ul>
         <li><i>.gitignore</i> files syntax highlight</li>
+        <li>Gitignore templates filtering and selecting in rules generator by name and content</li>
         <li>Show ignored files by specified Gitignore file (right click on <i>.gitignore</i> file)</li>
         <li>Create <i>.gitignore</i> file in currently selected directory</li>
         <li>Generate Gitignore rules basing on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
@@ -33,9 +34,11 @@
 
       <b><i>Feature requests:</i></b>
       <ul>
-        <li><i>Better Gitignore templates filtering and selecting in rules generator</i></li>
         <li><i>Better ignored files list</i></li>
         <li><i>Optional suggestion to add .gitignore file</i></li>
+        <li><i>User custom ignore templates</i></li>
+        <li><i>Node Packaged Modules support</i></li>
+        <li><i>Mercurial support</i></li>
       </ul>
 
       <br/>
@@ -48,6 +51,16 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+      Version 0.6
+      <ul>
+        <li>Reimplemented templates generator (tree structure, checkboxes allow to add many templates at once)</li>
+        <li>Find template by its content</li>
+        <li>"Add template..." option in context menu</li>
+        <li>Fixed no search input by default (<a href="https://github.com/hsz/idea-gitignore/issues/27">#27</a>)</li>
+        <li>Fixed CommonDataKeys NoClassDefFoundError (<a href="https://github.com/hsz/idea-gitignore/issues/51">#51</a>)</li>
+        <li>Fixed "Cannot create .gitignore, file already exists." (<a href="https://github.com/hsz/idea-gitignore/issues/55">#55</a>)</li>
+      </ul>
 
       Version 0.5.4
       <ul>
@@ -185,6 +198,8 @@
 
         <editorNotificationProvider
                 implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider"/>
+        <editorNotificationProvider
+                implementation="mobi.hsz.idea.gitignore.daemon.DonateNotificationProvider"/>
 
         <fileTypeFactory
                 implementation="mobi.hsz.idea.gitignore.file.GitignoreFileTypeFactory"/>
