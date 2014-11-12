@@ -1,11 +1,9 @@
 package mobi.hsz.idea.gitignore.ui;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.DefaultTreeExpander;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionPlaces;
-import com.intellij.openapi.actionSystem.ActionToolbar;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Document;
@@ -102,10 +100,10 @@ public class GeneratorDialog extends DialogWrapper {
     protected JComponent createCenterPanel() {
         // general panel
         final JBPanel centerPanel = new JBPanel(new BorderLayout());
-        centerPanel.setPreferredSize(new Dimension(800, 400));
+        centerPanel.setPreferredSize(new Dimension(800, 500));
 
         // splitter panel - contains tree panel and preview component
-        final JBSplitter splitter = new JBSplitter(0.3f);
+        final JBSplitter splitter = new JBSplitter(0.4f);
         centerPanel.add(splitter, BorderLayout.CENTER);
 
         final JBPanel treePanel = new JBPanel(new BorderLayout());
@@ -189,7 +187,6 @@ public class GeneratorDialog extends DialogWrapper {
             }
         });
 
-
         final JScrollPane scrollPane = ScrollPaneFactory.createScrollPane(tree);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         TreeUtil.expandAll(tree);
@@ -206,7 +203,18 @@ public class GeneratorDialog extends DialogWrapper {
         DefaultActionGroup actions = new DefaultActionGroup();
         actions.add(actionManager.createExpandAllAction(treeExpander, tree));
         actions.add(actionManager.createCollapseAllAction(treeExpander, tree));
-        actions.addSeparator();
+        actions.add(new AnAction(GitignoreBundle.message("dialog.generator.clearSelection"), null, AllIcons.Actions.Cancel){
+            @Override
+            public void update(AnActionEvent e) {
+                e.getPresentation().setEnabled(!checked.isEmpty());
+            }
+
+            @Override
+            public void actionPerformed(AnActionEvent e) {
+                checked.clear();
+                filterTree(profileFilter.getTextEditor().getText());
+            }
+        });
 
         final ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions, true);
         actionToolbar.setTargetComponent(target);
