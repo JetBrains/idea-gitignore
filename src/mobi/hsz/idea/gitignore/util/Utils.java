@@ -22,10 +22,7 @@ import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -146,5 +143,11 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static List<String> getWords(String filter) {
+        List<String> words = new ArrayList<String>(Arrays.asList(filter.toLowerCase().split("\\W+")));
+        words.removeAll(Arrays.asList(null, ""));
+        return words;
     }
 }

@@ -80,12 +80,25 @@ public class Resources {
         private final File file;
         private final String name;
         private final String content;
+        private final Container container;
+
+        public static enum Container {
+            /*USER,*/ ROOT, GLOBAL;
+        }
 
         public Template(File file, String content) {
             this.file = file;
             this.name = file.getName().replace(GitignoreLanguage.FILENAME, "");
             this.content = content;
+            this.container = file.getParent().endsWith("Global") ? Container.GLOBAL : Container.ROOT;
         }
+
+//        public Template(String name, String content) {
+//            this.file = null;
+//            this.name = name;
+//            this.content = content;
+//            this.container = Container.USER;
+//        }
 
         public File getFile() {
             return file;
@@ -97,6 +110,10 @@ public class Resources {
 
         public String getContent() {
             return content;
+        }
+
+        public Container getContainer() {
+            return container;
         }
 
         @Override
