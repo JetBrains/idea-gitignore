@@ -110,9 +110,10 @@ public class GeneratorDialog extends DialogWrapper {
         if (isOKActionEnabled()) {
             String content = "";
             for (Resources.Template template : checked) {
-                content += "### " + template.getName() + " template\n" + template.getContent() + "\n\n";
+                content += GitignoreBundle.message("file.templateSection", template.getName());
+                content += "\n" + template.getContent() + "\n\n";
             }
-            if (!content.equals("")) {
+            if (!content.isEmpty()) {
                 new AppendFileCommandAction(project, file, content).execute();
             }
             super.doOKAction();
