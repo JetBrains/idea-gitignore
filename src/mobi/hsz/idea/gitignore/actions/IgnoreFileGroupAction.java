@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) today.year hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package mobi.hsz.idea.gitignore.actions;
 
 import com.intellij.openapi.actionSystem.ActionGroup;
@@ -18,10 +42,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Group action that ignores specified file or directory.
+ * {@link ActionGroup} expands single action into a more child options to allow user specify the {@link mobi.hsz.idea.gitignore.psi.GitignoreFile}
+ * that will be used for file's path storage.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.5
+ */
 public class IgnoreFileGroupAction extends ActionGroup {
+    /** List of suitable Gitignore {@link VirtualFile}s that can be presented in an IgnoreFile action. */
     private final List<VirtualFile> files = new ArrayList<VirtualFile>();
+
+    /** {@link Project}'s base directory. */
     private VirtualFile baseDir;
 
+    /**
+     * Builds a new instance of {@link IgnoreFileGroupAction}.
+     * Describes action's presentation.
+     */
     public IgnoreFileGroupAction() {
         Presentation p = getTemplatePresentation();
         p.setText(GitignoreBundle.message("action.addToGitignore"));
@@ -29,6 +68,12 @@ public class IgnoreFileGroupAction extends ActionGroup {
         p.setIcon(Icons.FILE);
     }
 
+    /**
+     * Presents a list of suitable Gitignore files that can cover currently selected {@link VirtualFile}.
+     * Shows a subgroup with available files or one option if only one Gitignore file is available.
+     *
+     * @param e action event
+     */
     @Override
     public void update(AnActionEvent e) {
         final VirtualFile file = e.getData(CommonDataKeys.VIRTUAL_FILE);
@@ -47,6 +92,12 @@ public class IgnoreFileGroupAction extends ActionGroup {
         setPopup(files.size() > 1);
     }
 
+    /**
+     * Creates subactions bound to the specified Gitignore {@link VirtualFile}s using {@link IgnoreFileAction}.
+     *
+     * @param e action event
+     * @return actions list
+     */
     @NotNull
     @Override
     public AnAction[] getChildren(@Nullable AnActionEvent e) {
