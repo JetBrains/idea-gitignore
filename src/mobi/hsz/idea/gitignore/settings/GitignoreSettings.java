@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 public class GitignoreSettings implements PersistentStateComponent<Element> {
 
     /** Current plugin version. */
-    private static final String PLUGIN_VERSION = Utils.getPlugin().getVersion();
+    private static final String PLUGIN_VERSION = Utils.getPlugin().getVersion() + "x";
 
     /** Notify about missing Gitignore file in the project. */
     private boolean missingGitignore = true;

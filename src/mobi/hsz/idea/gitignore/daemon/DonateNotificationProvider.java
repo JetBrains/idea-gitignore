@@ -24,7 +24,7 @@
 
 package mobi.hsz.idea.gitignore.daemon;
 
-import com.intellij.ide.BrowserUtil;
+import com.intellij.notification.*;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
@@ -32,15 +32,13 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.settings.GitignoreSettings;
-import mobi.hsz.idea.gitignore.util.Icons;
-import mobi.hsz.idea.gitignore.util.Properties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DonateNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
-    private static final String DONATION_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL";
-    private static final Key<EditorNotificationPanel> KEY = Key.create(GitignoreBundle.message("daemon.donate.me"));
+    private static final Key<EditorNotificationPanel> KEY = Key.create(GitignoreBundle.message("daemon.donate.title"));
 
     private final Project project;
     private final EditorNotifications notifications;
@@ -64,32 +62,17 @@ public class DonateNotificationProvider extends EditorNotifications.Provider<Edi
             return null;
         }
 
-        return createPanel(project);
-    }
+        // TODO: Move to another place - EditorNotifications is pointless here
+        NotificationGroup group = new NotificationGroup(GitignoreLanguage.NAME, NotificationDisplayType.STICKY_BALLOON, true);
+        Notification notification = group.createNotification(
+                GitignoreBundle.message("daemon.donate.title"),
+                GitignoreBundle.message("daemon.donate.content"),
+                NotificationType.INFORMATION,
+                NotificationListener.URL_OPENING_LISTENER
+        );
+        Notifications.Bus.notify(notification);
+        settings.setDonationShown();
 
-    private EditorNotificationPanel createPanel(@NotNull final Project project) {
-        final EditorNotificationPanel panel = new EditorNotificationPanel();
-        panel.setText(GitignoreBundle.message("daemon.donate"));
-        panel.createActionLabel(GitignoreBundle.message("daemon.donate.me"), new Runnable() {
-            @Override
-            public void run() {
-                BrowserUtil.browse(DONATION_URL);
-                settings.setDonationShown();
-                notifications.updateAllNotifications();
-            }
-        });
-        panel.createActionLabel(GitignoreBundle.message("global.cancel"), new Runnable() {
-            @Override
-            public void run() {
-                settings.setDonationShown();
-                notifications.updateAllNotifications();
-            }
-        });
-
-        try { // ignore if older SDK does not support panel icon
-            panel.icon(Icons.FILE);
-        } catch (NoSuchMethodError ignored) {}
-
-        return panel;
+        return null;
     }
 }
