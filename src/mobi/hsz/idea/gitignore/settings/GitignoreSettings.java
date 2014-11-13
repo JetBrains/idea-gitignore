@@ -24,9 +24,13 @@
 
 package mobi.hsz.idea.gitignore.settings;
 
+import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import mobi.hsz.idea.gitignore.util.Utils;
+import org.jdom.Element;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Persistent global settings object for the Gitignore plugin.
@@ -38,10 +42,16 @@ import com.intellij.openapi.components.Storage;
         name = "GitignoreSettings",
         storages = @Storage(id = "other", file = "$APP_CONFIG$/gitignore.xml")
 )
-public class GitignoreSettings {
+public class GitignoreSettings implements PersistentStateComponent<Element> {
+
+    /** Current plugin version. */
+    private static final String PLUGIN_VERSION = Utils.getPlugin().getVersion();
 
     /** Notify about missing Gitignore file in the project. */
     private boolean missingGitignore = true;
+
+    /** Shows information about donation. */
+    private String donationShown;
 
 
     /**
@@ -51,6 +61,35 @@ public class GitignoreSettings {
      */
     public static GitignoreSettings getInstance() {
         return ServiceManager.getService(GitignoreSettings.class);
+    }
+
+    /**
+     * Get the settings state as a DOM element.
+     *
+     * @return an ready to serialize DOM {@link Element}.
+     * @see {@link #loadState(Element)}
+     */
+    @Nullable
+    @Override
+    public Element getState() {
+        final Element element = new Element("MarkdownSettings");
+        element.setAttribute("missingGitignore", Boolean.toString(missingGitignore));
+        element.setAttribute("donationShown", donationShown);
+        return element;
+    }
+
+    /**
+     * Load the settings state from the DOM {@link Element}.
+     *
+     * @param element the {@link Element} to load values from.
+     * @see {@link #getState()}
+     */
+    @Override
+    public void loadState(Element element) {
+        String value = element.getAttributeValue("missingGitignore");
+        if (value != null) missingGitignore = Boolean.parseBoolean(value);
+        value = element.getAttributeValue("donationShown");
+        if (value != null) donationShown = value;
     }
 
 
@@ -71,5 +110,21 @@ public class GitignoreSettings {
      */
     public void setMissingGitignore(boolean missingGitignore) {
         this.missingGitignore = missingGitignore;
+    }
+
+    /**
+     * Shows information about donation.
+     *
+     * @return {@link #donationShown} equals to the {@link #PLUGIN_VERSION}
+     */
+    public boolean isDonationShown() {
+        return donationShown != null && donationShown.equals(PLUGIN_VERSION);
+    }
+
+    /**
+     * Sets {@link #donationShown} to the {@link #PLUGIN_VERSION} value.
+     */
+    public void setDonationShown() {
+        this.donationShown = PLUGIN_VERSION;
     }
 }

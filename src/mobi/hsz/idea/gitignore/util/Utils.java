@@ -24,6 +24,9 @@
 
 package mobi.hsz.idea.gitignore.util;
 
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.ide.plugins.PluginManager;
+import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -43,6 +46,7 @@ import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,18 +54,11 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Utils {
-    public static final double JAVA_VERSION = getJavaVersion();
+    /** Gitignore plugin ID */
+    @NonNls
+    private static final String PLUGIN_ID = "mobi.hsz.idea.gitignore";
 
     private Utils() {
-    }
-
-    private static double getJavaVersion() {
-        String version = System.getProperty("java.version");
-        int pos = 0, count = 0;
-        for (; pos < version.length() && count < 2; pos++) {
-            if (version.charAt(pos) == '.') count++;
-        }
-        return Double.parseDouble(version.substring(0, pos - 1));
     }
 
     @Nullable
@@ -173,5 +170,14 @@ public class Utils {
         List<String> words = new ArrayList<String>(Arrays.asList(filter.toLowerCase().split("\\W+")));
         words.removeAll(Arrays.asList(null, ""));
         return words;
+    }
+
+    /**
+     * Returns Gitignore plugin information.
+     *
+     * @return {@link IdeaPluginDescriptor}
+     */
+    public static IdeaPluginDescriptor getPlugin() {
+        return PluginManager.getPlugin(PluginId.getId(PLUGIN_ID));
     }
 }

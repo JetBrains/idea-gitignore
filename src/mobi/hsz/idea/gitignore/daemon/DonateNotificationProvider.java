@@ -32,6 +32,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.settings.GitignoreSettings;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Properties;
 import org.jetbrains.annotations.NotNull;
@@ -43,10 +44,12 @@ public class DonateNotificationProvider extends EditorNotifications.Provider<Edi
 
     private final Project project;
     private final EditorNotifications notifications;
+    private final GitignoreSettings settings;
 
     public DonateNotificationProvider(Project project, @NotNull EditorNotifications notifications) {
         this.project = project;
         this.notifications = notifications;
+        this.settings = GitignoreSettings.getInstance();
     }
 
     @Override
@@ -57,7 +60,7 @@ public class DonateNotificationProvider extends EditorNotifications.Provider<Edi
     @Nullable
     @Override
     public EditorNotificationPanel createNotificationPanel(VirtualFile file, FileEditor fileEditor) {
-        if (Properties.isIgnoreDonation(project)) {
+        if (settings.isDonationShown()) {
             return null;
         }
 
@@ -71,14 +74,14 @@ public class DonateNotificationProvider extends EditorNotifications.Provider<Edi
             @Override
             public void run() {
                 BrowserUtil.browse(DONATION_URL);
-                Properties.setIgnoreDonation(project);
+                settings.setDonationShown();
                 notifications.updateAllNotifications();
             }
         });
         panel.createActionLabel(GitignoreBundle.message("global.cancel"), new Runnable() {
             @Override
             public void run() {
-                Properties.setIgnoreDonation(project);
+                settings.setDonationShown();
                 notifications.updateAllNotifications();
             }
         });

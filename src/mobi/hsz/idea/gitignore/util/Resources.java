@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.util;
 
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -34,6 +35,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Resources {
+
+    @NonNls
+    private static final String GITIGNORE_TEMPLATES_PATH = "/templates.list";
 
     private static List<Template> templates;
 
@@ -50,7 +54,7 @@ public class Resources {
             templates = new ArrayList<Template>();
 
             try {
-                String list = getResourceContent("/templates.list");
+                String list = getResourceContent(GITIGNORE_TEMPLATES_PATH);
                 BufferedReader br = new BufferedReader(new StringReader(list));
 
                 for (String line; (line = br.readLine()) != null; ) {
