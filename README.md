@@ -66,6 +66,12 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.6.1
+
+- Global settings section</li>
+- Optional missing gitignore file check ([#18](https://github.com/hsz/idea-gitignore/issues/18))
+- Fixed donation notification ([#59](https://github.com/hsz/idea-gitignore/issues/59))
+
 Version 0.6
 
 - Reimplemented templates generator (tree structure, checkboxes allow to add many templates at once)
