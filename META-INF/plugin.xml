@@ -188,6 +188,12 @@
                 file="colorSchemes/GitignoreDarcula.xml"
                 scheme="Darcula"/>
 
+        <applicationConfigurable
+                instance="mobi.hsz.idea.gitignore.settings.GitignoreSettingsConfigurable"/>
+
+        <applicationService
+                serviceInterface="mobi.hsz.idea.gitignore.settings.GitignoreSettings"
+                serviceImplementation="mobi.hsz.idea.gitignore.settings.GitignoreSettings"/>
 
         <codeInsight.lineMarkerProvider
                 language="Gitignore"

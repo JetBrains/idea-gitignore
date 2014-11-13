@@ -37,6 +37,7 @@ import com.intellij.ui.EditorNotifications;
 import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
+import mobi.hsz.idea.gitignore.settings.GitignoreSettings;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Properties;
@@ -47,10 +48,12 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     private static final Key<EditorNotificationPanel> KEY = Key.create(GitignoreBundle.message("daemon.missingGitignore.create"));
     private final Project project;
     private final EditorNotifications notifications;
+    private final GitignoreSettings settings;
 
     public MissingGitignoreNotificationProvider(Project project, @NotNull EditorNotifications notifications) {
         this.project = project;
         this.notifications = notifications;
+        this.settings = GitignoreSettings.getInstance();
     }
 
     @Override
@@ -61,13 +64,20 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     @Nullable
     @Override
     public EditorNotificationPanel createNotificationPanel(VirtualFile file, FileEditor fileEditor) {
+        // Break if feature is disabled in the Settings
+        if (!settings.isMissingGitignore()) {
+            return null;
+        }
+        // Break if user canceled previously this notification
         if (Properties.isIgnoreMissingGitignore(project)) {
             return null;
         }
+        // Break if there is no Git directory in the project
         VirtualFile gitDirectory = project.getBaseDir().findChild(GitignoreLanguage.GIT_DIRECTORY);
         if (gitDirectory == null || !gitDirectory.isDirectory()) {
             return null;
         }
+        // Break if there is Gitignore file already
         VirtualFile gitignoreFile = project.getBaseDir().findChild(GitignoreLanguage.FILENAME);
         if (gitignoreFile != null) {
             return null;
