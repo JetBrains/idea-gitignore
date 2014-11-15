@@ -51,7 +51,7 @@ public class GitignoreSettings implements PersistentStateComponent<Element> {
     private boolean missingGitignore = true;
 
     /** Shows information about donation. */
-    private String donationShown;
+    private String donationShown = "";
 
 
     /**
