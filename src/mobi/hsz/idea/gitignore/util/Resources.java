@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.util;
 
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.settings.GitignoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +40,7 @@ public class Resources {
     @NonNls
     private static final String GITIGNORE_TEMPLATES_PATH = "/templates.list";
 
-    private static List<Template> templates;
+    private static List<Template> resourceTemplates;
 
     private Resources() {
     }
@@ -50,9 +51,10 @@ public class Resources {
      * @return Gitignore templates list
      */
     public static List<Template> getGitignoreTemplates() {
-        if (templates == null) {
-            templates = new ArrayList<Template>();
+        if (resourceTemplates == null) {
+            resourceTemplates = new ArrayList<Template>();
 
+            // fetch templates from resources
             try {
                 String list = getResourceContent(GITIGNORE_TEMPLATES_PATH);
                 BufferedReader br = new BufferedReader(new StringReader(list));
@@ -61,7 +63,7 @@ public class Resources {
                     line = "/" + line;
                     File file = getResource(line);
                     String content = getResourceContent(line);
-                    templates.add(new Template(file, content));
+                    resourceTemplates.add(new Template(file, content));
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -69,6 +71,16 @@ public class Resources {
                 e.printStackTrace();
             }
         }
+
+        final List<Template> templates = new ArrayList<Template>();
+        templates.addAll(resourceTemplates);
+
+        // fetch user templates
+        GitignoreSettings settings = GitignoreSettings.getInstance();
+        for (GitignoreSettings.UserTemplate userTemplate : settings.getUserTemplates()) {
+            templates.add(new Template(userTemplate));
+        }
+
         return templates;
     }
 
@@ -111,7 +123,7 @@ public class Resources {
         private final Container container;
 
         public static enum Container {
-            /*USER,*/ ROOT, GLOBAL;
+            USER, ROOT, GLOBAL;
         }
 
         public Template(File file, String content) {
@@ -121,12 +133,12 @@ public class Resources {
             this.container = file.getParent().endsWith("Global") ? Container.GLOBAL : Container.ROOT;
         }
 
-//        public Template(String name, String content) {
-//            this.file = null;
-//            this.name = name;
-//            this.content = content;
-//            this.container = Container.USER;
-//        }
+        public Template(GitignoreSettings.UserTemplate userTemplate) {
+            this.file = null;
+            this.name = userTemplate.getName();
+            this.content = userTemplate.getContent();
+            this.container = Container.USER;
+        }
 
         public File getFile() {
             return file;

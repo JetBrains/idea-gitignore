@@ -28,6 +28,7 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.ui.GitignoreSettingsPanel;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -94,6 +95,7 @@ public class GitignoreSettingsConfigurable implements Configurable {
     public boolean isModified() {
         return settingsPanel == null
                 || settingsPanel.missingGitignore == null || settings.isMissingGitignore() != settingsPanel.missingGitignore.isSelected()
+                || settingsPanel.templatesListPanel == null || !Utils.equalLists(settings.getUserTemplates(), settingsPanel.templatesListPanel.getList())
                 ;
     }
 
@@ -104,6 +106,7 @@ public class GitignoreSettingsConfigurable implements Configurable {
     public void apply() throws ConfigurationException {
         if (settingsPanel == null) return;
         settings.setMissingGitignore(settingsPanel.missingGitignore != null && settingsPanel.missingGitignore.isSelected());
+        settings.setUserTemplates(settingsPanel.templatesListPanel.getList());
     }
 
     /**
@@ -113,6 +116,7 @@ public class GitignoreSettingsConfigurable implements Configurable {
     public void reset() {
         if (settingsPanel == null) return;
         if (settingsPanel.missingGitignore != null) settingsPanel.missingGitignore.setSelected(settings.isMissingGitignore());
+        if (settingsPanel.templatesListPanel != null) settingsPanel.templatesListPanel.resetFrom(settings.getUserTemplates());
     }
 
     /**

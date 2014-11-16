@@ -24,9 +24,36 @@
 
 package mobi.hsz.idea.gitignore.ui;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.CommandProcessor;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.EditorSettings;
+import com.intellij.openapi.editor.colors.EditorColors;
+import com.intellij.openapi.editor.colors.EditorColorsScheme;
+import com.intellij.openapi.editor.event.DocumentEvent;
+import com.intellij.openapi.editor.event.DocumentListener;
+import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.ui.InputValidatorEx;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.Splitter;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.ui.AddEditDeleteListPanel;
+import com.intellij.ui.components.JBLabel;
+import com.intellij.ui.components.JBPanel;
+import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.file.GitignoreFileType;
 import mobi.hsz.idea.gitignore.settings.GitignoreSettings;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * UI form for {@link GitignoreSettings} edition.
@@ -42,4 +69,289 @@ public class GitignoreSettingsPanel {
     /** Form element for {@link GitignoreSettings#missingGitignore}. */
     public JCheckBox missingGitignore;
 
+    /** Templates list panel. */
+    public TemplatesListPanel templatesListPanel;
+
+    /** Splitter element. */
+    private Splitter templatesSplitter;
+
+    /** Editor panel element. */
+    private EditorPanel editorPanel;
+
+    /** Create UI components. */
+    private void createUIComponents() {
+        templatesListPanel = new TemplatesListPanel();
+        editorPanel = new EditorPanel();
+
+        templatesSplitter = new Splitter(false, 0.3f) {
+            @Override
+            public Dimension getMinimumSize() {
+                Dimension dimension = super.getMinimumSize();
+                dimension.height = 300;
+                return dimension;
+            }
+        };
+        templatesSplitter.setFirstComponent(templatesListPanel);
+        templatesSplitter.setSecondComponent(editorPanel);
+    }
+
+    /**
+     * Creates and configures template preview editor.
+     *
+     * @param document virtual editor document
+     * @return editor
+     */
+    @NotNull
+    private static Editor createPreviewEditor(@NotNull Document document) {
+        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, null, GitignoreFileType.INSTANCE, false);
+        final EditorSettings settings = editor.getSettings();
+        settings.setLineNumbersShown(false);
+        settings.setAdditionalLinesCount(1);
+        settings.setAdditionalColumnsCount(1);
+        settings.setRightMarginShown(false);
+        settings.setFoldingOutlineShown(false);
+        settings.setLineMarkerAreaShown(false);
+        settings.setIndentGuidesShown(false);
+        settings.setVirtualSpace(false);
+        settings.setWheelFontChangeEnabled(false);
+
+        EditorColorsScheme colorsScheme = editor.getColorsScheme();
+        colorsScheme.setColor(EditorColors.CARET_ROW_COLOR, null);
+        return editor;
+    }
+
+    /**
+     * Extension for the CRUD list panel.
+     */
+    public class TemplatesListPanel extends AddEditDeleteListPanel<GitignoreSettings.UserTemplate> {
+
+        /** Constructs CRUD panel with list listener for editor updating. */
+        public TemplatesListPanel() {
+            super(null, new ArrayList<GitignoreSettings.UserTemplate>());
+            myList.addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    boolean enabled = myListModel.size() > 0;
+                    editorPanel.setEnabled(enabled);
+
+                    if (enabled) {
+                        GitignoreSettings.UserTemplate template = getCurrentItem();
+                        editorPanel.setContent(template != null ? template.getContent() : "");
+                    }
+                }
+            });
+        }
+
+        /**
+         * Opens edit dialog for new template.
+         *
+         * @return template
+         */
+        @Nullable
+        @Override
+        protected GitignoreSettings.UserTemplate findItemToAdd() {
+            return showEditDialog(new GitignoreSettings.UserTemplate());
+        }
+
+        /**
+         * SHows edit dialog and validates user's input name.
+         *
+         * @param initialValue template
+         * @return modified template
+         */
+        @Nullable
+        private GitignoreSettings.UserTemplate showEditDialog(@NotNull final GitignoreSettings.UserTemplate initialValue) {
+            String name = Messages.showInputDialog(this,
+                    GitignoreBundle.message("settings.userTemplates.dialogDescription"),
+                    GitignoreBundle.message("settings.userTemplates.dialogTitle"),
+                    Messages.getQuestionIcon(), initialValue.getName(), new InputValidatorEx() {
+
+                /**
+                 * Checks whether the <code>inputString</code> is valid. It is invoked each time
+                 * input changes.
+                 *
+                 * @param inputString the input to check
+                 * @return true if input string is valid
+                 */
+                @Override
+                public boolean checkInput(String inputString) {
+                    return !StringUtil.isEmpty(inputString);
+                }
+
+                /**
+                 * This method is invoked just before message dialog is closed with OK code.
+                 * If <code>false</code> is returned then then the message dialog will not be closed.
+                 *
+                 * @param inputString the input to check
+                 * @return true if the dialog could be closed, false otherwhise.
+                 */
+                @Override
+                public boolean canClose(String inputString) {
+                    return !StringUtil.isEmpty(inputString);
+                }
+
+                /**
+                 * Returns error message depending on the input string.
+                 *
+                 * @param inputString the input to check
+                 * @return error text
+                 */
+                @Nullable
+                @Override
+                public String getErrorText(String inputString) {
+                    if (!checkInput(inputString)) {
+                        return GitignoreBundle.message("settings.userTemplates.dialogError");
+                    }
+                    return null;
+                }
+            });
+
+            if (name != null) {
+                initialValue.setName(name);
+            }
+            return initialValue.isEmpty() ? null : initialValue;
+        }
+
+        /**
+         * Fills list element with given templates list.
+         *
+         * @param userTemplates templates list
+         */
+        public void resetFrom(List<GitignoreSettings.UserTemplate> userTemplates) {
+            myListModel.clear();
+            for (GitignoreSettings.UserTemplate template : userTemplates) {
+                myListModel.addElement(new GitignoreSettings.UserTemplate(template.getName(), template.getContent()));
+            }
+        }
+
+        /**
+         * Moves and resizes this component.
+         *
+         * @param x the new <i>x</i>-coordinate of this component
+         * @param y the new <i>y</i>-coordinate of this component
+         * @param width the new <code>width</code> of this component
+         * @param height the new <code>height</code> of this component
+         */
+        @Override
+        public void setBounds(int x, int y, int width, int height) {
+            super.setBounds(x, y, width, height);
+        }
+
+        /**
+         * Edits given template.
+         *
+         * @param item template
+         * @return modified template
+         */
+        @Override
+        protected GitignoreSettings.UserTemplate editSelectedItem(GitignoreSettings.UserTemplate item) {
+            return showEditDialog(item);
+        }
+
+        /**
+         * Returns current templates list.
+         *
+         * @return templates list
+         */
+        public List<GitignoreSettings.UserTemplate> getList() {
+            ArrayList<GitignoreSettings.UserTemplate> list = new ArrayList<GitignoreSettings.UserTemplate>();
+            for (int i = 0; i < myListModel.size(); i++) {
+                list.add((GitignoreSettings.UserTemplate) myListModel.getElementAt(i));
+            }
+            return list;
+        }
+
+        /**
+         * Updates editor component with given content.
+         *
+         * @param content new content
+         */
+        public void updateContent(String content) {
+            GitignoreSettings.UserTemplate template = getCurrentItem();
+            if (template != null) {
+                template.setContent(content);
+            }
+        }
+
+        /**
+         * Returns currently selected template.
+         *
+         * @return template or null if none selected
+         */
+        @Nullable
+        public GitignoreSettings.UserTemplate getCurrentItem() {
+            int index = myList.getSelectedIndex();
+            if (index == -1) {
+                return null;
+            }
+            return (GitignoreSettings.UserTemplate) myListModel.get(index);
+        }
+    }
+
+    /**
+     * Editor panel class that displays document editor or label if no template is selected.
+     */
+    private class EditorPanel extends JBPanel {
+        private final Editor preview;
+        private final JBLabel label;
+        private final Document previewDocument;
+
+        /**
+         * Constructor that creates document editor, empty content label.
+         */
+        public EditorPanel() {
+            super(new BorderLayout());
+            this.previewDocument = EditorFactory.getInstance().createDocument("");
+            this.label = new JBLabel(GitignoreBundle.message("settings.userTemplates.noTemplateSelected"), JBLabel.CENTER);
+            this.preview = createPreviewEditor(previewDocument);
+            this.preview.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void beforeDocumentChange(DocumentEvent event) {
+                }
+
+                @Override
+                public void documentChanged(DocumentEvent event) {
+                    templatesListPanel.updateContent(event.getDocument().getText());
+                }
+            });
+
+            setEnabled(false);
+        }
+
+        /**
+         * Shows or hides label and editor.
+         *
+         * @param enabled if true shows editor, else shows label
+         */
+        public void setEnabled(boolean enabled) {
+            if (enabled) {
+                remove(this.label);
+                add(this.preview.getComponent());
+            } else {
+                add(this.label);
+                remove(this.preview.getComponent());
+            }
+            revalidate();
+            repaint();
+        }
+
+        /**
+         * Sets new content to the editor component.
+         *
+         * @param content new content
+         */
+        public void setContent(@NotNull final String content) {
+            ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                @Override
+                public void run() {
+                    CommandProcessor.getInstance().runUndoTransparentAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            previewDocument.replaceString(0, previewDocument.getTextLength(), content);
+                        }
+                    });
+                }
+            });
+        }
+    }
 }

@@ -30,7 +30,11 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jdom.Element;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Persistent global settings object for the Gitignore plugin.
@@ -52,6 +56,9 @@ public class GitignoreSettings implements PersistentStateComponent<Element> {
 
     /** Shows information about donation. */
     private String donationShown = "";
+
+    /** Lists all user defined templates. */
+    private List<UserTemplate> userTemplates = new ArrayList<UserTemplate>();
 
 
     /**
@@ -75,6 +82,16 @@ public class GitignoreSettings implements PersistentStateComponent<Element> {
         final Element element = new Element("MarkdownSettings");
         element.setAttribute("missingGitignore", Boolean.toString(missingGitignore));
         element.setAttribute("donationShown", donationShown);
+
+        Element templates = new Element("userTemplates");
+        for (UserTemplate userTemplate : userTemplates) {
+            Element templateElement = new Element("template");
+            templateElement.setAttribute("name", userTemplate.getName());
+            templateElement.addContent(userTemplate.getContent());
+            templates.addContent(templateElement);
+        }
+        element.addContent(templates);
+
         return element;
     }
 
@@ -90,6 +107,14 @@ public class GitignoreSettings implements PersistentStateComponent<Element> {
         if (value != null) missingGitignore = Boolean.parseBoolean(value);
         value = element.getAttributeValue("donationShown");
         if (value != null) donationShown = value;
+
+        userTemplates.clear();
+        Element templates = element.getChild("userTemplates");
+        if (templates != null) {
+            for (Element template : templates.getChildren()) {
+                userTemplates.add(new UserTemplate(template.getAttributeValue("name"), template.getText()));
+            }
+        }
     }
 
 
@@ -126,5 +151,118 @@ public class GitignoreSettings implements PersistentStateComponent<Element> {
      */
     public void setDonationShown() {
         this.donationShown = PLUGIN_VERSION;
+    }
+
+    /**
+     * Gets the list of user defined templates.
+     *
+     * @return user templates
+     */
+    public List<UserTemplate> getUserTemplates() {
+        return userTemplates;
+    }
+
+    /**
+     * Sets the list of user defined templates.
+     *
+     * @param userTemplates user templates
+     */
+    public void setUserTemplates(@NotNull List<UserTemplate> userTemplates) {
+        this.userTemplates.clear();
+        this.userTemplates.addAll(userTemplates);
+    }
+
+    /**
+     * User defined template model.
+     */
+    public static class UserTemplate {
+        /** Template name. */
+        private String name = "";
+
+        /** Template content. */
+        private String content = "";
+
+        public UserTemplate() {
+        }
+
+        public UserTemplate(@NotNull String name, @NotNull String content) {
+            this.name = name;
+            this.content = content;
+        }
+
+        /**
+         * Sets template name.
+         *
+         * @param name template name
+         */
+        public void setName(@NotNull String name) {
+            this.name = name;
+        }
+
+        /**
+         * Gets template name.
+         *
+         * @return template name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Sets template content.
+         *
+         * @param content template content
+         */
+        public void setContent(@NotNull String content) {
+            this.content = content;
+        }
+
+        /**
+         * Gets template content.
+         *
+         * @return template content
+         */
+        public String getContent() {
+            return content;
+        }
+
+        /**
+         * Returns a string representation of the object.
+         *
+         * @return string representation
+         */
+        @Override
+        public String toString() {
+            return this.name;
+        }
+
+        /**
+         * Checks if template has set name or content.
+         *
+         * @return true if name or content is filled
+         */
+        public boolean isEmpty() {
+            return this.name.isEmpty() && this.content.isEmpty();
+        }
+
+        /**
+         * Checks if objects are equal.
+         *
+         * @param obj another template
+         * @return templates are equal
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof UserTemplate)) {
+                return false;
+            }
+            if (obj == this) {
+                return true;
+            }
+
+            UserTemplate t = (UserTemplate) obj;
+            return (getName() != null && getName().equals(t.getName()) || (getName() == null && t.getName() == null))
+                    && (getContent() != null && getContent().equals(t.getContent()) || (getContent() == null && t.getContent() == null));
+        }
     }
 }

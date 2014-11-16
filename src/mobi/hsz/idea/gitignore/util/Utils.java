@@ -180,4 +180,15 @@ public class Utils {
     public static IdeaPluginDescriptor getPlugin() {
         return PluginManager.getPlugin(PluginId.getId(PLUGIN_ID));
     }
+
+    /**
+     * Checks if lists are equal.
+     *
+     * @param l1 first list
+     * @param l2 second list
+     * @return lists are equal
+     */
+    public static boolean equalLists(@NotNull List<?> l1, @NotNull List<?> l2) {
+        return l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1);
+    }
 }

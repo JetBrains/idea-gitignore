@@ -143,7 +143,7 @@ public class GeneratorDialog extends DialogWrapper {
 
         final JBPanel northPanel = new JBPanel(new GridBagLayout());
         northPanel.setBorder(IdeBorderFactory.createEmptyBorder(2, 0, 2, 0));
-        northPanel.add(createTreeToolbarPanel(treeScrollPanel).getComponent(), new GridBagConstraints(0, 0, 1, 1, 0.5, 1, GridBagConstraints.BASELINE_LEADING, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        northPanel.add(createTreeToolbarPanel(treeScrollPanel).getComponent(), new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_LEADING, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         northPanel.add(profileFilter, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         treePanel.add(northPanel, BorderLayout.NORTH);
 
@@ -228,7 +228,7 @@ public class GeneratorDialog extends DialogWrapper {
         DefaultActionGroup actions = new DefaultActionGroup();
         actions.add(actionManager.createExpandAllAction(treeExpander, tree));
         actions.add(actionManager.createCollapseAllAction(treeExpander, tree));
-        actions.add(new AnAction(GitignoreBundle.message("dialog.generator.clearSelection"), null, AllIcons.Actions.Cancel){
+        actions.add(new AnAction(GitignoreBundle.message("dialog.generator.unselectAll"), null, AllIcons.Actions.Unselectall){
             @Override
             public void update(AnActionEvent e) {
                 e.getPresentation().setEnabled(!checked.isEmpty());
@@ -238,6 +238,23 @@ public class GeneratorDialog extends DialogWrapper {
             public void actionPerformed(AnActionEvent e) {
                 checked.clear();
                 filterTree(profileFilter.getTextEditor().getText());
+            }
+        });
+        actions.add(new AnAction(GitignoreBundle.message("dialog.generator.addUserTemplate"), null, AllIcons.General.Add) {
+            @Override
+            public void actionPerformed(AnActionEvent e) {
+
+            }
+        });
+        actions.add(new AnAction(GitignoreBundle.message("dialog.generator.removeUserTemplate"), null, AllIcons.General.Remove) {
+            @Override
+            public void update(AnActionEvent e) {
+                e.getPresentation().setEnabled(false);
+            }
+
+            @Override
+            public void actionPerformed(AnActionEvent e) {
+
             }
         });
 
