@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.gitignore support</name>
-    <version>0.6.1</version>
+    <version>0.7</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -9,8 +9,9 @@
       <br/>
 
       <a href="https://github.com/hsz/idea-gitignore">GitHub</a> |
-      <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a> |
-      <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL">Donate</a>
+      <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a> | Donate (
+      <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL">PayPal</a> or
+      <a href="https://blockchain.info/pl/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1">BTC</a> )
       <br/>
       <br/>
 
@@ -51,6 +52,13 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+      Version 0.7
+      <ul>
+        <li>User templates - you can create your own templates in <b>Settings > Gitignore > User templates</b></li>
+        <li>Fixed JDOM error (<a href="https://github.com/hsz/idea-gitignore/issues/62">#62</a>) - thanks to <a href="https://github.com/danpfe">@danpfe</a></li>
+        <li>Fixed donation URL</li>
+      </ul>
 
       Version 0.6.1
       <ul>

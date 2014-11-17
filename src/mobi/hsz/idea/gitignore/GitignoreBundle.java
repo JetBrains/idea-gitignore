@@ -37,9 +37,6 @@ import java.util.ResourceBundle;
  * @since 0.4
  */
 public class GitignoreBundle {
-    // TODO Move to the Settings
-    public static final String VERSION = "0.6";
-
     /** The {@link ResourceBundle} path. */
     @NonNls
     private static final String BUNDLE_NAME = "messages.GitignoreBundle";

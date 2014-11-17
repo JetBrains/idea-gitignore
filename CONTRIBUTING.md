@@ -19,8 +19,9 @@ Author
 
 **Contributors**
 
-[**@zolotov** Alexander Zolotov](https://github.com/zolotov)
-[**@bedla** Ivo Šmíd](https://github.com/bedla)
+- [**@zolotov** Alexander Zolotov](https://github.com/zolotov)
+- [**@bedla** Ivo Šmíd](https://github.com/bedla)
+- [**@danpfe**](https://github.com/danpfe)
 
 License
 -------

@@ -66,6 +66,11 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.7
+- User templates - you can create your own templates in <kbd>Settings > Gitignore > User templates</kbd>
+- Fixed JDOM error ([#62](https://github.com/hsz/idea-gitignore/issues/62)) - *thanks to [@danpfe](https://github.com/danpfe)*
+- Fixed donation URL
+
 Version 0.6.1
 
 - Global settings section</li>
@@ -212,8 +217,9 @@ Developed By
 
 **Contributors**
 
-[**@zolotov** Alexander Zolotov](https://github.com/zolotov)
-[**@bedla** Ivo Šmíd](https://github.com/bedla)
+- [**@zolotov** Alexander Zolotov](https://github.com/zolotov)
+- [**@bedla** Ivo Šmíd](https://github.com/bedla)
+- [**@danpfe**](https://github.com/danpfe)
 
 
 License
