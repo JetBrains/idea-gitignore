@@ -31,15 +31,14 @@
         <li>Comments and brackets support</li>
         <li>Navigation to entries in Project view</li>
         <li>Renaming entries from Gitignore file</li>
+        <li>Optional suggestion to add .gitignore file</li>
       </ul>
 
       <b><i>Feature requests:</i></b>
       <ul>
-        <li><i>Better ignored files list</i></li>
-        <li><i>Optional suggestion to add .gitignore file</i></li>
-        <li><i>User custom ignore templates</i></li>
         <li><i>Node Packaged Modules support</i></li>
         <li><i>Mercurial support</i></li>
+        <li><i>Better ignored files list</i></li>
       </ul>
 
       <br/>

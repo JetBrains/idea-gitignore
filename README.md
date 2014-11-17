@@ -24,6 +24,7 @@ Features
 
 - `.gitignore` files syntax highlight
 - Gitignore templates filtering and selecting in rules generator by name and content
+- User custom templates
 - Show ignored files by specified Gitignore file (right click on `.gitignore` file)
 - Create `.gitignore` file in currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
@@ -33,14 +34,13 @@ Features
 - Comments and brackets support
 - Navigation to entries in Project view
 - Renaming entries from Gitignore file
+- Optional suggestion to add .gitignore file
 
 *Feature requests:*
 
-- *Better ignored files list*
-- *Optional suggestion to add .gitignore file*
-- *User custom ignore templates*
 - *Node Packaged Modules support*
 - *Mercurial support*
+- *Better ignored files list*
 
 
 Installation
@@ -67,6 +67,7 @@ Changelog
 ---------
 
 Version 0.7
+
 - User templates - you can create your own templates in <kbd>Settings > Gitignore > User templates</kbd>
 - Fixed JDOM error ([#62](https://github.com/hsz/idea-gitignore/issues/62)) - *thanks to [@danpfe](https://github.com/danpfe)*
 - Fixed donation URL
