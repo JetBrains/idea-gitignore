@@ -240,23 +240,6 @@ public class GeneratorDialog extends DialogWrapper {
                 filterTree(profileFilter.getTextEditor().getText());
             }
         });
-        actions.add(new AnAction(GitignoreBundle.message("dialog.generator.addUserTemplate"), null, AllIcons.General.Add) {
-            @Override
-            public void actionPerformed(AnActionEvent e) {
-
-            }
-        });
-        actions.add(new AnAction(GitignoreBundle.message("dialog.generator.removeUserTemplate"), null, AllIcons.General.Remove) {
-            @Override
-            public void update(AnActionEvent e) {
-                e.getPresentation().setEnabled(false);
-            }
-
-            @Override
-            public void actionPerformed(AnActionEvent e) {
-
-            }
-        });
 
         final ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions, true);
         actionToolbar.setTargetComponent(target);
