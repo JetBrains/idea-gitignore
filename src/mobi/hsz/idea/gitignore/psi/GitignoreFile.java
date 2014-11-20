@@ -31,17 +31,34 @@ import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.file.GitignoreFileType;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Base plugin file.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.1
+ */
 public class GitignoreFile extends PsiFileBase {
+    /** Builds a new instance of {@link GitignoreFile}. */
     public GitignoreFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, GitignoreLanguage.INSTANCE);
     }
 
+    /**
+     * Returns the file type for the file.
+     *
+     * @return the file type instance.
+     */
     @NotNull
     @Override
     public FileType getFileType() {
         return GitignoreFileType.INSTANCE;
     }
 
+    /**
+     * Returns @{link GitignoreFile} string interpretation.
+     *
+     * @return string interpretation
+     */
     @Override
     public String toString() {
         return GitignoreLanguage.NAME + " file";

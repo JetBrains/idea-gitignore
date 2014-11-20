@@ -29,7 +29,14 @@ import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Custom element type.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.1
+ */
 public class GitignoreElementType extends IElementType {
+    /** Build a new instance of @{link GitignoreElementType} */
     public GitignoreElementType(@NotNull @NonNls String debugName) {
         super(debugName, GitignoreLanguage.INSTANCE);
     }

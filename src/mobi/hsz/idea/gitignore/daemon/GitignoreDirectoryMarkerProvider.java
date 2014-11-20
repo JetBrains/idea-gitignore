@@ -39,7 +39,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * {@link LineMarkerProvider} that marks entry lines with directory icon if they point to the directory in virtual system.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.5
+ */
 public class GitignoreDirectoryMarkerProvider implements LineMarkerProvider {
+    /**
+     * Returns {@link LineMarkerInfo} with set {@link PlatformIcons#FOLDER_ICON} if entry points to the directory.
+     *
+     * @param element current element
+     * @return <code>null</code> if entry is not a directory
+     */
     @Nullable
     @Override
     public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
@@ -67,6 +79,12 @@ public class GitignoreDirectoryMarkerProvider implements LineMarkerProvider {
         return null;
     }
 
+    /**
+     * Mocked method.
+     *
+     * @param elements unused parameter
+     * @param result   unused parameter
+     */
     @Override
     public void collectSlowLineMarkers(@NotNull List<PsiElement> elements, @NotNull Collection<LineMarkerInfo> result) {
     }

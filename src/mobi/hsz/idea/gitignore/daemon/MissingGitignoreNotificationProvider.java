@@ -44,23 +44,55 @@ import mobi.hsz.idea.gitignore.util.Properties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Editor notification provider that checks if there is {@link GitignoreLanguage#FILENAME} in root directory
+ * and suggest to create one.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.3.3
+ */
 public class MissingGitignoreNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
+    /** Notification key. */
     private static final Key<EditorNotificationPanel> KEY = Key.create(GitignoreBundle.message("daemon.missingGitignore.create"));
+
+    /** Current project. */
     private final Project project;
+
+    /** Notifications component. */
     private final EditorNotifications notifications;
+
+    /** Plugin settings holder. */
     private final GitignoreSettings settings;
 
+    /**
+     * Builds a new instance of {@link MissingGitignoreNotificationProvider}.
+     *
+     * @param project       current project
+     * @param notifications notifications component
+     */
     public MissingGitignoreNotificationProvider(Project project, @NotNull EditorNotifications notifications) {
         this.project = project;
         this.notifications = notifications;
         this.settings = GitignoreSettings.getInstance();
     }
 
+    /**
+     * Gets notification key.
+     *
+     * @return notification key
+     */
     @Override
     public Key<EditorNotificationPanel> getKey() {
         return KEY;
     }
 
+    /**
+     * Creates notification panel for given file and checks if is allowed to show the notification.
+     *
+     * @param file       current file
+     * @param fileEditor current file editor
+     * @return created notification panel
+     */
     @Nullable
     @Override
     public EditorNotificationPanel createNotificationPanel(VirtualFile file, FileEditor fileEditor) {
@@ -86,6 +118,12 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
         return createPanel(project);
     }
 
+    /**
+     * Creates notification panel.
+     *
+     * @param project current project
+     * @return notification panel
+     */
     private EditorNotificationPanel createPanel(@NotNull final Project project) {
         final EditorNotificationPanel panel = new EditorNotificationPanel();
         panel.setText(GitignoreBundle.message("daemon.missingGitignore"));

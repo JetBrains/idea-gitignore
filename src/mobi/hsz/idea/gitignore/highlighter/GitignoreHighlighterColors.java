@@ -27,7 +27,12 @@ package mobi.hsz.idea.gitignore.highlighter;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 
-
+/**
+ * Contains highlighter attributes definitions.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.2.2
+ */
 public class GitignoreHighlighterColors {
 
     /** Default style for regular comment started with # */

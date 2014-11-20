@@ -32,31 +32,55 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+/**
+ * Describes Gitignore file type.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.1
+ */
 public class GitignoreFileType extends LanguageFileType {
+    /** Contains {@link GitignoreFileType} singleton. */
     public static final GitignoreFileType INSTANCE = new GitignoreFileType();
 
+    /** Private constructor to prevent direct object creation. */
     private GitignoreFileType() {
         super(GitignoreLanguage.INSTANCE);
     }
 
+    /**
+     * Returns the name of the file type. The name must be unique among all file types registered in the system.
+     * @return The file type name.
+     */
     @NotNull
     @Override
     public String getName() {
         return GitignoreLanguage.NAME + " file";
     }
 
+    /**
+     * Returns the user-readable description of the file type.
+     * @return The file type description.
+     */
     @NotNull
     @Override
     public String getDescription() {
         return GitignoreLanguage.NAME + " file";
     }
 
+    /**
+     * Returns the default extension for files of the type.
+     * @return The extension, not including the leading '.'.
+     */
     @NotNull
     @Override
     public String getDefaultExtension() {
         return GitignoreLanguage.EXTENSION;
     }
 
+    /**
+     * Returns the icon used for showing files of the type.
+     * @return The icon instance, or null if no icon should be shown.
+     */
     @Nullable
     @Override
     public Icon getIcon() {

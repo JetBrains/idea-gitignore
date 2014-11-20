@@ -53,29 +53,65 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * {@link Utils} class that contains various methods.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.3.3
+ */
 public class Utils {
     /** Gitignore plugin ID */
     @NonNls
     private static final String PLUGIN_ID = "mobi.hsz.idea.gitignore";
 
+    /** Private constructor to prevent creating {@link Utils} instance. */
     private Utils() {
     }
 
+    /**
+     * Gets relative path of given @{link VirtualFile} and root directory.
+     *
+     * @param directory root directory
+     * @param file      file to get it's path
+     * @return relative path
+     */
     @Nullable
     public static String getRelativePath(@NotNull VirtualFile directory, @NotNull VirtualFile file) {
         return VfsUtilCore.getRelativePath(file, directory, '/');
     }
 
+    /**
+     * Gets Gitignore file for given {@link Project} root directory.
+     *
+     * @param project current project
+     * @return Gitignore file
+     */
     @Nullable
     public static PsiFile getGitignoreFile(@NotNull Project project) {
         return getGitignoreFile(project, null, false);
     }
 
+    /**
+     * Gets Gitignore file for given {@link Project} and root {@link PsiDirectory}.
+     *
+     * @param project   current project
+     * @param directory root directory
+     * @return Gitignore file
+     */
     @Nullable
     public static PsiFile getGitignoreFile(@NotNull Project project, @Nullable PsiDirectory directory) {
         return getGitignoreFile(project, directory, false);
     }
 
+    /**
+     * Gets Gitignore file for given {@link Project} and root {@link PsiDirectory}.
+     * If file is missing - creates new one.
+     *
+     * @param project         current project
+     * @param directory       root directory
+     * @param createIfMissing create new file if missing
+     * @return Gitignore file
+     */
     @Nullable
     public static PsiFile getGitignoreFile(@NotNull Project project, @Nullable PsiDirectory directory, boolean createIfMissing) {
         if (directory == null) {
@@ -91,18 +127,44 @@ public class Utils {
         return file;
     }
 
+    /**
+     * Opens given file in editor.
+     *
+     * @param project current project
+     * @param file    file to open
+     */
     public static void openFile(@NotNull Project project, @NotNull PsiFile file) {
         openFile(project, file.getVirtualFile());
     }
 
+    /**
+     * Opens given file in editor.
+     *
+     * @param project current project
+     * @param file    file to open
+     */
     public static void openFile(@NotNull Project project, @NotNull VirtualFile file) {
         FileEditorManager.getInstance(project).openFile(file, true);
     }
 
+    /**
+     * Returns all Gitignore files in given {@link Project}.
+     *
+     * @param project current project
+     * @return collection of Gitignore files
+     */
     public static Collection<VirtualFile> getGitignoreFiles(@NotNull Project project) {
         return FilenameIndex.getVirtualFilesByName(project, GitignoreLanguage.FILENAME, GlobalSearchScope.projectScope(project));
     }
 
+    /**
+     * Returns all Gitignore files in given {@link Project} that can match current passed file.
+     *
+     * @param project current project
+     * @param file    current file
+     * @return collection of suitable Gitignore files
+     * @throws ExternalFileException
+     */
     public static List<VirtualFile> getSuitableGitignoreFiles(@NotNull Project project, @NotNull VirtualFile file) throws ExternalFileException {
         List<VirtualFile> files = new ArrayList<VirtualFile>();
         if (file.getCanonicalPath() == null || !VfsUtilCore.isAncestor(project.getBaseDir(), file, true)) {
@@ -119,10 +181,22 @@ public class Utils {
         return files;
     }
 
+    /**
+     * Checks if given path is a {@link GitignoreLanguage#GIT_DIRECTORY}.
+     *
+     * @param path to check
+     * @return given path is <code>.git</code> directory
+     */
     public static boolean isGitDirectory(String path) {
         return path.equals(GitignoreLanguage.GIT_DIRECTORY) || path.startsWith(GitignoreLanguage.GIT_DIRECTORY + VfsUtil.VFS_PATH_SEPARATOR);
     }
 
+    /**
+     * Searches for excluded roots in given {@link Project}.
+     *
+     * @param project current project
+     * @return list of excluded roots
+     */
     public static List<VirtualFile> getExcludedRoots(@NotNull Project project) {
         List<VirtualFile> roots = new ArrayList<VirtualFile>();
         ModuleManager manager = ModuleManager.getInstance(project);
@@ -134,6 +208,13 @@ public class Utils {
         return roots;
     }
 
+    /**
+     * Checks if given {@link GitignoreEntry} is excluded in the current {@link Project}.
+     *
+     * @param entry   Gitignore entry
+     * @param project current project
+     * @return entry is excluded in current project
+     */
     public static boolean isEntryExcluded(GitignoreEntry entry, Project project) {
         final Pattern pattern = Glob.createPattern(entry.getText());
         if (pattern == null) {
@@ -166,6 +247,12 @@ public class Utils {
         return false;
     }
 
+    /**
+     * Gets list of words for given {@link String} excluding special characters.
+     *
+     * @param filter input string
+     * @return list of words without special characters
+     */
     public static List<String> getWords(String filter) {
         List<String> words = new ArrayList<String>(Arrays.asList(filter.toLowerCase().split("\\W+")));
         words.removeAll(Arrays.asList(null, ""));

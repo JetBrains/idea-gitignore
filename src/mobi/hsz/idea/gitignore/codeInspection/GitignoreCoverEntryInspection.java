@@ -46,7 +46,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Inspection tool that checks if entries are covered by others.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.5
+ */
 public class GitignoreCoverEntryInspection extends LocalInspectionTool {
+    /**
+     * Reports problems at file level. Checks if entries are covered by other entries.
+     *
+     * @param file       current working file yo check
+     * @param manager    {@link InspectionManager} to ask for {@link ProblemDescriptor}'s from
+     * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
+     * @return <code>null</code> if no problems found or not applicable at file level
+     */
     @Nullable
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
@@ -105,6 +119,14 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
         return problemsHolder.getResultsArray();
     }
 
+    /**
+     * Helper for inspection message generating.
+     *
+     * @param coveringEntry entry that covers message related
+     * @param virtualFile   current working file
+     * @param onTheFly      true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
+     * @return generated message {@link String}
+     */
     private static String message(@NotNull GitignoreEntry coveringEntry, @NotNull VirtualFile virtualFile, boolean onTheFly) {
         Document document = FileDocumentManager.getInstance().getDocument(virtualFile);
         if (onTheFly || document == null) {
@@ -116,6 +138,11 @@ public class GitignoreCoverEntryInspection extends LocalInspectionTool {
                 "<a href=\"" + virtualFile.getUrl() + "#" + startOffset + "\">" + coveringEntry.getText() + "</a>");
     }
 
+    /**
+     * Forces checking every entry in checked file.
+     *
+     * @return <code>true</code>
+     */
     @Override
     public boolean runForWholeFile() {
         return true;

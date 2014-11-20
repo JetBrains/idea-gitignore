@@ -34,9 +34,27 @@ import mobi.hsz.idea.gitignore.GitignoreBundle;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * {@link TemplateTreeRenderer} implementation of checkbox renderer.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.6
+ */
 abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCellRenderer {
+    /** Returns current filter. */
     protected abstract String getFilter();
 
+    /**
+     * Renders checkbox tree cell filled with @{link TemplateTreeNode} data.
+     *
+     * @param tree     current working tree
+     * @param value    template data
+     * @param selected node is selected
+     * @param expanded node is expanded
+     * @param leaf     node is a leaf
+     * @param row      node is a row
+     * @param hasFocus node has focus
+     */
     public void customizeRenderer(final JTree tree, final Object value, final boolean selected, final boolean expanded, final boolean leaf, final int row, final boolean hasFocus) {
         if (!(value instanceof TemplateTreeNode)) return;
         TemplateTreeNode node = (TemplateTreeNode) value;
@@ -58,5 +76,4 @@ abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCellRendere
         getTextRenderer().append(hint, selected ? new SimpleTextAttributes(Font.PLAIN, foreground) : SimpleTextAttributes.GRAYED_ATTRIBUTES);
         setForeground(foreground);
     }
-
 }

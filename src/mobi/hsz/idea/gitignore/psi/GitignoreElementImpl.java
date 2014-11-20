@@ -30,11 +30,22 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Definition of {@link ASTWrapperPsiElement}.
+ *
+ * @author Alexander Zolotov <alexander.zolotov@jetbrains.com>
+ * @since 0.5
+ */
 public class GitignoreElementImpl extends ASTWrapperPsiElement {
     public GitignoreElementImpl(ASTNode node) {
         super(node);
     }
 
+    /**
+     * Gets {@link PsiReference} list for given element.
+     *
+     * @return {@link PsiReference} list
+     */
     @NotNull
     @Override
     public PsiReference[] getReferences() {

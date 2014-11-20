@@ -28,9 +28,17 @@ import com.intellij.openapi.util.IconLoader;
 
 import javax.swing.*;
 
+/**
+ * {@link Icons} class that holds icon resources.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.2.1
+ */
 public class Icons {
+    /** Basic plugin icon with size 16x16px. */
     public static final Icon FILE = IconLoader.getIcon("/icons/icon16.png");
 
+    /** Private constructor to prevent creating {@link Icons} instance. */
     private Icons() {
     }
 }

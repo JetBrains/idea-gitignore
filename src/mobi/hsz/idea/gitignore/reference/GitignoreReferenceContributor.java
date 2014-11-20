@@ -33,13 +33,32 @@ import org.jetbrains.annotations.NotNull;
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.patterns.PlatformPatterns.psiFile;
 
+/**
+ * PSI elements references contributor.
+ *
+ * @author Alexander Zolotov <alexander.zolotov@jetbrains.com>
+ * @since 0.5
+ */
 public class GitignoreReferenceContributor extends PsiReferenceContributor {
+    /**
+     * Registers new references provider for PSI element.
+     *
+     * @param psiReferenceRegistrar reference provider
+     */
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar psiReferenceRegistrar) {
         psiReferenceRegistrar.registerReferenceProvider(psiElement().inFile(psiFile(GitignoreFile.class)), new GitignoreReferenceProvider());
     }
 
+    /** Reference provider definition.  */
     private static class GitignoreReferenceProvider extends PsiReferenceProvider {
+        /**
+         * Returns references for given @{link PsiElement}.
+         *
+         * @param psiElement        current element
+         * @param processingContext context
+         * @return {@link PsiReference} list
+         */
         @NotNull
         @Override
         public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {

@@ -38,7 +38,20 @@ import mobi.hsz.idea.gitignore.psi.GitignoreVisitor;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Inspection tool that checks if entries are unused - does not cover any file or directory.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.5
+ */
 public class GitignoreUnusedEntryInspection extends LocalInspectionTool {
+    /**
+     * Checks if entries are related to any file.
+     *
+     * @param holder     where visitor will register problems found.
+     * @param isOnTheFly true if inspection was run in non-batch mode
+     * @return not-null visitor for this inspection
+     */
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {

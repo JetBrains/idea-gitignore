@@ -30,7 +30,15 @@ import com.intellij.openapi.fileTypes.FileTypeFactory;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Class that assigns file types with languages.
+ */
 public class GitignoreFileTypeFactory extends FileTypeFactory {
+    /**
+     * Assigns file types with languages.
+     *
+     * @param consumer file types consumer
+     */
     @Override
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {
         consumer.consume(GitignoreFileType.INSTANCE, new ExactFileNameMatcher(GitignoreLanguage.FILENAME));

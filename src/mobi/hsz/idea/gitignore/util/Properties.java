@@ -27,16 +27,35 @@ package mobi.hsz.idea.gitignore.util;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
 
+/**
+ * {@link Properties} util class that holds project specified settings using {@link PropertiesComponent}.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.3.3
+ */
 public class Properties {
+    /** Ignore missing gitignore property key. */
     private static final String PROP_IGNORE_MISSING_GITIGNORE = "ignore_missing_gitignore";
 
+    /** Private constructor to prevent creating {@link Properties} instance. */
     private Properties() {
     }
 
+    /**
+     * Checks value of {@link #PROP_IGNORE_MISSING_GITIGNORE} key in {@link PropertiesComponent}.
+     *
+     * @param project current project
+     * @return {@link #PROP_IGNORE_MISSING_GITIGNORE} value
+     */
     public static boolean isIgnoreMissingGitignore(Project project) {
         return PropertiesComponent.getInstance(project).getBoolean(PROP_IGNORE_MISSING_GITIGNORE, false);
     }
 
+    /**
+     * Sets value of {@link #PROP_IGNORE_MISSING_GITIGNORE} key in {@link PropertiesComponent} to <code>true</code>.
+     *
+     * @param project current project
+     */
     public static void setIgnoreMissingGitignore(Project project) {
         PropertiesComponent.getInstance(project).setValue(PROP_IGNORE_MISSING_GITIGNORE, Boolean.TRUE.toString());
     }

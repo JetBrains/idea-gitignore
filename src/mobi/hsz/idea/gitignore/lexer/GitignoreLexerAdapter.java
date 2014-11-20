@@ -29,11 +29,19 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Definition of {@link FlexAdapter}.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.1
+ */
 public class GitignoreLexerAdapter extends FlexAdapter {
+    /** Builds a new instance of {@link GitignoreLexerAdapter}. */
     public GitignoreLexerAdapter(Project project) {
         this(project, null);
     }
 
+    /** Builds a new instance of {@link GitignoreLexerAdapter}. */
     public GitignoreLexerAdapter(Project project, @Nullable VirtualFile virtualFile) {
         super(new GitignoreLexer());
     }

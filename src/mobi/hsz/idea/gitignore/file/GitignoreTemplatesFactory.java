@@ -34,20 +34,42 @@ import mobi.hsz.idea.gitignore.GitignoreBundle;
 import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
+/**
+ * Templates factory that generates Gitignore file and its content.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.1
+ */
 public class GitignoreTemplatesFactory implements FileTemplateGroupDescriptorFactory {
+    /** File's content header. */
     private static final String TEXT = GitignoreBundle.message("file.templateNote");
+
+    /** Group descriptor. */
     private final FileTemplateGroupDescriptor templateGroup;
 
+    /** Builds a new instance of {@link GitignoreTemplatesFactory}. */
     public GitignoreTemplatesFactory() {
         templateGroup = new FileTemplateGroupDescriptor(GitignoreLanguage.NAME, Icons.FILE);
         templateGroup.addTemplate(GitignoreLanguage.FILENAME);
     }
 
+    /**
+     * Returns group descriptor.
+     *
+     * @return descriptor
+     */
     @Override
     public FileTemplateGroupDescriptor getFileTemplatesDescriptor() {
         return templateGroup;
     }
 
+    /**
+     * Creates new Gitignore file or uses an existing one.
+     *
+     * @param directory working directory
+     * @return file
+     * @throws IncorrectOperationException
+     */
     public static PsiFile createFromTemplate(final PsiDirectory directory) throws IncorrectOperationException {
         final PsiFile currentFile = directory.findFile(GitignoreLanguage.FILENAME);
         if (currentFile != null) {

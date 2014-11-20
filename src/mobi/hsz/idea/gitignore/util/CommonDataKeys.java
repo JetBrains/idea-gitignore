@@ -33,16 +33,47 @@ import com.intellij.pom.Navigatable;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 
+/**
+ * Util class that holds common {@link DataKey} list.
+ * 
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.6
+ */
 public class CommonDataKeys {
+    /** {@link Project} data key */
     public static final DataKey<Project> PROJECT = DataKey.create("project");
+
+    /** {@link Editor} data key */
     public static final DataKey<Editor> EDITOR = DataKey.create("editor");
+
+    /** {@link Editor} data key */
     public static final DataKey<Editor> HOST_EDITOR = DataKey.create("host.editor");
+
+    /** {@link Caret} data key */
     public static final DataKey<Caret> CARET = DataKey.create("caret");
+
+    /** {@link Editor} data key */
     public static final DataKey<Editor> EDITOR_EVEN_IF_INACTIVE = DataKey.create("editor.even.if.inactive");
+
+    /** {@link Navigatable} data key */
     public static final DataKey<Navigatable> NAVIGATABLE = DataKey.create("Navigatable");
+
+    /** {@link Navigatable} array data key */
     public static final DataKey<Navigatable[]> NAVIGATABLE_ARRAY = DataKey.create("NavigatableArray");
+
+    /** {@link VirtualFile} data key */
     public static final DataKey<VirtualFile> VIRTUAL_FILE = DataKey.create("virtualFile");
+
+    /** {@link VirtualFile} array data key */
     public static final DataKey<VirtualFile[]> VIRTUAL_FILE_ARRAY = DataKey.create("virtualFileArray");
+
+    /** {@link PsiElement} data key */
     public static final DataKey<PsiElement> PSI_ELEMENT = DataKey.create("psi.Element");
+
+    /** {@link PsiFile} data key */
     public static final DataKey<PsiFile> PSI_FILE = DataKey.create("psi.File");
+
+    /** Private constructor to prevent creating {@link CommonDataKeys} instance. */
+    private CommonDataKeys() {
+    }
 }

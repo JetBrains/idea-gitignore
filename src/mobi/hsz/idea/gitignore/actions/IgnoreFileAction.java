@@ -61,7 +61,7 @@ public class IgnoreFileAction extends DumbAwareAction {
     /**
      * Builds a new instance of {@link IgnoreFileAction}.
      * Default project's Gitignore file will be used.
-     * */
+     */
     public IgnoreFileAction() {
         this(null);
     }

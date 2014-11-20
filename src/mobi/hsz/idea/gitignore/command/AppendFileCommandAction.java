@@ -43,11 +43,30 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Command action that appends specified file to rules list.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.4
+ */
 public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
+    /** Current project. */
     private final Project project;
+
+    /** Current file. */
     private final PsiFile file;
+
+    /** Rules set to add. */
     private final Set<String> content;
 
+    /**
+     * Builds a new instance of {@link AppendFileCommandAction}.
+     * Takes a {@link Set} of the rules to add.
+     *
+     * @param project current project
+     * @param file    working file
+     * @param content rules set
+     */
     public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull Set<String> content) {
         super(project, file);
         this.project = project;
@@ -55,6 +74,14 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         this.content = content;
     }
 
+    /**
+     * Builds a new instance of {@link AppendFileCommandAction}.
+     * Takes a {@link String} rule.
+     *
+     * @param project current project
+     * @param file    working file
+     * @param content rule
+     */
     public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull final String content) {
         super(project, file);
         this.project = project;
@@ -65,6 +92,12 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         }
     }
 
+    /**
+     * Adds {@link #content} to the given {@link #file}. Checks if file contains content and sends a notification.
+     *
+     * @param result ignored parameter
+     * @throws Throwable
+     */
     @Override
     protected void run(@NotNull Result<PsiFile> result) throws Throwable {
         if (content.isEmpty()) {
@@ -76,7 +109,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                 if (content.contains(element.getText())) {
                     Notifications.Bus.notify(new Notification(GitignoreLanguage.NAME,
                             GitignoreBundle.message("action.appendFile.entryExists", element.getText()),
-                            "in " + Utils.getRelativePath(project.getBaseDir(), file.getVirtualFile()),
+                            GitignoreBundle.message("action.appendFile.entryExists.in", Utils.getRelativePath(project.getBaseDir(), file.getVirtualFile())),
                             NotificationType.WARNING), project);
                     content.remove(element.getText());
                 }

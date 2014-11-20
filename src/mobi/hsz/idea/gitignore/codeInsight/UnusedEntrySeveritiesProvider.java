@@ -38,9 +38,20 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Severities provider that checks if entry points to any file or directory.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.5.4
+ */
 public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
     public static final HighlightSeverity UNUSED_ENTRY = new HighlightSeverity("GITIGNORE.UNUSED_ENTRY", 10);
 
+    /**
+     * Defines the style of matched entry.
+     *
+     * @return style definition
+     */
     @NotNull
     @Override
     public List<HighlightInfoType> getSeveritiesHighlightInfoTypes() {
@@ -58,11 +69,23 @@ public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
         return result;
     }
 
+    /**
+     * Defines color of the matched entry.
+     *
+     * @param textAttributes current attribute
+     * @return entry color
+     */
     @Override
     public Color getTrafficRendererColor(@NotNull TextAttributes textAttributes) {
         return JBColor.GRAY;
     }
 
+    /**
+     * Checks if severity goto is enabled.
+     *
+     * @param minSeverity severity to compare
+     * @return severity equals to the {@link #UNUSED_ENTRY}
+     */
     @Override
     public boolean isGotoBySeverityEnabled(HighlightSeverity minSeverity) {
         return UNUSED_ENTRY != minSeverity;

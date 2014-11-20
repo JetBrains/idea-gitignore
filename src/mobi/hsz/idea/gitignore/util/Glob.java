@@ -38,16 +38,39 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+/**
+ * Glob util class that prepares glob statements or searches for content using glob rules.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.5
+ */
 public class Glob {
+    /** Cache map that holds processed regex statements to the glob rules. */
     private static final HashMap<String, String> cache = new HashMap<String, String>();
 
+    /** Private constructor to prevent creating {@link Glob} instance. */
     private Glob() {
     }
 
+    /**
+     * Finds for {@link VirtualFile} list using glob rule in given root directory.
+     *
+     * @param root root directory
+     * @param glob glob rule
+     * @return search result
+     */
     public static List<VirtualFile> find(VirtualFile root, String glob) {
         return find(root, glob, false);
     }
 
+    /**
+     * Finds for {@link VirtualFile} list using glob rule in given root directory.
+     *
+     * @param root          root directory
+     * @param glob          glob rule
+     * @param includeNested attach children to the search result
+     * @return search result
+     */
     public static List<VirtualFile> find(final VirtualFile root, String glob, final boolean includeNested) {
         Pattern pattern = createPattern(glob);
         if (pattern == null) {
@@ -82,10 +105,25 @@ public class Glob {
         return files;
     }
 
+    /**
+     * Finds for {@link VirtualFile} paths list using glob rule in given root directory.
+     *
+     * @param root root directory
+     * @param glob glob rule
+     * @return search result
+     */
     public static List<String> findAsPaths(VirtualFile root, String glob) {
         return findAsPaths(root, glob, false);
     }
 
+    /**
+     * Finds for {@link VirtualFile} paths list using glob rule in given root directory.
+     *
+     * @param root          root directory
+     * @param glob          glob rule
+     * @param includeNested attach children to the search result
+     * @return search result
+     */
     public static List<String> findAsPaths(VirtualFile root, String glob, boolean includeNested) {
         List<String> list = new ArrayList<String>();
         List<VirtualFile> files = find(root, glob, includeNested);
@@ -95,32 +133,12 @@ public class Glob {
         return list;
     }
 
-    private static List<VirtualFile> walk(VirtualFile root, VirtualFile directory, @Nullable Pattern pattern, boolean includeNested) {
-        List<VirtualFile> files = ContainerUtil.newArrayList();
-        for (VirtualFile file : directory.getChildren()) {
-            boolean matches = false;
-            String path = Utils.getRelativePath(root, file);
-            if (path == null) {
-                continue;
-            }
-
-            if ("/.git".equals(path)) {
-                continue;
-            }
-
-            if (pattern == null || pattern.matcher(path).matches()) {
-                matches = true;
-                files.add(file);
-            }
-
-            if (file.isDirectory()) {
-                files.addAll(walk(root, file, includeNested && matches ? null : pattern, includeNested));
-            }
-        }
-
-        return files;
-    }
-
+    /**
+     * Creates regex {@link Pattern} usign glob rule.
+     *
+     * @param glob rule
+     * @return regex {@link Pattern}
+     */
     @Nullable
     public static Pattern createPattern(@NotNull String glob) {
         try {
@@ -130,6 +148,12 @@ public class Glob {
         }
     }
 
+    /**
+     * Creates regex {@link String} usign glob rule.
+     *
+     * @param glob rule
+     * @return regex {@link String}
+     */
     public static String createRegex(String glob) {
         String cached = cache.get(glob);
         if (cached != null) {
@@ -141,9 +165,7 @@ public class Glob {
 
         if (!glob.startsWith("/")) {
             if (!glob.startsWith("**")) {
-//                if (glob.indexOf('/') == -1) {
-                    sb.append("([^/]*?/)*");
-//                }
+                sb.append("([^/]*?/)*");
             }
             chars = glob.toCharArray();
         } else {
@@ -264,5 +286,4 @@ public class Glob {
 
         return sb.toString();
     }
-
 }

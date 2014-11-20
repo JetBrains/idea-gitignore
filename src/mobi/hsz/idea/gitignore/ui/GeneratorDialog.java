@@ -67,21 +67,53 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * {@link GeneratorDialog} responsible for displaying list of all available templates and adding selected ones
+ * to the specified file.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.2
+ */
 public class GeneratorDialog extends DialogWrapper {
+    /** {@link FilterComponent} search history key. */
     private static final String TEMPLATES_FILTER_HISTORY = "TEMPLATES_FILTER_HISTORY";
+
+    /** Cache set to store checked templates for the current action. */
     private final Set<Resources.Template> checked = new HashSet<Resources.Template>();
 
+    /** Current working project. */
     @NotNull private final Project project;
+
+    /** Current working file. */
     @NotNull private final PsiFile file;
+
+    /** Templates tree root node. */
     @NotNull private final TemplateTreeNode root;
 
+    /** Templates tree with checkbox feature. */
     private CheckboxTree tree;
+
+    /** Tree expander responsible for expanding and collapsing tree structure. */
     private DefaultTreeExpander treeExpander;
+
+    /** Dynamic templates filter. */
     private FilterComponent profileFilter;
+
+    /** Preview editor with syntax highlight. */
     private Editor preview;
+
+    /** {@link Document} related to the {@link Editor} feature. */
     private Document previewDocument;
+
+    /** Scroll panel for the templates tree. */
     private JScrollPane treeScrollPanel;
 
+    /**
+     * Builds a new instance of {@link GeneratorDialog}.
+     *
+     * @param project current working project
+     * @param file current working file
+     */
     public GeneratorDialog(@NotNull Project project, @NotNull PsiFile file) {
         super(project, false);
         this.project = project;
@@ -93,18 +125,35 @@ public class GeneratorDialog extends DialogWrapper {
         init();
     }
 
+    /**
+     * Returns component which should be focused when the dialog appears on the screen.
+     *
+     * @return component to focus
+     */
     @Nullable
     @Override
     public JComponent getPreferredFocusedComponent() {
         return treeScrollPanel;
     }
 
+    /**
+     * Dispose the wrapped and releases all resources allocated be the wrapper to help
+     * more efficient garbage collection. You should never invoke this method twice or
+     * invoke any method of the wrapper after invocation of <code>dispose</code>.
+     *
+     * @throws IllegalStateException if the dialog is disposed not on the event dispatch thread
+     */
     @Override
     protected void dispose() {
         EditorFactory.getInstance().releaseEditor(preview);
         super.dispose();
     }
 
+    /**
+     * This method is invoked by default implementation of "OK" action. It just closes dialog
+     * with <code>OK_EXIT_CODE</code>. This is convenient place to override functionality of "OK" action.
+     * Note that the method does nothing if "OK" action isn't enabled.
+     */
     @Override
     protected void doOKAction() {
         if (isOKActionEnabled()) {
@@ -120,6 +169,13 @@ public class GeneratorDialog extends DialogWrapper {
         }
     }
 
+    /**
+     * Factory method. It creates panel with dialog options. Options panel is located at the
+     * center of the dialog's content pane. The implementation can return <code>null</code>
+     * value. In this case there will be no options panel.
+     *
+     * @return center panel
+     */
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
@@ -143,13 +199,20 @@ public class GeneratorDialog extends DialogWrapper {
 
         final JBPanel northPanel = new JBPanel(new GridBagLayout());
         northPanel.setBorder(IdeBorderFactory.createEmptyBorder(2, 0, 2, 0));
-        northPanel.add(createTreeToolbarPanel(treeScrollPanel).getComponent(), new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_LEADING, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        northPanel.add(createTreeActionsToolbarPanel(treeScrollPanel).getComponent(), new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_LEADING, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         northPanel.add(profileFilter, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         treePanel.add(northPanel, BorderLayout.NORTH);
 
         return centerPanel;
     }
 
+    /**
+     * Creates and configures Editor panel for template preview with syntax highlight.
+     *
+     * @param project  current working project
+     * @param document current working document
+     * @return editor
+     */
     @NotNull
     private static Editor createPreviewEditor(@NotNull Project project, @NotNull Document document) {
         EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, project, GitignoreFileType.INSTANCE, true);
@@ -170,6 +233,11 @@ public class GeneratorDialog extends DialogWrapper {
         return editor;
     }
 
+    /**
+     * Creates scroll panel with templates tree in it.
+     *
+     * @return scroll panel
+     */
     private JScrollPane createTreeScrollPanel() {
         fillTreeData(null, true);
 
@@ -222,7 +290,13 @@ public class GeneratorDialog extends DialogWrapper {
         return scrollPane;
     }
 
-    private ActionToolbar createTreeToolbarPanel(JComponent target) {
+    /**
+     * Creates tree toolbar panel with actions for working with templates tree.
+     *
+     * @param target templates tree
+     * @return action toolbar
+     */
+    private ActionToolbar createTreeActionsToolbarPanel(JComponent target) {
         final CommonActionsManager actionManager = CommonActionsManager.getInstance();
 
         DefaultActionGroup actions = new DefaultActionGroup();
@@ -246,6 +320,11 @@ public class GeneratorDialog extends DialogWrapper {
         return actionToolbar;
     }
 
+    /**
+     * Updates editor's content depending on the selected {@link TreePath}.
+     *
+     * @param path selected tree path
+     */
     private void updateDescriptionPanel(TreePath path) {
         final TemplateTreeNode node = (TemplateTreeNode) path.getLastPathComponent();
         final Resources.Template template = node.getTemplate();
@@ -267,6 +346,12 @@ public class GeneratorDialog extends DialogWrapper {
         });
     }
 
+    /**
+     * Fills templates tree with templates fetched with {@link Resources#getGitignoreTemplates()}.
+     *
+     * @param filter       templates filter
+     * @param forceInclude force include
+     */
     private void fillTreeData(String filter, boolean forceInclude) {
         root.removeAllChildren();
         root.setChecked(false);
@@ -277,7 +362,7 @@ public class GeneratorDialog extends DialogWrapper {
             root.add(node);
         }
 
-        java.util.List<Resources.Template> templatesList = Resources.getGitignoreTemplates();
+        List<Resources.Template> templatesList = Resources.getGitignoreTemplates();
         for (Resources.Template template : templatesList) {
             if (filter != null && filter.length() > 0 && !isTemplateAccepted(template, filter)) {
                 continue;
@@ -295,6 +380,13 @@ public class GeneratorDialog extends DialogWrapper {
         TreeUtil.sort(root, new TemplateTreeComparator());
     }
 
+    /**
+     * Creates or gets existing group node for specified element.
+     *
+     * @param root      tree root node
+     * @param container container type to search
+     * @return group node
+     */
     private static TemplateTreeNode getGroupNode(TemplateTreeNode root, Resources.Template.Container container) {
         final int childCount = root.getChildCount();
 
@@ -310,8 +402,15 @@ public class GeneratorDialog extends DialogWrapper {
         return child;
     }
 
+    /**
+     * Finds for the filter's words in the given content and returns their positions.
+     *
+     * @param filter  templates filter
+     * @param content templates content
+     * @return text ranges
+     */
     private List<Pair<Integer, Integer>> getFilterRanges(String filter, String content) {
-        java.util.List<Pair<Integer, Integer>> pairs = new ArrayList<Pair<Integer, Integer>>();
+        List<Pair<Integer, Integer>> pairs = new ArrayList<Pair<Integer, Integer>>();
         content = content.toLowerCase();
 
         for (String word : Utils.getWords(filter)) {
@@ -323,6 +422,13 @@ public class GeneratorDialog extends DialogWrapper {
         return pairs;
     }
 
+    /**
+     * Checks if given template is accepted by passed filter.
+     *
+     * @param template to check
+     * @param filter   templates filter
+     * @return template is accepted
+     */
     private boolean isTemplateAccepted(Resources.Template template, String filter) {
         filter = filter.toLowerCase();
 
@@ -341,6 +447,11 @@ public class GeneratorDialog extends DialogWrapper {
         return nameAccepted || ranges.size() > 0;
     }
 
+    /**
+     * Filters templates tree.
+     *
+     * @param filter text
+     */
     public void filterTree(String filter) {
         if (tree != null) {
             fillTreeData(filter, true);
@@ -352,6 +463,11 @@ public class GeneratorDialog extends DialogWrapper {
         }
     }
 
+    /**
+     * Highlights given text ranges in {@link #preview} content.
+     *
+     * @param pairs text ranges
+     */
     private void highlightWords(@NotNull List<Pair<Integer, Integer>> pairs) {
         final TextAttributes attr = new TextAttributes();
         attr.setBackgroundColor(UIUtil.getTreeSelectionBackground());
@@ -362,15 +478,23 @@ public class GeneratorDialog extends DialogWrapper {
         }
     }
 
+    /**
+     * Reloads tree model.
+     */
     private void reloadModel() {
         ((DefaultTreeModel) tree.getModel()).reload();
     }
 
+    /**
+     * Custom templates {@link FilterComponent}.
+     */
     private class TemplatesFilterComponent extends FilterComponent {
+        /** Builds a new instance of {@link TemplatesFilterComponent}. */
         public TemplatesFilterComponent() {
             super(TEMPLATES_FILTER_HISTORY, 10);
         }
 
+        /** Filters tree using current filter's value. */
         @Override
         public void filter() {
             filterTree(getFilter());

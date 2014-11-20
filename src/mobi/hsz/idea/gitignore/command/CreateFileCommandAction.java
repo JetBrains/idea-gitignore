@@ -32,14 +32,32 @@ import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.file.GitignoreTemplatesFactory;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Command action that creates new file in given diractory.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.3.3
+ */
 public class CreateFileCommandAction extends WriteCommandAction<PsiFile> {
+    /** Working directory. */
     private final PsiDirectory directory;
 
+    /**
+     * Builds a new instance of {@link CreateFileCommandAction}.
+     *
+     * @param project   current project
+     * @param directory working directory
+     */
     public CreateFileCommandAction(@NotNull Project project, @NotNull PsiDirectory directory) {
         super(project);
         this.directory = directory;
     }
 
+    /**
+     * Creates a new file using {@link GitignoreTemplatesFactory#createFromTemplate(PsiDirectory)} to fill it with content.
+     * @param result
+     * @throws Throwable
+     */
     @Override
     protected void run(@NotNull Result<PsiFile> result) throws Throwable {
         result.setResult(GitignoreTemplatesFactory.createFromTemplate(directory));

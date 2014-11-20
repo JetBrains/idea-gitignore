@@ -36,14 +36,33 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.*;
 
+/**
+ * {@link IgnoredTreeDialog} that shows a tree with marked ignored files by selected Gitignore file.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.4
+ */
 public class IgnoredTreeDialog extends JDialog {
+    /** Gitignore file. */
     private final PsiFile file;
 
+    /** Dialog content panel. */
     private JPanel contentPane;
+
+    /** Dialog OK button. */
     private JButton buttonOK;
+
+    /** Dialog Cancel button. */
     private JButton buttonCancel;
+
+    /** Project tree. */
     private JTree tree;
 
+    /**
+     * Builds a new instance of {@link IgnoredTreeDialog}.
+     *
+     * @param file Gitignore file
+     */
     public IgnoredTreeDialog(@NotNull final PsiFile file) {
         this.file = file;
         String filePath = Utils.getRelativePath(file.getProject().getBaseDir(), file.getVirtualFile());
@@ -81,22 +100,26 @@ public class IgnoredTreeDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    /** OK button event. */
     private void onOK() {
         // add your code here
         dispose();
     }
 
+    /** Cancel button event. */
     private void onCancel() {
         // add your code here if necessary
         dispose();
     }
 
+    /** Dialog show event. */
     public void showDialog() {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
+    /** Request for UI components creating. */
     private void createUIComponents() {
         TreeProcessor processor = new TreeProcessor(file);
 
@@ -106,5 +129,4 @@ public class IgnoredTreeDialog extends JDialog {
         tree = new GitignoreTree();
         tree.setModel(model);
     }
-
 }

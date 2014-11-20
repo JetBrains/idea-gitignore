@@ -33,7 +33,22 @@ import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.file.GitignoreFileType;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Entry manipulator.
+ *
+ * @author Alexander Zolotov <alexander.zolotov@jetbrains.com>
+ * @since 0.5
+ */
 public class GitignoreEntryManipulator extends AbstractElementManipulator<GitignoreEntry> {
+    /**
+     * Changes the element's text to a new value
+     *
+     * @param element element to be changed
+     * @param range range within the element
+     * @param newContent new element text
+     * @return changed element
+     * @throws IncorrectOperationException if something goes wrong
+     */
     @Override
     public GitignoreEntry handleContentChange(@NotNull GitignoreEntry entry, @NotNull TextRange textRange, String s) throws IncorrectOperationException {
         GitignoreFile file = (GitignoreFile) PsiFileFactory.getInstance(entry.getProject())
@@ -43,6 +58,12 @@ public class GitignoreEntryManipulator extends AbstractElementManipulator<Gitign
         return (GitignoreEntry) entry.replace(newEntry);
     }
 
+    /**
+     * Returns range of the entry. Skips negation element.
+     *
+     * @param element element to be changed
+     * @return range
+     */
     @NotNull
     @Override
     public TextRange getRangeInElement(@NotNull GitignoreEntry element) {

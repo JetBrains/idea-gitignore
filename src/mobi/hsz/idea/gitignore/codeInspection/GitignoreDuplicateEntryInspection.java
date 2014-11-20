@@ -41,7 +41,21 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * Inspection tool that checks if entries are duplicated by others.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.5
+ */
 public class GitignoreDuplicateEntryInspection extends LocalInspectionTool {
+    /**
+     * Reports problems at file level. Checks if entries are duplicated by other entries.
+     *
+     * @param file       current working file yo check
+     * @param manager    {@link InspectionManager} to ask for {@link ProblemDescriptor}'s from
+     * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
+     * @return <code>null</code> if no problems found or not applicable at file level
+     */
     @Nullable
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
@@ -68,6 +82,11 @@ public class GitignoreDuplicateEntryInspection extends LocalInspectionTool {
         return problemsHolder.getResultsArray();
     }
 
+    /**
+     * Forces checking every entry in checked file.
+     *
+     * @return <code>true</code>
+     */
     @Override
     public boolean runForWholeFile() {
         return true;

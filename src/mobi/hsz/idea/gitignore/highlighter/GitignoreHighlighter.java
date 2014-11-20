@@ -38,10 +38,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+/**
+ * Syntax highlighter definition.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.2
+ */
 public class GitignoreHighlighter extends SyntaxHighlighterBase {
-
+    /** Attributes map. */
     private static final Map<IElementType, TextAttributesKey> ATTRIBUTES = ContainerUtil.newHashMap();
 
+    /** Binds parser definitions with highlighter colors. */
     static {
         fillMap(ATTRIBUTES, GitignoreParserDefinition.COMMENTS, GitignoreHighlighterColors.COMMENT_ATTR_KEY);
         fillMap(ATTRIBUTES, GitignoreParserDefinition.SECTIONS, GitignoreHighlighterColors.SECTION_ATTR_KEY);
@@ -52,20 +59,35 @@ public class GitignoreHighlighter extends SyntaxHighlighterBase {
         fillMap(ATTRIBUTES, GitignoreParserDefinition.VALUES, GitignoreHighlighterColors.VALUE_ATTR_KEY);
     }
 
+    /** Current project. */
     private final Project project;
+
+    /** Current file. */
     private final VirtualFile virtualFile;
 
+    /** Builds a new instance of {@link GitignoreHighlighter}. */
     public GitignoreHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile) {
         this.project = project;
         this.virtualFile = virtualFile;
     }
 
+    /**
+     * Creates lexer adapter.
+     *
+     * @return lexer adapter
+     */
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
         return new GitignoreLexerAdapter(project, virtualFile);
     }
 
+    /**
+     * Gets highlighter text {@link TextAttributesKey} list using {@link IElementType} token.
+     *
+     * @param tokenType element type
+     * @return attributes list
+     */
     @NotNull
     @Override
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
