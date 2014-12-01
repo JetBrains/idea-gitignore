@@ -7,7 +7,7 @@ jdk:
   - openjdk6
 
 install:
-  - IDEA_VERSION=13.1.4b
+  - IDEA_VERSION=13.1.6
   - IDEA_TAR=ideaIC-${IDEA_VERSION}.tar.gz
   - |
     if [ -f ~/$IDEA_TAR ]; then
