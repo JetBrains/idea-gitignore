@@ -264,6 +264,14 @@
                 key="codeInspection.unusedEntry"
                 language="Gitignore"
                 level="GITIGNORE.UNUSED_ENTRY"/>
+        <localInspection
+                bundle="messages.GitignoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.GitignoreRelativeEntryInspection"
+                key="codeInspection.relativeEntry"
+                language="Gitignore"
+                level="ERROR"/>
 
         <psi.referenceContributor
                 language="Gitignore"

@@ -1,0 +1,7 @@
+foo.bar
+foo..bar
+<error descr="'foo/../bar' entry contains relative path">foo/../bar</error>
+<error descr="'../foo' entry contains relative path">../foo</error>
+<error descr="'foo/./bar' entry contains relative path">foo/./bar</error>
+<error descr="'./foo' entry contains relative path">./foo</error>
+/foo

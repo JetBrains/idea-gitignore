@@ -1,0 +1,1 @@
+<error descr="'./foobar' entry contains relative path">./<caret>foobar</error>
