@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
  * {@link SyntaxHighlighterFactory} class definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.1
+ * @since 0.8
  */
 public class GitignoreHighlighterFactory extends SyntaxHighlighterFactory {
     /**

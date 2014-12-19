@@ -41,7 +41,7 @@
                 <pathelement location="${grammar-kit.jar}"/>
             </classpath>
             <arg value="${project.gen}"/>
-            <arg value="${project.resources}/bnf/Gitignore.bnf"/>
+            <arg value="${project.resources}/bnf/Ignore.bnf"/>
         </java>
     </target>
 
@@ -52,7 +52,7 @@
             <arg value="${idea-flex.skeleton}"/>
             <arg value="--charat"/>
             <arg value="--nobak"/>
-            <arg value="${project.src}/mobi/hsz/idea/gitignore/lexer/Gitignore.flex"/>
+            <arg value="${project.src}/mobi/hsz/idea/gitignore/lexer/Ignore.flex"/>
             <arg value="-d"/>
             <arg value="${project.gen}/mobi/hsz/idea/gitignore/lexer/"/>
         </java>

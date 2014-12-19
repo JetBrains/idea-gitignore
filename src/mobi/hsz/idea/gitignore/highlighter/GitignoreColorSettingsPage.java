@@ -29,8 +29,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Resources;
 import org.jetbrains.annotations.NonNls;
@@ -48,9 +47,13 @@ import java.util.Map;
  */
 public class GitignoreColorSettingsPage implements ColorSettingsPage {
 
-    /** The path to the sample .gitignore file */
+    /** The path to the sample .gitignore file. */
     @NonNls
     private static final String SAMPLE_GITIGNORE_PATH = "/sample.gitignore";
+
+    /** Display name for Color Settings Page. */
+    @NonNls
+    private static final String DISPLAY_NAME = IgnoreBundle.message("ignore.colorSettings.displayName");
 
     /**
      * The sample .gitignore document shown in the colors settings dialog.
@@ -61,13 +64,13 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
 
     /**  Attributes descriptor list. */
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor(GitignoreBundle.message("highlighter.header"), GitignoreHighlighterColors.HEADER_ATTR_KEY),
-            new AttributesDescriptor(GitignoreBundle.message("highlighter.section"), GitignoreHighlighterColors.SECTION_ATTR_KEY),
-            new AttributesDescriptor(GitignoreBundle.message("highlighter.comment"), GitignoreHighlighterColors.COMMENT_ATTR_KEY),
-            new AttributesDescriptor(GitignoreBundle.message("highlighter.negation"), GitignoreHighlighterColors.NEGATION_ATTR_KEY),
-            new AttributesDescriptor(GitignoreBundle.message("highlighter.brackets"), GitignoreHighlighterColors.BRACKET_ATTR_KEY),
-            new AttributesDescriptor(GitignoreBundle.message("highlighter.slash"), GitignoreHighlighterColors.SLASH_ATTR_KEY),
-            new AttributesDescriptor(GitignoreBundle.message("highlighter.value"), GitignoreHighlighterColors.VALUE_ATTR_KEY),
+            new AttributesDescriptor(IgnoreBundle.message("highlighter.header"), IgnoreHighlighterColors.HEADER_ATTR_KEY),
+            new AttributesDescriptor(IgnoreBundle.message("highlighter.section"), IgnoreHighlighterColors.SECTION_ATTR_KEY),
+            new AttributesDescriptor(IgnoreBundle.message("highlighter.comment"), IgnoreHighlighterColors.COMMENT_ATTR_KEY),
+            new AttributesDescriptor(IgnoreBundle.message("highlighter.negation"), IgnoreHighlighterColors.NEGATION_ATTR_KEY),
+            new AttributesDescriptor(IgnoreBundle.message("highlighter.brackets"), IgnoreHighlighterColors.BRACKET_ATTR_KEY),
+            new AttributesDescriptor(IgnoreBundle.message("highlighter.slash"), IgnoreHighlighterColors.SLASH_ATTR_KEY),
+            new AttributesDescriptor(IgnoreBundle.message("highlighter.value"), IgnoreHighlighterColors.VALUE_ATTR_KEY),
     };
 
     /**
@@ -151,7 +154,7 @@ public class GitignoreColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDisplayName() {
-        return GitignoreLanguage.NAME;
+        return DISPLAY_NAME;
     }
 
     /**

@@ -25,7 +25,7 @@
 package mobi.hsz.idea.gitignore.ui;
 
 import com.intellij.psi.PsiFile;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.ui.tree.GitignoreTree;
 import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.tree.TreeProcessor;
@@ -70,7 +70,7 @@ public class IgnoredTreeDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-        setTitle(GitignoreBundle.message("dialog.ignoredTree.title", filePath));
+        setTitle(IgnoreBundle.message("dialog.ignoredTree.title", filePath));
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

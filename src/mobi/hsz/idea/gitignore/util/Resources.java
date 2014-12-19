@@ -24,8 +24,8 @@
 
 package mobi.hsz.idea.gitignore.util;
 
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
-import mobi.hsz.idea.gitignore.settings.GitignoreSettings;
+import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -84,8 +84,8 @@ public class Resources {
         templates.addAll(resourceTemplates);
 
         // fetch user templates
-        GitignoreSettings settings = GitignoreSettings.getInstance();
-        for (GitignoreSettings.UserTemplate userTemplate : settings.getUserTemplates()) {
+        IgnoreSettings settings = IgnoreSettings.getInstance();
+        for (IgnoreSettings.UserTemplate userTemplate : settings.getUserTemplates()) {
             templates.add(new Template(userTemplate));
         }
 
@@ -125,10 +125,10 @@ public class Resources {
     }
 
     /**
-     * {@link Template} entity that defines template fetched from resources or {@link GitignoreSettings}.
+     * {@link Template} entity that defines template fetched from resources or {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings}.
      */
     public static class Template implements Comparable<Template> {
-        /** {@link File} pointer. <code>null</code> if template is fetched from {@link GitignoreSettings}. */
+        /** {@link File} pointer. <code>null</code> if template is fetched from {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings}. */
         private final File file;
 
         /** Template name. */
@@ -142,7 +142,7 @@ public class Resources {
 
         /**
          * Defines if template is fetched from resources ({@link Container#ROOT} directory or {@link Container#GLOBAL}
-         * subdirectory) or is user defined and fetched from {@link GitignoreSettings}.
+         * subdirectory) or is user defined and fetched from {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings}.
          */
         public static enum Container {
             USER, ROOT, GLOBAL
@@ -157,7 +157,7 @@ public class Resources {
          */
         public Template(File file, String content) {
             this.file = file;
-            this.name = file.getName().replace(GitignoreLanguage.FILENAME, "");
+            this.name = file.getName().replace(GitignoreLanguage.INSTANCE.getFilename(), "");
             this.content = content;
             this.container = file.getParent().endsWith("Global") ? Container.GLOBAL : Container.ROOT;
         }
@@ -166,9 +166,9 @@ public class Resources {
          * Builds a new instance of {@link Template}.
          * {@link Container} will be set to {@link Container#USER}.
          *
-         * @param userTemplate {@link GitignoreSettings} user template object
+         * @param userTemplate {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings} user template object
          */
-        public Template(GitignoreSettings.UserTemplate userTemplate) {
+        public Template(IgnoreSettings.UserTemplate userTemplate) {
             this.file = null;
             this.name = userTemplate.getName();
             this.content = userTemplate.getContent();

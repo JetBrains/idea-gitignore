@@ -28,9 +28,9 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileSystemItem;
-import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
-import mobi.hsz.idea.gitignore.psi.GitignoreEntryDirectory;
-import mobi.hsz.idea.gitignore.ui.tree.GitignoreTreeObject;
+import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
+import mobi.hsz.idea.gitignore.psi.IgnoreEntryDirectory;
+import mobi.hsz.idea.gitignore.ui.tree.IgnoreTreeObject;
 import mobi.hsz.idea.gitignore.util.Glob;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,14 +48,14 @@ public class TreeProcessor {
         this.rootDirectory = file.getVirtualFile() != null ? file.getVirtualFile().getParent() : file.getProject().getBaseDir();
 
         for (PsiElement element : file.getChildren()) {
-            if (element instanceof GitignoreEntry) {
-                rules.add(new Rule((GitignoreEntry) element));
+            if (element instanceof IgnoreEntry) {
+                rules.add(new Rule((IgnoreEntry) element));
             }
         }
     }
 
     public DefaultMutableTreeNode fetchTree() {
-        GitignoreTreeObject node = new GitignoreTreeObject(file, rootDirectory);
+        IgnoreTreeObject node = new IgnoreTreeObject(file, rootDirectory);
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(node);
         buildTree(root, file.getParent(), false);
         return root;
@@ -63,7 +63,7 @@ public class TreeProcessor {
 
     private void buildTree(DefaultMutableTreeNode root, PsiFileSystemItem file, boolean parentIgnored) {
         for (PsiElement element : file.getChildren()) {
-            GitignoreTreeObject object = new GitignoreTreeObject(element, rootDirectory);
+            IgnoreTreeObject object = new IgnoreTreeObject(element, rootDirectory);
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(object);
             boolean ignored = parentIgnored;
 
@@ -90,9 +90,9 @@ public class TreeProcessor {
         private final String value;
         private final Pattern pattern;
 
-        public Rule(GitignoreEntry entry) {
+        public Rule(IgnoreEntry entry) {
             negated = entry.getNegation() != null;
-            directory = entry instanceof GitignoreEntryDirectory;
+            directory = entry instanceof IgnoreEntryDirectory;
             value = entry.getText();
             pattern = Glob.createPattern(value);
         }

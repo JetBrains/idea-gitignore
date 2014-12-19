@@ -42,8 +42,8 @@ public class GitignoreTreeCellRenderer extends JBDefaultTreeCellRenderer {
         GitignoreTreeCellRenderer component = (GitignoreTreeCellRenderer) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
         Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
 
-        if (userObject instanceof GitignoreTreeObject) {
-            GitignoreTreeObject object = (GitignoreTreeObject) userObject;
+        if (userObject instanceof IgnoreTreeObject) {
+            IgnoreTreeObject object = (IgnoreTreeObject) userObject;
             component.setIcon(object.getIcon());
 
             if (object.isIgnored()) {

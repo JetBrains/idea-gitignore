@@ -36,7 +36,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.lexer.GitignoreLexerAdapter;
 import mobi.hsz.idea.gitignore.parser.GitignoreParser;
 import mobi.hsz.idea.gitignore.psi.GitignoreFile;

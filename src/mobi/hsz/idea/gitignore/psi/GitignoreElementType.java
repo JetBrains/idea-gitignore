@@ -24,18 +24,17 @@
 
 package mobi.hsz.idea.gitignore.psi;
 
-import com.intellij.psi.tree.IElementType;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Custom element type.
+ * Gitignore element type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.1
+ * @since 0.8
  */
-public class GitignoreElementType extends IElementType {
+public class GitignoreElementType extends IgnoreElementType {
     /** Build a new instance of @{link GitignoreElementType} */
     public GitignoreElementType(@NotNull @NonNls String debugName) {
         super(debugName, GitignoreLanguage.INSTANCE);

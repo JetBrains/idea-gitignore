@@ -1,9 +1,9 @@
 {
   parserClass               = "mobi.hsz.idea.gitignore.parser.GitignoreParser"
 
-  extends                   = "mobi.hsz.idea.gitignore.psi.GitignoreElementImpl"
+  extends                   = "mobi.hsz.idea.gitignore.psi.IgnoreElementImpl"
  
-  psiClassPrefix            = "Gitignore"
+  psiClassPrefix            = "Ignore"
   psiImplClassSuffix        = "Impl"
   psiPackage                = "mobi.hsz.idea.gitignore.psi"
   psiImplPackage            = "mobi.hsz.idea.gitignore.psi.impl"
@@ -23,7 +23,7 @@
     VALUE                   = "regexp:(?![!#\s])(?![\[\]])(?:(?:\\[\[\]])|(?:\/\/)|[^\[\]\/\s])+"
   ]
 
-  mixin("ENTRY")            = "mobi.hsz.idea.gitignore.psi.impl.GitignoreEntryExtImpl"
+  mixin("ENTRY")            = "mobi.hsz.idea.gitignore.psi.impl.IgnoreEntryExtImpl"
   name("ENTRY.*")           = "entry"
 }
  

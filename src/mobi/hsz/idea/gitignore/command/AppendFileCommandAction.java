@@ -35,8 +35,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -107,9 +107,9 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         if (document != null) {
             for (PsiElement element : file.getChildren()) {
                 if (content.contains(element.getText())) {
-                    Notifications.Bus.notify(new Notification(GitignoreLanguage.NAME,
-                            GitignoreBundle.message("action.appendFile.entryExists", element.getText()),
-                            GitignoreBundle.message("action.appendFile.entryExists.in", Utils.getRelativePath(project.getBaseDir(), file.getVirtualFile())),
+                    Notifications.Bus.notify(new Notification(IgnoreLanguage.GROUP,
+                            IgnoreBundle.message("action.appendFile.entryExists", element.getText()),
+                            IgnoreBundle.message("action.appendFile.entryExists.in", Utils.getRelativePath(project.getBaseDir(), file.getVirtualFile())),
                             NotificationType.WARNING), project);
                     content.remove(element.getText());
                 }

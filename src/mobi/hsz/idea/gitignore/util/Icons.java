@@ -38,6 +38,12 @@ public class Icons {
     /** Basic plugin icon with size 16x16px. */
     public static final Icon FILE = IconLoader.getIcon("/icons/icon16.png");
 
+    /** Gitignore icon with size 16x16px. */
+    public static final Icon GITIGNORE = IconLoader.getIcon("/icons/icon16.png");
+
+    /** Npmignore icon with size 16x16px. */
+    public static final Icon NPMIGNORE = IconLoader.getIcon("/icons/icon16.png");
+
     /** Private constructor to prevent creating {@link Icons} instance. */
     private Icons() {
     }

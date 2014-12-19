@@ -24,43 +24,19 @@
 
 package mobi.hsz.idea.gitignore.psi;
 
-import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
-import mobi.hsz.idea.gitignore.file.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.GitignoreFileType;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Base plugin file.
+ * Gitignore plugin file.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.1
  */
-public class GitignoreFile extends PsiFileBase {
-    /** Builds a new instance of {@link GitignoreFile}. */
+public class GitignoreFile extends IgnoreFile {
+    /** Builds a new instance of {@link GitignoreFileType}. */
     public GitignoreFile(@NotNull FileViewProvider viewProvider) {
-        super(viewProvider, GitignoreLanguage.INSTANCE);
-    }
-
-    /**
-     * Returns the file type for the file.
-     *
-     * @return the file type instance.
-     */
-    @NotNull
-    @Override
-    public FileType getFileType() {
-        return GitignoreFileType.INSTANCE;
-    }
-
-    /**
-     * Returns @{link GitignoreFile} string interpretation.
-     *
-     * @return string interpretation
-     */
-    @Override
-    public String toString() {
-        return GitignoreLanguage.NAME + " file";
+        super(viewProvider, GitignoreFileType.INSTANCE);
     }
 }

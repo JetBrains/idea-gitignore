@@ -30,29 +30,44 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.file.type.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.ui.IgnoredTreeDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
-import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Shows dialog with project tree and marks files covered by the current Gitignore file.
+ * Shows dialog with project tree and marks files covered by the current ignore file.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.4
  */
 public class ShowIgnoredAction extends DumbAwareAction {
+    /** Current file type. */
+    private final IgnoreFileType fileType;
+
     /**
      * Builds a new instance of {@link ShowIgnoredAction}.
      * Describes action's presentation.
      */
     protected ShowIgnoredAction() {
-        super(GitignoreBundle.message("action.showIgnored"), GitignoreBundle.message("action.showIgnored.description"), Icons.FILE);
+        this(GitignoreFileType.INSTANCE);
     }
 
     /**
-     * Shows {@link IgnoredTreeDialog} for the given Gitignore file.
+     * Builds a new instance of {@link ShowIgnoredAction}.
+     * Describes action's presentation.
+     *
+     * @param fileType Current file type
+     */
+    protected ShowIgnoredAction(@NotNull IgnoreFileType fileType) {
+        super(IgnoreBundle.message("action.showIgnored"), IgnoreBundle.message("action.showIgnored.description"), fileType.getIcon());
+        this.fileType = fileType;
+    }
+
+    /**
+     * Shows {@link IgnoredTreeDialog} for the given ignore file.
      *
      * @param e action event
      */
@@ -62,7 +77,7 @@ public class ShowIgnoredAction extends DumbAwareAction {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
         PsiFile file = PsiManager.getInstance(project).findFile(virtualFile);
-        if (file == null || !file.getLanguage().equals(GitignoreLanguage.INSTANCE)) {
+        if (file == null || !file.getLanguage().equals(fileType.getIgnoreLanguage())) {
             return;
         }
 
@@ -78,7 +93,7 @@ public class ShowIgnoredAction extends DumbAwareAction {
     public void update(AnActionEvent e) {
         final Project project = e.getData(CommonDataKeys.PROJECT);
         final VirtualFile file = e.getData(CommonDataKeys.VIRTUAL_FILE);
-        if (project == null || file == null || !file.getName().equals(GitignoreLanguage.FILENAME)) {
+        if (project == null || file == null || !file.getName().equals(fileType.getIgnoreLanguage().getFilename())) {
             e.getPresentation().setVisible(false);
         }
     }

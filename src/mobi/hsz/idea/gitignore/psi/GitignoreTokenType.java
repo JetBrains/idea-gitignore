@@ -24,35 +24,19 @@
 
 package mobi.hsz.idea.gitignore.psi;
 
-import com.intellij.psi.tree.IElementType;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Token type definition.
+ * Gitignore token type definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.1
+ * @since 0.8
  */
-public class GitignoreTokenType extends IElementType {
-    /** Token debug name. */
-    private final String debugName;
-
+public class GitignoreTokenType extends IgnoreTokenType {
     /** Builds a new instance of @{link GitignoreTokenType}. */
     public GitignoreTokenType(@NotNull @NonNls String debugName) {
         super(debugName, GitignoreLanguage.INSTANCE);
-        this.debugName = debugName;
-    }
-
-    /**
-     * String interpretation of the token type.
-     *
-     * @return string representation
-     */
-    @Override
-    public String toString() {
-        return GitignoreBundle.messageOrDefault("tokenType." + debugName, GitignoreLanguage.NAME + "TokenType." + super.toString());
     }
 }
