@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.highlighter;
+package mobi.hsz.idea.gitignore.highlighter.gitignore;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -31,8 +31,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.containers.ContainerUtil;
-import mobi.hsz.idea.gitignore.lang.GitignoreParserDefinition;
-import mobi.hsz.idea.gitignore.lexer.GitignoreLexerAdapter;
+import mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterColors;
+import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreParserDefinition;
+import mobi.hsz.idea.gitignore.lexer.gitignore.GitignoreLexerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +51,7 @@ public class GitignoreHighlighter extends SyntaxHighlighterBase {
 
     /** Binds parser definitions with highlighter colors. */
     static {
-        fillMap(ATTRIBUTES, GitignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT_ATTR_KEY);
+        SyntaxHighlighterBase.fillMap(ATTRIBUTES, GitignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT_ATTR_KEY);
         fillMap(ATTRIBUTES, GitignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION_ATTR_KEY);
         fillMap(ATTRIBUTES, GitignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER_ATTR_KEY);
         fillMap(ATTRIBUTES, GitignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION_ATTR_KEY);

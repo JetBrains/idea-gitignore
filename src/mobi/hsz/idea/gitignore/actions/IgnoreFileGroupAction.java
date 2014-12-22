@@ -31,9 +31,9 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.file.type.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.NpmignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.ExternalFileException;
 import mobi.hsz.idea.gitignore.util.Icons;
@@ -45,7 +45,7 @@ import java.util.*;
 
 /**
  * Group action that ignores specified file or directory.
- * {@link ActionGroup} expands single action into a more child options to allow user specify the {@link mobi.hsz.idea.gitignore.psi.GitignoreFile}
+ * {@link ActionGroup} expands single action into a more child options to allow user specify the {@link mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile}
  * that will be used for file's path storage.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>

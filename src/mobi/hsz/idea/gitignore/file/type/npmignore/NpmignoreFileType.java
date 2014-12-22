@@ -22,60 +22,33 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang;
+package mobi.hsz.idea.gitignore.file.type.npmignore;
 
-import com.intellij.lang.Language;
-import mobi.hsz.idea.gitignore.util.Icons;
-
-import javax.swing.*;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.npmignore.NpmignoreLanguage;
 
 /**
- * Gitignore {@link Language} definition.
+ * Describes Npmignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.1
+ * @since 0.8
  */
-public class GitignoreLanguage extends IgnoreLanguage {
-    /** The {@link GitignoreLanguage} instance. */
-    public static final GitignoreLanguage INSTANCE = new GitignoreLanguage();
+public class NpmignoreFileType extends IgnoreFileType {
+    /** Contains {@link NpmignoreFileType} singleton. */
+    public static final NpmignoreFileType INSTANCE = new NpmignoreFileType();
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    protected GitignoreLanguage() {
-        super("Gitignore");
+    /** Private constructor to prevent direct object creation. */
+    private NpmignoreFileType() {
+        super(NpmignoreLanguage.INSTANCE);
     }
 
-    /** The {@link GitignoreLanguage} instance. */
+    /**
+     * Returns current instance.
+     *
+     * @return current instance
+     */
     @Override
-    public GitignoreLanguage getInstance() {
+    public NpmignoreFileType getInstance() {
         return INSTANCE;
-    }
-
-    /** The Gitignore language name. */
-    @Override
-    public String getName() {
-        return "Gitignore";
-    }
-
-    /** The Gitignore file extension suffix. */
-    @Override
-    public String getExtension() {
-        return "gitignore";
-    }
-
-    /** The Gitignore file extension. */
-    @Override
-    public String getFilename() {
-        return DOT + getExtension();
-    }
-
-    /** The GitignoreLanguage icon. */
-    @Override
-    public Icon getIcon() {
-        return Icons.GITIGNORE;
-    }
-
-    /** The Git specific directory. */
-    public String getGitDirectory() {
-        return ".git";
     }
 }

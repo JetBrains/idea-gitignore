@@ -217,7 +217,7 @@
                 serviceImplementation="mobi.hsz.idea.gitignore.settings.IgnoreSettings"/>
 
         <colorSettingsPage
-                implementation="mobi.hsz.idea.gitignore.highlighter.GitignoreColorSettingsPage"/>
+                implementation="mobi.hsz.idea.gitignore.highlighter.IgnoreColorSettingsPage"/>
 
         <editorNotificationProvider
                 implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider"/>
@@ -247,10 +247,10 @@
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
             language="Gitignore"/>
         <lang.parserDefinition
-            implementationClass="mobi.hsz.idea.gitignore.lang.GitignoreParserDefinition"
+            implementationClass="mobi.hsz.idea.gitignore.lang.gitignore.GitignoreParserDefinition"
             language="Gitignore"/>
         <lang.syntaxHighlighterFactory
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.GitignoreHighlighterFactory"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.gitignore.GitignoreHighlighterFactory"
             key="Gitignore"/>
 
         <localInspection
@@ -304,10 +304,10 @@
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
             language="Npmignore"/>
         <lang.parserDefinition
-            implementationClass="mobi.hsz.idea.gitignore.lang.NpmignoreParserDefinition"
+            implementationClass="mobi.hsz.idea.gitignore.lang.npmignore.NpmignoreParserDefinition"
             language="Npmignore"/>
         <lang.syntaxHighlighterFactory
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.NpmignoreHighlighterFactory"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.npmignore.NpmignoreHighlighterFactory"
             key="Npmignore"/>
 
         <localInspection

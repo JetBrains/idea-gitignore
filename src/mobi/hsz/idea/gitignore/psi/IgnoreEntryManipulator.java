@@ -29,8 +29,9 @@ import com.intellij.psi.AbstractElementManipulator;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
-import mobi.hsz.idea.gitignore.file.type.GitignoreFileType;
+import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile;
 import org.jetbrains.annotations.NotNull;
 
 /**

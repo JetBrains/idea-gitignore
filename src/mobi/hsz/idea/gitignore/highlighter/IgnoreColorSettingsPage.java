@@ -30,6 +30,7 @@ import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.highlighter.gitignore.GitignoreHighlighter;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Resources;
 import org.jetbrains.annotations.NonNls;
@@ -45,7 +46,7 @@ import java.util.Map;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.1
  */
-public class GitignoreColorSettingsPage implements ColorSettingsPage {
+public class IgnoreColorSettingsPage implements ColorSettingsPage {
 
     /** The path to the sample .gitignore file. */
     @NonNls

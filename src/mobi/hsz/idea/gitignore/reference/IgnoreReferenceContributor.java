@@ -26,7 +26,7 @@ package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
-import mobi.hsz.idea.gitignore.psi.GitignoreFile;
+import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NotNull;
 

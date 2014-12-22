@@ -22,32 +22,22 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type;
+package mobi.hsz.idea.gitignore.psi.gitignore;
 
-import mobi.hsz.idea.gitignore.lang.NpmignoreLanguage;
+import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Describes Npmignore file type.
+ * Gitignore plugin file.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.1
  */
-public class NpmignoreFileType extends IgnoreFileType {
-    /** Contains {@link NpmignoreFileType} singleton. */
-    public static final NpmignoreFileType INSTANCE = new NpmignoreFileType();
-
-    /** Private constructor to prevent direct object creation. */
-    private NpmignoreFileType() {
-        super(NpmignoreLanguage.INSTANCE);
-    }
-
-    /**
-     * Returns current instance.
-     *
-     * @return current instance
-     */
-    @Override
-    public NpmignoreFileType getInstance() {
-        return INSTANCE;
+public class GitignoreFile extends IgnoreFile {
+    /** Builds a new instance of {@link GitignoreFileType}. */
+    public GitignoreFile(@NotNull FileViewProvider viewProvider) {
+        super(viewProvider, GitignoreFileType.INSTANCE);
     }
 }

@@ -32,9 +32,9 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.tree.TreeUtil;
 import com.intellij.psi.tree.IElementType;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.psi.GitignoreTypes;
+import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreTypes;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
-import mobi.hsz.idea.gitignore.psi.NpmignoreTypes;
+import mobi.hsz.idea.gitignore.psi.npmignore.NpmignoreTypes;
 import org.jetbrains.annotations.NotNull;
 
 /**

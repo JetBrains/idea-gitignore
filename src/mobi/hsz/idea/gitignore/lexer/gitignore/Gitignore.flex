@@ -7,7 +7,7 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.util.Glob;
-import static mobi.hsz.idea.gitignore.psi.GitignoreTypes.*;
+import static mobi.hsz.idea.gitignore.psi.gitignore.GitignoreTypes.*;
 import static com.intellij.psi.TokenType.*;
 %%
 

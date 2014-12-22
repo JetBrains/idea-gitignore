@@ -26,7 +26,7 @@ package mobi.hsz.idea.gitignore.settings;
 
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.ui.IgnoreSettingsPanel;
 import mobi.hsz.idea.gitignore.util.Utils;

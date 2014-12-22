@@ -2,7 +2,7 @@ package mobi.hsz.idea.gitignore.inspections;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

@@ -24,8 +24,7 @@
 
 package mobi.hsz.idea.gitignore.actions;
 
-import mobi.hsz.idea.gitignore.file.type.NpmignoreFileType;
-import mobi.hsz.idea.gitignore.lang.NpmignoreLanguage;
+import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 
 /**
  * Creates new Npmignore file or returns existing one.

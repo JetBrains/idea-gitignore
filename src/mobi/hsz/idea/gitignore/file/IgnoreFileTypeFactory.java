@@ -27,9 +27,9 @@ package mobi.hsz.idea.gitignore.file;
 import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
-import mobi.hsz.idea.gitignore.file.type.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.NpmignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 import org.jetbrains.annotations.NotNull;
 
 /**

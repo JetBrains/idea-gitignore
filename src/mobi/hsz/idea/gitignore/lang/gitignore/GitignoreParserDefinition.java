@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang;
+package mobi.hsz.idea.gitignore.lang.gitignore;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -36,45 +36,45 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import mobi.hsz.idea.gitignore.lexer.NpmignoreLexerAdapter;
-import mobi.hsz.idea.gitignore.parser.NpmignoreParser;
-import mobi.hsz.idea.gitignore.psi.NpmignoreFile;
-import mobi.hsz.idea.gitignore.psi.NpmignoreTypes;
+import mobi.hsz.idea.gitignore.lexer.gitignore.GitignoreLexerAdapter;
+import mobi.hsz.idea.gitignore.parser.GitignoreParser;
+import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile;
+import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreTypes;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Defines the implementation of a parser for a custom language.
  * 
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.1
  */
-public class NpmignoreParserDefinition implements ParserDefinition {
+public class GitignoreParserDefinition implements ParserDefinition {
     /** Whitespaces. */
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
 
     /** Regular comment started with # */
-    public static final TokenSet COMMENTS = TokenSet.create(NpmignoreTypes.COMMENT);
+    public static final TokenSet COMMENTS = TokenSet.create(GitignoreTypes.COMMENT);
 
     /** Section comment started with ## */
-    public static final TokenSet SECTIONS = TokenSet.create(NpmignoreTypes.SECTION);
+    public static final TokenSet SECTIONS = TokenSet.create(GitignoreTypes.SECTION);
 
     /** Header comment started with ### */
-    public static final TokenSet HEADERS = TokenSet.create(NpmignoreTypes.HEADER);
+    public static final TokenSet HEADERS = TokenSet.create(GitignoreTypes.HEADER);
 
     /** Negation element - ! in the beginning of the entry */
-    public static final TokenSet NEGATIONS = TokenSet.create(NpmignoreTypes.NEGATION);
+    public static final TokenSet NEGATIONS = TokenSet.create(GitignoreTypes.NEGATION);
 
     /** Brackets [] */
-    public static final TokenSet BRACKETS = TokenSet.create(NpmignoreTypes.BRACKET_LEFT, NpmignoreTypes.BRACKET_RIGHT);
+    public static final TokenSet BRACKETS = TokenSet.create(GitignoreTypes.BRACKET_LEFT, GitignoreTypes.BRACKET_RIGHT);
 
     /** Slashes / */
-    public static final TokenSet SLASHES = TokenSet.create(NpmignoreTypes.SLASH);
+    public static final TokenSet SLASHES = TokenSet.create(GitignoreTypes.SLASH);
 
     /** All values - parts of paths */
-    public static final TokenSet VALUES = TokenSet.create(NpmignoreTypes.VALUE);
+    public static final TokenSet VALUES = TokenSet.create(GitignoreTypes.VALUE);
 
     /** Element type of the node describing a file in the specified language. */
-    public static final IFileElementType FILE = new IFileElementType(Language.findInstance(NpmignoreLanguage.class));
+    public static final IFileElementType FILE = new IFileElementType(Language.findInstance(GitignoreLanguage.class));
 
     /**
      * Returns the lexer for lexing files in the specified project. This lexer does not need to support incremental relexing - it is always
@@ -86,7 +86,7 @@ public class NpmignoreParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return new NpmignoreLexerAdapter(project);
+        return new GitignoreLexerAdapter(project);
     }
 
     /**
@@ -97,7 +97,7 @@ public class NpmignoreParserDefinition implements ParserDefinition {
      */
     @Override
     public PsiParser createParser(Project project) {
-        return new NpmignoreParser();
+        return new GitignoreParser();
     }
 
     /**
@@ -162,7 +162,7 @@ public class NpmignoreParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public PsiElement createElement(ASTNode node) {
-        return NpmignoreTypes.Factory.createElement(node);
+        return GitignoreTypes.Factory.createElement(node);
     }
 
     /**
@@ -173,7 +173,7 @@ public class NpmignoreParserDefinition implements ParserDefinition {
      */
     @Override
     public PsiFile createFile(FileViewProvider viewProvider) {
-        return new NpmignoreFile(viewProvider);
+        return new GitignoreFile(viewProvider);
     }
 
     /**

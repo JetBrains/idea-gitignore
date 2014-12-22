@@ -22,32 +22,61 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type;
+package mobi.hsz.idea.gitignore.lang.gitignore;
 
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
+import com.intellij.lang.Language;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.util.Icons;
+
+import javax.swing.*;
 
 /**
- * Describes Gitignore file type.
+ * Gitignore {@link Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.1
  */
-public class GitignoreFileType extends IgnoreFileType {
-    /** Contains {@link GitignoreFileType} singleton. */
-    public static final GitignoreFileType INSTANCE = new GitignoreFileType();
+public class GitignoreLanguage extends IgnoreLanguage {
+    /** The {@link GitignoreLanguage} instance. */
+    public static final GitignoreLanguage INSTANCE = new GitignoreLanguage();
 
-    /** Private constructor to prevent direct object creation. */
-    private GitignoreFileType() {
-        super(GitignoreLanguage.INSTANCE);
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
+    protected GitignoreLanguage() {
+        super("Gitignore");
     }
 
-    /**
-     * Returns current instance.
-     *
-     * @return current instance
-     */
+    /** The {@link GitignoreLanguage} instance. */
     @Override
-    public GitignoreFileType getInstance() {
+    public GitignoreLanguage getInstance() {
         return INSTANCE;
+    }
+
+    /** The Gitignore language name. */
+    @Override
+    public String getName() {
+        return "Gitignore";
+    }
+
+    /** The Gitignore file extension suffix. */
+    @Override
+    public String getExtension() {
+        return "gitignore";
+    }
+
+    /** The Gitignore file extension. */
+    @Override
+    public String getFilename() {
+        return DOT + getExtension();
+    }
+
+    /** The GitignoreLanguage icon. */
+    @Override
+    public Icon getIcon() {
+        return Icons.GITIGNORE;
+    }
+
+    /** The Git specific directory. */
+    public String getGitDirectory() {
+        return ".git";
     }
 }

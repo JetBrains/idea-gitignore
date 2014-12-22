@@ -24,7 +24,7 @@
 
 package mobi.hsz.idea.gitignore.actions;
 
-import mobi.hsz.idea.gitignore.file.type.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 
 /**
  * Creates new Gitignore file or returns existing one.

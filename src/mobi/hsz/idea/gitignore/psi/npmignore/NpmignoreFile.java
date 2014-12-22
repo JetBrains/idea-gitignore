@@ -22,21 +22,22 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.psi;
+package mobi.hsz.idea.gitignore.psi.npmignore;
 
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
-import org.jetbrains.annotations.NonNls;
+import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Gitignore token type definition.
+ * Npmignore plugin file.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class GitignoreTokenType extends IgnoreTokenType {
-    /** Builds a new instance of @{link GitignoreTokenType}. */
-    public GitignoreTokenType(@NotNull @NonNls String debugName) {
-        super(debugName, GitignoreLanguage.INSTANCE);
+public class NpmignoreFile extends IgnoreFile {
+    /** Builds a new instance of {@link NpmignoreFileType}. */
+    public NpmignoreFile(@NotNull FileViewProvider viewProvider) {
+        super(viewProvider, NpmignoreFileType.INSTANCE);
     }
 }

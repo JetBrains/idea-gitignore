@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lexer;
+package mobi.hsz.idea.gitignore.lexer.npmignore;
 
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import mobi.hsz.idea.gitignore.lexer.NpmignoreLexer;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -36,12 +37,12 @@ import org.jetbrains.annotations.Nullable;
  * @since 0.1
  */
 public class NpmignoreLexerAdapter extends FlexAdapter {
-    /** Builds a new instance of {@link GitignoreLexerAdapter}. */
+    /** Builds a new instance of {@link NpmignoreLexerAdapter}. */
     public NpmignoreLexerAdapter(Project project) {
         this(project, null);
     }
 
-    /** Builds a new instance of {@link GitignoreLexerAdapter}. */
+    /** Builds a new instance of {@link NpmignoreLexerAdapter}. */
     public NpmignoreLexerAdapter(Project project, @Nullable VirtualFile virtualFile) {
         super(new NpmignoreLexer());
     }

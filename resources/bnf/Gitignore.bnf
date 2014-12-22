@@ -8,9 +8,9 @@
   psiPackage                = "mobi.hsz.idea.gitignore.psi"
   psiImplPackage            = "mobi.hsz.idea.gitignore.psi.impl"
 
-  elementTypeHolderClass    = "mobi.hsz.idea.gitignore.psi.GitignoreTypes"
-  elementTypeClass          = "mobi.hsz.idea.gitignore.psi.GitignoreElementType"
-  tokenTypeClass            = "mobi.hsz.idea.gitignore.psi.GitignoreTokenType"
+  elementTypeHolderClass    = "mobi.hsz.idea.gitignore.psi.gitignore.GitignoreTypes"
+  elementTypeClass          = "mobi.hsz.idea.gitignore.psi.gitignore.GitignoreElementType"
+  tokenTypeClass            = "mobi.hsz.idea.gitignore.psi.gitignore.GitignoreTokenType"
  
   tokens = [
     CRLF                    = "regexp:[\s\r\n]+"

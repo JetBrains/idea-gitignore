@@ -22,21 +22,28 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.psi;
+package mobi.hsz.idea.gitignore.lexer.gitignore;
 
-import mobi.hsz.idea.gitignore.lang.NpmignoreLanguage;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.lexer.FlexAdapter;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import mobi.hsz.idea.gitignore.lexer.GitignoreLexer;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Npmignore element type.
+ * Definition of {@link FlexAdapter}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.1
  */
-public class NpmignoreElementType extends IgnoreElementType {
-    /** Build a new instance of @{link GitignoreElementType} */
-    public NpmignoreElementType(@NotNull @NonNls String debugName) {
-        super(debugName, NpmignoreLanguage.INSTANCE);
+public class GitignoreLexerAdapter extends FlexAdapter {
+    /** Builds a new instance of {@link GitignoreLexerAdapter}. */
+    public GitignoreLexerAdapter(Project project) {
+        this(project, null);
+    }
+
+    /** Builds a new instance of {@link GitignoreLexerAdapter}. */
+    public GitignoreLexerAdapter(Project project, @Nullable VirtualFile virtualFile) {
+        super(new GitignoreLexer());
     }
 }

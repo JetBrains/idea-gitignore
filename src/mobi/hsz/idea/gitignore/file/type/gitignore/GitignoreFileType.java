@@ -22,21 +22,33 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.psi;
+package mobi.hsz.idea.gitignore.file.type.gitignore;
 
-import mobi.hsz.idea.gitignore.lang.GitignoreLanguage;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
 
 /**
- * Gitignore element type.
+ * Describes Gitignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.1
  */
-public class GitignoreElementType extends IgnoreElementType {
-    /** Build a new instance of @{link GitignoreElementType} */
-    public GitignoreElementType(@NotNull @NonNls String debugName) {
-        super(debugName, GitignoreLanguage.INSTANCE);
+public class GitignoreFileType extends IgnoreFileType {
+    /** Contains {@link GitignoreFileType} singleton. */
+    public static final GitignoreFileType INSTANCE = new GitignoreFileType();
+
+    /** Private constructor to prevent direct object creation. */
+    private GitignoreFileType() {
+        super(GitignoreLanguage.INSTANCE);
+    }
+
+    /**
+     * Returns current instance.
+     *
+     * @return current instance
+     */
+    @Override
+    public GitignoreFileType getInstance() {
+        return INSTANCE;
     }
 }
