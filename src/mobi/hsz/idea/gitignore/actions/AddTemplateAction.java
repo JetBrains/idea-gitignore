@@ -53,10 +53,10 @@ public class AddTemplateAction extends AnAction {
      */
     @Override
     public void actionPerformed(AnActionEvent e) {
-        final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
+        final Project project = e.getData(CommonDataKeys.PROJECT);
         final PsiFile file = e.getData(CommonDataKeys.PSI_FILE);
 
-        if (file == null || !(file instanceof GitignoreFile)) {
+        if (project == null || file == null || !(file instanceof GitignoreFile)) {
             return;
         }
 
