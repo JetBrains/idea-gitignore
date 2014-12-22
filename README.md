@@ -1,11 +1,11 @@
-.gitignore support [![Build Status](https://travis-ci.org/hsz/idea-gitignore.svg?branch=travis)](https://travis-ci.org/hsz/idea-gitignore) [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL)
+.gitignore .hgignore .npmignore .dockerignore support [![Build Status](https://travis-ci.org/hsz/idea-gitignore.svg?branch=travis)](https://travis-ci.org/hsz/idea-gitignore) [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL)
 ==================
 
 
 Introduction
 ------------
 
-**.gitignore support** is a plugin for `.gitignore` files in your Git project. It supports following JetBrains IDEs:
+**.gitignore .hgignore .npmignore .dockerignore support** is a plugin for `.*ignore` files in your project. It supports following JetBrains IDEs:
 
 - Android Studio
 - AppCode
@@ -22,11 +22,11 @@ Introduction
 Features
 --------
 
-- `.gitignore` files syntax highlight
+- `.gitignore, .hgignore, .npmignore, .dockerignore` files syntax highlight
 - Gitignore templates filtering and selecting in rules generator by name and content
 - User custom templates
 - Show ignored files by specified Gitignore file (right click on `.gitignore` file)
-- Create `.gitignore` file in currently selected directory
+- Create `.gitignore, .hgignore, .npmignore, .dockerignore` file in currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
 - Add selected file/directory to Gitignore rules from popup menu
 - Suggesting `.gitignore` file creation for new project
@@ -38,8 +38,6 @@ Features
 
 *Feature requests:*
 
-- *Node Packaged Modules support*
-- *Mercurial support*
 - *Better ignored files list*
 
 
@@ -66,6 +64,15 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.8
+
+- Support for .hgignore .npmignore and .dockerignore files ([#57](https://github.com/hsz/idea-gitignore/issues/57), [#58](https://github.com/hsz/idea-gitignore/issues/58))
+- Relative entry inspection with quick fix
+- Retina-ready icons ([#63](https://github.com/hsz/idea-gitignore/issues/63), [#65](https://github.com/hsz/idea-gitignore/issues/65))
+- Fixed Add template... on External Libraries ([#68](https://github.com/hsz/idea-gitignore/issues/68))
+- Fixed template presentation error ([#67](https://github.com/hsz/idea-gitignore/issues/67))
+- Fixed minor bugs ([#64](https://github.com/hsz/idea-gitignore/issues/64), [#49](https://github.com/hsz/idea-gitignore/issues/49))
+
 Version 0.7
 
 - User templates - you can create your own templates in <kbd>Settings > Gitignore > User templates</kbd>
@@ -74,7 +81,7 @@ Version 0.7
 
 Version 0.6.1
 
-- Global settings section</li>
+- Global settings section
 - Optional missing gitignore file check ([#18](https://github.com/hsz/idea-gitignore/issues/18))
 - Fixed donation notification ([#59](https://github.com/hsz/idea-gitignore/issues/59))
 
