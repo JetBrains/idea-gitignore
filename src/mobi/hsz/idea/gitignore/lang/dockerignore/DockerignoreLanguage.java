@@ -30,7 +30,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
 import javax.swing.*;
 
 /**
- * Dockerignore {@link com.intellij.lang.Language} definition.
+ * Dockerignore {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
@@ -39,7 +39,7 @@ public class DockerignoreLanguage extends IgnoreLanguage {
     /** The {@link DockerignoreLanguage} instance. */
     public static final DockerignoreLanguage INSTANCE = new DockerignoreLanguage();
 
-    /** {@link mobi.hsz.idea.gitignore.lang.IgnoreLanguage} is a non-instantiable static class. */
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected DockerignoreLanguage() {
         super("Dockerignore");
     }

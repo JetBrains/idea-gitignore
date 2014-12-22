@@ -84,7 +84,7 @@ public class DockerignoreHighlighter extends SyntaxHighlighterBase {
     }
 
     /**
-     * Gets highlighter text {@link com.intellij.openapi.editor.colors.TextAttributesKey} list using {@link com.intellij.psi.tree.IElementType} token.
+     * Gets highlighter text {@link TextAttributesKey} list using {@link IElementType} token.
      *
      * @param tokenType element type
      * @return attributes list

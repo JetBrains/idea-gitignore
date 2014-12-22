@@ -31,7 +31,7 @@ import mobi.hsz.idea.gitignore.lexer.DockerignoreLexer;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Definition of {@link com.intellij.lexer.FlexAdapter}.
+ * Definition of {@link FlexAdapter}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8

@@ -34,7 +34,7 @@ import mobi.hsz.idea.gitignore.lang.hgignore.HgignoreLanguage;
  * @since 0.8
  */
 public class HgignoreFileType extends IgnoreFileType {
-    /** Contains {@link mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType} singleton. */
+    /** Contains {@link HgignoreFileType} singleton. */
     public static final HgignoreFileType INSTANCE = new HgignoreFileType();
 
     /** Private constructor to prevent direct object creation. */

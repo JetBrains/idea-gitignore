@@ -125,10 +125,10 @@ public class Resources {
     }
 
     /**
-     * {@link Template} entity that defines template fetched from resources or {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings}.
+     * {@link Template} entity that defines template fetched from resources or {@link IgnoreSettings}.
      */
     public static class Template implements Comparable<Template> {
-        /** {@link File} pointer. <code>null</code> if template is fetched from {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings}. */
+        /** {@link File} pointer. <code>null</code> if template is fetched from {@link IgnoreSettings}. */
         private final File file;
 
         /** Template name. */
@@ -142,7 +142,7 @@ public class Resources {
 
         /**
          * Defines if template is fetched from resources ({@link Container#ROOT} directory or {@link Container#GLOBAL}
-         * subdirectory) or is user defined and fetched from {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings}.
+         * subdirectory) or is user defined and fetched from {@link IgnoreSettings}.
          */
         public static enum Container {
             USER, ROOT, GLOBAL
@@ -166,7 +166,7 @@ public class Resources {
          * Builds a new instance of {@link Template}.
          * {@link Container} will be set to {@link Container#USER}.
          *
-         * @param userTemplate {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings} user template object
+         * @param userTemplate {@link IgnoreSettings} user template object
          */
         public Template(IgnoreSettings.UserTemplate userTemplate) {
             this.file = null;

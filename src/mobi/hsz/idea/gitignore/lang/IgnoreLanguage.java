@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NonNls;
 import javax.swing.*;
 
 /**
- * Gitignore {@link com.intellij.lang.Language} definition.
+ * Gitignore {@link Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8

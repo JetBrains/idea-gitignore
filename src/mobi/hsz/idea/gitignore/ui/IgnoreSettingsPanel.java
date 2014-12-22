@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * UI form for {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings} edition.
+ * UI form for {@link IgnoreSettings} edition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.6.1

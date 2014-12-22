@@ -34,7 +34,7 @@ import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
  * @since 0.8
  */
 public class NewDockerignoreFileAction extends NewFileAction {
-    /** Builds a new instance of {@link mobi.hsz.idea.gitignore.actions.NewFileAction}. */
+    /** Builds a new instance of {@link NewFileAction}. */
     public NewDockerignoreFileAction() {
         super(DockerignoreFileType.INSTANCE);
     }

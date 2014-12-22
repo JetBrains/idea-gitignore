@@ -30,7 +30,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
 import javax.swing.*;
 
 /**
- * Hgignore {@link com.intellij.lang.Language} definition.
+ * Hgignore {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
@@ -39,7 +39,7 @@ public class HgignoreLanguage extends IgnoreLanguage {
     /** The {@link HgignoreLanguage} instance. */
     public static final HgignoreLanguage INSTANCE = new HgignoreLanguage();
 
-    /** {@link mobi.hsz.idea.gitignore.lang.IgnoreLanguage} is a non-instantiable static class. */
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected HgignoreLanguage() {
         super("Hgignore");
     }

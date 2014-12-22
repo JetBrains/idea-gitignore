@@ -77,7 +77,7 @@ public class IgnoreSettingsConfigurable implements Configurable {
     /**
      * Returns the user interface component for editing the configuration.
      *
-     * @return the {@link mobi.hsz.idea.gitignore.ui.IgnoreSettingsPanel} component instance
+     * @return the {@link IgnoreSettingsPanel} component instance
      */
     @Nullable
     @Override

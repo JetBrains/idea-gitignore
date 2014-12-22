@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * {@link com.intellij.openapi.fileTypes.SyntaxHighlighterFactory} class definition.
+ * {@link SyntaxHighlighterFactory} class definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8

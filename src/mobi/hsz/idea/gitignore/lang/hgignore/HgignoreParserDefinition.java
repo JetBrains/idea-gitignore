@@ -115,7 +115,7 @@ public class HgignoreParserDefinition implements ParserDefinition {
      * Tokens of those types are automatically skipped by PsiBuilder. Whitespace elements
      * on the bounds of nodes built by PsiBuilder are automatically excluded from the text
      * range of the nodes.
-     * <p><strong>It is strongly advised you return TokenSet that only contains {@link com.intellij.psi.TokenType#WHITE_SPACE},
+     * <p><strong>It is strongly advised you return TokenSet that only contains {@link TokenType#WHITE_SPACE},
      * which is suitable for all the languages unless you really need to use special whitespace token</strong>
      *
      * @return the set of whitespace token types.

@@ -34,7 +34,7 @@ import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
  * @since 0.8
  */
 public class NewHgignoreFileAction extends NewFileAction {
-    /** Builds a new instance of {@link mobi.hsz.idea.gitignore.actions.NewFileAction}. */
+    /** Builds a new instance of {@link NewFileAction}. */
     public NewHgignoreFileAction() {
         super(HgignoreFileType.INSTANCE);
     }

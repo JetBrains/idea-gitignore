@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.8
  */
 public class HgignoreFile extends IgnoreFile {
-    /** Builds a new instance of {@link mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType}. */
+    /** Builds a new instance of {@link HgignoreFileType}. */
     public HgignoreFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, HgignoreFileType.INSTANCE);
     }
