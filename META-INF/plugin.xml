@@ -292,6 +292,7 @@
 
         <!-- END Gitignore -->
 
+
         <!-- Npmignore -->
 
         <codeInsight.lineMarkerProvider
@@ -349,6 +350,122 @@
 
         <!-- END Npmignore -->
 
+
+        <!-- Dockerignore -->
+
+        <codeInsight.lineMarkerProvider
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"
+            language="Dockerignore"/>
+        <lang.braceMatcher
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"
+            language="Dockerignore"/>
+        <lang.commenter
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
+            language="Dockerignore"/>
+        <lang.parserDefinition
+            implementationClass="mobi.hsz.idea.gitignore.lang.dockerignore.DockerignoreParserDefinition"
+            language="Dockerignore"/>
+        <lang.syntaxHighlighterFactory
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.dockerignore.DockerignoreHighlighterFactory"
+            key="Dockerignore"/>
+
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection"
+            key="codeInspection.coverEntry"
+            language="Dockerignore"
+            level="WARNING"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection"
+            key="codeInspection.duplicateEntry"
+            language="Dockerignore"
+            level="ERROR"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
+            key="codeInspection.unusedEntry"
+            language="Dockerignore"
+            level="GITIGNORE.UNUSED_ENTRY"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
+            key="codeInspection.relativeEntry"
+            language="Dockerignore"
+            level="ERROR"/>
+
+        <psi.referenceContributor
+            implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
+            language="Dockerignore"/>
+
+        <!-- END Dockerignore -->
+
+
+        <!-- Hgignore -->
+
+        <codeInsight.lineMarkerProvider
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"
+            language="Hgignore"/>
+        <lang.braceMatcher
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"
+            language="Hgignore"/>
+        <lang.commenter
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
+            language="Hgignore"/>
+        <lang.parserDefinition
+            implementationClass="mobi.hsz.idea.gitignore.lang.hgignore.HgignoreParserDefinition"
+            language="Hgignore"/>
+        <lang.syntaxHighlighterFactory
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.hgignore.HgignoreHighlighterFactory"
+            key="Hgignore"/>
+
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection"
+            key="codeInspection.coverEntry"
+            language="Hgignore"
+            level="WARNING"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection"
+            key="codeInspection.duplicateEntry"
+            language="Hgignore"
+            level="ERROR"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
+            key="codeInspection.unusedEntry"
+            language="Hgignore"
+            level="GITIGNORE.UNUSED_ENTRY"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
+            key="codeInspection.relativeEntry"
+            language="Hgignore"
+            level="ERROR"/>
+
+        <psi.referenceContributor
+            implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
+            language="Hgignore"/>
+
+        <!-- END Hgignore -->
+
     </extensions>
 
     <application-components>
@@ -361,8 +478,10 @@
 
     <actions>
         <group id="Ignore.New">
-            <action id="Ignore.New.Gitignore" class="mobi.hsz.idea.gitignore.actions.NewGitignoreFileAction"/>
-            <action id="Ignore.New.Npmignore" class="mobi.hsz.idea.gitignore.actions.NewNpmignoreFileAction"/>
+            <action id="Ignore.New.Gitignore" class="mobi.hsz.idea.gitignore.actions.gitignore.NewGitignoreFileAction"/>
+            <action id="Ignore.New.Npmignore" class="mobi.hsz.idea.gitignore.actions.npmignore.NewNpmignoreFileAction"/>
+            <action id="Ignore.New.Dockerignore" class="mobi.hsz.idea.gitignore.actions.dockerignore.NewDockerignoreFileAction"/>
+            <action id="Ignore.New.Hgignore" class="mobi.hsz.idea.gitignore.actions.hgignore.NewHgignoreFileAction"/>
             <add-to-group group-id="NewGroup" anchor="last"/>
         </group>
         <group id="Gitignore.IgnoreGroup" class="mobi.hsz.idea.gitignore.actions.IgnoreFileGroupAction">

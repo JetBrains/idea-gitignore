@@ -27,8 +27,10 @@ package mobi.hsz.idea.gitignore.file;
 import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
-import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,6 +47,8 @@ public class IgnoreFileTypeFactory extends FileTypeFactory {
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {
         consume(consumer, GitignoreFileType.INSTANCE);
         consume(consumer, NpmignoreFileType.INSTANCE);
+        consume(consumer, DockerignoreFileType.INSTANCE);
+        consume(consumer, HgignoreFileType.INSTANCE);
     }
 
     /**

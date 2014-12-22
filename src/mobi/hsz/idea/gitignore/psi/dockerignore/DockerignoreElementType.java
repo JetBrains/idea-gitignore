@@ -22,19 +22,22 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.actions;
+package mobi.hsz.idea.gitignore.psi.dockerignore;
 
-import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.lang.dockerignore.DockerignoreLanguage;
+import mobi.hsz.idea.gitignore.psi.IgnoreElementType;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Creates new Gitignore file or returns existing one.
+ * Dockerignore element type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class NewGitignoreFileAction extends NewFileAction {
-    /** Builds a new instance of {@link NewFileAction}. */
-    public NewGitignoreFileAction() {
-        super(GitignoreFileType.INSTANCE);
+public class DockerignoreElementType extends IgnoreElementType {
+    /** Build a new instance of @{link DockerignoreElementType} */
+    public DockerignoreElementType(@NotNull @NonNls String debugName) {
+        super(debugName, DockerignoreLanguage.INSTANCE);
     }
 }

@@ -22,19 +22,20 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.actions;
+package mobi.hsz.idea.gitignore.actions.dockerignore;
 
-import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
+import mobi.hsz.idea.gitignore.actions.NewFileAction;
+import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
 
 /**
- * Creates new Npmignore file or returns existing one.
+ * Creates new Dockerignore file or returns existing one.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class NewNpmignoreFileAction extends NewFileAction {
-    /** Builds a new instance of {@link NewFileAction}. */
-    public NewNpmignoreFileAction() {
-        super(NpmignoreFileType.INSTANCE);
+public class NewDockerignoreFileAction extends NewFileAction {
+    /** Builds a new instance of {@link mobi.hsz.idea.gitignore.actions.NewFileAction}. */
+    public NewDockerignoreFileAction() {
+        super(DockerignoreFileType.INSTANCE);
     }
 }
