@@ -35,9 +35,6 @@ import javax.swing.*;
  * @since 0.2.1
  */
 public class Icons {
-    /** Basic plugin icon with size 16x16px. */
-    public static final Icon FILE = IconLoader.getIcon("/icons/icon16.png");
-
     /** Gitignore icon. */
     public static final Icon GITIGNORE = IconLoader.getIcon("/icons/icon_git.png");
 

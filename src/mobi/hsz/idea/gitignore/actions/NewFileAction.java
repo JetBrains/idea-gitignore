@@ -57,7 +57,7 @@ public abstract class NewFileAction extends AnAction {
      */
     public NewFileAction(IgnoreFileType fileType) {
         super(
-                IgnoreBundle.message("action.newFile", fileType.getLanguageName()),
+                IgnoreBundle.message("action.newFile", fileType.getIgnoreLanguage().getFilename()),
                 IgnoreBundle.message("action.newFile.description", fileType.getLanguageName()),
                 fileType.getIcon()
         );

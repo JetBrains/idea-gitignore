@@ -29,10 +29,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
-import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
  * Action that initiates adding new template to the selected .gitignore file.
@@ -42,7 +42,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
  */
 public class AddTemplateAction extends AnAction {
     public AddTemplateAction() {
-        super(IgnoreBundle.message("action.addTemplate"), IgnoreBundle.message("action.addTemplate.description"), Icons.FILE);
+        super(IgnoreBundle.message("action.addTemplate"), IgnoreBundle.message("action.addTemplate.description"), null);
     }
 
     /**
@@ -56,7 +56,7 @@ public class AddTemplateAction extends AnAction {
         final Project project = e.getData(CommonDataKeys.PROJECT);
         final PsiFile file = e.getData(CommonDataKeys.PSI_FILE);
 
-        if (project == null || file == null || !(file instanceof GitignoreFile)) {
+        if (project == null || file == null || !(file instanceof IgnoreFile)) {
             return;
         }
 
@@ -73,8 +73,10 @@ public class AddTemplateAction extends AnAction {
     public void update(AnActionEvent e) {
         final PsiFile file = e.getData(CommonDataKeys.PSI_FILE);
 
-        if (file == null || !(file instanceof GitignoreFile)) {
+        if (file == null || !(file instanceof IgnoreFile)) {
             e.getPresentation().setVisible(false);
+            return;
         }
+        getTemplatePresentation().setIcon(file.getFileType().getIcon());
     }
 }
