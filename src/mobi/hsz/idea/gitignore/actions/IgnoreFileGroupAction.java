@@ -31,12 +31,13 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.ExternalFileException;
-import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,7 +57,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
     private final Map<IgnoreFileType, List<VirtualFile>> files = new HashMap<IgnoreFileType, List<VirtualFile>>();
 
     private final List<IgnoreFileType> fileTypes = Arrays.asList(
-            GitignoreFileType.INSTANCE, NpmignoreFileType.INSTANCE
+            GitignoreFileType.INSTANCE, HgignoreFileType.INSTANCE, NpmignoreFileType.INSTANCE, DockerignoreFileType.INSTANCE
     );
 
     /** {@link Project}'s base directory. */
@@ -70,7 +71,6 @@ public class IgnoreFileGroupAction extends ActionGroup {
         Presentation p = getTemplatePresentation();
         p.setText(IgnoreBundle.message("action.addToIgnore.group"));
         p.setDescription(IgnoreBundle.message("action.addToIgnore.group.description"));
-        p.setIcon(Icons.FILE);
     }
 
     /**
@@ -83,10 +83,12 @@ public class IgnoreFileGroupAction extends ActionGroup {
     public void update(AnActionEvent e) {
         final VirtualFile file = e.getData(CommonDataKeys.VIRTUAL_FILE);
         final Project project = e.getData(CommonDataKeys.PROJECT);
+        final Presentation presentation = e.getPresentation();
         files.clear();
+
         if (project != null && file != null) {
             try {
-                e.getPresentation().setVisible(true);
+                presentation.setVisible(true);
                 baseDir = project.getBaseDir();
 
                 for (IgnoreFileType fileType : fileTypes) {
@@ -95,10 +97,11 @@ public class IgnoreFileGroupAction extends ActionGroup {
                     files.put(fileType, list);
                 }
             } catch (ExternalFileException e1) {
-                e.getPresentation().setVisible(false);
+                presentation.setVisible(false);
             }
         }
-        setPopup(files.size() > 1);
+
+        setPopup(countFiles() > 1);
     }
 
     /**
@@ -111,15 +114,12 @@ public class IgnoreFileGroupAction extends ActionGroup {
     @Override
     public AnAction[] getChildren(@Nullable AnActionEvent e) {
         AnAction[] actions;
-        int size = 0;
-        for (List value : files.values()) {
-            size += value.size();
-        }
+        int count = countFiles();
 
-        if (size == 0) {
+        if (count == 0) {
             actions = new AnAction[]{ new IgnoreFileAction() };
         } else {
-            actions = new AnAction[size];
+            actions = new AnAction[count];
 
             int i = 0;
             for(Map.Entry<IgnoreFileType, List<VirtualFile>> entry : files.entrySet()) {
@@ -128,6 +128,10 @@ public class IgnoreFileGroupAction extends ActionGroup {
                     actions[i++] = action;
 
                     String name = Utils.getRelativePath(baseDir, file);
+                    if (count == 1) {
+                        name = IgnoreBundle.message("action.addToIgnore.group.noPopup", name);
+                    }
+
                     Presentation presentation = action.getTemplatePresentation();
                     presentation.setIcon(entry.getKey().getIcon());
                     presentation.setText(name);
@@ -135,5 +139,18 @@ public class IgnoreFileGroupAction extends ActionGroup {
             }
         }
         return actions;
+    }
+
+    /**
+     * Counts items in {@link #files} map.
+     *
+     * @return files amount
+     */
+    private int countFiles() {
+        int size = 0;
+        for (List value : files.values()) {
+            size += value.size();
+        }
+        return size;
     }
 }
