@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.ui;
 
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Document;
@@ -61,7 +62,7 @@ import java.util.List;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.6.1
  */
-public class IgnoreSettingsPanel {
+public class IgnoreSettingsPanel implements Disposable {
 
     /** The parent panel for the form. */
     public JPanel panel;
@@ -118,6 +119,11 @@ public class IgnoreSettingsPanel {
         EditorColorsScheme colorsScheme = editor.getColorsScheme();
         colorsScheme.setColor(EditorColors.CARET_ROW_COLOR, null);
         return editor;
+    }
+
+    @Override
+    public void dispose() {
+        EditorFactory.getInstance().releaseEditor(editorPanel.preview);
     }
 
     /**
@@ -353,5 +359,7 @@ public class IgnoreSettingsPanel {
                 }
             });
         }
+
+
     }
 }

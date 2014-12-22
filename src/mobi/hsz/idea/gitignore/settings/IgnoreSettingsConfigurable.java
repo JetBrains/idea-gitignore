@@ -124,6 +124,7 @@ public class IgnoreSettingsConfigurable implements Configurable {
      */
     @Override
     public void disposeUIResources() {
+        settingsPanel.dispose();
         settingsPanel = null;
     }
 }
