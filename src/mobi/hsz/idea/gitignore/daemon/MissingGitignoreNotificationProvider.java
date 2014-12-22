@@ -34,18 +34,19 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
-import mobi.hsz.idea.gitignore.settings.GitignoreSettings;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
-import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Properties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Editor notification provider that checks if there is {@link GitignoreLanguage#FILENAME} in root directory
+ * Editor notification provider that checks if there is {@link GitignoreLanguage#getFilename()} in root directory
  * and suggest to create one.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
@@ -53,7 +54,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MissingGitignoreNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
     /** Notification key. */
-    private static final Key<EditorNotificationPanel> KEY = Key.create(GitignoreBundle.message("daemon.missingGitignore.create"));
+    private static final Key<EditorNotificationPanel> KEY = Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
 
     /** Current project. */
     private final Project project;
@@ -62,7 +63,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     private final EditorNotifications notifications;
 
     /** Plugin settings holder. */
-    private final GitignoreSettings settings;
+    private final IgnoreSettings settings;
 
     /**
      * Builds a new instance of {@link MissingGitignoreNotificationProvider}.
@@ -73,7 +74,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     public MissingGitignoreNotificationProvider(Project project, @NotNull EditorNotifications notifications) {
         this.project = project;
         this.notifications = notifications;
-        this.settings = GitignoreSettings.getInstance();
+        this.settings = IgnoreSettings.getInstance();
     }
 
     /**
@@ -105,12 +106,12 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
             return null;
         }
         // Break if there is no Git directory in the project
-        VirtualFile gitDirectory = project.getBaseDir().findChild(GitignoreLanguage.GIT_DIRECTORY);
+        VirtualFile gitDirectory = project.getBaseDir().findChild(GitignoreLanguage.INSTANCE.getGitDirectory());
         if (gitDirectory == null || !gitDirectory.isDirectory()) {
             return null;
         }
         // Break if there is Gitignore file already
-        VirtualFile gitignoreFile = project.getBaseDir().findChild(GitignoreLanguage.FILENAME);
+        VirtualFile gitignoreFile = project.getBaseDir().findChild(GitignoreLanguage.INSTANCE.getFilename());
         if (gitignoreFile != null) {
             return null;
         }
@@ -126,19 +127,20 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
      */
     private EditorNotificationPanel createPanel(@NotNull final Project project) {
         final EditorNotificationPanel panel = new EditorNotificationPanel();
-        panel.setText(GitignoreBundle.message("daemon.missingGitignore"));
-        panel.createActionLabel(GitignoreBundle.message("daemon.missingGitignore.create"), new Runnable() {
+        final IgnoreFileType fileType = GitignoreFileType.INSTANCE;
+        panel.setText(IgnoreBundle.message("daemon.missingGitignore"));
+        panel.createActionLabel(IgnoreBundle.message("daemon.missingGitignore.create"), new Runnable() {
             @Override
             public void run() {
                 PsiDirectory directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
                 if (directory != null) {
-                    PsiFile file = new CreateFileCommandAction(project, directory).execute().getResultObject();
+                    PsiFile file = new CreateFileCommandAction(project, directory, fileType).execute().getResultObject();
                     FileEditorManager.getInstance(project).openFile(file.getVirtualFile(), true);
                     new GeneratorDialog(project, file).show();
                 }
             }
         });
-        panel.createActionLabel(GitignoreBundle.message("global.cancel"), new Runnable() {
+        panel.createActionLabel(IgnoreBundle.message("global.cancel"), new Runnable() {
             @Override
             public void run() {
                 Properties.setIgnoreMissingGitignore(project);
@@ -147,7 +149,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
         });
 
         try { // ignore if older SDK does not support panel icon
-            panel.icon(Icons.FILE);
+            panel.icon(fileType.getIcon());
         } catch (NoSuchMethodError ignored) {}
 
         return panel;

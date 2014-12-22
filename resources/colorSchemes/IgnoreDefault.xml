@@ -1,0 +1,49 @@
+<?xml version='1.0'?>
+<list>
+    <option name="IGNORE.COMMENT">
+        <value>
+            <option name="FOREGROUND" value="808080" />
+        </value>
+    </option>
+    <option name="IGNORE.SECTION">
+        <value>
+            <option name="FOREGROUND" value="808080" />
+            <option name="BACKGROUND" value="ECFAEB" />
+        </value>
+    </option>
+    <option name="IGNORE.HEADER">
+        <value>
+            <option name="FOREGROUND" value="808080" />
+            <option name="BACKGROUND" value="ECFAEB" />
+            <option name="FONT_TYPE" value="1" />
+        </value>
+    </option>
+    <option name="IGNORE.NEGATION">
+        <value>
+            <option name="FOREGROUND" value="CC7832" />
+            <option name="FONT_TYPE" value="1" />
+        </value>
+    </option>
+    <option name="IGNORE.BRACKET">
+        <value>
+            <option name="FOREGROUND" value="CC7832" />
+            <option name="FONT_TYPE" value="1" />
+        </value>
+    </option>
+    <option name="IGNORE.SLASH">
+        <value>
+            <option name="FOREGROUND" value="808080" />
+        </value>
+    </option>
+    <option name="IGNORE.VALUE">
+        <value>
+            <option name="FOREGROUND" value="5C9F30" />
+        </value>
+    </option>
+    <option name="IGNORE.UNUSED_ENTRY">
+        <value>
+            <option name="FOREGROUND" value="808080" />
+            <option name="FONT_TYPE" value="2" />
+        </value>
+    </option>
+</list>

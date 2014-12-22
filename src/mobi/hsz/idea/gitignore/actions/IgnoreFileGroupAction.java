@@ -30,7 +30,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.ExternalFileException;
 import mobi.hsz.idea.gitignore.util.Icons;
@@ -38,13 +41,11 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Group action that ignores specified file or directory.
- * {@link ActionGroup} expands single action into a more child options to allow user specify the {@link mobi.hsz.idea.gitignore.psi.GitignoreFile}
+ * {@link ActionGroup} expands single action into a more child options to allow user specify the {@link mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile}
  * that will be used for file's path storage.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
@@ -52,7 +53,11 @@ import java.util.List;
  */
 public class IgnoreFileGroupAction extends ActionGroup {
     /** List of suitable Gitignore {@link VirtualFile}s that can be presented in an IgnoreFile action. */
-    private final List<VirtualFile> files = new ArrayList<VirtualFile>();
+    private final Map<IgnoreFileType, List<VirtualFile>> files = new HashMap<IgnoreFileType, List<VirtualFile>>();
+
+    private final List<IgnoreFileType> fileTypes = Arrays.asList(
+            GitignoreFileType.INSTANCE, NpmignoreFileType.INSTANCE
+    );
 
     /** {@link Project}'s base directory. */
     private VirtualFile baseDir;
@@ -63,8 +68,8 @@ public class IgnoreFileGroupAction extends ActionGroup {
      */
     public IgnoreFileGroupAction() {
         Presentation p = getTemplatePresentation();
-        p.setText(GitignoreBundle.message("action.addToGitignore"));
-        p.setDescription(GitignoreBundle.message("action.addToGitignore.description"));
+        p.setText(IgnoreBundle.message("action.addToIgnore.group"));
+        p.setDescription(IgnoreBundle.message("action.addToIgnore.group.description"));
         p.setIcon(Icons.FILE);
     }
 
@@ -81,10 +86,14 @@ public class IgnoreFileGroupAction extends ActionGroup {
         files.clear();
         if (project != null && file != null) {
             try {
-                files.addAll(Utils.getSuitableGitignoreFiles(project, file));
                 e.getPresentation().setVisible(true);
-                Collections.reverse(files);
                 baseDir = project.getBaseDir();
+
+                for (IgnoreFileType fileType : fileTypes) {
+                    List<VirtualFile> list = Utils.getSuitableIgnoreFiles(project, fileType, file);
+                    Collections.reverse(list);
+                    files.put(fileType, list);
+                }
             } catch (ExternalFileException e1) {
                 e.getPresentation().setVisible(false);
             }
@@ -102,19 +111,26 @@ public class IgnoreFileGroupAction extends ActionGroup {
     @Override
     public AnAction[] getChildren(@Nullable AnActionEvent e) {
         AnAction[] actions;
-        int size = files.size();
+        int size = 0;
+        for (List value : files.values()) {
+            size += value.size();
+        }
+
         if (size == 0) {
             actions = new AnAction[]{ new IgnoreFileAction() };
         } else {
             actions = new AnAction[size];
-            for (int i = 0; i < files.size(); i++) {
-                VirtualFile file = files.get(i);
-                IgnoreFileAction action = new IgnoreFileAction(file);
-                actions[i] = action;
 
-                if (size > 1) {
+            int i = 0;
+            for(Map.Entry<IgnoreFileType, List<VirtualFile>> entry : files.entrySet()) {
+                for (VirtualFile file : entry.getValue()) {
+                    IgnoreFileAction action = new IgnoreFileAction(file);
+                    actions[i++] = action;
+
                     String name = Utils.getRelativePath(baseDir, file);
-                    action.getTemplatePresentation().setText(name);
+                    Presentation presentation = action.getTemplatePresentation();
+                    presentation.setIcon(entry.getKey().getIcon());
+                    presentation.setText(name);
                 }
             }
         }

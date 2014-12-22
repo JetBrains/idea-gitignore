@@ -24,7 +24,7 @@
 
 package mobi.hsz.idea.gitignore.util;
 
-import mobi.hsz.idea.gitignore.GitignoreException;
+import mobi.hsz.idea.gitignore.IgnoreException;
 
 /**
  * External file {@link Exception} definition.
@@ -32,5 +32,5 @@ import mobi.hsz.idea.gitignore.GitignoreException;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.5.1
  */
-public class ExternalFileException extends GitignoreException {
+public class ExternalFileException extends IgnoreException {
 }

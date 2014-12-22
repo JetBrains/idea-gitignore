@@ -2,12 +2,14 @@ package mobi.hsz.idea.gitignore.inspections;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 abstract public class GitignoreInspectionTestCase extends LightPlatformCodeInsightFixtureTestCase {
+    private static final String FILENAME = GitignoreLanguage.INSTANCE.getFilename();
+
     @Override
     protected String getTestDataPath() {
         return new File("testData/inspections/" + name()).getAbsolutePath();
@@ -24,18 +26,18 @@ abstract public class GitignoreInspectionTestCase extends LightPlatformCodeInsig
 
     protected void doHighlightingTest() {
         myFixture.copyDirectoryToProject(getTestName(true), getTestName(true));
-        myFixture.testHighlighting(true, false, true, getTestName(true) + "/" + GitignoreLanguage.FILENAME);
+        myFixture.testHighlighting(true, false, true, getTestName(true) + "/" + FILENAME);
     }
     
     protected void doHighlightingFileTest() {
-        myFixture.configureByFile(getTestName(true) + GitignoreLanguage.FILENAME);
+        myFixture.configureByFile(getTestName(true) + FILENAME);
         myFixture.testHighlighting(true, false, true);
     }
     
     protected void doHighlightingFileTestWithQuickFix(@NotNull String quickFixName) {
-        myFixture.configureByFile(getTestName(true) + GitignoreLanguage.FILENAME);
+        myFixture.configureByFile(getTestName(true) + FILENAME);
         myFixture.testHighlighting(true, false, true);
         myFixture.launchAction(myFixture.findSingleIntention(quickFixName));
-        myFixture.checkResultByFile(getTestName(true) + "-after" + GitignoreLanguage.FILENAME);
+        myFixture.checkResultByFile(getTestName(true) + "-after" + FILENAME);
     }
 }

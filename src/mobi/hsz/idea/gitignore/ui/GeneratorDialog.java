@@ -49,9 +49,9 @@ import com.intellij.ui.components.JBPanel;
 import com.intellij.util.containers.hash.HashSet;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
-import mobi.hsz.idea.gitignore.file.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.util.Resources;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -120,8 +120,8 @@ public class GeneratorDialog extends DialogWrapper {
         this.file = file;
         this.root = new TemplateTreeNode();
 
-        setTitle(GitignoreBundle.message("dialog.generator.title"));
-        setOKButtonText(GitignoreBundle.message("global.generate"));
+        setTitle(IgnoreBundle.message("dialog.generator.title"));
+        setOKButtonText(IgnoreBundle.message("global.generate"));
         init();
     }
 
@@ -159,7 +159,7 @@ public class GeneratorDialog extends DialogWrapper {
         if (isOKActionEnabled()) {
             String content = "";
             for (Resources.Template template : checked) {
-                content += GitignoreBundle.message("file.templateSection", template.getName());
+                content += IgnoreBundle.message("file.templateSection", template.getName());
                 content += "\n" + template.getContent() + "\n\n";
             }
             if (!content.isEmpty()) {
@@ -302,7 +302,7 @@ public class GeneratorDialog extends DialogWrapper {
         DefaultActionGroup actions = new DefaultActionGroup();
         actions.add(actionManager.createExpandAllAction(treeExpander, tree));
         actions.add(actionManager.createCollapseAllAction(treeExpander, tree));
-        actions.add(new AnAction(GitignoreBundle.message("dialog.generator.unselectAll"), null, AllIcons.Actions.Unselectall){
+        actions.add(new AnAction(IgnoreBundle.message("dialog.generator.unselectAll"), null, AllIcons.Actions.Unselectall){
             @Override
             public void update(AnActionEvent e) {
                 e.getPresentation().setEnabled(!checked.isEmpty());

@@ -40,17 +40,19 @@ import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.containers.ContainerUtil;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
-import mobi.hsz.idea.gitignore.psi.GitignoreEntry;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -81,47 +83,50 @@ public class Utils {
     }
 
     /**
-     * Gets Gitignore file for given {@link Project} root directory.
+     * Gets Ignore file for given {@link Project} root directory.
      *
-     * @param project current project
-     * @return Gitignore file
+     * @param project  current project
+     * @param fileType current ignore file type
+     * @return Ignore file
      */
     @Nullable
-    public static PsiFile getGitignoreFile(@NotNull Project project) {
-        return getGitignoreFile(project, null, false);
+    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType) {
+        return getIgnoreFile(project, fileType, null, false);
     }
 
     /**
-     * Gets Gitignore file for given {@link Project} and root {@link PsiDirectory}.
+     * Gets Ignore file for given {@link Project} and root {@link PsiDirectory}.
      *
      * @param project   current project
+     * @param fileType  current ignore file type
      * @param directory root directory
-     * @return Gitignore file
+     * @return Ignore file
      */
     @Nullable
-    public static PsiFile getGitignoreFile(@NotNull Project project, @Nullable PsiDirectory directory) {
-        return getGitignoreFile(project, directory, false);
+    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType, @Nullable PsiDirectory directory) {
+        return getIgnoreFile(project, fileType, directory, false);
     }
 
     /**
-     * Gets Gitignore file for given {@link Project} and root {@link PsiDirectory}.
+     * Gets Ignore file for given {@link Project} and root {@link PsiDirectory}.
      * If file is missing - creates new one.
      *
      * @param project         current project
+     * @param fileType        current ignore file type
      * @param directory       root directory
      * @param createIfMissing create new file if missing
-     * @return Gitignore file
+     * @return Ignore file
      */
     @Nullable
-    public static PsiFile getGitignoreFile(@NotNull Project project, @Nullable PsiDirectory directory, boolean createIfMissing) {
+    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType, @Nullable PsiDirectory directory, boolean createIfMissing) {
         if (directory == null) {
             directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
         }
 
         assert directory != null;
-        PsiFile file = directory.findFile(GitignoreLanguage.FILENAME);
+        PsiFile file = directory.findFile(fileType.getIgnoreLanguage().getFilename());
         if (file == null && createIfMissing) {
-            file = new CreateFileCommandAction(project, directory).execute().getResultObject();
+            file = new CreateFileCommandAction(project, directory, fileType).execute().getResultObject();
         }
 
         return file;
@@ -148,24 +153,15 @@ public class Utils {
     }
 
     /**
-     * Returns all Gitignore files in given {@link Project}.
-     *
-     * @param project current project
-     * @return collection of Gitignore files
-     */
-    public static Collection<VirtualFile> getGitignoreFiles(@NotNull Project project) {
-        return FilenameIndex.getVirtualFilesByName(project, GitignoreLanguage.FILENAME, GlobalSearchScope.projectScope(project));
-    }
-
-    /**
-     * Returns all Gitignore files in given {@link Project} that can match current passed file.
+     * Returns all Ignore files in given {@link Project} that can match current passed file.
      *
      * @param project current project
      * @param file    current file
-     * @return collection of suitable Gitignore files
+     * @return collection of suitable Ignore files
      * @throws ExternalFileException
      */
-    public static List<VirtualFile> getSuitableGitignoreFiles(@NotNull Project project, @NotNull VirtualFile file) throws ExternalFileException {
+    public static List<VirtualFile> getSuitableIgnoreFiles(@NotNull Project project, @NotNull IgnoreFileType fileType, @NotNull VirtualFile file)
+            throws ExternalFileException {
         List<VirtualFile> files = new ArrayList<VirtualFile>();
         if (file.getCanonicalPath() == null || !VfsUtilCore.isAncestor(project.getBaseDir(), file, true)) {
             throw new ExternalFileException();
@@ -174,21 +170,22 @@ public class Utils {
         if (baseDir != null && !baseDir.equals(file)) {
             do {
                 file = file.getParent();
-                VirtualFile gitignore = file.findChild(GitignoreLanguage.FILENAME);
-                ContainerUtil.addIfNotNull(gitignore, files);
+                VirtualFile ignorefile = file.findChild(fileType.getIgnoreLanguage().getFilename());
+                ContainerUtil.addIfNotNull(ignorefile, files);
             } while (!file.equals(project.getBaseDir()));
         }
         return files;
     }
 
     /**
-     * Checks if given path is a {@link GitignoreLanguage#GIT_DIRECTORY}.
+     * Checks if given path is a {@link GitignoreLanguage#getGitDirectory()}.
      *
      * @param path to check
      * @return given path is <code>.git</code> directory
      */
     public static boolean isGitDirectory(String path) {
-        return path.equals(GitignoreLanguage.GIT_DIRECTORY) || path.startsWith(GitignoreLanguage.GIT_DIRECTORY + VfsUtil.VFS_PATH_SEPARATOR);
+        final String directory = GitignoreLanguage.INSTANCE.getGitDirectory();
+        return path.equals(directory) || path.startsWith(directory + VfsUtil.VFS_PATH_SEPARATOR);
     }
 
     /**
@@ -209,13 +206,13 @@ public class Utils {
     }
 
     /**
-     * Checks if given {@link GitignoreEntry} is excluded in the current {@link Project}.
+     * Checks if given {@link IgnoreEntry} is excluded in the current {@link Project}.
      *
      * @param entry   Gitignore entry
      * @param project current project
      * @return entry is excluded in current project
      */
-    public static boolean isEntryExcluded(GitignoreEntry entry, Project project) {
+    public static boolean isEntryExcluded(IgnoreEntry entry, Project project) {
         final Pattern pattern = Glob.createPattern(entry.getText());
         if (pattern == null) {
             return false;

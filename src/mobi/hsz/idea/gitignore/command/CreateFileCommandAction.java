@@ -29,7 +29,8 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
-import mobi.hsz.idea.gitignore.file.GitignoreTemplatesFactory;
+import mobi.hsz.idea.gitignore.file.IgnoreTemplatesFactory;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -42,24 +43,30 @@ public class CreateFileCommandAction extends WriteCommandAction<PsiFile> {
     /** Working directory. */
     private final PsiDirectory directory;
 
+    /** Working file type. */
+    private final IgnoreFileType fileType;
+
     /**
      * Builds a new instance of {@link CreateFileCommandAction}.
      *
      * @param project   current project
      * @param directory working directory
+     * @param fileType  working file type
      */
-    public CreateFileCommandAction(@NotNull Project project, @NotNull PsiDirectory directory) {
+    public CreateFileCommandAction(@NotNull Project project, @NotNull PsiDirectory directory, @NotNull IgnoreFileType fileType) {
         super(project);
         this.directory = directory;
+        this.fileType = fileType;
     }
 
     /**
-     * Creates a new file using {@link GitignoreTemplatesFactory#createFromTemplate(PsiDirectory)} to fill it with content.
-     * @param result
+     * Creates a new file using {@link IgnoreTemplatesFactory#createFromTemplate(PsiDirectory)} to fill it with content.
+     * @param result command result
      * @throws Throwable
      */
     @Override
     protected void run(@NotNull Result<PsiFile> result) throws Throwable {
-        result.setResult(GitignoreTemplatesFactory.createFromTemplate(directory));
+        IgnoreTemplatesFactory factory = new IgnoreTemplatesFactory(fileType);
+        result.setResult(factory.createFromTemplate(directory));
     }
 }

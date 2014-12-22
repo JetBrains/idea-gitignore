@@ -29,7 +29,7 @@ import com.intellij.ui.CheckboxTree;
 import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.util.ui.PlatformColors;
 import com.intellij.util.ui.UIUtil;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,7 +68,7 @@ abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCellRendere
         if (node.getTemplate() != null) { // template leaf
             text = node.getTemplate().getName();
         } else if (node.getContainer() != null) { // container group
-            hint = GitignoreBundle.message("template.container." + node.getContainer().toString().toLowerCase());
+            hint = IgnoreBundle.message("template.container." + node.getContainer().toString().toLowerCase());
             getCheckbox().setVisible(false);
         }
 

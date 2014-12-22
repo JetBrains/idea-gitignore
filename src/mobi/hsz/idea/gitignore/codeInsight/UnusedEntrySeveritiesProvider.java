@@ -30,8 +30,8 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.ui.JBColor;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
-import mobi.hsz.idea.gitignore.highlighter.GitignoreHighlighterColors;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterColors;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -63,8 +63,8 @@ public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
 
         result.add(new HighlightInfoType.HighlightInfoTypeImpl(
                 UNUSED_ENTRY,
-                TextAttributesKey.createTextAttributesKey(GitignoreBundle.message("codeInspection.unusedEntry"),
-                GitignoreHighlighterColors.UNUSED_ENTRY_ATTR_KEY))
+                TextAttributesKey.createTextAttributesKey(IgnoreBundle.message("codeInspection.unusedEntry"),
+                IgnoreHighlighterColors.UNUSED_ENTRY_ATTR_KEY))
         );
         return result;
     }

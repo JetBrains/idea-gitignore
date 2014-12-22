@@ -34,28 +34,35 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
-import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
 
 /**
- * Creates new Gitignore file or returns existing one.
+ * Creates new file or returns existing one.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @author Alexander Zolotov <alexander.zolotov@jetbrains.com>
  * @since 0.1
  */
-public class NewFileAction extends AnAction {
+public abstract class NewFileAction extends AnAction {
+    /** Current file type. */
+    private final IgnoreFileType fileType;
+
     /**
      * Builds a new instance of {@link NewFileAction}.
-     * Describes action's presentation.
      */
-    public NewFileAction() {
-        super(GitignoreBundle.message("action.newFile"), GitignoreBundle.message("action.newFile.description"), Icons.FILE);
+    public NewFileAction(IgnoreFileType fileType) {
+        super(
+                IgnoreBundle.message("action.newFile", fileType.getLanguageName()),
+                IgnoreBundle.message("action.newFile.description", fileType.getLanguageName()),
+                fileType.getIcon()
+        );
+
+        this.fileType = fileType;
     }
 
     /**
@@ -73,14 +80,16 @@ public class NewFileAction extends AnAction {
             return;
         }
 
-        PsiFile file = directory.findFile(GitignoreLanguage.FILENAME);
+        PsiFile file = directory.findFile(fileType.getIgnoreLanguage().getFilename());
         if (file == null) {
-            file = new CreateFileCommandAction(project, directory).execute().getResultObject();
+            file = new CreateFileCommandAction(project, directory, fileType).execute().getResultObject();
         } else {
-            Notifications.Bus.notify(new Notification(GitignoreLanguage.NAME,
-                    GitignoreBundle.message("action.newFile.exists"),
-                    GitignoreBundle.message("action.newFile.exists.in", file.getVirtualFile().getPath()),
-                    NotificationType.INFORMATION), project);
+            Notifications.Bus.notify(new Notification(
+                    fileType.getLanguageName(),
+                    IgnoreBundle.message("action.newFile.exists", fileType.getLanguageName()),
+                    IgnoreBundle.message("action.newFile.exists.in", file.getVirtualFile().getPath()),
+                    NotificationType.INFORMATION
+            ), project);
         }
 
         Utils.openFile(project, file);

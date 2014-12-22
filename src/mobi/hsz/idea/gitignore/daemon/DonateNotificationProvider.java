@@ -31,9 +31,9 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
-import mobi.hsz.idea.gitignore.GitignoreBundle;
-import mobi.hsz.idea.gitignore.GitignoreLanguage;
-import mobi.hsz.idea.gitignore.settings.GitignoreSettings;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class DonateNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
     /** Notification key. */
-    private static final Key<EditorNotificationPanel> KEY = Key.create(GitignoreBundle.message("daemon.donate.title"));
+    private static final Key<EditorNotificationPanel> KEY = Key.create(IgnoreBundle.message("daemon.donate.title"));
 
     /** Current project. */
     private final Project project;
@@ -54,7 +54,7 @@ public class DonateNotificationProvider extends EditorNotifications.Provider<Edi
     private final EditorNotifications notifications;
 
     /** Plugin settings holder. */
-    private final GitignoreSettings settings;
+    private final IgnoreSettings settings;
 
     /**
      * Builds a new instance of {@link DonateNotificationProvider}.
@@ -65,7 +65,7 @@ public class DonateNotificationProvider extends EditorNotifications.Provider<Edi
     public DonateNotificationProvider(Project project, @NotNull EditorNotifications notifications) {
         this.project = project;
         this.notifications = notifications;
-        this.settings = GitignoreSettings.getInstance();
+        this.settings = IgnoreSettings.getInstance();
     }
 
     /**
@@ -93,10 +93,10 @@ public class DonateNotificationProvider extends EditorNotifications.Provider<Edi
         }
 
         // TODO: Move to another place - EditorNotifications is pointless here
-        NotificationGroup group = new NotificationGroup(GitignoreLanguage.NAME, NotificationDisplayType.STICKY_BALLOON, true);
+        NotificationGroup group = new NotificationGroup(IgnoreLanguage.GROUP, NotificationDisplayType.STICKY_BALLOON, true);
         Notification notification = group.createNotification(
-                GitignoreBundle.message("daemon.donate.title"),
-                GitignoreBundle.message("daemon.donate.content"),
+                IgnoreBundle.message("daemon.donate.title"),
+                IgnoreBundle.message("daemon.donate.content"),
                 NotificationType.INFORMATION,
                 NotificationListener.URL_OPENING_LISTENER
         );

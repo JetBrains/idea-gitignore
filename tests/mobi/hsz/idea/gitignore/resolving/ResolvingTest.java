@@ -9,7 +9,7 @@ import com.intellij.psi.ResolveResult;
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
-import mobi.hsz.idea.gitignore.file.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

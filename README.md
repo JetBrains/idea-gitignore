@@ -234,8 +234,8 @@ Copyright (c) 2014 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [grammar-kit-plugin]:     http://plugins.jetbrains.com/plugin/6606
 [psiviewer-plugin]:       http://plugins.jetbrains.com/plugin/227
 [jflex-support-plugin]:   http://plugins.jetbrains.com/plugin/263
-[bnf-file]:               ./resources/bnf/Gitignore.bnf
-[flex-file]:              ./src/mobi/hsz/idea/gitignore/lexer/Gitignore.flex
+[bnf-file]:               ./resources/bnf/Ignore.bnf
+[flex-file]:              ./src/mobi/hsz/idea/gitignore/lexer/Ignore.flex
 [build-xml]:              ./build.xml
 [hsz]:                    http://hsz.mobi
 [latest-release]:         https://github.com/hsz/idea-gitignore/releases/latest
