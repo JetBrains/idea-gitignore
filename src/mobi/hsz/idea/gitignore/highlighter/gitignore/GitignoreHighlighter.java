@@ -51,13 +51,13 @@ public class GitignoreHighlighter extends SyntaxHighlighterBase {
 
     /** Binds parser definitions with highlighter colors. */
     static {
-        SyntaxHighlighterBase.fillMap(ATTRIBUTES, GitignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH_ATTR_KEY);
-        fillMap(ATTRIBUTES, GitignoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE_ATTR_KEY);
+        SyntaxHighlighterBase.fillMap(ATTRIBUTES, GitignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH);
+        fillMap(ATTRIBUTES, GitignoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE);
     }
 
     /** Current project. */

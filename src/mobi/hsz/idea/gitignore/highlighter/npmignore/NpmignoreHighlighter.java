@@ -51,13 +51,13 @@ public class NpmignoreHighlighter extends SyntaxHighlighterBase {
 
     /** Binds parser definitions with highlighter colors. */
     static {
-        SyntaxHighlighterBase.fillMap(ATTRIBUTES, NpmignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT_ATTR_KEY);
-        fillMap(ATTRIBUTES, NpmignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION_ATTR_KEY);
-        fillMap(ATTRIBUTES, NpmignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER_ATTR_KEY);
-        fillMap(ATTRIBUTES, NpmignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION_ATTR_KEY);
-        fillMap(ATTRIBUTES, NpmignoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET_ATTR_KEY);
-        fillMap(ATTRIBUTES, NpmignoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH_ATTR_KEY);
-        fillMap(ATTRIBUTES, NpmignoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE_ATTR_KEY);
+        SyntaxHighlighterBase.fillMap(ATTRIBUTES, NpmignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT);
+        fillMap(ATTRIBUTES, NpmignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION);
+        fillMap(ATTRIBUTES, NpmignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER);
+        fillMap(ATTRIBUTES, NpmignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION);
+        fillMap(ATTRIBUTES, NpmignoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET);
+        fillMap(ATTRIBUTES, NpmignoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH);
+        fillMap(ATTRIBUTES, NpmignoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE);
     }
 
     /** Current project. */

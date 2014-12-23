@@ -51,13 +51,13 @@ public class HgignoreHighlighter extends SyntaxHighlighterBase {
 
     /** Binds parser definitions with highlighter colors. */
     static {
-        SyntaxHighlighterBase.fillMap(ATTRIBUTES, HgignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT_ATTR_KEY);
-        fillMap(ATTRIBUTES, HgignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION_ATTR_KEY);
-        fillMap(ATTRIBUTES, HgignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER_ATTR_KEY);
-        fillMap(ATTRIBUTES, HgignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION_ATTR_KEY);
-        fillMap(ATTRIBUTES, HgignoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET_ATTR_KEY);
-        fillMap(ATTRIBUTES, HgignoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH_ATTR_KEY);
-        fillMap(ATTRIBUTES, HgignoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE_ATTR_KEY);
+        SyntaxHighlighterBase.fillMap(ATTRIBUTES, HgignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT);
+        fillMap(ATTRIBUTES, HgignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION);
+        fillMap(ATTRIBUTES, HgignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER);
+        fillMap(ATTRIBUTES, HgignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION);
+        fillMap(ATTRIBUTES, HgignoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET);
+        fillMap(ATTRIBUTES, HgignoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH);
+        fillMap(ATTRIBUTES, HgignoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE);
     }
 
     /** Current project. */

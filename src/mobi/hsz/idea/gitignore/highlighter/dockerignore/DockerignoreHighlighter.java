@@ -51,13 +51,13 @@ public class DockerignoreHighlighter extends SyntaxHighlighterBase {
 
     /** Binds parser definitions with highlighter colors. */
     static {
-        SyntaxHighlighterBase.fillMap(ATTRIBUTES, DockerignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT_ATTR_KEY);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION_ATTR_KEY);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER_ATTR_KEY);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION_ATTR_KEY);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET_ATTR_KEY);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH_ATTR_KEY);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE_ATTR_KEY);
+        SyntaxHighlighterBase.fillMap(ATTRIBUTES, DockerignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT);
+        fillMap(ATTRIBUTES, DockerignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION);
+        fillMap(ATTRIBUTES, DockerignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER);
+        fillMap(ATTRIBUTES, DockerignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION);
+        fillMap(ATTRIBUTES, DockerignoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET);
+        fillMap(ATTRIBUTES, DockerignoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH);
+        fillMap(ATTRIBUTES, DockerignoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE);
     }
 
     /** Current project. */
