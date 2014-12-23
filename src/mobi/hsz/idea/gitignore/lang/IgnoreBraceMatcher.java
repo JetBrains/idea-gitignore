@@ -40,6 +40,12 @@ import org.jetbrains.annotations.Nullable;
  * @since 0.5
  */
 public class IgnoreBraceMatcher implements PairedBraceMatcher {
+    /** Array of definitions for brace pairs. */
+    private static final BracePair[] PAIRS = new BracePair[]{
+            new BracePair(GitignoreTypes.BRACKET_LEFT, GitignoreTypes.BRACKET_RIGHT, false),
+            new BracePair(NpmignoreTypes.BRACKET_LEFT, NpmignoreTypes.BRACKET_RIGHT, false)
+    };
+
     /**
      * Returns the array of definitions for brace pairs that need to be matched when
      * editing code in the language.
@@ -48,10 +54,7 @@ public class IgnoreBraceMatcher implements PairedBraceMatcher {
      */
     @Override
     public BracePair[] getPairs() {
-        return new BracePair[]{
-            new BracePair(GitignoreTypes.BRACKET_LEFT, GitignoreTypes.BRACKET_RIGHT, false),
-            new BracePair(NpmignoreTypes.BRACKET_LEFT, NpmignoreTypes.BRACKET_RIGHT, false)
-        };
+        return PAIRS;
     }
 
     /**

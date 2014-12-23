@@ -34,7 +34,6 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
  * @since 0.2.2
  */
 public class IgnoreHighlighterColors {
-
     /** Default style for regular comment started with # */
     public static final TextAttributesKey COMMENT = TextAttributesKey.createTextAttributesKey("IGNORE.COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
 
@@ -58,6 +57,4 @@ public class IgnoreHighlighterColors {
 
     /** Default style for unused entry */
     public static final TextAttributesKey UNUSED_ENTRY = TextAttributesKey.createTextAttributesKey("IGNORE.UNUSED_ENTRY", DefaultLanguageHighlighterColors.DOC_COMMENT);
-
-
 }
