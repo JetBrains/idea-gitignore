@@ -2,7 +2,7 @@ package mobi.hsz.idea.gitignore.inspections;
 
 import mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection;
 
-public class IgnoreCoverEntryInspectionTest extends GitignoreInspectionTestCase {
+public class CoverEntryInspectionTest extends InspectionTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();

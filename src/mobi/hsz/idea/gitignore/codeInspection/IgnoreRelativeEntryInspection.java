@@ -31,6 +31,7 @@ import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,6 +54,10 @@ public class IgnoreRelativeEntryInspection extends LocalInspectionTool {
     @Nullable
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
+        if (!(file instanceof IgnoreFile)) {
+            return null;
+        }
+
         final ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
 
         file.acceptChildren(new IgnoreVisitor() {

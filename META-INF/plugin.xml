@@ -230,6 +230,35 @@
             forClass="mobi.hsz.idea.gitignore.psi.IgnoreEntry"
             implementationClass="mobi.hsz.idea.gitignore.psi.IgnoreEntryManipulator"/>
 
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection"
+            key="codeInspection.coverEntry"
+            level="WARNING"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection"
+            key="codeInspection.duplicateEntry"
+            level="ERROR"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
+            key="codeInspection.unusedEntry"
+            level="GITIGNORE.UNUSED_ENTRY"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
+            key="codeInspection.relativeEntry"
+            level="ERROR"/>
+
         <severitiesProvider
             implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
@@ -251,39 +280,6 @@
         <lang.syntaxHighlighterFactory
             implementationClass="mobi.hsz.idea.gitignore.highlighter.gitignore.GitignoreHighlighterFactory"
             key="Gitignore"/>
-
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection"
-            key="codeInspection.coverEntry"
-            language="Gitignore"
-            level="WARNING"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection"
-            key="codeInspection.duplicateEntry"
-            language="Gitignore"
-            level="ERROR"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
-            key="codeInspection.unusedEntry"
-            language="Gitignore"
-            level="GITIGNORE.UNUSED_ENTRY"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
-            key="codeInspection.relativeEntry"
-            language="Gitignore"
-            level="ERROR"/>
 
         <psi.referenceContributor
             implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
@@ -310,39 +306,6 @@
             implementationClass="mobi.hsz.idea.gitignore.highlighter.npmignore.NpmignoreHighlighterFactory"
             key="Npmignore"/>
 
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection"
-            key="codeInspection.coverEntry"
-            language="Npmignore"
-            level="WARNING"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection"
-            key="codeInspection.duplicateEntry"
-            language="Npmignore"
-            level="ERROR"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
-            key="codeInspection.unusedEntry"
-            language="Npmignore"
-            level="GITIGNORE.UNUSED_ENTRY"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
-            key="codeInspection.relativeEntry"
-            language="Npmignore"
-            level="ERROR"/>
-
         <psi.referenceContributor
             implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
             language="Npmignore"/>
@@ -368,39 +331,6 @@
             implementationClass="mobi.hsz.idea.gitignore.highlighter.dockerignore.DockerignoreHighlighterFactory"
             key="Dockerignore"/>
 
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection"
-            key="codeInspection.coverEntry"
-            language="Dockerignore"
-            level="WARNING"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection"
-            key="codeInspection.duplicateEntry"
-            language="Dockerignore"
-            level="ERROR"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
-            key="codeInspection.unusedEntry"
-            language="Dockerignore"
-            level="GITIGNORE.UNUSED_ENTRY"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
-            key="codeInspection.relativeEntry"
-            language="Dockerignore"
-            level="ERROR"/>
-
         <psi.referenceContributor
             implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
             language="Dockerignore"/>
@@ -425,39 +355,6 @@
         <lang.syntaxHighlighterFactory
             implementationClass="mobi.hsz.idea.gitignore.highlighter.hgignore.HgignoreHighlighterFactory"
             key="Hgignore"/>
-
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection"
-            key="codeInspection.coverEntry"
-            language="Hgignore"
-            level="WARNING"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection"
-            key="codeInspection.duplicateEntry"
-            language="Hgignore"
-            level="ERROR"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
-            key="codeInspection.unusedEntry"
-            language="Hgignore"
-            level="GITIGNORE.UNUSED_ENTRY"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
-            key="codeInspection.relativeEntry"
-            language="Hgignore"
-            level="ERROR"/>
 
         <psi.referenceContributor
             implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"

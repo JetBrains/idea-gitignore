@@ -28,7 +28,7 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection;
 
-public class IgnoreRelativeEntryInspectionTest extends GitignoreInspectionTestCase {
+public class RelativeEntryInspectionTest extends InspectionTestCase {
     private static final String FILENAME = GitignoreLanguage.INSTANCE.getFilename();
 
     @Override

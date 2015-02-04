@@ -2,7 +2,7 @@ package mobi.hsz.idea.gitignore.inspections;
 
 import mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection;
 
-public class IgnoreUnusedEntryInspectionTest extends GitignoreInspectionTestCase {
+public class UnusedEntryInspectionTest extends InspectionTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();

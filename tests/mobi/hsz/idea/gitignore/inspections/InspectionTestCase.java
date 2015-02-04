@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-abstract public class GitignoreInspectionTestCase extends LightPlatformCodeInsightFixtureTestCase {
+abstract public class InspectionTestCase extends LightPlatformCodeInsightFixtureTestCase {
     private static final String FILENAME = GitignoreLanguage.INSTANCE.getFilename();
 
     @Override

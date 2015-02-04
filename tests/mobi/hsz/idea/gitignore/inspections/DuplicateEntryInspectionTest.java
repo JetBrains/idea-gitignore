@@ -3,7 +3,7 @@ package mobi.hsz.idea.gitignore.inspections;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection;
 
-public class IgnoreDuplicateEntryInspectionTest extends GitignoreInspectionTestCase {
+public class DuplicateEntryInspectionTest extends InspectionTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
