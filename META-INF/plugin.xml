@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>0.8</version>
+    <version>0.8.1</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -48,6 +48,14 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+      Version 0.8.1
+      <ul>
+        <li>Plugin renamed to <b>.ignore</b></li>
+        <li>Idea 12 support (all products since build 123) (<a href="https://github.com/hsz/idea-gitignore/issues/71">#71</a>)</li>
+        <li>Inspections are back again</li>
+        <li>Few minor fixes</li>
+      </ul>
 
       Version 0.8
       <ul>

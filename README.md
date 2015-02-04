@@ -71,6 +71,13 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 Changelog
 ---------
 
+Version 0.8.1
+
+- Plugin renamed to `.ignore`
+- Idea 12 support (all products since build 123) ([#71](https://github.com/hsz/idea-gitignore/issues/71))
+- Inspections are back again
+- Few minor fixes
+
 Version 0.8
 
 - Support for .hgignore .npmignore and .dockerignore files ([#57](https://github.com/hsz/idea-gitignore/issues/57), [#58](https://github.com/hsz/idea-gitignore/issues/58))
