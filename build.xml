@@ -32,27 +32,58 @@
         <pathelement location="${idea.home}/lib/junit-*.jar" />
     </path>
 
-
     <!-- Generate parser using Grammar-Kit -->
     <target name="generate-parser" description="Generate parser">
+        <antcall target="generate-parser-partial">
+            <param name="type" value="Dockerignore"/>
+        </antcall>
+        <antcall target="generate-parser-partial">
+            <param name="type" value="Gitignore"/>
+        </antcall>
+        <antcall target="generate-parser-partial">
+            <param name="type" value="Hgignore"/>
+        </antcall>
+        <antcall target="generate-parser-partial">
+            <param name="type" value="Npmignore"/>
+        </antcall>
+    </target>
+    <target name="generate-parser-partial" description="Generate parser - partial task">
         <java classname="org.intellij.grammar.Main">
             <classpath>
                 <fileset dir="${idea.home}/lib" includes="*.jar"/>
                 <pathelement location="${grammar-kit.jar}"/>
             </classpath>
             <arg value="${project.gen}"/>
-            <arg value="${project.resources}/bnf/Gitignore.bnf"/>
+            <arg value="${project.resources}/bnf/${type}.bnf"/>
         </java>
     </target>
 
     <!-- Generate lexer using jFlex -->
     <target name="generate-lexer" description="Generate lexer">
+        <antcall target="generate-lexer-partial">
+            <param name="package" value="dockerignore"/>
+            <param name="type" value="Dockerignore"/>
+        </antcall>
+        <antcall target="generate-lexer-partial">
+            <param name="package" value="gitignore"/>
+            <param name="type" value="Gitignore"/>
+        </antcall>
+        <antcall target="generate-lexer-partial">
+            <param name="package" value="hgignore"/>
+            <param name="type" value="Hgignore"/>
+        </antcall>
+        <antcall target="generate-lexer-partial">
+            <param name="package" value="npmignore"/>
+            <param name="type" value="Npmignore"/>
+        </antcall>
+    </target>
+    <target name="generate-lexer-partial" description="Generate lexer - partial task">
         <java jar="${JFlex.jar}" fork="true">
             <arg value="--skel"/>
             <arg value="${idea-flex.skeleton}"/>
             <arg value="--charat"/>
             <arg value="--nobak"/>
-            <arg value="${project.src}/mobi/hsz/idea/gitignore/lexer/gitignore/Gitignore.flex"/>
+            <arg value="${project.src}/mobi/hsz/idea/gitignore/lexer/${package}/${type}.flex"/>
             <arg value="-d"/>
             <arg value="${project.gen}/mobi/hsz/idea/gitignore/lexer/"/>
         </java>

@@ -27,7 +27,6 @@ package mobi.hsz.idea.gitignore.lexer.dockerignore;
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import mobi.hsz.idea.gitignore.lexer.DockerignoreLexer;
 import org.jetbrains.annotations.Nullable;
 
 /**

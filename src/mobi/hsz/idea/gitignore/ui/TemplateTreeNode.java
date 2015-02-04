@@ -46,7 +46,7 @@ public class TemplateTreeNode extends CheckedTreeNode {
 
     /** Creates a new instance of {@link TemplateTreeNode}. */
     public TemplateTreeNode() {
-        super();
+        super(null);
         this.template = null;
         this.container = null;
     }
@@ -56,7 +56,7 @@ public class TemplateTreeNode extends CheckedTreeNode {
      *
      * @param container current templates container
      */
-    public TemplateTreeNode(@NotNull Resources.Template.Container container) {
+    public TemplateTreeNode(@Nullable Resources.Template.Container container) {
         super(container);
         this.template = null;
         this.container = container;

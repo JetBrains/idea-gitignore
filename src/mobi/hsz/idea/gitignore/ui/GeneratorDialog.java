@@ -184,7 +184,7 @@ public class GeneratorDialog extends DialogWrapper {
         centerPanel.setPreferredSize(new Dimension(800, 500));
 
         // splitter panel - contains tree panel and preview component
-        final JBSplitter splitter = new JBSplitter(0.4f);
+        final JBSplitter splitter = new JBSplitter(false, 0.4f);
         centerPanel.add(splitter, BorderLayout.CENTER);
 
         final JBPanel treePanel = new JBPanel(new BorderLayout());
