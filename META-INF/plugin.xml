@@ -1,11 +1,11 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
-    <name>.gitignore .hgignore .npmignore .dockerignore support</name>
+    <name>.ignore</name>
     <version>0.8</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
-      <h1>ignore support plugin for: .gitignore .hgignore .npmignore .dockerignore</h1>
+      <h1>.ignore</h1>
       <br/>
 
       <a href="https://github.com/hsz/idea-gitignore">GitHub</a> |
@@ -15,7 +15,7 @@
       <br/>
       <br/>
 
-      <b>.ignore support</b> is a plugin for <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker)</i> files in your project.
+      <b>.ignore</b> is a plugin for <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker)</i> files in your project.
       <br/>
 
       <b>Features</b>

@@ -1,11 +1,18 @@
-.gitignore .hgignore .npmignore .dockerignore support [![Build Status](https://travis-ci.org/hsz/idea-gitignore.svg?branch=travis)](https://travis-ci.org/hsz/idea-gitignore) [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL)
+.ignore [![Build Status](https://travis-ci.org/hsz/idea-gitignore.svg?branch=travis)](https://travis-ci.org/hsz/idea-gitignore) [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL)
 ==================
 
 
 Introduction
 ------------
 
-**.gitignore .hgignore .npmignore .dockerignore support** is a plugin for `.*ignore` files in your project. It supports following JetBrains IDEs:
+**.ignore** is a plugin for:
+ 
+- `.gitignore` (GIT),
+- `.hgignore` (Mercurial),
+- `.npmignore` (NPM),
+- `.dockerignore` (Docker)
+
+files in your project. It supports following JetBrains IDEs:
 
 - Android Studio
 - AppCode
