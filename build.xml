@@ -46,6 +46,9 @@
         <antcall target="generate-parser-partial">
             <param name="type" value="Npmignore"/>
         </antcall>
+        <antcall target="generate-parser-partial">
+            <param name="type" value="Chefignore"/>
+        </antcall>
     </target>
     <target name="generate-parser-partial" description="Generate parser - partial task">
         <java classname="org.intellij.grammar.Main">
@@ -75,6 +78,10 @@
         <antcall target="generate-lexer-partial">
             <param name="package" value="npmignore"/>
             <param name="type" value="Npmignore"/>
+        </antcall>
+        <antcall target="generate-lexer-partial">
+            <param name="package" value="chefignore"/>
+            <param name="type" value="Chefignore"/>
         </antcall>
     </target>
     <target name="generate-lexer-partial" description="Generate lexer - partial task">

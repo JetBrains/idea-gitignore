@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,35 +22,33 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.util;
+package mobi.hsz.idea.gitignore.file.type.chefignore;
 
-import com.intellij.openapi.util.IconLoader;
-
-import javax.swing.*;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.chefignore.ChefignoreLanguage;
 
 /**
- * {@link Icons} class that holds icon resources.
+ * Describes Chefignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.2.1
+ * @since 0.9
  */
-public class Icons {
-    /** Gitignore icon. */
-    public static final Icon GITIGNORE = IconLoader.getIcon("/icons/icon_git.png");
+public class ChefignoreFileType extends IgnoreFileType {
+    /** Contains {@link ChefignoreFileType} singleton. */
+    public static final ChefignoreFileType INSTANCE = new ChefignoreFileType();
 
-    /** Npmignore icon. */
-    public static final Icon NPMIGNORE = IconLoader.getIcon("/icons/icon_npm.png");
+    /** Private constructor to prevent direct object creation. */
+    private ChefignoreFileType() {
+        super(ChefignoreLanguage.INSTANCE);
+    }
 
-    /** Hgignore icon. */
-    public static final Icon HGIGNORE = IconLoader.getIcon("/icons/icon_hg.png");
-
-    /** Dockerignore icon. */
-    public static final Icon DOCKERIGNORE = IconLoader.getIcon("/icons/icon_docker.png");
-
-    /** Chefignore icon. */
-    public static final Icon CHEFIGNORE = IconLoader.getIcon("/icons/icon_chef.png");
-
-    /** Private constructor to prevent creating {@link Icons} instance. */
-    private Icons() {
+    /**
+     * Returns current instance.
+     *
+     * @return current instance
+     */
+    @Override
+    public ChefignoreFileType getInstance() {
+        return INSTANCE;
     }
 }

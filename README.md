@@ -11,6 +11,7 @@ Introduction
 - `.hgignore` (Mercurial),
 - `.npmignore` (NPM),
 - `.dockerignore` (Docker)
+- `.chefignore` (Chef)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -29,11 +30,11 @@ files in your project. It supports following JetBrains IDEs:
 Features
 --------
 
-- `.gitignore, .hgignore, .npmignore, .dockerignore` files syntax highlight
+- `.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore` files syntax highlight
 - Gitignore templates filtering and selecting in rules generator by name and content
 - User custom templates
 - Show ignored files by specified Gitignore file (right click on `.gitignore` file)
-- Create `.gitignore, .hgignore, .npmignore, .dockerignore` file in currently selected directory
+- Create `.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore` file in currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
 - Add selected file/directory to Gitignore rules from popup menu
 - Suggesting `.gitignore` file creation for new project
@@ -70,6 +71,10 @@ To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd
 
 Changelog
 ---------
+
+Version 0.9
+
+- `.chefignore` support (Chef automation tool)
 
 Version 0.8.1
 

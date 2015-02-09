@@ -28,7 +28,10 @@ import com.intellij.lang.BracePair;
 import com.intellij.lang.PairedBraceMatcher;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
+import mobi.hsz.idea.gitignore.psi.chefignore.ChefignoreTypes;
+import mobi.hsz.idea.gitignore.psi.dockerignore.DockerignoreTypes;
 import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreTypes;
+import mobi.hsz.idea.gitignore.psi.hgignore.HgignoreTypes;
 import mobi.hsz.idea.gitignore.psi.npmignore.NpmignoreTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,7 +46,10 @@ public class IgnoreBraceMatcher implements PairedBraceMatcher {
     /** Array of definitions for brace pairs. */
     private static final BracePair[] PAIRS = new BracePair[]{
             new BracePair(GitignoreTypes.BRACKET_LEFT, GitignoreTypes.BRACKET_RIGHT, false),
-            new BracePair(NpmignoreTypes.BRACKET_LEFT, NpmignoreTypes.BRACKET_RIGHT, false)
+            new BracePair(NpmignoreTypes.BRACKET_LEFT, NpmignoreTypes.BRACKET_RIGHT, false),
+            new BracePair(DockerignoreTypes.BRACKET_LEFT, DockerignoreTypes.BRACKET_RIGHT, false),
+            new BracePair(HgignoreTypes.BRACKET_LEFT, HgignoreTypes.BRACKET_RIGHT, false),
+            new BracePair(ChefignoreTypes.BRACKET_LEFT, ChefignoreTypes.BRACKET_RIGHT, false),
     };
 
     /**

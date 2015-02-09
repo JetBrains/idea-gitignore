@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,35 +22,27 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.util;
+package mobi.hsz.idea.gitignore.lexer.chefignore;
 
-import com.intellij.openapi.util.IconLoader;
-
-import javax.swing.*;
+import com.intellij.lexer.FlexAdapter;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * {@link Icons} class that holds icon resources.
+ * Definition of {@link com.intellij.lexer.FlexAdapter}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.2.1
+ * @since 0.1
  */
-public class Icons {
-    /** Gitignore icon. */
-    public static final Icon GITIGNORE = IconLoader.getIcon("/icons/icon_git.png");
+public class ChefignoreLexerAdapter extends FlexAdapter {
+    /** Builds a new instance of {@link ChefignoreLexerAdapter}. */
+    public ChefignoreLexerAdapter(Project project) {
+        this(project, null);
+    }
 
-    /** Npmignore icon. */
-    public static final Icon NPMIGNORE = IconLoader.getIcon("/icons/icon_npm.png");
-
-    /** Hgignore icon. */
-    public static final Icon HGIGNORE = IconLoader.getIcon("/icons/icon_hg.png");
-
-    /** Dockerignore icon. */
-    public static final Icon DOCKERIGNORE = IconLoader.getIcon("/icons/icon_docker.png");
-
-    /** Chefignore icon. */
-    public static final Icon CHEFIGNORE = IconLoader.getIcon("/icons/icon_chef.png");
-
-    /** Private constructor to prevent creating {@link Icons} instance. */
-    private Icons() {
+    /** Builds a new instance of {@link ChefignoreLexerAdapter}. */
+    public ChefignoreLexerAdapter(Project project, @Nullable VirtualFile virtualFile) {
+        super(new ChefignoreLexer());
     }
 }

@@ -15,15 +15,15 @@
       <br/>
       <br/>
 
-      <b>.ignore</b> is a plugin for <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker)</i> files in your project.
+      <b>.ignore</b> is a plugin for <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker), .chefignore (Chef)</i> files in your project.
       <br/>
 
       <b>Features</b>
       <ul>
-        <li><i>.gitignore, .hgignore, .npmignore, .dockerignore</i> files syntax highlight</li>
+        <li><i>.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore</i> files syntax highlight</li>
         <li>Gitignore templates filtering and selecting in rules generator by name and content</li>
-        <li>Show ignored files by specified ignore file (right click on <i>.gitignore, .npmignore</i> file)</li>
-        <li>Create <i>.gitignore, .hgignore, .npmignore, .dockerignore</i> file in currently selected directory</li>
+        <li>Show ignored files by specified ignore file (right click on <i>.gitignore</i> file)</li>
+        <li>Create <i>.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore</i> file in currently selected directory</li>
         <li>Generate Gitignore rules basing on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
         <li>Add selected file/directory to ignore rules from popup menu</li>
         <li>Suggesting <i>.gitignore</i> file creation for new project</li>
@@ -370,6 +370,31 @@
 
         <!-- END Hgignore -->
 
+
+        <!-- Chefignore -->
+
+        <codeInsight.lineMarkerProvider
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"
+            language="Chefignore"/>
+        <lang.braceMatcher
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"
+            language="Chefignore"/>
+        <lang.commenter
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
+            language="Chefignore"/>
+        <lang.parserDefinition
+            implementationClass="mobi.hsz.idea.gitignore.lang.chefignore.ChefignoreParserDefinition"
+            language="Chefignore"/>
+        <lang.syntaxHighlighterFactory
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.chefignore.ChefignoreHighlighterFactory"
+            key="Chefignore"/>
+
+        <psi.referenceContributor
+            implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
+            language="Chefignore"/>
+
+        <!-- END Hgignore -->
+
     </extensions>
 
     <application-components>
@@ -386,6 +411,7 @@
             <action id="Ignore.New.Npmignore" class="mobi.hsz.idea.gitignore.actions.npmignore.NewNpmignoreFileAction"/>
             <action id="Ignore.New.Dockerignore" class="mobi.hsz.idea.gitignore.actions.dockerignore.NewDockerignoreFileAction"/>
             <action id="Ignore.New.Hgignore" class="mobi.hsz.idea.gitignore.actions.hgignore.NewHgignoreFileAction"/>
+            <action id="Ignore.New.Chefignore" class="mobi.hsz.idea.gitignore.actions.chefignore.NewChefignoreFileAction"/>
             <add-to-group group-id="NewGroup" anchor="last"/>
         </group>
         <group id="Gitignore.IgnoreGroup" class="mobi.hsz.idea.gitignore.actions.IgnoreFileGroupAction">

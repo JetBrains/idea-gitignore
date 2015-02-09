@@ -28,6 +28,7 @@ import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.chefignore.ChefignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
@@ -49,6 +50,7 @@ public class IgnoreFileTypeFactory extends FileTypeFactory {
         consume(consumer, NpmignoreFileType.INSTANCE);
         consume(consumer, DockerignoreFileType.INSTANCE);
         consume(consumer, HgignoreFileType.INSTANCE);
+        consume(consumer, ChefignoreFileType.INSTANCE);
     }
 
     /**

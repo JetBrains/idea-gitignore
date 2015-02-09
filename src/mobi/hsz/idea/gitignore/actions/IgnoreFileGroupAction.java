@@ -32,6 +32,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.chefignore.ChefignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
@@ -57,7 +58,8 @@ public class IgnoreFileGroupAction extends ActionGroup {
     private final Map<IgnoreFileType, List<VirtualFile>> files = new HashMap<IgnoreFileType, List<VirtualFile>>();
 
     private final List<IgnoreFileType> fileTypes = Arrays.asList(
-            GitignoreFileType.INSTANCE, HgignoreFileType.INSTANCE, NpmignoreFileType.INSTANCE, DockerignoreFileType.INSTANCE
+            GitignoreFileType.INSTANCE, HgignoreFileType.INSTANCE, NpmignoreFileType.INSTANCE,
+            DockerignoreFileType.INSTANCE, ChefignoreFileType.INSTANCE
     );
 
     /** {@link Project}'s base directory. */
