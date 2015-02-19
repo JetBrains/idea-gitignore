@@ -26,12 +26,12 @@ package mobi.hsz.idea.gitignore.psi;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.AbstractElementManipulator;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
-import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
-import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
-import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -52,8 +52,14 @@ public class IgnoreEntryManipulator extends AbstractElementManipulator<IgnoreEnt
      */
     @Override
     public IgnoreEntry handleContentChange(@NotNull IgnoreEntry entry, @NotNull TextRange range, String newContent) throws IncorrectOperationException {
-        GitignoreFile file = (GitignoreFile) PsiFileFactory.getInstance(entry.getProject())
-                .createFileFromText(GitignoreLanguage.INSTANCE.getFilename(), GitignoreFileType.INSTANCE, range.replace(entry.getText(), newContent));
+        if (!(entry.getLanguage() instanceof IgnoreLanguage)) {
+            return entry;
+        }
+        IgnoreLanguage language = (IgnoreLanguage) entry.getLanguage();
+        IgnoreFileType fileType = (IgnoreFileType) language.getAssociatedFileType();
+        assert fileType != null;
+        PsiFile file = PsiFileFactory.getInstance(entry.getProject())
+                .createFileFromText(language.getFilename(), fileType, range.replace(entry.getText(), newContent));
         IgnoreEntry newEntry = PsiTreeUtil.findChildOfType(file, IgnoreEntry.class);
         assert newEntry != null;
         return (IgnoreEntry) entry.replace(newEntry);

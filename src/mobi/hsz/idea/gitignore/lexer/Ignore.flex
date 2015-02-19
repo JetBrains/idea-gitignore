@@ -7,18 +7,18 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.util.Glob;
-import static mobi.hsz.idea.gitignore.psi.gitignore.GitignoreTypes.*;
+import static mobi.hsz.idea.gitignore.psi.IgnoreTypes.*;
 import static com.intellij.psi.TokenType.*;
 %%
 
 %{
-  public GitignoreLexer() {
+  public IgnoreLexer() {
     this((java.io.Reader)null);
   }
 %}
 
 %public
-%class GitignoreLexer
+%class IgnoreLexer
 %implements FlexLexer
 %function advance
 %type IElementType

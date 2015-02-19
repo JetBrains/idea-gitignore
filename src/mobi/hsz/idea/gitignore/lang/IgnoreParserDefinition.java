@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.hgignore;
+package mobi.hsz.idea.gitignore.lang;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -36,45 +36,44 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import mobi.hsz.idea.gitignore.lexer.hgignore.HgignoreLexerAdapter;
-import mobi.hsz.idea.gitignore.parser.HgignoreParser;
-import mobi.hsz.idea.gitignore.psi.hgignore.HgignoreFile;
-import mobi.hsz.idea.gitignore.psi.hgignore.HgignoreTypes;
+import mobi.hsz.idea.gitignore.lexer.IgnoreLexerAdapter;
+import mobi.hsz.idea.gitignore.parser.IgnoreParser;
+import mobi.hsz.idea.gitignore.psi.IgnoreTypes;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Defines the implementation of a parser for a custom language.
  * 
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.1
  */
-public class HgignoreParserDefinition implements ParserDefinition {
+public class IgnoreParserDefinition implements ParserDefinition {
     /** Whitespaces. */
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
 
     /** Regular comment started with # */
-    public static final TokenSet COMMENTS = TokenSet.create(HgignoreTypes.COMMENT);
+    public static final TokenSet COMMENTS = TokenSet.create(IgnoreTypes.COMMENT);
 
     /** Section comment started with ## */
-    public static final TokenSet SECTIONS = TokenSet.create(HgignoreTypes.SECTION);
+    public static final TokenSet SECTIONS = TokenSet.create(IgnoreTypes.SECTION);
 
     /** Header comment started with ### */
-    public static final TokenSet HEADERS = TokenSet.create(HgignoreTypes.HEADER);
+    public static final TokenSet HEADERS = TokenSet.create(IgnoreTypes.HEADER);
 
     /** Negation element - ! in the beginning of the entry */
-    public static final TokenSet NEGATIONS = TokenSet.create(HgignoreTypes.NEGATION);
+    public static final TokenSet NEGATIONS = TokenSet.create(IgnoreTypes.NEGATION);
 
     /** Brackets [] */
-    public static final TokenSet BRACKETS = TokenSet.create(HgignoreTypes.BRACKET_LEFT, HgignoreTypes.BRACKET_RIGHT);
+    public static final TokenSet BRACKETS = TokenSet.create(IgnoreTypes.BRACKET_LEFT, IgnoreTypes.BRACKET_RIGHT);
 
     /** Slashes / */
-    public static final TokenSet SLASHES = TokenSet.create(HgignoreTypes.SLASH);
+    public static final TokenSet SLASHES = TokenSet.create(IgnoreTypes.SLASH);
 
     /** All values - parts of paths */
-    public static final TokenSet VALUES = TokenSet.create(HgignoreTypes.VALUE);
+    public static final TokenSet VALUES = TokenSet.create(IgnoreTypes.VALUE);
 
     /** Element type of the node describing a file in the specified language. */
-    public static final IFileElementType FILE = new IFileElementType(Language.findInstance(HgignoreLanguage.class));
+    public static final IFileElementType FILE = new IFileElementType(Language.findInstance(IgnoreLanguage.class));
 
     /**
      * Returns the lexer for lexing files in the specified project. This lexer does not need to support incremental relexing - it is always
@@ -86,7 +85,7 @@ public class HgignoreParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return new HgignoreLexerAdapter(project);
+        return new IgnoreLexerAdapter(project);
     }
 
     /**
@@ -97,7 +96,7 @@ public class HgignoreParserDefinition implements ParserDefinition {
      */
     @Override
     public PsiParser createParser(Project project) {
-        return new HgignoreParser();
+        return new IgnoreParser();
     }
 
     /**
@@ -115,7 +114,7 @@ public class HgignoreParserDefinition implements ParserDefinition {
      * Tokens of those types are automatically skipped by PsiBuilder. Whitespace elements
      * on the bounds of nodes built by PsiBuilder are automatically excluded from the text
      * range of the nodes.
-     * <p><strong>It is strongly advised you return TokenSet that only contains {@link TokenType#WHITE_SPACE},
+     * <p><strong>It is strongly advised you return TokenSet that only contains {@link com.intellij.psi.TokenType#WHITE_SPACE},
      * which is suitable for all the languages unless you really need to use special whitespace token</strong>
      *
      * @return the set of whitespace token types.
@@ -162,7 +161,7 @@ public class HgignoreParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public PsiElement createElement(ASTNode node) {
-        return HgignoreTypes.Factory.createElement(node);
+        return IgnoreTypes.Factory.createElement(node);
     }
 
     /**
@@ -173,7 +172,8 @@ public class HgignoreParserDefinition implements ParserDefinition {
      */
     @Override
     public PsiFile createFile(FileViewProvider viewProvider) {
-        return new HgignoreFile(viewProvider);
+        IgnoreLanguage language = (IgnoreLanguage) viewProvider.getBaseLanguage();
+        return language.createFile(viewProvider);
     }
 
     /**

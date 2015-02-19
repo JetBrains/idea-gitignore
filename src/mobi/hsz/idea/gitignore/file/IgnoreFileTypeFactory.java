@@ -46,6 +46,7 @@ public class IgnoreFileTypeFactory extends FileTypeFactory {
      */
     @Override
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {
+        consume(consumer, IgnoreFileType.INSTANCE);
         consume(consumer, GitignoreFileType.INSTANCE);
         consume(consumer, NpmignoreFileType.INSTANCE);
         consume(consumer, DockerignoreFileType.INSTANCE);

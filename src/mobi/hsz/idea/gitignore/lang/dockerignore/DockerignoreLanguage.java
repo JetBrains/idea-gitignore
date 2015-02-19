@@ -24,8 +24,12 @@
 
 package mobi.hsz.idea.gitignore.lang.dockerignore;
 
+import com.intellij.psi.FileViewProvider;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
+import mobi.hsz.idea.gitignore.psi.dockerignore.DockerignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -72,5 +76,11 @@ public class DockerignoreLanguage extends IgnoreLanguage {
     @Override
     public Icon getIcon() {
         return Icons.DOCKERIGNORE;
+    }
+
+    /** Creates {@link DockerignoreFile} instance. */
+    @Override
+    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
+        return new DockerignoreFile(viewProvider);
     }
 }

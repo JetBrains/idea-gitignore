@@ -36,7 +36,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
-import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
@@ -77,7 +76,7 @@ public class IgnoreFileAction extends DumbAwareAction {
      * @param virtualFile Gitignore file
      */
     public IgnoreFileAction(@Nullable VirtualFile virtualFile) {
-        this(GitignoreFileType.INSTANCE, virtualFile);
+        this(Utils.getFileType(virtualFile), virtualFile);
     }
 
     /**
@@ -87,10 +86,10 @@ public class IgnoreFileAction extends DumbAwareAction {
      * @param fileType    Current file type
      * @param virtualFile Gitignore file
      */
-    public IgnoreFileAction(@NotNull IgnoreFileType fileType, @Nullable VirtualFile virtualFile) {
-        super(IgnoreBundle.message("action.addToIgnore", fileType.getIgnoreLanguage().getFilename()),
-                IgnoreBundle.message("action.addToIgnore.description", fileType.getIgnoreLanguage().getFilename()),
-                fileType.getIcon());
+    public IgnoreFileAction(@Nullable IgnoreFileType fileType, @Nullable VirtualFile virtualFile) {
+        super(IgnoreBundle.message("action.addToIgnore", fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
+                IgnoreBundle.message("action.addToIgnore.description", fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
+                fileType != null ? fileType.getIcon() : null);
         this.ignoreFile = virtualFile;
         this.fileType = fileType;
     }

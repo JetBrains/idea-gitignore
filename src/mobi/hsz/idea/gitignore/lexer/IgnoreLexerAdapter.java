@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,27 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.psi.gitignore;
+package mobi.hsz.idea.gitignore.lexer;
 
-import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreTokenType;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.lexer.FlexAdapter;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Gitignore token type definition.
+ * Definition of {@link com.intellij.lexer.FlexAdapter}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.1
  */
-public class GitignoreTokenType extends IgnoreTokenType {
-    /** Builds a new instance of @{link GitignoreTokenType}. */
-    public GitignoreTokenType(@NotNull @NonNls String debugName) {
-        super(debugName, GitignoreLanguage.INSTANCE);
+public class IgnoreLexerAdapter extends FlexAdapter {
+    /** Builds a new instance of {@link IgnoreLexerAdapter}. */
+    public IgnoreLexerAdapter(Project project) {
+        this(project, null);
+    }
+
+    /** Builds a new instance of {@link IgnoreLexerAdapter}. */
+    public IgnoreLexerAdapter(Project project, @Nullable VirtualFile virtualFile) {
+        super(new IgnoreLexer());
     }
 }

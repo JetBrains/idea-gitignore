@@ -24,11 +24,10 @@
 
 package mobi.hsz.idea.gitignore.psi;
 
-import com.intellij.lang.Language;
 import com.intellij.psi.tree.IElementType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Custom element type.
@@ -36,9 +35,9 @@ import org.jetbrains.annotations.Nullable;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.1
  */
-public abstract class IgnoreElementType extends IElementType {
+public class IgnoreElementType extends IElementType {
     /** Build a new instance of @{link IgnoreElementType} */
-    public IgnoreElementType(@NotNull @NonNls String debugName, @Nullable Language language) {
-        super(debugName, language);
+    public IgnoreElementType(@NotNull @NonNls String debugName) {
+        super(debugName, IgnoreLanguage.INSTANCE);
     }
 }

@@ -36,18 +36,14 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.1
  */
-public abstract class IgnoreTokenType extends IElementType {
+public class IgnoreTokenType extends IElementType {
     /** Token debug name. */
     private final String debugName;
 
-    /** Current language. */
-    private final IgnoreLanguage language;
-
     /** Builds a new instance of @{link IgnoreTokenType}. */
-    public IgnoreTokenType(@NotNull @NonNls String debugName, @NotNull IgnoreLanguage language) {
-        super(debugName, language);
+    public IgnoreTokenType(@NotNull @NonNls String debugName) {
+        super(debugName, IgnoreLanguage.INSTANCE);
         this.debugName = debugName;
-        this.language = language;
     }
 
     /**
@@ -57,6 +53,6 @@ public abstract class IgnoreTokenType extends IElementType {
      */
     @Override
     public String toString() {
-        return IgnoreBundle.messageOrDefault("tokenType." + debugName, language.getName() + "TokenType." + super.toString());
+        return IgnoreBundle.messageOrDefault("tokenType." + debugName, "IgnoreTokenType." + super.toString());
     }
 }

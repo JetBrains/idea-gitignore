@@ -271,6 +271,26 @@
             implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
 
+        <lang.parserDefinition language="Ignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Chefignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Dockerignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Gitignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Hgignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Npmignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+
+
+        <!-- Common -->
+
+        <psi.referenceContributor
+            implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
+            language="Ignore"/>
+        <lang.syntaxHighlighterFactory
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
+            key="Ignore"/>
+
+        <!-- END Common -->
+
+
         <!-- Gitignore -->
 
         <codeInsight.lineMarkerProvider
@@ -282,16 +302,9 @@
         <lang.commenter
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
             language="Gitignore"/>
-        <lang.parserDefinition
-            implementationClass="mobi.hsz.idea.gitignore.lang.gitignore.GitignoreParserDefinition"
-            language="Gitignore"/>
         <lang.syntaxHighlighterFactory
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.gitignore.GitignoreHighlighterFactory"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
             key="Gitignore"/>
-
-        <psi.referenceContributor
-            implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
-            language="Gitignore"/>
 
         <!-- END Gitignore -->
 
@@ -307,16 +320,9 @@
         <lang.commenter
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
             language="Npmignore"/>
-        <lang.parserDefinition
-            implementationClass="mobi.hsz.idea.gitignore.lang.npmignore.NpmignoreParserDefinition"
-            language="Npmignore"/>
         <lang.syntaxHighlighterFactory
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.npmignore.NpmignoreHighlighterFactory"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
             key="Npmignore"/>
-
-        <psi.referenceContributor
-            implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
-            language="Npmignore"/>
 
         <!-- END Npmignore -->
 
@@ -332,16 +338,9 @@
         <lang.commenter
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
             language="Dockerignore"/>
-        <lang.parserDefinition
-            implementationClass="mobi.hsz.idea.gitignore.lang.dockerignore.DockerignoreParserDefinition"
-            language="Dockerignore"/>
         <lang.syntaxHighlighterFactory
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.dockerignore.DockerignoreHighlighterFactory"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
             key="Dockerignore"/>
-
-        <psi.referenceContributor
-            implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
-            language="Dockerignore"/>
 
         <!-- END Dockerignore -->
 
@@ -357,16 +356,9 @@
         <lang.commenter
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
             language="Hgignore"/>
-        <lang.parserDefinition
-            implementationClass="mobi.hsz.idea.gitignore.lang.hgignore.HgignoreParserDefinition"
-            language="Hgignore"/>
         <lang.syntaxHighlighterFactory
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.hgignore.HgignoreHighlighterFactory"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
             key="Hgignore"/>
-
-        <psi.referenceContributor
-            implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
-            language="Hgignore"/>
 
         <!-- END Hgignore -->
 
@@ -382,16 +374,9 @@
         <lang.commenter
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
             language="Chefignore"/>
-        <lang.parserDefinition
-            implementationClass="mobi.hsz.idea.gitignore.lang.chefignore.ChefignoreParserDefinition"
-            language="Chefignore"/>
         <lang.syntaxHighlighterFactory
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.chefignore.ChefignoreHighlighterFactory"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
             key="Chefignore"/>
-
-        <psi.referenceContributor
-            implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"
-            language="Chefignore"/>
 
         <!-- END Hgignore -->
 

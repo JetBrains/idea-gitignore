@@ -33,11 +33,7 @@ import com.intellij.psi.impl.source.tree.TreeUtil;
 import com.intellij.psi.tree.IElementType;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
-import mobi.hsz.idea.gitignore.psi.chefignore.ChefignoreTypes;
-import mobi.hsz.idea.gitignore.psi.dockerignore.DockerignoreTypes;
-import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreTypes;
-import mobi.hsz.idea.gitignore.psi.hgignore.HgignoreTypes;
-import mobi.hsz.idea.gitignore.psi.npmignore.NpmignoreTypes;
+import mobi.hsz.idea.gitignore.psi.IgnoreTypes;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -82,11 +78,7 @@ public class IgnoreRemoveEntryFix extends LocalQuickFixOnPsiElement {
     @Override
     public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         if (startElement instanceof IgnoreEntry) {
-            removeCrlf(startElement, GitignoreTypes.CRLF);
-            removeCrlf(startElement, NpmignoreTypes.CRLF);
-            removeCrlf(startElement, DockerignoreTypes.CRLF);
-            removeCrlf(startElement, HgignoreTypes.CRLF);
-            removeCrlf(startElement, ChefignoreTypes.CRLF);
+            removeCrlf(startElement, IgnoreTypes.CRLF);
             startElement.delete();
         }
     }

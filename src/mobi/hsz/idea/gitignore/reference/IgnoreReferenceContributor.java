@@ -26,8 +26,8 @@ package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
-import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
@@ -47,7 +47,7 @@ public class IgnoreReferenceContributor extends PsiReferenceContributor {
      */
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar psiReferenceRegistrar) {
-        psiReferenceRegistrar.registerReferenceProvider(psiElement().inFile(psiFile(GitignoreFile.class)), new IgnoreReferenceProvider());
+        psiReferenceRegistrar.registerReferenceProvider(psiElement().inFile(psiFile(IgnoreFile.class)), new IgnoreReferenceProvider());
     }
 
     /** Reference provider definition.  */

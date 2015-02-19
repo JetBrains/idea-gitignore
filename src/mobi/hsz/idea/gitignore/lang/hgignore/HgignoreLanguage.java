@@ -24,8 +24,12 @@
 
 package mobi.hsz.idea.gitignore.lang.hgignore;
 
+import com.intellij.psi.FileViewProvider;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
+import mobi.hsz.idea.gitignore.psi.hgignore.HgignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -72,5 +76,11 @@ public class HgignoreLanguage extends IgnoreLanguage {
     @Override
     public Icon getIcon() {
         return Icons.HGIGNORE;
+    }
+
+    /** Creates {@link HgignoreFile} instance. */
+    @Override
+    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
+        return new HgignoreFile(viewProvider);
     }
 }

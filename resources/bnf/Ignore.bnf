@@ -1,5 +1,5 @@
 {
-  parserClass               = "mobi.hsz.idea.gitignore.parser.ChefignoreParser"
+  parserClass               = "mobi.hsz.idea.gitignore.parser.IgnoreParser"
   parserUtilClass           = "mobi.hsz.idea.gitignore.parser.IgnoreParserUtil"
 
   extends                   = "mobi.hsz.idea.gitignore.psi.IgnoreElementImpl"
@@ -9,9 +9,9 @@
   psiPackage                = "mobi.hsz.idea.gitignore.psi"
   psiImplPackage            = "mobi.hsz.idea.gitignore.psi.impl"
 
-  elementTypeHolderClass    = "mobi.hsz.idea.gitignore.psi.chefignore.ChefignoreTypes"
-  elementTypeClass          = "mobi.hsz.idea.gitignore.psi.chefignore.ChefignoreElementType"
-  tokenTypeClass            = "mobi.hsz.idea.gitignore.psi.chefignore.ChefignoreTokenType"
+  elementTypeHolderClass    = "mobi.hsz.idea.gitignore.psi.IgnoreTypes"
+  elementTypeClass          = "mobi.hsz.idea.gitignore.psi.IgnoreElementType"
+  tokenTypeClass            = "mobi.hsz.idea.gitignore.psi.IgnoreTokenType"
  
   tokens = [
     CRLF                    = "regexp:[\s\r\n]+"

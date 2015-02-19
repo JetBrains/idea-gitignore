@@ -25,7 +25,11 @@
 package mobi.hsz.idea.gitignore.lang;
 
 import com.intellij.lang.Language;
+import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -35,7 +39,10 @@ import javax.swing.*;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public abstract class IgnoreLanguage extends Language {
+public class IgnoreLanguage extends Language {
+    /** The {@link IgnoreLanguage} instance. */
+    public static final IgnoreLanguage INSTANCE = new IgnoreLanguage();
+
     /** The dot. */
     public static final String DOT = ".";
 
@@ -44,23 +51,39 @@ public abstract class IgnoreLanguage extends Language {
     public static final String GROUP = "IGNORE_GROUP";
 
     /** The {@link IgnoreLanguage} instance. */
-    public abstract IgnoreLanguage getInstance();
+    public IgnoreLanguage getInstance() {
+        return INSTANCE;
+    }
 
-    /** The language name. */
-    @NonNls
-    public abstract String getName();
+    /** The Gitignore language name. */
+    public String getName() {
+        return "Ignore";
+    }
 
-    /** The file extension suffix. */
-    @NonNls
-    public abstract String getExtension();
+    /** The Gitignore file extension suffix. */
+    public String getExtension() {
+        return "ignore";
+    }
 
-    /** The file extension. */
-    @NonNls
-    public abstract String getFilename();
+    /** The Gitignore file extension. */
+    public String getFilename() {
+        return DOT + getExtension();
+    }
 
-    /** The icon. */
-    @NonNls
-    public abstract Icon getIcon();
+    /** The GitignoreLanguage icon. */
+    public Icon getIcon() {
+        return null;
+    }
+
+    /** Creates {@link IgnoreFile} instance. */
+    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
+        return new IgnoreFile(viewProvider, IgnoreFileType.INSTANCE);
+    }
+
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
+    protected IgnoreLanguage() {
+        super("Ignore");
+    }
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage(String name) {

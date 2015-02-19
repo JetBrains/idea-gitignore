@@ -30,7 +30,6 @@ import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.highlighter.gitignore.GitignoreHighlighter;
 import mobi.hsz.idea.gitignore.util.Resources;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -93,7 +92,7 @@ public class IgnoreColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public SyntaxHighlighter getHighlighter() {
-        return new GitignoreHighlighter(null, null);
+        return new IgnoreHighlighter(null, null);
     }
 
     /**

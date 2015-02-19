@@ -37,9 +37,17 @@ import javax.swing.*;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public abstract class IgnoreFileType extends LanguageFileType {
+public class IgnoreFileType extends LanguageFileType {
+    /** Contains {@link IgnoreFileType} singleton. */
+    public static final IgnoreFileType INSTANCE = new IgnoreFileType();
+
     /** Current file type language. */
     private final IgnoreLanguage language;
+
+    /** Protected constructor to prevent direct object creation. */
+    protected IgnoreFileType() {
+        this(IgnoreLanguage.INSTANCE);
+    }
 
     /** Protected constructor to prevent direct object creation. */
     protected IgnoreFileType(@NotNull IgnoreLanguage language) {
@@ -52,7 +60,9 @@ public abstract class IgnoreFileType extends LanguageFileType {
      *
      * @return current instance
      */
-    public abstract IgnoreFileType getInstance();
+    public IgnoreFileType getInstance() {
+        return INSTANCE;
+    }
 
     /**
      * Returns the name of the file type. The name must be unique among all file types registered in the system.

@@ -28,6 +28,7 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
@@ -274,5 +275,21 @@ public class Utils {
      */
     public static boolean equalLists(@NotNull List<?> l1, @NotNull List<?> l2) {
         return l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1);
+    }
+
+    /**
+     * Returns {@link IgnoreFileType} basing on the {@link VirtualFile} file.
+     *
+     * @param virtualFile current file
+     * @return file type
+     */
+    public static IgnoreFileType getFileType(@Nullable VirtualFile virtualFile) {
+        if (virtualFile != null) {
+            FileType fileType = virtualFile.getFileType();
+            if (fileType instanceof IgnoreFileType) {
+                return (IgnoreFileType) fileType;
+            }
+        }
+        return null;
     }
 }

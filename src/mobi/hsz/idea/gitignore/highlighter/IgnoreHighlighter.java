@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.highlighter.dockerignore;
+package mobi.hsz.idea.gitignore.highlighter;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -31,9 +31,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.containers.ContainerUtil;
-import mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterColors;
-import mobi.hsz.idea.gitignore.lang.dockerignore.DockerignoreParserDefinition;
-import mobi.hsz.idea.gitignore.lexer.dockerignore.DockerignoreLexerAdapter;
+import mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition;
+import mobi.hsz.idea.gitignore.lexer.IgnoreLexerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,19 +44,19 @@ import java.util.Map;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class DockerignoreHighlighter extends SyntaxHighlighterBase {
+public class IgnoreHighlighter extends SyntaxHighlighterBase {
     /** Attributes map. */
     private static final Map<IElementType, TextAttributesKey> ATTRIBUTES = ContainerUtil.newHashMap();
 
     /** Binds parser definitions with highlighter colors. */
     static {
-        SyntaxHighlighterBase.fillMap(ATTRIBUTES, DockerignoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH);
-        fillMap(ATTRIBUTES, DockerignoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE);
+        SyntaxHighlighterBase.fillMap(ATTRIBUTES, IgnoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT);
+        fillMap(ATTRIBUTES, IgnoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION);
+        fillMap(ATTRIBUTES, IgnoreParserDefinition.HEADERS, IgnoreHighlighterColors.HEADER);
+        fillMap(ATTRIBUTES, IgnoreParserDefinition.NEGATIONS, IgnoreHighlighterColors.NEGATION);
+        fillMap(ATTRIBUTES, IgnoreParserDefinition.BRACKETS, IgnoreHighlighterColors.BRACKET);
+        fillMap(ATTRIBUTES, IgnoreParserDefinition.SLASHES, IgnoreHighlighterColors.SLASH);
+        fillMap(ATTRIBUTES, IgnoreParserDefinition.VALUES, IgnoreHighlighterColors.VALUE);
     }
 
     /** Current project. */
@@ -66,8 +65,8 @@ public class DockerignoreHighlighter extends SyntaxHighlighterBase {
     /** Current file. */
     private final VirtualFile virtualFile;
 
-    /** Builds a new instance of {@link DockerignoreHighlighter}. */
-    public DockerignoreHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile) {
+    /** Builds a new instance of {@link IgnoreHighlighter}. */
+    public IgnoreHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile) {
         this.project = project;
         this.virtualFile = virtualFile;
     }
@@ -80,7 +79,7 @@ public class DockerignoreHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new DockerignoreLexerAdapter(project, virtualFile);
+        return new IgnoreLexerAdapter(project, virtualFile);
     }
 
     /**

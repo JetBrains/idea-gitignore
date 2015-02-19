@@ -31,7 +31,7 @@ import org.jetbrains.annotations.PropertyKey;
 import java.util.ResourceBundle;
 
 /**
- * {@link ResourceBundle}/localization utils for the Gitignore support plugin.
+ * {@link ResourceBundle}/localization utils for the .ignore support plugin.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.4

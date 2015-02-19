@@ -24,11 +24,20 @@
 
 package mobi.hsz.idea.gitignore.psi;
 
-import com.intellij.extapi.psi.PsiFileBase;
+import com.intellij.lang.Language;
+import com.intellij.lang.LanguageParserDefinitions;
+import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.impl.source.PsiFileImpl;
+import com.intellij.psi.tree.IFileElementType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Base plugin file.
@@ -36,14 +45,53 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class IgnoreFile extends PsiFileBase {
+public class IgnoreFile extends PsiFileImpl {
+    @NotNull private final Language myLanguage;
+    @NotNull private final ParserDefinition myParserDefinition;
+
     /** Current file type. */
-    private final IgnoreFileType fileType;
+    @NotNull private final IgnoreFileType fileType;
 
     /** Builds a new instance of {@link IgnoreFile}. */
     public IgnoreFile(@NotNull FileViewProvider viewProvider, @NotNull IgnoreFileType fileType) {
-        super(viewProvider, fileType.getIgnoreLanguage());
+        super(viewProvider);
         this.fileType = fileType;
+        IgnoreLanguage language = (IgnoreLanguage) fileType.getLanguage();
+
+        myLanguage = findLanguage(language, viewProvider);
+        final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(myLanguage);
+        if (parserDefinition == null) {
+            throw new RuntimeException("PsiFileBase: language.getParserDefinition() returned null for: "+myLanguage);
+        }
+        myParserDefinition = parserDefinition;
+        final IFileElementType nodeType = parserDefinition.getFileNodeType();
+        init(nodeType, nodeType);
+    }
+
+    private static Language findLanguage(Language baseLanguage, FileViewProvider viewProvider) {
+        final Set<Language> languages = viewProvider.getLanguages();
+        for (final Language actualLanguage : languages) {
+            if (actualLanguage.isKindOf(baseLanguage)) {
+                return actualLanguage;
+            }
+        }
+        throw new AssertionError("Language " + baseLanguage + " doesn't participate in view provider " + viewProvider + ": " + new ArrayList<Language>(languages));
+    }
+
+    @Override
+    @NotNull
+    public final Language getLanguage() {
+        return myLanguage;
+    }
+
+    @Override
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        visitor.visitFile(this);
+    }
+
+    @NotNull
+    public ParserDefinition getParserDefinition() {
+        return myParserDefinition;
     }
 
     /**

@@ -25,8 +25,12 @@
 package mobi.hsz.idea.gitignore.lang.gitignore;
 
 import com.intellij.lang.Language;
+import com.intellij.psi.FileViewProvider;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
+import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -78,5 +82,11 @@ public class GitignoreLanguage extends IgnoreLanguage {
     /** The Git specific directory. */
     public String getGitDirectory() {
         return ".git";
+    }
+
+    /** Creates {@link GitignoreFile} instance. */
+    @Override
+    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
+        return new GitignoreFile(viewProvider);
     }
 }
