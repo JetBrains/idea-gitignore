@@ -24,8 +24,9 @@
 
 package mobi.hsz.idea.gitignore.codeInspection;
 
-import com.intellij.codeInspection.LocalQuickFixOnPsiElement;
+import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -34,6 +35,7 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreTypes;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * QuickFix action that removes specified entry handled by code inspections like
@@ -45,7 +47,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.4
  */
-public class IgnoreRemoveEntryFix extends LocalQuickFixOnPsiElement {
+public class IgnoreRemoveEntryFix extends LocalQuickFixAndIntentionActionOnPsiElement {
     /**
      * Builds a new instance of {@link IgnoreRemoveEntryFix}.
      *
@@ -70,12 +72,12 @@ public class IgnoreRemoveEntryFix extends LocalQuickFixOnPsiElement {
      * Handles QuickFix action invoked on {@link IgnoreEntry}.
      *
      * @param project      the {@link Project} containing the working file
-     * @param psiFile      the {@link PsiFile} containing handled entry
+     * @param file         the {@link PsiFile} containing handled entry
      * @param startElement the {@link IgnoreEntry} that will be removed
      * @param endElement   the {@link PsiElement} which is ignored in invoked action
      */
     @Override
-    public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, @Nullable("is null when called from inspection") Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         if (startElement instanceof IgnoreEntry) {
             removeCrlf(startElement);
             startElement.delete();

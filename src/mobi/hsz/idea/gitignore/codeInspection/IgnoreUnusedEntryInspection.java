@@ -27,10 +27,10 @@ package mobi.hsz.idea.gitignore.codeInspection;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiPolyVariantReference;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveResult;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileReference;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
@@ -62,7 +62,7 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                 int previous = Integer.MAX_VALUE;
                 for (PsiReference reference : references) {
                     if (reference instanceof FileReferenceOwner) {
-                        PsiFileReference fileReference = (PsiFileReference) reference;
+                        PsiPolyVariantReference fileReference = (PsiPolyVariantReference) reference;
                         ResolveResult[] result = fileReference.multiResolve(false);
                         resolved = result.length > 0 || (previous > 0 && reference.getCanonicalText().endsWith("/*"));
                         previous = result.length;
