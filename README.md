@@ -12,6 +12,8 @@ Introduction
 - `.npmignore` (NPM),
 - `.dockerignore` (Docker)
 - `.chefignore` (Chef)
+- `.cvsignore` (CVS)
+- `.bzrignore` (Bazaar)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -30,11 +32,11 @@ files in your project. It supports following JetBrains IDEs:
 Features
 --------
 
-- `.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore` files syntax highlight
+- `.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore, .cvsignore, .bzrignore` files syntax highlight
 - Gitignore templates filtering and selecting in rules generator by name and content
 - User custom templates
 - Show ignored files by specified Gitignore file (right click on `.gitignore` file)
-- Create `.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore` file in currently selected directory
+- Create `.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore, .cvsignore, .bzrignore` file in currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
 - Add selected file/directory to Gitignore rules from popup menu
 - Suggesting `.gitignore` file creation for new project
@@ -75,6 +77,10 @@ Changelog
 Version 0.9
 
 - `.chefignore` support (Chef automation tool)
+- `.cvsignore` support (CVS version control)
+- `.bzrignore` support (Bazaar version control)
+- Grouped actions for creating new file
+- Ant build file fix
 
 Version 0.8.1
 

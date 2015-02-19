@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>0.8.1</version>
+    <version>0.9</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -15,15 +15,18 @@
       <br/>
       <br/>
 
-      <b>.ignore</b> is a plugin for <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker), .chefignore (Chef)</i> files in your project.
+      <b>.ignore</b> is a plugin for
+        <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker), .chefignore (Chef),
+           .cvsignore (CVS), .bzrignore (Bazaar)</i>
+        files in your project.
       <br/>
 
       <b>Features</b>
       <ul>
-        <li><i>.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore</i> files syntax highlight</li>
+        <li><i>.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore, .cvsignore, .bzrignore</i> files syntax highlight</li>
         <li>Gitignore templates filtering and selecting in rules generator by name and content</li>
         <li>Show ignored files by specified ignore file (right click on <i>.gitignore</i> file)</li>
-        <li>Create <i>.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore</i> file in currently selected directory</li>
+        <li>Create <i>.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore, .cvsignore, .bzrignore</i> file in currently selected directory</li>
         <li>Generate Gitignore rules basing on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
         <li>Add selected file/directory to ignore rules from popup menu</li>
         <li>Suggesting <i>.gitignore</i> file creation for new project</li>
@@ -48,6 +51,15 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+      Version 0.9
+      <ul>
+        <li><b>.chefignore</b> support (Chef automation tool)</li>
+        <li><b>.cvsignore</b> support (CVS version control)</li>
+        <li><b>.bzrignore</b> support (Bazaar version control)</li>
+        <li>Grouped actions for creating new file</li>
+        <li>Ant build file fix</li>
+      </ul>
 
       Version 0.8.1
       <ul>
