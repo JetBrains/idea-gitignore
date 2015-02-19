@@ -271,12 +271,14 @@
             implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
 
-        <lang.parserDefinition language="Ignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Chefignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Dockerignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Gitignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Hgignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Npmignore" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Ignore"        implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Chefignore"    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Cvsignore"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Dockerignore"  implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Gitignore"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Hgignore"      implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Npmignore"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+
 
 
         <!-- Common -->
@@ -291,40 +293,40 @@
         <!-- END Common -->
 
 
-        <!-- Gitignore -->
+        <!-- Chefignore -->
 
         <codeInsight.lineMarkerProvider
             implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"
-            language="Gitignore"/>
+            language="Chefignore"/>
         <lang.braceMatcher
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"
-            language="Gitignore"/>
+            language="Chefignore"/>
         <lang.commenter
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
-            language="Gitignore"/>
+            language="Chefignore"/>
         <lang.syntaxHighlighterFactory
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
-            key="Gitignore"/>
+            key="Chefignore"/>
 
-        <!-- END Gitignore -->
+        <!-- END Chefignore -->
 
 
-        <!-- Npmignore -->
+        <!-- Cvsignore -->
 
         <codeInsight.lineMarkerProvider
             implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"
-            language="Npmignore"/>
+            language="Cvsignore"/>
         <lang.braceMatcher
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"
-            language="Npmignore"/>
+            language="Cvsignore"/>
         <lang.commenter
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
-            language="Npmignore"/>
+            language="Cvsignore"/>
         <lang.syntaxHighlighterFactory
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
-            key="Npmignore"/>
+            key="Cvsignore"/>
 
-        <!-- END Npmignore -->
+        <!-- END Cvsignore -->
 
 
         <!-- Dockerignore -->
@@ -345,6 +347,24 @@
         <!-- END Dockerignore -->
 
 
+        <!-- Gitignore -->
+
+        <codeInsight.lineMarkerProvider
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"
+            language="Gitignore"/>
+        <lang.braceMatcher
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"
+            language="Gitignore"/>
+        <lang.commenter
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
+            language="Gitignore"/>
+        <lang.syntaxHighlighterFactory
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
+            key="Gitignore"/>
+
+        <!-- END Gitignore -->
+
+
         <!-- Hgignore -->
 
         <codeInsight.lineMarkerProvider
@@ -363,22 +383,23 @@
         <!-- END Hgignore -->
 
 
-        <!-- Chefignore -->
+        <!-- Npmignore -->
 
         <codeInsight.lineMarkerProvider
             implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"
-            language="Chefignore"/>
+            language="Npmignore"/>
         <lang.braceMatcher
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"
-            language="Chefignore"/>
+            language="Npmignore"/>
         <lang.commenter
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
-            language="Chefignore"/>
+            language="Npmignore"/>
         <lang.syntaxHighlighterFactory
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
-            key="Chefignore"/>
+            key="Npmignore"/>
 
-        <!-- END Hgignore -->
+        <!-- END Npmignore -->
+
 
     </extensions>
 

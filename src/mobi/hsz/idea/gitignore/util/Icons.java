@@ -35,20 +35,23 @@ import javax.swing.*;
  * @since 0.2.1
  */
 public class Icons {
-    /** Gitignore icon. */
-    public static final Icon GITIGNORE = IconLoader.getIcon("/icons/icon_git.png");
+    /** Chefignore icon. */
+    public static final Icon CHEFIGNORE = IconLoader.getIcon("/icons/icon_chef.png");
 
-    /** Npmignore icon. */
-    public static final Icon NPMIGNORE = IconLoader.getIcon("/icons/icon_npm.png");
-
-    /** Hgignore icon. */
-    public static final Icon HGIGNORE = IconLoader.getIcon("/icons/icon_hg.png");
+    /** Cvsignore icon. */
+    public static final Icon CVSIGNORE = IconLoader.getIcon("/icons/icon_cvs.png");
 
     /** Dockerignore icon. */
     public static final Icon DOCKERIGNORE = IconLoader.getIcon("/icons/icon_docker.png");
 
-    /** Chefignore icon. */
-    public static final Icon CHEFIGNORE = IconLoader.getIcon("/icons/icon_chef.png");
+    /** Gitignore icon. */
+    public static final Icon GITIGNORE = IconLoader.getIcon("/icons/icon_git.png");
+
+    /** Hgignore icon. */
+    public static final Icon HGIGNORE = IconLoader.getIcon("/icons/icon_hg.png");
+
+    /** Npmignore icon. */
+    public static final Icon NPMIGNORE = IconLoader.getIcon("/icons/icon_npm.png");
 
     /** Private constructor to prevent creating {@link Icons} instance. */
     private Icons() {

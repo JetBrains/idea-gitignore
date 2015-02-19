@@ -22,22 +22,22 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.psi.chefignore;
+package mobi.hsz.idea.gitignore.psi.cvsignore;
 
 import com.intellij.psi.FileViewProvider;
-import mobi.hsz.idea.gitignore.file.type.chefignore.ChefignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.cvsignore.CvsignoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Chefignore plugin file.
+ * Cvsignore plugin file.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.9
  */
-public class ChefignoreFile extends IgnoreFile {
-    /** Builds a new instance of {@link ChefignoreFileType}. */
-    public ChefignoreFile(@NotNull FileViewProvider viewProvider) {
-        super(viewProvider, ChefignoreFileType.INSTANCE);
+public class CvsignoreFile extends IgnoreFile {
+    /** Builds a new instance of {@link CvsignoreFileType}. */
+    public CvsignoreFile(@NotNull FileViewProvider viewProvider) {
+        super(viewProvider, CvsignoreFileType.INSTANCE);
     }
 }
