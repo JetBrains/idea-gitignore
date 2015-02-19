@@ -44,7 +44,7 @@ public class ChefignoreLanguage extends IgnoreLanguage {
     public static final ChefignoreLanguage INSTANCE = new ChefignoreLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    protected ChefignoreLanguage() {
+    private ChefignoreLanguage() {
         super("Chefignore");
     }
 

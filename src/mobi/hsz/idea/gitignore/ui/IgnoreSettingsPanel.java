@@ -189,7 +189,7 @@ public class IgnoreSettingsPanel implements Disposable {
                  * If <code>false</code> is returned then then the message dialog will not be closed.
                  *
                  * @param inputString the input to check
-                 * @return true if the dialog could be closed, false otherwhise.
+                 * @return true if the dialog could be closed, false otherwise.
                  */
                 @Override
                 public boolean canClose(String inputString) {
@@ -228,19 +228,6 @@ public class IgnoreSettingsPanel implements Disposable {
             for (IgnoreSettings.UserTemplate template : userTemplates) {
                 myListModel.addElement(new IgnoreSettings.UserTemplate(template.getName(), template.getContent()));
             }
-        }
-
-        /**
-         * Moves and resizes this component.
-         *
-         * @param x the new <i>x</i>-coordinate of this component
-         * @param y the new <i>y</i>-coordinate of this component
-         * @param width the new <code>width</code> of this component
-         * @param height the new <code>height</code> of this component
-         */
-        @Override
-        public void setBounds(int x, int y, int width, int height) {
-            super.setBounds(x, y, width, height);
         }
 
         /**

@@ -1,12 +1,7 @@
 package mobi.hsz.idea.gitignore.lexer;
 
-import java.io.File;
-import java.util.List;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import mobi.hsz.idea.gitignore.util.Glob;
 import static mobi.hsz.idea.gitignore.psi.IgnoreTypes.*;
 import static com.intellij.psi.TokenType.*;
 %%

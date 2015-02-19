@@ -134,7 +134,7 @@ public class Glob {
     }
 
     /**
-     * Creates regex {@link Pattern} usign glob rule.
+     * Creates regex {@link Pattern} using glob rule.
      *
      * @param glob rule
      * @return regex {@link Pattern}
@@ -149,7 +149,7 @@ public class Glob {
     }
 
     /**
-     * Creates regex {@link String} usign glob rule.
+     * Creates regex {@link String} using glob rule.
      *
      * @param glob rule
      * @return regex {@link String}
@@ -241,7 +241,7 @@ public class Glob {
                     break;
 
                 case ']':
-                    if (!bracket || escape) {
+                    if (!bracket) {
                         sb.append('\\');
                     }
                     sb.append(ch);
@@ -276,10 +276,6 @@ public class Glob {
             sb.append("?");
         }
         sb.append("/?");
-
-        if (escape) {
-            // should not be alone
-        }
         sb.append('$');
 
         cache.put(glob, sb.toString());

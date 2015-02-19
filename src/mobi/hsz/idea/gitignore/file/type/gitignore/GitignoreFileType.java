@@ -41,14 +41,4 @@ public class GitignoreFileType extends IgnoreFileType {
     private GitignoreFileType() {
         super(GitignoreLanguage.INSTANCE);
     }
-
-    /**
-     * Returns current instance.
-     *
-     * @return current instance
-     */
-    @Override
-    public GitignoreFileType getInstance() {
-        return INSTANCE;
-    }
 }

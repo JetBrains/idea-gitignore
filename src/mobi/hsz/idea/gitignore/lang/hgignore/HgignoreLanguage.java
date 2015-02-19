@@ -44,7 +44,7 @@ public class HgignoreLanguage extends IgnoreLanguage {
     public static final HgignoreLanguage INSTANCE = new HgignoreLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    protected HgignoreLanguage() {
+    private HgignoreLanguage() {
         super("Hgignore");
     }
 

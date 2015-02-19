@@ -45,6 +45,8 @@ import mobi.hsz.idea.gitignore.util.Properties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
+
 /**
  * Editor notification provider that checks if there is {@link GitignoreLanguage#getFilename()} in root directory
  * and suggest to create one.
@@ -149,7 +151,10 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
         });
 
         try { // ignore if older SDK does not support panel icon
-            panel.icon(fileType.getIcon());
+            Icon icon = fileType.getIcon();
+            if (icon != null) {
+                panel.icon(icon);
+            }
         } catch (NoSuchMethodError ignored) {}
 
         return panel;

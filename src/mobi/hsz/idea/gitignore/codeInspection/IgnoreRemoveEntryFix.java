@@ -30,7 +30,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.tree.TreeUtil;
-import com.intellij.psi.tree.IElementType;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreTypes;
@@ -78,21 +77,20 @@ public class IgnoreRemoveEntryFix extends LocalQuickFixOnPsiElement {
     @Override
     public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         if (startElement instanceof IgnoreEntry) {
-            removeCrlf(startElement, IgnoreTypes.CRLF);
+            removeCrlf(startElement);
             startElement.delete();
         }
     }
 
     /**
      * Shorthand method for removing CRLF element.
+     *  @param startElement working PSI element
      *
-     * @param startElement working PSI element
-     * @param crlf         CRLF element to remove
      */
-    private void removeCrlf(PsiElement startElement, IElementType crlf) {
-        ASTNode node = TreeUtil.findSibling(startElement.getNode(), crlf);
+    private void removeCrlf(PsiElement startElement) {
+        ASTNode node = TreeUtil.findSibling(startElement.getNode(), IgnoreTypes.CRLF);
         if (node == null) {
-            node = TreeUtil.findSiblingBackward(startElement.getNode(), crlf);
+            node = TreeUtil.findSiblingBackward(startElement.getNode(), IgnoreTypes.CRLF);
         }
         if (node != null) {
             node.getPsi().delete();

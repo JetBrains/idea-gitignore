@@ -44,7 +44,7 @@ public class DockerignoreLanguage extends IgnoreLanguage {
     public static final DockerignoreLanguage INSTANCE = new DockerignoreLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    protected DockerignoreLanguage() {
+    private DockerignoreLanguage() {
         super("Dockerignore");
     }
 

@@ -45,7 +45,7 @@ public class NpmignoreLanguage extends IgnoreLanguage {
     public static final NpmignoreLanguage INSTANCE = new NpmignoreLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    protected NpmignoreLanguage() {
+    private NpmignoreLanguage() {
         super("Npmignore");
     }
 

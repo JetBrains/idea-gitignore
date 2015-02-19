@@ -41,14 +41,4 @@ public class NpmignoreFileType extends IgnoreFileType {
     private NpmignoreFileType() {
         super(NpmignoreLanguage.INSTANCE);
     }
-
-    /**
-     * Returns current instance.
-     *
-     * @return current instance
-     */
-    @Override
-    public NpmignoreFileType getInstance() {
-        return INSTANCE;
-    }
 }

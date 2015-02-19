@@ -41,14 +41,4 @@ public class HgignoreFileType extends IgnoreFileType {
     private HgignoreFileType() {
         super(HgignoreLanguage.INSTANCE);
     }
-
-    /**
-     * Returns current instance.
-     *
-     * @return current instance
-     */
-    @Override
-    public HgignoreFileType getInstance() {
-        return INSTANCE;
-    }
 }

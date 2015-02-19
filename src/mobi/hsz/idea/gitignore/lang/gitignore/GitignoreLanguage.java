@@ -45,7 +45,7 @@ public class GitignoreLanguage extends IgnoreLanguage {
     public static final GitignoreLanguage INSTANCE = new GitignoreLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    protected GitignoreLanguage() {
+    private GitignoreLanguage() {
         super("Gitignore");
     }
 

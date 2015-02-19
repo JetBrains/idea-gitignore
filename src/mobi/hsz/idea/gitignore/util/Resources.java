@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * {@link Resources} util class that contains methods that work on plugin's resources.
+ * {@link Resources} util class that contains methods that work on plugin resources.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.2

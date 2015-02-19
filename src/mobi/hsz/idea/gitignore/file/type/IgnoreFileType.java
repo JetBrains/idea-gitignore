@@ -56,15 +56,6 @@ public class IgnoreFileType extends LanguageFileType {
     }
 
     /**
-     * Returns current instance.
-     *
-     * @return current instance
-     */
-    public IgnoreFileType getInstance() {
-        return INSTANCE;
-    }
-
-    /**
      * Returns the name of the file type. The name must be unique among all file types registered in the system.
      * @return The file type name.
      */

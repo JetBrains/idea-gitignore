@@ -58,7 +58,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
     private String donationShown = "";
 
     /** Lists all user defined templates. */
-    private List<UserTemplate> userTemplates = new ArrayList<UserTemplate>();
+    private final List<UserTemplate> userTemplates = new ArrayList<UserTemplate>();
 
 
     /**

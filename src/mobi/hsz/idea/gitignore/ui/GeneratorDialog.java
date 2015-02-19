@@ -452,7 +452,7 @@ public class GeneratorDialog extends DialogWrapper {
      *
      * @param filter text
      */
-    public void filterTree(String filter) {
+    private void filterTree(String filter) {
         if (tree != null) {
             fillTreeData(filter, true);
             reloadModel();

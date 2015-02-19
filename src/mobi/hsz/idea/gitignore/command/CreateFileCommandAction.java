@@ -34,7 +34,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Command action that creates new file in given diractory.
+ * Command action that creates new file in given directory.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.3.3

@@ -171,8 +171,8 @@ public class Utils {
         if (baseDir != null && !baseDir.equals(file)) {
             do {
                 file = file.getParent();
-                VirtualFile ignorefile = file.findChild(fileType.getIgnoreLanguage().getFilename());
-                ContainerUtil.addIfNotNull(ignorefile, files);
+                VirtualFile ignoreFile = file.findChild(fileType.getIgnoreLanguage().getFilename());
+                ContainerUtil.addIfNotNull(ignoreFile, files);
             } while (!file.equals(project.getBaseDir()));
         }
         return files;

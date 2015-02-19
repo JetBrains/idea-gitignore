@@ -41,14 +41,4 @@ public class ChefignoreFileType extends IgnoreFileType {
     private ChefignoreFileType() {
         super(ChefignoreLanguage.INSTANCE);
     }
-
-    /**
-     * Returns current instance.
-     *
-     * @return current instance
-     */
-    @Override
-    public ChefignoreFileType getInstance() {
-        return INSTANCE;
-    }
 }

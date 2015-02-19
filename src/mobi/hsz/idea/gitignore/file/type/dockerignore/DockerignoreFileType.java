@@ -41,14 +41,4 @@ public class DockerignoreFileType extends IgnoreFileType {
     private DockerignoreFileType() {
         super(DockerignoreLanguage.INSTANCE);
     }
-
-    /**
-     * Returns current instance.
-     *
-     * @return current instance
-     */
-    @Override
-    public DockerignoreFileType getInstance() {
-        return INSTANCE;
-    }
 }

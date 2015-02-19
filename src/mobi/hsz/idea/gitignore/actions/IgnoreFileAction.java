@@ -111,7 +111,7 @@ public class IgnoreFileAction extends DumbAwareAction {
         if (ignoreFile != null) {
             ignore = PsiManager.getInstance(project).findFile(ignoreFile);
         }
-        if (ignore == null) {
+        if (ignore == null && fileType != null) {
             ignore = Utils.getIgnoreFile(project, fileType, null, true);
         }
 
