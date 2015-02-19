@@ -391,7 +391,7 @@
     </project-components>
 
     <actions>
-        <group id="Ignore.New">
+        <group id="Ignore.New" popup="true" text=".ignore file">
             <action id="Ignore.New.Gitignore" class="mobi.hsz.idea.gitignore.actions.gitignore.NewGitignoreFileAction"/>
             <action id="Ignore.New.Npmignore" class="mobi.hsz.idea.gitignore.actions.npmignore.NewNpmignoreFileAction"/>
             <action id="Ignore.New.Dockerignore" class="mobi.hsz.idea.gitignore.actions.dockerignore.NewDockerignoreFileAction"/>

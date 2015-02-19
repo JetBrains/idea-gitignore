@@ -43,7 +43,6 @@
             <arg value="${project.gen}"/>
             <arg value="${project.resources}/bnf/Ignore.bnf"/>
         </java>
-
     </target>
 
     <!-- Generate lexer using jFlex -->
