@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore;
 
 import com.intellij.CommonBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.bzrignore.BzrignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.chefignore.ChefignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.cvsignore.CvsignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
@@ -59,6 +60,7 @@ public class IgnoreBundle {
 
     /** Available {@link IgnoreFileType} instances. */
     public static final List<IgnoreFileType> FILE_TYPES = Arrays.asList(
+            BzrignoreFileType.INSTANCE,
             ChefignoreFileType.INSTANCE,
             CvsignoreFileType.INSTANCE,
             DockerignoreFileType.INSTANCE,

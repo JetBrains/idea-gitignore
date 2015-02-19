@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,41 +22,22 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.util;
+package mobi.hsz.idea.gitignore.psi.bzrignore;
 
-import com.intellij.openapi.util.IconLoader;
-
-import javax.swing.*;
+import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.bzrignore.BzrignoreFileType;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * {@link Icons} class that holds icon resources.
+ * Bzrignore plugin file.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.2.1
+ * @since 0.9
  */
-public class Icons {
-    /** Bzrignore icon. */
-    public static final Icon BZRIGNORE = IconLoader.getIcon("/icons/icon_bzr.png");
-
-    /** Chefignore icon. */
-    public static final Icon CHEFIGNORE = IconLoader.getIcon("/icons/icon_chef.png");
-
-    /** Cvsignore icon. */
-    public static final Icon CVSIGNORE = IconLoader.getIcon("/icons/icon_cvs.png");
-
-    /** Dockerignore icon. */
-    public static final Icon DOCKERIGNORE = IconLoader.getIcon("/icons/icon_docker.png");
-
-    /** Gitignore icon. */
-    public static final Icon GITIGNORE = IconLoader.getIcon("/icons/icon_git.png");
-
-    /** Hgignore icon. */
-    public static final Icon HGIGNORE = IconLoader.getIcon("/icons/icon_hg.png");
-
-    /** Npmignore icon. */
-    public static final Icon NPMIGNORE = IconLoader.getIcon("/icons/icon_npm.png");
-
-    /** Private constructor to prevent creating {@link Icons} instance. */
-    private Icons() {
+public class BzrignoreFile extends IgnoreFile {
+    /** Builds a new instance of {@link BzrignoreFileType}. */
+    public BzrignoreFile(@NotNull FileViewProvider viewProvider) {
+        super(viewProvider, BzrignoreFileType.INSTANCE);
     }
 }
