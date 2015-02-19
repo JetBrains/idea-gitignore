@@ -32,18 +32,16 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.chefignore.ChefignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.ExternalFileException;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Group action that ignores specified file or directory.
@@ -56,11 +54,6 @@ import java.util.*;
 public class IgnoreFileGroupAction extends ActionGroup {
     /** List of suitable Gitignore {@link VirtualFile}s that can be presented in an IgnoreFile action. */
     private final Map<IgnoreFileType, List<VirtualFile>> files = new HashMap<IgnoreFileType, List<VirtualFile>>();
-
-    private final List<IgnoreFileType> fileTypes = Arrays.asList(
-            GitignoreFileType.INSTANCE, HgignoreFileType.INSTANCE, NpmignoreFileType.INSTANCE,
-            DockerignoreFileType.INSTANCE, ChefignoreFileType.INSTANCE
-    );
 
     /** {@link Project}'s base directory. */
     private VirtualFile baseDir;
