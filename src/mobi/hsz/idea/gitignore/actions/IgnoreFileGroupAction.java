@@ -93,7 +93,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
                 presentation.setVisible(true);
                 baseDir = project.getBaseDir();
 
-                for (IgnoreFileType fileType : fileTypes) {
+                for (IgnoreFileType fileType : IgnoreBundle.FILE_TYPES) {
                     List<VirtualFile> list = Utils.getSuitableIgnoreFiles(project, fileType, file);
                     Collections.reverse(list);
                     files.put(fileType, list);

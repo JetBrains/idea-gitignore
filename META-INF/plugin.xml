@@ -391,14 +391,9 @@
     </project-components>
 
     <actions>
-        <group id="Ignore.New" popup="true" text=".ignore file">
-            <action id="Ignore.New.Gitignore" class="mobi.hsz.idea.gitignore.actions.gitignore.NewGitignoreFileAction"/>
-            <action id="Ignore.New.Npmignore" class="mobi.hsz.idea.gitignore.actions.npmignore.NewNpmignoreFileAction"/>
-            <action id="Ignore.New.Dockerignore" class="mobi.hsz.idea.gitignore.actions.dockerignore.NewDockerignoreFileAction"/>
-            <action id="Ignore.New.Hgignore" class="mobi.hsz.idea.gitignore.actions.hgignore.NewHgignoreFileAction"/>
-            <action id="Ignore.New.Chefignore" class="mobi.hsz.idea.gitignore.actions.chefignore.NewChefignoreFileAction"/>
+        <action id="Ignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileGroupAction">
             <add-to-group group-id="NewGroup" anchor="last"/>
-        </group>
+        </action>
         <group id="Gitignore.IgnoreGroup" class="mobi.hsz.idea.gitignore.actions.IgnoreFileGroupAction">
             <add-to-group group-id="EditorPopupMenu"/>
             <add-to-group group-id="ProjectViewPopupMenu"/>

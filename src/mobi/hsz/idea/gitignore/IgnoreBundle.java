@@ -25,9 +25,17 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.CommonBundle;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.chefignore.ChefignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.PropertyKey;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -47,6 +55,15 @@ public class IgnoreBundle {
     /** {@link IgnoreBundle} is a non-instantiable static class. */
     private IgnoreBundle() {
     }
+
+    /** Available {@link IgnoreFileType} instances. */
+    public static final List<IgnoreFileType> FILE_TYPES = Arrays.asList(
+            ChefignoreFileType.INSTANCE,
+            DockerignoreFileType.INSTANCE,
+            GitignoreFileType.INSTANCE,
+            HgignoreFileType.INSTANCE,
+            NpmignoreFileType.INSTANCE
+    );
 
     /**
      * Loads a {@link String} from the {@link #BUNDLE} {@link ResourceBundle}.

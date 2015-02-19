@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,31 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.actions.npmignore;
+package mobi.hsz.idea.gitignore.actions;
 
-import mobi.hsz.idea.gitignore.actions.NewFileAction;
-import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.project.DumbAware;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 
 /**
- * Creates new Npmignore file or returns existing one.
- *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.9
  */
-public class NewNpmignoreFileAction extends NewFileAction {
-    /** Builds a new instance of {@link NewFileAction}. */
-    public NewNpmignoreFileAction() {
-        super(NpmignoreFileType.INSTANCE);
+public class NewFileGroupAction extends DefaultActionGroup implements DumbAware {
+    public NewFileGroupAction() {
+        setPopup(true);
+        Presentation presentation = getTemplatePresentation();
+        presentation.setText(IgnoreBundle.message("action.newFile.group"));
+
+        for (final IgnoreFileType fileType : IgnoreBundle.FILE_TYPES) {
+            add(new NewFileAction(fileType){{
+                Presentation p = getTemplatePresentation();
+                p.setText(IgnoreBundle.message("action.newFile", fileType.getIgnoreLanguage().getFilename()));
+                p.setDescription(IgnoreBundle.message("action.newFile.description", fileType.getLanguageName()));
+                p.setIcon(fileType.getIcon());
+            }});
+        }
     }
 }

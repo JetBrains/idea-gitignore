@@ -31,6 +31,7 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
@@ -48,7 +49,8 @@ import mobi.hsz.idea.gitignore.util.Utils;
  * @author Alexander Zolotov <alexander.zolotov@jetbrains.com>
  * @since 0.1
  */
-public abstract class NewFileAction extends AnAction {
+@SuppressWarnings("ComponentNotRegistered")
+public class NewFileAction extends AnAction implements DumbAware {
     /** Current file type. */
     private final IgnoreFileType fileType;
 
@@ -56,12 +58,6 @@ public abstract class NewFileAction extends AnAction {
      * Builds a new instance of {@link NewFileAction}.
      */
     public NewFileAction(IgnoreFileType fileType) {
-        super(
-                IgnoreBundle.message("action.newFile", fileType.getIgnoreLanguage().getFilename()),
-                IgnoreBundle.message("action.newFile.description", fileType.getLanguageName()),
-                fileType.getIcon()
-        );
-
         this.fileType = fileType;
     }
 
