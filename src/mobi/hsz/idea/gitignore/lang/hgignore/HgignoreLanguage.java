@@ -24,14 +24,10 @@
 
 package mobi.hsz.idea.gitignore.lang.hgignore;
 
-import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.hgignore.HgignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 /**
  * Hgignore {@link IgnoreLanguage} definition.
@@ -45,42 +41,12 @@ public class HgignoreLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private HgignoreLanguage() {
-        super("Hgignore");
+        super("Hgignore", "hgignore", Icons.HGIGNORE);
     }
 
-    /** The {@link HgignoreLanguage} instance. */
+    /** Language file type. */
     @Override
-    public HgignoreLanguage getInstance() {
-        return INSTANCE;
-    }
-
-    /** The Hgignore language name. */
-    @Override
-    public String getName() {
-        return "Hgignore";
-    }
-
-    /** The Hgignore file extension suffix. */
-    @Override
-    public String getExtension() {
-        return "hgignore";
-    }
-
-    /** The Hgignore file extension. */
-    @Override
-    public String getFilename() {
-        return DOT + getExtension();
-    }
-
-    /** The HgignoreLanguage icon. */
-    @Override
-    public Icon getIcon() {
-        return Icons.HGIGNORE;
-    }
-
-    /** Creates {@link HgignoreFile} instance. */
-    @Override
-    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
-        return new HgignoreFile(viewProvider);
+    public IgnoreFileType getFileType() {
+        return HgignoreFileType.INSTANCE;
     }
 }

@@ -24,14 +24,10 @@
 
 package mobi.hsz.idea.gitignore.lang.cvsignore;
 
-import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.cvsignore.CvsignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.cvsignore.CvsignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 /**
  * Cvsignore {@link com.intellij.lang.Language} definition.
@@ -45,42 +41,12 @@ public class CvsignoreLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private CvsignoreLanguage() {
-        super("Cvsignore");
+        super("Cvsignore", "cvsignore", Icons.CVSIGNORE);
     }
 
-    /** The {@link CvsignoreLanguage} instance. */
+    /** Language file type. */
     @Override
-    public CvsignoreLanguage getInstance() {
-        return INSTANCE;
-    }
-
-    /** The Cvsignore language name. */
-    @Override
-    public String getName() {
-        return "Cvsignore";
-    }
-
-    /** The Cvsignore file extension suffix. */
-    @Override
-    public String getExtension() {
-        return "cvsignore";
-    }
-
-    /** The Cvsignore file extension. */
-    @Override
-    public String getFilename() {
-        return DOT + getExtension();
-    }
-
-    /** The Cvsignore icon. */
-    @Override
-    public Icon getIcon() {
-        return Icons.CVSIGNORE;
-    }
-
-    /** Creates {@link CvsignoreFile} instance. */
-    @Override
-    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
-        return new CvsignoreFile(viewProvider);
+    public IgnoreFileType getFileType() {
+        return CvsignoreFileType.INSTANCE;
     }
 }

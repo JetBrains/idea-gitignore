@@ -24,14 +24,10 @@
 
 package mobi.hsz.idea.gitignore.lang.dockerignore;
 
-import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.dockerignore.DockerignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 /**
  * Dockerignore {@link IgnoreLanguage} definition.
@@ -45,42 +41,12 @@ public class DockerignoreLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private DockerignoreLanguage() {
-        super("Dockerignore");
+        super("Dockerignore", "dockerignore", Icons.DOCKERIGNORE);
     }
 
-    /** The {@link DockerignoreLanguage} instance. */
+    /** Language file type. */
     @Override
-    public DockerignoreLanguage getInstance() {
-        return INSTANCE;
-    }
-
-    /** The Dockerignore language name. */
-    @Override
-    public String getName() {
-        return "Dockerignore";
-    }
-
-    /** The Dockerignore file extension suffix. */
-    @Override
-    public String getExtension() {
-        return "dockerignore";
-    }
-
-    /** The Dockerignore file extension. */
-    @Override
-    public String getFilename() {
-        return DOT + getExtension();
-    }
-
-    /** The DockerignoreLanguage icon. */
-    @Override
-    public Icon getIcon() {
-        return Icons.DOCKERIGNORE;
-    }
-
-    /** Creates {@link DockerignoreFile} instance. */
-    @Override
-    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
-        return new DockerignoreFile(viewProvider);
+    public IgnoreFileType getFileType() {
+        return DockerignoreFileType.INSTANCE;
     }
 }

@@ -24,14 +24,10 @@
 
 package mobi.hsz.idea.gitignore.lang.chefignore;
 
-import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.chefignore.ChefignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.chefignore.ChefignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 /**
  * Chefignore {@link com.intellij.lang.Language} definition.
@@ -45,42 +41,12 @@ public class ChefignoreLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private ChefignoreLanguage() {
-        super("Chefignore");
+        super("Chefignore", "chefignore", Icons.CHEFIGNORE);
     }
 
-    /** The {@link ChefignoreLanguage} instance. */
+    /** Language file type. */
     @Override
-    public ChefignoreLanguage getInstance() {
-        return INSTANCE;
-    }
-
-    /** The Chefignore language name. */
-    @Override
-    public String getName() {
-        return "Chefignore";
-    }
-
-    /** The Chefignore file extension suffix. */
-    @Override
-    public String getExtension() {
-        return "chefignore";
-    }
-
-    /** The Chefignore file extension. */
-    @Override
-    public String getFilename() {
-        return DOT + getExtension();
-    }
-
-    /** The Chefignore icon. */
-    @Override
-    public Icon getIcon() {
-        return Icons.CHEFIGNORE;
-    }
-
-    /** Creates {@link ChefignoreFile} instance. */
-    @Override
-    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
-        return new ChefignoreFile(viewProvider);
+    public IgnoreFileType getFileType() {
+        return ChefignoreFileType.INSTANCE;
     }
 }

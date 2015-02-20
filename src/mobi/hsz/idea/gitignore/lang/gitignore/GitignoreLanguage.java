@@ -25,14 +25,10 @@
 package mobi.hsz.idea.gitignore.lang.gitignore;
 
 import com.intellij.lang.Language;
-import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 /**
  * Gitignore {@link Language} definition.
@@ -46,47 +42,17 @@ public class GitignoreLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private GitignoreLanguage() {
-        super("Gitignore");
+        super("Gitignore", "gitignore", Icons.GITIGNORE);
     }
 
-    /** The {@link GitignoreLanguage} instance. */
+    /** Language file type. */
     @Override
-    public GitignoreLanguage getInstance() {
-        return INSTANCE;
-    }
-
-    /** The Gitignore language name. */
-    @Override
-    public String getName() {
-        return "Gitignore";
-    }
-
-    /** The Gitignore file extension suffix. */
-    @Override
-    public String getExtension() {
-        return "gitignore";
-    }
-
-    /** The Gitignore file extension. */
-    @Override
-    public String getFilename() {
-        return DOT + getExtension();
-    }
-
-    /** The GitignoreLanguage icon. */
-    @Override
-    public Icon getIcon() {
-        return Icons.GITIGNORE;
+    public IgnoreFileType getFileType() {
+        return GitignoreFileType.INSTANCE;
     }
 
     /** The Git specific directory. */
     public String getGitDirectory() {
         return ".git";
-    }
-
-    /** Creates {@link GitignoreFile} instance. */
-    @Override
-    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
-        return new GitignoreFile(viewProvider);
     }
 }

@@ -62,7 +62,7 @@ public class IgnoreFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return language.getName() + " file";
+        return language.getDisplayName() + " file";
     }
 
     /**
@@ -71,7 +71,7 @@ public class IgnoreFileType extends LanguageFileType {
      */
     @NotNull
     public String getLanguageName() {
-        return language.getName();
+        return language.getDisplayName();
     }
 
     /**
@@ -82,7 +82,7 @@ public class IgnoreFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getDescription() {
-        return language.getName() + " file";
+        return language.getDisplayName() + " file";
     }
 
     /**

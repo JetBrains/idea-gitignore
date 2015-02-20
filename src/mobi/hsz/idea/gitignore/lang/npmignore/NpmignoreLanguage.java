@@ -25,14 +25,10 @@
 package mobi.hsz.idea.gitignore.lang.npmignore;
 
 import com.intellij.lang.Language;
-import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.npmignore.NpmignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 /**
  * Npmignore {@link Language} definition.
@@ -46,47 +42,12 @@ public class NpmignoreLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private NpmignoreLanguage() {
-        super("Npmignore");
+        super("Npmignore", "npmignore", Icons.NPMIGNORE);
     }
 
-    /** The {@link NpmignoreLanguage} instance. */
+    /** Language file type. */
     @Override
-    public NpmignoreLanguage getInstance() {
-        return INSTANCE;
-    }
-
-    /** The Npmignore language name. */
-    @Override
-    public String getName() {
-        return "Npmignore";
-    }
-
-    /** The Npmignore file extension suffix. */
-    @Override
-    public String getExtension() {
-        return "npmignore";
-    }
-
-    /** The Npmignore file extension. */
-    @Override
-    public String getFilename() {
-        return DOT + getExtension();
-    }
-
-    /** The Npmignore icon. */
-    @Override
-    public Icon getIcon() {
-        return Icons.NPMIGNORE;
-    }
-
-    /** Creates {@link NpmignoreFile} instance. */
-    @Override
-    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
-        return new NpmignoreFile(viewProvider);
-    }
-
-    /** The NPM specific package file. */
-    public String getPackageFile() {
-        return "package.json";
+    public IgnoreFileType getFileType() {
+        return NpmignoreFileType.INSTANCE;
     }
 }

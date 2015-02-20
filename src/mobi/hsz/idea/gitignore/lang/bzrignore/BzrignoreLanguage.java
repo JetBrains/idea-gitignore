@@ -24,14 +24,10 @@
 
 package mobi.hsz.idea.gitignore.lang.bzrignore;
 
-import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.bzrignore.BzrignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.bzrignore.BzrignoreFile;
 import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 /**
  * Bzrignore {@link com.intellij.lang.Language} definition.
@@ -45,42 +41,12 @@ public class BzrignoreLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private BzrignoreLanguage() {
-        super("Bzrignore");
+        super("Bzrignore", "bzrignore", Icons.BZRIGNORE);
     }
 
-    /** The {@link BzrignoreLanguage} instance. */
+    /** Language file type. */
     @Override
-    public BzrignoreLanguage getInstance() {
-        return INSTANCE;
-    }
-
-    /** The Bzrignore language name. */
-    @Override
-    public String getName() {
-        return "Bzrignore";
-    }
-
-    /** The Bzrignore file extension suffix. */
-    @Override
-    public String getExtension() {
-        return "bzrignore";
-    }
-
-    /** The Bzrignore file extension. */
-    @Override
-    public String getFilename() {
-        return DOT + getExtension();
-    }
-
-    /** The Bzrignore icon. */
-    @Override
-    public Icon getIcon() {
-        return Icons.BZRIGNORE;
-    }
-
-    /** Creates {@link BzrignoreFile} instance. */
-    @Override
-    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
-        return new BzrignoreFile(viewProvider);
+    public IgnoreFileType getFileType() {
+        return BzrignoreFileType.INSTANCE;
     }
 }

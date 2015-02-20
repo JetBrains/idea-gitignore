@@ -30,6 +30,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
@@ -44,25 +45,38 @@ public class IgnoreLanguage extends Language {
     public static final IgnoreLanguage INSTANCE = new IgnoreLanguage();
 
     /** The dot. */
+    @NonNls
     public static final String DOT = ".";
 
     /** Ignore languages group name. */
     @NonNls
     public static final String GROUP = "IGNORE_GROUP";
 
-    /** The {@link IgnoreLanguage} instance. */
-    public IgnoreLanguage getInstance() {
-        return INSTANCE;
+    /** The Ignore file extension suffix. */
+    private final String extension;
+
+    /** The GitignoreLanguage icon. */
+    private final Icon icon;
+
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
+    protected IgnoreLanguage() {
+        this("Ignore", "ignore", null);
     }
 
-    /** The Gitignore language name. */
-    public String getName() {
-        return "Ignore";
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
+    protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable Icon icon) {
+        super(name);
+        this.extension = extension;
+        this.icon = icon;
     }
 
-    /** The Gitignore file extension suffix. */
+    /**
+     * Returns Ignore file extension suffix.
+     *
+     * @return extension
+     */
     public String getExtension() {
-        return "ignore";
+        return extension;
     }
 
     /** The Gitignore file extension. */
@@ -70,23 +84,23 @@ public class IgnoreLanguage extends Language {
         return DOT + getExtension();
     }
 
-    /** The GitignoreLanguage icon. */
+    /**
+     * Returns Ignore file icon.
+     *
+     * @return icon
+     */
+    @Nullable
     public Icon getIcon() {
-        return null;
+        return icon;
+    }
+
+    /** Language file type. */
+    public IgnoreFileType getFileType() {
+        return IgnoreFileType.INSTANCE;
     }
 
     /** Creates {@link IgnoreFile} instance. */
-    public IgnoreFile createFile(@NotNull FileViewProvider viewProvider) {
-        return new IgnoreFile(viewProvider, IgnoreFileType.INSTANCE);
-    }
-
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    protected IgnoreLanguage() {
-        super("Ignore");
-    }
-
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    protected IgnoreLanguage(String name) {
-        super(name);
+    public IgnoreFile createFile(@NotNull final FileViewProvider viewProvider) {
+        return new IgnoreFile(viewProvider, getFileType());
     }
 }
