@@ -28,6 +28,7 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -146,6 +147,17 @@ public class Glob {
         } catch (PatternSyntaxException e) {
             return null;
         }
+    }
+
+    /**
+     * Creates regex {@link Pattern} using {@link IgnoreEntry}.
+     *
+     * @param entry {@link IgnoreEntry}
+     * @return regex {@link Pattern}
+     */
+    @Nullable
+    public static Pattern createPattern(@NotNull IgnoreEntry entry) {
+        return createPattern(entry.getText());
     }
 
     /**
