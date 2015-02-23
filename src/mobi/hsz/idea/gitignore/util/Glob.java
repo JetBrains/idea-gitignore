@@ -166,7 +166,8 @@ public class Glob {
      * @param glob rule
      * @return regex {@link String}
      */
-    public static String createRegex(String glob) {
+    public static String createRegex(@NotNull String glob) {
+        glob = glob.trim();
         String cached = cache.get(glob);
         if (cached != null) {
             return cached;
