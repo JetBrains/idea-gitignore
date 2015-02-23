@@ -30,7 +30,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 
@@ -47,7 +46,7 @@ public class AddTemplateAction extends AnAction {
 
     /**
      * Handles an action of adding new template.
-     * Ignores action if selected file is not a {@link GitignoreFile} instance, otherwise shows {@link GeneratorDialog}.
+     * Ignores action if selected file is not a {@link IgnoreFile} instance, otherwise shows {@link GeneratorDialog}.
      *
      * @param e action event
      */
@@ -65,7 +64,7 @@ public class AddTemplateAction extends AnAction {
 
     /**
      * Updates visibility of the action presentation in various actions list.
-     * Visible only for {@link GitignoreFile} context.
+     * Visible only for {@link IgnoreFile} context.
      *
      * @param e action event
      */

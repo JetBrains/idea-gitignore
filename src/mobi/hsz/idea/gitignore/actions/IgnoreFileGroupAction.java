@@ -45,7 +45,7 @@ import java.util.Map;
 
 /**
  * Group action that ignores specified file or directory.
- * {@link ActionGroup} expands single action into a more child options to allow user specify the {@link mobi.hsz.idea.gitignore.psi.gitignore.GitignoreFile}
+ * {@link ActionGroup} expands single action into a more child options to allow user specify the {@link mobi.hsz.idea.gitignore.psi.IgnoreFile}
  * that will be used for file's path storage.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
