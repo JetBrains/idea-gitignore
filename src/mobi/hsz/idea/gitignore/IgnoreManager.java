@@ -225,7 +225,6 @@ public class IgnoreManager {
         return cache.isParentIgnored(file);
     }
 
-
     /**
      * {@link HashMap} cache helper.
      */
