@@ -221,6 +221,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
 
+        <projectService serviceImplementation="mobi.hsz.idea.gitignore.IgnoreManager"/>
+
         <additionalTextAttributes
             file="colorSchemes/IgnoreDefault.xml"
             scheme="Default"/>
@@ -282,6 +284,8 @@
         <severitiesProvider
             implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
+        <vcs.fileStatusProvider
+            implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
 
         <lang.parserDefinition language="Ignore"        implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Bzrignore"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>

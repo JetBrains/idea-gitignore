@@ -33,7 +33,6 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.impl.source.PsiFileImpl;
 import com.intellij.psi.tree.IFileElementType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -46,28 +45,50 @@ import java.util.Set;
  * @since 0.8
  */
 public class IgnoreFile extends PsiFileImpl {
-    @NotNull private final Language myLanguage;
-    @NotNull private final ParserDefinition myParserDefinition;
+    /**
+     * Current language.
+     */
+    @NotNull
+    private final Language language;
 
-    /** Current file type. */
-    @NotNull private final IgnoreFileType fileType;
+    /**
+     * Current parser definition.
+     */
+    @NotNull
+    private final ParserDefinition parserDefinition;
 
-    /** Builds a new instance of {@link IgnoreFile}. */
+    /**
+     * Current file type.
+     */
+    @NotNull
+    private final IgnoreFileType fileType;
+
+    /**
+     * Builds a new instance of {@link IgnoreFile}.
+     */
     public IgnoreFile(@NotNull FileViewProvider viewProvider, @NotNull IgnoreFileType fileType) {
         super(viewProvider);
-        this.fileType = fileType;
-        IgnoreLanguage language = (IgnoreLanguage) fileType.getLanguage();
 
-        myLanguage = findLanguage(language, viewProvider);
-        final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(myLanguage);
+        this.fileType = fileType;
+        this.language = findLanguage(fileType.getLanguage(), viewProvider);
+
+        final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(this.language);
         if (parserDefinition == null) {
-            throw new RuntimeException("PsiFileBase: language.getParserDefinition() returned null for: "+myLanguage);
+            throw new RuntimeException("PsiFileBase: language.getParserDefinition() returned null for: " + this.language);
         }
-        myParserDefinition = parserDefinition;
+        this.parserDefinition = parserDefinition;
+
         final IFileElementType nodeType = parserDefinition.getFileNodeType();
         init(nodeType, nodeType);
     }
 
+    /**
+     * Searches for the matching language in {@link FileViewProvider}.
+     *
+     * @param baseLanguage language to look for
+     * @param viewProvider current {@link FileViewProvider}
+     * @return matched {@link Language}
+     */
     private static Language findLanguage(Language baseLanguage, FileViewProvider viewProvider) {
         final Set<Language> languages = viewProvider.getLanguages();
         for (final Language actualLanguage : languages) {
@@ -78,20 +99,35 @@ public class IgnoreFile extends PsiFileImpl {
         throw new AssertionError("Language " + baseLanguage + " doesn't participate in view provider " + viewProvider + ": " + new ArrayList<Language>(languages));
     }
 
-    @Override
-    @NotNull
-    public final Language getLanguage() {
-        return myLanguage;
-    }
-
+    /**
+     * Passes the element to the specified visitor.
+     *
+     * @param visitor the visitor to pass the element to.
+     */
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
         visitor.visitFile(this);
     }
 
+    /**
+     * Returns current language.
+     *
+     * @return current {@link Language}
+     */
+    @Override
+    @NotNull
+    public final Language getLanguage() {
+        return language;
+    }
+
+    /**
+     * Returns current parser definition.
+     *
+     * @return current {@link ParserDefinition}
+     */
     @NotNull
     public ParserDefinition getParserDefinition() {
-        return myParserDefinition;
+        return parserDefinition;
     }
 
     /**
