@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.util;
 
+import com.google.common.collect.Sets;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.extensions.PluginId;
@@ -214,7 +215,7 @@ public class Utils {
      * @return entry is excluded in current project
      */
     public static boolean isEntryExcluded(IgnoreEntry entry, Project project) {
-        final Pattern pattern = Glob.createPattern(entry.getText());
+        final Pattern pattern = Glob.createPattern(entry);
         if (pattern == null) {
             return false;
         }
@@ -291,5 +292,16 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    /**
+     * Checks if file is under given directory.
+     *
+     * @param file      file
+     * @param directory directory
+     * @return file is under directory
+     */
+    public static boolean isUnder(VirtualFile file, VirtualFile directory) {
+        return VfsUtilCore.isUnder(file, Sets.newHashSet(directory));
     }
 }
