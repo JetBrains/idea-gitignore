@@ -69,6 +69,9 @@ public class IgnoreParserDefinition implements ParserDefinition {
     /** Slashes / */
     public static final TokenSet SLASHES = TokenSet.create(IgnoreTypes.SLASH);
 
+    /** Syntax syntax: */
+    public static final TokenSet SYNTAXES = TokenSet.create(IgnoreTypes.SYNTAX_KEY);
+
     /** All values - parts of paths */
     public static final TokenSet VALUES = TokenSet.create(IgnoreTypes.VALUE);
 

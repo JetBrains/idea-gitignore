@@ -35,6 +35,13 @@
             <option name="FOREGROUND" value="808080" />
         </value>
     </option>
+    <option name="IGNORE.SYNTAX">
+        <value>
+            <option name="FOREGROUND" value="ACACAC" />
+            <option name="BACKGROUND" value="4A4A4A" />
+            <option name="FONT_TYPE" value="1" />
+        </value>
+    </option>
     <option name="IGNORE.VALUE">
         <value>
             <option name="FOREGROUND" value="5C9F30" />

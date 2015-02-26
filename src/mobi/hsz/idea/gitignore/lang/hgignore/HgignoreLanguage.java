@@ -49,4 +49,14 @@ public class HgignoreLanguage extends IgnoreLanguage {
     public IgnoreFileType getFileType() {
         return HgignoreFileType.INSTANCE;
     }
+
+    /**
+     * Returns <code>true</code> if `syntax: value` entry is supported by the language (i.e. Mercurial).
+     *
+     * @return <code>true</code> if `syntax: value` entry is supported
+     */
+    @Override
+    public boolean isSyntaxSupported() {
+        return true;
+    }
 }

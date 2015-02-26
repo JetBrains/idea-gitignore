@@ -103,4 +103,13 @@ public class IgnoreLanguage extends Language {
     public IgnoreFile createFile(@NotNull final FileViewProvider viewProvider) {
         return new IgnoreFile(viewProvider, getFileType());
     }
+
+    /**
+     * Returns <code>true</code> if `syntax: value` entry is supported by the language (i.e. Mercurial).
+     *
+     * @return <code>true</code> if `syntax: value` entry is supported
+     */
+    public boolean isSyntaxSupported() {
+        return false;
+    }
 }

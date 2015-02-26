@@ -21,6 +21,7 @@
     BRACKET_LEFT            = "regexp:(?!\\\[)\["
     BRACKET_RIGHT           = "regexp:(?!\\\])\]"
     SLASH                   = "/"
+    SYNTAX_KEY              = "syntax:"
     VALUE                   = "regexp:(?![!#\s])(?![\[\]])(?:(?:\\[\[\]])|(?:\/\/)|[^\[\]\/\s])+"
   ]
 
@@ -29,8 +30,10 @@
 }
  
 gitignoreFile           ::= item_ *
-private item_           ::= HEADER | SECTION | COMMENT | ENTRY_DIRECTORY | ENTRY_FILE | CRLF
+private item_           ::= HEADER | SECTION | COMMENT | SYNTAX | ENTRY_DIRECTORY | ENTRY_FILE | CRLF
 NEGATION                ::= "!"
+SYNTAX                  ::= SYNTAX_KEY CRLF * VALUE
+
 ENTRY_FILE              ::= NEGATION ? SLASH ? <<list_macro value_>>        { extends="ENTRY" }
 ENTRY_DIRECTORY         ::= NEGATION ? SLASH ? <<list_macro value_>> SLASH  { extends="ENTRY_FILE" }
 ENTRY                   ::= NEGATION ? SLASH ? <<list_macro value_>>

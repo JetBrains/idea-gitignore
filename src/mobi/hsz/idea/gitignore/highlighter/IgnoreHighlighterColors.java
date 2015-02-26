@@ -52,6 +52,9 @@ public class IgnoreHighlighterColors {
     /** Default style for negation element - ! in the beginning of the entry */
     public static final TextAttributesKey SLASH = TextAttributesKey.createTextAttributesKey("IGNORE.SLASH", DefaultLanguageHighlighterColors.COMMA);
 
+    /** Default style for syntax element - syntax: */
+    public static final TextAttributesKey SYNTAX = TextAttributesKey.createTextAttributesKey("IGNORE.SYNTAX", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
+
     /** Default style for negation element - ! in the beginning of the entry */
     public static final TextAttributesKey VALUE = TextAttributesKey.createTextAttributesKey("IGNORE.VALUE", DefaultLanguageHighlighterColors.STRING);
 

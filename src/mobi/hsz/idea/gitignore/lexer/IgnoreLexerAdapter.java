@@ -43,6 +43,6 @@ public class IgnoreLexerAdapter extends FlexAdapter {
 
     /** Builds a new instance of {@link IgnoreLexerAdapter}. */
     public IgnoreLexerAdapter(Project project, @Nullable VirtualFile virtualFile) {
-        super(new IgnoreLexer());
+        super(new IgnoreLexer(virtualFile));
     }
 }
