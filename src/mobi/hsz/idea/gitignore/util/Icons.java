@@ -35,6 +35,9 @@ import javax.swing.*;
  * @since 0.2.1
  */
 public class Icons {
+    /** General ignore icon. */
+    public static final Icon IGNORE = IconLoader.getIcon("/icons/icon.png");
+
     /** Boringignore icon. */
     public static final Icon BORINGIGNORE = IconLoader.getIcon("/icons/icon_boring.png");
 

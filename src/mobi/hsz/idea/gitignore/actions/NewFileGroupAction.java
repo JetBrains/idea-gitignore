@@ -29,6 +29,7 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.DumbAware;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
@@ -39,6 +40,7 @@ public class NewFileGroupAction extends DefaultActionGroup implements DumbAware 
         setPopup(true);
         Presentation presentation = getTemplatePresentation();
         presentation.setText(IgnoreBundle.message("action.newFile.group"));
+        presentation.setIcon(Icons.IGNORE);
 
         for (final IgnoreFileType fileType : IgnoreBundle.FILE_TYPES) {
             add(new NewFileAction(fileType){{
