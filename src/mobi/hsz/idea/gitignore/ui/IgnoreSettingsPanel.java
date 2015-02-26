@@ -44,7 +44,7 @@ import com.intellij.ui.AddEditDeleteListPanel;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -104,7 +104,7 @@ public class IgnoreSettingsPanel implements Disposable {
      */
     @NotNull
     private static Editor createPreviewEditor(@NotNull Document document) {
-        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, null, GitignoreFileType.INSTANCE, false);
+        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, null, IgnoreFileType.INSTANCE, false);
         final EditorSettings settings = editor.getSettings();
         settings.setLineNumbersShown(false);
         settings.setAdditionalLinesCount(1);

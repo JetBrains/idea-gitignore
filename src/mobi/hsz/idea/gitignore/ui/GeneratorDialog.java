@@ -51,7 +51,7 @@ import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
-import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.util.Resources;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -215,7 +215,7 @@ public class GeneratorDialog extends DialogWrapper {
      */
     @NotNull
     private static Editor createPreviewEditor(@NotNull Project project, @NotNull Document document) {
-        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, project, GitignoreFileType.INSTANCE, true);
+        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, project, IgnoreFileType.INSTANCE, true);
         final EditorSettings settings = editor.getSettings();
         settings.setLineNumbersShown(false);
         settings.setAdditionalLinesCount(1);

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.cvsignore;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.cvsignore.CvsignoreFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.lang.kind.HgignoreLanguage;
 
 /**
- * Cvsignore {@link com.intellij.lang.Language} definition.
+ * Describes hgignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.9
+ * @since 0.8
  */
-public class CvsignoreLanguage extends IgnoreLanguage {
-    /** The {@link CvsignoreLanguage} instance. */
-    public static final CvsignoreLanguage INSTANCE = new CvsignoreLanguage();
+public class HgignoreFileType extends IgnoreFileType {
+    /** Contains {@link HgignoreFileType} singleton. */
+    public static final HgignoreFileType INSTANCE = new HgignoreFileType();
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private CvsignoreLanguage() {
-        super("Cvsignore", "cvsignore", Icons.CVSIGNORE);
-    }
-
-    /** Language file type. */
-    @Override
-    public IgnoreFileType getFileType() {
-        return CvsignoreFileType.INSTANCE;
+    /** Private constructor to prevent direct object creation. */
+    private HgignoreFileType() {
+        super(HgignoreLanguage.INSTANCE);
     }
 }

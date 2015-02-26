@@ -25,7 +25,7 @@
 package mobi.hsz.idea.gitignore.inspections;
 
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitignoreLanguage;
 import mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection;
 
 public class RelativeEntryInspectionTest extends InspectionTestCase {

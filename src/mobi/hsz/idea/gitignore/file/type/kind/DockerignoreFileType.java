@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type.hgignore;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.hgignore.HgignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.DockerignoreLanguage;
 
 /**
- * Describes hgignore file type.
+ * Describes Dockerignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class HgignoreFileType extends IgnoreFileType {
-    /** Contains {@link HgignoreFileType} singleton. */
-    public static final HgignoreFileType INSTANCE = new HgignoreFileType();
+public class DockerignoreFileType extends IgnoreFileType {
+    /** Contains {@link DockerignoreFileType} singleton. */
+    public static final DockerignoreFileType INSTANCE = new DockerignoreFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private HgignoreFileType() {
-        super(HgignoreLanguage.INSTANCE);
+    private DockerignoreFileType() {
+        super(DockerignoreLanguage.INSTANCE);
     }
 }

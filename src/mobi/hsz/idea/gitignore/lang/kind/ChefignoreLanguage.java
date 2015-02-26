@@ -22,31 +22,31 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.bzrignore;
+package mobi.hsz.idea.gitignore.lang.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.bzrignore.BzrignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.ChefignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
- * Bzrignore {@link com.intellij.lang.Language} definition.
+ * Chefignore {@link com.intellij.lang.Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.9
  */
-public class BzrignoreLanguage extends IgnoreLanguage {
-    /** The {@link BzrignoreLanguage} instance. */
-    public static final BzrignoreLanguage INSTANCE = new BzrignoreLanguage();
+public class ChefignoreLanguage extends IgnoreLanguage {
+    /** The {@link ChefignoreLanguage} instance. */
+    public static final ChefignoreLanguage INSTANCE = new ChefignoreLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private BzrignoreLanguage() {
-        super("Bzrignore", "bzrignore", Icons.BZRIGNORE);
+    private ChefignoreLanguage() {
+        super("Chefignore", "chefignore", Icons.CHEFIGNORE);
     }
 
     /** Language file type. */
     @Override
     public IgnoreFileType getFileType() {
-        return BzrignoreFileType.INSTANCE;
+        return ChefignoreFileType.INSTANCE;
     }
 }

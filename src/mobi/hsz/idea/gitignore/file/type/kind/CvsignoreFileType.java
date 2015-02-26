@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type.bzrignore;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.bzrignore.BzrignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.CvsignoreLanguage;
 
 /**
- * Describes Bzrignore file type.
+ * Describes Cvsignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.9
  */
-public class BzrignoreFileType extends IgnoreFileType {
-    /** Contains {@link mobi.hsz.idea.gitignore.file.type.bzrignore.BzrignoreFileType} singleton. */
-    public static final BzrignoreFileType INSTANCE = new BzrignoreFileType();
+public class CvsignoreFileType extends IgnoreFileType {
+    /** Contains {@link CvsignoreFileType} singleton. */
+    public static final CvsignoreFileType INSTANCE = new CvsignoreFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private BzrignoreFileType() {
-        super(BzrignoreLanguage.INSTANCE);
+    private CvsignoreFileType() {
+        super(CvsignoreLanguage.INSTANCE);
     }
 }

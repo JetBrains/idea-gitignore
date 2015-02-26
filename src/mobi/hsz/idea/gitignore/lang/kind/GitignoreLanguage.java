@@ -22,32 +22,37 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.npmignore;
+package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.lang.Language;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
- * Npmignore {@link Language} definition.
+ * Gitignore {@link Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.1
  */
-public class NpmignoreLanguage extends IgnoreLanguage {
-    /** The {@link NpmignoreLanguage} instance. */
-    public static final NpmignoreLanguage INSTANCE = new NpmignoreLanguage();
+public class GitignoreLanguage extends IgnoreLanguage {
+    /** The {@link GitignoreLanguage} instance. */
+    public static final GitignoreLanguage INSTANCE = new GitignoreLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private NpmignoreLanguage() {
-        super("Npmignore", "npmignore", Icons.NPMIGNORE);
+    private GitignoreLanguage() {
+        super("Gitignore", "gitignore", Icons.GITIGNORE);
     }
 
     /** Language file type. */
     @Override
     public IgnoreFileType getFileType() {
-        return NpmignoreFileType.INSTANCE;
+        return GitignoreFileType.INSTANCE;
+    }
+
+    /** The Git specific directory. */
+    public String getGitDirectory() {
+        return ".git";
     }
 }

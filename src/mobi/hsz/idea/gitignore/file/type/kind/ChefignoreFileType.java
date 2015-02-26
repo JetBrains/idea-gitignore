@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type.npmignore;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.npmignore.NpmignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.ChefignoreLanguage;
 
 /**
- * Describes Npmignore file type.
+ * Describes Chefignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.9
  */
-public class NpmignoreFileType extends IgnoreFileType {
-    /** Contains {@link NpmignoreFileType} singleton. */
-    public static final NpmignoreFileType INSTANCE = new NpmignoreFileType();
+public class ChefignoreFileType extends IgnoreFileType {
+    /** Contains {@link ChefignoreFileType} singleton. */
+    public static final ChefignoreFileType INSTANCE = new ChefignoreFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private NpmignoreFileType() {
-        super(NpmignoreLanguage.INSTANCE);
+    private ChefignoreFileType() {
+        super(ChefignoreLanguage.INSTANCE);
     }
 }

@@ -22,31 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.dockerignore;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.dockerignore.DockerignoreFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.lang.kind.NpmignoreLanguage;
 
 /**
- * Dockerignore {@link IgnoreLanguage} definition.
+ * Describes Npmignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class DockerignoreLanguage extends IgnoreLanguage {
-    /** The {@link DockerignoreLanguage} instance. */
-    public static final DockerignoreLanguage INSTANCE = new DockerignoreLanguage();
+public class NpmignoreFileType extends IgnoreFileType {
+    /** Contains {@link NpmignoreFileType} singleton. */
+    public static final NpmignoreFileType INSTANCE = new NpmignoreFileType();
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private DockerignoreLanguage() {
-        super("Dockerignore", "dockerignore", Icons.DOCKERIGNORE);
-    }
-
-    /** Language file type. */
-    @Override
-    public IgnoreFileType getFileType() {
-        return DockerignoreFileType.INSTANCE;
+    /** Private constructor to prevent direct object creation. */
+    private NpmignoreFileType() {
+        super(NpmignoreLanguage.INSTANCE);
     }
 }

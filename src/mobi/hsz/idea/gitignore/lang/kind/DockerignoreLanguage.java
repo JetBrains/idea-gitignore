@@ -22,37 +22,31 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.gitignore;
+package mobi.hsz.idea.gitignore.lang.kind;
 
-import com.intellij.lang.Language;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.DockerignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
- * Gitignore {@link Language} definition.
+ * Dockerignore {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.1
+ * @since 0.8
  */
-public class GitignoreLanguage extends IgnoreLanguage {
-    /** The {@link GitignoreLanguage} instance. */
-    public static final GitignoreLanguage INSTANCE = new GitignoreLanguage();
+public class DockerignoreLanguage extends IgnoreLanguage {
+    /** The {@link DockerignoreLanguage} instance. */
+    public static final DockerignoreLanguage INSTANCE = new DockerignoreLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private GitignoreLanguage() {
-        super("Gitignore", "gitignore", Icons.GITIGNORE);
+    private DockerignoreLanguage() {
+        super("Dockerignore", "dockerignore", Icons.DOCKERIGNORE);
     }
 
     /** Language file type. */
     @Override
     public IgnoreFileType getFileType() {
-        return GitignoreFileType.INSTANCE;
-    }
-
-    /** The Git specific directory. */
-    public String getGitDirectory() {
-        return ".git";
+        return DockerignoreFileType.INSTANCE;
     }
 }

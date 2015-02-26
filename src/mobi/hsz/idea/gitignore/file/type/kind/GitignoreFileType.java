@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type.gitignore;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.gitignore.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitignoreLanguage;
 
 /**
  * Describes Gitignore file type.

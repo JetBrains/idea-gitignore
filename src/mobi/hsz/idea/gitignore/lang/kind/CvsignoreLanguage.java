@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,54 +22,31 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.hgignore;
+package mobi.hsz.idea.gitignore.lang.kind;
 
-import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.CvsignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
 
 /**
- * Hgignore {@link IgnoreLanguage} definition.
+ * Cvsignore {@link com.intellij.lang.Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.9
  */
-public class HgignoreLanguage extends IgnoreLanguage {
-    /** The {@link HgignoreLanguage} instance. */
-    public static final HgignoreLanguage INSTANCE = new HgignoreLanguage();
+public class CvsignoreLanguage extends IgnoreLanguage {
+    /** The {@link CvsignoreLanguage} instance. */
+    public static final CvsignoreLanguage INSTANCE = new CvsignoreLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private HgignoreLanguage() {
-        super("Hgignore", "hgignore", Icons.HGIGNORE);
+    private CvsignoreLanguage() {
+        super("Cvsignore", "cvsignore", Icons.CVSIGNORE);
     }
 
     /** Language file type. */
     @Override
     public IgnoreFileType getFileType() {
-        return HgignoreFileType.INSTANCE;
-    }
-
-    /**
-     * Returns <code>true</code> if `syntax: value` entry is supported by the language (i.e. Mercurial).
-     *
-     * @return <code>true</code> if `syntax: value` entry is supported
-     */
-    @Override
-    public boolean isSyntaxSupported() {
-        return true;
-    }
-
-    /**
-     * Returns default language syntax.
-     *
-     * @return default syntax
-     */
-    @Override
-    @NotNull
-    public IgnoreBundle.Syntax getDefaultSyntax() {
-        return IgnoreBundle.Syntax.REGEXP;
+        return CvsignoreFileType.INSTANCE;
     }
 }

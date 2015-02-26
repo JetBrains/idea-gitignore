@@ -22,23 +22,31 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type.cvsignore;
+package mobi.hsz.idea.gitignore.lang.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.cvsignore.CvsignoreLanguage;
+import mobi.hsz.idea.gitignore.file.type.kind.BzrignoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
- * Describes Cvsignore file type.
+ * Bzrignore {@link com.intellij.lang.Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.9
  */
-public class CvsignoreFileType extends IgnoreFileType {
-    /** Contains {@link CvsignoreFileType} singleton. */
-    public static final CvsignoreFileType INSTANCE = new CvsignoreFileType();
+public class BzrignoreLanguage extends IgnoreLanguage {
+    /** The {@link BzrignoreLanguage} instance. */
+    public static final BzrignoreLanguage INSTANCE = new BzrignoreLanguage();
 
-    /** Private constructor to prevent direct object creation. */
-    private CvsignoreFileType() {
-        super(CvsignoreLanguage.INSTANCE);
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
+    private BzrignoreLanguage() {
+        super("Bzrignore", "bzrignore", Icons.BZRIGNORE);
+    }
+
+    /** Language file type. */
+    @Override
+    public IgnoreFileType getFileType() {
+        return BzrignoreFileType.INSTANCE;
     }
 }

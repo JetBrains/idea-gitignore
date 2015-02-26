@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type.chefignore;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.chefignore.ChefignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.BzrignoreLanguage;
 
 /**
- * Describes Chefignore file type.
+ * Describes Bzrignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.9
  */
-public class ChefignoreFileType extends IgnoreFileType {
-    /** Contains {@link ChefignoreFileType} singleton. */
-    public static final ChefignoreFileType INSTANCE = new ChefignoreFileType();
+public class BzrignoreFileType extends IgnoreFileType {
+    /** Contains {@link BzrignoreFileType} singleton. */
+    public static final BzrignoreFileType INSTANCE = new BzrignoreFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private ChefignoreFileType() {
-        super(ChefignoreLanguage.INSTANCE);
+    private BzrignoreFileType() {
+        super(BzrignoreLanguage.INSTANCE);
     }
 }
