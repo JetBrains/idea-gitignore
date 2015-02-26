@@ -35,14 +35,14 @@ import mobi.hsz.idea.gitignore.psi.IgnoreTypes;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Class provides completion feature for {@link mobi.hsz.idea.gitignore.psi.IgnoreTypes#SYNTAX} element.
+ * Class provides completion feature for {@link IgnoreTypes#SYNTAX} element.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.10
  */
 public class SyntaxCompletionContributor extends CompletionContributor {
     private static final Iterable<LookupElementBuilder> SYNTAX_ELEMENTS = Lists.newArrayList(
-            LookupElementBuilder.create("glob"), LookupElementBuilder.create("regex")
+            LookupElementBuilder.create("glob"), LookupElementBuilder.create("regexp")
     );
 
     public SyntaxCompletionContributor() {
