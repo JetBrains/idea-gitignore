@@ -45,7 +45,7 @@ import java.util.List;
  * @since 0.5.4
  */
 public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
-    public static final HighlightSeverity UNUSED_ENTRY = new HighlightSeverity("GITIGNORE.UNUSED_ENTRY", 10);
+    public static final HighlightSeverity UNUSED_ENTRY = new HighlightSeverity("IGNORE.UNUSED_ENTRY", 10);
 
     /**
      * Defines the style of matched entry.

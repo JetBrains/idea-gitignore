@@ -2,7 +2,7 @@ subdir/foo.txt
 subdir/foo*
 subdir/dir/
 subdir/**/biz.a
-<GITIGNORE.UNUSED_ENTRY descr="'subdir/*/biz.a' entry is never used">subdir/*/biz.a</GITIGNORE.UNUSED_ENTRY>
-<GITIGNORE.UNUSED_ENTRY descr="'subdir/bar*' entry is never used">subdir/bar*</GITIGNORE.UNUSED_ENTRY>
-<GITIGNORE.UNUSED_ENTRY descr="'subdir/bar.txt' entry is never used">subdir/bar.txt</GITIGNORE.UNUSED_ENTRY>
-<GITIGNORE.UNUSED_ENTRY descr="'bar.txt' entry is never used">bar.txt</GITIGNORE.UNUSED_ENTRY>
+<IGNORE.UNUSED_ENTRY descr="'subdir/*/biz.a' entry is never used">subdir/*/biz.a</IGNORE.UNUSED_ENTRY>
+<IGNORE.UNUSED_ENTRY descr="'subdir/bar*' entry is never used">subdir/bar*</IGNORE.UNUSED_ENTRY>
+<IGNORE.UNUSED_ENTRY descr="'subdir/bar.txt' entry is never used">subdir/bar.txt</IGNORE.UNUSED_ENTRY>
+<IGNORE.UNUSED_ENTRY descr="'bar.txt' entry is never used">bar.txt</IGNORE.UNUSED_ENTRY>

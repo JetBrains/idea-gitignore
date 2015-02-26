@@ -2,6 +2,6 @@ subdir/
 subdir
 subdir/*
 emptydir/*
-<GITIGNORE.UNUSED_ENTRY descr="'foo' entry is never used">foo</GITIGNORE.UNUSED_ENTRY>
-<GITIGNORE.UNUSED_ENTRY descr="'foo/' entry is never used">foo/</GITIGNORE.UNUSED_ENTRY>
-<GITIGNORE.UNUSED_ENTRY descr="'foo/*' entry is never used">foo/*</GITIGNORE.UNUSED_ENTRY>
+<IGNORE.UNUSED_ENTRY descr="'foo' entry is never used">foo</IGNORE.UNUSED_ENTRY>
+<IGNORE.UNUSED_ENTRY descr="'foo/' entry is never used">foo/</IGNORE.UNUSED_ENTRY>
+<IGNORE.UNUSED_ENTRY descr="'foo/*' entry is never used">foo/*</IGNORE.UNUSED_ENTRY>

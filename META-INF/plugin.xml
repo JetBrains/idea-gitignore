@@ -276,7 +276,7 @@
             groupKey="codeInspection.group"
             implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
             key="codeInspection.unusedEntry"
-            level="GITIGNORE.UNUSED_ENTRY"/>
+            level="IGNORE.UNUSED_ENTRY"/>
         <localInspection
             bundle="messages.IgnoreBundle"
             enabledByDefault="true"
@@ -314,7 +314,6 @@
         <lang.parserDefinition language="Git"       implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Npm"       implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-
 
 
         <!-- Common -->
@@ -472,7 +471,6 @@
 
         <!-- END Npm -->
 
-
     </extensions>
 
     <application-components>
@@ -487,14 +485,14 @@
         <action id="Ignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileGroupAction">
             <add-to-group group-id="NewGroup" anchor="last"/>
         </action>
-        <group id="Gitignore.IgnoreGroup" class="mobi.hsz.idea.gitignore.actions.IgnoreFileGroupAction">
+        <group id="Ignore.IgnoreGroup" class="mobi.hsz.idea.gitignore.actions.IgnoreFileGroupAction">
             <add-to-group group-id="EditorPopupMenu"/>
             <add-to-group group-id="ProjectViewPopupMenu"/>
             <add-to-group group-id="EditorTabPopupMenu"/>
             <add-to-group group-id="ConsoleEditorPopupMenu"/>
         </group>
         <group>
-            <action id="Gitignore.AddTemplate" class="mobi.hsz.idea.gitignore.actions.AddTemplateAction"/>
+            <action id="Ignore.AddTemplate" class="mobi.hsz.idea.gitignore.actions.AddTemplateAction"/>
             <add-to-group group-id="EditorPopupMenu"/>
             <add-to-group group-id="ProjectViewPopupMenu"/>
             <add-to-group group-id="EditorTabPopupMenu"/>
