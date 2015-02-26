@@ -26,13 +26,7 @@ package mobi.hsz.idea.gitignore;
 
 import com.intellij.CommonBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.BzrignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.ChefignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.CvsignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.DockerignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.GitignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.HgignoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.NpmignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.*;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.PropertyKey;
@@ -61,6 +55,7 @@ public class IgnoreBundle {
 
     /** Available {@link IgnoreFileType} instances. */
     public static final List<IgnoreFileType> FILE_TYPES = Arrays.asList(
+            BoringignoreFileType.INSTANCE,
             BzrignoreFileType.INSTANCE,
             ChefignoreFileType.INSTANCE,
             CvsignoreFileType.INSTANCE,

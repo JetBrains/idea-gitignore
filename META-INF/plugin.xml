@@ -306,6 +306,7 @@
             implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
 
         <lang.parserDefinition language="Ignore"        implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Boringignore"  implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Bzrignore"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Chefignore"    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Cvsignore"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
@@ -326,6 +327,24 @@
             key="Ignore"/>
 
         <!-- END Common -->
+
+
+        <!-- Boringignore -->
+
+        <codeInsight.lineMarkerProvider
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"
+            language="Boringignore"/>
+        <lang.braceMatcher
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"
+            language="Boringignore"/>
+        <lang.commenter
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
+            language="Boringignore"/>
+        <lang.syntaxHighlighterFactory
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
+            key="Boringignore"/>
+
+        <!-- END Boringignore -->
 
 
         <!-- Bzrignore -->
