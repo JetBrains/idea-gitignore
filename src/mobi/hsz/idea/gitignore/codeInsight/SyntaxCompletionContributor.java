@@ -41,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.10
  */
 public class SyntaxCompletionContributor extends CompletionContributor {
-    private static final Iterable<LookupElementBuilder> SYNTAX_ELEMENTS = Lists.newArrayList(
+    public static final Iterable<LookupElementBuilder> SYNTAX_ELEMENTS = Lists.newArrayList(
             LookupElementBuilder.create("glob"), LookupElementBuilder.create("regexp")
     );
 
@@ -58,5 +58,13 @@ public class SyntaxCompletionContributor extends CompletionContributor {
                     }
                 }
         );
+    }
+
+    /**
+     * Allow autoPopup to appear after custom symbol
+     */
+    @Override
+    public boolean invokeAutoPopup(@NotNull PsiElement position, char typeChar) {
+        return true;
     }
 }
