@@ -41,6 +41,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.Splitter;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.AddEditDeleteListPanel;
+import com.intellij.ui.ColorPanel;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -76,6 +77,8 @@ public class IgnoreSettingsPanel implements Disposable {
     /** Splitter element. */
     private Splitter templatesSplitter;
 
+    private JPanel ignoredColor;
+
     /** Editor panel element. */
     private EditorPanel editorPanel;
 
@@ -94,6 +97,9 @@ public class IgnoreSettingsPanel implements Disposable {
         };
         templatesSplitter.setFirstComponent(templatesListPanel);
         templatesSplitter.setSecondComponent(editorPanel);
+
+        /** Store data like in {@link org.intellij.plugins.xpathView.ui.ConfigUI} */
+        ignoredColor = new ColorPanel();
     }
 
     /**
