@@ -141,13 +141,8 @@ public class IgnoreManager {
                 addFile(event);
             }
 
-            /**
-             * Fired when a virtual file is deleted.
-             *
-             * @param event the event object containing information about the change.
-             */
             @Override
-            public void fileDeleted(@NotNull VirtualFileEvent event) {
+            public void beforeFileDeletion(@NotNull VirtualFileEvent event) {
                 removeFile(event);
             }
 
@@ -202,6 +197,9 @@ public class IgnoreManager {
      */
     @Nullable
     private IgnoreFile getIgnoreFile(@NotNull VirtualFile file) {
+        if (!file.exists()) {
+            return null;
+        }
         return (IgnoreFile) psiManager.findFile(file);
     }
 
