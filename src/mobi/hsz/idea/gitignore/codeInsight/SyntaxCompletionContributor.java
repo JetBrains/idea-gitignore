@@ -52,16 +52,7 @@ public class SyntaxCompletionContributor extends CompletionContributor {
                     @Override
                     protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result) {
                         PsiElement current = parameters.getOriginalPosition();
-                        if (current == null) {
-                            return;
-                        }
-
-                        PsiElement previous = current.getPrevSibling();
-                        if (previous == null) {
-                            return;
-                        }
-
-                        if (current.getParent() instanceof IgnoreSyntax && previous.getNode().getElementType().equals(IgnoreTypes.SYNTAX_KEY)) {
+                        if (current != null && current.getParent() instanceof IgnoreSyntax && current.getPrevSibling() != null) {
                             result.addAllElements(SYNTAX_ELEMENTS);
                         }
                     }
