@@ -291,6 +291,13 @@
             implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreSyntaxEntryInspection"
             key="codeInspection.syntaxEntry"
             level="ERROR"/>
+        <localInspection
+            bundle="messages.IgnoreBundle"
+            enabledByDefault="true"
+            groupKey="codeInspection.group"
+            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreIncorrectEntryInspection"
+            key="codeInspection.incorrectEntry"
+            level="ERROR"/>
 
         <severitiesProvider
             implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
