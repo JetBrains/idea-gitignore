@@ -69,6 +69,11 @@ public class IgnoreBundle {
             NpmignoreFileType.INSTANCE
     );
 
+    /** Available syntax list. */
+    public static enum Syntax {
+        GLOB, REGEXP
+    }
+
     /**
      * Loads a {@link String} from the {@link #BUNDLE} {@link ResourceBundle}.
      *

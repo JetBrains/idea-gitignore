@@ -81,9 +81,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
         file.acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
-                String value = entry.getText();
-
-                Set<String> matched = ContainerUtil.newHashSet(Glob.findAsPaths(contextDirectory, value, true));
+                Set<String> matched = ContainerUtil.newHashSet(Glob.findAsPaths(contextDirectory, entry, true));
 
                 for (IgnoreEntry recent : map.keySet()) {
                     Set<String> recentValues = map.get(recent);

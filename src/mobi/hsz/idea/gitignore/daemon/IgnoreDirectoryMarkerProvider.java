@@ -58,12 +58,8 @@ public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
         boolean isDirectory = element instanceof IgnoreEntryDirectory;
         if (!isDirectory && element instanceof IgnoreEntryFile) {
             IgnoreEntryFile entry = (IgnoreEntryFile) element;
-            String path = entry.getText();
-            if (entry.getNegation() != null) {
-                path = path.substring(1);
-            }
             VirtualFile parent = element.getContainingFile().getVirtualFile().getParent();
-            List<VirtualFile> files = Glob.find(parent, path);
+            List<VirtualFile> files = Glob.find(parent, entry);
             for (VirtualFile file : files) {
                 if (!file.isDirectory()) {
                     return null;

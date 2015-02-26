@@ -24,10 +24,12 @@
 
 package mobi.hsz.idea.gitignore.lang.hgignore;
 
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Hgignore {@link IgnoreLanguage} definition.
@@ -58,5 +60,16 @@ public class HgignoreLanguage extends IgnoreLanguage {
     @Override
     public boolean isSyntaxSupported() {
         return true;
+    }
+
+    /**
+     * Returns default language syntax.
+     *
+     * @return default syntax
+     */
+    @Override
+    @NotNull
+    public IgnoreBundle.Syntax getDefaultSyntax() {
+        return IgnoreBundle.Syntax.REGEXP;
     }
 }

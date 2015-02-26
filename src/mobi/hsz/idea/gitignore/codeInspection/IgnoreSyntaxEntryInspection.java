@@ -24,12 +24,10 @@
 
 package mobi.hsz.idea.gitignore.codeInspection;
 
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.codeInsight.SyntaxCompletionContributor;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreSyntax;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
@@ -61,8 +59,8 @@ public class IgnoreSyntaxEntryInspection extends LocalInspectionTool {
                 }
 
                 String value = syntax.getValue().getText();
-                for (LookupElementBuilder element : SyntaxCompletionContributor.SYNTAX_ELEMENTS) {
-                    if (element.getLookupString().equals(value)) {
+                for (IgnoreBundle.Syntax s : IgnoreBundle.Syntax.values()) {
+                    if (s.toString().toLowerCase().equals(value)) {
                         return;
                     }
                 }

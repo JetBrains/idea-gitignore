@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.lang;
 
 import com.intellij.lang.Language;
 import com.intellij.psi.FileViewProvider;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.NonNls;
@@ -111,5 +112,15 @@ public class IgnoreLanguage extends Language {
      */
     public boolean isSyntaxSupported() {
         return false;
+    }
+
+    /**
+     * Returns default language syntax.
+     *
+     * @return default syntax
+     */
+    @NotNull
+    public IgnoreBundle.Syntax getDefaultSyntax() {
+        return IgnoreBundle.Syntax.GLOB;
     }
 }

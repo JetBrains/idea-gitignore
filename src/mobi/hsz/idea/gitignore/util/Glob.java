@@ -28,6 +28,7 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,23 +58,23 @@ public class Glob {
      * Finds for {@link VirtualFile} list using glob rule in given root directory.
      *
      * @param root root directory
-     * @param glob glob rule
+     * @param entry ignore entry
      * @return search result
      */
-    public static List<VirtualFile> find(VirtualFile root, String glob) {
-        return find(root, glob, false);
+    public static List<VirtualFile> find(VirtualFile root, IgnoreEntry entry) {
+        return find(root, entry, false);
     }
 
     /**
      * Finds for {@link VirtualFile} list using glob rule in given root directory.
      *
      * @param root          root directory
-     * @param glob          glob rule
+     * @param entry         ignore entry
      * @param includeNested attach children to the search result
      * @return search result
      */
-    public static List<VirtualFile> find(final VirtualFile root, String glob, final boolean includeNested) {
-        Pattern pattern = createPattern(glob);
+    public static List<VirtualFile> find(final VirtualFile root, IgnoreEntry entry, final boolean includeNested) {
+        Pattern pattern = createPattern(entry);
         if (pattern == null) {
             return Collections.emptyList();
         }
@@ -109,25 +110,25 @@ public class Glob {
     /**
      * Finds for {@link VirtualFile} paths list using glob rule in given root directory.
      *
-     * @param root root directory
-     * @param glob glob rule
+     * @param root  root directory
+     * @param entry ignore entry
      * @return search result
      */
-    public static List<String> findAsPaths(VirtualFile root, String glob) {
-        return findAsPaths(root, glob, false);
+    public static List<String> findAsPaths(VirtualFile root, IgnoreEntry entry) {
+        return findAsPaths(root, entry, false);
     }
 
     /**
      * Finds for {@link VirtualFile} paths list using glob rule in given root directory.
      *
      * @param root          root directory
-     * @param glob          glob rule
+     * @param entry         ignore entry
      * @param includeNested attach children to the search result
      * @return search result
      */
-    public static List<String> findAsPaths(VirtualFile root, String glob, boolean includeNested) {
+    public static List<String> findAsPaths(VirtualFile root, IgnoreEntry entry, boolean includeNested) {
         List<String> list = new ArrayList<String>();
-        List<VirtualFile> files = find(root, glob, includeNested);
+        List<VirtualFile> files = find(root, entry, includeNested);
         for (VirtualFile file : files) {
             list.add(Utils.getRelativePath(root, file));
         }
@@ -137,13 +138,15 @@ public class Glob {
     /**
      * Creates regex {@link Pattern} using glob rule.
      *
-     * @param glob rule
+     * @param rule rule value
+     * @param syntax rule syntax
      * @return regex {@link Pattern}
      */
     @Nullable
-    public static Pattern createPattern(@NotNull String glob) {
+    public static Pattern createPattern(@NotNull String rule, @NotNull IgnoreBundle.Syntax syntax) {
+        final String regex = syntax.equals(IgnoreBundle.Syntax.GLOB) ? createRegex(rule) : rule;
         try {
-            return Pattern.compile(createRegex(glob));
+            return Pattern.compile(regex);
         } catch (PatternSyntaxException e) {
             return null;
         }
@@ -157,7 +160,7 @@ public class Glob {
      */
     @Nullable
     public static Pattern createPattern(@NotNull IgnoreEntry entry) {
-        return createPattern(entry.getText());
+        return createPattern(entry.getText(), entry.getSyntax());
     }
 
     /**

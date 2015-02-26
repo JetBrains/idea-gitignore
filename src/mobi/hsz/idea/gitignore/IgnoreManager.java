@@ -244,8 +244,12 @@ public class IgnoreManager {
             file.acceptChildren(new IgnoreVisitor() {
                 @Override
                 public void visitEntry(@NotNull IgnoreEntry entry) {
+                    Pattern pattern = Glob.createPattern(entry);
+                    if (pattern == null) {
+                        return;
+                    }
                     set.add(entry.getText().trim().hashCode());
-                    patterns.add(Glob.createPattern(entry));
+                    patterns.add(pattern);
                 }
             });
 

@@ -25,9 +25,11 @@
 package mobi.hsz.idea.gitignore.psi.impl;
 
 import com.intellij.lang.ASTNode;
-import mobi.hsz.idea.gitignore.psi.IgnoreElementImpl;
-import mobi.hsz.idea.gitignore.psi.IgnoreEntryFile;
-import mobi.hsz.idea.gitignore.psi.IgnoreNegation;
+import com.intellij.psi.PsiElement;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.psi.*;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl {
     public IgnoreEntryExtImpl(ASTNode node) {
@@ -44,5 +46,22 @@ public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl {
 
     public boolean isFile() {
         return !isDirectory();
+    }
+
+    /**
+     * Returns element syntax.
+     *
+     * @return syntax
+     */
+    @NotNull
+    public IgnoreBundle.Syntax getSyntax() {
+        PsiElement previous = getPrevSibling();
+        while (previous != null) {
+            if (previous.getNode().getElementType().equals(IgnoreTypes.SYNTAX)) {
+                return IgnoreBundle.Syntax.valueOf(((IgnoreSyntaxImpl) previous).getValue().getText().toUpperCase());
+            }
+            previous = previous.getPrevSibling();
+        }
+        return ((IgnoreLanguage) getContainingFile().getLanguage()).getDefaultSyntax();
     }
 }

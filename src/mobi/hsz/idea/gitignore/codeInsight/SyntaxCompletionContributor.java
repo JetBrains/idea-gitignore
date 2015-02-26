@@ -30,9 +30,12 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreSyntax;
 import mobi.hsz.idea.gitignore.psi.IgnoreTypes;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * Class provides completion feature for {@link IgnoreTypes#SYNTAX} element.
@@ -41,10 +44,14 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.10
  */
 public class SyntaxCompletionContributor extends CompletionContributor {
-    public static final Iterable<LookupElementBuilder> SYNTAX_ELEMENTS = Lists.newArrayList(
-            LookupElementBuilder.create("glob"), LookupElementBuilder.create("regexp")
-    );
+    public static final List<LookupElementBuilder> SYNTAX_ELEMENTS = Lists.newArrayList();
+    static {
+        for (IgnoreBundle.Syntax syntax : IgnoreBundle.Syntax.values()) {
+            SYNTAX_ELEMENTS.add(LookupElementBuilder.create(syntax.toString().toLowerCase()));
+        }
+    }
 
+    /** Constructor. */
     public SyntaxCompletionContributor() {
         extend(CompletionType.BASIC,
                 StandardPatterns.instanceOf(PsiElement.class),

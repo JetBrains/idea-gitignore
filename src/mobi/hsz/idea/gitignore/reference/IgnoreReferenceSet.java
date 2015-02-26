@@ -183,7 +183,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
             super.innerResolveInContext(text, context, result, caseSensitive);
             VirtualFile contextVirtualFile = context.getVirtualFile();
             if (contextVirtualFile != null) {
-                final Pattern pattern = Glob.createPattern(getCanonicalText());
+                IgnoreEntry entry = (IgnoreEntry) getFileReferenceSet().getElement();
+                final Pattern pattern = Glob.createPattern(getCanonicalText(), entry.getSyntax());
                 if (pattern != null) {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
                     final VirtualFile root = (parent != null) ? parent.getVirtualFile() : null;
