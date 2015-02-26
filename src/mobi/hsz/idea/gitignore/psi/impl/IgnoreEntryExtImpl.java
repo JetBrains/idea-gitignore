@@ -58,7 +58,10 @@ public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl {
         PsiElement previous = getPrevSibling();
         while (previous != null) {
             if (previous.getNode().getElementType().equals(IgnoreTypes.SYNTAX)) {
-                return IgnoreBundle.Syntax.valueOf(((IgnoreSyntaxImpl) previous).getValue().getText().toUpperCase());
+                IgnoreBundle.Syntax syntax = IgnoreBundle.Syntax.find(((IgnoreSyntaxImpl) previous).getValue().getText());
+                if (syntax != null) {
+                    return syntax;
+                }
             }
             previous = previous.getPrevSibling();
         }

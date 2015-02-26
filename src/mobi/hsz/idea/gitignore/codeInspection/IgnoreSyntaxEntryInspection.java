@@ -60,7 +60,7 @@ public class IgnoreSyntaxEntryInspection extends LocalInspectionTool {
 
                 String value = syntax.getValue().getText();
                 for (IgnoreBundle.Syntax s : IgnoreBundle.Syntax.values()) {
-                    if (s.toString().toLowerCase().equals(value)) {
+                    if (s.toString().equals(value)) {
                         return;
                     }
                 }

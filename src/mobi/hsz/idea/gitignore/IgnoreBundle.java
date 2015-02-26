@@ -34,6 +34,7 @@ import mobi.hsz.idea.gitignore.file.type.gitignore.GitignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.hgignore.HgignoreFileType;
 import mobi.hsz.idea.gitignore.file.type.npmignore.NpmignoreFileType;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.PropertyKey;
 
 import java.util.Arrays;
@@ -71,7 +72,24 @@ public class IgnoreBundle {
 
     /** Available syntax list. */
     public static enum Syntax {
-        GLOB, REGEXP
+        GLOB, REGEXP;
+
+        @Nullable
+        public static Syntax find(@Nullable String name) {
+            if (name == null) {
+                return null;
+            }
+            try {
+                return Syntax.valueOf(name.toUpperCase());
+            } catch (IllegalArgumentException iae) {
+                return null;
+            }
+        }
+
+        @Override
+        public String toString() {
+            return super.toString().toLowerCase();
+        }
     }
 
     /**
