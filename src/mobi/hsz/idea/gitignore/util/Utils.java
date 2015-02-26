@@ -45,7 +45,7 @@ import com.intellij.psi.PsiManager;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -180,13 +180,13 @@ public class Utils {
     }
 
     /**
-     * Checks if given path is a {@link GitignoreLanguage#getGitDirectory()}.
+     * Checks if given path is a {@link mobi.hsz.idea.gitignore.lang.kind.GitLanguage#getGitDirectory()}.
      *
      * @param path to check
      * @return given path is <code>.git</code> directory
      */
     public static boolean isGitDirectory(String path) {
-        final String directory = GitignoreLanguage.INSTANCE.getGitDirectory();
+        final String directory = GitLanguage.INSTANCE.getGitDirectory();
         return path.equals(directory) || path.startsWith(directory + VfsUtil.VFS_PATH_SEPARATOR);
     }
 

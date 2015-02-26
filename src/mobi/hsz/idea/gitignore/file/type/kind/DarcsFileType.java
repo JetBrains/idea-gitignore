@@ -25,20 +25,20 @@
 package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.ChefignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.DarcsLanguage;
 
 /**
- * Describes Chefignore file type.
+ * Describes Boringignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.9
+ * @since 0.10
  */
-public class ChefignoreFileType extends IgnoreFileType {
-    /** Contains {@link ChefignoreFileType} singleton. */
-    public static final ChefignoreFileType INSTANCE = new ChefignoreFileType();
+public class DarcsFileType extends IgnoreFileType {
+    /** Contains {@link DarcsFileType} singleton. */
+    public static final DarcsFileType INSTANCE = new DarcsFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private ChefignoreFileType() {
-        super(ChefignoreLanguage.INSTANCE);
+    private DarcsFileType() {
+        super(DarcsLanguage.INSTANCE);
     }
 }

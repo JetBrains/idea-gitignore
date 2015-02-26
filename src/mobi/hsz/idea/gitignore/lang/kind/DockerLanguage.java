@@ -24,52 +24,29 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
-import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.HgignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.DockerFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
 
 /**
- * Hgignore {@link IgnoreLanguage} definition.
+ * Docker {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class HgignoreLanguage extends IgnoreLanguage {
-    /** The {@link HgignoreLanguage} instance. */
-    public static final HgignoreLanguage INSTANCE = new HgignoreLanguage();
+public class DockerLanguage extends IgnoreLanguage {
+    /** The {@link DockerLanguage} instance. */
+    public static final DockerLanguage INSTANCE = new DockerLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private HgignoreLanguage() {
-        super("Hgignore", "hgignore", Icons.HGIGNORE);
+    private DockerLanguage() {
+        super("Docker", "dockerignore", Icons.DOCKER);
     }
 
     /** Language file type. */
     @Override
     public IgnoreFileType getFileType() {
-        return HgignoreFileType.INSTANCE;
-    }
-
-    /**
-     * Returns <code>true</code> if `syntax: value` entry is supported by the language (i.e. Mercurial).
-     *
-     * @return <code>true</code> if `syntax: value` entry is supported
-     */
-    @Override
-    public boolean isSyntaxSupported() {
-        return true;
-    }
-
-    /**
-     * Returns default language syntax.
-     *
-     * @return default syntax
-     */
-    @Override
-    @NotNull
-    public IgnoreBundle.Syntax getDefaultSyntax() {
-        return IgnoreBundle.Syntax.REGEXP;
+        return DockerFileType.INSTANCE;
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,20 @@
 package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.CvsLanguage;
 
 /**
- * Describes Gitignore file type.
+ * Describes Cvs file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.1
+ * @since 0.9
  */
-public class GitignoreFileType extends IgnoreFileType {
-    /** Contains {@link GitignoreFileType} singleton. */
-    public static final GitignoreFileType INSTANCE = new GitignoreFileType();
+public class CvsFileType extends IgnoreFileType {
+    /** Contains {@link CvsFileType} singleton. */
+    public static final CvsFileType INSTANCE = new CvsFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private GitignoreFileType() {
-        super(GitignoreLanguage.INSTANCE);
+    private CvsFileType() {
+        super(CvsLanguage.INSTANCE);
     }
 }

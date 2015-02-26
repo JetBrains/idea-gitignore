@@ -25,11 +25,11 @@
 package mobi.hsz.idea.gitignore.inspections;
 
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.lang.kind.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection;
 
 public class RelativeEntryInspectionTest extends InspectionTestCase {
-    private static final String FILENAME = GitignoreLanguage.INSTANCE.getFilename();
+    private static final String FILENAME = GitLanguage.INSTANCE.getFilename();
 
     @Override
     public void setUp() throws Exception {

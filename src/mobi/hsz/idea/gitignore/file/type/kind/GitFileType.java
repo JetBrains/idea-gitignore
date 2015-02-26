@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,20 @@
 package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.BzrignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 
 /**
- * Describes Bzrignore file type.
+ * Describes Git file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.9
+ * @since 0.1
  */
-public class BzrignoreFileType extends IgnoreFileType {
-    /** Contains {@link BzrignoreFileType} singleton. */
-    public static final BzrignoreFileType INSTANCE = new BzrignoreFileType();
+public class GitFileType extends IgnoreFileType {
+    /** Contains {@link GitFileType} singleton. */
+    public static final GitFileType INSTANCE = new GitFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private BzrignoreFileType() {
-        super(BzrignoreLanguage.INSTANCE);
+    private GitFileType() {
+        super(GitLanguage.INSTANCE);
     }
 }

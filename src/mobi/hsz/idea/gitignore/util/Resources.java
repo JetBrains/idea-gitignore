@@ -24,7 +24,7 @@
 
 package mobi.hsz.idea.gitignore.util;
 
-import mobi.hsz.idea.gitignore.lang.kind.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -157,7 +157,7 @@ public class Resources {
          */
         public Template(File file, String content) {
             this.file = file;
-            this.name = file.getName().replace(GitignoreLanguage.INSTANCE.getFilename(), "");
+            this.name = file.getName().replace(GitLanguage.INSTANCE.getFilename(), "");
             this.content = content;
             this.container = file.getParent().endsWith("Global") ? Container.GLOBAL : Container.ROOT;
         }

@@ -24,35 +24,52 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
-import com.intellij.lang.Language;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.MercurialFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Gitignore {@link Language} definition.
+ * Mercurial {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.1
+ * @since 0.8
  */
-public class GitignoreLanguage extends IgnoreLanguage {
-    /** The {@link GitignoreLanguage} instance. */
-    public static final GitignoreLanguage INSTANCE = new GitignoreLanguage();
+public class MercurialLanguage extends IgnoreLanguage {
+    /** The {@link MercurialLanguage} instance. */
+    public static final MercurialLanguage INSTANCE = new MercurialLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private GitignoreLanguage() {
-        super("Gitignore", "gitignore", Icons.GITIGNORE);
+    private MercurialLanguage() {
+        super("Mercurial", "hgignore", Icons.MERCURIAL);
     }
 
     /** Language file type. */
     @Override
     public IgnoreFileType getFileType() {
-        return GitignoreFileType.INSTANCE;
+        return MercurialFileType.INSTANCE;
     }
 
-    /** The Git specific directory. */
-    public String getGitDirectory() {
-        return ".git";
+    /**
+     * Returns <code>true</code> if `syntax: value` entry is supported by the language (i.e. Mercurial).
+     *
+     * @return <code>true</code> if `syntax: value` entry is supported
+     */
+    @Override
+    public boolean isSyntaxSupported() {
+        return true;
+    }
+
+    /**
+     * Returns default language syntax.
+     *
+     * @return default syntax
+     */
+    @Override
+    @NotNull
+    public IgnoreBundle.Syntax getDefaultSyntax() {
+        return IgnoreBundle.Syntax.REGEXP;
     }
 }

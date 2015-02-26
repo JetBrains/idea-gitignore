@@ -22,31 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.kind;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.CvsignoreFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.lang.kind.ChefLanguage;
 
 /**
- * Cvsignore {@link com.intellij.lang.Language} definition.
+ * Describes Chef file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.9
  */
-public class CvsignoreLanguage extends IgnoreLanguage {
-    /** The {@link CvsignoreLanguage} instance. */
-    public static final CvsignoreLanguage INSTANCE = new CvsignoreLanguage();
+public class ChefFileType extends IgnoreFileType {
+    /** Contains {@link ChefFileType} singleton. */
+    public static final ChefFileType INSTANCE = new ChefFileType();
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private CvsignoreLanguage() {
-        super("Cvsignore", "cvsignore", Icons.CVSIGNORE);
-    }
-
-    /** Language file type. */
-    @Override
-    public IgnoreFileType getFileType() {
-        return CvsignoreFileType.INSTANCE;
+    /** Private constructor to prevent direct object creation. */
+    private ChefFileType() {
+        super(ChefLanguage.INSTANCE);
     }
 }

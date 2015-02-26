@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,44 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.kind;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
-import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.BoringignoreFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
+import mobi.hsz.idea.gitignore.lang.kind.MercurialLanguage;
 
 /**
- * Boringignore {@link com.intellij.lang.Language} definition.
+ * Describes Mercurial file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 0.8
  */
-public class BoringignoreLanguage extends IgnoreLanguage {
-    /** The {@link BoringignoreLanguage} instance. */
-    public static final BoringignoreLanguage INSTANCE = new BoringignoreLanguage();
+public class MercurialFileType extends IgnoreFileType {
+    /** Contains {@link MercurialFileType} singleton. */
+    public static final MercurialFileType INSTANCE = new MercurialFileType();
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private BoringignoreLanguage() {
-        super("Boringignore", "boringignore", Icons.BORINGIGNORE);
-    }
-
-    /** Language file type. */
-    @Override
-    public IgnoreFileType getFileType() {
-        return BoringignoreFileType.INSTANCE;
-    }
-
-    /**
-     * Returns default language syntax.
-     *
-     * @return default syntax
-     */
-    @NotNull
-    @Override
-    public IgnoreBundle.Syntax getDefaultSyntax() {
-        return IgnoreBundle.Syntax.REGEXP;
+    /** Private constructor to prevent direct object creation. */
+    private MercurialFileType() {
+        super(MercurialLanguage.INSTANCE);
     }
 }

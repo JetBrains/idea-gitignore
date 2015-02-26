@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,31 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type.kind;
+package mobi.hsz.idea.gitignore.lang.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.DockerignoreLanguage;
+import mobi.hsz.idea.gitignore.file.type.kind.ChefFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
- * Describes Dockerignore file type.
+ * Chef {@link com.intellij.lang.Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.9
  */
-public class DockerignoreFileType extends IgnoreFileType {
-    /** Contains {@link DockerignoreFileType} singleton. */
-    public static final DockerignoreFileType INSTANCE = new DockerignoreFileType();
+public class ChefLanguage extends IgnoreLanguage {
+    /** The {@link ChefLanguage} instance. */
+    public static final ChefLanguage INSTANCE = new ChefLanguage();
 
-    /** Private constructor to prevent direct object creation. */
-    private DockerignoreFileType() {
-        super(DockerignoreLanguage.INSTANCE);
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
+    private ChefLanguage() {
+        super("Chef", "chefignore", Icons.CHEF);
+    }
+
+    /** Language file type. */
+    @Override
+    public IgnoreFileType getFileType() {
+        return ChefFileType.INSTANCE;
     }
 }

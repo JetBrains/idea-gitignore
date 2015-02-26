@@ -2,13 +2,13 @@ package mobi.hsz.idea.gitignore.inspections;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
-import mobi.hsz.idea.gitignore.lang.kind.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 abstract public class InspectionTestCase extends LightPlatformCodeInsightFixtureTestCase {
-    private static final String FILENAME = GitignoreLanguage.INSTANCE.getFilename();
+    private static final String FILENAME = GitLanguage.INSTANCE.getFilename();
 
     @Override
     protected String getTestDataPath() {

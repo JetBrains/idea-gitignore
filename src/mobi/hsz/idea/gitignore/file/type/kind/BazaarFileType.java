@@ -22,31 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.kind;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.ChefignoreFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.lang.kind.BazaarLanguage;
 
 /**
- * Chefignore {@link com.intellij.lang.Language} definition.
+ * Describes Bazaar file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.9
  */
-public class ChefignoreLanguage extends IgnoreLanguage {
-    /** The {@link ChefignoreLanguage} instance. */
-    public static final ChefignoreLanguage INSTANCE = new ChefignoreLanguage();
+public class BazaarFileType extends IgnoreFileType {
+    /** Contains {@link BazaarFileType} singleton. */
+    public static final BazaarFileType INSTANCE = new BazaarFileType();
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private ChefignoreLanguage() {
-        super("Chefignore", "chefignore", Icons.CHEFIGNORE);
-    }
-
-    /** Language file type. */
-    @Override
-    public IgnoreFileType getFileType() {
-        return ChefignoreFileType.INSTANCE;
+    /** Private constructor to prevent direct object creation. */
+    private BazaarFileType() {
+        super(BazaarLanguage.INSTANCE);
     }
 }

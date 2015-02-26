@@ -36,9 +36,9 @@ import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
-import mobi.hsz.idea.gitignore.file.type.kind.GitignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.GitignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.util.Properties;
@@ -48,7 +48,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 /**
- * Editor notification provider that checks if there is {@link GitignoreLanguage#getFilename()} in root directory
+ * Editor notification provider that checks if there is {@link mobi.hsz.idea.gitignore.lang.kind.GitLanguage#getFilename()} in root directory
  * and suggest to create one.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
@@ -108,12 +108,12 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
             return null;
         }
         // Break if there is no Git directory in the project
-        VirtualFile gitDirectory = project.getBaseDir().findChild(GitignoreLanguage.INSTANCE.getGitDirectory());
+        VirtualFile gitDirectory = project.getBaseDir().findChild(GitLanguage.INSTANCE.getGitDirectory());
         if (gitDirectory == null || !gitDirectory.isDirectory()) {
             return null;
         }
         // Break if there is Gitignore file already
-        VirtualFile gitignoreFile = project.getBaseDir().findChild(GitignoreLanguage.INSTANCE.getFilename());
+        VirtualFile gitignoreFile = project.getBaseDir().findChild(GitLanguage.INSTANCE.getFilename());
         if (gitignoreFile != null) {
             return null;
         }
@@ -129,7 +129,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
      */
     private EditorNotificationPanel createPanel(@NotNull final Project project) {
         final EditorNotificationPanel panel = new EditorNotificationPanel();
-        final IgnoreFileType fileType = GitignoreFileType.INSTANCE;
+        final IgnoreFileType fileType = GitFileType.INSTANCE;
         panel.setText(IgnoreBundle.message("daemon.missingGitignore"));
         panel.createActionLabel(IgnoreBundle.message("daemon.missingGitignore.create"), new Runnable() {
             @Override

@@ -24,29 +24,42 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.BzrignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.DarcsFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Bzrignore {@link com.intellij.lang.Language} definition.
+ * Darcs {@link com.intellij.lang.Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.9
+ * @since 0.10
  */
-public class BzrignoreLanguage extends IgnoreLanguage {
-    /** The {@link BzrignoreLanguage} instance. */
-    public static final BzrignoreLanguage INSTANCE = new BzrignoreLanguage();
+public class DarcsLanguage extends IgnoreLanguage {
+    /** The {@link DarcsLanguage} instance. */
+    public static final DarcsLanguage INSTANCE = new DarcsLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private BzrignoreLanguage() {
-        super("Bzrignore", "bzrignore", Icons.BZRIGNORE);
+    private DarcsLanguage() {
+        super("Darcs", "boringignore", Icons.DARCS);
     }
 
     /** Language file type. */
     @Override
     public IgnoreFileType getFileType() {
-        return BzrignoreFileType.INSTANCE;
+        return DarcsFileType.INSTANCE;
+    }
+
+    /**
+     * Returns default language syntax.
+     *
+     * @return default syntax
+     */
+    @NotNull
+    @Override
+    public IgnoreBundle.Syntax getDefaultSyntax() {
+        return IgnoreBundle.Syntax.REGEXP;
     }
 }

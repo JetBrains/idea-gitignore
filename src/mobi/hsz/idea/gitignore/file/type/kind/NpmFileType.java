@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,20 @@
 package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.BoringignoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.NpmLanguage;
 
 /**
- * Describes Boringignore file type.
+ * Describes Npm file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 0.8
  */
-public class BoringignoreFileType extends IgnoreFileType {
-    /** Contains {@link BoringignoreFileType} singleton. */
-    public static final BoringignoreFileType INSTANCE = new BoringignoreFileType();
+public class NpmFileType extends IgnoreFileType {
+    /** Contains {@link NpmFileType} singleton. */
+    public static final NpmFileType INSTANCE = new NpmFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private BoringignoreFileType() {
-        super(BoringignoreLanguage.INSTANCE);
+    private NpmFileType() {
+        super(NpmLanguage.INSTANCE);
     }
 }

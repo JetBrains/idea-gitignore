@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,30 +24,29 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
-import com.intellij.lang.Language;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.NpmignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.BazaarFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
- * Npmignore {@link Language} definition.
+ * Bazaar {@link com.intellij.lang.Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.9
  */
-public class NpmignoreLanguage extends IgnoreLanguage {
-    /** The {@link NpmignoreLanguage} instance. */
-    public static final NpmignoreLanguage INSTANCE = new NpmignoreLanguage();
+public class BazaarLanguage extends IgnoreLanguage {
+    /** The {@link BazaarLanguage} instance. */
+    public static final BazaarLanguage INSTANCE = new BazaarLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private NpmignoreLanguage() {
-        super("Npmignore", "npmignore", Icons.NPMIGNORE);
+    private BazaarLanguage() {
+        super("Bazaar", "bzrignore", Icons.BAZAAR);
     }
 
     /** Language file type. */
     @Override
     public IgnoreFileType getFileType() {
-        return NpmignoreFileType.INSTANCE;
+        return BazaarFileType.INSTANCE;
     }
 }

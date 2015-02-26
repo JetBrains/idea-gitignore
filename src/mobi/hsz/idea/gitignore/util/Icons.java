@@ -38,29 +38,29 @@ public class Icons {
     /** General ignore icon. */
     public static final Icon IGNORE = IconLoader.getIcon("/icons/icon.png");
 
-    /** Boringignore icon. */
-    public static final Icon BORINGIGNORE = IconLoader.getIcon("/icons/icon_boring.png");
-
-    /** Bzrignore icon. */
-    public static final Icon BZRIGNORE = IconLoader.getIcon("/icons/icon_bzr.png");
+    /** Bazaar icon. */
+    public static final Icon BAZAAR = IconLoader.getIcon("/icons/icon_bazaar.png");
 
     /** Chefignore icon. */
-    public static final Icon CHEFIGNORE = IconLoader.getIcon("/icons/icon_chef.png");
+    public static final Icon CHEF = IconLoader.getIcon("/icons/icon_chef.png");
 
     /** Cvsignore icon. */
-    public static final Icon CVSIGNORE = IconLoader.getIcon("/icons/icon_cvs.png");
+    public static final Icon CVS = IconLoader.getIcon("/icons/icon_cvs.png");
+
+    /** Darcs icon. */
+    public static final Icon DARCS = IconLoader.getIcon("/icons/icon_darcs.png");
 
     /** Dockerignore icon. */
-    public static final Icon DOCKERIGNORE = IconLoader.getIcon("/icons/icon_docker.png");
+    public static final Icon DOCKER = IconLoader.getIcon("/icons/icon_docker.png");
 
-    /** Gitignore icon. */
-    public static final Icon GITIGNORE = IconLoader.getIcon("/icons/icon_git.png");
+    /** Git icon. */
+    public static final Icon GIT = IconLoader.getIcon("/icons/icon_git.png");
 
-    /** Hgignore icon. */
-    public static final Icon HGIGNORE = IconLoader.getIcon("/icons/icon_hg.png");
+    /** Mercurial icon. */
+    public static final Icon MERCURIAL = IconLoader.getIcon("/icons/icon_mercurial.png");
 
     /** Npmignore icon. */
-    public static final Icon NPMIGNORE = IconLoader.getIcon("/icons/icon_npm.png");
+    public static final Icon NPM = IconLoader.getIcon("/icons/icon_npm.png");
 
     /** Private constructor to prevent creating {@link Icons} instance. */
     private Icons() {

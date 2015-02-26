@@ -22,23 +22,32 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type.kind;
+package mobi.hsz.idea.gitignore.lang.kind;
 
+import com.intellij.lang.Language;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.NpmignoreLanguage;
+import mobi.hsz.idea.gitignore.file.type.kind.NpmFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
- * Describes Npmignore file type.
+ * Npm {@link Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class NpmignoreFileType extends IgnoreFileType {
-    /** Contains {@link NpmignoreFileType} singleton. */
-    public static final NpmignoreFileType INSTANCE = new NpmignoreFileType();
+public class NpmLanguage extends IgnoreLanguage {
+    /** The {@link NpmLanguage} instance. */
+    public static final NpmLanguage INSTANCE = new NpmLanguage();
 
-    /** Private constructor to prevent direct object creation. */
-    private NpmignoreFileType() {
-        super(NpmignoreLanguage.INSTANCE);
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
+    private NpmLanguage() {
+        super("Npm", "npmignore", Icons.NPM);
+    }
+
+    /** Language file type. */
+    @Override
+    public IgnoreFileType getFileType() {
+        return NpmFileType.INSTANCE;
     }
 }

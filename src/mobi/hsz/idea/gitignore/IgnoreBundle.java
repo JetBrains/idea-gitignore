@@ -55,14 +55,14 @@ public class IgnoreBundle {
 
     /** Available {@link IgnoreFileType} instances. */
     public static final List<IgnoreFileType> FILE_TYPES = Arrays.asList(
-            BoringignoreFileType.INSTANCE,
-            BzrignoreFileType.INSTANCE,
-            ChefignoreFileType.INSTANCE,
-            CvsignoreFileType.INSTANCE,
-            DockerignoreFileType.INSTANCE,
-            GitignoreFileType.INSTANCE,
-            HgignoreFileType.INSTANCE,
-            NpmignoreFileType.INSTANCE
+            BazaarFileType.INSTANCE,
+            ChefFileType.INSTANCE,
+            CvsFileType.INSTANCE,
+            DarcsFileType.INSTANCE,
+            DockerFileType.INSTANCE,
+            GitFileType.INSTANCE,
+            MercurialFileType.INSTANCE,
+            NpmFileType.INSTANCE
     );
 
     /** Available syntax list. */

@@ -29,6 +29,7 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.DumbAware;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
@@ -44,8 +45,9 @@ public class NewFileGroupAction extends DefaultActionGroup implements DumbAware 
 
         for (final IgnoreFileType fileType : IgnoreBundle.FILE_TYPES) {
             add(new NewFileAction(fileType){{
+                IgnoreLanguage language = fileType.getIgnoreLanguage();
                 Presentation p = getTemplatePresentation();
-                p.setText(IgnoreBundle.message("action.newFile", fileType.getIgnoreLanguage().getFilename()));
+                p.setText(IgnoreBundle.message("action.newFile", language.getFilename(), language.getDisplayName()));
                 p.setDescription(IgnoreBundle.message("action.newFile.description", fileType.getLanguageName()));
                 p.setIcon(fileType.getIcon());
             }});

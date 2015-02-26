@@ -24,29 +24,35 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
+import com.intellij.lang.Language;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.DockerignoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
- * Dockerignore {@link IgnoreLanguage} definition.
+ * Gitignore {@link Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.8
+ * @since 0.1
  */
-public class DockerignoreLanguage extends IgnoreLanguage {
-    /** The {@link DockerignoreLanguage} instance. */
-    public static final DockerignoreLanguage INSTANCE = new DockerignoreLanguage();
+public class GitLanguage extends IgnoreLanguage {
+    /** The {@link GitLanguage} instance. */
+    public static final GitLanguage INSTANCE = new GitLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private DockerignoreLanguage() {
-        super("Dockerignore", "dockerignore", Icons.DOCKERIGNORE);
+    private GitLanguage() {
+        super("Git", "gitignore", Icons.GIT);
     }
 
     /** Language file type. */
     @Override
     public IgnoreFileType getFileType() {
-        return DockerignoreFileType.INSTANCE;
+        return GitFileType.INSTANCE;
+    }
+
+    /** The Git specific directory. */
+    public String getGitDirectory() {
+        return ".git";
     }
 }
