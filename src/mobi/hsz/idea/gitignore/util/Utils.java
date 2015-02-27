@@ -51,6 +51,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -303,5 +304,15 @@ public class Utils {
      */
     public static boolean isUnder(VirtualFile file, VirtualFile directory) {
         return VfsUtilCore.isUnder(file, Sets.newHashSet(directory));
+    }
+
+    /**
+     * Converts {@link Color} to the hex string.
+     *
+     * @param color current color
+     * @return hex string
+     */
+    public static String colorToHexString(Color color) {
+        return String.format("#%06X", (0xFFFFFF & color.getRGB()));
     }
 }

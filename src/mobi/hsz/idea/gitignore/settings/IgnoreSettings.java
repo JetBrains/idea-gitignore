@@ -29,10 +29,12 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,18 +50,30 @@ import java.util.List;
 )
 public class IgnoreSettings implements PersistentStateComponent<Element> {
 
-    /** Current plugin version. */
+    /**
+     * Current plugin version.
+     */
     private static final String PLUGIN_VERSION = Utils.getPlugin().getVersion();
 
-    /** Notify about missing Gitignore file in the project. */
+    /**
+     * Notify about missing Gitignore file in the project.
+     */
     private boolean missingGitignore = true;
 
-    /** Shows information about donation. */
+    /**
+     * Shows information about donation.
+     */
     private String donationShown = "";
 
-    /** Lists all user defined templates. */
+    /**
+     * Lists all user defined templates.
+     */
     private final List<UserTemplate> userTemplates = new ArrayList<UserTemplate>();
 
+    /**
+     * Default ignored files text color.
+     */
+    private Color ignoredColor = IgnoreFileStatusProvider.DEFAULT_COLOR;
 
     /**
      * Get the instance of this service.
@@ -79,9 +93,10 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
     @Nullable
     @Override
     public Element getState() {
-        final Element element = new Element("MarkdownSettings");
+        final Element element = new Element("IgnoreSettings");
         element.setAttribute("missingGitignore", Boolean.toString(missingGitignore));
         element.setAttribute("donationShown", donationShown);
+        element.setAttribute("ignoredColor", Utils.colorToHexString(ignoredColor));
 
         Element templates = new Element("userTemplates");
         for (UserTemplate userTemplate : userTemplates) {
@@ -105,8 +120,12 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
     public void loadState(Element element) {
         String value = element.getAttributeValue("missingGitignore");
         if (value != null) missingGitignore = Boolean.parseBoolean(value);
+
         value = element.getAttributeValue("donationShown");
         if (value != null) donationShown = value;
+
+        value = element.getAttributeValue("ignoredColor");
+        if (value != null) ignoredColor = Color.decode(value);
 
         userTemplates.clear();
         Element templates = element.getChild("userTemplates");
@@ -131,7 +150,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      * Notify about missing Gitignore file in the project.
      *
      * @param missingGitignore notify about missing Gitignore file in the project
-
      */
     public void setMissingGitignore(boolean missingGitignore) {
         this.missingGitignore = missingGitignore;
@@ -151,6 +169,24 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      */
     public void setDonationShown() {
         this.donationShown = PLUGIN_VERSION;
+    }
+
+    /**
+     * Returns current color of ignored files in the Project View tree.
+     *
+     * @return ignored color
+     */
+    public Color getIgnoredColor() {
+        return ignoredColor;
+    }
+
+    /**
+     * Sets new color of ignored files in the Project View tree.
+     *
+     * @param ignoredColor ignored color
+     */
+    public void setIgnoredColor(Color ignoredColor) {
+        this.ignoredColor = ignoredColor;
     }
 
     /**

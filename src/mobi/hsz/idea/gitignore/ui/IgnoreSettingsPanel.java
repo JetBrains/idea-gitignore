@@ -77,7 +77,8 @@ public class IgnoreSettingsPanel implements Disposable {
     /** Splitter element. */
     private Splitter templatesSplitter;
 
-    private JPanel ignoredColor;
+    /** Ignored color component. */
+    public JPanel ignoredColor;
 
     /** Editor panel element. */
     private EditorPanel editorPanel;
