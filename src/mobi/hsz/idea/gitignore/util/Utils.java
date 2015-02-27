@@ -24,7 +24,6 @@
 
 package mobi.hsz.idea.gitignore.util;
 
-import com.google.common.collect.Sets;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.extensions.PluginId;
@@ -302,8 +301,15 @@ public class Utils {
      * @param directory directory
      * @return file is under directory
      */
-    public static boolean isUnder(VirtualFile file, VirtualFile directory) {
-        return VfsUtilCore.isUnder(file, Sets.newHashSet(directory));
+    public static boolean isUnder(@NotNull VirtualFile file, @NotNull VirtualFile directory) {
+        VirtualFile parent = file;
+        while (parent != null) {
+            if (directory.equals(parent)) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
     }
 
     /**
