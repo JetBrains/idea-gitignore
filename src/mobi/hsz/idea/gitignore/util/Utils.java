@@ -302,7 +302,7 @@ public class Utils {
      * @return file is under directory
      */
     public static boolean isUnder(@NotNull VirtualFile file, @NotNull VirtualFile directory) {
-        VirtualFile parent = file;
+        VirtualFile parent = file.getParent();
         while (parent != null) {
             if (directory.equals(parent)) {
                 return true;

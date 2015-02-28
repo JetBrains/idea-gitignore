@@ -221,8 +221,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
 
-        <projectService serviceImplementation="mobi.hsz.idea.gitignore.IgnoreManager"/>
-
         <additionalTextAttributes
             file="colorSchemes/IgnoreDefault.xml"
             scheme="Default"/>
@@ -478,7 +476,10 @@
     </application-components>
 
     <project-components>
-        <!-- Add your project components here -->
+        <component>
+            <implementation-class>mobi.hsz.idea.gitignore.IgnoreManager</implementation-class>
+            <loadForDefaultProject/>
+        </component>
     </project-components>
 
     <actions>
