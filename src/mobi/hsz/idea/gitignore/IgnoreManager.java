@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * {@link IgnoreManager} handles ignore files indexing and status caching.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 1.0
  */
 public class IgnoreManager extends AbstractProjectComponent {
     private final IgnoreCacheMap cache;

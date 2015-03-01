@@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
  * for the files matched with ignore rules.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 1.0
  */
 public class IgnoreFileStatusProvider implements FileStatusProvider {
     /** Ignored status. */

@@ -14,6 +14,7 @@ Introduction
 - `.chefignore` (Chef)
 - `.cvsignore` (CVS)
 - `.bzrignore` (Bazaar)
+- `.boringignore` (Darcs)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -32,23 +33,19 @@ files in your project. It supports following JetBrains IDEs:
 Features
 --------
 
-- `.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore, .cvsignore, .bzrignore` files syntax highlight
+- Files syntax highlight
+- Coloring ignored files in the Project View
 - Gitignore templates filtering and selecting in rules generator by name and content
 - User custom templates
 - Show ignored files by specified Gitignore file (right click on `.gitignore` file)
-- Create `.gitignore, .hgignore, .npmignore, .dockerignore, .chefignore, .cvsignore, .bzrignore` file in currently selected directory
+- Create file in currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
 - Add selected file/directory to Gitignore rules from popup menu
 - Suggesting `.gitignore` file creation for new project
-- Entries inspection (duplicated, covered, unused) with fix actions
+- Entries inspection (duplicated, covered, unused, incorrect syntax, relative entries) with fix actions
 - Comments and brackets support
 - Navigation to entries in Project view
 - Renaming entries from Gitignore file
-- Optional suggestion to add .gitignore file
-
-*Feature requests:*
-
-- *Better ignored files list*
 
 
 Installation
@@ -65,14 +62,33 @@ Restart IDE.
 Usage
 -----
 
-1. Generate new file
+1. Generate new file and templates usage
 
-To generate new `.gitignore` file, just click on <kbd>File</kbd> > <kbd>New</kbd> or use <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut and select `.gitignore file` element.
+To generate new ignore file, just click on <kbd>File</kbd> > <kbd>New</kbd> or use <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut and select `.ignore file` element.
 
-![Generate new file](http://gitignore.hsz.mobi/usage-01.gif)
+2. Support for typing new rules, linking rules with matched files
+
+3. Code inspections
+
+Code inspections covers few cases:
+
+- duplicated entries (checks if entry is defined more than once)
+- covered entries - entry is covered by more general one
+- unused entries
+- incorrect syntax (regexp rules)
+- relative entries
+
 
 Changelog
 ---------
+
+Version 1.0
+
+- **Ignored files coloring** in the Project View (customizable style)
+- **Regex support** (used with Mercurial and Darcs)
+- **Syntax switching** support for Mercurial (with suggestion)
+- Incorrect entry syntax inspection
+- `.boringignore` support (Darcs version control)
 
 Version 0.9
 

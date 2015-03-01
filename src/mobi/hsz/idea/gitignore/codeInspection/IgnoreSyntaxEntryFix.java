@@ -41,7 +41,7 @@ import org.jetbrains.annotations.Nullable;
  * on the given {@link IgnoreSyntax} element.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 1.0
  */
 public class IgnoreSyntaxEntryFix extends LocalQuickFixAndIntentionActionOnPsiElement {
     /**

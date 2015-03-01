@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
  * Darcs {@link com.intellij.lang.Language} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 1.0
  */
 public class DarcsLanguage extends IgnoreLanguage {
     /** The {@link DarcsLanguage} instance. */

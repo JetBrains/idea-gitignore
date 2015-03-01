@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 1.0
  */
 public interface IgnoreEntryBase extends PsiElement {
 

@@ -31,7 +31,7 @@ import mobi.hsz.idea.gitignore.lang.kind.DarcsLanguage;
  * Describes Boringignore file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 1.0
  */
 public class DarcsFileType extends IgnoreFileType {
     /** Contains {@link DarcsFileType} singleton. */

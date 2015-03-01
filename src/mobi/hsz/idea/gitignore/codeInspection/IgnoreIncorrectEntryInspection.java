@@ -40,7 +40,7 @@ import java.util.regex.PatternSyntaxException;
  * Inspection tool that checks if entry has correct form in specific according to the specific {@link mobi.hsz.idea.gitignore.IgnoreBundle.Syntax}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 1.0
  */
 public class IgnoreIncorrectEntryInspection extends LocalInspectionTool {
     /**
