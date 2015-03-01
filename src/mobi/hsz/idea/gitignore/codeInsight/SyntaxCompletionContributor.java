@@ -41,7 +41,7 @@ import java.util.List;
  * Class provides completion feature for {@link IgnoreTypes#SYNTAX} element.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.10
+ * @since 1.0
  */
 public class SyntaxCompletionContributor extends CompletionContributor {
     public static final List<LookupElementBuilder> SYNTAX_ELEMENTS = Lists.newArrayList();
@@ -58,8 +58,8 @@ public class SyntaxCompletionContributor extends CompletionContributor {
                 new CompletionProvider<CompletionParameters>() {
                     @Override
                     protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result) {
-                        PsiElement current = parameters.getOriginalPosition();
-                        if (current != null && current.getParent() instanceof IgnoreSyntax && current.getPrevSibling() != null) {
+                        PsiElement current = parameters.getPosition();
+                        if (current.getParent() instanceof IgnoreSyntax && current.getPrevSibling() != null) {
                             result.addAllElements(SYNTAX_ELEMENTS);
                         }
                     }
