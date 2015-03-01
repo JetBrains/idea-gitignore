@@ -133,7 +133,7 @@ public class GeneratorDialog extends DialogWrapper {
     @Nullable
     @Override
     public JComponent getPreferredFocusedComponent() {
-        return treeScrollPanel;
+        return profileFilter;
     }
 
     /**
