@@ -29,12 +29,10 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import mobi.hsz.idea.gitignore.util.Utils;
-import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,11 +69,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
     private final List<UserTemplate> userTemplates = new ArrayList<UserTemplate>();
 
     /**
-     * Default ignored files text color.
-     */
-    private Color ignoredColor = IgnoreFileStatusProvider.DEFAULT_COLOR;
-
-    /**
      * Get the instance of this service.
      *
      * @return the unique {@link IgnoreSettings} instance.
@@ -96,7 +89,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
         final Element element = new Element("IgnoreSettings");
         element.setAttribute("missingGitignore", Boolean.toString(missingGitignore));
         element.setAttribute("donationShown", donationShown);
-        element.setAttribute("ignoredColor", Utils.colorToHexString(ignoredColor));
 
         Element templates = new Element("userTemplates");
         for (UserTemplate userTemplate : userTemplates) {
@@ -123,9 +115,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
 
         value = element.getAttributeValue("donationShown");
         if (value != null) donationShown = value;
-
-        value = element.getAttributeValue("ignoredColor");
-        if (value != null) ignoredColor = Color.decode(value);
 
         userTemplates.clear();
         Element templates = element.getChild("userTemplates");
@@ -169,24 +158,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      */
     public void setDonationShown() {
         this.donationShown = PLUGIN_VERSION;
-    }
-
-    /**
-     * Returns current color of ignored files in the Project View tree.
-     *
-     * @return ignored color
-     */
-    public Color getIgnoredColor() {
-        return ignoredColor;
-    }
-
-    /**
-     * Sets new color of ignored files in the Project View tree.
-     *
-     * @param ignoredColor ignored color
-     */
-    public void setIgnoredColor(Color ignoredColor) {
-        this.ignoredColor = ignoredColor;
     }
 
     /**

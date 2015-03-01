@@ -301,7 +301,8 @@
             implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
         <vcs.fileStatusProvider
-            implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
+            implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"
+            order="before Ignored"/>
 
         <lang.parserDefinition language="Ignore"    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Bazaar"    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>

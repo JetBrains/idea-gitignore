@@ -34,55 +34,38 @@ import com.intellij.ui.JBColor;
 import com.intellij.util.ThreeState;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
-import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-
 /**
- * Ignore instance of {@link FileStatusProvider} that provides {@link #ignoredStatus}
+ * Ignore instance of {@link FileStatusProvider} that provides {@link #IGNORED} status
  * for the files matched with ignore rules.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.10
  */
 public class IgnoreFileStatusProvider implements FileStatusProvider {
-
-    /** Default ignored color. */
-    public static final Color DEFAULT_COLOR = JBColor.GRAY;
-
-    /** Ignored status key. */
-    private static final String IGNORED_STATUS_KEY = "IGNORE.PROJECT_VIEW.IGNORED";
+    /** Ignored status. */
+    private static final FileStatus IGNORED = FileStatusFactory.getInstance().createFileStatus("IGNORE.PROJECT_VIEW.IGNORED", IgnoreBundle.message("projectView.ignored"), JBColor.GRAY);
 
     /** Instance of {@link IgnoreManager}. */
     private final IgnoreManager ignoreManager;
 
-    /** Ignored status. */
-    private FileStatus ignoredStatus;
-
     /** Constructor. */
     public IgnoreFileStatusProvider(Project project) {
         this.ignoreManager = IgnoreManager.getInstance(project);
-
-        IgnoreSettings settings = IgnoreSettings.getInstance();
-        this.ignoredStatus = FileStatusFactory.getInstance().createFileStatus(
-                IGNORED_STATUS_KEY,
-                IgnoreBundle.message("projectView.ignored"),
-                settings.getIgnoredColor()
-        );
     }
 
     /**
-     * Returns the {@link #ignoredStatus} status if file is ignored or <code>null</code>.
+     * Returns the {@link #IGNORED} status if file is ignored or <code>null</code>.
      *
      * @param virtualFile file to check
-     * @return {@link #ignoredStatus} status or <code>null</code>
+     * @return {@link #IGNORED} status or <code>null</code>
      */
     @Nullable
     @Override
     public FileStatus getFileStatus(@NotNull VirtualFile virtualFile) {
-        return ignoreManager.isFileIgnored(virtualFile) ? ignoredStatus : null;
+        return ignoreManager.isFileIgnored(virtualFile) ? IGNORED : null;
     }
 
     /** Does nothing. */

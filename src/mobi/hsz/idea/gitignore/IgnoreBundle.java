@@ -42,6 +42,10 @@ import java.util.ResourceBundle;
  * @since 0.4
  */
 public class IgnoreBundle {
+    /** Plugin name. */
+    @NonNls
+    public static final String PLUGIN_NAME = ".ignore";
+
     /** The {@link ResourceBundle} path. */
     @NonNls
     private static final String BUNDLE_NAME = "messages.IgnoreBundle";

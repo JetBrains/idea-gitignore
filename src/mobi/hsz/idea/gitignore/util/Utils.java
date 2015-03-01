@@ -50,7 +50,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -310,15 +309,5 @@ public class Utils {
             parent = parent.getParent();
         }
         return false;
-    }
-
-    /**
-     * Converts {@link Color} to the hex string.
-     *
-     * @param color current color
-     * @return hex string
-     */
-    public static String colorToHexString(Color color) {
-        return String.format("#%06X", (0xFFFFFF & color.getRGB()));
     }
 }

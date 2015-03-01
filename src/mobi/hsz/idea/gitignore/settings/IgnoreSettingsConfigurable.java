@@ -26,15 +26,12 @@ package mobi.hsz.idea.gitignore.settings;
 
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.ui.ColorPanel;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.ui.IgnoreSettingsPanel;
-import mobi.hsz.idea.gitignore.util.Restart;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Configuration interface for {@link IgnoreSettings}.
@@ -99,7 +96,6 @@ public class IgnoreSettingsConfigurable implements Configurable {
         return settingsPanel == null
                 || settingsPanel.missingGitignore == null || settings.isMissingGitignore() != settingsPanel.missingGitignore.isSelected()
                 || settingsPanel.templatesListPanel == null || !Utils.equalLists(settings.getUserTemplates(), settingsPanel.templatesListPanel.getList())
-                || settingsPanel.ignoredColor == null || !settings.getIgnoredColor().equals(((ColorPanel) settingsPanel.ignoredColor).getSelectedColor())
                 ;
     }
 
@@ -111,12 +107,6 @@ public class IgnoreSettingsConfigurable implements Configurable {
         if (settingsPanel == null) return;
         settings.setMissingGitignore(settingsPanel.missingGitignore != null && settingsPanel.missingGitignore.isSelected());
         settings.setUserTemplates(settingsPanel.templatesListPanel.getList());
-
-        Color ignoredColor = ((ColorPanel) settingsPanel.ignoredColor).getSelectedColor();
-        if (!ignoredColor.equals(settings.getIgnoredColor())) {
-            Restart.shutdownOrRestartApp(IgnoreBundle.message("restart.ignoredColor"));
-        }
-        settings.setIgnoredColor(ignoredColor);
     }
 
     /**
@@ -127,7 +117,6 @@ public class IgnoreSettingsConfigurable implements Configurable {
         if (settingsPanel == null) return;
         if (settingsPanel.missingGitignore != null) settingsPanel.missingGitignore.setSelected(settings.isMissingGitignore());
         if (settingsPanel.templatesListPanel != null) settingsPanel.templatesListPanel.resetFrom(settings.getUserTemplates());
-        if (settingsPanel.ignoredColor != null) ((ColorPanel) settingsPanel.ignoredColor).setSelectedColor(settings.getIgnoredColor());
     }
 
     /**

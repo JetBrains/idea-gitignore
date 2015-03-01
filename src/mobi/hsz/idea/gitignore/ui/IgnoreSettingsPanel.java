@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.ui;
 
+import com.intellij.ide.DataManager;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
@@ -36,14 +37,18 @@ import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.options.SearchableConfigurable;
+import com.intellij.openapi.options.newEditor.OptionsEditor;
 import com.intellij.openapi.ui.InputValidatorEx;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.Splitter;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.AddEditDeleteListPanel;
-import com.intellij.ui.ColorPanel;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
+import com.intellij.ui.components.labels.LinkLabel;
+import com.intellij.ui.components.labels.LinkListener;
+import com.intellij.ui.navigation.Place;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
@@ -64,6 +69,7 @@ import java.util.List;
  * @since 0.6.1
  */
 public class IgnoreSettingsPanel implements Disposable {
+    private static final String FILE_STATUS_CONFIGURABLE_ID = "reference.settingsdialog.IDE.editor.colors.File Status";
 
     /** The parent panel for the form. */
     public JPanel panel;
@@ -77,8 +83,8 @@ public class IgnoreSettingsPanel implements Disposable {
     /** Splitter element. */
     private Splitter templatesSplitter;
 
-    /** Ignored color component. */
-    public JPanel ignoredColor;
+    /** Link to the Colors & Fonts settings */
+    private JLabel editIgnoredFilesTextLabel;
 
     /** Editor panel element. */
     private EditorPanel editorPanel;
@@ -99,8 +105,24 @@ public class IgnoreSettingsPanel implements Disposable {
         templatesSplitter.setFirstComponent(templatesListPanel);
         templatesSplitter.setSecondComponent(editorPanel);
 
-        /** Store data like in {@link org.intellij.plugins.xpathView.ui.ConfigUI} */
-        ignoredColor = new ColorPanel();
+        editIgnoredFilesTextLabel = new LinkLabel(IgnoreBundle.message("settings.general.ignoredColor"), null, new LinkListener() {
+            @Override
+            public void linkSelected(LinkLabel aSource, Object aLinkData) {
+                final OptionsEditor optionsEditor = OptionsEditor.KEY.getData(DataManager.getInstance().getDataContext(panel));
+                if (optionsEditor != null) {
+                    SearchableConfigurable configurable = optionsEditor.findConfigurableById(FILE_STATUS_CONFIGURABLE_ID);
+                    if (configurable != null) {
+
+                        Place place = new Place();
+                        place.putPath("configurable", configurable);
+                        place.putPath("filter", IgnoreBundle.PLUGIN_NAME);
+
+                        optionsEditor.navigateTo(place, true);
+                    }
+                }
+            }
+        });
+
     }
 
     /**
