@@ -13,3 +13,6 @@ build/
 # .gitignore negations
 !out/foo.txt
 !bar/
+
+# Mercurial syntax switch
+syntax: glob
