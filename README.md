@@ -66,7 +66,11 @@ Usage
 
 To generate new ignore file, just click on <kbd>File</kbd> > <kbd>New</kbd> or use <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut and select `.ignore file` element.
 
+![Generate new file](http://gitignore.hsz.mobi/usage-01.gif)
+
 2. Support for typing new rules, linking rules with matched files
+
+![Support for typing new rules](http://gitignore.hsz.mobi/usage-02.gif)
 
 3. Code inspections
 
@@ -77,6 +81,8 @@ Code inspections covers few cases:
 - unused entries
 - incorrect syntax (regexp rules)
 - relative entries
+
+![Code inspections](http://gitignore.hsz.mobi/usage-03.gif)
 
 
 Changelog
