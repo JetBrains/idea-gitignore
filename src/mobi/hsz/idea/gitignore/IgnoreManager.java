@@ -39,7 +39,7 @@ import com.intellij.psi.impl.PsiManagerImpl;
 import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.containers.HashMap;
+import com.intellij.util.containers.ConcurrentHashMap;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
@@ -283,11 +283,11 @@ public class IgnoreManager extends AbstractProjectComponent {
     }
 
     /**
-     * {@link HashMap} cache helper.
+     * {@link ConcurrentHashMap} cache helper.
      */
-    public class IgnoreCacheMap extends HashMap<IgnoreFile, Pair<Set<Integer>, Set<Pattern>>> {
-        /** Cache {@link HashMap} to store files statuses. */
-        private final HashMap<VirtualFile, Boolean> statuses = new HashMap<VirtualFile, Boolean>();
+    public class IgnoreCacheMap extends ConcurrentHashMap<IgnoreFile, Pair<Set<Integer>, Set<Pattern>>> {
+        /** Cache {@link ConcurrentHashMap} to store files statuses. */
+        private final ConcurrentHashMap<VirtualFile, Boolean> statuses = new ConcurrentHashMap<VirtualFile, Boolean>();
 
         /**
          * Adds new {@link IgnoreFile} to the cache and builds its hashCode and patterns sets.
