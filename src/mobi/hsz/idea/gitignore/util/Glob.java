@@ -161,7 +161,7 @@ public class Glob {
      */
     @Nullable
     public static Pattern createPattern(@NotNull IgnoreEntry entry) {
-        return createPattern(entry.getValue(), entry.getSyntax());
+        return createPattern(entry.getText(), entry.getSyntax());
     }
 
     /**
@@ -181,7 +181,7 @@ public class Glob {
         char[] chars;
         StringBuilder sb = new StringBuilder();
 
-        if (!StringUtil.endsWithChar(glob, '/')) {
+        if (!StringUtil.startsWithChar(glob, '/')) {
             if (!StringUtil.startsWith(glob, "**")) {
                 sb.append("([^/]*?/)*");
             }
