@@ -15,6 +15,7 @@ Introduction
 - `.cvsignore` (CVS)
 - `.bzrignore` (Bazaar)
 - `.boringignore` (Darcs)
+- `.mtn-ignore` (Monotone)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -87,6 +88,14 @@ Usage
 
 Changelog
 ---------
+
+Version 1.0.1
+
+- Allow enable/disable coloring ignored files ([#87](https://github.com/hsz/idea-gitignore/issues/87))
+- Cover inspection respects negated entries
+- Wrong ignore indicator with nested entries fix ([#85](https://github.com/hsz/idea-gitignore/issues/85))
+- ConcurrentModificationException fix ([#84](https://github.com/hsz/idea-gitignore/issues/84))
+- `.mtn-ignore` support (Monotone version control)
 
 Version 1.0
 
@@ -280,7 +289,7 @@ Developed By
 License
 -------
 
-Copyright (c) 2014 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for license rights and limitations (MIT).
+Copyright (c) 2015 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for license rights and limitations (MIT).
 
     
 [github-gitignore]:       https://github.com/github/gitignore

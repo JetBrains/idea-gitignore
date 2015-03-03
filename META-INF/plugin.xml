@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -17,7 +17,7 @@
 
       <b>.ignore</b> is a plugin for
         <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker), .chefignore (Chef),
-           .cvsignore (CVS), .bzrignore (Bazaar), .boringignore (Darcs)</i>
+           .cvsignore (CVS), .bzrignore (Bazaar), .boringignore (Darcs), .mtn-ignore (Monotone)</i>
         files in your project.
       <br/>
 
@@ -47,6 +47,15 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+      Version 1.0.1
+      <ul>
+        <li>Allow enable/disable coloring ignored files (<a href="https://github.com/hsz/idea-gitignore/issues/87">#87</a>)</li>
+        <li>Cover inspection respects negated entries</li>
+        <li>Wrong ignore indicator with nested entries fix (<a href="https://github.com/hsz/idea-gitignore/issues/85">#85</a>)</li>
+        <li>ConcurrentModificationException fix (<a href="https://github.com/hsz/idea-gitignore/issues/84">#84</a>)</li>
+        <li><i>.mtn-ignore</i> support (Monotone version control)</li>
+      </ul>
 
       Version 1.0
       <ul>
