@@ -50,7 +50,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -163,7 +162,7 @@ public class Utils {
      */
     public static List<VirtualFile> getSuitableIgnoreFiles(@NotNull Project project, @NotNull IgnoreFileType fileType, @NotNull VirtualFile file)
             throws ExternalFileException {
-        List<VirtualFile> files = new ArrayList<VirtualFile>();
+        List<VirtualFile> files = ContainerUtil.newArrayList();
         if (file.getCanonicalPath() == null || !VfsUtilCore.isAncestor(project.getBaseDir(), file, true)) {
             throw new ExternalFileException();
         }
@@ -196,7 +195,7 @@ public class Utils {
      * @return list of excluded roots
      */
     public static List<VirtualFile> getExcludedRoots(@NotNull Project project) {
-        List<VirtualFile> roots = new ArrayList<VirtualFile>();
+        List<VirtualFile> roots = ContainerUtil.newArrayList();
         ModuleManager manager = ModuleManager.getInstance(project);
         for (Module module : manager.getModules()) {
             ModifiableRootModel model = ModuleRootManager.getInstance(module).getModifiableModel();
@@ -220,7 +219,7 @@ public class Utils {
         }
 
         final VirtualFile projectRoot = project.getBaseDir();
-        final List<VirtualFile> matched = new ArrayList<VirtualFile>();
+        final List<VirtualFile> matched = ContainerUtil.newArrayList();
         for (final VirtualFile root : getExcludedRoots(project)) {
             VfsUtil.visitChildrenRecursively(root, new VirtualFileVisitor() {
                 @Override
@@ -252,7 +251,7 @@ public class Utils {
      * @return list of words without special characters
      */
     public static List<String> getWords(String filter) {
-        List<String> words = new ArrayList<String>(Arrays.asList(filter.toLowerCase().split("\\W+")));
+        List<String> words = ContainerUtil.newArrayList(filter.toLowerCase().split("\\W+"));
         words.removeAll(Arrays.asList(null, ""));
         return words;
     }

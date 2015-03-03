@@ -34,7 +34,6 @@ import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +48,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class Glob {
     /** Cache map that holds processed regex statements to the glob rules. */
-    private static final HashMap<String, String> cache = new HashMap<String, String>();
+    private static final HashMap<String, String> cache = ContainerUtil.newHashMap();
 
     /** Private constructor to prevent creating {@link Glob} instance. */
     private Glob() {
@@ -128,7 +127,7 @@ public class Glob {
      * @return search result
      */
     public static List<String> findAsPaths(VirtualFile root, IgnoreEntry entry, boolean includeNested) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = ContainerUtil.newArrayList();
         List<VirtualFile> files = find(root, entry, includeNested);
         for (VirtualFile file : files) {
             list.add(Utils.getRelativePath(root, file));

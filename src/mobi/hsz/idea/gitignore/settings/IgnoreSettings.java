@@ -28,12 +28,12 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,7 +66,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
     /**
      * Lists all user defined templates.
      */
-    private final List<UserTemplate> userTemplates = new ArrayList<UserTemplate>();
+    private final List<UserTemplate> userTemplates = ContainerUtil.newArrayList();
 
     /**
      * Get the instance of this service.

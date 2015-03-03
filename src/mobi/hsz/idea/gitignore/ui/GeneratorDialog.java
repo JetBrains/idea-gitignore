@@ -46,7 +46,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.*;
 import com.intellij.ui.components.JBPanel;
-import com.intellij.util.containers.hash.HashSet;
+import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -63,7 +63,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -79,7 +78,7 @@ public class GeneratorDialog extends DialogWrapper {
     private static final String TEMPLATES_FILTER_HISTORY = "TEMPLATES_FILTER_HISTORY";
 
     /** Cache set to store checked templates for the current action. */
-    private final Set<Resources.Template> checked = new HashSet<Resources.Template>();
+    private final Set<Resources.Template> checked = ContainerUtil.newHashSet();
 
     /** Current working project. */
     @NotNull private final Project project;
@@ -410,12 +409,12 @@ public class GeneratorDialog extends DialogWrapper {
      * @return text ranges
      */
     private List<Pair<Integer, Integer>> getFilterRanges(String filter, String content) {
-        List<Pair<Integer, Integer>> pairs = new ArrayList<Pair<Integer, Integer>>();
+        List<Pair<Integer, Integer>> pairs = ContainerUtil.newArrayList();
         content = content.toLowerCase();
 
         for (String word : Utils.getWords(filter)) {
             for (int index = content.indexOf(word); index >= 0; index = content.indexOf(word, index + 1)) {
-                pairs.add(new Pair<Integer, Integer>(index, index + word.length()));
+                pairs.add(Pair.create(index, index + word.length()));
             }
         }
 

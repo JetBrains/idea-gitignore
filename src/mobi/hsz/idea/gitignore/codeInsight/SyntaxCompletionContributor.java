@@ -24,12 +24,12 @@
 
 package mobi.hsz.idea.gitignore.codeInsight;
 
-import com.google.common.collect.Lists;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreSyntax;
 import mobi.hsz.idea.gitignore.psi.IgnoreTypes;
@@ -44,7 +44,7 @@ import java.util.List;
  * @since 1.0
  */
 public class SyntaxCompletionContributor extends CompletionContributor {
-    public static final List<LookupElementBuilder> SYNTAX_ELEMENTS = Lists.newArrayList();
+    public static final List<LookupElementBuilder> SYNTAX_ELEMENTS = ContainerUtil.newArrayList();
     static {
         for (IgnoreBundle.Syntax syntax : IgnoreBundle.Syntax.values()) {
             SYNTAX_ELEMENTS.add(LookupElementBuilder.create(syntax.toString().toLowerCase()));

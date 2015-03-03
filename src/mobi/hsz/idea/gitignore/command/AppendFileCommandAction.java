@@ -35,12 +35,12 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -86,7 +86,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         super(project, file);
         this.project = project;
         this.file = file;
-        this.content = new HashSet<String>();
+        this.content = ContainerUtil.newHashSet();
         if (!content.isEmpty()) {
             this.content.add(content);
         }

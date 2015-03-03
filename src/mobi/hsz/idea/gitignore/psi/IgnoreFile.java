@@ -32,10 +32,10 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.impl.source.PsiFileImpl;
 import com.intellij.psi.tree.IFileElementType;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -91,12 +91,15 @@ public class IgnoreFile extends PsiFileImpl {
      */
     private static Language findLanguage(Language baseLanguage, FileViewProvider viewProvider) {
         final Set<Language> languages = viewProvider.getLanguages();
+
         for (final Language actualLanguage : languages) {
             if (actualLanguage.isKindOf(baseLanguage)) {
                 return actualLanguage;
             }
         }
-        throw new AssertionError("Language " + baseLanguage + " doesn't participate in view provider " + viewProvider + ": " + new ArrayList<Language>(languages));
+
+        throw new AssertionError("Language " + baseLanguage + " doesn't participate in view provider " + viewProvider
+                + ": " + ContainerUtil.newArrayList(languages));
     }
 
     /**

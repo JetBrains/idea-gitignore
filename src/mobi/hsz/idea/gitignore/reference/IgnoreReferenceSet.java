@@ -32,13 +32,13 @@ import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.util.Glob;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -123,7 +123,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
     @Override
     protected void reparse() {
         String str = StringUtil.trimEnd(getPathString(), getSeparatorString());
-        final List<FileReference> referencesList = new ArrayList<FileReference>();
+        final List<FileReference> referencesList = ContainerUtil.newArrayList();
 
         String separatorString = getSeparatorString(); // separator's length can be more then 1 char
         int sepLen = separatorString.length();

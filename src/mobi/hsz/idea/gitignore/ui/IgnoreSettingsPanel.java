@@ -49,6 +49,7 @@ import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.components.labels.LinkLabel;
 import com.intellij.ui.components.labels.LinkListener;
 import com.intellij.ui.navigation.Place;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
@@ -162,7 +163,7 @@ public class IgnoreSettingsPanel implements Disposable {
 
         /** Constructs CRUD panel with list listener for editor updating. */
         public TemplatesListPanel() {
-            super(null, new ArrayList<IgnoreSettings.UserTemplate>());
+            super(null, ContainerUtil.<IgnoreSettings.UserTemplate>newArrayList());
             myList.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
@@ -276,7 +277,7 @@ public class IgnoreSettingsPanel implements Disposable {
          * @return templates list
          */
         public List<IgnoreSettings.UserTemplate> getList() {
-            ArrayList<IgnoreSettings.UserTemplate> list = new ArrayList<IgnoreSettings.UserTemplate>();
+            ArrayList<IgnoreSettings.UserTemplate> list = ContainerUtil.newArrayList();
             for (int i = 0; i < myListModel.size(); i++) {
                 list.add((IgnoreSettings.UserTemplate) myListModel.getElementAt(i));
             }

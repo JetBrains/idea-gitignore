@@ -24,7 +24,6 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.google.common.collect.Sets;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
@@ -300,7 +299,7 @@ public class IgnoreManager extends AbstractProjectComponent {
          * @param file to add
          */
         public void add(@NotNull IgnoreFile file) {
-            final Set<Integer> set = Sets.newHashSet();
+            final Set<Integer> set = ContainerUtil.newHashSet();
 
             file.acceptChildren(new IgnoreVisitor() {
                 @Override
@@ -349,7 +348,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         public void hasChanged(@NotNull IgnoreFile file) {
             final Trinity<Set<Integer>, Set<String>, Set<String>> recent = get(file);
 
-            final Set<Integer> set = Sets.newHashSet();
+            final Set<Integer> set = ContainerUtil.newHashSet();
             file.acceptChildren(new IgnoreVisitor() {
                 @Override
                 public void visitEntry(@NotNull IgnoreEntry entry) {
