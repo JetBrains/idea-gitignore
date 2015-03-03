@@ -66,6 +66,7 @@ public class IgnoreBundle {
             DockerFileType.INSTANCE,
             GitFileType.INSTANCE,
             MercurialFileType.INSTANCE,
+            MonotoneFileType.INSTANCE,
             NpmFileType.INSTANCE
     );
 
