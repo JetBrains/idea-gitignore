@@ -27,6 +27,9 @@ package mobi.hsz.idea.gitignore.psi;
 import com.intellij.psi.PsiElement;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.regex.Pattern;
 
 /**
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
@@ -34,7 +37,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface IgnoreEntryBase extends PsiElement {
 
+    public boolean isNegated();
+
     @NotNull
     public IgnoreBundle.Syntax getSyntax();
+
+    @NotNull
+    public String getValue();
+
+    @Nullable
+    public Pattern getPattern();
 
 }

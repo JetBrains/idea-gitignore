@@ -28,7 +28,7 @@ import com.google.common.collect.Sets;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.Trinity;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vfs.*;
@@ -40,6 +40,7 @@ import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.containers.ConcurrentHashMap;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
@@ -50,10 +51,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.regex.Pattern;
+import java.util.*;
 
 /**
  * {@link IgnoreManager} handles ignore files indexing and status caching.
@@ -182,7 +180,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      */
     public IgnoreManager(@NotNull final Project project) {
         super(project);
-        this.cache = new IgnoreCacheMap();
+        this.cache = new IgnoreCacheMap(project);
         this.statusManager = FileStatusManager.getInstance(project);
         this.baseDir = project.getBaseDir();
         this.psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
@@ -285,9 +283,16 @@ public class IgnoreManager extends AbstractProjectComponent {
     /**
      * {@link ConcurrentHashMap} cache helper.
      */
-    public class IgnoreCacheMap extends ConcurrentHashMap<IgnoreFile, Pair<Set<Integer>, Set<Pattern>>> {
+    public class IgnoreCacheMap extends ConcurrentHashMap<IgnoreFile, Trinity<Set<Integer>, Set<String>, Set<String>>> {
         /** Cache {@link ConcurrentHashMap} to store files statuses. */
         private final ConcurrentHashMap<VirtualFile, Boolean> statuses = new ConcurrentHashMap<VirtualFile, Boolean>();
+
+        /** Current project. */
+        private final Project project;
+
+        public IgnoreCacheMap(Project project) {
+            this.project = project;
+        }
 
         /**
          * Adds new {@link IgnoreFile} to the cache and builds its hashCode and patterns sets.
@@ -296,21 +301,44 @@ public class IgnoreManager extends AbstractProjectComponent {
          */
         public void add(@NotNull IgnoreFile file) {
             final Set<Integer> set = Sets.newHashSet();
-            final Set<Pattern> patterns = Sets.newHashSet();
 
             file.acceptChildren(new IgnoreVisitor() {
                 @Override
                 public void visitEntry(@NotNull IgnoreEntry entry) {
-                    Pattern pattern = Glob.createPattern(entry);
-                    if (pattern == null) {
-                        return;
-                    }
                     set.add(entry.getText().trim().hashCode());
-                    patterns.add(pattern);
                 }
             });
 
-            put(file, Pair.create(set, patterns));
+            add(file, set);
+        }
+
+        /**
+         * Adds new {@link IgnoreFile} to the cache and builds its hashCode and patterns sets.
+         *
+         * @param file to add
+         * @param set entries hashCodes set
+         */
+        public void add(@NotNull IgnoreFile file, Set<Integer> set) {
+
+            final Set<String> ignored = ContainerUtil.newHashSet();
+            final Set<String> unignored = ContainerUtil.newHashSet();
+            final VirtualFile parent = file.getVirtualFile().getParent();
+
+            file.acceptChildren(new IgnoreVisitor() {
+                @Override
+                public void visitEntry(@NotNull IgnoreEntry entry) {
+                    List<String> matched = Glob.findAsPaths(parent, entry, true);
+                    if (!entry.isNegated()) {
+                        ignored.addAll(matched);
+                        unignored.removeAll(matched);
+                    } else {
+                        unignored.addAll(matched);
+                        ignored.removeAll(matched);
+                    }
+                }
+            });
+
+            put(file, Trinity.create(set, ignored, unignored));
         }
 
         /**
@@ -319,7 +347,7 @@ public class IgnoreManager extends AbstractProjectComponent {
          * @param file to check
          */
         public void hasChanged(@NotNull IgnoreFile file) {
-            final Pair<Set<Integer>, Set<Pattern>> recent = get(file);
+            final Trinity<Set<Integer>, Set<String>, Set<String>> recent = get(file);
 
             final Set<Integer> set = Sets.newHashSet();
             file.acceptChildren(new IgnoreVisitor() {
@@ -330,7 +358,7 @@ public class IgnoreManager extends AbstractProjectComponent {
             });
 
             if (recent == null || !set.equals(recent.getFirst())) {
-                add(file);
+                add(file, set);
                 statusManager.fileStatusesChanged();
             }
         }
@@ -342,7 +370,17 @@ public class IgnoreManager extends AbstractProjectComponent {
          * @return file is ignored
          */
         public boolean isFileIgnored(@NotNull VirtualFile file) {
-            for (final IgnoreFile ignoreFile : keySet()) {
+            boolean result = false;
+
+            final List<IgnoreFile> files = Collections.list(keys());
+            ContainerUtil.sort(files, new Comparator<IgnoreFile>() {
+                @Override
+                public int compare(IgnoreFile file1, IgnoreFile file2) {
+                    return StringUtil.naturalCompare(file1.getVirtualFile().getPath(), file2.getVirtualFile().getPath());
+                }
+            });
+
+            for (final IgnoreFile ignoreFile : files) {
                 final VirtualFile ignoreFileParent = ignoreFile.getVirtualFile().getParent();
                 if (!Utils.isUnder(file, ignoreFileParent)) {
                     continue;
@@ -353,15 +391,18 @@ public class IgnoreManager extends AbstractProjectComponent {
                     continue;
                 }
 
-                for (Pattern pattern : get(ignoreFile).getSecond()) {
-                    if (pattern.matcher(path).matches()) {
-                        statuses.put(file, true);
-                        return true;
-                    }
+                Set<String> ignored = get(ignoreFile).getSecond();
+                Set<String> unignored = get(ignoreFile).getThird();
+
+                if (ignored.contains(path)) {
+                    result = true;
+                } else if (unignored.contains(path)) {
+                    result = false;
                 }
             }
-            statuses.put(file, false);
-            return false;
+
+            statuses.put(file, result);
+            return result;
         }
 
         /**

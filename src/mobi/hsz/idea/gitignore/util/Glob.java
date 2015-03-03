@@ -161,7 +161,7 @@ public class Glob {
      */
     @Nullable
     public static Pattern createPattern(@NotNull IgnoreEntry entry) {
-        return createPattern(entry.getText(), entry.getSyntax());
+        return createPattern(entry.getValue(), entry.getSyntax());
     }
 
     /**

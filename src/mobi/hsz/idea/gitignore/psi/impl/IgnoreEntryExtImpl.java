@@ -25,13 +25,18 @@
 package mobi.hsz.idea.gitignore.psi.impl;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.*;
+import mobi.hsz.idea.gitignore.util.Glob;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl {
+import java.util.regex.Pattern;
+
+public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl implements IgnoreEntry {
     public IgnoreEntryExtImpl(ASTNode node) {
         super(node);
     }
@@ -66,5 +71,30 @@ public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl {
             previous = previous.getPrevSibling();
         }
         return ((IgnoreLanguage) getContainingFile().getLanguage()).getDefaultSyntax();
+    }
+
+    /**
+     * Returns entry value without leading `!` if entry is negated.
+     *
+     * @return entry value without `!` negation sign
+     */
+    @NotNull
+    public String getValue() {
+        String value = getText();
+        if (isNegated()) {
+            value = StringUtil.trimStart(value, "!");
+        }
+        return value;
+    }
+
+    /**
+     * Returns entries pattern.
+     *
+     * @return pattern
+     */
+    @Nullable
+    @Override
+    public Pattern getPattern() {
+        return Glob.createPattern(this);
     }
 }
