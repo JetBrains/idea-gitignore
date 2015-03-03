@@ -51,7 +51,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
     /**
      * Current plugin version.
      */
-    private static final String PLUGIN_VERSION = Utils.getPlugin().getVersion();
+    private static final String PLUGIN_VERSION = Utils.getMinorVersion();
 
     /**
      * Notify about missing Gitignore file in the project.

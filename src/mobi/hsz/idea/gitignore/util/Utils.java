@@ -34,6 +34,7 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -263,6 +264,33 @@ public class Utils {
      */
     public static IdeaPluginDescriptor getPlugin() {
         return PluginManager.getPlugin(PluginId.getId(PLUGIN_ID));
+    }
+
+    /**
+     * Returns plugin major version.
+     *
+     * @return major version
+     */
+    public static String getMajorVersion() {
+        return getVersion().split("\\.")[0];
+    }
+
+    /**
+     * Returns plugin minor version.
+     *
+     * @return minor version
+     */
+    public static String getMinorVersion() {
+        return StringUtil.join("1.0.0".split("\\."), 0, 2, ".");
+    }
+
+    /**
+     * Returns plugin version.
+     *
+     * @return version
+     */
+    public static String getVersion() {
+        return getPlugin().getVersion();
     }
 
     /**
