@@ -44,6 +44,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Glob;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
@@ -64,6 +65,7 @@ public class IgnoreManager extends AbstractProjectComponent {
     private final VirtualFile baseDir;
     private final PsiManagerImpl psiManager;
     private final VirtualFileManager virtualFileManager;
+    private boolean working;
 
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
         public boolean wasIgnoreFileType;
@@ -207,7 +209,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @return file is ignored
      */
     public boolean isFileIgnored(final VirtualFile file) {
-        return isParentIgnored(file) || cache.isFileIgnored(file);
+        return isEnabled() && (isParentIgnored(file) || cache.isFileIgnored(file));
     }
 
     /**
@@ -217,7 +219,22 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @return parent is ignored
      */
     public boolean isParentIgnored(final VirtualFile file) {
-        return cache.isParentIgnored(file);
+        return isEnabled() && cache.isParentIgnored(file);
+    }
+
+    /**
+     * Checks if ignored files watching is enabled.
+     *
+     * @return enabled
+     */
+    private boolean isEnabled() {
+        boolean enabled = IgnoreSettings.getInstance().isIgnoredFileStatus();
+        if (enabled && !working) {
+            enable();
+        } else if (!enabled && working) {
+            disable();
+        }
+        return enabled;
     }
 
     /**
@@ -227,11 +244,21 @@ public class IgnoreManager extends AbstractProjectComponent {
      */
     @Override
     public void projectOpened() {
+        if (isEnabled() && !working) {
+            enable();
+        }
+    }
+
+    /**
+     * Enable manager.
+     */
+    private void enable() {
         this.virtualFileManager.addVirtualFileListener(virtualFileListener);
         this.psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
+        this.working = true;
 
         final Timer timer = new Timer();
-        timer.schedule( new TimerTask() {
+        timer.schedule(new TimerTask() {
             public void run() {
                 if (((FileManagerImpl) psiManager.getFileManager()).isInitialized()) {
                     timer.cancel();
@@ -261,6 +288,13 @@ public class IgnoreManager extends AbstractProjectComponent {
      */
     @Override
     public void projectClosed() {
+        disable();
+    }
+
+    /**
+     * Disable manager.
+     */
+    private void disable() {
         this.virtualFileManager.removeVirtualFileListener(virtualFileListener);
         this.psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
         this.cache.clear();

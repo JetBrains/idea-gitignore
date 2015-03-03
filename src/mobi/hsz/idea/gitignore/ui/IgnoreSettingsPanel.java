@@ -75,16 +75,19 @@ public class IgnoreSettingsPanel implements Disposable {
     /** The parent panel for the form. */
     public JPanel panel;
 
-    /** Form element for {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings#missingGitignore}. */
+    /** Form element for {@link IgnoreSettings#missingGitignore}. */
     public JCheckBox missingGitignore;
 
     /** Templates list panel. */
     public TemplatesListPanel templatesListPanel;
 
+    /** Enable ignored file status coloring. */
+    public JCheckBox ignoredFileStatus;
+
     /** Splitter element. */
     private Splitter templatesSplitter;
 
-    /** Link to the Colors & Fonts settings */
+    /** Link to the Colors & Fonts settings. */
     private JLabel editIgnoredFilesTextLabel;
 
     /** Editor panel element. */
@@ -123,6 +126,7 @@ public class IgnoreSettingsPanel implements Disposable {
                 }
             }
         });
+        editIgnoredFilesTextLabel.setBorder(BorderFactory.createEmptyBorder(0, 26, 0, 0));
 
     }
 

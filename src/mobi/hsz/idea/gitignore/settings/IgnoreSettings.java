@@ -59,6 +59,11 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
     private boolean missingGitignore = true;
 
     /**
+     * Enable ignored file status coloring.
+     */
+    private boolean ignoredFileStatus = true;
+
+    /**
      * Shows information about donation.
      */
     private String donationShown = "";
@@ -89,6 +94,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
         final Element element = new Element("IgnoreSettings");
         element.setAttribute("missingGitignore", Boolean.toString(missingGitignore));
         element.setAttribute("donationShown", donationShown);
+        element.setAttribute("ignoredFileStatus", Boolean.toString(ignoredFileStatus));
 
         Element templates = new Element("userTemplates");
         for (UserTemplate userTemplate : userTemplates) {
@@ -116,6 +122,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
         value = element.getAttributeValue("donationShown");
         if (value != null) donationShown = value;
 
+        value = element.getAttributeValue("ignoredFileStatus");
+        if (value != null) ignoredFileStatus = Boolean.parseBoolean(value);
+
         userTemplates.clear();
         Element templates = element.getChild("userTemplates");
         if (templates != null) {
@@ -142,6 +151,24 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      */
     public void setMissingGitignore(boolean missingGitignore) {
         this.missingGitignore = missingGitignore;
+    }
+
+    /**
+     * Check if ignored file status coloring is enabled.
+     *
+     * @return ignored file status coloring is enabled
+     */
+    public boolean isIgnoredFileStatus() {
+        return ignoredFileStatus;
+    }
+
+    /**
+     * Sets ignored file status coloring.
+     *
+     * @param ignoredFileStatus ignored file status coloring
+     */
+    public void setIgnoredFileStatus(boolean ignoredFileStatus) {
+        this.ignoredFileStatus = ignoredFileStatus;
     }
 
     /**
