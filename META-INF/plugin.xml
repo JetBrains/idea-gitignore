@@ -279,7 +279,7 @@
             groupKey="codeInspection.group"
             implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
             key="codeInspection.unusedEntry"
-            level="IGNORE.UNUSED_ENTRY"/>
+            level="UNUSED ENTRY"/>
         <localInspection
             bundle="messages.IgnoreBundle"
             enabledByDefault="true"

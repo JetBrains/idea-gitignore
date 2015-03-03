@@ -45,7 +45,7 @@ import java.util.List;
  * @since 0.5.4
  */
 public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
-    public static final HighlightSeverity UNUSED_ENTRY = new HighlightSeverity("IGNORE.UNUSED_ENTRY", 10);
+    public static final HighlightSeverity UNUSED_ENTRY = new HighlightSeverity("UNUSED ENTRY", 10);
 
     /**
      * Defines the style of matched entry.
@@ -56,10 +56,6 @@ public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
     @Override
     public List<HighlightInfoType> getSeveritiesHighlightInfoTypes() {
         final List<HighlightInfoType> result = ContainerUtil.newArrayList();
-
-        final TextAttributes attributes = new TextAttributes();
-        attributes.setForegroundColor(JBColor.GRAY);
-        attributes.setFontType(Font.ITALIC);
 
         result.add(new HighlightInfoType.HighlightInfoTypeImpl(
                 UNUSED_ENTRY,
