@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.util;
 
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
@@ -160,7 +161,7 @@ public class Glob {
      */
     @Nullable
     public static Pattern createPattern(@NotNull IgnoreEntry entry) {
-        return createPattern(entry.getText(), entry.getSyntax());
+        return createPattern(entry.getValue(), entry.getSyntax());
     }
 
     /**
@@ -180,13 +181,13 @@ public class Glob {
         char[] chars;
         StringBuilder sb = new StringBuilder();
 
-        if (!glob.startsWith("/")) {
-            if (!glob.startsWith("**")) {
+        if (!StringUtil.endsWithChar(glob, '/')) {
+            if (!StringUtil.startsWith(glob, "**")) {
                 sb.append("([^/]*?/)*");
             }
             chars = glob.toCharArray();
         } else {
-            sb.append("^");
+            sb.append('^');
             chars = glob.substring(1).toCharArray();
         }
 
@@ -288,9 +289,9 @@ public class Glob {
         }
 
         if (star || doubleStar) {
-            sb.append("[^/]+");
+            sb.append(StringUtil.endsWithChar(sb, '/') ? "[^/]+" : "[^/]*");
         } else if (sb.charAt(sb.length() - 1) == '/') {
-            sb.append("?");
+            sb.append('?');
         }
         sb.append("/?");
         sb.append('$');
