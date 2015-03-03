@@ -42,6 +42,7 @@ import mobi.hsz.idea.gitignore.util.Glob;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -74,6 +75,9 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
             return null;
         }
 
+        final Set<String> ignored = ContainerUtil.newHashSet();
+        final Set<String> unignored = ContainerUtil.newHashSet();
+
         final ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
         final List<Pair<IgnoreEntry, IgnoreEntry>> entries = ContainerUtil.newArrayList();
         final Map<IgnoreEntry, Set<String>> map = ContainerUtil.newHashMap();
@@ -82,6 +86,22 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 Set<String> matched = ContainerUtil.newHashSet(Glob.findAsPaths(contextDirectory, entry, true));
+                Collection<String> intersection;
+                boolean modified;
+
+                if (!entry.isNegated()) {
+                    ignored.addAll(matched);
+                    intersection = ContainerUtil.intersection(unignored, matched);
+                    modified = unignored.removeAll(intersection);
+                } else {
+                    unignored.addAll(matched);
+                    intersection = ContainerUtil.intersection(ignored, matched);
+                    modified = ignored.removeAll(intersection);
+                }
+
+                if (modified) {
+                    return;
+                }
 
                 for (IgnoreEntry recent : map.keySet()) {
                     Set<String> recentValues = map.get(recent);
@@ -89,23 +109,16 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
                         continue;
                     }
 
-                    /**
-                     * TODO:
-                     * It should choose highlighting element smarter.
-                     * In the ideal world more concrete pattern should be highlighted.
-                     * E.g. given following structure:
-                     * root
-                     *   - dir
-                     *     - file.txt
-                     *
-                     * 'dir/f*' and dir/* match the same set of files, so at the moment the _latest_in_file_ will
-                     * be always highlighted. Meanwhile 'dir/*' is wider so it should have priority regardless of
-                     * position in file.
-                     */
-                    if (recentValues.containsAll(matched)) {
-                        entries.add(Pair.create(recent, entry));
-                    } else if (matched.containsAll(recentValues)) {
-                        entries.add(Pair.create(entry, recent));
+                    if (entry.isNegated() == recent.isNegated()) {
+                        if (recentValues.containsAll(matched)) {
+                            entries.add(Pair.create(recent, entry));
+                        } else if (matched.containsAll(recentValues)) {
+                            entries.add(Pair.create(entry, recent));
+                        }
+                    } else {
+                        if (intersection.containsAll(recentValues)) {
+                            entries.add(Pair.create(entry, recent));
+                        }
                     }
                 }
 
