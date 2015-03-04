@@ -21,6 +21,7 @@ files in your project. It supports following JetBrains IDEs:
 
 - Android Studio
 - AppCode
+- CLion
 - IntelliJ IDEA
 - PhpStorm
 - PyCharm
