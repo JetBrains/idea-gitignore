@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -47,6 +47,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+      Version 1.0.2
+      <ul>
+        <li>CLion VerifyError hotfix (<a href="https://github.com/hsz/idea-gitignore/issues/89">#89</a>)</li>
+      </ul>
 
       Version 1.0.1
       <ul>
