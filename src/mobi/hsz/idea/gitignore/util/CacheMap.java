@@ -37,6 +37,7 @@ import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -141,7 +142,7 @@ public class CacheMap {
     public boolean isFileIgnored(@NotNull VirtualFile file) {
         boolean result = false;
 
-        final List<IgnoreFile> files = ContainerUtil.newArrayList();
+        final List<IgnoreFile> files = Collections.list(map.keys());
         ContainerUtil.sort(files, new Comparator<IgnoreFile>() {
             @Override
             public int compare(IgnoreFile file1, IgnoreFile file2) {
