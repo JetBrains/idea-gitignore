@@ -27,9 +27,6 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Trinity;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vfs.*;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiTreeChangeAdapter;
@@ -38,20 +35,16 @@ import com.intellij.psi.impl.PsiManagerImpl;
 import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.containers.ConcurrentHashMap;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
-import mobi.hsz.idea.gitignore.util.Glob;
-import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.CacheMap;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * {@link IgnoreManager} handles ignore files indexing and status caching.
@@ -60,9 +53,7 @@ import java.util.*;
  * @since 1.0
  */
 public class IgnoreManager extends AbstractProjectComponent {
-    private final IgnoreCacheMap cache;
-    private final FileStatusManager statusManager;
-    private final VirtualFile baseDir;
+    private final CacheMap cache;
     private final PsiManagerImpl psiManager;
     private final VirtualFileManager virtualFileManager;
     private boolean working;
@@ -124,7 +115,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
 
         /**
-         * Adds {@link IgnoreFile} to the {@link IgnoreCacheMap}.
+         * Adds {@link IgnoreFile} to the {@link CacheMap}.
          */
         private void addFile(VirtualFileEvent event) {
             if (isIgnoreFileType(event)) {
@@ -136,7 +127,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
 
         /**
-         * Removes {@link IgnoreFile} from the {@link IgnoreCacheMap}.
+         * Removes {@link IgnoreFile} from the {@link CacheMap}.
          */
         private void removeFile(VirtualFileEvent event) {
             if (isIgnoreFileType(event)) {
@@ -181,9 +172,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      */
     public IgnoreManager(@NotNull final Project project) {
         super(project);
-        this.cache = new IgnoreCacheMap(project);
-        this.statusManager = FileStatusManager.getInstance(project);
-        this.baseDir = project.getBaseDir();
+        this.cache = new CacheMap(project);
         this.psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
         this.virtualFileManager = VirtualFileManager.getInstance();
     }
@@ -311,157 +300,5 @@ public class IgnoreManager extends AbstractProjectComponent {
     @Override
     public String getComponentName() {
         return "IgnoreManager";
-    }
-
-    /**
-     * {@link ConcurrentHashMap} cache helper.
-     */
-    public class IgnoreCacheMap extends ConcurrentHashMap<IgnoreFile, Trinity<Set<Integer>, Set<String>, Set<String>>> {
-        /** Cache {@link ConcurrentHashMap} to store files statuses. */
-        private final ConcurrentHashMap<VirtualFile, Boolean> statuses = new ConcurrentHashMap<VirtualFile, Boolean>();
-
-        /** Current project. */
-        private final Project project;
-
-        public IgnoreCacheMap(Project project) {
-            this.project = project;
-        }
-
-        /**
-         * Adds new {@link IgnoreFile} to the cache and builds its hashCode and patterns sets.
-         *
-         * @param file to add
-         */
-        public void add(@NotNull IgnoreFile file) {
-            final Set<Integer> set = ContainerUtil.newHashSet();
-
-            file.acceptChildren(new IgnoreVisitor() {
-                @Override
-                public void visitEntry(@NotNull IgnoreEntry entry) {
-                    set.add(entry.getText().trim().hashCode());
-                }
-            });
-
-            add(file, set);
-        }
-
-        /**
-         * Adds new {@link IgnoreFile} to the cache and builds its hashCode and patterns sets.
-         *
-         * @param file to add
-         * @param set entries hashCodes set
-         */
-        public void add(@NotNull IgnoreFile file, Set<Integer> set) {
-
-            final Set<String> ignored = ContainerUtil.newHashSet();
-            final Set<String> unignored = ContainerUtil.newHashSet();
-            final VirtualFile parent = file.getVirtualFile().getParent();
-
-            file.acceptChildren(new IgnoreVisitor() {
-                @Override
-                public void visitEntry(@NotNull IgnoreEntry entry) {
-                    List<String> matched = Glob.findAsPaths(parent, entry, true);
-                    if (!entry.isNegated()) {
-                        ignored.addAll(matched);
-                        unignored.removeAll(matched);
-                    } else {
-                        unignored.addAll(matched);
-                        ignored.removeAll(matched);
-                    }
-                }
-            });
-
-            put(file, Trinity.create(set, ignored, unignored));
-        }
-
-        /**
-         * Checks if {@link IgnoreFile} has changed and rebuilds its cache.
-         *
-         * @param file to check
-         */
-        public void hasChanged(@NotNull IgnoreFile file) {
-            final Trinity<Set<Integer>, Set<String>, Set<String>> recent = get(file);
-
-            final Set<Integer> set = ContainerUtil.newHashSet();
-            file.acceptChildren(new IgnoreVisitor() {
-                @Override
-                public void visitEntry(@NotNull IgnoreEntry entry) {
-                    set.add(entry.getText().trim().hashCode());
-                }
-            });
-
-            if (recent == null || !set.equals(recent.getFirst())) {
-                add(file, set);
-                statusManager.fileStatusesChanged();
-            }
-        }
-
-        /**
-         * Checks if given {@link VirtualFile} is ignored.
-         *
-         * @param file to check
-         * @return file is ignored
-         */
-        public boolean isFileIgnored(@NotNull VirtualFile file) {
-            boolean result = false;
-
-            final List<IgnoreFile> files = Collections.list(keys());
-            ContainerUtil.sort(files, new Comparator<IgnoreFile>() {
-                @Override
-                public int compare(IgnoreFile file1, IgnoreFile file2) {
-                    return StringUtil.naturalCompare(file1.getVirtualFile().getPath(), file2.getVirtualFile().getPath());
-                }
-            });
-
-            for (final IgnoreFile ignoreFile : files) {
-                final VirtualFile ignoreFileParent = ignoreFile.getVirtualFile().getParent();
-                if (!Utils.isUnder(file, ignoreFileParent)) {
-                    continue;
-                }
-
-                final String path = Utils.getRelativePath(ignoreFileParent, file);
-                if (StringUtil.isEmpty(path)) {
-                    continue;
-                }
-
-                Set<String> ignored = get(ignoreFile).getSecond();
-                Set<String> unignored = get(ignoreFile).getThird();
-
-                if (ignored.contains(path)) {
-                    result = true;
-                } else if (unignored.contains(path)) {
-                    result = false;
-                }
-            }
-
-            statuses.put(file, result);
-            return result;
-        }
-
-        /**
-         * Checks if any of the file parents is ignored.
-         *
-         * @param file to check
-         * @return any of the parents is ignored
-         */
-        public boolean isParentIgnored(@NotNull VirtualFile file) {
-            VirtualFile parent = file.getParent();
-            while (parent != null && !parent.equals(baseDir)) {
-                if (statuses.containsKey(parent) && statuses.get(parent)) {
-                    return true;
-                }
-                parent = parent.getParent();
-            }
-            return false;
-        }
-
-        /**
-         * Clears cache.
-         */
-        @Override
-        public void clear() {
-            super.clear();
-            this.statuses.clear();
-        }
     }
 }

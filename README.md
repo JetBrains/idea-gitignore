@@ -91,6 +91,10 @@ Changelog
 
 Version 1.0.1
 
+- CLion VerifyError hotfix ([#89](https://github.com/hsz/idea-gitignore/issues/89))
+
+Version 1.0.1
+
 - Allow enable/disable coloring ignored files ([#87](https://github.com/hsz/idea-gitignore/issues/87))
 - Cover inspection respects negated entries
 - Wrong ignore indicator with nested entries fix ([#85](https://github.com/hsz/idea-gitignore/issues/85))
