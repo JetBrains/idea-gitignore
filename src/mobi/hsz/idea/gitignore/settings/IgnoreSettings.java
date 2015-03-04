@@ -29,6 +29,7 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +54,11 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      */
     private static final String PLUGIN_VERSION = Utils.getMinorVersion();
 
+    private static final UserTemplate DEFAULT_TEMPLATE = new UserTemplate(
+            IgnoreBundle.message("settings.userTemplates.default.name"),
+            IgnoreBundle.message("settings.userTemplates.default.content")
+    );
+
     /**
      * Notify about missing Gitignore file in the project.
      */
@@ -71,7 +77,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
     /**
      * Lists all user defined templates.
      */
-    private final List<UserTemplate> userTemplates = ContainerUtil.newArrayList();
+    private final List<UserTemplate> userTemplates = ContainerUtil.newArrayList(DEFAULT_TEMPLATE);
 
     /**
      * Get the instance of this service.
@@ -125,9 +131,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
         value = element.getAttributeValue("ignoredFileStatus");
         if (value != null) ignoredFileStatus = Boolean.parseBoolean(value);
 
-        userTemplates.clear();
         Element templates = element.getChild("userTemplates");
         if (templates != null) {
+            userTemplates.clear();
             for (Element template : templates.getChildren()) {
                 userTemplates.add(new UserTemplate(template.getAttributeValue("name"), template.getText()));
             }
