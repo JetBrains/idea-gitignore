@@ -90,7 +90,7 @@ Usage
 Changelog
 ---------
 
-Version 1.0.1
+Version 1.0.2
 
 - CLion VerifyError hotfix ([#89](https://github.com/hsz/idea-gitignore/issues/89))
 
