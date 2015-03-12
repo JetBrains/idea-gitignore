@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.ui;
 
+import com.intellij.application.options.colors.NewColorAndFontPanel;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
@@ -48,11 +49,11 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.components.labels.LinkLabel;
 import com.intellij.ui.components.labels.LinkListener;
-import com.intellij.ui.navigation.Place;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -113,21 +114,23 @@ public class IgnoreSettingsPanel implements Disposable {
             @Override
             public void linkSelected(LinkLabel aSource, Object aLinkData) {
                 final OptionsEditor optionsEditor = OptionsEditor.KEY.getData(DataManager.getInstance().getDataContext(panel));
+
                 if (optionsEditor != null) {
                     SearchableConfigurable configurable = optionsEditor.findConfigurableById(FILE_STATUS_CONFIGURABLE_ID);
                     if (configurable != null) {
-
-                        Place place = new Place();
-                        place.putPath("configurable", configurable);
-                        place.putPath("filter", IgnoreBundle.PLUGIN_NAME);
-
-                        optionsEditor.navigateTo(place, true);
+                        optionsEditor.select(configurable);
+                        NewColorAndFontPanel colorAndFontPanel = ((NewColorAndFontPanel) configurable.createComponent());
+                        if (colorAndFontPanel != null) {
+                            Runnable showOption = colorAndFontPanel.showOption(IgnoreFileStatusProvider.IGNORED.getId());
+                            if (showOption != null) {
+                                showOption.run();
+                            }
+                        }
                     }
                 }
             }
         });
         editIgnoredFilesTextLabel.setBorder(BorderFactory.createEmptyBorder(0, 26, 0, 0));
-
     }
 
     /**

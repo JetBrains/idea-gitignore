@@ -31,6 +31,7 @@ import com.intellij.openapi.vfs.*;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiTreeChangeAdapter;
 import com.intellij.psi.PsiTreeChangeEvent;
+import com.intellij.psi.PsiTreeChangeListener;
 import com.intellij.psi.impl.PsiManagerImpl;
 import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
@@ -146,7 +147,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
     };
 
-    private final com.intellij.psi.PsiTreeChangeListener psiTreeChangeListener = new PsiTreeChangeAdapter() {
+    private final PsiTreeChangeListener psiTreeChangeListener = new PsiTreeChangeAdapter() {
         @Override
         public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
             if (event.getParent() instanceof IgnoreFile) {
