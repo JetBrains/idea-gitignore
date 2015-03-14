@@ -36,6 +36,7 @@ import com.intellij.psi.impl.PsiManagerImpl;
 import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.util.Alarm;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
@@ -43,9 +44,6 @@ import mobi.hsz.idea.gitignore.util.CacheMap;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * {@link IgnoreManager} handles ignore files indexing and status caching.
@@ -57,6 +55,7 @@ public class IgnoreManager extends AbstractProjectComponent {
     private final CacheMap cache;
     private final PsiManagerImpl psiManager;
     private final VirtualFileManager virtualFileManager;
+    private final Alarm alarm = new Alarm();
     private boolean working;
 
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
@@ -247,11 +246,11 @@ public class IgnoreManager extends AbstractProjectComponent {
         this.psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
         this.working = true;
 
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        alarm.addRequest(new Runnable() {
+            @Override
             public void run() {
                 if (((FileManagerImpl) psiManager.getFileManager()).isInitialized()) {
-                    timer.cancel();
+                    alarm.cancelAllRequests();
 
                     ApplicationManager.getApplication().runReadAction(new Runnable() {
                         public void run() {
@@ -268,7 +267,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                     });
                 }
             }
-        }, 0, 200);
+        }, 200);
     }
 
     /**
