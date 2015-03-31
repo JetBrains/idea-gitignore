@@ -112,7 +112,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
         int count = countFiles();
 
         if (count == 0) {
-            actions = new AnAction[]{ new IgnoreFileAction() };
+            actions = new AnAction[0];
         } else {
             actions = new AnAction[count];
 
