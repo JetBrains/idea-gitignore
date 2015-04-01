@@ -164,7 +164,7 @@ public class Utils {
     public static List<VirtualFile> getSuitableIgnoreFiles(@NotNull Project project, @NotNull IgnoreFileType fileType, @NotNull VirtualFile file)
             throws ExternalFileException {
         List<VirtualFile> files = ContainerUtil.newArrayList();
-        if (file.getCanonicalPath() == null || !VfsUtilCore.isAncestor(project.getBaseDir(), file, true)) {
+        if (file.getCanonicalPath() == null || project.getBaseDir() == null || !VfsUtilCore.isAncestor(project.getBaseDir(), file, true)) {
             throw new ExternalFileException();
         }
         VirtualFile baseDir = project.getBaseDir();
