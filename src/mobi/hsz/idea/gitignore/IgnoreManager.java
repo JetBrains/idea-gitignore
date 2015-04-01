@@ -198,17 +198,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @return file is ignored
      */
     public boolean isFileIgnored(final VirtualFile file) {
-        return isEnabled() && (isParentIgnored(file) || cache.isFileIgnored(file));
-    }
-
-    /**
-     * Checks if parent directory is ignored.
-     *
-     * @param file current file
-     * @return parent is ignored
-     */
-    public boolean isParentIgnored(final VirtualFile file) {
-        return isEnabled() && cache.isParentIgnored(file);
+        return isEnabled() && cache.isFileIgnored(file);
     }
 
     /**

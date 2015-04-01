@@ -25,7 +25,7 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Trinity;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -37,10 +37,8 @@ import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * {@link ConcurrentHashMap} cache helper.
@@ -49,16 +47,21 @@ import java.util.Set;
  * @since 1.0.2
  */
 public class CacheMap {
-    private final ConcurrentHashMap<IgnoreFile, Trinity<Set<Integer>, Set<String>, Set<String>>> map = new ConcurrentHashMap<IgnoreFile, Trinity<Set<Integer>, Set<String>, Set<String>>>();
+    private final ConcurrentHashMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Pattern, Boolean>>>> map = new ConcurrentHashMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Pattern, Boolean>>>>();
 
     /** Cache {@link ConcurrentHashMap} to store files statuses. */
-    private final HashMap<VirtualFile, Boolean> statuses = new HashMap<VirtualFile, Boolean>();
+    private final HashMap<VirtualFile, Status> statuses = new HashMap<VirtualFile, Status>();
 
     /** Current project. */
     private final Project project;
 
     /** {@link FileStatusManager} instance. */
     private final FileStatusManager statusManager;
+
+    /** Status of the file. */
+    private enum Status {
+        IGNORED, UNIGNORED, UNTOUCHED
+    }
 
     public CacheMap(Project project) {
         this.project = project;
@@ -90,25 +93,19 @@ public class CacheMap {
      * @param set entries hashCodes set
      */
     public void add(@NotNull IgnoreFile file, Set<Integer> set) {
-        final Set<String> ignored = ContainerUtil.newHashSet();
-        final Set<String> unignored = ContainerUtil.newHashSet();
-        final VirtualFile parent = file.getVirtualFile().getParent();
+        final List<Pair<Pattern, Boolean>> patterns = ContainerUtil.newArrayList();
 
         file.acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
-                List<String> matched = Glob.findAsPaths(parent, entry, true);
-                if (!entry.isNegated()) {
-                    ignored.addAll(matched);
-                    unignored.removeAll(matched);
-                } else {
-                    unignored.addAll(matched);
-                    ignored.removeAll(matched);
+                Pattern pattern = Glob.createPattern(entry);
+                if (pattern != null) {
+                    patterns.add(Pair.create(pattern, entry.isNegated()));
                 }
             }
         });
 
-        map.put(file, Trinity.create(set, ignored, unignored));
+        map.put(file, Pair.create(set, patterns));
     }
 
     /**
@@ -117,7 +114,7 @@ public class CacheMap {
      * @param file to check
      */
     public void hasChanged(@NotNull IgnoreFile file) {
-        final Trinity<Set<Integer>, Set<String>, Set<String>> recent = map.get(file);
+        final Pair<Set<Integer>, List<Pair<Pattern, Boolean>>> recent = map.get(file);
 
         final Set<Integer> set = ContainerUtil.newHashSet();
         file.acceptChildren(new IgnoreVisitor() {
@@ -129,6 +126,7 @@ public class CacheMap {
 
         if (recent == null || !set.equals(recent.getFirst())) {
             add(file, set);
+            statuses.clear();
             statusManager.fileStatusesChanged();
         }
     }
@@ -140,7 +138,16 @@ public class CacheMap {
      * @return file is ignored
      */
     public boolean isFileIgnored(@NotNull VirtualFile file) {
-        boolean result = false;
+        Status status = statuses.get(file);
+
+        if (status == null || status.equals(Status.UNTOUCHED)) {
+            status = getParentStatus(file);
+            statuses.put(file, status);
+        }
+
+        if (!status.equals(Status.UNTOUCHED)) {
+            return status.equals(Status.IGNORED);
+        }
 
         final List<IgnoreFile> files = Collections.list(map.keys());
         ContainerUtil.sort(files, new Comparator<IgnoreFile>() {
@@ -161,35 +168,39 @@ public class CacheMap {
                 continue;
             }
 
-            Set<String> ignored = map.get(ignoreFile).getSecond();
-            Set<String> unignored = map.get(ignoreFile).getThird();
+            List<Pair<Pattern, Boolean>> patterns = map.get(ignoreFile).getSecond();
+            for (Pair<Pattern, Boolean> pair : ContainerUtil.reverse(patterns)) {
+                if (pair.getFirst().matcher(path).matches()) {
+                    status = pair.getSecond() ? Status.UNIGNORED : Status.IGNORED;
+                    break;
+                }
+            }
 
-            if (ignored.contains(path)) {
-                result = true;
-            } else if (unignored.contains(path)) {
-                result = false;
+            if (!status.equals(Status.UNTOUCHED)) {
+                break;
             }
         }
 
-        statuses.put(file, result);
-        return result;
+        statuses.put(file, status);
+        return status.equals(Status.IGNORED);
     }
 
     /**
-     * Checks if any of the file parents is ignored.
+     * Returns the status of the parent.
      *
      * @param file to check
      * @return any of the parents is ignored
      */
-    public boolean isParentIgnored(@NotNull VirtualFile file) {
+    @NotNull
+    public Status getParentStatus(@NotNull VirtualFile file) {
         VirtualFile parent = file.getParent();
         while (parent != null && !parent.equals(project.getBaseDir())) {
-            if (statuses.containsKey(parent) && statuses.get(parent)) {
-                return true;
+            if (statuses.containsKey(parent)) {
+                return statuses.get(parent);
             }
             parent = parent.getParent();
         }
-        return false;
+        return Status.UNTOUCHED;
     }
 
     /**
@@ -206,7 +217,7 @@ public class CacheMap {
      * @param file to remove
      * @return removed value
      */
-    public Trinity<Set<Integer>, Set<String>, Set<String>> remove(IgnoreFile file) {
+    public Pair<Set<Integer>, List<Pair<Pattern, Boolean>>> remove(IgnoreFile file) {
         return map.remove(file);
     }
 }
