@@ -30,6 +30,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.util.Listenable;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +48,7 @@ import java.util.List;
         name = "IgnoreSettings",
         storages = @Storage(id = "other", file = "$APP_CONFIG$/ignore.xml")
 )
-public class IgnoreSettings implements PersistentStateComponent<Element> {
+public class IgnoreSettings implements PersistentStateComponent<Element>, Listenable<IgnoreSettings.Listener> {
 
     /**
      * Current plugin version.
@@ -78,6 +79,11 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      * Lists all user defined templates.
      */
     private final List<UserTemplate> userTemplates = ContainerUtil.newArrayList(DEFAULT_TEMPLATE);
+
+    /**
+     * Listeners list.
+     */
+    private final List<Listener> listeners = ContainerUtil.newArrayList();
 
     /**
      * Get the instance of this service.
@@ -156,6 +162,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      * @param missingGitignore notify about missing Gitignore file in the project
      */
     public void setMissingGitignore(boolean missingGitignore) {
+        this.notifyOnChange("missingGitignore", this.missingGitignore, missingGitignore);
         this.missingGitignore = missingGitignore;
     }
 
@@ -174,6 +181,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      * @param ignoredFileStatus ignored file status coloring
      */
     public void setIgnoredFileStatus(boolean ignoredFileStatus) {
+        this.notifyOnChange("ignoredFileStatus", this.ignoredFileStatus, ignoredFileStatus);
         this.ignoredFileStatus = ignoredFileStatus;
     }
 
@@ -190,6 +198,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      * Sets {@link #donationShown} to the {@link #PLUGIN_VERSION} value.
      */
     public void setDonationShown() {
+        this.notifyOnChange("donationShown", this.donationShown, PLUGIN_VERSION);
         this.donationShown = PLUGIN_VERSION;
     }
 
@@ -208,8 +217,51 @@ public class IgnoreSettings implements PersistentStateComponent<Element> {
      * @param userTemplates user templates
      */
     public void setUserTemplates(@NotNull List<UserTemplate> userTemplates) {
+        this.notifyOnChange("userTemplates", this.userTemplates, userTemplates);
         this.userTemplates.clear();
         this.userTemplates.addAll(userTemplates);
+    }
+
+    /**
+     * Add the given listener. The listener will be executed in the containing instance's thread.
+     *
+     * @param listener listener to add
+     */
+    @Override
+    public void addListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * Remove the given listener.
+     *
+     * @param listener listener to remove
+     */
+    @Override
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
+    }
+
+    /**
+     * Notifies listeners about the changes.
+     *
+     * @param key changed property key
+     * @param oldValue new value
+     * @param newValue new value
+     */
+    private void notifyOnChange(String key, Object oldValue, Object newValue) {
+        if (!newValue.equals(oldValue)) {
+            for (Listener listener : listeners) {
+                listener.onChange(key, newValue);
+            }
+        }
+    }
+
+    /**
+     * Listener interface for onChange event.
+     */
+    public static interface Listener {
+        public void onChange(@NotNull String key, Object value);
     }
 
     /**

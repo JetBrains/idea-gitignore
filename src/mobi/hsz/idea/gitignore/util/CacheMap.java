@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.util;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
@@ -37,7 +38,10 @@ import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -73,10 +77,10 @@ public class CacheMap {
      *
      * @param file to add
      */
-    public void add(@NotNull IgnoreFile file) {
+    public void add(@NotNull final IgnoreFile file) {
         final Set<Integer> set = ContainerUtil.newHashSet();
 
-        file.acceptChildren(new IgnoreVisitor() {
+        runVisitorInReadAction(file, new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 set.add(entry.getText().trim().hashCode());
@@ -92,10 +96,10 @@ public class CacheMap {
      * @param file to add
      * @param set entries hashCodes set
      */
-    public void add(@NotNull IgnoreFile file, Set<Integer> set) {
+    public void add(@NotNull final IgnoreFile file, Set<Integer> set) {
         final List<Pair<Pattern, Boolean>> patterns = ContainerUtil.newArrayList();
 
-        file.acceptChildren(new IgnoreVisitor() {
+        runVisitorInReadAction(file, new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 Pattern pattern = Glob.createPattern(entry);
@@ -106,6 +110,8 @@ public class CacheMap {
         });
 
         map.put(file, Pair.create(set, patterns));
+        statuses.clear();
+        statusManager.fileStatusesChanged();
     }
 
     /**
@@ -126,9 +132,21 @@ public class CacheMap {
 
         if (recent == null || !set.equals(recent.getFirst())) {
             add(file, set);
-            statuses.clear();
-            statusManager.fileStatusesChanged();
         }
+    }
+
+    /**
+     * Simple wrapper for running read action
+     *
+     * @param file    {@ling IgnoreFile} to run visitor on it
+     * @param visitor {@link IgnoreVisitor}
+     */
+    private void runVisitorInReadAction(final IgnoreFile file, final IgnoreVisitor visitor) {
+        ApplicationManager.getApplication().runReadAction(new Runnable() {
+            public void run() {
+                file.acceptChildren(visitor);
+            }
+        });
     }
 
     /**
@@ -207,8 +225,9 @@ public class CacheMap {
      * Clears cache.
      */
     public void clear() {
-        this.map.clear();
-        this.statuses.clear();
+        map.clear();
+        statuses.clear();
+        statusManager.fileStatusesChanged();
     }
 
     /**

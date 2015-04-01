@@ -24,8 +24,10 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.progress.BackgroundTaskQueue;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.*;
 import com.intellij.psi.PsiManager;
@@ -41,6 +43,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.CacheMap;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,6 +59,8 @@ public class IgnoreManager extends AbstractProjectComponent {
     private final PsiManagerImpl psiManager;
     private final VirtualFileManager virtualFileManager;
     private final Alarm alarm = new Alarm();
+    private final BackgroundTaskQueue queue;
+    private final IgnoreSettings settings;
     private boolean working;
 
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
@@ -175,6 +180,21 @@ public class IgnoreManager extends AbstractProjectComponent {
         this.cache = new CacheMap(project);
         this.psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
         this.virtualFileManager = VirtualFileManager.getInstance();
+        this.queue = new BackgroundTaskQueue(project, IgnoreBundle.message("cache.indexing"));
+        this.settings = IgnoreSettings.getInstance();
+
+        this.settings.addListener(new IgnoreSettings.Listener() {
+            @Override
+            public void onChange(@NotNull String key, Object value) {
+                if ("ignoredFileStatus".equals(key)) {
+                    if ((Boolean) value) {
+                        enable();
+                    } else {
+                        disable();
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -207,7 +227,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @return enabled
      */
     private boolean isEnabled() {
-        boolean enabled = IgnoreSettings.getInstance().isIgnoredFileStatus();
+        boolean enabled = settings.isIgnoredFileStatus();
         if (enabled && !working) {
             enable();
         } else if (!enabled && working) {
@@ -242,20 +262,24 @@ public class IgnoreManager extends AbstractProjectComponent {
             public void run() {
                 if (((FileManagerImpl) psiManager.getFileManager()).isInitialized()) {
                     alarm.cancelAllRequests();
+                    queue.clear();
 
-                    ApplicationManager.getApplication().runReadAction(new Runnable() {
-                        public void run() {
-                            GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
-                            for (IgnoreFileType type : IgnoreBundle.FILE_TYPES) {
-                                for (VirtualFile virtualFile : FileTypeIndex.getFiles(type, scope)) {
-                                    IgnoreFile file = getIgnoreFile(virtualFile);
-                                    if (file != null) {
+                    final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
+                    for (final IgnoreFileType type : IgnoreBundle.FILE_TYPES) {
+                        for (VirtualFile virtualFile : FileTypeIndex.getFiles(type, scope)) {
+                            final IgnoreFile file = getIgnoreFile(virtualFile);
+                            if (file != null) {
+                                queue.run(new Task.Backgroundable(myProject, IgnoreBundle.message("cache.indexing")) {
+                                    @Override
+                                    public void run(@NotNull ProgressIndicator indicator) {
+                                        String path = Utils.getRelativePath(myProject.getBaseDir(), file.getVirtualFile());
+                                        indicator.setText(path);
                                         cache.add(file);
                                     }
-                                }
+                                });
                             }
                         }
-                    });
+                    }
                 }
             }
         }, 200);
@@ -278,6 +302,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         this.virtualFileManager.removeVirtualFileListener(virtualFileListener);
         this.psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
         this.cache.clear();
+        this.working = false;
     }
 
     /**
