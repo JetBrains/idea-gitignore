@@ -153,7 +153,7 @@ public class CacheMap {
         ContainerUtil.sort(files, new Comparator<IgnoreFile>() {
             @Override
             public int compare(IgnoreFile file1, IgnoreFile file2) {
-                return StringUtil.naturalCompare(file1.getVirtualFile().getPath(), file2.getVirtualFile().getPath());
+                return StringUtil.naturalCompare(file1.getVirtualFile().getPath(), file2.getVirtualFile().getPath()) * -1;
             }
         });
 
