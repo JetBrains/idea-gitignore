@@ -236,6 +236,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         this.psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
         this.working = true;
 
+        alarm.cancelAllRequests();
         alarm.addRequest(new Runnable() {
             @Override
             public void run() {
