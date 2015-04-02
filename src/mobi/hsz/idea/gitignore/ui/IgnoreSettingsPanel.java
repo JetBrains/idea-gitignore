@@ -43,6 +43,7 @@ import com.intellij.openapi.options.newEditor.OptionsEditor;
 import com.intellij.openapi.ui.InputValidatorEx;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.Splitter;
+import com.intellij.openapi.util.ActionCallback;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.AddEditDeleteListPanel;
 import com.intellij.ui.components.JBLabel;
@@ -116,14 +117,15 @@ public class IgnoreSettingsPanel implements Disposable {
                 final OptionsEditor optionsEditor = OptionsEditor.KEY.getData(DataManager.getInstance().getDataContext(panel));
 
                 if (optionsEditor != null) {
-                    SearchableConfigurable configurable = optionsEditor.findConfigurableById(FILE_STATUS_CONFIGURABLE_ID);
+                    final SearchableConfigurable configurable = optionsEditor.findConfigurableById(FILE_STATUS_CONFIGURABLE_ID);
                     if (configurable != null) {
-                        optionsEditor.select(configurable);
-                        NewColorAndFontPanel colorAndFontPanel = ((NewColorAndFontPanel) configurable.createComponent());
+                        final NewColorAndFontPanel colorAndFontPanel = ((NewColorAndFontPanel) configurable.createComponent());
+                        ActionCallback callback = optionsEditor.select(configurable);
+
                         if (colorAndFontPanel != null) {
-                            Runnable showOption = colorAndFontPanel.showOption(IgnoreFileStatusProvider.IGNORED.getId());
+                            final Runnable showOption = colorAndFontPanel.showOption(IgnoreFileStatusProvider.IGNORED.getId());
                             if (showOption != null) {
-                                showOption.run();
+                                callback.doWhenDone(showOption);
                             }
                         }
                     }
