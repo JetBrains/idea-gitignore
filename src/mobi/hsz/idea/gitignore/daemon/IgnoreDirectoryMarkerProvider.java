@@ -27,12 +27,14 @@ package mobi.hsz.idea.gitignore.daemon;
 import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.PlatformIcons;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryDirectory;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryFile;
 import mobi.hsz.idea.gitignore.util.Glob;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,6 +61,10 @@ public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
         if (!isDirectory && element instanceof IgnoreEntryFile) {
             IgnoreEntryFile entry = (IgnoreEntryFile) element;
             VirtualFile parent = element.getContainingFile().getVirtualFile().getParent();
+            Project project = element.getProject();
+            if (!Utils.isUnder(parent, project.getBaseDir())) {
+                return null;
+            }
             List<VirtualFile> files = Glob.find(parent, entry);
             for (VirtualFile file : files) {
                 if (!file.isDirectory()) {
