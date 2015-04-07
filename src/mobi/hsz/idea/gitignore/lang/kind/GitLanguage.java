@@ -54,6 +54,9 @@ public class GitLanguage extends IgnoreLanguage {
     /** The outer file. */
     public static VirtualFile OUTER_FILE;
 
+    /** Flag to mark that outer file was fetched. */
+    private static boolean OUTER_FILE_FETCHED = false;
+
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private GitLanguage() {
         super("Git", "gitignore", Icons.GIT);
@@ -73,7 +76,7 @@ public class GitLanguage extends IgnoreLanguage {
     @Nullable
     @Override
     public VirtualFile getOuterFile() {
-        if (OUTER_FILE != null) {
+        if (OUTER_FILE_FETCHED) {
             return OUTER_FILE;
         }
         if (Utils.isGitPluginEnabled()) {
@@ -84,12 +87,15 @@ public class GitLanguage extends IgnoreLanguage {
                     pr.waitFor();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
                     String path = Utils.resolveUserDir(reader.readLine());
-                    OUTER_FILE = VfsUtil.findFileByIoFile(new File(path), true);
+                    if (StringUtil.isNotEmpty(path)) {
+                        OUTER_FILE = VfsUtil.findFileByIoFile(new File(path), true);
+                    }
                 }
                 catch (IOException ignored) {}
                 catch (InterruptedException ignored) {}
             }
         }
+        OUTER_FILE_FETCHED = true;
         return OUTER_FILE;
     }
 
