@@ -66,11 +66,11 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
     @Nullable
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        if (!(file instanceof IgnoreFile) || !Utils.isUnder(file.getVirtualFile(), file.getProject().getBaseDir())) {
+        final VirtualFile virtualFile = file.getVirtualFile();
+        if (!(file instanceof IgnoreFile) || !Utils.isInProject(virtualFile, file.getProject())) {
             return null;
         }
 
-        final VirtualFile virtualFile = file.getVirtualFile();
         final VirtualFile contextDirectory = virtualFile.getParent();
         if (contextDirectory == null) {
             return null;

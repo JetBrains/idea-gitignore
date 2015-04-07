@@ -32,12 +32,8 @@ import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.editor.EditorSettings;
-import com.intellij.openapi.editor.colors.EditorColors;
-import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
-import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.options.newEditor.OptionsEditor;
 import com.intellij.openapi.ui.InputValidatorEx;
@@ -52,8 +48,8 @@ import com.intellij.ui.components.labels.LinkLabel;
 import com.intellij.ui.components.labels.LinkListener;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -85,6 +81,9 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /** Enable ignored file status coloring. */
     public JCheckBox ignoredFileStatus;
+
+    /** Enable outer ignore rules. */
+    public JCheckBox outerIgnoreRules;
 
     /** Splitter element. */
     private Splitter templatesSplitter;
@@ -135,34 +134,11 @@ public class IgnoreSettingsPanel implements Disposable {
         editIgnoredFilesTextLabel.setBorder(BorderFactory.createEmptyBorder(0, 26, 0, 0));
     }
 
-    /**
-     * Creates and configures template preview editor.
-     *
-     * @param document virtual editor document
-     * @return editor
-     */
-    @NotNull
-    private static Editor createPreviewEditor(@NotNull Document document) {
-        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, null, IgnoreFileType.INSTANCE, false);
-        final EditorSettings settings = editor.getSettings();
-        settings.setLineNumbersShown(false);
-        settings.setAdditionalLinesCount(1);
-        settings.setAdditionalColumnsCount(1);
-        settings.setRightMarginShown(false);
-        settings.setFoldingOutlineShown(false);
-        settings.setLineMarkerAreaShown(false);
-        settings.setIndentGuidesShown(false);
-        settings.setVirtualSpace(false);
-        settings.setWheelFontChangeEnabled(false);
-
-        EditorColorsScheme colorsScheme = editor.getColorsScheme();
-        colorsScheme.setColor(EditorColors.CARET_ROW_COLOR, null);
-        return editor;
-    }
-
     @Override
     public void dispose() {
-        EditorFactory.getInstance().releaseEditor(editorPanel.preview);
+        if (!editorPanel.preview.isDisposed()) {
+            EditorFactory.getInstance().releaseEditor(editorPanel.preview);
+        }
     }
 
     /**
@@ -335,7 +311,7 @@ public class IgnoreSettingsPanel implements Disposable {
             super(new BorderLayout());
             this.previewDocument = EditorFactory.getInstance().createDocument("");
             this.label = new JBLabel(IgnoreBundle.message("settings.userTemplates.noTemplateSelected"), JBLabel.CENTER);
-            this.preview = createPreviewEditor(previewDocument);
+            this.preview = Utils.createPreviewEditor(previewDocument, null, false);
             this.preview.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
                 public void beforeDocumentChange(DocumentEvent event) {

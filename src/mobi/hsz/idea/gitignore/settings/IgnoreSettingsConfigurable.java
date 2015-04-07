@@ -97,6 +97,7 @@ public class IgnoreSettingsConfigurable implements Configurable {
                 || settingsPanel.missingGitignore == null || settings.isMissingGitignore() != settingsPanel.missingGitignore.isSelected()
                 || settingsPanel.templatesListPanel == null || !Utils.equalLists(settings.getUserTemplates(), settingsPanel.templatesListPanel.getList())
                 || settingsPanel.ignoredFileStatus == null || settings.isIgnoredFileStatus() != settingsPanel.ignoredFileStatus.isSelected()
+                || settingsPanel.outerIgnoreRules == null || settings.isOuterIgnoreRules() != settingsPanel.outerIgnoreRules.isSelected()
                 ;
     }
 
@@ -109,6 +110,7 @@ public class IgnoreSettingsConfigurable implements Configurable {
         settings.setMissingGitignore(settingsPanel.missingGitignore != null && settingsPanel.missingGitignore.isSelected());
         settings.setUserTemplates(settingsPanel.templatesListPanel.getList());
         settings.setIgnoredFileStatus(settingsPanel.ignoredFileStatus != null && settingsPanel.ignoredFileStatus.isSelected());
+        settings.setOuterIgnoreRules(settingsPanel.outerIgnoreRules != null && settingsPanel.outerIgnoreRules.isSelected());
     }
 
     /**
@@ -120,6 +122,7 @@ public class IgnoreSettingsConfigurable implements Configurable {
         if (settingsPanel.missingGitignore != null) settingsPanel.missingGitignore.setSelected(settings.isMissingGitignore());
         if (settingsPanel.templatesListPanel != null) settingsPanel.templatesListPanel.resetFrom(settings.getUserTemplates());
         if (settingsPanel.ignoredFileStatus != null) settingsPanel.ignoredFileStatus.setSelected(settings.isIgnoredFileStatus());
+        if (settingsPanel.outerIgnoreRules != null) settingsPanel.outerIgnoreRules.setSelected(settings.isOuterIgnoreRules());
     }
 
     /**

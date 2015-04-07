@@ -33,10 +33,6 @@ import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.editor.EditorSettings;
-import com.intellij.openapi.editor.colors.EditorColors;
-import com.intellij.openapi.editor.colors.EditorColorsScheme;
-import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.markup.HighlighterTargetArea;
 import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.project.Project;
@@ -51,7 +47,6 @@ import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
-import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.util.Resources;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -188,7 +183,7 @@ public class GeneratorDialog extends DialogWrapper {
 
         final JBPanel treePanel = new JBPanel(new BorderLayout());
         previewDocument = EditorFactory.getInstance().createDocument("");
-        preview = createPreviewEditor(project, previewDocument);
+        preview = Utils.createPreviewEditor(previewDocument, project, true);
 
         splitter.setFirstComponent(treePanel);
         splitter.setSecondComponent(preview.getComponent());
@@ -203,33 +198,6 @@ public class GeneratorDialog extends DialogWrapper {
         treePanel.add(northPanel, BorderLayout.NORTH);
 
         return centerPanel;
-    }
-
-    /**
-     * Creates and configures Editor panel for template preview with syntax highlight.
-     *
-     * @param project  current working project
-     * @param document current working document
-     * @return editor
-     */
-    @NotNull
-    private static Editor createPreviewEditor(@NotNull Project project, @NotNull Document document) {
-        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, project, IgnoreFileType.INSTANCE, true);
-        final EditorSettings settings = editor.getSettings();
-        settings.setLineNumbersShown(false);
-        settings.setAdditionalLinesCount(1);
-        settings.setAdditionalColumnsCount(1);
-        settings.setRightMarginShown(false);
-        settings.setFoldingOutlineShown(false);
-        settings.setLineMarkerAreaShown(false);
-        settings.setIndentGuidesShown(false);
-        settings.setVirtualSpace(false);
-        settings.setWheelFontChangeEnabled(false);
-        editor.setCaretEnabled(false);
-
-        EditorColorsScheme colorsScheme = editor.getColorsScheme();
-        colorsScheme.setColor(EditorColors.CARET_ROW_COLOR, null);
-        return editor;
     }
 
     /**

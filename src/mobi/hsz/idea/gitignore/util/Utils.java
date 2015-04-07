@@ -25,7 +25,15 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
 import com.intellij.ide.plugins.PluginManager;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.EditorSettings;
+import com.intellij.openapi.editor.colors.EditorColors;
+import com.intellij.openapi.editor.colors.EditorColorsScheme;
+import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileTypes.FileType;
@@ -336,5 +344,79 @@ public class Utils {
             parent = parent.getParent();
         }
         return false;
+    }
+
+    /**
+     * Checks if file is in project directory.
+     *
+     * @param file     file
+     * @param project project
+     * @return file is under directory
+     */
+    public static boolean isInProject(@NotNull final VirtualFile file, @NotNull final Project project) {
+        return isUnder(file, project.getBaseDir()) || StringUtil.startsWith(file.getUrl(), "temp://");
+    }
+
+    /**
+     * Creates and configures template preview editor.
+     *
+     * @param document virtual editor document
+     * @param project current project
+     * @return editor
+     */
+    @NotNull
+    public static Editor createPreviewEditor(@NotNull Document document, @Nullable Project project, boolean isViewer) {
+        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, project, IgnoreFileType.INSTANCE, isViewer);
+        editor.setCaretEnabled(!isViewer);
+
+        final EditorSettings settings = editor.getSettings();
+        settings.setLineNumbersShown(false);
+        settings.setAdditionalColumnsCount(1);
+        settings.setAdditionalLinesCount(0);
+        settings.setRightMarginShown(false);
+        settings.setFoldingOutlineShown(false);
+        settings.setLineMarkerAreaShown(false);
+        settings.setIndentGuidesShown(false);
+        settings.setVirtualSpace(false);
+        settings.setWheelFontChangeEnabled(false);
+
+        EditorColorsScheme colorsScheme = editor.getColorsScheme();
+        colorsScheme.setColor(EditorColors.CARET_ROW_COLOR, null);
+
+        return editor;
+    }
+
+    /**
+     * Checks if specified plugin is enabled.
+     *
+     * @param id plugin id
+     * @return plugin is enabled
+     */
+    private static boolean isPluginEnabled(@NotNull String id) {
+        IdeaPluginDescriptor p = PluginManager.getPlugin(PluginId.getId(id));
+        return p instanceof IdeaPluginDescriptorImpl && ((IdeaPluginDescriptorImpl) p).isEnabled();
+    }
+
+    /**
+     * Checks if Git plugin is enabled.
+     *
+     * @return Git plugin is enabled
+     */
+    public static boolean isGitPluginEnabled() {
+        return isPluginEnabled("Git4Idea");
+    }
+
+    /**
+     * Resolves user directory with the <code>user.home</code> property.
+     *
+     * @param path path with leading ~
+     * @return resolved path
+     */
+    public static String resolveUserDir(@Nullable String path) {
+        if (StringUtil.startsWithChar(path, '~')) {
+            assert path != null;
+            path = System.getProperty("user.home") + path.substring(1);
+        }
+        return path;
     }
 }

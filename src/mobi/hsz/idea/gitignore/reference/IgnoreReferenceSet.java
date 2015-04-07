@@ -33,7 +33,9 @@ import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.util.Glob;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -181,13 +183,24 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         @Override
         protected void innerResolveInContext(@NotNull String text, @NotNull PsiFileSystemItem context, final Collection<ResolveResult> result, boolean caseSensitive) {
             super.innerResolveInContext(text, context, result, caseSensitive);
-            VirtualFile contextVirtualFile = context.getVirtualFile();
+            VirtualFile contextVirtualFile;
+            boolean isOuterFile = isOuterFile((IgnoreFile) getContainingFile());
+
+            if (isOuterFile) {
+                contextVirtualFile = getElement().getProject().getBaseDir();
+                result.clear();
+            } else if (getContainingFile() != null && Utils.isInProject(getContainingFile().getVirtualFile(), getElement().getProject())) {
+                contextVirtualFile = context.getVirtualFile();
+            } else {
+                return;
+            }
+
             if (contextVirtualFile != null) {
                 IgnoreEntry entry = (IgnoreEntry) getFileReferenceSet().getElement();
                 final Pattern pattern = Glob.createPattern(getCanonicalText(), entry.getSyntax());
                 if (pattern != null) {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
-                    final VirtualFile root = (parent != null) ? parent.getVirtualFile() : null;
+                    final VirtualFile root = isOuterFile ? contextVirtualFile : ( (parent != null) ? parent.getVirtualFile() : null );
                     final PsiManager manager = getElement().getManager();
 
                     VfsUtil.visitChildrenRecursively(contextVirtualFile, new VirtualFileVisitor(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
@@ -209,6 +222,17 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     });
                 }
             }
+        }
+
+        /**
+         * Checks if {@link IgnoreFile} is defined as an outer rules file.
+         *
+         * @param file current file
+         * @return is outer file
+         */
+        private boolean isOuterFile(IgnoreFile file) {
+            VirtualFile outerFile = ((IgnoreFileType) file.getFileType()).getIgnoreLanguage().getOuterFile();
+            return outerFile != null && outerFile.equals(file.getVirtualFile());
         }
 
         /**

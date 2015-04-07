@@ -25,10 +25,21 @@
 package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.lang.Language;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFile;
+import git4idea.config.GitVcsApplicationSettings;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Gitignore {@link Language} definition.
@@ -40,6 +51,9 @@ public class GitLanguage extends IgnoreLanguage {
     /** The {@link GitLanguage} instance. */
     public static final GitLanguage INSTANCE = new GitLanguage();
 
+    /** The outer file. */
+    public static VirtualFile OUTER_FILE;
+
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private GitLanguage() {
         super("Git", "gitignore", Icons.GIT);
@@ -49,6 +63,34 @@ public class GitLanguage extends IgnoreLanguage {
     @Override
     public IgnoreFileType getFileType() {
         return GitFileType.INSTANCE;
+    }
+
+    /**
+     * Returns path to the global excludes file.
+     *
+     * @return excludes file path
+     */
+    @Nullable
+    @Override
+    public VirtualFile getOuterFile() {
+        if (OUTER_FILE != null) {
+            return OUTER_FILE;
+        }
+        if (Utils.isGitPluginEnabled()) {
+            final String bin = GitVcsApplicationSettings.getInstance().getPathToGit();
+            if (StringUtil.isNotEmpty(bin)) {
+                try {
+                    Process pr = Runtime.getRuntime().exec(bin + " config --global core.excludesfile");
+                    pr.waitFor();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                    String path = Utils.resolveUserDir(reader.readLine());
+                    OUTER_FILE = VfsUtil.findFileByIoFile(new File(path), true);
+                }
+                catch (IOException ignored) {}
+                catch (InterruptedException ignored) {}
+            }
+        }
+        return OUTER_FILE;
     }
 
     /** The Git specific directory. */

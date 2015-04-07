@@ -145,6 +145,15 @@ public class IgnoreFile extends PsiFileImpl {
     }
 
     /**
+     * Checks if current file is the language outer file.
+     *
+     * @return is outer file
+     */
+    public boolean isOuter() {
+        return getVirtualFile().equals(fileType.getIgnoreLanguage().getOuterFile());
+    }
+
+    /**
      * Returns @{link IgnoreFileType} string interpretation.
      *
      * @return string interpretation

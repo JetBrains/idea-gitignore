@@ -71,6 +71,11 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     private boolean ignoredFileStatus = true;
 
     /**
+     * Enable outer ignore rules.
+     */
+    private boolean outerIgnoreRules = true;
+
+    /**
      * Shows information about donation.
      */
     private String donationShown = "";
@@ -107,6 +112,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute("missingGitignore", Boolean.toString(missingGitignore));
         element.setAttribute("donationShown", donationShown);
         element.setAttribute("ignoredFileStatus", Boolean.toString(ignoredFileStatus));
+        element.setAttribute("outerIgnoreRules", Boolean.toString(outerIgnoreRules));
 
         Element templates = new Element("userTemplates");
         for (UserTemplate userTemplate : userTemplates) {
@@ -136,6 +142,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
         value = element.getAttributeValue("ignoredFileStatus");
         if (value != null) ignoredFileStatus = Boolean.parseBoolean(value);
+
+        value = element.getAttributeValue("outerIgnoreRules");
+        if (value != null) outerIgnoreRules = Boolean.parseBoolean(value);
 
         Element templates = element.getChild("userTemplates");
         if (templates != null) {
@@ -183,6 +192,25 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     public void setIgnoredFileStatus(boolean ignoredFileStatus) {
         this.notifyOnChange("ignoredFileStatus", this.ignoredFileStatus, ignoredFileStatus);
         this.ignoredFileStatus = ignoredFileStatus;
+    }
+
+    /**
+     * Check if outer ignore rules is enabled.
+     *
+     * @return ignored file status coloring is enabled
+     */
+    public boolean isOuterIgnoreRules() {
+        return outerIgnoreRules;
+    }
+
+    /**
+     * Sets outer ignore rules.
+     *
+     * @param outerIgnoreRules ignored file status coloring
+     */
+    public void setOuterIgnoreRules(boolean outerIgnoreRules) {
+        this.notifyOnChange("outerIgnoreRules", this.outerIgnoreRules, outerIgnoreRules);
+        this.outerIgnoreRules = outerIgnoreRules;
     }
 
     /**

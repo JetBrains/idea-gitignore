@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.lang;
 
 import com.intellij.lang.Language;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileViewProvider;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -122,5 +123,15 @@ public class IgnoreLanguage extends Language {
     @NotNull
     public IgnoreBundle.Syntax getDefaultSyntax() {
         return IgnoreBundle.Syntax.GLOB;
+    }
+
+    /**
+     * Returns path to the global excludes file.
+     *
+     * @return excludes file path
+     */
+    @Nullable
+    public VirtualFile getOuterFile() {
+        return null;
     }
 }

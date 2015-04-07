@@ -186,7 +186,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         this.settings.addListener(new IgnoreSettings.Listener() {
             @Override
             public void onChange(@NotNull String key, Object value) {
-                if ("ignoredFileStatus".equals(key)) {
+                if ("ignoredFileStatus".equals(key) || "outerIgnoreRules".equals(key)) {
                     if ((Boolean) value) {
                         enable();
                     } else {
@@ -264,23 +264,43 @@ public class IgnoreManager extends AbstractProjectComponent {
                     alarm.cancelAllRequests();
                     queue.clear();
 
+                    // Search for Ignore files in the project
                     final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
                     for (final IgnoreFileType type : IgnoreBundle.FILE_TYPES) {
                         for (VirtualFile virtualFile : FileTypeIndex.getFiles(type, scope)) {
-                            final IgnoreFile file = getIgnoreFile(virtualFile);
-                            if (file != null) {
-                                queue.run(new Task.Backgroundable(myProject, IgnoreBundle.message("cache.indexing")) {
-                                    @Override
-                                    public void run(@NotNull ProgressIndicator indicator) {
-                                        String path = Utils.getRelativePath(myProject.getBaseDir(), file.getVirtualFile());
-                                        indicator.setText(path);
-                                        cache.add(file);
-                                    }
-                                });
+                            addTaskFor(getIgnoreFile(virtualFile));
+                        }
+                    }
+
+                    // Search for outer files
+                    if (settings.isOuterIgnoreRules()) {
+                        for (IgnoreFileType fileType : IgnoreBundle.FILE_TYPES) {
+                            VirtualFile outerFile = fileType.getIgnoreLanguage().getOuterFile();
+                            if (outerFile != null) {
+                                addTaskFor((IgnoreFile) psiManager.findFile(outerFile));
                             }
                         }
                     }
                 }
+            }
+
+            /**
+             * Adds {@link IgnoreFile} to the cache processor queue.
+             *
+             * @param file to cache
+             */
+            private void addTaskFor(@Nullable final IgnoreFile file) {
+                if (file == null) {
+                    return;
+                }
+                queue.run(new Task.Backgroundable(myProject, IgnoreBundle.message("cache.indexing")) {
+                    @Override
+                    public void run(@NotNull ProgressIndicator indicator) {
+                        String path = Utils.getRelativePath(myProject.getBaseDir(), file.getVirtualFile());
+                        indicator.setText(path);
+                        cache.add(file);
+                    }
+                });
             }
         }, 200);
     }

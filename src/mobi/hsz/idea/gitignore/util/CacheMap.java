@@ -176,12 +176,13 @@ public class CacheMap {
         });
 
         for (final IgnoreFile ignoreFile : files) {
+            boolean outer = ignoreFile.isOuter();
             final VirtualFile ignoreFileParent = ignoreFile.getVirtualFile().getParent();
-            if (!Utils.isUnder(file, ignoreFileParent)) {
+            if (!Utils.isUnder(file, ignoreFileParent) && !outer) {
                 continue;
             }
 
-            final String path = Utils.getRelativePath(ignoreFileParent, file);
+            final String path = Utils.getRelativePath(outer ? project.getBaseDir() : ignoreFileParent, file);
             if (StringUtil.isEmpty(path)) {
                 continue;
             }
