@@ -104,7 +104,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 return;
             }
 
-            VirtualFile outerFile = ((IgnoreFileType) file.getFileType()).getIgnoreLanguage().getOuterFile();
+            VirtualFile outerFile = ((IgnoreFileType) file.getFileType()).getIgnoreLanguage().getOuterFile(project);
 
             if (outerFile == null || outerFile.equals(file)) {
                 return;

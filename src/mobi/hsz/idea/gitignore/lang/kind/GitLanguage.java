@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -33,6 +34,7 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -70,11 +72,12 @@ public class GitLanguage extends IgnoreLanguage {
     /**
      * Returns path to the global excludes file.
      *
+     * @param project current project
      * @return excludes file path
      */
     @Nullable
     @Override
-    public VirtualFile getOuterFile() {
+    public VirtualFile getOuterFile(@NotNull final Project project) {
         if (OUTER_FILE_FETCHED) {
             return OUTER_FILE;
         }

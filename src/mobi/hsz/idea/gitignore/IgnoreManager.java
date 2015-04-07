@@ -275,7 +275,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                     // Search for outer files
                     if (settings.isOuterIgnoreRules()) {
                         for (IgnoreFileType fileType : IgnoreBundle.FILE_TYPES) {
-                            VirtualFile outerFile = fileType.getIgnoreLanguage().getOuterFile();
+                            VirtualFile outerFile = fileType.getIgnoreLanguage().getOuterFile(myProject);
                             if (outerFile != null) {
                                 addTaskFor((IgnoreFile) psiManager.findFile(outerFile));
                             }

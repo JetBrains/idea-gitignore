@@ -16,6 +16,8 @@ Introduction
 - `.bzrignore` (Bazaar)
 - `.boringignore` (Darcs)
 - `.mtn-ignore` (Monotone)
+- `ignore-glob` (Fossil)
+- `.jshintignore` (JSHint)
 
 files in your project. It supports following JetBrains IDEs:
 

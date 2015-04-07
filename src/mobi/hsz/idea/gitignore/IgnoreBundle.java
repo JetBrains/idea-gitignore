@@ -64,6 +64,7 @@ public class IgnoreBundle {
             CvsFileType.INSTANCE,
             DarcsFileType.INSTANCE,
             DockerFileType.INSTANCE,
+            FossilFileType.INSTANCE,
             GitFileType.INSTANCE,
             JSHintFileType.INSTANCE,
             MercurialFileType.INSTANCE,

@@ -56,6 +56,9 @@ public class Icons {
     /** Git icon. */
     public static final Icon GIT = IconLoader.getIcon("/icons/icon_git.png");
 
+    /** Fossil icon. */
+    public static final Icon FOSSIL = IconLoader.getIcon("/icons/icon_fossil.png");
+
     /** Mercurial icon. */
     public static final Icon MERCURIAL = IconLoader.getIcon("/icons/icon_mercurial.png");
 

@@ -150,7 +150,7 @@ public class IgnoreFile extends PsiFileImpl {
      * @return is outer file
      */
     public boolean isOuter() {
-        return getVirtualFile().equals(fileType.getIgnoreLanguage().getOuterFile());
+        return getVirtualFile().equals(fileType.getIgnoreLanguage().getOuterFile(getProject()));
     }
 
     /**

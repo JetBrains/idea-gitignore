@@ -231,7 +231,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
          * @return is outer file
          */
         private boolean isOuterFile(IgnoreFile file) {
-            VirtualFile outerFile = ((IgnoreFileType) file.getFileType()).getIgnoreLanguage().getOuterFile();
+            VirtualFile outerFile = ((IgnoreFileType) file.getFileType()).getIgnoreLanguage().getOuterFile(file.getProject());
             return outerFile != null && outerFile.equals(file.getVirtualFile());
         }
 
