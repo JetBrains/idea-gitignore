@@ -98,15 +98,9 @@ public class IgnoreSettingsPanel implements Disposable {
     private void createUIComponents() {
         templatesListPanel = new TemplatesListPanel();
         editorPanel = new EditorPanel();
+        editorPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 200));
 
-        templatesSplitter = new Splitter(false, 0.3f) {
-            @Override
-            public Dimension getMinimumSize() {
-                Dimension dimension = super.getMinimumSize();
-                dimension.height = 300;
-                return dimension;
-            }
-        };
+        templatesSplitter = new Splitter(false, 0.3f);
         templatesSplitter.setFirstComponent(templatesListPanel);
         templatesSplitter.setSecondComponent(editorPanel);
 
