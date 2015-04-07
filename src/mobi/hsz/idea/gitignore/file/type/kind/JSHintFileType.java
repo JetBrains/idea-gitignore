@@ -22,31 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.kind;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.BazaarFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.lang.kind.JSHintLanguage;
 
 /**
- * Bazaar {@link IgnoreLanguage} definition.
+ * Describes JSHint file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.9
+ * @since 1.1
  */
-public class BazaarLanguage extends IgnoreLanguage {
-    /** The {@link BazaarLanguage} instance. */
-    public static final BazaarLanguage INSTANCE = new BazaarLanguage();
+public class JSHintFileType extends IgnoreFileType {
+    /** Contains {@link JSHintFileType} singleton. */
+    public static final JSHintFileType INSTANCE = new JSHintFileType();
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private BazaarLanguage() {
-        super("Bazaar", "bzrignore", Icons.BAZAAR);
-    }
-
-    /** Language file type. */
-    @Override
-    public IgnoreFileType getFileType() {
-        return BazaarFileType.INSTANCE;
+    /** Private constructor to prevent direct object creation. */
+    private JSHintFileType() {
+        super(JSHintLanguage.INSTANCE);
     }
 }

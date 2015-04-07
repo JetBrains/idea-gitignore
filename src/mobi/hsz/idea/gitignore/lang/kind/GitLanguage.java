@@ -24,7 +24,6 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
-import com.intellij.lang.Language;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -42,7 +41,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Gitignore {@link Language} definition.
+ * Gitignore {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.1

@@ -65,6 +65,7 @@ public class IgnoreBundle {
             DarcsFileType.INSTANCE,
             DockerFileType.INSTANCE,
             GitFileType.INSTANCE,
+            JSHintFileType.INSTANCE,
             MercurialFileType.INSTANCE,
             MonotoneFileType.INSTANCE,
             NpmFileType.INSTANCE

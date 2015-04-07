@@ -59,6 +59,9 @@ public class Icons {
     /** Mercurial icon. */
     public static final Icon MERCURIAL = IconLoader.getIcon("/icons/icon_mercurial.png");
 
+    /** JSHint icon. */
+    public static final Icon JSHINT = IconLoader.getIcon("/icons/icon_jshint.png");
+
     /** Monotone icon. */
     public static final Icon MONOTONE = IconLoader.getIcon("/icons/icon_monotone.png");
 
