@@ -98,6 +98,8 @@ public class IgnoreSettingsConfigurable implements Configurable {
                 || settingsPanel.templatesListPanel == null || !Utils.equalLists(settings.getUserTemplates(), settingsPanel.templatesListPanel.getList())
                 || settingsPanel.ignoredFileStatus == null || settings.isIgnoredFileStatus() != settingsPanel.ignoredFileStatus.isSelected()
                 || settingsPanel.outerIgnoreRules == null || settings.isOuterIgnoreRules() != settingsPanel.outerIgnoreRules.isSelected()
+                || settingsPanel.languagesTable == null
+                    || !((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).equalSettings(settings.getLanguagesSettings())
                 ;
     }
 
@@ -111,6 +113,7 @@ public class IgnoreSettingsConfigurable implements Configurable {
         settings.setUserTemplates(settingsPanel.templatesListPanel.getList());
         settings.setIgnoredFileStatus(settingsPanel.ignoredFileStatus != null && settingsPanel.ignoredFileStatus.isSelected());
         settings.setOuterIgnoreRules(settingsPanel.outerIgnoreRules != null && settingsPanel.outerIgnoreRules.isSelected());
+        settings.setLanguagesSettings(((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).getSettings());
     }
 
     /**
@@ -120,9 +123,13 @@ public class IgnoreSettingsConfigurable implements Configurable {
     public void reset() {
         if (settingsPanel == null) return;
         if (settingsPanel.missingGitignore != null) settingsPanel.missingGitignore.setSelected(settings.isMissingGitignore());
-        if (settingsPanel.templatesListPanel != null) settingsPanel.templatesListPanel.resetFrom(settings.getUserTemplates());
+        if (settingsPanel.templatesListPanel != null) settingsPanel.templatesListPanel.resetForm(settings.getUserTemplates());
         if (settingsPanel.ignoredFileStatus != null) settingsPanel.ignoredFileStatus.setSelected(settings.isIgnoredFileStatus());
         if (settingsPanel.outerIgnoreRules != null) settingsPanel.outerIgnoreRules.setSelected(settings.isOuterIgnoreRules());
+        if (settingsPanel.languagesTable != null) {
+            IgnoreSettingsPanel.LanguagesTableModel model = (IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel();
+            model.update(settings.getLanguagesSettings().clone());
+        }
     }
 
     /**

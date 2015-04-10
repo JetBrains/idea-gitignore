@@ -30,13 +30,17 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Listenable;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Persistent global settings object for the Ignore plugin.
@@ -74,6 +78,18 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Enable outer ignore rules.
      */
     private boolean outerIgnoreRules = true;
+
+    /**
+     * Settings related to the {@link IgnoreLanguage}.
+     */
+    private IgnoreLanguagesSettings languagesSettings = new IgnoreLanguagesSettings() {{
+        for (IgnoreLanguage fileType : IgnoreBundle.LANGUAGES) {
+            put(fileType, new HashMap<KEY, Object>() {{
+                put(KEY.NEW_FILE, true);
+                put(KEY.ENABLE, true);
+            }});
+        }
+    }};
 
     /**
      * Shows information about donation.
@@ -114,6 +130,17 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute("ignoredFileStatus", Boolean.toString(ignoredFileStatus));
         element.setAttribute("outerIgnoreRules", Boolean.toString(outerIgnoreRules));
 
+        Element languagesElement = new Element("languages");
+        for (Map.Entry<IgnoreLanguage, HashMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
+            Element languageElement = new Element("language");
+            languageElement.setAttribute("id", entry.getKey().getID());
+            for (Map.Entry<IgnoreLanguagesSettings.KEY, Object> data : entry.getValue().entrySet()) {
+                languageElement.setAttribute(data.getKey().name(), data.getValue().toString());
+            }
+            languagesElement.addContent(languageElement);
+        }
+        element.addContent(languagesElement);
+
         Element templates = new Element("userTemplates");
         for (UserTemplate userTemplate : userTemplates) {
             Element templateElement = new Element("template");
@@ -145,6 +172,20 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
         value = element.getAttributeValue("outerIgnoreRules");
         if (value != null) outerIgnoreRules = Boolean.parseBoolean(value);
+
+        Element languagesElement = element.getChild("languages");
+        if (languagesElement != null) {
+            languagesSettings.clear();
+            for (Element languageElement : languagesElement.getChildren()) {
+                HashMap<IgnoreLanguagesSettings.KEY, Object> data = ContainerUtil.newHashMap();
+                for (IgnoreLanguagesSettings.KEY key : IgnoreLanguagesSettings.KEY.values()) {
+                    data.put(key, languageElement.getAttributeValue(key.name()));
+                }
+                String id = languageElement.getAttributeValue("id");
+                IgnoreLanguage language = IgnoreBundle.LANGUAGES.get(id);
+                languagesSettings.put(language, data);
+            }
+        }
 
         Element templates = element.getChild("userTemplates");
         if (templates != null) {
@@ -214,6 +255,25 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     }
 
     /**
+     * Gets the {@link IgnoreLanguage} settings.
+     *
+     * @return fileType settings
+     */
+    public IgnoreLanguagesSettings getLanguagesSettings() {
+        return languagesSettings;
+    }
+
+    /**
+     * Sets the {@link IgnoreLanguage} settings.
+     *
+     * @param languagesSettings languagesSettings
+     */
+    public void setLanguagesSettings(IgnoreLanguagesSettings languagesSettings) {
+        this.notifyOnChange("languages", this.languagesSettings, languagesSettings);
+        this.languagesSettings = languagesSettings;
+    }
+
+    /**
      * Shows information about donation.
      *
      * @return {@link #donationShown} equals to the {@link #PLUGIN_VERSION}
@@ -273,7 +333,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     /**
      * Notifies listeners about the changes.
      *
-     * @param key changed property key
+     * @param key      changed property key
      * @param oldValue new value
      * @param newValue new value
      */
@@ -296,10 +356,14 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * User defined template model.
      */
     public static class UserTemplate {
-        /** Template name. */
+        /**
+         * Template name.
+         */
         private String name = "";
 
-        /** Template content. */
+        /**
+         * Template content.
+         */
         private String content = "";
 
         public UserTemplate() {
@@ -383,6 +447,30 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
             UserTemplate t = (UserTemplate) obj;
             return (getName() != null && getName().equals(t.getName()) || (getName() == null && t.getName() == null))
                     && (getContent() != null && getContent().equals(t.getContent()) || (getContent() == null && t.getContent() == null));
+        }
+    }
+
+    public static class IgnoreLanguagesSettings extends LinkedHashMap<IgnoreLanguage, HashMap<IgnoreLanguagesSettings.KEY, Object>> {
+        public enum KEY {
+            NEW_FILE, ENABLE
+        }
+
+        /**
+         * Returns a shallow copy of this <tt>HashMap</tt> instance: the keys and
+         * values themselves are not cloned.
+         *
+         * @return a shallow copy of this map
+         */
+        @Override
+        public IgnoreLanguagesSettings clone() {
+            IgnoreLanguagesSettings copy = (IgnoreLanguagesSettings) super.clone();
+            for (HashMap.Entry<IgnoreLanguage, HashMap<IgnoreLanguagesSettings.KEY, Object>> entry : copy.entrySet()) {
+                @SuppressWarnings("unchecked")
+                HashMap<IgnoreLanguagesSettings.KEY, Object> data = (HashMap<KEY, Object>) entry.getValue().clone();
+
+                copy.put(entry.getKey(), data);
+            }
+            return copy;
         }
     }
 }

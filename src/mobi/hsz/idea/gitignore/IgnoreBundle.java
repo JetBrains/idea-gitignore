@@ -26,11 +26,14 @@ package mobi.hsz.idea.gitignore;
 
 import com.intellij.CommonBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.*;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.*;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.PropertyKey;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -58,19 +61,19 @@ public class IgnoreBundle {
     }
 
     /** Available {@link IgnoreFileType} instances. */
-    public static final List<IgnoreFileType> FILE_TYPES = Arrays.asList(
-            BazaarFileType.INSTANCE,
-            ChefFileType.INSTANCE,
-            CvsFileType.INSTANCE,
-            DarcsFileType.INSTANCE,
-            DockerFileType.INSTANCE,
-            FossilFileType.INSTANCE,
-            GitFileType.INSTANCE,
-            JSHintFileType.INSTANCE,
-            MercurialFileType.INSTANCE,
-            MonotoneFileType.INSTANCE,
-            NpmFileType.INSTANCE
-    );
+    public static final IgnoreLanguages LANGUAGES = new IgnoreLanguages(Arrays.asList(
+            BazaarLanguage.INSTANCE,
+            ChefLanguage.INSTANCE,
+            CvsLanguage.INSTANCE,
+            DarcsLanguage.INSTANCE,
+            DockerLanguage.INSTANCE,
+            FossilLanguage.INSTANCE,
+            GitLanguage.INSTANCE,
+            JSHintLanguage.INSTANCE,
+            MercurialLanguage.INSTANCE,
+            MonotoneLanguage.INSTANCE,
+            NpmLanguage.INSTANCE
+    ));
 
     /** Available syntax list. */
     public static enum Syntax {
@@ -116,5 +119,24 @@ public class IgnoreBundle {
 
     public static String messageOrDefault(@PropertyKey(resourceBundle = BUNDLE_NAME) String key, String defaultValue, Object... params) {
         return CommonBundle.messageOrDefault(BUNDLE, key, defaultValue, params);
+    }
+
+    /**
+     * Simple {@link ArrayList} with method to find {@link IgnoreLanguage} by its name.
+     */
+    public static class IgnoreLanguages extends ArrayList<IgnoreLanguage> {
+        public IgnoreLanguages(List<IgnoreLanguage> languages) {
+            super(languages);
+        }
+
+        @Nullable
+        public IgnoreLanguage get(@NotNull final String id) {
+            for (IgnoreLanguage language : this) {
+                if (id.equals(language.getID())) {
+                    return language;
+                }
+            }
+            return null;
+        }
     }
 }

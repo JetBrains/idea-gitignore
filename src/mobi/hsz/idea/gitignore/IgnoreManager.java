@@ -40,6 +40,7 @@ import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Alarm;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.CacheMap;
@@ -266,16 +267,16 @@ public class IgnoreManager extends AbstractProjectComponent {
 
                     // Search for Ignore files in the project
                     final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
-                    for (final IgnoreFileType type : IgnoreBundle.FILE_TYPES) {
-                        for (VirtualFile virtualFile : FileTypeIndex.getFiles(type, scope)) {
+                    for (final IgnoreLanguage language: IgnoreBundle.LANGUAGES) {
+                        for (VirtualFile virtualFile : FileTypeIndex.getFiles(language.getFileType(), scope)) {
                             addTaskFor(getIgnoreFile(virtualFile));
                         }
                     }
 
                     // Search for outer files
                     if (settings.isOuterIgnoreRules()) {
-                        for (IgnoreFileType fileType : IgnoreBundle.FILE_TYPES) {
-                            VirtualFile outerFile = fileType.getIgnoreLanguage().getOuterFile(myProject);
+                        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                            VirtualFile outerFile = language.getOuterFile(myProject);
                             if (outerFile != null) {
                                 addTaskFor((IgnoreFile) psiManager.findFile(outerFile));
                             }

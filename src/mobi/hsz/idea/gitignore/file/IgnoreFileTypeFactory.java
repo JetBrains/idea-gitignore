@@ -29,6 +29,7 @@ import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -43,8 +44,8 @@ public class IgnoreFileTypeFactory extends FileTypeFactory {
     @Override
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {
         consume(consumer, IgnoreFileType.INSTANCE);
-        for (final IgnoreFileType fileType : IgnoreBundle.FILE_TYPES) {
-            consume(consumer, fileType);
+        for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+            consume(consumer, language.getFileType());
         }
     }
 

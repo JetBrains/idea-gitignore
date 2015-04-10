@@ -33,6 +33,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.ExternalFileException;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -86,7 +87,8 @@ public class IgnoreFileGroupAction extends ActionGroup {
                 presentation.setVisible(true);
                 baseDir = project.getBaseDir();
 
-                for (IgnoreFileType fileType : IgnoreBundle.FILE_TYPES) {
+                for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                    final IgnoreFileType fileType = language.getFileType();
                     List<VirtualFile> list = Utils.getSuitableIgnoreFiles(project, fileType, file);
                     Collections.reverse(list);
                     files.put(fileType, list);

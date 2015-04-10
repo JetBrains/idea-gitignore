@@ -42,12 +42,15 @@ import com.intellij.openapi.ui.Splitter;
 import com.intellij.openapi.util.ActionCallback;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.AddEditDeleteListPanel;
+import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.components.labels.LinkLabel;
 import com.intellij.ui.components.labels.LinkListener;
+import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider;
@@ -57,9 +60,15 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE;
+import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE;
+
 
 /**
  * UI form for {@link IgnoreSettings} edition.
@@ -70,31 +79,59 @@ import java.util.List;
 public class IgnoreSettingsPanel implements Disposable {
     private static final String FILE_STATUS_CONFIGURABLE_ID = "reference.settingsdialog.IDE.editor.colors.File Status";
 
-    /** The parent panel for the form. */
+    /**
+     * The parent panel for the form.
+     */
     public JPanel panel;
 
-    /** Form element for {@link IgnoreSettings#missingGitignore}. */
+    /**
+     * Form element for {@link IgnoreSettings#missingGitignore}.
+     */
     public JCheckBox missingGitignore;
 
-    /** Templates list panel. */
+    /**
+     * Templates list panel.
+     */
     public TemplatesListPanel templatesListPanel;
 
-    /** Enable ignored file status coloring. */
+    /**
+     * Enable ignored file status coloring.
+     */
     public JCheckBox ignoredFileStatus;
 
-    /** Enable outer ignore rules. */
+    /**
+     * Enable outer ignore rules.
+     */
     public JCheckBox outerIgnoreRules;
 
-    /** Splitter element. */
+    /**
+     * Splitter element.
+     */
     private Splitter templatesSplitter;
 
-    /** Link to the Colors & Fonts settings. */
+    /**
+     * Link to the Colors & Fonts settings.
+     */
     private JLabel editIgnoredFilesTextLabel;
 
-    /** Editor panel element. */
+    /**
+     * File types scroll panel with table.
+     */
+    private JScrollPane languagesPanel;
+
+    /**
+     * {@link IgnoreLanguage} settings table.
+     */
+    public JBTable languagesTable;
+
+    /**
+     * Editor panel element.
+     */
     private EditorPanel editorPanel;
 
-    /** Create UI components. */
+    /**
+     * Create UI components.
+     */
     private void createUIComponents() {
         templatesListPanel = new TemplatesListPanel();
         editorPanel = new EditorPanel();
@@ -126,6 +163,20 @@ public class IgnoreSettingsPanel implements Disposable {
             }
         });
         editIgnoredFilesTextLabel.setBorder(BorderFactory.createEmptyBorder(0, 26, 0, 0));
+
+        languagesTable = new JBTable();
+        languagesTable.setModel(new LanguagesTableModel());
+        languagesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        languagesTable.setColumnSelectionAllowed(false);
+        languagesTable.setRowHeight(22);
+        languagesTable.setPreferredScrollableViewportSize(new Dimension(-1, languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size()));
+
+        languagesTable.setStriped(true);
+        languagesTable.setShowGrid(false);
+        languagesTable.setBorder(null);
+        languagesTable.setDragEnabled(false);
+
+        languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
     }
 
     @Override
@@ -140,7 +191,9 @@ public class IgnoreSettingsPanel implements Disposable {
      */
     public class TemplatesListPanel extends AddEditDeleteListPanel<IgnoreSettings.UserTemplate> {
 
-        /** Constructs CRUD panel with list listener for editor updating. */
+        /**
+         * Constructs CRUD panel with list listener for editor updating.
+         */
         public TemplatesListPanel() {
             super(null, ContainerUtil.<IgnoreSettings.UserTemplate>newArrayList());
             myList.addListSelectionListener(new ListSelectionListener() {
@@ -181,45 +234,45 @@ public class IgnoreSettingsPanel implements Disposable {
                     IgnoreBundle.message("settings.userTemplates.dialogTitle"),
                     Messages.getQuestionIcon(), initialValue.getName(), new InputValidatorEx() {
 
-                /**
-                 * Checks whether the <code>inputString</code> is valid. It is invoked each time
-                 * input changes.
-                 *
-                 * @param inputString the input to check
-                 * @return true if input string is valid
-                 */
-                @Override
-                public boolean checkInput(String inputString) {
-                    return !StringUtil.isEmpty(inputString);
-                }
+                        /**
+                         * Checks whether the <code>inputString</code> is valid. It is invoked each time
+                         * input changes.
+                         *
+                         * @param inputString the input to check
+                         * @return true if input string is valid
+                         */
+                        @Override
+                        public boolean checkInput(String inputString) {
+                            return !StringUtil.isEmpty(inputString);
+                        }
 
-                /**
-                 * This method is invoked just before message dialog is closed with OK code.
-                 * If <code>false</code> is returned then then the message dialog will not be closed.
-                 *
-                 * @param inputString the input to check
-                 * @return true if the dialog could be closed, false otherwise.
-                 */
-                @Override
-                public boolean canClose(String inputString) {
-                    return !StringUtil.isEmpty(inputString);
-                }
+                        /**
+                         * This method is invoked just before message dialog is closed with OK code.
+                         * If <code>false</code> is returned then then the message dialog will not be closed.
+                         *
+                         * @param inputString the input to check
+                         * @return true if the dialog could be closed, false otherwise.
+                         */
+                        @Override
+                        public boolean canClose(String inputString) {
+                            return !StringUtil.isEmpty(inputString);
+                        }
 
-                /**
-                 * Returns error message depending on the input string.
-                 *
-                 * @param inputString the input to check
-                 * @return error text
-                 */
-                @Nullable
-                @Override
-                public String getErrorText(String inputString) {
-                    if (!checkInput(inputString)) {
-                        return IgnoreBundle.message("settings.userTemplates.dialogError");
-                    }
-                    return null;
-                }
-            });
+                        /**
+                         * Returns error message depending on the input string.
+                         *
+                         * @param inputString the input to check
+                         * @return error text
+                         */
+                        @Nullable
+                        @Override
+                        public String getErrorText(String inputString) {
+                            if (!checkInput(inputString)) {
+                                return IgnoreBundle.message("settings.userTemplates.dialogError");
+                            }
+                            return null;
+                        }
+                    });
 
             if (name != null) {
                 initialValue.setName(name);
@@ -232,7 +285,7 @@ public class IgnoreSettingsPanel implements Disposable {
          *
          * @param userTemplates templates list
          */
-        public void resetFrom(List<IgnoreSettings.UserTemplate> userTemplates) {
+        public void resetForm(List<IgnoreSettings.UserTemplate> userTemplates) {
             myListModel.clear();
             for (IgnoreSettings.UserTemplate template : userTemplates) {
                 myListModel.addElement(new IgnoreSettings.UserTemplate(template.getName(), template.getContent()));
@@ -355,7 +408,140 @@ public class IgnoreSettingsPanel implements Disposable {
                 }
             });
         }
+    }
 
+    public static class LanguagesTableModel extends AbstractTableModel {
+        private final IgnoreSettings.IgnoreLanguagesSettings settings = new IgnoreSettings.IgnoreLanguagesSettings();
 
+        private final String[] columnNames = new String[]{
+                IgnoreBundle.message("settings.languagesSettings.table.name"),
+                IgnoreBundle.message("settings.languagesSettings.table.newFile"),
+                IgnoreBundle.message("settings.languagesSettings.table.enable")
+        };
+
+        private final Class[] columnClasses = new Class[]{
+                String.class, Boolean.class, Boolean.class
+        };
+
+        /**
+         * Returns the number of rows in this data table.
+         *
+         * @return the number of rows in the model
+         */
+        @Override
+        public int getRowCount() {
+            return settings.size();
+        }
+
+        /**
+         * Returns the number of columns in this data table.
+         *
+         * @return the number of columns in the model
+         */
+        @Override
+        public int getColumnCount() {
+            return 3;
+        }
+
+        /**
+         * Returns a default name for the column using spreadsheet conventions:
+         * A, B, C, ... Z, AA, AB, etc.  If <code>column</code> cannot be found,
+         * returns an empty string.
+         *
+         * @param column the column being queried
+         * @return a string containing the default name of <code>column</code>
+         */
+        @Override
+        public String getColumnName(int column) {
+            return columnNames[column];
+        }
+
+        /**
+         * Returns <code>Object.class</code> regardless of <code>columnIndex</code>.
+         *
+         * @param columnIndex the column being queried
+         * @return the Object.class
+         */
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return columnClasses[columnIndex];
+        }
+
+        /**
+         * Returns true regardless of parameter values.
+         *
+         * @param row    the row whose value is to be queried
+         * @param column the column whose value is to be queried
+         * @return true
+         * @see #setValueAt
+         */
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return column != 0;
+        }
+
+        /**
+         * Returns an attribute value for the cell at <code>row</code>
+         * and <code>column</code>.
+         *
+         * @param row    the row whose value is to be queried
+         * @param column the column whose value is to be queried
+         * @return the value Object at the specified cell
+         * @throws ArrayIndexOutOfBoundsException if an invalid row or
+         *                                        column was given
+         */
+        @Override
+        public Object getValueAt(int row, int column) {
+            IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
+            HashMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = settings.get(language);
+
+            switch (column) {
+                case 0:
+                    return language.getID();
+                case 1:
+                    return Boolean.valueOf(data.get(NEW_FILE).toString());
+                case 2:
+                    return Boolean.valueOf(data.get(ENABLE).toString());
+            }
+            throw new IllegalArgumentException();
+        }
+
+        /**
+         * This empty implementation is provided so users don't have to implement
+         * this method if their data model is not editable.
+         *
+         * @param value  value to assign to cell
+         * @param row    row of cell
+         * @param column column of cell
+         */
+        @Override
+        public void setValueAt(Object value, int row, int column) {
+            IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
+            HashMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = settings.get(language);
+
+            switch (column) {
+                case 1:
+                    data.put(NEW_FILE, value);
+                    return;
+                case 2:
+                    data.put(ENABLE, value);
+                    return;
+            }
+            throw new IllegalArgumentException();
+        }
+
+        public IgnoreSettings.IgnoreLanguagesSettings getSettings() {
+            return settings;
+        }
+
+        public void update(@NotNull IgnoreSettings.IgnoreLanguagesSettings settings) {
+            this.settings.clear();
+            this.settings.putAll(settings);
+        }
+
+        public boolean equalSettings(IgnoreSettings.IgnoreLanguagesSettings settings) {
+            boolean equals = this.settings.equals(settings);
+            return equals;
+        }
     }
 }
