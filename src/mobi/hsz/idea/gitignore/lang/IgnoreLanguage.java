@@ -167,4 +167,14 @@ public class IgnoreLanguage extends Language {
         return Boolean.valueOf(IgnoreSettings.getInstance().getLanguagesSettings()
                 .get(this).get(IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE).toString());
     }
+
+    /**
+     * Checks if creating new file for given language is allowed with the settings.
+     *
+     * @return new file action is allowed
+     */
+    public boolean isNewAllowed() {
+        return Boolean.valueOf(IgnoreSettings.getInstance().getLanguagesSettings()
+                .get(this).get(IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE).toString());
+    }
 }

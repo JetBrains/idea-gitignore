@@ -103,7 +103,7 @@ public class NewFileAction extends AnAction implements DumbAware {
         final IdeView view = e.getData(LangDataKeys.IDE_VIEW);
 
         final PsiDirectory[] directory = view != null ? view.getDirectories() : null;
-        if (directory == null || directory.length == 0 || project == null) {
+        if (directory == null || directory.length == 0 || project == null || !this.fileType.getIgnoreLanguage().isNewAllowed()) {
             e.getPresentation().setVisible(false);
         }
     }
