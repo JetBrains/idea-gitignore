@@ -27,10 +27,12 @@ package mobi.hsz.idea.gitignore.outer;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.fileEditor.*;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +50,9 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Current project. */
     private final Project project;
+
+    /** Plugin settings. */
+    private static final IgnoreSettings settings = IgnoreSettings.getInstance();
 
     /** Constructor. */
     public OuterIgnoreLoaderComponent(@NotNull final Project project) {
@@ -78,7 +83,17 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
      *
      * @return outer ignore rules enabled
      */
-    private static boolean isEnabled() {
+    private static boolean isEnabled(@NotNull final VirtualFile file) {
+        if (!settings.isOuterIgnoreRules()) {
+            return false;
+        }
+
+        FileType fileType = file.getFileType();
+        if (!(fileType instanceof IgnoreFileType)) {
+            return false;
+        }
+
+        IgnoreLanguage language = ((IgnoreFileType) fileType).getIgnoreLanguage();
         return IgnoreSettings.getInstance().isOuterIgnoreRules();
     }
 
@@ -102,12 +117,17 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
          */
         @Override
         public void fileOpened(@NotNull final FileEditorManager source, @NotNull final VirtualFile file) {
-            if (!isEnabled() || !(file.getFileType() instanceof IgnoreFileType)) {
+            FileType fileType = file.getFileType();
+            if (!(fileType instanceof IgnoreFileType) || !IgnoreSettings.getInstance().isOuterIgnoreRules()) {
                 return;
             }
 
-            VirtualFile outerFile = ((IgnoreFileType) file.getFileType()).getIgnoreLanguage().getOuterFile(project);
+            IgnoreLanguage language = ((IgnoreFileType) fileType).getIgnoreLanguage();
+            if (!language.isEnabled()) {
+                return;
+            }
 
+            VirtualFile outerFile = language.getOuterFile(project);
             if (outerFile == null || outerFile.equals(file)) {
                 return;
             }

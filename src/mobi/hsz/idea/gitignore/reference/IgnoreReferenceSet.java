@@ -33,7 +33,6 @@ import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.util.containers.ContainerUtil;
-import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.util.Glob;
@@ -230,9 +229,10 @@ public class IgnoreReferenceSet extends FileReferenceSet {
          * @param file current file
          * @return is outer file
          */
-        private boolean isOuterFile(IgnoreFile file) {
-            VirtualFile outerFile = ((IgnoreFileType) file.getFileType()).getIgnoreLanguage().getOuterFile(file.getProject());
-            return outerFile != null && outerFile.equals(file.getVirtualFile());
+        private boolean isOuterFile(@Nullable IgnoreFile file) {
+            return file != null && file.isOuter();
+//            VirtualFile outerFile = ((IgnoreFileType) file.getFileType()).getIgnoreLanguage().getOuterFile(file.getProject());
+//            return outerFile != null && outerFile.equals(file.getVirtualFile());
         }
 
         /**

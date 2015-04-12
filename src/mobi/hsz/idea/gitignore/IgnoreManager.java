@@ -30,10 +30,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.*;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiTreeChangeAdapter;
-import com.intellij.psi.PsiTreeChangeEvent;
-import com.intellij.psi.PsiTreeChangeListener;
+import com.intellij.psi.*;
 import com.intellij.psi.impl.PsiManagerImpl;
 import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
@@ -189,12 +186,20 @@ public class IgnoreManager extends AbstractProjectComponent {
         this.settings.addListener(new IgnoreSettings.Listener() {
             @Override
             public void onChange(@NotNull KEY key, Object value) {
-                if (KEY.IGNORED_FILE_STATUS.equals(key) || KEY.OUTER_IGNORE_RULES.equals(key)) {
-                    if ((Boolean) value) {
-                        enable();
-                    } else {
-                        disable();
-                    }
+                switch (key) {
+
+                    case IGNORED_FILE_STATUS:
+                        toggle((Boolean) value);
+                        break;
+
+                    case OUTER_IGNORE_RULES:
+                    case LANGUAGES:
+                        if (isEnabled()) {
+                            cache.clear();
+                            enable();
+                        }
+                        break;
+
                 }
             }
         });
@@ -207,11 +212,15 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @return {@link IgnoreFile}
      */
     @Nullable
-    private IgnoreFile getIgnoreFile(@NotNull VirtualFile file) {
-        if (!file.exists()) {
+    private IgnoreFile getIgnoreFile(@Nullable VirtualFile file) {
+        if (file == null || !file.exists()) {
             return null;
         }
-        return (IgnoreFile) psiManager.findFile(file);
+        PsiFile psiFile = psiManager.findFile(file);
+        if (psiFile == null || !(psiFile instanceof IgnoreFile)) {
+            return null;
+        }
+        return (IgnoreFile) psiFile;
     }
 
     /**
@@ -270,17 +279,19 @@ public class IgnoreManager extends AbstractProjectComponent {
                     // Search for Ignore files in the project
                     final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
                     for (final IgnoreLanguage language: IgnoreBundle.LANGUAGES) {
-                        for (VirtualFile virtualFile : FileTypeIndex.getFiles(language.getFileType(), scope)) {
-                            addTaskFor(getIgnoreFile(virtualFile));
+                        if (language.isEnabled()) {
+                            for (VirtualFile virtualFile : FileTypeIndex.getFiles(language.getFileType(), scope)) {
+                                addTaskFor(getIgnoreFile(virtualFile));
+                            }
                         }
                     }
 
                     // Search for outer files
                     if (settings.isOuterIgnoreRules()) {
                         for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                            VirtualFile outerFile = language.getOuterFile(myProject);
-                            if (outerFile != null) {
-                                addTaskFor((IgnoreFile) psiManager.findFile(outerFile));
+                            if (language.isEnabled()) {
+                                VirtualFile outerFile = language.getOuterFile(myProject);
+                                addTaskFor(getIgnoreFile(outerFile));
                             }
                         }
                     }
@@ -326,6 +337,19 @@ public class IgnoreManager extends AbstractProjectComponent {
         this.psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
         this.cache.clear();
         this.working = false;
+    }
+
+    /**
+     * Runs {@link #enable()} or {@link #disable()} depending on the passed value.
+     *
+     * @param enable or disable
+     */
+    private void toggle(Boolean enable) {
+        if (enable) {
+            enable();
+        } else {
+            disable();
+        }
     }
 
     /**

@@ -31,6 +31,7 @@ import com.intellij.psi.FileViewProvider;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,29 +45,43 @@ import javax.swing.*;
  * @since 0.8
  */
 public class IgnoreLanguage extends Language {
-    /** The {@link IgnoreLanguage} instance. */
+    /**
+     * The {@link IgnoreLanguage} instance.
+     */
     public static final IgnoreLanguage INSTANCE = new IgnoreLanguage();
 
-    /** The dot. */
+    /**
+     * The dot.
+     */
     @NonNls
     public static final String DOT = ".";
 
-    /** Ignore languages group name. */
+    /**
+     * Ignore languages group name.
+     */
     @NonNls
     public static final String GROUP = "IGNORE_GROUP";
 
-    /** The Ignore file extension suffix. */
+    /**
+     * The Ignore file extension suffix.
+     */
     private final String extension;
 
-    /** The GitignoreLanguage icon. */
+    /**
+     * The GitignoreLanguage icon.
+     */
     private final Icon icon;
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
+    /**
+     * {@link IgnoreLanguage} is a non-instantiable static class.
+     */
     protected IgnoreLanguage() {
         this("Ignore", "ignore", null);
     }
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
+    /**
+     * {@link IgnoreLanguage} is a non-instantiable static class.
+     */
     protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable Icon icon) {
         super(name);
         this.extension = extension;
@@ -82,7 +97,9 @@ public class IgnoreLanguage extends Language {
         return extension;
     }
 
-    /** The Gitignore file extension. */
+    /**
+     * The Gitignore file extension.
+     */
     public String getFilename() {
         return DOT + getExtension();
     }
@@ -97,12 +114,16 @@ public class IgnoreLanguage extends Language {
         return icon;
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     */
     public IgnoreFileType getFileType() {
         return IgnoreFileType.INSTANCE;
     }
 
-    /** Creates {@link IgnoreFile} instance. */
+    /**
+     * Creates {@link IgnoreFile} instance.
+     */
     public IgnoreFile createFile(@NotNull final FileViewProvider viewProvider) {
         return new IgnoreFile(viewProvider, getFileType());
     }
@@ -135,5 +156,15 @@ public class IgnoreLanguage extends Language {
     @Nullable
     public VirtualFile getOuterFile(@NotNull final Project project) {
         return null;
+    }
+
+    /**
+     * Checks is language is enabled or with {@link IgnoreSettings}.
+     *
+     * @return language is enabled
+     */
+    public boolean isEnabled() {
+        return Boolean.valueOf(IgnoreSettings.getInstance().getLanguagesSettings()
+                .get(this).get(IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE).toString());
     }
 }

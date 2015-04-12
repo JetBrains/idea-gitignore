@@ -476,6 +476,15 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         }
 
         /**
+         * Returns the value to which the specified key is mapped.
+         *
+         * @param language Ignore language
+         */
+        public HashMap<KEY, Object> get(IgnoreLanguage language) {
+            return super.get(language);
+        }
+
+        /**
          * Returns a shallow copy of this <tt>HashMap</tt> instance: the keys and
          * values themselves are not cloned.
          *
