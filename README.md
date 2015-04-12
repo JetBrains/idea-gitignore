@@ -94,6 +94,20 @@ Usage
 Changelog
 ---------
 
+Version 1.1
+
+- Fixed performance issues
+- Handling outside ignore rules (.gitignore global file)
+- Languages settings (configurable list in `New file`, marking as ignored in Project tree) 
+- `.jshintignore` support (JSHint)
+- `ignore-glob` support (Fossil)
+- `.tfignore` support (Team Foundation)
+- `.p4ignore` support (Perforce)
+- Fixed "Add to null" issue ([#96](https://github.com/hsz/idea-gitignore/issues/96))
+- Fixed @NotNull parameter 'ancestor ([#93](https://github.com/hsz/idea-gitignore/issues/93))
+- Fixed ignored files coloring ([#85](https://github.com/hsz/idea-gitignore/issues/85), [#87](https://github.com/hsz/idea-gitignore/issues/87))
+- Default user template
+
 Version 1.0.2
 
 - CLion VerifyError hotfix ([#89](https://github.com/hsz/idea-gitignore/issues/89))
