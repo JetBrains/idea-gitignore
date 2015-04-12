@@ -25,20 +25,20 @@
 package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.TFLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.PerforceLanguage;
 
 /**
- * Describes TeamFoundation file type.
+ * Describes Perforce file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.1
  */
-public class TFFileType extends IgnoreFileType {
-    /** Contains {@link TFFileType} singleton. */
-    public static final TFFileType INSTANCE = new TFFileType();
+public class PerforceFileType extends IgnoreFileType {
+    /** Contains {@link PerforceFileType} singleton. */
+    public static final PerforceFileType INSTANCE = new PerforceFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private TFFileType() {
-        super(TFLanguage.INSTANCE);
+    private PerforceFileType() {
+        super(PerforceLanguage.INSTANCE);
     }
 }

@@ -22,23 +22,31 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.file.type.kind;
+package mobi.hsz.idea.gitignore.lang.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.TFLanguage;
+import mobi.hsz.idea.gitignore.file.type.kind.PerforceFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
- * Describes TeamFoundation file type.
+ * Npm {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.1
  */
-public class TFFileType extends IgnoreFileType {
-    /** Contains {@link TFFileType} singleton. */
-    public static final TFFileType INSTANCE = new TFFileType();
+public class PerforceLanguage extends IgnoreLanguage {
+    /** The {@link mobi.hsz.idea.gitignore.lang.kind.PerforceLanguage} instance. */
+    public static final PerforceLanguage INSTANCE = new PerforceLanguage();
 
-    /** Private constructor to prevent direct object creation. */
-    private TFFileType() {
-        super(TFLanguage.INSTANCE);
+    /** {@link mobi.hsz.idea.gitignore.lang.IgnoreLanguage} is a non-instantiable static class. */
+    private PerforceLanguage() {
+        super("Perforce", "p4ignore", Icons.PERFORCE);
+    }
+
+    /** Language file type. */
+    @Override
+    public IgnoreFileType getFileType() {
+        return PerforceFileType.INSTANCE;
     }
 }

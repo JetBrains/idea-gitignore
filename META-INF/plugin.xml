@@ -549,6 +549,24 @@
         <!-- END Npm -->
 
 
+        <!-- Perforce -->
+
+        <codeInsight.lineMarkerProvider
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"
+            language="Perforce"/>
+        <lang.braceMatcher
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"
+            language="Perforce"/>
+        <lang.commenter
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"
+            language="Perforce"/>
+        <lang.syntaxHighlighterFactory
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"
+            key="Perforce"/>
+
+        <!-- END Perforce -->
+
+
         <!-- Team Foundation -->
 
         <codeInsight.lineMarkerProvider

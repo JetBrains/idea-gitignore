@@ -73,6 +73,7 @@ public class IgnoreBundle {
             MercurialLanguage.INSTANCE,
             MonotoneLanguage.INSTANCE,
             NpmLanguage.INSTANCE,
+            PerforceLanguage.INSTANCE,
             TFLanguage.INSTANCE
     ));
 
