@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.0.2</version>
+    <version>1.1</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -18,7 +18,7 @@
       <b>.ignore</b> is a plugin for
         <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker), .chefignore (Chef),
            .cvsignore (CVS), .bzrignore (Bazaar), .boringignore (Darcs), .mtn-ignore (Monotone), ignore-glob (Fossil),
-           .jshintignore (JSHint), .tfignore (Team Foundation)</i>
+           .jshintignore (JSHint), .tfignore (Team Foundation), .p4ignore (Perforce)</i>
         files in your project.
       <br/>
 

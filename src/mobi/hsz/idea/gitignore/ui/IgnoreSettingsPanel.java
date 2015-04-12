@@ -24,8 +24,6 @@
 
 package mobi.hsz.idea.gitignore.ui;
 
-import com.intellij.application.options.colors.NewColorAndFontPanel;
-import com.intellij.ide.DataManager;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
@@ -34,26 +32,20 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
-import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.options.newEditor.OptionsEditor;
 import com.intellij.openapi.ui.InputValidatorEx;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.Splitter;
-import com.intellij.openapi.util.ActionCallback;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.AddEditDeleteListPanel;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
-import com.intellij.ui.components.labels.LinkLabel;
-import com.intellij.ui.components.labels.LinkListener;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
-import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,8 +69,6 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSet
  * @since 0.6.1
  */
 public class IgnoreSettingsPanel implements Disposable {
-    private static final String FILE_STATUS_CONFIGURABLE_ID = "reference.settingsdialog.IDE.editor.colors.File Status";
-
     /**
      * The parent panel for the form.
      */
@@ -110,11 +100,6 @@ public class IgnoreSettingsPanel implements Disposable {
     private Splitter templatesSplitter;
 
     /**
-     * Link to the Colors & Fonts settings.
-     */
-    private JLabel editIgnoredFilesTextLabel;
-
-    /**
      * File types scroll panel with table.
      */
     private JScrollPane languagesPanel;
@@ -140,29 +125,6 @@ public class IgnoreSettingsPanel implements Disposable {
         templatesSplitter = new Splitter(false, 0.3f);
         templatesSplitter.setFirstComponent(templatesListPanel);
         templatesSplitter.setSecondComponent(editorPanel);
-
-        editIgnoredFilesTextLabel = new LinkLabel(IgnoreBundle.message("settings.general.ignoredColor"), null, new LinkListener() {
-            @Override
-            public void linkSelected(LinkLabel aSource, Object aLinkData) {
-                final OptionsEditor optionsEditor = OptionsEditor.KEY.getData(DataManager.getInstance().getDataContext(panel));
-
-                if (optionsEditor != null) {
-                    final SearchableConfigurable configurable = optionsEditor.findConfigurableById(FILE_STATUS_CONFIGURABLE_ID);
-                    if (configurable != null) {
-                        final NewColorAndFontPanel colorAndFontPanel = ((NewColorAndFontPanel) configurable.createComponent());
-                        ActionCallback callback = optionsEditor.select(configurable);
-
-                        if (colorAndFontPanel != null) {
-                            final Runnable showOption = colorAndFontPanel.showOption(IgnoreFileStatusProvider.IGNORED.getId());
-                            if (showOption != null) {
-                                callback.doWhenDone(showOption);
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        editIgnoredFilesTextLabel.setBorder(BorderFactory.createEmptyBorder(0, 26, 0, 0));
 
         languagesTable = new JBTable();
         languagesTable.setModel(new LanguagesTableModel());

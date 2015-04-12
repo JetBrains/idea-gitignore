@@ -19,6 +19,7 @@ Introduction
 - `ignore-glob` (Fossil)
 - `.jshintignore` (JSHint)
 - `.tfignore` (Team Foundation)
+- `.p4ignore` (Perforce)
 
 files in your project. It supports following JetBrains IDEs:
 
