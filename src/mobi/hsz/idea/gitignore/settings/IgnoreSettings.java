@@ -196,7 +196,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
         Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
-            languagesSettings.clear();
             for (Element languageElement : languagesElement.getChildren()) {
                 HashMap<IgnoreLanguagesSettings.KEY, Object> data = ContainerUtil.newHashMap();
                 for (IgnoreLanguagesSettings.KEY key : IgnoreLanguagesSettings.KEY.values()) {
