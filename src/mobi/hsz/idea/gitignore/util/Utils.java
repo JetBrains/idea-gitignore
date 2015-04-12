@@ -289,7 +289,7 @@ public class Utils {
      * @return minor version
      */
     public static String getMinorVersion() {
-        return StringUtil.join("1.0.0".split("\\."), 0, 2, ".");
+        return StringUtil.join(getVersion().split("\\."), 0, 2, ".");
     }
 
     /**
