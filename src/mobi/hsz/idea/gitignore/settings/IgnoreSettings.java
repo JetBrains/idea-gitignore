@@ -492,7 +492,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         @Override
         public IgnoreLanguagesSettings clone() {
             IgnoreLanguagesSettings copy = (IgnoreLanguagesSettings) super.clone();
-            for (HashMap.Entry<IgnoreLanguage, HashMap<IgnoreLanguagesSettings.KEY, Object>> entry : copy.entrySet()) {
+            for (Map.Entry<IgnoreLanguage, HashMap<IgnoreLanguagesSettings.KEY, Object>> entry : copy.entrySet()) {
                 @SuppressWarnings("unchecked")
                 HashMap<IgnoreLanguagesSettings.KEY, Object> data = (HashMap<KEY, Object>) entry.getValue().clone();
 
