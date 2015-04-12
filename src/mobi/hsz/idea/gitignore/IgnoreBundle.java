@@ -72,7 +72,8 @@ public class IgnoreBundle {
             JSHintLanguage.INSTANCE,
             MercurialLanguage.INSTANCE,
             MonotoneLanguage.INSTANCE,
-            NpmLanguage.INSTANCE
+            NpmLanguage.INSTANCE,
+            TFLanguage.INSTANCE
     ));
 
     /** Available syntax list. */

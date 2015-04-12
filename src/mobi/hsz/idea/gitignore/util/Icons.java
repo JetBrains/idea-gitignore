@@ -71,6 +71,9 @@ public class Icons {
     /** Npmignore icon. */
     public static final Icon NPM = IconLoader.getIcon("/icons/icon_npm.png");
 
+    /** Npmignore icon. */
+    public static final Icon TF = IconLoader.getIcon("/icons/icon_tf.png");
+
     /** Private constructor to prevent creating {@link Icons} instance. */
     private Icons() {
     }
