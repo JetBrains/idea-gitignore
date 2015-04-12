@@ -37,6 +37,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
+import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
+
 /**
  * Component loader for outer ignore files editor.
  *
@@ -118,8 +120,8 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
 
                     IgnoreSettings.getInstance().addListener(new IgnoreSettings.Listener() {
                         @Override
-                        public void onChange(@NotNull String key, Object value) {
-                            if ("outerIgnoreRules".equals(key)) {
+                        public void onChange(@NotNull KEY key, Object value) {
+                            if (KEY.OUTER_IGNORE_RULES.equals(key)) {
                                 c.setVisible((Boolean) value);
                             }
                         }

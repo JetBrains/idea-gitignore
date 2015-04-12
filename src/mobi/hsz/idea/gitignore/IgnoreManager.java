@@ -49,6 +49,8 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
+
 /**
  * {@link IgnoreManager} handles ignore files indexing and status caching.
  *
@@ -186,8 +188,8 @@ public class IgnoreManager extends AbstractProjectComponent {
 
         this.settings.addListener(new IgnoreSettings.Listener() {
             @Override
-            public void onChange(@NotNull String key, Object value) {
-                if ("ignoredFileStatus".equals(key) || "outerIgnoreRules".equals(key)) {
+            public void onChange(@NotNull KEY key, Object value) {
+                if (KEY.IGNORED_FILE_STATUS.equals(key) || KEY.OUTER_IGNORE_RULES.equals(key)) {
                     if ((Boolean) value) {
                         enable();
                     } else {

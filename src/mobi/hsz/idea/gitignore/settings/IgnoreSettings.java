@@ -59,6 +59,27 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      */
     private static final String PLUGIN_VERSION = Utils.getMinorVersion();
 
+    /**
+     * Settings keys.
+     */
+    public enum KEY {
+        ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
+        USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), DONATION_SHOWN("donationShown"),
+        LANGUAGES("languages"), LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"),
+        IGNORED_FILE_STATUS("ignoredFileStatus"), OUTER_IGNORE_RULES("outerIgnoreRules");
+
+        private final String key;
+
+        KEY(@NotNull String key) {
+            this.key = key;
+        }
+
+        @Override
+        public String toString() {
+            return this.key;
+        }
+    }
+
     private static final UserTemplate DEFAULT_TEMPLATE = new UserTemplate(
             IgnoreBundle.message("settings.userTemplates.default.name"),
             IgnoreBundle.message("settings.userTemplates.default.content")
@@ -124,16 +145,16 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     @Nullable
     @Override
     public Element getState() {
-        final Element element = new Element("IgnoreSettings");
-        element.setAttribute("missingGitignore", Boolean.toString(missingGitignore));
-        element.setAttribute("donationShown", donationShown);
-        element.setAttribute("ignoredFileStatus", Boolean.toString(ignoredFileStatus));
-        element.setAttribute("outerIgnoreRules", Boolean.toString(outerIgnoreRules));
+        final Element element = new Element(KEY.ROOT.toString());
+        element.setAttribute(KEY.MISSING_GITIGNORE.toString(), Boolean.toString(missingGitignore));
+        element.setAttribute(KEY.DONATION_SHOWN.toString(), donationShown);
+        element.setAttribute(KEY.IGNORED_FILE_STATUS.toString(), Boolean.toString(ignoredFileStatus));
+        element.setAttribute(KEY.OUTER_IGNORE_RULES.toString(), Boolean.toString(outerIgnoreRules));
 
-        Element languagesElement = new Element("languages");
+        Element languagesElement = new Element(KEY.LANGUAGES.toString());
         for (Map.Entry<IgnoreLanguage, HashMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
-            Element languageElement = new Element("language");
-            languageElement.setAttribute("id", entry.getKey().getID());
+            Element languageElement = new Element(KEY.LANGUAGES_LANGUAGE.toString());
+            languageElement.setAttribute(KEY.LANGUAGES_ID.toString(), entry.getKey().getID());
             for (Map.Entry<IgnoreLanguagesSettings.KEY, Object> data : entry.getValue().entrySet()) {
                 languageElement.setAttribute(data.getKey().name(), data.getValue().toString());
             }
@@ -141,10 +162,10 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         }
         element.addContent(languagesElement);
 
-        Element templates = new Element("userTemplates");
+        Element templates = new Element(KEY.USER_TEMPLATES.toString());
         for (UserTemplate userTemplate : userTemplates) {
-            Element templateElement = new Element("template");
-            templateElement.setAttribute("name", userTemplate.getName());
+            Element templateElement = new Element(KEY.USER_TEMPLATES_TEMPLATE.toString());
+            templateElement.setAttribute(KEY.USER_TEMPLATES_NAME.toString(), userTemplate.getName());
             templateElement.addContent(userTemplate.getContent());
             templates.addContent(templateElement);
         }
@@ -161,19 +182,19 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      */
     @Override
     public void loadState(Element element) {
-        String value = element.getAttributeValue("missingGitignore");
+        String value = element.getAttributeValue(KEY.MISSING_GITIGNORE.toString());
         if (value != null) missingGitignore = Boolean.parseBoolean(value);
 
-        value = element.getAttributeValue("donationShown");
+        value = element.getAttributeValue(KEY.DONATION_SHOWN.toString());
         if (value != null) donationShown = value;
 
-        value = element.getAttributeValue("ignoredFileStatus");
+        value = element.getAttributeValue(KEY.IGNORED_FILE_STATUS.toString());
         if (value != null) ignoredFileStatus = Boolean.parseBoolean(value);
 
-        value = element.getAttributeValue("outerIgnoreRules");
+        value = element.getAttributeValue(KEY.OUTER_IGNORE_RULES.toString());
         if (value != null) outerIgnoreRules = Boolean.parseBoolean(value);
 
-        Element languagesElement = element.getChild("languages");
+        Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
             languagesSettings.clear();
             for (Element languageElement : languagesElement.getChildren()) {
@@ -181,21 +202,20 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
                 for (IgnoreLanguagesSettings.KEY key : IgnoreLanguagesSettings.KEY.values()) {
                     data.put(key, languageElement.getAttributeValue(key.name()));
                 }
-                String id = languageElement.getAttributeValue("id");
+                String id = languageElement.getAttributeValue(KEY.LANGUAGES_ID.toString());
                 IgnoreLanguage language = IgnoreBundle.LANGUAGES.get(id);
                 languagesSettings.put(language, data);
             }
         }
 
-        Element templates = element.getChild("userTemplates");
+        Element templates = element.getChild(KEY.USER_TEMPLATES.toString());
         if (templates != null) {
             userTemplates.clear();
             for (Element template : templates.getChildren()) {
-                userTemplates.add(new UserTemplate(template.getAttributeValue("name"), template.getText()));
+                userTemplates.add(new UserTemplate(template.getAttributeValue(KEY.USER_TEMPLATES_NAME.toString()), template.getText()));
             }
         }
     }
-
 
     /**
      * Notify about missing Gitignore file in the project.
@@ -212,7 +232,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * @param missingGitignore notify about missing Gitignore file in the project
      */
     public void setMissingGitignore(boolean missingGitignore) {
-        this.notifyOnChange("missingGitignore", this.missingGitignore, missingGitignore);
+        this.notifyOnChange(KEY.MISSING_GITIGNORE, this.missingGitignore, missingGitignore);
         this.missingGitignore = missingGitignore;
     }
 
@@ -231,7 +251,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * @param ignoredFileStatus ignored file status coloring
      */
     public void setIgnoredFileStatus(boolean ignoredFileStatus) {
-        this.notifyOnChange("ignoredFileStatus", this.ignoredFileStatus, ignoredFileStatus);
+        this.notifyOnChange(KEY.IGNORED_FILE_STATUS, this.ignoredFileStatus, ignoredFileStatus);
         this.ignoredFileStatus = ignoredFileStatus;
     }
 
@@ -250,7 +270,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * @param outerIgnoreRules ignored file status coloring
      */
     public void setOuterIgnoreRules(boolean outerIgnoreRules) {
-        this.notifyOnChange("outerIgnoreRules", this.outerIgnoreRules, outerIgnoreRules);
+        this.notifyOnChange(KEY.OUTER_IGNORE_RULES, this.outerIgnoreRules, outerIgnoreRules);
         this.outerIgnoreRules = outerIgnoreRules;
     }
 
@@ -269,7 +289,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * @param languagesSettings languagesSettings
      */
     public void setLanguagesSettings(IgnoreLanguagesSettings languagesSettings) {
-        this.notifyOnChange("languages", this.languagesSettings, languagesSettings);
+        this.notifyOnChange(KEY.LANGUAGES, this.languagesSettings, languagesSettings);
         this.languagesSettings = languagesSettings;
     }
 
@@ -286,7 +306,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Sets {@link #donationShown} to the {@link #PLUGIN_VERSION} value.
      */
     public void setDonationShown() {
-        this.notifyOnChange("donationShown", this.donationShown, PLUGIN_VERSION);
+        this.notifyOnChange(KEY.DONATION_SHOWN, this.donationShown, PLUGIN_VERSION);
         this.donationShown = PLUGIN_VERSION;
     }
 
@@ -305,7 +325,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * @param userTemplates user templates
      */
     public void setUserTemplates(@NotNull List<UserTemplate> userTemplates) {
-        this.notifyOnChange("userTemplates", this.userTemplates, userTemplates);
+        this.notifyOnChange(KEY.USER_TEMPLATES, this.userTemplates, userTemplates);
         this.userTemplates.clear();
         this.userTemplates.addAll(userTemplates);
     }
@@ -337,7 +357,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * @param oldValue new value
      * @param newValue new value
      */
-    private void notifyOnChange(String key, Object oldValue, Object newValue) {
+    private void notifyOnChange(KEY key, Object oldValue, Object newValue) {
         if (!newValue.equals(oldValue)) {
             for (Listener listener : listeners) {
                 listener.onChange(key, newValue);
@@ -349,7 +369,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Listener interface for onChange event.
      */
     public static interface Listener {
-        public void onChange(@NotNull String key, Object value);
+        public void onChange(@NotNull KEY key, Object value);
     }
 
     /**
