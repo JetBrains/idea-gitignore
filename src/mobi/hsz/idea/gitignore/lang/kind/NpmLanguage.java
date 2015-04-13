@@ -49,4 +49,14 @@ public class NpmLanguage extends IgnoreLanguage {
     public IgnoreFileType getFileType() {
         return NpmFileType.INSTANCE;
     }
+
+    /**
+     * Language is related to the VCS.
+     *
+     * @return is VCS
+     */
+    @Override
+    public boolean isVCS() {
+        return false;
+    }
 }

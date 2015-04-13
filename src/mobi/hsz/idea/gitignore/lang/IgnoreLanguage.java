@@ -186,4 +186,13 @@ public class IgnoreLanguage extends Language {
         }
         return value;
     }
+
+    /**
+     * Language is related to the VCS.
+     *
+     * @return is VCS
+     */
+    public boolean isVCS() {
+        return true;
+    }
 }

@@ -49,4 +49,14 @@ public class JSHintLanguage extends IgnoreLanguage {
     public IgnoreFileType getFileType() {
         return JSHintFileType.INSTANCE;
     }
+
+    /**
+     * Language is related to the VCS.
+     *
+     * @return is VCS
+     */
+    @Override
+    public boolean isVCS() {
+        return false;
+    }
 }

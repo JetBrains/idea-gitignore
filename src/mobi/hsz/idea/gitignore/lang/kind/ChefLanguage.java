@@ -49,4 +49,14 @@ public class ChefLanguage extends IgnoreLanguage {
     public IgnoreFileType getFileType() {
         return ChefFileType.INSTANCE;
     }
+
+    /**
+     * Language is related to the VCS.
+     *
+     * @return is VCS
+     */
+    @Override
+    public boolean isVCS() {
+        return false;
+    }
 }

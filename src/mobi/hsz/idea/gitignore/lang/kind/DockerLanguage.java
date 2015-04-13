@@ -49,4 +49,14 @@ public class DockerLanguage extends IgnoreLanguage {
     public IgnoreFileType getFileType() {
         return DockerFileType.INSTANCE;
     }
+
+    /**
+     * Language is related to the VCS.
+     *
+     * @return is VCS
+     */
+    @Override
+    public boolean isVCS() {
+        return false;
+    }
 }
