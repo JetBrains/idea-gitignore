@@ -357,6 +357,7 @@
         <lang.parserDefinition language="Mercurial"         implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Monotone"          implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Npm"               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Perforce"          implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Team Foundation"   implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
 
 
