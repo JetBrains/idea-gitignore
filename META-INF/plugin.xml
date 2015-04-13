@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.1</version>
+    <version>1.1.1</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -48,6 +48,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+      Version 1.1.1
+      <ul>
+        <li>Disable  non-VCS languages ignoring by default</li>
+        <li>EmptyFileManager class cast exception fix</li>
+      </ul>
 
       Version 1.1
       <ul>

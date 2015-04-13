@@ -94,6 +94,11 @@ Usage
 Changelog
 ---------
 
+Version 1.1.1
+
+- Disable  non-VCS languages ignoring by default
+- EmptyFileManager class cast exception fix
+
 Version 1.1
 
 - Fixed performance issues
