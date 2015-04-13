@@ -32,6 +32,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.*;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.PsiManagerImpl;
+import com.intellij.psi.impl.file.impl.FileManager;
 import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -272,13 +273,17 @@ public class IgnoreManager extends AbstractProjectComponent {
         alarm.addRequest(new Runnable() {
             @Override
             public void run() {
+                FileManager fileManager = psiManager.getFileManager();
+                if (!(fileManager instanceof FileManagerImpl)) {
+                    return;
+                }
                 if (((FileManagerImpl) psiManager.getFileManager()).isInitialized()) {
                     alarm.cancelAllRequests();
                     queue.clear();
 
                     // Search for Ignore files in the project
                     final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
-                    for (final IgnoreLanguage language: IgnoreBundle.LANGUAGES) {
+                    for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                         if (language.isEnabled()) {
                             for (VirtualFile virtualFile : FileTypeIndex.getFiles(language.getFileType(), scope)) {
                                 addTaskFor(getIgnoreFile(virtualFile));
