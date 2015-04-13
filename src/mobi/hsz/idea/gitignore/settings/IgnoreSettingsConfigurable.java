@@ -26,9 +26,13 @@ package mobi.hsz.idea.gitignore.settings;
 
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.options.SearchableConfigurable;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.VcsConfigurableProvider;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.ui.IgnoreSettingsPanel;
 import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -39,7 +43,7 @@ import javax.swing.*;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.6.1
  */
-public class IgnoreSettingsConfigurable implements Configurable {
+public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsConfigurableProvider {
 
     /** The settings storage object. */
     private final IgnoreSettings settings;
@@ -67,7 +71,7 @@ public class IgnoreSettingsConfigurable implements Configurable {
      *
      * @return the help topic, or null if no help is available {@link #getDisplayName()}
      */
-    @Nullable
+    @NotNull
     @Override
     public String getHelpTopic() {
         return getDisplayName();
@@ -139,5 +143,23 @@ public class IgnoreSettingsConfigurable implements Configurable {
     public void disposeUIResources() {
         settingsPanel.dispose();
         settingsPanel = null;
+    }
+
+    @Nullable
+    @Override
+    public Configurable getConfigurable(Project project) {
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public String getId() {
+        return getHelpTopic();
+    }
+
+    @Nullable
+    @Override
+    public Runnable enableSearch(String option) {
+        return null;
     }
 }

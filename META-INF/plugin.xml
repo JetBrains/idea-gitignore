@@ -270,8 +270,8 @@
             file="colorSchemes/IgnoreDarcula.xml"
             scheme="Darcula"/>
 
-        <applicationConfigurable
-            instance="mobi.hsz.idea.gitignore.settings.IgnoreSettingsConfigurable"/>
+        <vcsConfigurableProvider
+            implementation="mobi.hsz.idea.gitignore.settings.IgnoreSettingsConfigurable"/>
 
         <applicationService
             serviceInterface="mobi.hsz.idea.gitignore.settings.IgnoreSettings"
