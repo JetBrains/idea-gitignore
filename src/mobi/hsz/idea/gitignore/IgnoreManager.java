@@ -156,10 +156,39 @@ public class IgnoreManager extends AbstractProjectComponent {
         @Override
         public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
             if (event.getParent() instanceof IgnoreFile) {
-                cache.hasChanged((IgnoreFile) event.getParent());
+                IgnoreFile ignoreFile = (IgnoreFile) event.getParent();
+                if (((IgnoreLanguage) ignoreFile.getLanguage()).isEnabled()) {
+                    cache.hasChanged(ignoreFile);
+                }
             }
         }
     };
+
+    private final IgnoreSettings.Listener settingsListener = new IgnoreSettings.Listener() {
+        @Override
+        public void onChange(@NotNull KEY key, Object value) {
+            switch (key) {
+
+                case IGNORED_FILE_STATUS:
+                    toggle((Boolean) value);
+                    break;
+
+                case OUTER_IGNORE_RULES:
+                case LANGUAGES:
+                    if (isEnabled()) {
+                        if (working) {
+                            cache.clear();
+                            retrieve();
+                        } else {
+                            enable();
+                        }
+                    }
+                    break;
+
+            }
+        }
+    };
+
 
     /**
      * Returns {@link IgnoreManager} service instance.
@@ -178,32 +207,11 @@ public class IgnoreManager extends AbstractProjectComponent {
      */
     public IgnoreManager(@NotNull final Project project) {
         super(project);
-        this.cache = new CacheMap(project);
-        this.psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
-        this.virtualFileManager = VirtualFileManager.getInstance();
-        this.queue = new BackgroundTaskQueue(project, IgnoreBundle.message("cache.indexing"));
-        this.settings = IgnoreSettings.getInstance();
-
-        this.settings.addListener(new IgnoreSettings.Listener() {
-            @Override
-            public void onChange(@NotNull KEY key, Object value) {
-                switch (key) {
-
-                    case IGNORED_FILE_STATUS:
-                        toggle((Boolean) value);
-                        break;
-
-                    case OUTER_IGNORE_RULES:
-                    case LANGUAGES:
-                        if (isEnabled()) {
-                            cache.clear();
-                            enable();
-                        }
-                        break;
-
-                }
-            }
-        });
+        cache = new CacheMap(project);
+        psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
+        virtualFileManager = VirtualFileManager.getInstance();
+        queue = new BackgroundTaskQueue(project, IgnoreBundle.message("cache.indexing"));
+        settings = IgnoreSettings.getInstance();
     }
 
     /**
@@ -240,13 +248,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @return enabled
      */
     private boolean isEnabled() {
-        boolean enabled = settings.isIgnoredFileStatus();
-        if (enabled && !working) {
-            enable();
-        } else if (!enabled && working) {
-            disable();
-        }
-        return enabled;
+        return settings.isIgnoredFileStatus();
     }
 
     /**
@@ -265,10 +267,57 @@ public class IgnoreManager extends AbstractProjectComponent {
      * Enable manager.
      */
     private void enable() {
-        this.virtualFileManager.addVirtualFileListener(virtualFileListener);
-        this.psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
-        this.working = true;
+        if (working) {
+            return;
+        }
 
+        virtualFileManager.addVirtualFileListener(virtualFileListener);
+        psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
+        settings.addListener(settingsListener);
+        working = true;
+
+        retrieve();
+    }
+
+    /**
+     * Invoked when the project corresponding to this component instance is closed.<p>
+     * Note that components may be created for even unopened projects and this method can be never
+     * invoked for a particular component instance (for example for default project).
+     */
+    @Override
+    public void projectClosed() {
+        disable();
+    }
+
+    /**
+     * Disable manager.
+     */
+    private void disable() {
+        alarm.cancelAllRequests();
+        virtualFileManager.removeVirtualFileListener(virtualFileListener);
+        psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
+        settings.removeListener(settingsListener);
+        cache.clear();
+        working = false;
+    }
+
+    /**
+     * Runs {@link #enable()} or {@link #disable()} depending on the passed value.
+     *
+     * @param enable or disable
+     */
+    private void toggle(Boolean enable) {
+        if (enable) {
+            enable();
+        } else {
+            disable();
+        }
+    }
+
+    /**
+     * Triggers caching actions.
+     */
+    private void retrieve() {
         alarm.cancelAllRequests();
         alarm.addRequest(new Runnable() {
             @Override
@@ -322,39 +371,6 @@ public class IgnoreManager extends AbstractProjectComponent {
                 });
             }
         }, 200);
-    }
-
-    /**
-     * Invoked when the project corresponding to this component instance is closed.<p>
-     * Note that components may be created for even unopened projects and this method can be never
-     * invoked for a particular component instance (for example for default project).
-     */
-    @Override
-    public void projectClosed() {
-        disable();
-    }
-
-    /**
-     * Disable manager.
-     */
-    private void disable() {
-        this.virtualFileManager.removeVirtualFileListener(virtualFileListener);
-        this.psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
-        this.cache.clear();
-        this.working = false;
-    }
-
-    /**
-     * Runs {@link #enable()} or {@link #disable()} depending on the passed value.
-     *
-     * @param enable or disable
-     */
-    private void toggle(Boolean enable) {
-        if (enable) {
-            enable();
-        } else {
-            disable();
-        }
     }
 
     /**
