@@ -167,7 +167,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @param project current project
      * @return {@link IgnoreManager instance}
      */
-    public static IgnoreManager getInstance(Project project) {
+    public static IgnoreManager getInstance(@NotNull final Project project) {
         return project.getComponent(IgnoreManager.class);
     }
 

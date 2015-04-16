@@ -93,6 +93,8 @@ public class OuterIgnoreWrapper implements Disposable {
 
     @Override
     public void dispose() {
-        EditorFactory.getInstance().releaseEditor(outerEditor);
+        if (outerEditor != null) {
+            EditorFactory.getInstance().releaseEditor(outerEditor);
+        }
     }
 }
