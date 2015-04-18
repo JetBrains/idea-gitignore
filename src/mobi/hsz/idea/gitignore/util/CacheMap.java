@@ -25,6 +25,8 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
@@ -138,10 +140,10 @@ public class CacheMap {
     /**
      * Simple wrapper for running read action
      *
-     * @param file    {@ling IgnoreFile} to run visitor on it
+     * @param file    {@link IgnoreFile} to run visitor on it
      * @param visitor {@link IgnoreVisitor}
      */
-    private void runVisitorInReadAction(final IgnoreFile file, final IgnoreVisitor visitor) {
+    private void runVisitorInReadAction(@NotNull final IgnoreFile file, @NotNull final IgnoreVisitor visitor) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             public void run() {
                 file.acceptChildren(visitor);
@@ -178,8 +180,19 @@ public class CacheMap {
         for (final IgnoreFile ignoreFile : files) {
             boolean outer = ignoreFile.isOuter();
             final VirtualFile ignoreFileParent = ignoreFile.getVirtualFile().getParent();
-            if (!Utils.isUnder(file, ignoreFileParent) && !outer) {
-                continue;
+
+            if (!outer) {
+                if (!Utils.isUnder(file, ignoreFileParent)) {
+                    continue;
+                }
+
+                Module module = ModuleUtil.findModuleForFile(file, project);
+                if (module != null && module.getModuleFile() != null) {
+                    VirtualFile moduleDirectory = module.getModuleFile().getParent();
+                    if (!moduleDirectory.equals(file) && !Utils.isUnder(ignoreFile.getVirtualFile(), moduleDirectory)) {
+                        continue;
+                    }
+                }
             }
 
             final String path = Utils.getRelativePath(outer ? project.getBaseDir() : ignoreFileParent, file);
@@ -213,7 +226,14 @@ public class CacheMap {
     @NotNull
     public Status getParentStatus(@NotNull VirtualFile file) {
         VirtualFile parent = file.getParent();
-        while (parent != null && !parent.equals(project.getBaseDir())) {
+
+        Module module = ModuleUtil.findModuleForFile(file, project);
+        VirtualFile moduleDirectory = null;
+        if (module != null && module.getModuleFile() != null) {
+            moduleDirectory = module.getModuleFile().getParent();
+        }
+
+        while (parent != null && !parent.equals(project.getBaseDir()) && (moduleDirectory == null || !moduleDirectory.equals(parent))) {
             if (statuses.containsKey(parent)) {
                 return statuses.get(parent);
             }
