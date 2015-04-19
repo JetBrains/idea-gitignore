@@ -53,7 +53,7 @@ public class GitLanguage extends IgnoreLanguage {
     public static final GitLanguage INSTANCE = new GitLanguage();
 
     /** The outer file. */
-    public static VirtualFile OUTER_FILE;
+    private static VirtualFile OUTER_FILE;
 
     /** Flag to mark that outer file was fetched. */
     private static boolean OUTER_FILE_FETCHED = false;

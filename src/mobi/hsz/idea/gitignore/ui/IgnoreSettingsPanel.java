@@ -247,6 +247,7 @@ public class IgnoreSettingsPanel implements Disposable {
          *
          * @param userTemplates templates list
          */
+        @SuppressWarnings("unchecked")
         public void resetForm(List<IgnoreSettings.UserTemplate> userTemplates) {
             myListModel.clear();
             for (IgnoreSettings.UserTemplate template : userTemplates) {
@@ -502,8 +503,7 @@ public class IgnoreSettingsPanel implements Disposable {
         }
 
         public boolean equalSettings(IgnoreSettings.IgnoreLanguagesSettings settings) {
-            boolean equals = this.settings.equals(settings);
-            return equals;
+            return this.settings.equals(settings);
         }
     }
 }

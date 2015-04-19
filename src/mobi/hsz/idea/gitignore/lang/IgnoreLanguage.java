@@ -55,7 +55,7 @@ public class IgnoreLanguage extends Language {
      * The dot.
      */
     @NonNls
-    public static final String DOT = ".";
+    private static final String DOT = ".";
 
     /**
      * Ignore languages group name.

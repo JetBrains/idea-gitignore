@@ -193,7 +193,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
     };
 
-    private VcsListener vcsListener = new VcsListener() {
+    private final VcsListener vcsListener = new VcsListener() {
         private boolean initialized;
 
         @Override

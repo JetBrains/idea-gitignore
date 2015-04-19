@@ -79,25 +79,6 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     }
 
     /**
-     * Checks if outer ignore rules are enabled.
-     *
-     * @return outer ignore rules enabled
-     */
-    private static boolean isEnabled(@NotNull final VirtualFile file) {
-        if (!settings.isOuterIgnoreRules()) {
-            return false;
-        }
-
-        FileType fileType = file.getFileType();
-        if (!(fileType instanceof IgnoreFileType)) {
-            return false;
-        }
-
-        IgnoreLanguage language = ((IgnoreFileType) fileType).getIgnoreLanguage();
-        return IgnoreSettings.getInstance().isOuterIgnoreRules();
-    }
-
-    /**
      * Listener for ignore editor manager.
      */
     private static class IgnoreEditorManagerListener extends FileEditorManagerAdapter {

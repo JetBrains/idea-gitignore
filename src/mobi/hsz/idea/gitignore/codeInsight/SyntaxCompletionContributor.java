@@ -44,7 +44,7 @@ import java.util.List;
  * @since 1.0
  */
 public class SyntaxCompletionContributor extends CompletionContributor {
-    public static final List<LookupElementBuilder> SYNTAX_ELEMENTS = ContainerUtil.newArrayList();
+    private static final List<LookupElementBuilder> SYNTAX_ELEMENTS = ContainerUtil.newArrayList();
     static {
         for (IgnoreBundle.Syntax syntax : IgnoreBundle.Syntax.values()) {
             SYNTAX_ELEMENTS.add(LookupElementBuilder.create(syntax.toString().toLowerCase()));
