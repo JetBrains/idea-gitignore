@@ -39,6 +39,7 @@ import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -186,12 +187,9 @@ public class CacheMap {
                     continue;
                 }
 
-                Module module = ModuleUtil.findModuleForFile(file, project);
-                if (module != null && module.getModuleFile() != null) {
-                    VirtualFile moduleDirectory = module.getModuleFile().getParent();
-                    if (!moduleDirectory.equals(file) && !Utils.isUnder(ignoreFile.getVirtualFile(), moduleDirectory)) {
-                        continue;
-                    }
+                VirtualFile moduleDirectory = findModuleDirectoryForFile(file);
+                if (moduleDirectory != null && !moduleDirectory.equals(file) && !Utils.isUnder(ignoreFile.getVirtualFile(), moduleDirectory)) {
+                    continue;
                 }
             }
 
@@ -218,6 +216,22 @@ public class CacheMap {
     }
 
     /**
+     * Finds module for the given file and returns its directory.
+     *
+     * @param file to search
+     * @return module directory
+     */
+    @Nullable
+    private VirtualFile findModuleDirectoryForFile(@NotNull VirtualFile file) {
+        Module module = ModuleUtil.findModuleForFile(file, project);
+        if (module != null && module.getModuleFile() != null) {
+            return module.getModuleFile().getParent();
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the status of the parent.
      *
      * @param file to check
@@ -226,12 +240,7 @@ public class CacheMap {
     @NotNull
     public Status getParentStatus(@NotNull VirtualFile file) {
         VirtualFile parent = file.getParent();
-
-        Module module = ModuleUtil.findModuleForFile(file, project);
-        VirtualFile moduleDirectory = null;
-        if (module != null && module.getModuleFile() != null) {
-            moduleDirectory = module.getModuleFile().getParent();
-        }
+        VirtualFile moduleDirectory = findModuleDirectoryForFile(file);
 
         while (parent != null && !parent.equals(project.getBaseDir()) && (moduleDirectory == null || !moduleDirectory.equals(parent))) {
             if (statuses.containsKey(parent)) {
