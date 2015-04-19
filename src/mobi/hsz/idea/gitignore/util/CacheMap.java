@@ -25,12 +25,11 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
+import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ConcurrentHashMap;
 import com.intellij.util.containers.ContainerUtil;
@@ -39,7 +38,6 @@ import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -187,8 +185,8 @@ public class CacheMap {
                     continue;
                 }
 
-                VirtualFile moduleDirectory = findModuleDirectoryForFile(file);
-                if (moduleDirectory != null && !moduleDirectory.equals(file) && !Utils.isUnder(ignoreFile.getVirtualFile(), moduleDirectory)) {
+                VirtualFile vcsRoot = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(file);
+                if (vcsRoot != null && !vcsRoot.equals(file) && !Utils.isUnder(ignoreFile.getVirtualFile(), vcsRoot)) {
                     continue;
                 }
             }
@@ -216,22 +214,6 @@ public class CacheMap {
     }
 
     /**
-     * Finds module for the given file and returns its directory.
-     *
-     * @param file to search
-     * @return module directory
-     */
-    @Nullable
-    private VirtualFile findModuleDirectoryForFile(@NotNull VirtualFile file) {
-        Module module = ModuleUtil.findModuleForFile(file, project);
-        if (module != null && module.getModuleFile() != null) {
-            return module.getModuleFile().getParent();
-        }
-
-        return null;
-    }
-
-    /**
      * Returns the status of the parent.
      *
      * @param file to check
@@ -240,9 +222,9 @@ public class CacheMap {
     @NotNull
     public Status getParentStatus(@NotNull VirtualFile file) {
         VirtualFile parent = file.getParent();
-        VirtualFile moduleDirectory = findModuleDirectoryForFile(file);
+        VirtualFile vcsRoot = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(file);
 
-        while (parent != null && !parent.equals(project.getBaseDir()) && (moduleDirectory == null || !moduleDirectory.equals(parent))) {
+        while (parent != null && !parent.equals(project.getBaseDir()) && (vcsRoot == null || !vcsRoot.equals(parent))) {
             if (statuses.containsKey(parent)) {
                 return statuses.get(parent);
             }

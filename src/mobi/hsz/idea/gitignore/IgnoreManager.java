@@ -29,6 +29,8 @@ import com.intellij.openapi.progress.BackgroundTaskQueue;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import com.intellij.openapi.vcs.VcsListener;
 import com.intellij.openapi.vfs.*;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.PsiManagerImpl;
@@ -37,6 +39,7 @@ import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Alarm;
+import com.intellij.util.messages.MessageBusConnection;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
@@ -62,6 +65,7 @@ public class IgnoreManager extends AbstractProjectComponent {
     private final Alarm alarm = new Alarm();
     private final BackgroundTaskQueue queue;
     private final IgnoreSettings settings;
+    private MessageBusConnection messageBus;
     private boolean working;
 
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
@@ -189,6 +193,18 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
     };
 
+    private VcsListener vcsListener = new VcsListener() {
+        private boolean initialized;
+
+        @Override
+        public void directoryMappingChanged() {
+            if (working && initialized) {
+                cache.clear();
+                retrieve();
+            }
+            initialized = true;
+        }
+    };
 
     /**
      * Returns {@link IgnoreManager} service instance.
@@ -274,6 +290,8 @@ public class IgnoreManager extends AbstractProjectComponent {
         virtualFileManager.addVirtualFileListener(virtualFileListener);
         psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
         settings.addListener(settingsListener);
+        messageBus = myProject.getMessageBus().connect();
+        messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, vcsListener);
         working = true;
 
         retrieve();
@@ -297,6 +315,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         virtualFileManager.removeVirtualFileListener(virtualFileListener);
         psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
         settings.removeListener(settingsListener);
+        messageBus.disconnect();
         cache.clear();
         working = false;
     }
