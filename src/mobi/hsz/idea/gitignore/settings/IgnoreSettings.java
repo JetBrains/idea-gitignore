@@ -32,7 +32,6 @@ import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Listenable;
-import mobi.hsz.idea.gitignore.util.Utils;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,18 +54,13 @@ import java.util.Map;
 public class IgnoreSettings implements PersistentStateComponent<Element>, Listenable<IgnoreSettings.Listener> {
 
     /**
-     * Current plugin version.
-     */
-    private static final String PLUGIN_VERSION = Utils.getMinorVersion();
-
-    /**
      * Settings keys.
      */
     public enum KEY {
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
-        USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), DONATION_SHOWN("donationShown"),
-        LANGUAGES("languages"), LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"),
-        IGNORED_FILE_STATUS("ignoredFileStatus"), OUTER_IGNORE_RULES("outerIgnoreRules");
+        USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
+        LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
+        OUTER_IGNORE_RULES("outerIgnoreRules");
 
         private final String key;
 
@@ -113,11 +107,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     }};
 
     /**
-     * Shows information about donation.
-     */
-    private String donationShown = "";
-
-    /**
      * Lists all user defined templates.
      */
     private final List<UserTemplate> userTemplates = ContainerUtil.newArrayList(DEFAULT_TEMPLATE);
@@ -147,7 +136,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     public Element getState() {
         final Element element = new Element(KEY.ROOT.toString());
         element.setAttribute(KEY.MISSING_GITIGNORE.toString(), Boolean.toString(missingGitignore));
-        element.setAttribute(KEY.DONATION_SHOWN.toString(), donationShown);
         element.setAttribute(KEY.IGNORED_FILE_STATUS.toString(), Boolean.toString(ignoredFileStatus));
         element.setAttribute(KEY.OUTER_IGNORE_RULES.toString(), Boolean.toString(outerIgnoreRules));
 
@@ -187,9 +175,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     public void loadState(Element element) {
         String value = element.getAttributeValue(KEY.MISSING_GITIGNORE.toString());
         if (value != null) missingGitignore = Boolean.parseBoolean(value);
-
-        value = element.getAttributeValue(KEY.DONATION_SHOWN.toString());
-        if (value != null) donationShown = value;
 
         value = element.getAttributeValue(KEY.IGNORED_FILE_STATUS.toString());
         if (value != null) ignoredFileStatus = Boolean.parseBoolean(value);
@@ -303,23 +288,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     public void setLanguagesSettings(IgnoreLanguagesSettings languagesSettings) {
         this.notifyOnChange(KEY.LANGUAGES, this.languagesSettings, languagesSettings);
         this.languagesSettings = languagesSettings;
-    }
-
-    /**
-     * Shows information about donation.
-     *
-     * @return {@link #donationShown} equals to the {@link #PLUGIN_VERSION}
-     */
-    public boolean isDonationShown() {
-        return donationShown != null && donationShown.equals(PLUGIN_VERSION);
-    }
-
-    /**
-     * Sets {@link #donationShown} to the {@link #PLUGIN_VERSION} value.
-     */
-    public void setDonationShown() {
-        this.notifyOnChange(KEY.DONATION_SHOWN, this.donationShown, PLUGIN_VERSION);
-        this.donationShown = PLUGIN_VERSION;
     }
 
     /**
