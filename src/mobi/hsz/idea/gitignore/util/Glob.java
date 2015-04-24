@@ -177,20 +177,30 @@ public class Glob {
             return cached;
         }
 
-        char[] chars;
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("^");
+        boolean escape = false, star = false, doubleStar = false, bracket = false;
+        int beginIndex = 0;
 
-        if (!StringUtil.startsWithChar(glob, '/')) {
-            if (!StringUtil.startsWith(glob, "**")) {
-                sb.append("([^/]*?/)*");
-            }
-            chars = glob.toCharArray();
-        } else {
-            sb.append('^');
-            chars = glob.substring(1).toCharArray();
+        if (StringUtil.startsWith(glob, "**")) {
+            sb.append("([^/]*?/)*");
+            beginIndex = 2;
+            doubleStar = true;
+        } else if (StringUtil.startsWith(glob, "*/")) {
+            sb.append("[^/]*");
+            beginIndex = 1;
+            star = true;
+        } else if (StringUtil.equals("*", glob)) {
+            sb.append(".*");
+        } else if (StringUtil.startsWithChar(glob, '*')) {
+            sb.append(".*?");
+        } else if (!StringUtil.containsChar(glob, '/')) {
+            sb.append("([^/]*?/)*");
+        } else if (StringUtil.startsWithChar(glob, '/')) {
+            beginIndex = 1;
         }
 
-        boolean escape = false, star = false, doubleStar = false, bracket = false;
+        char[] chars = glob.substring(beginIndex).toCharArray();
+
         for (char ch : chars) {
             if (bracket && ch != ']') {
                 sb.append(ch);
