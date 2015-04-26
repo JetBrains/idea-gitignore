@@ -72,6 +72,7 @@ public class IgnoreBundle {
             JSHintLanguage.INSTANCE,
             MercurialLanguage.INSTANCE,
             MonotoneLanguage.INSTANCE,
+            NodemonLanguage.INSTANCE,
             NpmLanguage.INSTANCE,
             PerforceLanguage.INSTANCE,
             TFLanguage.INSTANCE

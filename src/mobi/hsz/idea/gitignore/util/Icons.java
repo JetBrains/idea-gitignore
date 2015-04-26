@@ -68,6 +68,9 @@ public class Icons {
     /** Monotone icon. */
     public static final Icon MONOTONE = IconLoader.getIcon("/icons/icon_monotone.png");
 
+    /** Nodemon icon. */
+    public static final Icon NODEMON = IconLoader.getIcon("/icons/icon_nodemon.png");
+
     /** Npmignore icon. */
     public static final Icon NPM = IconLoader.getIcon("/icons/icon_npm.png");
 
