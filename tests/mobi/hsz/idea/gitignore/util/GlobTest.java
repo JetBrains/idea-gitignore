@@ -52,7 +52,7 @@ public class GlobTest {
         Assert.assertTrue(pattern.matcher("dir/subdir/foo/file.txt").matches());
         Assert.assertTrue(pattern.matcher("dir/file.txt").matches());
 
-        pattern = Glob.createPattern("dir/*", IgnoreBundle.Syntax.GLOB);
+        pattern = Glob.createPattern("dir/*", IgnoreBundle.Syntax.GLOB, true);
         Assert.assertTrue(pattern.matcher("dir/file.txt").matches());
         Assert.assertTrue(pattern.matcher("dir/subdir/").matches());
         Assert.assertFalse(pattern.matcher("dir/").matches());

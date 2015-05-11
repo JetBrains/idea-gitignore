@@ -58,7 +58,7 @@ public class IgnoreIncorrectEntryInspection extends LocalInspectionTool {
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 String regex = entry.getText();
                 if (IgnoreBundle.Syntax.GLOB.equals(entry.getSyntax())) {
-                    regex = Glob.createRegex(regex);
+                    regex = Glob.createRegex(regex, false);
                 }
 
                 try {

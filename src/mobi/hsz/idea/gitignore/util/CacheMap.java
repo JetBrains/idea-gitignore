@@ -40,7 +40,6 @@ import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -168,13 +167,7 @@ public class CacheMap {
             return status.equals(Status.IGNORED);
         }
 
-        final List<IgnoreFile> files = Collections.list(map.keys());
-        ContainerUtil.sort(files, new Comparator<IgnoreFile>() {
-            @Override
-            public int compare(IgnoreFile file1, IgnoreFile file2) {
-                return StringUtil.naturalCompare(file1.getVirtualFile().getPath(), file2.getVirtualFile().getPath()) * -1;
-            }
-        });
+        final List<IgnoreFile> files = ContainerUtil.reverse(Utils.ignoreFilesSort(Collections.list(map.keys())));
 
         for (final IgnoreFile ignoreFile : files) {
             boolean outer = ignoreFile.isOuter();

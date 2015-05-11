@@ -144,7 +144,20 @@ public class Glob {
      */
     @Nullable
     public static Pattern createPattern(@NotNull String rule, @NotNull IgnoreBundle.Syntax syntax) {
-        final String regex = syntax.equals(IgnoreBundle.Syntax.GLOB) ? createRegex(rule) : rule;
+        return createPattern(rule, syntax, false);
+    }
+
+    /**
+     * Creates regex {@link Pattern} using glob rule.
+     *
+     * @param rule rule value
+     * @param syntax rule syntax
+     * @param acceptChildren Matches directory children
+     * @return regex {@link Pattern}
+     */
+    @Nullable
+    public static Pattern createPattern(@NotNull String rule, @NotNull IgnoreBundle.Syntax syntax, boolean acceptChildren) {
+        final String regex = syntax.equals(IgnoreBundle.Syntax.GLOB) ? createRegex(rule, acceptChildren) : rule;
         try {
             return Pattern.compile(regex);
         } catch (PatternSyntaxException e) {
@@ -160,17 +173,30 @@ public class Glob {
      */
     @Nullable
     public static Pattern createPattern(@NotNull IgnoreEntry entry) {
-        return createPattern(entry.getValue(), entry.getSyntax());
+        return createPattern(entry, false);
+    }
+
+    /**
+     * Creates regex {@link Pattern} using {@link IgnoreEntry}.
+     *
+     * @param entry {@link IgnoreEntry}
+     * @param acceptChildren Matches directory children
+     * @return regex {@link Pattern}
+     */
+    @Nullable
+    public static Pattern createPattern(@NotNull IgnoreEntry entry, boolean acceptChildren) {
+        return createPattern(entry.getValue(), entry.getSyntax(), acceptChildren);
     }
 
     /**
      * Creates regex {@link String} using glob rule.
      *
      * @param glob rule
+     * @param acceptChildren Matches directory children
      * @return regex {@link String}
      */
     @NotNull
-    public static String createRegex(@NotNull String glob) {
+    public static String createRegex(@NotNull String glob, boolean acceptChildren) {
         glob = glob.trim();
         String cached = cache.get(glob);
         if (cached != null) {
@@ -298,11 +324,18 @@ public class Glob {
         }
 
         if (star || doubleStar) {
-            sb.append(StringUtil.endsWithChar(sb, '/') ? "[^/]+" : "[^/]*");
-        } else if (sb.charAt(sb.length() - 1) == '/') {
-            sb.append('?');
+            if (StringUtil.endsWithChar(sb, '/')) {
+                sb.append(acceptChildren ? ".+" : "[^/]+");
+            } else {
+                sb.append("[^/]*");
+            }
+        } else {
+            if (StringUtil.endsWithChar(sb, '/')) {
+                sb.setLength(sb.length() - 1);
+            }
+            sb.append(acceptChildren ? "(/.*)?" : "/?");
         }
-        sb.append("/?");
+
         sb.append('$');
 
         cache.put(glob, sb.toString());

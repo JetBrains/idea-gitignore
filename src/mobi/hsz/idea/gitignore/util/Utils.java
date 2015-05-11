@@ -55,12 +55,14 @@ import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -419,4 +421,22 @@ public class Utils {
         }
         return path;
     }
+
+    /**
+     * Sorts {@link IgnoreFile} ascending using files path.
+     * Uses passed argument by reference and additionally returns the same object.
+     *
+     * @param files {@link IgnoreFile} list
+     * @return sorted list
+     */
+    public static List<IgnoreFile> ignoreFilesSort(final List<IgnoreFile> files) {
+        ContainerUtil.sort(files, new Comparator<IgnoreFile>() {
+            @Override
+            public int compare(IgnoreFile file1, IgnoreFile file2) {
+                return StringUtil.naturalCompare(file1.getVirtualFile().getPath(), file2.getVirtualFile().getPath());
+            }
+        });
+        return files;
+    }
+
 }

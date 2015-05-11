@@ -39,6 +39,7 @@ import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Alarm;
+import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -49,6 +50,8 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 
@@ -351,13 +354,17 @@ public class IgnoreManager extends AbstractProjectComponent {
 
                     // Search for Ignore files in the project
                     final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
+                    final List<IgnoreFile> files = ContainerUtil.newArrayList();
                     for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                         if (language.isEnabled()) {
                             for (VirtualFile virtualFile : FileTypeIndex.getFiles(language.getFileType(), scope)) {
-                                addTaskFor(getIgnoreFile(virtualFile));
+                                files.add(getIgnoreFile(virtualFile));
                             }
                         }
                     }
+                    Utils.ignoreFilesSort(files);
+
+                    addTasksFor(files);
 
                     // Search for outer files
                     if (settings.isOuterIgnoreRules()) {
@@ -374,6 +381,17 @@ public class IgnoreManager extends AbstractProjectComponent {
             /**
              * Adds {@link IgnoreFile} to the cache processor queue.
              *
+             * @param files to cache
+             */
+            private void addTasksFor(@NotNull final List<IgnoreFile> files) {
+                for (IgnoreFile file : files) {
+                    addTaskFor(file);
+                }
+            }
+
+            /**
+             * Adds {@link IgnoreFile} to the cache processor queue.
+             *
              * @param file to cache
              */
             private void addTaskFor(@Nullable final IgnoreFile file) {
@@ -383,6 +401,11 @@ public class IgnoreManager extends AbstractProjectComponent {
                 queue.run(new Task.Backgroundable(myProject, IgnoreBundle.message("cache.indexing")) {
                     @Override
                     public void run(@NotNull ProgressIndicator indicator) {
+                        if (isFileIgnored(file.getVirtualFile())) {
+                            indicator.cancel();
+                            return;
+                        }
+
                         String path = Utils.getRelativePath(myProject.getBaseDir(), file.getVirtualFile());
                         indicator.setText(path);
                         cache.add(file);
