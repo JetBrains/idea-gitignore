@@ -111,7 +111,6 @@ Changelog
 - Ignored directory with single asterisk is ignore recursively [\#113](https://github.com/hsz/idea-gitignore/issues/113)
 - Unexpected ignore coloring of nested file listed as a top level ignore only [\#112](https://github.com/hsz/idea-gitignore/issues/112)
 - Throwable: Directory index is already disposed for Project \(Disposed\) PROJECT\_NAME  [\#109](https://github.com/hsz/idea-gitignore/issues/109)
-- InvalidVirtualFileAccessException [\#107](https://github.com/hsz/idea-gitignore/issues/107)
 - Argument for @NotNull parameter 'editor' of EditorFactoryImpl.releaseEditor must not be null [\#108](https://github.com/hsz/idea-gitignore/issues/108)
 - Indexing node\_modules every time when open the project [\#104](https://github.com/hsz/idea-gitignore/issues/104)
 - Extremely slow behaviour [\#100](https://github.com/hsz/idea-gitignore/issues/100)

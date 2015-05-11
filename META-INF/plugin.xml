@@ -50,7 +50,7 @@
     <change-notes><![CDATA[
 
         <a href="https://github.com/hsz/idea-gitignore/tree/v1.1.2"><b>v1.1.2</b></a> (2015-05-11) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.1.1...v1.1.2"><small>Full Changelog</small></a>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.1.1...v1.1.2"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         <ul>
@@ -67,7 +67,6 @@
             <li>Ignored directory with single asterisk is ignore recursively <a href="https://github.com/hsz/idea-gitignore/issues/113">#113</a></li>
             <li>Unexpected ignore coloring of nested file listed as a top level ignore only <a href="https://github.com/hsz/idea-gitignore/issues/112">#112</a></li>
             <li>Throwable: Directory index is already disposed for Project \(Disposed\) PROJECT\_NAME  <a href="https://github.com/hsz/idea-gitignore/issues/109">#109</a></li>
-            <li>InvalidVirtualFileAccessException <a href="https://github.com/hsz/idea-gitignore/issues/107">#107</a></li>
             <li>Argument for @NotNull parameter 'editor' of EditorFactoryImpl.releaseEditor must not be null <a href="https://github.com/hsz/idea-gitignore/issues/108">#108</a></li>
             <li>Indexing node\_modules every time when open the project <a href="https://github.com/hsz/idea-gitignore/issues/104">#104</a></li>
             <li>Extremely slow behaviour <a href="https://github.com/hsz/idea-gitignore/issues/100">#100</a></li>
