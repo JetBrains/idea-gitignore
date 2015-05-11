@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -49,211 +49,34 @@
 
     <change-notes><![CDATA[
 
-      Version 1.1.1
-      <ul>
-        <li>Disable  non-VCS languages ignoring by default</li>
-        <li>EmptyFileManager class cast exception fix</li>
-      </ul>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.1.2"><b>v1.1.2</b></a> (2015-05-11) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.1.1...v1.1.2"><small>Full Changelog</small></a>
 
-      Version 1.1
-      <ul>
-        <li>Fixed performance issues</li>
-        <li>Handling outside ignore rules (.gitignore global file)</li>
-        <li>Languages settings (configurable list in <i>New file</i>, marking as ignored in Project tree)</li>
-        <li><i>.jshintignore</i> support (JSHint)</li>
-        <li><i>ignore-glob</i> support (Fossil)</li>
-        <li><i>.tfignore</i> support (Team Foundation)</li>
-        <li><i>.p4ignore</i> support (Perforce)</li>
-        <li>Fixed "Add to null" issue (<a href="https://github.com/hsz/idea-gitignore/issues/96">#96</a>)</li>
-        <li>Fixed @NotNull parameter 'ancestor (<a href="https://github.com/hsz/idea-gitignore/issues/93">#93</a>)</li>
-        <li>Fixed ignored files coloring (<a href="https://github.com/hsz/idea-gitignore/issues/85">#85</a>, <a href="https://github.com/hsz/idea-gitignore/issues/87">#87</a>)</li>
-        <li>Default user template</li>
-      </ul>
+        <i>Implemented enhancements:</i>
+        <ul>
+            <li>Disable recursive .ignore check <a href="https://github.com/hsz/idea-gitignore/issues/114">#114</a></li>
+            <li>Move plugin settings from Other Settings to Version Control section <a href="https://github.com/hsz/idea-gitignore/issues/106">#106</a></li>
+            <li>Nested repositories handling regression <a href="https://github.com/hsz/idea-gitignore/issues/105">#105</a></li>
+            <li>Skywinder's <a href="https://github.com/skywinder/github-changelog-generator">github-changelog-generator</a></li>
+        </ul>
 
-      Version 1.0.2
-      <ul>
-        <li>CLion VerifyError hotfix (<a href="https://github.com/hsz/idea-gitignore/issues/89">#89</a>)</li>
-      </ul>
+        <i>Fixed bugs:</i>
 
-      Version 1.0.1
-      <ul>
-        <li>Allow enable/disable coloring ignored files (<a href="https://github.com/hsz/idea-gitignore/issues/87">#87</a>)</li>
-        <li>Cover inspection respects negated entries</li>
-        <li>Wrong ignore indicator with nested entries fix (<a href="https://github.com/hsz/idea-gitignore/issues/85">#85</a>)</li>
-        <li>ConcurrentModificationException fix (<a href="https://github.com/hsz/idea-gitignore/issues/84">#84</a>)</li>
-        <li><i>.mtn-ignore</i> support (Monotone version control)</li>
-      </ul>
+        <ul>
+            <li>Argument for @NotNull parameter 'directory' of Utils.isUnder must not be null <a href="https://github.com/hsz/idea-gitignore/issues/115">#115</a></li>
+            <li>Ignored directory with single asterisk is ignore recursively <a href="https://github.com/hsz/idea-gitignore/issues/113">#113</a></li>
+            <li>Unexpected ignore coloring of nested file listed as a top level ignore only <a href="https://github.com/hsz/idea-gitignore/issues/112">#112</a></li>
+            <li>Throwable: Directory index is already disposed for Project \(Disposed\) PROJECT\_NAME  <a href="https://github.com/hsz/idea-gitignore/issues/109">#109</a></li>
+            <li>InvalidVirtualFileAccessException <a href="https://github.com/hsz/idea-gitignore/issues/107">#107</a></li>
+            <li>Argument for @NotNull parameter 'editor' of EditorFactoryImpl.releaseEditor must not be null <a href="https://github.com/hsz/idea-gitignore/issues/108">#108</a></li>
+            <li>Indexing node\_modules every time when open the project <a href="https://github.com/hsz/idea-gitignore/issues/104">#104</a></li>
+            <li>Extremely slow behaviour <a href="https://github.com/hsz/idea-gitignore/issues/100">#100</a></li>
+            <li>WS10 RC Memory Leak <a href="https://github.com/hsz/idea-gitignore/issues/99">#99</a></li>
+            <li>Lags (several seconds) while editing .ignore <a href="https://github.com/hsz/idea-gitignore/issues/95">#95</a></li>
+        </ul>
 
-      Version 1.0
-      <ul>
-        <li><b>Ignored files coloring</b> in the Project View (customizable style)</li>
-        <li><b>Regex support</b> (used with Mercurial and Darcs)</li>
-        <li><b>Syntax switching</b> support for Mercurial (with suggestion)</li>
-        <li>Incorrect entry syntax inspection</li>
-        <li><i>.boringignore</i> support (Darcs version control)</li>
-      </ul>
+        <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
 
-      Version 0.9
-      <ul>
-        <li><b>.chefignore</b> support (Chef automation tool)</li>
-        <li><b>.cvsignore</b> support (CVS version control)</li>
-        <li><b>.bzrignore</b> support (Bazaar version control)</li>
-        <li>Grouped actions for creating new file</li>
-        <li>Ant build file fix</li>
-      </ul>
-
-      Version 0.8.1
-      <ul>
-        <li>Plugin renamed to <b>.ignore</b></li>
-        <li>Idea 12 support (all products since build 123) (<a href="https://github.com/hsz/idea-gitignore/issues/71">#71</a>)</li>
-        <li>Inspections are back again</li>
-        <li>Few minor fixes</li>
-      </ul>
-
-      Version 0.8
-      <ul>
-        <li>Support for .hgignore .npmignore and .dockerignore files (<a href="https://github.com/hsz/idea-gitignore/issues/57">#57</a>, <a href="https://github.com/hsz/idea-gitignore/issues/58">#58</a>)</li>
-        <li>Relative entry inspection with quick fix</li>
-        <li>Retina-ready icons (<a href="https://github.com/hsz/idea-gitignore/issues/63">#63</a>, <a href="https://github.com/hsz/idea-gitignore/issues/65">#65</a>)</li>
-        <li>Fixed Add template... on External Libraries (<a href="https://github.com/hsz/idea-gitignore/issues/68">#68</a>)</li>
-        <li>Fixed template presentation error (<a href="https://github.com/hsz/idea-gitignore/issues/67">#67</a>)</li>
-        <li>Fixed minor bugs (<a href="https://github.com/hsz/idea-gitignore/issues/64">#64</a>, <a href="https://github.com/hsz/idea-gitignore/issues/49">#49</a>)</li>
-      </ul>
-
-      Version 0.7
-      <ul>
-        <li>User templates - you can create your own templates in <b>Settings > Gitignore > User templates</b></li>
-        <li>Fixed JDOM error (<a href="https://github.com/hsz/idea-gitignore/issues/62">#62</a>) - thanks to <a href="https://github.com/danpfe">@danpfe</a></li>
-        <li>Fixed donation URL</li>
-      </ul>
-
-      Version 0.6.1
-      <ul>
-        <li>Global settings section</li>
-        <li>Optional missing gitignore file check (<a href="https://github.com/hsz/idea-gitignore/issues/18">#18</a>)</li>
-        <li>Fixed donation notification (<a href="https://github.com/hsz/idea-gitignore/issues/59">#59</a>)</li>
-      </ul>
-
-      Version 0.6
-      <ul>
-        <li>Reimplemented templates generator (tree structure, checkboxes allow to add many templates at once)</li>
-        <li>Find template by its content</li>
-        <li>"Add template..." option in context menu</li>
-        <li>Fixed no search input by default (<a href="https://github.com/hsz/idea-gitignore/issues/27">#27</a>)</li>
-        <li>Fixed CommonDataKeys NoClassDefFoundError (<a href="https://github.com/hsz/idea-gitignore/issues/51">#51</a>)</li>
-        <li>Fixed "Cannot create .gitignore, file already exists." (<a href="https://github.com/hsz/idea-gitignore/issues/55">#55</a>)</li>
-      </ul>
-
-      Version 0.5.4
-      <ul>
-        <li>Better entries completion and references</li>
-        <li>Unused entry inspection style changed to grayed (<a href="https://github.com/hsz/idea-gitignore/issues/47">#47</a>)</li>
-        <li>Fixed AddTemplateAction NPE (<a href="https://github.com/hsz/idea-gitignore/issues/48">#48</a>)</li>
-        <li>Select Destination dialog problem fixed in Android Studio (<a href="https://github.com/hsz/idea-gitignore/issues/36">#36</a>)</li>
-        <li>Handling excluded directories in inspection (<a href="https://github.com/hsz/idea-gitignore/issues/47">#47</a>)</li>
-        <li>Inspection warning messages clarification</li>
-      </ul>
-
-      Version 0.5.3
-      <ul>
-        <li>Added "Add template..." action to the "Generate" context menu under <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut</li>
-        <li>Travis integration</li>
-        <li>Donation button - if you find my plugin helpful, just donate it</li>
-        <li>Fixed wrong line separators errors (<a href="https://github.com/hsz/idea-gitignore/issues/41">#41</a>)</li>
-      </ul>
-
-      Version 0.5.2
-      <ul>
-        <li>Fixed few errors (<a href="https://github.com/hsz/idea-gitignore/issues/35">#35</a>, <a href="https://github.com/hsz/idea-gitignore/issues/36">#36</a>, <a href="https://github.com/hsz/idea-gitignore/issues/37">#37</a>)
-        <li>Fixed "Show ignored files" action (<a href="https://github.com/hsz/idea-gitignore/issues/38">#38</a>)
-      </ul>
-
-      Version 0.5.1
-      <ul>
-        <li>Reference resolving fixes (me and <a href="https://github.com/zolotov">@zolotov</a>) (<a href="https://github.com/hsz/idea-gitignore/issues/26">#26</a>, <a href="https://github.com/hsz/idea-gitignore/issues/33">#33</a>)</li>
-        <li>Build script for Windows (<a href="https://github.com/bedla">@bedla</a>)</li>
-        <li>NPE in Utils (<a href="https://github.com/hsz/idea-gitignore/issues/30">#30</a>, <a href="https://github.com/hsz/idea-gitignore/issues/32">#32</a>, <a href="https://github.com/hsz/idea-gitignore/issues/34">#34</a>)</li>
-      </ul>
-
-      Version 0.5
-      <br/><br/>
-      <i>Many thanks to <a href="https://github.com/zolotov">@zolotov</a> for his great support.</i>
-      <br/><br/>
-      <ul>
-        <li>Comments support with <kbd>Ctrl</kbd> + <kbd>/</kbd> shortcut</li>
-        <li>Brackets support</li>
-        <li>Generator dialog enhancement (<a href="https://github.com/zolotov">@zolotov</a>)</li>
-        <li>Duplicate entry inspection</li>
-        <li>Cover entry inspection (checks if entry includes another one)</li>
-        <li>Unused entry inspection</li>
-        <li>Remove entry quick fix (<a href="https://github.com/zolotov">@zolotov</a>)</li>
-        <li>Entry reference navigation with <kbd>Ctrl</kbd> + <kbd>click</kbd> (<a href="https://github.com/zolotov">@zolotov</a>)</li>
-        <li>Rename entry refactoring (<a href="https://github.com/zolotov">@zolotov</a>)</li>
-        <li>Color schemes update (introduced bracket, value, slash; removed file, directory)</li>
-        <li>Directory line marker</li>
-        <li>Multi-gitignore files support for adding from context menu</li>
-        <li>Prevent adding duplicate entries (<a href="https://github.com/hsz/idea-gitignore/issues/17">#17</a>)</li>
-        <li><i>and many more...</i></li>
-      </ul>
-
-      Version 0.4
-      <ul>
-        <li>Show ignored files by specified Gitignore file (right click on <i>.gitignore</i> file)</li>
-        <li>Add selected file/directory to Gitignore rules from popup menu</li>
-        <li>Negation syntax style changed (also fixes <a href="https://github.com/hsz/idea-gitignore/issues/15">#15</a>)</li>
-        <li>Fixed problem with negation (AssertionError) (<a href="https://github.com/hsz/idea-gitignore/issues/10">#10</a>)</li>
-        <li>Fixed problem with template's wrong line separator (<a href="https://github.com/hsz/idea-gitignore/issues/13">#13</a>)</li>
-        <li>Fixed NoSuchMethodError if older SDK does not support notification panel's icon (<a href="https://github.com/hsz/idea-gitignore/issues/14">#14</a>)</li>
-        <li>Rewritten BNF and JFlex rules</li>
-      </ul>
-
-      Version 0.3.3
-      <ul>
-        <li>Gitignore file creating suggestion if missing</li>
-        <li>Fixed problem with negation (AssertionError) (<a href="https://github.com/hsz/idea-gitignore/issues/10">#10</a>)</li>
-        <li>Replaced icon (<a href="https://github.com/hsz/idea-gitignore/issues/9">#9</a>)</li>
-        <li>New file entry moved to the end of list (<a href="https://github.com/hsz/idea-gitignore/issues/9">#9</a>)</li>
-      </ul>
-
-      Version 0.3.2
-      <ul>
-        <li>Fixed problem with Java 1.6 and JList - NoSuchMethodError (<a href="https://github.com/hsz/idea-gitignore/issues/7">#7</a>)</li>
-      </ul>
-
-      Version 0.3.1
-      <ul>
-        <li>Fixed problem with Java 1.6 (<a href="https://github.com/hsz/idea-gitignore/issues/2">#2</a>,
-            <a href="https://github.com/hsz/idea-gitignore/issues/4">#4</a>)</li>
-        <li>Fixed fetching templates list (<a href="https://github.com/hsz/idea-gitignore/issues/5">#5</a>)</li>
-      </ul>
-
-      Version 0.3
-      <ul>
-        <li>Content generator based on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
-      </ul>
-
-      Version 0.2.2
-      <ul>
-        <li>Custom color schemes for <i>Default</i> and <i>Darcula</i> themes</li>
-      </ul>
-
-      Version 0.2.1
-      <ul>
-        <li>Color Settings Page sample (<kbd>Settings > Editor > Color & Fonts > Gitignore</kbd>)</li>
-        <li>Syntax highlighting fix</li>
-      </ul>
-
-      Version 0.2
-      <ul>
-        <li>Full syntax highlighting (comment, section, header, file, directory, negation)</li>
-      </ul>
-
-      Version 0.1
-      <ul>
-        <li>Initial version</li>
-        <li><b>.gitignore</b> file support</li>
-        <li>Basic syntax highlighting</li>
-      </ul>
     ]]>
     </change-notes>
 
