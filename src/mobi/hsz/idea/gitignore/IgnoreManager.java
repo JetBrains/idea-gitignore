@@ -344,6 +344,10 @@ public class IgnoreManager extends AbstractProjectComponent {
      * Triggers caching actions.
      */
     private void retrieve() {
+        if (!Alarm.isEventDispatchThread()) {
+            return;
+        }
+
         alarm.cancelAllRequests();
         alarm.addRequest(new Runnable() {
             @Override
