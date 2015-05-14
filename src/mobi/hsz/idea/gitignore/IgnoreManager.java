@@ -318,7 +318,11 @@ public class IgnoreManager extends AbstractProjectComponent {
         virtualFileManager.removeVirtualFileListener(virtualFileListener);
         psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
         settings.removeListener(settingsListener);
-        messageBus.disconnect();
+
+        if (messageBus != null) {
+            messageBus.disconnect();
+        }
+
         cache.clear();
         working = false;
     }
