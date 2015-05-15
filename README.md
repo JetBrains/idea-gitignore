@@ -118,7 +118,7 @@ Changelog
 - Lags\(several seconds\) while editing .ignore [\#95](https://github.com/hsz/idea-gitignore/issues/95)
 
 
-[Full Changelog History](https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md)
+[Full Changelog History](./CHANGELOG.md)
 
 
 Contribution
