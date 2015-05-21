@@ -366,7 +366,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                     for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                         if (language.isEnabled()) {
                             for (VirtualFile virtualFile : FileTypeIndex.getFiles(language.getFileType(), scope)) {
-                                files.add(getIgnoreFile(virtualFile));
+                                ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
                             }
                         }
                     }
