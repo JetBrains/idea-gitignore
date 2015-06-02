@@ -449,11 +449,13 @@ public class IgnoreManager extends AbstractProjectComponent {
                             cache.add(file);
                         }
 
-                        if (!ContainerUtil.isEmpty(dependentFiles)) {
-                            for (IgnoreFile dependentFile : dependentFiles) {
-                                if (!isFileIgnored(dependentFile.getVirtualFile()) && !isParentIgnored(dependentFile.getVirtualFile())) {
-                                    addTaskFor(dependentFile);
-                                }
+                        if (dependentFiles == null || dependentFiles.isEmpty()) {
+                            return;
+                        }
+
+                        for (IgnoreFile dependentFile : dependentFiles) {
+                            if (!isFileIgnored(dependentFile.getVirtualFile()) && !isParentIgnored(dependentFile.getVirtualFile())) {
+                                addTaskFor(dependentFile);
                             }
                         }
                     }
