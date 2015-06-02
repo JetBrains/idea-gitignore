@@ -257,8 +257,29 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @param file current file
      * @return file is ignored
      */
-    public boolean isFileIgnored(final VirtualFile file) {
+    public boolean isFileIgnored(@NotNull final VirtualFile file) {
         return isEnabled() && cache.isFileIgnored(file);
+    }
+
+    /**
+     * Checks if file's parents are ignored.
+     *
+     * @param file current file
+     * @return file's parents are ignored
+     */
+    public boolean isParentIgnored(@NotNull final VirtualFile file) {
+        if (!isEnabled()) {
+            return false;
+        }
+
+        VirtualFile parent = file.getParent();
+        while (parent != null && Utils.isInProject(parent, myProject)) {
+            if (isFileIgnored(parent)) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
     }
 
     /**
@@ -392,9 +413,10 @@ public class IgnoreManager extends AbstractProjectComponent {
              * @param files to cache
              */
             private void addTasksFor(@NotNull final List<IgnoreFile> files) {
-                for (IgnoreFile file : files) {
-                    addTaskFor(file);
+                if (files.isEmpty()) {
+                    return;
                 }
+                addTaskFor(files.remove(0), files);
             }
 
             /**
@@ -403,6 +425,16 @@ public class IgnoreManager extends AbstractProjectComponent {
              * @param file to cache
              */
             private void addTaskFor(@Nullable final IgnoreFile file) {
+                addTaskFor(file, null);
+            }
+
+            /**
+             * Adds {@link IgnoreFile} to the cache processor queue.
+             *
+             * @param file to cache
+             * @param dependentFiles files to cache if not ignored by given file
+             */
+            private void addTaskFor(@Nullable final IgnoreFile file, @Nullable final List<IgnoreFile> dependentFiles) {
                 if (file == null) {
                     return;
                 }
@@ -411,12 +443,19 @@ public class IgnoreManager extends AbstractProjectComponent {
                     public void run(@NotNull ProgressIndicator indicator) {
                         if (isFileIgnored(file.getVirtualFile())) {
                             indicator.cancel();
-                            return;
+                        } else {
+                            String path = Utils.getRelativePath(myProject.getBaseDir(), file.getVirtualFile());
+                            indicator.setText(path);
+                            cache.add(file);
                         }
 
-                        String path = Utils.getRelativePath(myProject.getBaseDir(), file.getVirtualFile());
-                        indicator.setText(path);
-                        cache.add(file);
+                        if (!ContainerUtil.isEmpty(dependentFiles)) {
+                            for (IgnoreFile dependentFile : dependentFiles) {
+                                if (!isFileIgnored(dependentFile.getVirtualFile()) && !isParentIgnored(dependentFile.getVirtualFile())) {
+                                    addTaskFor(dependentFile);
+                                }
+                            }
+                        }
                     }
                 });
             }
