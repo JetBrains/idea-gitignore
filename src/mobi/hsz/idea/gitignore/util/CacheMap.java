@@ -170,9 +170,12 @@ public class CacheMap {
         final List<IgnoreFile> files = ContainerUtil.reverse(Utils.ignoreFilesSort(Collections.list(map.keys())));
 
         for (final IgnoreFile ignoreFile : files) {
-            boolean outer = ignoreFile.isOuter();
             final VirtualFile ignoreFileParent = ignoreFile.getVirtualFile().getParent();
+            if (ignoreFileParent == null) {
+                continue;
+            }
 
+            boolean outer = ignoreFile.isOuter();
             if (!outer) {
                 if (!Utils.isUnder(file, ignoreFileParent)) {
                     continue;
