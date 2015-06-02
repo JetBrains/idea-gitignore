@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -49,29 +49,18 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.1.2"><b>v1.1.2</b></a> (2015-05-11) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.1.1...v1.1.2"><small>Full Changelog</small></a> <br/><br/>
-
-        <i>Implemented enhancements:</i>
-        <ul>
-            <li>Disable recursive .ignore check <a href="https://github.com/hsz/idea-gitignore/issues/114">#114</a></li>
-            <li>Move plugin settings from Other Settings to Version Control section <a href="https://github.com/hsz/idea-gitignore/issues/106">#106</a></li>
-            <li>Nested repositories handling regression <a href="https://github.com/hsz/idea-gitignore/issues/105">#105</a></li>
-            <li>Skywinder's <a href="https://github.com/skywinder/github-changelog-generator">github-changelog-generator</a></li>
-        </ul>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.1.3"><b>v1.1.3</b></a> (2015-06-02) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.3"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>Argument for @NotNull parameter 'directory' of Utils.isUnder must not be null <a href="https://github.com/hsz/idea-gitignore/issues/115">#115</a></li>
-            <li>Ignored directory with single asterisk is ignore recursively <a href="https://github.com/hsz/idea-gitignore/issues/113">#113</a></li>
-            <li>Unexpected ignore coloring of nested file listed as a top level ignore only <a href="https://github.com/hsz/idea-gitignore/issues/112">#112</a></li>
-            <li>Throwable: Directory index is already disposed for Project \(Disposed\) PROJECT\_NAME  <a href="https://github.com/hsz/idea-gitignore/issues/109">#109</a></li>
-            <li>Argument for @NotNull parameter 'editor' of EditorFactoryImpl.releaseEditor must not be null <a href="https://github.com/hsz/idea-gitignore/issues/108">#108</a></li>
-            <li>Indexing node\_modules every time when open the project <a href="https://github.com/hsz/idea-gitignore/issues/104">#104</a></li>
-            <li>Extremely slow behaviour <a href="https://github.com/hsz/idea-gitignore/issues/100">#100</a></li>
-            <li>WS10 RC Memory Leak <a href="https://github.com/hsz/idea-gitignore/issues/99">#99</a></li>
-            <li>Lags (several seconds) while editing .ignore <a href="https://github.com/hsz/idea-gitignore/issues/95">#95</a></li>
+            <li>CacheMap.getParentStatus must not return null <a href="https://github.com/hsz/idea-gitignore/issues/138">#138</a></li>
+            <li>Utils.isUnder - directory must not be null <a href="https://github.com/hsz/idea-gitignore/issues/137">#137</a></li>
+            <li>NPE after adding null to the files list <a href="https://github.com/hsz/idea-gitignore/issues/130">#130</a></li>
+            <li>Exclude ignored `.ignore` files from parsing <a href="https://github.com/hsz/idea-gitignore/issues/125">#125</a></li>
+            <li>Error while opening project - messageBus not initialized <a href="https://github.com/hsz/idea-gitignore/issues/123">#123</a></li>
+            <li>Access is allowed from event dispatch thread only <a href="https://github.com/hsz/idea-gitignore/issues/122">#122</a></li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

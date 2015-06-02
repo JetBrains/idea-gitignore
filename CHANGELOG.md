@@ -1,5 +1,18 @@
 # Change Log
 
+## [v1.1.3](https://github.com/hsz/idea-gitignore/tree/v1.1.3) (2015-06-02)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.3)
+
+**Fixed bugs:**
+
+- CacheMap.getParentStatus must not return null [\#138](https://github.com/hsz/idea-gitignore/issues/138)
+- Utils.isUnder - directory must not be null [\#137](https://github.com/hsz/idea-gitignore/issues/137)
+- NPE after adding null to the files list [\#130](https://github.com/hsz/idea-gitignore/issues/130)
+- Exclude ignored `.ignore` files from parsing [\#125](https://github.com/hsz/idea-gitignore/issues/125)
+- Error while opening project - messageBus not initialized [\#123](https://github.com/hsz/idea-gitignore/issues/123)
+- Access is allowed from event dispatch thread only [\#122](https://github.com/hsz/idea-gitignore/issues/122)
+
 ## [v1.1.2](https://github.com/hsz/idea-gitignore/tree/v1.1.2) (2015-05-11)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.1...v1.1.2)

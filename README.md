@@ -94,28 +94,18 @@ Usage
 Changelog
 ---------
 
-## [v1.1.2](https://github.com/hsz/idea-gitignore/tree/v1.1.2) (2015-05-11)
+## [v1.1.3](https://github.com/hsz/idea-gitignore/tree/v1.1.3) (2015-06-02)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.1...v1.1.2)
-
-**Implemented enhancements:**
-
-- Disable recursive .ignore check [\#114](https://github.com/hsz/idea-gitignore/issues/114)
-- Move plugin settings from Other Settings to Version Control section [\#106](https://github.com/hsz/idea-gitignore/issues/106)
-- Nested repositories handling regression [\#105](https://github.com/hsz/idea-gitignore/issues/105)
-- Skywinder's [github-changelog-generator](https://github.com/skywinder/github-changelog-generator)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.3)
 
 **Fixed bugs:**
 
-- Argument for @NotNull parameter 'directory' of Utils.isUnder must not be null [\#115](https://github.com/hsz/idea-gitignore/issues/115)
-- Ignored directory with single asterisk is ignore recursively [\#113](https://github.com/hsz/idea-gitignore/issues/113)
-- Unexpected ignore coloring of nested file listed as a top level ignore only [\#112](https://github.com/hsz/idea-gitignore/issues/112)
-- Throwable: Directory index is already disposed for Project \(Disposed\) PROJECT\_NAME  [\#109](https://github.com/hsz/idea-gitignore/issues/109)
-- Argument for @NotNull parameter 'editor' of EditorFactoryImpl.releaseEditor must not be null [\#108](https://github.com/hsz/idea-gitignore/issues/108)
-- Indexing node\_modules every time when open the project [\#104](https://github.com/hsz/idea-gitignore/issues/104)
-- Extremely slow behaviour [\#100](https://github.com/hsz/idea-gitignore/issues/100)
-- WS10 RC Memory Leak [\#99](https://github.com/hsz/idea-gitignore/issues/99)
-- Lags\(several seconds\) while editing .ignore [\#95](https://github.com/hsz/idea-gitignore/issues/95)
+- CacheMap.getParentStatus must not return null [\#138](https://github.com/hsz/idea-gitignore/issues/138)
+- Utils.isUnder - directory must not be null [\#137](https://github.com/hsz/idea-gitignore/issues/137)
+- NPE after adding null to the files list [\#130](https://github.com/hsz/idea-gitignore/issues/130)
+- Exclude ignored `.ignore` files from parsing [\#125](https://github.com/hsz/idea-gitignore/issues/125)
+- Error while opening project - messageBus not initialized [\#123](https://github.com/hsz/idea-gitignore/issues/123)
+- Access is allowed from event dispatch thread only [\#122](https://github.com/hsz/idea-gitignore/issues/122)
 
 
 [Full Changelog History](./CHANGELOG.md)
