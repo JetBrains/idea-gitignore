@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -49,12 +49,13 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.1.3"><b>v1.1.3</b></a> (2015-06-02) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.3"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.1.4"><b>v1.1.4</b></a> (2015-06-02) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.4"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Fixed bugs:</i>
 
         <ul>
+            <li>NoSuchMethodError ContainerUtil.isEmpty(Ljava/util/List;) <a href="https://github.com/hsz/idea-gitignore/issues/140">#140</a></li>
             <li>CacheMap.getParentStatus must not return null <a href="https://github.com/hsz/idea-gitignore/issues/138">#138</a></li>
             <li>Utils.isUnder - directory must not be null <a href="https://github.com/hsz/idea-gitignore/issues/137">#137</a></li>
             <li>NPE after adding null to the files list <a href="https://github.com/hsz/idea-gitignore/issues/130">#130</a></li>

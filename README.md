@@ -94,12 +94,13 @@ Usage
 Changelog
 ---------
 
-## [v1.1.3](https://github.com/hsz/idea-gitignore/tree/v1.1.3) (2015-06-02)
+## [v1.1.4](https://github.com/hsz/idea-gitignore/tree/v1.1.4) (2015-06-02)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.3)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.4)
 
 **Fixed bugs:**
 
+- NoSuchMethodError ContainerUtil.isEmpty(Ljava/util/List;) [\#140](https://github.com/hsz/idea-gitignore/issues/140)
 - CacheMap.getParentStatus must not return null [\#138](https://github.com/hsz/idea-gitignore/issues/138)
 - Utils.isUnder - directory must not be null [\#137](https://github.com/hsz/idea-gitignore/issues/137)
 - NPE after adding null to the files list [\#130](https://github.com/hsz/idea-gitignore/issues/130)
