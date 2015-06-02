@@ -221,7 +221,7 @@ public class CacheMap {
         VirtualFile vcsRoot = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(file);
 
         while (parent != null && !parent.equals(project.getBaseDir()) && (vcsRoot == null || !vcsRoot.equals(parent))) {
-            if (statuses.containsKey(parent)) {
+            if (statuses.containsKey(parent) && statuses.get(parent) != null) {
                 return statuses.get(parent);
             }
             parent = parent.getParent();
