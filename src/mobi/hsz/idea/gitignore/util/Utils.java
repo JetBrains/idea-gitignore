@@ -73,11 +73,15 @@ import java.util.regex.Pattern;
  * @since 0.3.3
  */
 public class Utils {
-    /** Gitignore plugin ID */
+    /**
+     * Gitignore plugin ID
+     */
     @NonNls
     private static final String PLUGIN_ID = "mobi.hsz.idea.gitignore";
 
-    /** Private constructor to prevent creating {@link Utils} instance. */
+    /**
+     * Private constructor to prevent creating {@link Utils} instance.
+     */
     private Utils() {
     }
 
@@ -351,19 +355,19 @@ public class Utils {
     /**
      * Checks if file is in project directory.
      *
-     * @param file     file
+     * @param file    file
      * @param project project
      * @return file is under directory
      */
     public static boolean isInProject(@NotNull final VirtualFile file, @NotNull final Project project) {
-        return isUnder(file, project.getBaseDir()) || StringUtil.startsWith(file.getUrl(), "temp://");
+        return project.getBaseDir() != null && (isUnder(file, project.getBaseDir()) || StringUtil.startsWith(file.getUrl(), "temp://"));
     }
 
     /**
      * Creates and configures template preview editor.
      *
      * @param document virtual editor document
-     * @param project current project
+     * @param project  current project
      * @return editor
      */
     @NotNull
