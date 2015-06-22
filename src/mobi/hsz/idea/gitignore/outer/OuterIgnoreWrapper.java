@@ -33,7 +33,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.components.labels.LinkLabel;
 import com.intellij.ui.components.labels.LinkListener;
 import com.intellij.util.ui.UIUtil;
@@ -51,17 +50,17 @@ import java.awt.*;
  * @since 1.1
  */
 public class OuterIgnoreWrapper implements Disposable {
-    private final JBPanel panel;
+    private final JPanel panel;
     private final Editor outerEditor;
 
     public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final VirtualFile outerFile) {
-        panel = new JBPanel(new BorderLayout());
+        panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
 
         JBLabel label = new JBLabel(IgnoreBundle.message("outer.label"), UIUtil.ComponentStyle.REGULAR, UIUtil.FontColor.BRIGHTER);
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
-        JBPanel northPanel = new JBPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
+        JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         northPanel.add(label);
         northPanel.add(new LinkLabel(outerFile.getPath(), null, new LinkListener() {
             @Override

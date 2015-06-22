@@ -41,7 +41,6 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.*;
-import com.intellij.ui.components.JBPanel;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
@@ -171,14 +170,14 @@ public class GeneratorDialog extends DialogWrapper {
     @Override
     protected JComponent createCenterPanel() {
         // general panel
-        final JBPanel centerPanel = new JBPanel(new BorderLayout());
+        final JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(800, 500));
 
         // splitter panel - contains tree panel and preview component
         final JBSplitter splitter = new JBSplitter(false, 0.4f);
         centerPanel.add(splitter, BorderLayout.CENTER);
 
-        final JBPanel treePanel = new JBPanel(new BorderLayout());
+        final JPanel treePanel = new JPanel(new BorderLayout());
         previewDocument = EditorFactory.getInstance().createDocument("");
         preview = Utils.createPreviewEditor(previewDocument, project, true);
 
@@ -189,7 +188,7 @@ public class GeneratorDialog extends DialogWrapper {
         JScrollPane treeScrollPanel = createTreeScrollPanel();
         treePanel.add(treeScrollPanel, BorderLayout.CENTER);
 
-        final JBPanel northPanel = new JBPanel(new GridBagLayout());
+        final JPanel northPanel = new JPanel(new GridBagLayout());
         northPanel.setBorder(IdeBorderFactory.createEmptyBorder(2, 0, 2, 0));
         northPanel.add(createTreeActionsToolbarPanel(treeScrollPanel).getComponent(), new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_LEADING, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         northPanel.add(profileFilter, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));

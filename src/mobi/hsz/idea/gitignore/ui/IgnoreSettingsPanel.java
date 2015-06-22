@@ -39,7 +39,6 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.AddEditDeleteListPanel;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -309,7 +308,7 @@ public class IgnoreSettingsPanel implements Disposable {
     /**
      * Editor panel class that displays document editor or label if no template is selected.
      */
-    private class EditorPanel extends JBPanel {
+    private class EditorPanel extends JPanel {
         private final Editor preview;
         private final JBLabel label;
         private final Document previewDocument;
