@@ -99,9 +99,6 @@ public class GeneratorDialog extends DialogWrapper {
     /** {@link Document} related to the {@link Editor} feature. */
     private Document previewDocument;
 
-    /** Scroll panel for the templates tree. */
-    private JScrollPane treeScrollPanel;
-
     /**
      * Builds a new instance of {@link GeneratorDialog}.
      *
@@ -188,7 +185,8 @@ public class GeneratorDialog extends DialogWrapper {
         splitter.setFirstComponent(treePanel);
         splitter.setSecondComponent(preview.getComponent());
 
-        treeScrollPanel = createTreeScrollPanel();
+        /* Scroll panel for the templates tree. */
+        JScrollPane treeScrollPanel = createTreeScrollPanel();
         treePanel.add(treeScrollPanel, BorderLayout.CENTER);
 
         final JBPanel northPanel = new JBPanel(new GridBagLayout());

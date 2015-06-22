@@ -398,7 +398,7 @@ public class Utils {
      * @param id plugin id
      * @return plugin is enabled
      */
-    private static boolean isPluginEnabled(@NotNull String id) {
+    private static boolean isPluginEnabled(@NotNull final String id) {
         IdeaPluginDescriptor p = PluginManager.getPlugin(PluginId.getId(id));
         return p instanceof IdeaPluginDescriptorImpl && p.isEnabled();
     }

@@ -51,9 +51,6 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Current project. */
     private final Project project;
 
-    /** Plugin settings. */
-    private static final IgnoreSettings settings = IgnoreSettings.getInstance();
-
     /** Constructor. */
     public OuterIgnoreLoaderComponent(@NotNull final Project project) {
         super(project);
