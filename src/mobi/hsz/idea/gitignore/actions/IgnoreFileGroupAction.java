@@ -29,6 +29,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -53,6 +54,10 @@ import java.util.Map;
  * @since 0.5
  */
 public class IgnoreFileGroupAction extends ActionGroup {
+
+    /** Maximum filename length for the action name. */
+    private static final int FILENAME_MAX_LENGTH = 30;
+
     /** List of suitable Gitignore {@link VirtualFile}s that can be presented in an IgnoreFile action. */
     private final Map<IgnoreFileType, List<VirtualFile>> files = ContainerUtil.newHashMap();
 
@@ -125,6 +130,10 @@ public class IgnoreFileGroupAction extends ActionGroup {
                     actions[i++] = action;
 
                     String name = Utils.getRelativePath(baseDir, file);
+                    if (StringUtil.isNotEmpty(name)) {
+                        name = StringUtil.shortenPathWithEllipsis(name, FILENAME_MAX_LENGTH);
+                    }
+
                     if (count == 1) {
                         name = IgnoreBundle.message("action.addToIgnore.group.noPopup", name);
                     }
