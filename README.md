@@ -140,12 +140,12 @@ Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
   - Remove `-XX:MaxPermSize=250m` from *VM Options*
 - Generate PSI classes
   - Go to [`Gitignore.bnf`][bnf-file] file and **Generate Parser Code**
-    - <kbd>Tools<kbd> > <kbd>Generate Parser Code</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
+    - <kbd>Tools</kbd> > <kbd>Generate Parser Code</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
   - Go to [`Gitignore.flex`][flex-file] file and **Run JFlex Generator**
     - <kbd>Tools</kbd> > <kbd>Run JFlex Generator</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
     - For the first time it will download `JFlex.jar` and `idea-flex.skeleton` files - save them in the root project directory
 - Set *Java Compiler* to **1.6**
-  - Go to <kbd>Settings<kbd> > <kbd>Compiler</kbd> > <kbd>Java Compiler</kbd> and set *Project bytecode version* to **1.6**
+  - Go to <kbd>Settings</kbd> > <kbd>Compiler</kbd> > <kbd>Java Compiler</kbd> and set *Project bytecode version* to **1.6**
 - In *Ant Build* add [`build.xml`][build-xml] file and mark **generate-templates-list** task as <kbd>Execute on</kbd> > <kbd>Before compilation</kbd>
 
 Developed By
