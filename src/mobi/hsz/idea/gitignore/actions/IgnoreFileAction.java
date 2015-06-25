@@ -158,9 +158,10 @@ public class IgnoreFileAction extends DumbAwareAction {
      */
     private static String getPath(@NotNull VirtualFile root, @NotNull VirtualFile file) {
         String path = StringUtil.notNullize(Utils.getRelativePath(root, file));
-        path = StringUtil.escapeChar(path, '[');
-        path = StringUtil.escapeChar(path, ']');
+        path = Utils.escapeChar(path, '[');
+        path = Utils.escapeChar(path, ']');
         path = StringUtil.trimLeading(path, VfsUtil.VFS_PATH_SEPARATOR);
         return VfsUtil.VFS_PATH_SEPARATOR + path;
     }
+
 }

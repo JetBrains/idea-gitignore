@@ -56,6 +56,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -441,6 +442,26 @@ public class Utils {
             }
         });
         return files;
+    }
+
+    /**
+     * Escapes character in the given {@link String}.
+     * Method is copied from the {@link StringUtil} class to keep the backward compatibility with IDEA 12.x
+     *
+     * @param string to parse
+     * @param character to escape
+     * @return escaped string
+     */
+    @NotNull
+    @Contract(pure = true)
+    public static String escapeChar(@NotNull final String string, final char character) {
+        final StringBuilder buf = new StringBuilder(string);
+        int idx = 0;
+        while ((idx = StringUtil.indexOf(buf, character, idx)) >= 0) {
+            buf.insert(idx, "\\");
+            idx += 2;
+        }
+        return buf.toString();
     }
 
 }
