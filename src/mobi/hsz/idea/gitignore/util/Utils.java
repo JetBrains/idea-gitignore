@@ -464,4 +464,20 @@ public class Utils {
         return buf.toString();
     }
 
+    /**
+     * Trims leading character in the given {@link String}.
+     * Method is copied from the {@link StringUtil} class to keep the backward compatibility with IDEA 12.x
+     *
+     * @param string to parse
+     * @param character to trim
+     * @return trimmed string
+     */
+    @NotNull
+    @Contract(pure = true)
+    public static String trimLeading(@NotNull String string, final char character) {
+        int index = 0;
+        while (index < string.length() && string.charAt(index) == character) index++;
+        return string.substring(index);
+    }
+
 }
