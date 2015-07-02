@@ -175,6 +175,9 @@ public class IgnoreParserDefinition implements ParserDefinition {
      */
     @Override
     public PsiFile createFile(FileViewProvider viewProvider) {
+        if (!(viewProvider.getBaseLanguage() instanceof IgnoreLanguage)) {
+            return null;
+        }
         IgnoreLanguage language = (IgnoreLanguage) viewProvider.getBaseLanguage();
         return language.createFile(viewProvider);
     }
