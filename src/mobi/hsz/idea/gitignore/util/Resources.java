@@ -68,16 +68,17 @@ public class Resources {
             // fetch templates from resources
             try {
                 String list = getResourceContent(GITIGNORE_TEMPLATES_PATH);
-                if (list == null) {
-                    return templates;
-                }
-                BufferedReader br = new BufferedReader(new StringReader(list));
+                if (list != null) {
+                    BufferedReader br = new BufferedReader(new StringReader(list));
 
-                for (String line; (line = br.readLine()) != null; ) {
-                    line = "/" + line;
-                    File file = getResource(line);
-                    String content = getResourceContent(line);
-                    resourceTemplates.add(new Template(file, content));
+                    for (String line; (line = br.readLine()) != null; ) {
+                        line = "/" + line;
+                        File file = getResource(line);
+                        if (file != null) {
+                            String content = getResourceContent(line);
+                            resourceTemplates.add(new Template(file, content));
+                        }
+                    }
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -168,7 +169,7 @@ public class Resources {
          * @param file    template's file
          * @param content template's content
          */
-        public Template(File file, String content) {
+        public Template(@NotNull File file, @Nullable String content) {
             this.file = file;
             this.name = file.getName().replace(GitLanguage.INSTANCE.getFilename(), "");
             this.content = content;
