@@ -34,6 +34,7 @@ import com.intellij.psi.impl.source.PsiFileImpl;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -94,6 +95,12 @@ public class IgnoreFile extends PsiFileImpl {
 
         for (final Language actualLanguage : languages) {
             if (actualLanguage.isKindOf(baseLanguage)) {
+                return actualLanguage;
+            }
+        }
+
+        for (final Language actualLanguage : languages) {
+            if (actualLanguage instanceof IgnoreLanguage) {
                 return actualLanguage;
             }
         }

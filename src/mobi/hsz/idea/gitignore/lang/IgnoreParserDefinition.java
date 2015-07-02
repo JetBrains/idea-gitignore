@@ -36,8 +36,10 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lexer.IgnoreLexerAdapter;
 import mobi.hsz.idea.gitignore.parser.IgnoreParser;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -175,11 +177,10 @@ public class IgnoreParserDefinition implements ParserDefinition {
      */
     @Override
     public PsiFile createFile(FileViewProvider viewProvider) {
-        if (!(viewProvider.getBaseLanguage() instanceof IgnoreLanguage)) {
-            return null;
+        if (viewProvider.getBaseLanguage() instanceof IgnoreLanguage) {
+            return ((IgnoreLanguage) viewProvider.getBaseLanguage()).createFile(viewProvider);
         }
-        IgnoreLanguage language = (IgnoreLanguage) viewProvider.getBaseLanguage();
-        return language.createFile(viewProvider);
+        return new IgnoreFile(viewProvider, IgnoreFileType.INSTANCE);
     }
 
     /**
