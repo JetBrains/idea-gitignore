@@ -29,6 +29,7 @@ import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.URL;
@@ -58,13 +59,18 @@ public class Resources {
      *
      * @return Gitignore templates list
      */
+    @NotNull
     public static List<Template> getGitignoreTemplates() {
+        final List<Template> templates = ContainerUtil.newArrayList();
         if (resourceTemplates == null) {
             resourceTemplates = ContainerUtil.newArrayList();
 
             // fetch templates from resources
             try {
                 String list = getResourceContent(GITIGNORE_TEMPLATES_PATH);
+                if (list == null) {
+                    return templates;
+                }
                 BufferedReader br = new BufferedReader(new StringReader(list));
 
                 for (String line; (line = br.readLine()) != null; ) {
@@ -80,7 +86,6 @@ public class Resources {
             }
         }
 
-        final List<Template> templates = ContainerUtil.newArrayList();
         templates.addAll(resourceTemplates);
 
         // fetch user templates
@@ -97,9 +102,12 @@ public class Resources {
      *
      * @return Resources directory
      */
-    public static File getResource(String path) {
+    @Nullable
+    public static File getResource(@NotNull String path) {
         URL resource = Resources.class.getResource(path);
-        assert resource != null;
+        if (resource == null) {
+            return null;
+        }
         return new File(resource.getPath());
     }
 
@@ -109,7 +117,8 @@ public class Resources {
      * @param path Resource path
      * @return Content
      */
-    public static String getResourceContent(String path) {
+    @Nullable
+    public static String getResourceContent(@NotNull String path) {
         return convertStreamToString(Resources.class.getResourceAsStream(path));
     }
 
@@ -119,7 +128,11 @@ public class Resources {
      * @param inputStream Input stream
      * @return Content
      */
-    protected static String convertStreamToString(InputStream inputStream) {
+    @Nullable
+    protected static String convertStreamToString(@Nullable InputStream inputStream) {
+        if (inputStream == null) {
+            return null;
+        }
         Scanner s = new Scanner(inputStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
