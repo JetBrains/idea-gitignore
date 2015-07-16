@@ -67,6 +67,7 @@ public class IgnoreBundle {
             CvsLanguage.INSTANCE,
             DarcsLanguage.INSTANCE,
             DockerLanguage.INSTANCE,
+            FloobitsLanguage.INSTANCE,
             FossilLanguage.INSTANCE,
             GitLanguage.INSTANCE,
             JSHintLanguage.INSTANCE,
