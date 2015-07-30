@@ -51,6 +51,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
@@ -386,8 +387,12 @@ public class IgnoreManager extends AbstractProjectComponent {
                     final List<IgnoreFile> files = ContainerUtil.newArrayList();
                     for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                         if (language.isEnabled()) {
-                            for (VirtualFile virtualFile : FileTypeIndex.getFiles(language.getFileType(), scope)) {
-                                ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
+                            try {
+                                Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(language.getFileType(), scope);
+                                for (VirtualFile virtualFile : virtualFiles) {
+                                    ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
+                                }
+                            } catch (IndexOutOfBoundsException ignored) {
                             }
                         }
                     }
