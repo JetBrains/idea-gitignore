@@ -115,7 +115,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                 }
             }
             for (String entry : content) {
-                document.insertString(document.getTextLength(), "\n" + StringUtil.replaceChar(entry, '\r', '\0'));
+                document.insertString(document.getTextLength(), "\n" + StringUtil.replace(entry, "\r", ""));
             }
             PsiDocumentManager.getInstance(project).commitDocument(document);
         }
