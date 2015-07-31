@@ -30,6 +30,9 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.VisualPosition;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
@@ -114,8 +117,20 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                     content.remove(element.getText());
                 }
             }
+
+            int offset = document.getTextLength();
+            Editor[] editors = EditorFactory.getInstance().getEditors(document);
+            if (editors.length > 0) {
+                VisualPosition position = editors[0].getSelectionModel().getSelectionStartPosition();
+                if (position != null) {
+                    offset = document.getLineStartOffset(position.line);
+                }
+            }
+
             for (String entry : content) {
-                document.insertString(document.getTextLength(), "\n" + StringUtil.replace(entry, "\r", ""));
+                entry += "\n";
+                document.insertString(offset, StringUtil.replace(entry, "\r", ""));
+                offset += entry.length();
             }
             PsiDocumentManager.getInstance(project).commitDocument(document);
         }

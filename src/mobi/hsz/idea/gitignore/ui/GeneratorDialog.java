@@ -150,7 +150,7 @@ public class GeneratorDialog extends DialogWrapper {
             String content = "";
             for (Resources.Template template : checked) {
                 content += IgnoreBundle.message("file.templateSection", template.getName());
-                content += "\n" + template.getContent() + "\n\n";
+                content += "\n" + template.getContent();
             }
             if (!content.isEmpty()) {
                 new AppendFileCommandAction(project, file, content).execute();
