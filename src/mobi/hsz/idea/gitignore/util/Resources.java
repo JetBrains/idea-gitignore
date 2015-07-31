@@ -182,7 +182,7 @@ public class Resources {
          *
          * @param userTemplate {@link IgnoreSettings} user template object
          */
-        public Template(IgnoreSettings.UserTemplate userTemplate) {
+        public Template(@NotNull final IgnoreSettings.UserTemplate userTemplate) {
             this.file = null;
             this.name = userTemplate.getName();
             this.content = userTemplate.getContent();

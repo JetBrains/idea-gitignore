@@ -228,7 +228,7 @@ public class Utils {
      * @param project current project
      * @return entry is excluded in current project
      */
-    public static boolean isEntryExcluded(IgnoreEntry entry, Project project) {
+    public static boolean isEntryExcluded(@NotNull IgnoreEntry entry, @NotNull Project project) {
         final Pattern pattern = Glob.createPattern(entry);
         if (pattern == null) {
             return false;
@@ -266,7 +266,7 @@ public class Utils {
      * @param filter input string
      * @return list of words without special characters
      */
-    public static List<String> getWords(String filter) {
+    public static List<String> getWords(@NotNull String filter) {
         List<String> words = ContainerUtil.newArrayList(filter.toLowerCase().split("\\W+"));
         words.removeAll(Arrays.asList(null, ""));
         return words;

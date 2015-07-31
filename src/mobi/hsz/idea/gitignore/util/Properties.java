@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * {@link Properties} util class that holds project specified settings using {@link PropertiesComponent}.
@@ -47,7 +48,7 @@ public class Properties {
      * @param project current project
      * @return {@link #PROP_IGNORE_MISSING_GITIGNORE} value
      */
-    public static boolean isIgnoreMissingGitignore(Project project) {
+    public static boolean isIgnoreMissingGitignore(@NotNull Project project) {
         return PropertiesComponent.getInstance(project).getBoolean(PROP_IGNORE_MISSING_GITIGNORE, false);
     }
 
@@ -56,7 +57,7 @@ public class Properties {
      *
      * @param project current project
      */
-    public static void setIgnoreMissingGitignore(Project project) {
+    public static void setIgnoreMissingGitignore(@NotNull Project project) {
         PropertiesComponent.getInstance(project).setValue(PROP_IGNORE_MISSING_GITIGNORE, Boolean.TRUE.toString());
     }
 }
