@@ -136,15 +136,13 @@ public class IgnoreReferenceSet extends FileReferenceSet {
             currentSlash++;
         }
 
-        if (currentSlash + sepLen + sepLen < str.length() &&
-                str.substring(currentSlash + sepLen, currentSlash + sepLen + sepLen).equals(separatorString)) {
+        if (currentSlash + sepLen + sepLen < str.length() && str.substring(currentSlash + sepLen, currentSlash + sepLen + sepLen).equals(separatorString)) {
             currentSlash += sepLen;
         }
         int index = 0;
 
         if (str.equals(separatorString)) {
-            final FileReference fileReference =
-                    createFileReference(new TextRange(startInElement, startInElement + sepLen), index++, separatorString);
+            final FileReference fileReference = createFileReference(new TextRange(startInElement, startInElement + sepLen), index++, separatorString);
             referencesList.add(fileReference);
         }
 
@@ -183,12 +181,14 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         protected void innerResolveInContext(@NotNull String text, @NotNull PsiFileSystemItem context, final Collection<ResolveResult> result, boolean caseSensitive) {
             super.innerResolveInContext(text, context, result, caseSensitive);
             VirtualFile contextVirtualFile;
-            boolean isOuterFile = isOuterFile((IgnoreFile) getContainingFile());
+
+            final PsiFile containingFile = getContainingFile();
+            boolean isOuterFile = isOuterFile((IgnoreFile) containingFile);
 
             if (isOuterFile) {
                 contextVirtualFile = getElement().getProject().getBaseDir();
                 result.clear();
-            } else if (getContainingFile() != null && Utils.isInProject(getContainingFile().getVirtualFile(), getElement().getProject())) {
+            } else if (containingFile != null && Utils.isInProject(containingFile.getVirtualFile(), getElement().getProject())) {
                 contextVirtualFile = context.getVirtualFile();
             } else {
                 return;
@@ -209,11 +209,11 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                             if (name == null || Utils.isGitDirectory(name)) {
                                 return false;
                             }
-                            PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
-                            if (psiFileSystemItem == null) {
-                                return false;
-                            }
                             if (pattern.matcher(name).matches()) {
+                                PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
+                                if (psiFileSystemItem == null) {
+                                    return false;
+                                }
                                 result.add(new PsiElementResolveResult(psiFileSystemItem));
                             }
                             return true;
@@ -231,8 +231,6 @@ public class IgnoreReferenceSet extends FileReferenceSet {
          */
         private boolean isOuterFile(@Nullable IgnoreFile file) {
             return file != null && file.isOuter();
-//            VirtualFile outerFile = ((IgnoreFileType) file.getFileType()).getIgnoreLanguage().getOuterFile(file.getProject());
-//            return outerFile != null && outerFile.equals(file.getVirtualFile());
         }
 
         /**
@@ -242,7 +240,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
          * @param file    working file
          * @return Psi item
          */
-        private PsiFileSystemItem getPsiFileSystemItem(PsiManager manager, @NotNull VirtualFile file) {
+        @Nullable
+        private PsiFileSystemItem getPsiFileSystemItem(@NotNull PsiManager manager, @NotNull VirtualFile file) {
             return file.isDirectory() ? manager.findDirectory(file) : manager.findFile(file);
         }
     }
