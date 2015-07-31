@@ -31,6 +31,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileWithId;
 import com.intellij.util.containers.ConcurrentHashMap;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
@@ -144,7 +145,10 @@ public class CacheMap {
     private void runVisitorInReadAction(@NotNull final IgnoreFile file, @NotNull final IgnoreVisitor visitor) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             public void run() {
-                file.acceptChildren(visitor);
+                VirtualFile virtualFile = file.getVirtualFile();
+                if (virtualFile != null && ((VirtualFileWithId) virtualFile).getId() > 0) {
+                    file.acceptChildren(visitor);
+                }
             }
         });
     }
