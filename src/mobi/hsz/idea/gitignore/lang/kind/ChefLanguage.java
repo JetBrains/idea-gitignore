@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.ChefFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Chef {@link IgnoreLanguage} definition.
@@ -41,10 +42,11 @@ public class ChefLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private ChefLanguage() {
-        super("Chef", "chefignore", Icons.CHEF);
+        super("Chef", "chefignore", null, Icons.CHEF);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return ChefFileType.INSTANCE;

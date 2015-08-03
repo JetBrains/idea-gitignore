@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.NodemonFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Npm {@link IgnoreLanguage} definition.
@@ -41,10 +42,11 @@ public class NodemonLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private NodemonLanguage() {
-        super("Nodemon", "nodemonignore", Icons.NODEMON);
+        super("Nodemon", "nodemonignore", null, Icons.NODEMON);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return NodemonFileType.INSTANCE;

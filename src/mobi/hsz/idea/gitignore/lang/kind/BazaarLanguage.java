@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.BazaarFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Bazaar {@link IgnoreLanguage} definition.
@@ -41,10 +42,11 @@ public class BazaarLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private BazaarLanguage() {
-        super("Bazaar", "bzrignore", Icons.BAZAAR);
+        super("Bazaar", "bzrignore", ".bzr", Icons.BAZAAR);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return BazaarFileType.INSTANCE;

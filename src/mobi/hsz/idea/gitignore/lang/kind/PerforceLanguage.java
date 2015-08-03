@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.PerforceFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Npm {@link IgnoreLanguage} definition.
@@ -41,10 +42,11 @@ public class PerforceLanguage extends IgnoreLanguage {
 
     /** {@link mobi.hsz.idea.gitignore.lang.IgnoreLanguage} is a non-instantiable static class. */
     private PerforceLanguage() {
-        super("Perforce", "p4ignore", Icons.PERFORCE);
+        super("Perforce", "p4ignore", null, Icons.PERFORCE);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return PerforceFileType.INSTANCE;

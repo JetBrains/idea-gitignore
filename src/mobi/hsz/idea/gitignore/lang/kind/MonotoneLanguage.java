@@ -43,10 +43,11 @@ public class MonotoneLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private MonotoneLanguage() {
-        super("Monotone", "mtn-ignore", Icons.MONOTONE);
+        super("Monotone", "mtn-ignore", "_MTN", Icons.MONOTONE);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return MonotoneFileType.INSTANCE;

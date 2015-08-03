@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.FloobitsFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Floobits {@link IgnoreLanguage} definition.
@@ -41,10 +42,11 @@ public class FloobitsLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private FloobitsLanguage() {
-        super("Floobits", "flooignore", Icons.FLOOBITS);
+        super("Floobits", "flooignore", null, Icons.FLOOBITS);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return FloobitsFileType.INSTANCE;

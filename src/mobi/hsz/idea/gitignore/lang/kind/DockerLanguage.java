@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.DockerFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Docker {@link IgnoreLanguage} definition.
@@ -41,10 +42,11 @@ public class DockerLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private DockerLanguage() {
-        super("Docker", "dockerignore", Icons.DOCKER);
+        super("Docker", "dockerignore", null, Icons.DOCKER);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return DockerFileType.INSTANCE;

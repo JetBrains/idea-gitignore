@@ -51,9 +51,10 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.Contract;
@@ -194,14 +195,22 @@ public class Utils {
     }
 
     /**
-     * Checks if given path is a {@link mobi.hsz.idea.gitignore.lang.kind.GitLanguage#getGitDirectory()}.
+     * Checks if given directory is a {@link mobi.hsz.idea.gitignore.lang.IgnoreLanguage#getVcsDirectory()}.
      *
-     * @param path to check
-     * @return given path is <code>.git</code> directory
+     * @param directory to check
+     * @return given file is VCS directory
      */
-    public static boolean isGitDirectory(String path) {
-        final String directory = GitLanguage.INSTANCE.getGitDirectory();
-        return path.equals(directory) || path.startsWith(directory + VfsUtil.VFS_PATH_SEPARATOR);
+    public static boolean isVcsDirectory(@NotNull VirtualFile directory) {
+        if (!directory.isDirectory()) {
+            return false;
+        }
+        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+            String vcsName = language.getVcsDirectory();
+            if (language.isVCS() && language.isEnabled() && directory.getName().equals(vcsName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -43,10 +43,11 @@ public class MercurialLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private MercurialLanguage() {
-        super("Mercurial", "hgignore", Icons.MERCURIAL);
+        super("Mercurial", "hgignore", ".hg", Icons.MERCURIAL);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return MercurialFileType.INSTANCE;

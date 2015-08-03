@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.CvsFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Cvs {@link IgnoreLanguage} definition.
@@ -41,10 +42,11 @@ public class CvsLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private CvsLanguage() {
-        super("Cvs", "cvsignore", Icons.CVS);
+        super("Cvs", "cvsignore", null, Icons.CVS);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return CvsFileType.INSTANCE;

@@ -88,7 +88,7 @@ public class Glob {
                 Pattern pattern = getCurrentValue();
                 String path = Utils.getRelativePath(root, file);
 
-                if (path == null || Utils.isGitDirectory(path)) {
+                if (path == null || Utils.isVcsDirectory(file)) {
                     return false;
                 }
 

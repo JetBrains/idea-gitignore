@@ -45,10 +45,11 @@ public class FossilLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private FossilLanguage() {
-        super("Fossil", "ignore-glob", Icons.FOSSIL);
+        super("Fossil", "ignore-glob", ".fossil-settings", Icons.FOSSIL);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return FossilFileType.INSTANCE;
@@ -57,6 +58,7 @@ public class FossilLanguage extends IgnoreLanguage {
     /**
      * The Gitignore file extension.
      */
+    @NotNull
     @Override
     public String getFilename() {
         return getExtension();

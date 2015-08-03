@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.NpmFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Npm {@link IgnoreLanguage} definition.
@@ -41,10 +42,11 @@ public class NpmLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private NpmLanguage() {
-        super("Npm", "npmignore", Icons.NPM);
+        super("Npm", "npmignore", null, Icons.NPM);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return NpmFileType.INSTANCE;

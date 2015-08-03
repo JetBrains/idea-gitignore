@@ -66,26 +66,35 @@ public class IgnoreLanguage extends Language {
     /**
      * The Ignore file extension suffix.
      */
+    @NotNull
     private final String extension;
+
+    /**
+     * The Ignore VCS directory name.
+     */
+    @Nullable
+    private final String vcsDirectory;
 
     /**
      * The GitignoreLanguage icon.
      */
+    @Nullable
     private final Icon icon;
 
     /**
      * {@link IgnoreLanguage} is a non-instantiable static class.
      */
     protected IgnoreLanguage() {
-        this("Ignore", "ignore", null);
+        this("Ignore", "ignore", null, null);
     }
 
     /**
      * {@link IgnoreLanguage} is a non-instantiable static class.
      */
-    protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable Icon icon) {
+    protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable String vcsDirectory, @Nullable Icon icon) {
         super(name);
         this.extension = extension;
+        this.vcsDirectory = vcsDirectory;
         this.icon = icon;
     }
 
@@ -94,13 +103,25 @@ public class IgnoreLanguage extends Language {
      *
      * @return extension
      */
+    @NotNull
     public String getExtension() {
         return extension;
     }
 
     /**
+     * Returns Ignore VCS directory name.
+     *
+     * @return VCS directory name
+     */
+    @Nullable
+    public String getVcsDirectory() {
+        return vcsDirectory;
+    }
+
+    /**
      * The Gitignore file extension.
      */
+    @NotNull
     public String getFilename() {
         return DOT + getExtension();
     }
@@ -118,6 +139,7 @@ public class IgnoreLanguage extends Language {
     /**
      * Language file type.
      */
+    @NotNull
     public IgnoreFileType getFileType() {
         return IgnoreFileType.INSTANCE;
     }

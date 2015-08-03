@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.TFFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Npm {@link IgnoreLanguage} definition.
@@ -41,10 +42,11 @@ public class TFLanguage extends IgnoreLanguage {
 
     /** {@link mobi.hsz.idea.gitignore.lang.IgnoreLanguage} is a non-instantiable static class. */
     private TFLanguage() {
-        super("Team Foundation", "tfignore", Icons.TF);
+        super("Team Foundation", "tfignore", null, Icons.TF);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return TFFileType.INSTANCE;

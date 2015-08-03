@@ -43,10 +43,11 @@ public class DarcsLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private DarcsLanguage() {
-        super("Darcs", "boringignore", Icons.DARCS);
+        super("Darcs", "boringignore", ".darcs", Icons.DARCS);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return DarcsFileType.INSTANCE;

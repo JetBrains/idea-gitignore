@@ -108,7 +108,11 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
             return null;
         }
         // Break if there is no Git directory in the project
-        VirtualFile gitDirectory = project.getBaseDir().findChild(GitLanguage.INSTANCE.getGitDirectory());
+        String vcsDirectory = GitLanguage.INSTANCE.getVcsDirectory();
+        if (vcsDirectory == null) {
+            return null;
+        }
+        VirtualFile gitDirectory = project.getBaseDir().findChild(vcsDirectory);
         if (gitDirectory == null || !gitDirectory.isDirectory()) {
             return null;
         }

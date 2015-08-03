@@ -206,7 +206,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                         @Override
                         public boolean visitFile(@NotNull VirtualFile file) {
                             String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
-                            if (name == null || Utils.isGitDirectory(name)) {
+                            if (name == null || Utils.isVcsDirectory(file)) {
                                 return false;
                             }
                             if (pattern.matcher(name).matches()) {

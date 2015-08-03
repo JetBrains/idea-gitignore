@@ -60,10 +60,11 @@ public class GitLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private GitLanguage() {
-        super("Git", "gitignore", Icons.GIT);
+        super("Git", "gitignore", ".git", Icons.GIT);
     }
 
     /** Language file type. */
+    @NotNull
     @Override
     public IgnoreFileType getFileType() {
         return GitFileType.INSTANCE;
@@ -99,10 +100,5 @@ public class GitLanguage extends IgnoreLanguage {
         }
         OUTER_FILE_FETCHED = true;
         return OUTER_FILE;
-    }
-
-    /** The Git specific directory. */
-    public String getGitDirectory() {
-        return ".git";
     }
 }
