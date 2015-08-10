@@ -26,12 +26,14 @@ package mobi.hsz.idea.gitignore.file;
 
 import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptor;
 import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptorFactory;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.util.IncorrectOperationException;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -82,7 +84,13 @@ public class IgnoreTemplatesFactory implements FileTemplateGroupDescriptorFactor
             return currentFile;
         }
         final PsiFileFactory factory = PsiFileFactory.getInstance(directory.getProject());
-        final PsiFile file = factory.createFileFromText(filename, fileType, TEMPLATE_NOTE);
+        final IgnoreLanguage language = fileType.getIgnoreLanguage();
+
+        String content = StringUtil.join(TEMPLATE_NOTE, "\n");
+        if (language.isSyntaxSupported() && !IgnoreBundle.Syntax.GLOB.equals(language.getDefaultSyntax())) {
+            content = StringUtil.join(content, IgnoreBundle.Syntax.GLOB.getPresentation(), "\n\n");
+        }
+        final PsiFile file = factory.createFileFromText(filename, fileType, content);
         return (PsiFile) directory.add(file);
     }
 }

@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.CommonBundle;
+import com.intellij.openapi.util.text.StringUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.*;
@@ -83,6 +84,8 @@ public class IgnoreBundle {
     public static enum Syntax {
         GLOB, REGEXP;
 
+        private static final String KEY = "syntax:";
+
         @Nullable
         public static Syntax find(@Nullable String name) {
             if (name == null) {
@@ -98,6 +101,15 @@ public class IgnoreBundle {
         @Override
         public String toString() {
             return super.toString().toLowerCase();
+        }
+
+        /**
+         * Returns {@link mobi.hsz.idea.gitignore.psi.IgnoreTypes#SYNTAX} element presentation.
+         *
+         * @return element presentation
+         */
+        public String getPresentation() {
+            return StringUtil.join(KEY, " ", toString());
         }
     }
 
