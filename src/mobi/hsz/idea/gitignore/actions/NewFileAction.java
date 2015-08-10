@@ -76,9 +76,12 @@ public class NewFileAction extends AnAction implements DumbAware {
             return;
         }
 
+        GeneratorDialog dialog;
         PsiFile file = directory.findFile(fileType.getIgnoreLanguage().getFilename());
+
         if (file == null) {
-            file = new CreateFileCommandAction(project, directory, fileType).execute().getResultObject();
+            CreateFileCommandAction action = new CreateFileCommandAction(project, directory, fileType);
+            dialog = new GeneratorDialog(project, action);
         } else {
             Notifications.Bus.notify(new Notification(
                     fileType.getLanguageName(),
@@ -86,10 +89,15 @@ public class NewFileAction extends AnAction implements DumbAware {
                     IgnoreBundle.message("action.newFile.exists.in", file.getVirtualFile().getPath()),
                     NotificationType.INFORMATION
             ), project);
+            dialog = new GeneratorDialog(project, file);
         }
 
-        Utils.openFile(project, file);
-        new GeneratorDialog(project, file).show();
+        dialog.show();
+        file = dialog.getFile();
+
+        if (file != null) {
+            Utils.openFile(project, file);
+        }
     }
 
     /**

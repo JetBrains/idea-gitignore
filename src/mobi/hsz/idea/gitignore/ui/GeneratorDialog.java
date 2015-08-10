@@ -46,6 +46,7 @@ import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
+import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.util.Resources;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -78,10 +79,13 @@ public class GeneratorDialog extends DialogWrapper {
     @NotNull private final Project project;
 
     /** Current working file. */
-    @NotNull private final PsiFile file;
+    @Nullable private PsiFile file;
 
     /** Templates tree root node. */
     @NotNull private final TemplateTreeNode root;
+
+    /** {@link CreateFileCommandAction} action instance to generate new file in the proper time. */
+    @Nullable private CreateFileCommandAction action;
 
     /** Templates tree with checkbox feature. */
     private CheckboxTree tree;
@@ -104,15 +108,27 @@ public class GeneratorDialog extends DialogWrapper {
      * @param project current working project
      * @param file current working file
      */
-    public GeneratorDialog(@NotNull Project project, @NotNull PsiFile file) {
+    public GeneratorDialog(@NotNull Project project, @Nullable PsiFile file) {
         super(project, false);
         this.project = project;
         this.file = file;
         this.root = new TemplateTreeNode();
+        this.action = null;
 
         setTitle(IgnoreBundle.message("dialog.generator.title"));
         setOKButtonText(IgnoreBundle.message("global.generate"));
         init();
+    }
+
+    /**
+     * Builds a new instance of {@link GeneratorDialog}.
+     *
+     * @param project current working project
+     * @param action {@link CreateFileCommandAction} action instance to generate new file in the proper time
+     */
+    public GeneratorDialog(@NotNull Project project, @Nullable CreateFileCommandAction action) {
+        this(project, (PsiFile) null);
+        this.action = action;
     }
 
     /**
@@ -152,7 +168,10 @@ public class GeneratorDialog extends DialogWrapper {
                 content += IgnoreBundle.message("file.templateSection", template.getName());
                 content += "\n" + template.getContent();
             }
-            if (!content.isEmpty()) {
+            if (file == null && action != null) {
+                file = action.execute().getResultObject();
+            }
+            if (file != null && !content.isEmpty()) {
                 new AppendFileCommandAction(project, file, content).execute();
             }
             super.doOKAction();
@@ -447,6 +466,11 @@ public class GeneratorDialog extends DialogWrapper {
      */
     private void reloadModel() {
         ((DefaultTreeModel) tree.getModel()).reload();
+    }
+
+    @Nullable
+    public PsiFile getFile() {
+        return file;
     }
 
     /**

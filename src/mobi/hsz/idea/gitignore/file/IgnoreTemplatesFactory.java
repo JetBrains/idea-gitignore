@@ -32,6 +32,7 @@ import com.intellij.psi.PsiFileFactory;
 import com.intellij.util.IncorrectOperationException;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Templates factory that generates Gitignore file and its content.
@@ -73,6 +74,7 @@ public class IgnoreTemplatesFactory implements FileTemplateGroupDescriptorFactor
      * @return file
      * @throws IncorrectOperationException
      */
+    @Nullable
     public PsiFile createFromTemplate(final PsiDirectory directory) throws IncorrectOperationException {
         final String filename = fileType.getIgnoreLanguage().getFilename();
         final PsiFile currentFile = directory.findFile(filename);
