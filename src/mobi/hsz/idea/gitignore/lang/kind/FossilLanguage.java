@@ -73,6 +73,10 @@ public class FossilLanguage extends IgnoreLanguage {
     @Nullable
     @Override
     public VirtualFile getOuterFile(@NotNull final Project project) {
-        return project.getBaseDir().findFileByRelativePath("./.fossil-settings/ignore-glob");
+        VirtualFile baseDir = project.getBaseDir();
+        if (baseDir == null) {
+            return null;
+        }
+        return baseDir.findFileByRelativePath("./.fossil-settings/ignore-glob");
     }
 }
