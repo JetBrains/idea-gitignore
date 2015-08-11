@@ -28,6 +28,7 @@ import com.intellij.lang.Language;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.impl.source.PsiFileImpl;
@@ -157,7 +158,8 @@ public class IgnoreFile extends PsiFileImpl {
      * @return is outer file
      */
     public boolean isOuter() {
-        return getVirtualFile().equals(fileType.getIgnoreLanguage().getOuterFile(getProject()));
+        final VirtualFile outerFile = fileType.getIgnoreLanguage().getOuterFile(getProject());
+        return outerFile != null && outerFile.equals(getOriginalFile().getVirtualFile());
     }
 
     /**

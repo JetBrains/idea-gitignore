@@ -177,7 +177,7 @@ public class IgnoreLanguage extends Language {
      * @return excludes file path
      */
     @Nullable
-    public VirtualFile getOuterFile(@NotNull final Project project) {
+    public VirtualFile getOuterFile(@Nullable final Project project) {
         return null;
     }
 

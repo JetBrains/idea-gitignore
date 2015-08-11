@@ -72,7 +72,10 @@ public class FossilLanguage extends IgnoreLanguage {
      */
     @Nullable
     @Override
-    public VirtualFile getOuterFile(@NotNull final Project project) {
+    public VirtualFile getOuterFile(@Nullable final Project project) {
+        if (project == null) {
+            return null;
+        }
         VirtualFile baseDir = project.getBaseDir();
         if (baseDir == null) {
             return null;

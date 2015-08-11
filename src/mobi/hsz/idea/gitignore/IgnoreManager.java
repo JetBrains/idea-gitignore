@@ -403,9 +403,18 @@ public class IgnoreManager extends AbstractProjectComponent {
                     // Search for outer files
                     if (settings.isOuterIgnoreRules()) {
                         for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                            if (language.isEnabled()) {
-                                VirtualFile outerFile = language.getOuterFile(myProject);
-                                addTaskFor(getIgnoreFile(outerFile));
+                            if (!language.isEnabled()) {
+                                continue;
+                            }
+                            VirtualFile outerFile = language.getOuterFile(myProject);
+                            if (outerFile != null) {
+                                PsiFile psiFile = psiManager.findFile(outerFile);
+                                if (psiFile != null) {
+                                    IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
+                                            .createFileFromText(language.getFilename(), language, psiFile.getText());
+                                    outerIgnoreFile.setOriginalFile(psiFile);
+                                    addTaskFor(outerIgnoreFile);
+                                }
                             }
                         }
                     }
@@ -446,7 +455,9 @@ public class IgnoreManager extends AbstractProjectComponent {
                 queue.run(new Task.Backgroundable(myProject, IgnoreBundle.message("cache.indexing")) {
                     @Override
                     public void run(@NotNull ProgressIndicator indicator) {
-                        if (isFileIgnored(file.getVirtualFile())) {
+                        final VirtualFile virtualFile = file.getVirtualFile();
+
+                        if (!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) {
                             indicator.cancel();
                         } else {
                             String path = Utils.getRelativePath(myProject.getBaseDir(), file.getVirtualFile());
@@ -459,7 +470,8 @@ public class IgnoreManager extends AbstractProjectComponent {
                         }
 
                         for (IgnoreFile dependentFile : dependentFiles) {
-                            if (!isFileIgnored(dependentFile.getVirtualFile()) && !isParentIgnored(dependentFile.getVirtualFile())) {
+                            VirtualFile dependentVirtualFile = dependentFile.getVirtualFile();
+                            if (dependentVirtualFile != null && !isFileIgnored(dependentVirtualFile) && !isParentIgnored(dependentVirtualFile)) {
                                 addTaskFor(dependentFile);
                             }
                         }

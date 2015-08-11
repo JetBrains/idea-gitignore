@@ -78,7 +78,7 @@ public class GitLanguage extends IgnoreLanguage {
      */
     @Nullable
     @Override
-    public VirtualFile getOuterFile(@NotNull final Project project) {
+    public VirtualFile getOuterFile(@Nullable final Project project) {
         if (OUTER_FILE_FETCHED) {
             return OUTER_FILE;
         }

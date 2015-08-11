@@ -32,6 +32,7 @@ import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWithId;
+import com.intellij.testFramework.LightVirtualFile;
 import com.intellij.util.containers.ConcurrentHashMap;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
@@ -95,7 +96,7 @@ public class CacheMap {
      * Adds new {@link IgnoreFile} to the cache and builds its hashCode and patterns sets.
      *
      * @param file to add
-     * @param set entries hashCodes set
+     * @param set  entries hashCodes set
      */
     protected void add(@NotNull final IgnoreFile file, Set<Integer> set) {
         final List<Pair<Pattern, Boolean>> patterns = ContainerUtil.newArrayList();
@@ -146,7 +147,7 @@ public class CacheMap {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             public void run() {
                 VirtualFile virtualFile = file.getVirtualFile();
-                if (virtualFile != null && ((VirtualFileWithId) virtualFile).getId() > 0) {
+                if (virtualFile != null && (virtualFile instanceof LightVirtualFile || ((VirtualFileWithId) virtualFile).getId() > 0)) {
                     file.acceptChildren(visitor);
                 }
             }
@@ -174,14 +175,11 @@ public class CacheMap {
         final List<IgnoreFile> files = ContainerUtil.reverse(Utils.ignoreFilesSort(Collections.list(map.keys())));
 
         for (final IgnoreFile ignoreFile : files) {
-            final VirtualFile ignoreFileParent = ignoreFile.getVirtualFile().getParent();
-            if (ignoreFileParent == null) {
-                continue;
-            }
-
             boolean outer = ignoreFile.isOuter();
+            final VirtualFile ignoreFileParent = ignoreFile.getVirtualFile().getParent();
+
             if (!outer) {
-                if (!Utils.isUnder(file, ignoreFileParent)) {
+                if (ignoreFileParent == null || !Utils.isUnder(file, ignoreFileParent)) {
                     continue;
                 }
 
