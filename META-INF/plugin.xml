@@ -489,5 +489,9 @@
             <add-to-group group-id="ConsoleEditorPopupMenu"/>
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </group>
+
+        <action id="CloseIgnoredEditors" class="mobi.hsz.idea.gitignore.actions.CloseIgnoredEditorsAction">
+            <add-to-group group-id="CloseEditorsGroup" anchor="before" relative-to-action="CloseAllUnpinnedEditors"/>
+        </action>
     </actions>
 </idea-plugin>

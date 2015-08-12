@@ -163,5 +163,4 @@ public class IgnoreFileAction extends DumbAwareAction {
         path = Utils.trimLeading(path, VfsUtil.VFS_PATH_SEPARATOR);
         return VfsUtil.VFS_PATH_SEPARATOR + path;
     }
-
 }
