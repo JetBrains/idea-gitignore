@@ -20,6 +20,7 @@ Introduction
 - `.jshintignore` (JSHint)
 - `.tfignore` (Team Foundation)
 - `.p4ignore` (Perforce)
+- `.flooignore` (Floobits)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -51,7 +52,8 @@ Features
 - Entries inspection (duplicated, covered, unused, incorrect syntax, relative entries) with fix actions
 - Comments and brackets support
 - Navigation to entries in Project view
-- Renaming entries from Gitignore file
+- Renaming entries from ignore file
+- Close opened ignored files action
 
 
 Installation
@@ -94,19 +96,33 @@ Usage
 Changelog
 ---------
 
-## [v1.1.4](https://github.com/hsz/idea-gitignore/tree/v1.1.4) (2015-06-02)
+## [v1.2](https://github.com/hsz/idea-gitignore/tree/v1.2) (2015-08-13)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.4)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.4...v1.2)
+
+**Implemented enhancements:**
+
+- Prevent ignore file creation when dialog generator is canceled [\#156](https://github.com/hsz/idea-gitignore/issues/156)
+- Add leading slash to the entry when invoking `Add to ignore file` action [\#141](https://github.com/hsz/idea-gitignore/issues/141)
+- Floobits (.flooignore) support [\#152](https://github.com/hsz/idea-gitignore/issues/152)
+- Add ignore rules at the cursor position [\#153](https://github.com/hsz/idea-gitignore/issues/153)
+- Insert `syntax: glob` for non-glob ignore types when creating new file [\#158](https://github.com/hsz/idea-gitignore/issues/158)
+- Close ignored files action [\#160](https://github.com/hsz/idea-gitignore/issues/160)
 
 **Fixed bugs:**
 
-- NoSuchMethodError ContainerUtil.isEmpty(Ljava/util/List;) [\#140](https://github.com/hsz/idea-gitignore/issues/140)
-- CacheMap.getParentStatus must not return null [\#138](https://github.com/hsz/idea-gitignore/issues/138)
-- Utils.isUnder - directory must not be null [\#137](https://github.com/hsz/idea-gitignore/issues/137)
-- NPE after adding null to the files list [\#130](https://github.com/hsz/idea-gitignore/issues/130)
-- Exclude ignored `.ignore` files from parsing [\#125](https://github.com/hsz/idea-gitignore/issues/125)
-- Error while opening project - messageBus not initialized [\#123](https://github.com/hsz/idea-gitignore/issues/123)
-- Access is allowed from event dispatch thread only [\#122](https://github.com/hsz/idea-gitignore/issues/122)
+- Project base dir should not be null in Utils.isInProject [\#145](https://github.com/hsz/idea-gitignore/issues/145)
+- NPE in FossilLanguage.getOuterFile [\#157](https://github.com/hsz/idea-gitignore/issues/157)
+- Removed `\0` from the generated content. [\#155](https://github.com/hsz/idea-gitignore/issues/155)
+- ClassCastException while indexing [\#150](https://github.com/hsz/idea-gitignore/issues/150)
+- IllegalAccessError for StringUtil.escapeChar(String, char) in IntelliJ 12.x [\#149](https://github.com/hsz/idea-gitignore/issues/149)
+- Migration to JPanel because of the broken IntelliJ API (JBPanel NoClassDefFoundError) [\#146](https://github.com/hsz/idea-gitignore/issues/146)
+- IndexOutOfBoundsException [\#144](https://github.com/hsz/idea-gitignore/issues/144)
+- InvalidVirtualFileAccessException [\#107](https://github.com/hsz/idea-gitignore/issues/107)
+- Shorten ignore file path in the context menu [\#148](https://github.com/hsz/idea-gitignore/issues/148)
+- Assertion and NPE errors fix in Resources
+- Fix for including outer file rules
+- Performance fixes
 
 
 [Full Changelog History](./CHANGELOG.md)
@@ -139,9 +155,9 @@ Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
   - Add `-Didea.is.internal=true` to *VM Options* (it will allow you run internal actions like `View PSI structure` action)
   - Remove `-XX:MaxPermSize=250m` from *VM Options*
 - Generate PSI classes
-  - Go to [`Gitignore.bnf`][bnf-file] file and **Generate Parser Code**
+  - Go to [`Ignore.bnf`][bnf-file] file and **Generate Parser Code**
     - <kbd>Tools</kbd> > <kbd>Generate Parser Code</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
-  - Go to [`Gitignore.flex`][flex-file] file and **Run JFlex Generator**
+  - Go to [`Ignore.flex`][flex-file] file and **Run JFlex Generator**
     - <kbd>Tools</kbd> > <kbd>Run JFlex Generator</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
     - For the first time it will download `JFlex.jar` and `idea-flex.skeleton` files - save them in the root project directory
 - Set *Java Compiler* to **1.6**

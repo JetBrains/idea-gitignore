@@ -1,5 +1,33 @@
 # Change Log
 
+## [v1.2](https://github.com/hsz/idea-gitignore/tree/v1.2) (2015-08-13)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.4...v1.2)
+
+**Implemented enhancements:**
+
+- Prevent ignore file creation when dialog generator is canceled [\#156](https://github.com/hsz/idea-gitignore/issues/156)
+- Add leading slash to the entry when invoking `Add to ignore file` action [\#141](https://github.com/hsz/idea-gitignore/issues/141)
+- Floobits (.flooignore) support [\#152](https://github.com/hsz/idea-gitignore/issues/152)
+- Add ignore rules at the cursor position [\#153](https://github.com/hsz/idea-gitignore/issues/153)
+- Insert `syntax: glob` for non-glob ignore types when creating new file [\#158](https://github.com/hsz/idea-gitignore/issues/158)
+- Close ignored files action [\#160](https://github.com/hsz/idea-gitignore/issues/160)
+
+**Fixed bugs:**
+
+- Project base dir should not be null in Utils.isInProject [\#145](https://github.com/hsz/idea-gitignore/issues/145)
+- NPE in FossilLanguage.getOuterFile [\#157](https://github.com/hsz/idea-gitignore/issues/157)
+- Removed `\0` from the generated content. [\#155](https://github.com/hsz/idea-gitignore/issues/155)
+- ClassCastException while indexing [\#150](https://github.com/hsz/idea-gitignore/issues/150)
+- IllegalAccessError for StringUtil.escapeChar(String, char) in IntelliJ 12.x [\#149](https://github.com/hsz/idea-gitignore/issues/149)
+- Migration to JPanel because of the broken IntelliJ API (JBPanel NoClassDefFoundError) [\#146](https://github.com/hsz/idea-gitignore/issues/146)
+- IndexOutOfBoundsException [\#144](https://github.com/hsz/idea-gitignore/issues/144)
+- InvalidVirtualFileAccessException [\#107](https://github.com/hsz/idea-gitignore/issues/107)
+- Shorten ignore file path in the context menu [\#148](https://github.com/hsz/idea-gitignore/issues/148)
+- Assertion and NPE errors fix in Resources
+- Fix for including outer file rules
+- Performance fixes
+
 ## [v1.1.4](https://github.com/hsz/idea-gitignore/tree/v1.1.4) (2015-06-02)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.4)
