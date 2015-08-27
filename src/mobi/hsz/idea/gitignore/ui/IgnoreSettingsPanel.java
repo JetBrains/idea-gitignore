@@ -54,8 +54,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE;
@@ -455,7 +455,7 @@ public class IgnoreSettingsPanel implements Disposable {
         @Override
         public Object getValueAt(int row, int column) {
             IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
-            HashMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = settings.get(language);
+            TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = settings.get(language);
 
             switch (column) {
                 case 0:
@@ -465,6 +465,7 @@ public class IgnoreSettingsPanel implements Disposable {
                 case 2:
                     return Boolean.valueOf(data.get(ENABLE).toString());
             }
+
             throw new IllegalArgumentException();
         }
 
@@ -479,7 +480,7 @@ public class IgnoreSettingsPanel implements Disposable {
         @Override
         public void setValueAt(Object value, int row, int column) {
             IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
-            HashMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = settings.get(language);
+            TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = settings.get(language);
 
             switch (column) {
                 case 1:
@@ -489,6 +490,7 @@ public class IgnoreSettingsPanel implements Disposable {
                     data.put(ENABLE, value);
                     return;
             }
+
             throw new IllegalArgumentException();
         }
 

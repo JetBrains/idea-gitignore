@@ -36,10 +36,7 @@ import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Persistent global settings object for the Ignore plugin.
@@ -99,7 +96,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      */
     private IgnoreLanguagesSettings languagesSettings = new IgnoreLanguagesSettings() {{
         for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-            put(language, new HashMap<KEY, Object>() {{
+            put(language, new TreeMap<KEY, Object>() {{
                 put(KEY.NEW_FILE, true);
                 put(KEY.ENABLE, language.isVCS());
             }});
@@ -140,7 +137,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.OUTER_IGNORE_RULES.toString(), Boolean.toString(outerIgnoreRules));
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
-        for (Map.Entry<IgnoreLanguage, HashMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
+        for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
             Element languageElement = new Element(KEY.LANGUAGES_LANGUAGE.toString());
             languageElement.setAttribute(KEY.LANGUAGES_ID.toString(), entry.getKey().getID());
             for (Map.Entry<IgnoreLanguagesSettings.KEY, Object> data : entry.getValue().entrySet()) {
@@ -185,7 +182,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
             for (Element languageElement : languagesElement.getChildren()) {
-                HashMap<IgnoreLanguagesSettings.KEY, Object> data = ContainerUtil.newHashMap();
+                TreeMap<IgnoreLanguagesSettings.KEY, Object> data = ContainerUtil.newTreeMap();
                 for (IgnoreLanguagesSettings.KEY key : IgnoreLanguagesSettings.KEY.values()) {
                     data.put(key, languageElement.getAttributeValue(key.name()));
                 }
@@ -450,7 +447,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         }
     }
 
-    public static class IgnoreLanguagesSettings extends LinkedHashMap<IgnoreLanguage, HashMap<IgnoreLanguagesSettings.KEY, Object>> {
+    public static class IgnoreLanguagesSettings extends LinkedHashMap<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> {
         public enum KEY {
             NEW_FILE, ENABLE
         }
@@ -460,7 +457,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
          *
          * @param language Ignore language
          */
-        public HashMap<KEY, Object> get(IgnoreLanguage language) {
+        public TreeMap<KEY, Object> get(IgnoreLanguage language) {
             return super.get(language);
         }
 
@@ -473,9 +470,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         @Override
         public IgnoreLanguagesSettings clone() {
             IgnoreLanguagesSettings copy = (IgnoreLanguagesSettings) super.clone();
-            for (Map.Entry<IgnoreLanguage, HashMap<IgnoreLanguagesSettings.KEY, Object>> entry : copy.entrySet()) {
+            for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : copy.entrySet()) {
                 @SuppressWarnings("unchecked")
-                HashMap<IgnoreLanguagesSettings.KEY, Object> data = (HashMap<KEY, Object>) entry.getValue().clone();
+                TreeMap<IgnoreLanguagesSettings.KEY, Object> data = (TreeMap<KEY, Object>) entry.getValue().clone();
 
                 copy.put(entry.getKey(), data);
             }

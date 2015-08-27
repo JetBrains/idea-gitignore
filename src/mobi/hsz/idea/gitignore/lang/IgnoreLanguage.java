@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Gitignore {@link Language} definition.
@@ -187,7 +187,7 @@ public class IgnoreLanguage extends Language {
      * @return language is enabled
      */
     public boolean isEnabled() {
-        HashMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = IgnoreSettings.getInstance().getLanguagesSettings().get(this);
+        TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = IgnoreSettings.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {
             value = Boolean.valueOf(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE).toString());
@@ -201,7 +201,7 @@ public class IgnoreLanguage extends Language {
      * @return new file action is allowed
      */
     public boolean isNewAllowed() {
-        HashMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = IgnoreSettings.getInstance().getLanguagesSettings().get(this);
+        TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = IgnoreSettings.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {
             value = Boolean.valueOf(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE).toString());
