@@ -456,11 +456,12 @@ public class IgnoreManager extends AbstractProjectComponent {
                     @Override
                     public void run(@NotNull ProgressIndicator indicator) {
                         final VirtualFile virtualFile = file.getVirtualFile();
+                        VirtualFile projectDir = myProject.getBaseDir();
 
-                        if (!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) {
+                        if ((!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) || projectDir == null) {
                             indicator.cancel();
                         } else {
-                            String path = Utils.getRelativePath(myProject.getBaseDir(), file.getVirtualFile());
+                            String path = Utils.getRelativePath(projectDir, file.getVirtualFile());
                             indicator.setText(path);
                             cache.add(file);
                         }
