@@ -238,6 +238,13 @@
         <lang.syntaxHighlighterFactory       key="Docker"           implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Docker -->
 
+        <!-- ESLint -->
+        <codeInsight.lineMarkerProvider language="ESLint"           implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher              language="ESLint"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter                 language="ESLint"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory       key="ESLint"           implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END ESLint -->
+
         <!-- Floobits -->
         <codeInsight.lineMarkerProvider language="Floobits"         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher              language="Floobits"         implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>

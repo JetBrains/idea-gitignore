@@ -56,6 +56,9 @@ public class Icons {
     /** Dockerignore icon. */
     public static final Icon DOCKER = IconLoader.getIcon("/icons/icon_docker.png");
 
+    /** ESLint icon. */
+    public static final Icon ESLINT = IconLoader.getIcon("/icons/icon_eslint.png");
+
     /** Git icon. */
     public static final Icon GIT = IconLoader.getIcon("/icons/icon_git.png");
 
