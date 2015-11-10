@@ -64,6 +64,7 @@ public class IgnoreBundle {
     /** Available {@link IgnoreFileType} instances. */
     public static final IgnoreLanguages LANGUAGES = new IgnoreLanguages(Arrays.asList(
             BazaarLanguage.INSTANCE,
+            CloudFoundryLanguage.INSTANCE,
             ChefLanguage.INSTANCE,
             CvsLanguage.INSTANCE,
             DarcsLanguage.INSTANCE,

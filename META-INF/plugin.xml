@@ -175,6 +175,7 @@
         <lang.parserDefinition language="Ignore"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Bazaar"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Chef"                      implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="CloudFoundry"              implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Cvs"                       implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Darcs"                     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Docker"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
@@ -208,6 +209,13 @@
         <lang.commenter                 language="Chef"             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory       key="Chef"             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Chef -->
+
+        <!-- CloudFoundry -->
+        <codeInsight.lineMarkerProvider language="CloudFoundry"     implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher              language="CloudFoundry"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter                 language="CloudFoundry"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory       key="CloudFoundry"     implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END CloudFoundry -->
 
         <!-- Cvs -->
         <codeInsight.lineMarkerProvider language="Cvs"              implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>

@@ -44,6 +44,9 @@ public class Icons {
     /** Chefignore icon. */
     public static final Icon CHEF = IconLoader.getIcon("/icons/icon_chef.png");
 
+    /** Cloud Foundry icon. */
+    public static final Icon CLOUD_FOUNDRY = IconLoader.getIcon("/icons/icon_cf.png");
+
     /** Cvsignore icon. */
     public static final Icon CVS = IconLoader.getIcon("/icons/icon_cvs.png");
 
