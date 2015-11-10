@@ -46,7 +46,7 @@ BRACKET_RIGHT   = \]
 
 FIRST_CHARACTER = [^!# ]
 SYNTAX_KEY      = "syntax:"
-VALUE           = ("\\\["|"\\\]"|"\\\/"|[^\[\]\r\n\/])+
+VALUE           = ("\\\["|"\\\]"|"\\\/"|[^\[\]\r\n])+
 
 %state IN_ENTRY, IN_SYNTAX
 

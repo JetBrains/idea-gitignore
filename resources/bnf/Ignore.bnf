@@ -22,11 +22,11 @@
     BRACKET_RIGHT           = "regexp:(?!\\\])\]"
     SLASH                   = "/"
     SYNTAX_KEY              = "syntax:"
-    VALUE                   = "regexp:(?![!#\s])(?![\[\]])(?:(?:\\[\[\]])|(?:\/\/)|[^\[\]\/\s])+"
+    VALUE                   = "regexp:(?![!#\s])(?![\[\]])(?:(?:\\[\[\]])|(?:\/\/)|[^\[\]\/\s]|\/)+"
   ]
 
-  mixin("ENTRY")            = "mobi.hsz.idea.gitignore.psi.impl.IgnoreEntryExtImpl"
   name("ENTRY.*")           = "entry"
+  mixin("ENTRY")            = "mobi.hsz.idea.gitignore.psi.impl.IgnoreEntryExtImpl"
   implements("ENTRY")       = "mobi.hsz.idea.gitignore.psi.IgnoreEntryBase"
 }
  
