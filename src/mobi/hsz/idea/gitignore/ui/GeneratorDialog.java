@@ -178,6 +178,9 @@ public class GeneratorDialog extends DialogWrapper {
     private void performAppendAction(boolean ignoreDuplicates) {
         String content = "";
         for (Resources.Template template : checked) {
+            if (template == null) {
+                continue;
+            }
             content += IgnoreBundle.message("file.templateSection", template.getName());
             content += "\n" + template.getContent();
         }
