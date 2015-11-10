@@ -76,12 +76,6 @@ import java.util.regex.Pattern;
  */
 public class Utils {
     /**
-     * Gitignore plugin ID
-     */
-    @NonNls
-    private static final String PLUGIN_ID = "mobi.hsz.idea.gitignore";
-
-    /**
      * Private constructor to prevent creating {@link Utils} instance.
      */
     private Utils() {
@@ -287,7 +281,7 @@ public class Utils {
      * @return {@link IdeaPluginDescriptor}
      */
     public static IdeaPluginDescriptor getPlugin() {
-        return PluginManager.getPlugin(PluginId.getId(PLUGIN_ID));
+        return PluginManager.getPlugin(PluginId.getId(IgnoreBundle.PLUGIN_ID));
     }
 
     /**

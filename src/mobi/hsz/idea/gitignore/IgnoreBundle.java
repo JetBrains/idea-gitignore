@@ -50,6 +50,10 @@ public class IgnoreBundle {
     @NonNls
     public static final String PLUGIN_NAME = ".ignore";
 
+    /** Gitignore plugin ID. */
+    @NonNls
+    public static final String PLUGIN_ID = "mobi.hsz.idea.gitignore";
+
     /** The {@link ResourceBundle} path. */
     @NonNls
     private static final String BUNDLE_NAME = "messages.IgnoreBundle";
