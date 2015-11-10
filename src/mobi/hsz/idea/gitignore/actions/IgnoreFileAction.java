@@ -31,7 +31,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
@@ -160,7 +159,7 @@ public class IgnoreFileAction extends DumbAwareAction {
         String path = StringUtil.notNullize(Utils.getRelativePath(root, file));
         path = Utils.escapeChar(path, '[');
         path = Utils.escapeChar(path, ']');
-        path = Utils.trimLeading(path, VfsUtil.VFS_PATH_SEPARATOR);
-        return VfsUtil.VFS_PATH_SEPARATOR + path;
+        path = Utils.trimLeading(path, '/');
+        return '/' + path;
     }
 }
