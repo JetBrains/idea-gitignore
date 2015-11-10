@@ -37,6 +37,7 @@ import com.intellij.openapi.editor.markup.HighlighterTargetArea;
 import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.OptionAction;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
@@ -58,6 +59,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Set;
 
@@ -117,6 +119,7 @@ public class GeneratorDialog extends DialogWrapper {
 
         setTitle(IgnoreBundle.message("dialog.generator.title"));
         setOKButtonText(IgnoreBundle.message("global.generate"));
+        setCancelButtonText(IgnoreBundle.message("global.cancel"));
         init();
     }
 
@@ -163,19 +166,34 @@ public class GeneratorDialog extends DialogWrapper {
     @Override
     protected void doOKAction() {
         if (isOKActionEnabled()) {
-            String content = "";
-            for (Resources.Template template : checked) {
-                content += IgnoreBundle.message("file.templateSection", template.getName());
-                content += "\n" + template.getContent();
-            }
-            if (file == null && action != null) {
-                file = action.execute().getResultObject();
-            }
-            if (file != null && !content.isEmpty()) {
-                new AppendFileCommandAction(project, file, content).execute();
-            }
-            super.doOKAction();
+            performAppendAction(false);
         }
+    }
+
+    /**
+     * Performs {@link AppendFileCommandAction} action.
+     *
+     * @param ignoreDuplicates ignores duplicated rules
+     */
+    private void performAppendAction(boolean ignoreDuplicates) {
+        String content = "";
+        for (Resources.Template template : checked) {
+            content += IgnoreBundle.message("file.templateSection", template.getName());
+            content += "\n" + template.getContent();
+        }
+        if (file == null && action != null) {
+            file = action.execute().getResultObject();
+        }
+        if (file != null && !content.isEmpty()) {
+            new AppendFileCommandAction(project, file, content, ignoreDuplicates).execute();
+        }
+        super.doOKAction();
+    }
+
+    @Override
+    protected void createDefaultActions() {
+        super.createDefaultActions();
+        myOKAction = new OptionOkAction();
     }
 
     /**
@@ -487,5 +505,20 @@ public class GeneratorDialog extends DialogWrapper {
         public void filter() {
             filterTree(getFilter());
         }
+    }
+
+    protected class OptionOkAction extends OkAction implements OptionAction {
+
+        @NotNull
+        @Override
+        public Action[] getOptions() {
+            return new Action[]{ new DialogWrapperAction(IgnoreBundle.message("global.generate.without.duplicates")) {
+                @Override
+                protected void doAction(ActionEvent e) {
+                    performAppendAction(true);
+                }
+            } };
+        }
+
     }
 }

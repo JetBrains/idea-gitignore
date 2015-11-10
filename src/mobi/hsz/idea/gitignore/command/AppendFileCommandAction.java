@@ -34,17 +34,21 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.VisualPosition;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.ui.ListUtil;
+import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
+import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
+import java.util.*;
 
 /**
  * Command action that appends specified file to rules list.
@@ -63,36 +67,42 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
     private final Set<String> content;
 
     /**
+     * {@link PsiDocumentManager} instance.
+     */
+    private final PsiDocumentManager manager;
+
+    /** Ignore duplicated entries. */
+    private final boolean ignoreDuplicates;
+
+    /**
      * Builds a new instance of {@link AppendFileCommandAction}.
      * Takes a {@link Set} of the rules to add.
      *
-     * @param project current project
-     * @param file    working file
-     * @param content rules set
+     * @param project          current project
+     * @param file             working file
+     * @param content          rule
+     * @param ignoreDuplicates ignore duplicated entries
      */
-    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull Set<String> content) {
+    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull Set<String> content, boolean ignoreDuplicates) {
         super(project, file);
         this.project = project;
         this.file = file;
         this.content = content;
+        this.manager = PsiDocumentManager.getInstance(project);
+        this.ignoreDuplicates = ignoreDuplicates;
     }
 
     /**
      * Builds a new instance of {@link AppendFileCommandAction}.
      * Takes a {@link String} rule.
      *
-     * @param project current project
-     * @param file    working file
-     * @param content rule
+     * @param project          current project
+     * @param file             working file
+     * @param content          rule
+     * @param ignoreDuplicates ignore duplicated entries
      */
-    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull final String content) {
-        super(project, file);
-        this.project = project;
-        this.file = file;
-        this.content = ContainerUtil.newHashSet();
-        if (!content.isEmpty()) {
-            this.content.add(content);
-        }
+    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull final String content, boolean ignoreDuplicates) {
+        this(project, file, ContainerUtil.newHashSet(content), ignoreDuplicates);
     }
 
     /**
@@ -106,33 +116,65 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         if (content.isEmpty()) {
             return;
         }
-        Document document = PsiDocumentManager.getInstance(project).getDocument(file);
-        if (document != null) {
-            for (PsiElement element : file.getChildren()) {
-                if (content.contains(element.getText())) {
+        final Document document = manager.getDocument(file);
+        if (document == null) {
+            return;
+        }
+
+        file.acceptChildren(new IgnoreVisitor() {
+            @Override
+            public void visitEntry(@NotNull IgnoreEntry entry) {
+                if (content.contains(entry.getText())) {
                     Notifications.Bus.notify(new Notification(IgnoreLanguage.GROUP,
-                            IgnoreBundle.message("action.appendFile.entryExists", element.getText()),
+                            IgnoreBundle.message("action.appendFile.entryExists", entry.getText()),
                             IgnoreBundle.message("action.appendFile.entryExists.in", Utils.getRelativePath(project.getBaseDir(), file.getVirtualFile())),
                             NotificationType.WARNING), project);
-                    content.remove(element.getText());
+                    content.remove(entry.getText());
                 }
             }
+        });
 
-            int offset = document.getTextLength();
-            Editor[] editors = EditorFactory.getInstance().getEditors(document);
-            if (editors.length > 0) {
-                VisualPosition position = editors[0].getSelectionModel().getSelectionStartPosition();
-                if (position != null) {
-                    offset = document.getLineStartOffset(position.line);
-                }
+        int offset = document.getTextLength();
+        Editor[] editors = EditorFactory.getInstance().getEditors(document);
+        if (editors.length > 0) {
+            VisualPosition position = editors[0].getSelectionModel().getSelectionStartPosition();
+            if (position != null) {
+                offset = document.getLineStartOffset(position.line);
             }
-
-            for (String entry : content) {
-                entry += "\n";
-                document.insertString(offset, StringUtil.replace(entry, "\r", ""));
-                offset += entry.length();
-            }
-            PsiDocumentManager.getInstance(project).commitDocument(document);
         }
+
+        for (String entry : content) {
+            if (ignoreDuplicates) {
+                List<String> currentLines = ContainerUtil.filter(document.getText().split("\n"), new Condition<String>() {
+                    @Override
+                    public boolean value(String s) {
+                        return !s.isEmpty() && !s.startsWith("#");
+                    }
+                });
+
+                List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split("\n")));
+                Iterator<String> iterator = entryLines.iterator();
+                while (iterator.hasNext()) {
+                    String line = iterator.next();
+                    if (line.isEmpty() || line.startsWith("#")) {
+                        continue;
+                    }
+
+                    if (currentLines.contains(line)) {
+                        iterator.remove();
+                    } else {
+                        currentLines.add(line);
+                    }
+                }
+
+                entry = StringUtil.join(entryLines, "\n");
+            }
+
+            entry += "\n";
+            document.insertString(offset, StringUtil.replace(entry, "\r", ""));
+            offset += entry.length();
+        }
+
+        manager.commitDocument(document);
     }
 }
