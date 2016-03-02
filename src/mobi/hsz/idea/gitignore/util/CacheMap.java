@@ -147,7 +147,8 @@ public class CacheMap {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             public void run() {
                 VirtualFile virtualFile = file.getVirtualFile();
-                if (virtualFile != null && (virtualFile instanceof LightVirtualFile || ((VirtualFileWithId) virtualFile).getId() > 0)) {
+                if (virtualFile != null && (virtualFile instanceof LightVirtualFile
+                        || (virtualFile instanceof VirtualFileWithId && ((VirtualFileWithId) virtualFile).getId() > 0))) {
                     file.acceptChildren(visitor);
                 }
             }
