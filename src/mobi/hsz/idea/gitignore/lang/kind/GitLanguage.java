@@ -79,9 +79,10 @@ public class GitLanguage extends IgnoreLanguage {
     @Nullable
     @Override
     public VirtualFile getOuterFile(@Nullable final Project project) {
-        if (OUTER_FILE_FETCHED || OUTER_FILE == null || OUTER_FILE.exists()) {
+        if (OUTER_FILE_FETCHED && (OUTER_FILE != null && OUTER_FILE.exists())) {
             return OUTER_FILE;
         }
+
         if (Utils.isGitPluginEnabled()) {
             final String bin = GitVcsApplicationSettings.getInstance().getPathToGit();
             if (StringUtil.isNotEmpty(bin)) {
