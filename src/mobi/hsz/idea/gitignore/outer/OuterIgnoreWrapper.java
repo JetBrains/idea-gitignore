@@ -37,30 +37,45 @@ import com.intellij.ui.components.labels.LinkLabel;
 import com.intellij.ui.components.labels.LinkListener;
 import com.intellij.util.ui.UIUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 /**
  * Wrapper that creates bottom editor component for displaying outer ignore rules.
- * 
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.1
  */
 public class OuterIgnoreWrapper implements Disposable {
+    private static final int DRAG_OFFSET = 10;
+
     private final JPanel panel;
     private final Editor outerEditor;
 
+    /** The settings storage object. */
+    private final IgnoreSettings settings;
+
+    private int dragScrollPanelHeight;
+    private int dragYOnScreen;
+    private boolean drag;
+
     public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final VirtualFile outerFile) {
+        settings = IgnoreSettings.getInstance();
+
         panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
 
         JBLabel label = new JBLabel(IgnoreBundle.message("outer.label"), UIUtil.ComponentStyle.REGULAR, UIUtil.FontColor.BRIGHTER);
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
-        JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
+        final JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         northPanel.add(label);
         northPanel.add(new LinkLabel(outerFile.getPath(), null, new LinkListener() {
             @Override
@@ -73,9 +88,41 @@ public class OuterIgnoreWrapper implements Disposable {
         outerEditor = document != null ? Utils.createPreviewEditor(document, project, true) : null;
 
         if (outerEditor != null) {
-            JScrollPane scrollPanel = ScrollPaneFactory.createScrollPane(outerEditor.getComponent());
+            final JScrollPane scrollPanel = ScrollPaneFactory.createScrollPane(outerEditor.getComponent());
             scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-            scrollPanel.setPreferredSize(new Dimension(0, 100));
+            scrollPanel.setPreferredSize(new Dimension(0, settings.getOuterIgnoreWrapperHeight()));
+
+            northPanel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getPoint().getY() <= DRAG_OFFSET) {
+                        dragScrollPanelHeight = scrollPanel.getHeight();
+                        dragYOnScreen = e.getYOnScreen();
+                        drag = true;
+                    }
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    drag = false;
+                    settings.setOuterIgnoreWrapperHeight(scrollPanel.getHeight());
+                }
+            });
+            northPanel.addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    Cursor cursor = (e.getPoint().getY() <= DRAG_OFFSET) ? Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR) : Cursor.getDefaultCursor();
+                    panel.setCursor(cursor);
+                }
+
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    if (drag) {
+                        scrollPanel.setPreferredSize(new Dimension(0, dragScrollPanelHeight - e.getYOnScreen() + dragYOnScreen));
+                        panel.revalidate();
+                    }
+                }
+            });
 
             panel.add(northPanel, BorderLayout.NORTH);
             panel.add(scrollPanel, BorderLayout.CENTER);
@@ -84,7 +131,7 @@ public class OuterIgnoreWrapper implements Disposable {
 
     /**
      * Returns outer panel.
-     * 
+     *
      * @return outer panel
      */
     public JComponent getComponent() {

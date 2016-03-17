@@ -57,7 +57,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
-        OUTER_IGNORE_RULES("outerIgnoreRules");
+        OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight");
 
         private final String key;
 
@@ -85,6 +85,11 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Enable ignored file status coloring.
      */
     private boolean ignoredFileStatus = true;
+
+    /**
+     * Height of the outer ignore file wrapper panel.
+     */
+    private int outerIgnoreWrapperHeight = 100;
 
     /**
      * Enable outer ignore rules.
@@ -135,6 +140,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.MISSING_GITIGNORE.toString(), Boolean.toString(missingGitignore));
         element.setAttribute(KEY.IGNORED_FILE_STATUS.toString(), Boolean.toString(ignoredFileStatus));
         element.setAttribute(KEY.OUTER_IGNORE_RULES.toString(), Boolean.toString(outerIgnoreRules));
+        element.setAttribute(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString(), Integer.toString(outerIgnoreWrapperHeight));
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
         for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
@@ -178,6 +184,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
         value = element.getAttributeValue(KEY.OUTER_IGNORE_RULES.toString());
         if (value != null) outerIgnoreRules = Boolean.parseBoolean(value);
+
+        value = element.getAttributeValue(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString());
+        if (value != null) outerIgnoreWrapperHeight = Integer.parseInt(value);
 
         Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
@@ -269,6 +278,25 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     }
 
     /**
+     * Returns the height of the outer ignore file wrapper panel.
+     *
+     * @return wrapper panel height
+     */
+    public int getOuterIgnoreWrapperHeight() {
+        return outerIgnoreWrapperHeight;
+    }
+
+    /**
+     * Sets outer ignore rules.
+     *
+     * @param outerIgnoreWrapperHeight wrapper panel height
+     */
+    public void setOuterIgnoreWrapperHeight(int outerIgnoreWrapperHeight) {
+        this.notifyOnChange(KEY.OUTER_IGNORE_WRAPPER_HEIGHT, this.outerIgnoreWrapperHeight, outerIgnoreWrapperHeight);
+        this.outerIgnoreWrapperHeight = outerIgnoreWrapperHeight;
+    }
+
+    /**
      * Gets the {@link IgnoreLanguage} settings.
      *
      * @return fileType settings
@@ -345,8 +373,8 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     /**
      * Listener interface for onChange event.
      */
-    public static interface Listener {
-        public void onChange(@NotNull KEY key, Object value);
+    public interface Listener {
+        void onChange(@NotNull KEY key, Object value);
     }
 
     /**
