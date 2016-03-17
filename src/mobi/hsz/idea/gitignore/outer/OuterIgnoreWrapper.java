@@ -74,6 +74,7 @@ public class OuterIgnoreWrapper implements Disposable {
 
         if (outerEditor != null) {
             JScrollPane scrollPanel = ScrollPaneFactory.createScrollPane(outerEditor.getComponent());
+            scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
             scrollPanel.setPreferredSize(new Dimension(0, 100));
 
             panel.add(northPanel, BorderLayout.NORTH);
