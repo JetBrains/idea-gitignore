@@ -407,7 +407,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                                 continue;
                             }
                             VirtualFile outerFile = language.getOuterFile(myProject);
-                            if (outerFile != null) {
+                            if (outerFile != null && outerFile.exists()) {
                                 PsiFile psiFile = psiManager.findFile(outerFile);
                                 if (psiFile != null) {
                                     IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
