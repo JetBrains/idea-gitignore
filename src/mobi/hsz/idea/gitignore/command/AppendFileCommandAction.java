@@ -36,10 +36,9 @@ import com.intellij.openapi.editor.VisualPosition;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
-import com.intellij.ui.ListUtil;
-import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -124,10 +123,11 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         file.acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
-                if (content.contains(entry.getText())) {
+                final VirtualFile baseDir = project.getBaseDir();
+                if (content.contains(entry.getText()) && baseDir != null) {
                     Notifications.Bus.notify(new Notification(IgnoreLanguage.GROUP,
                             IgnoreBundle.message("action.appendFile.entryExists", entry.getText()),
-                            IgnoreBundle.message("action.appendFile.entryExists.in", Utils.getRelativePath(project.getBaseDir(), file.getVirtualFile())),
+                            IgnoreBundle.message("action.appendFile.entryExists.in", Utils.getRelativePath(baseDir, file.getVirtualFile())),
                             NotificationType.WARNING), project);
                     content.remove(entry.getText());
                 }

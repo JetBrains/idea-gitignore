@@ -120,10 +120,13 @@ public class IgnoreFileAction extends DumbAwareAction {
             for (VirtualFile file : files) {
                 String path = getPath(ignore.getVirtualFile().getParent(), file);
                 if (path.isEmpty()) {
-                    Notifications.Bus.notify(new Notification(IgnoreLanguage.GROUP,
-                            IgnoreBundle.message("action.ignoreFile.addError", Utils.getRelativePath(project.getBaseDir(), file)),
-                            IgnoreBundle.message("action.ignoreFile.addError.to", Utils.getRelativePath(project.getBaseDir(), ignore.getVirtualFile())),
-                            NotificationType.ERROR), project);
+                    final VirtualFile baseDir = project.getBaseDir();
+                    if (baseDir != null) {
+                        Notifications.Bus.notify(new Notification(IgnoreLanguage.GROUP,
+                                IgnoreBundle.message("action.ignoreFile.addError", Utils.getRelativePath(baseDir, file)),
+                                IgnoreBundle.message("action.ignoreFile.addError.to", Utils.getRelativePath(baseDir, ignore.getVirtualFile())),
+                                NotificationType.ERROR), project);
+                    }
                 } else {
                     paths.add(path);
                 }

@@ -55,13 +55,19 @@ import java.util.Map;
  */
 public class IgnoreFileGroupAction extends ActionGroup {
 
-    /** Maximum filename length for the action name. */
+    /**
+     * Maximum filename length for the action name.
+     */
     private static final int FILENAME_MAX_LENGTH = 30;
 
-    /** List of suitable Gitignore {@link VirtualFile}s that can be presented in an IgnoreFile action. */
+    /**
+     * List of suitable Gitignore {@link VirtualFile}s that can be presented in an IgnoreFile action.
+     */
     private final Map<IgnoreFileType, List<VirtualFile>> files = ContainerUtil.newHashMap();
 
-    /** {@link Project}'s base directory. */
+    /**
+     * {@link Project}'s base directory.
+     */
     private VirtualFile baseDir;
 
     /**
@@ -124,7 +130,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
             actions = new AnAction[count];
 
             int i = 0;
-            for(Map.Entry<IgnoreFileType, List<VirtualFile>> entry : files.entrySet()) {
+            for (Map.Entry<IgnoreFileType, List<VirtualFile>> entry : files.entrySet()) {
                 for (VirtualFile file : entry.getValue()) {
                     IgnoreFileAction action = new IgnoreFileAction(file);
                     actions[i++] = action;
