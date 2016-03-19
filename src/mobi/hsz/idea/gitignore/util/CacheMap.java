@@ -33,7 +33,6 @@ import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWithId;
 import com.intellij.testFramework.LightVirtualFile;
-import com.intellij.util.containers.ConcurrentHashMap;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
@@ -41,21 +40,21 @@ import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 
 /**
- * {@link ConcurrentHashMap} cache helper.
+ * {@link HashMap} cache helper.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.0.2
  */
 public class CacheMap {
-    private final ConcurrentHashMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Pattern, Boolean>>>> map = new ConcurrentHashMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Pattern, Boolean>>>>();
+    private final ConcurrentMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Pattern, Boolean>>>> map = ContainerUtil.newConcurrentMap();
 
-    /** Cache {@link ConcurrentHashMap} to store files statuses. */
+    /** Cache {@link HashMap} to store files statuses. */
     private final HashMap<VirtualFile, Status> statuses = new HashMap<VirtualFile, Status>();
 
     /** Current project. */
@@ -173,7 +172,7 @@ public class CacheMap {
             return status.equals(Status.IGNORED);
         }
 
-        final List<IgnoreFile> files = ContainerUtil.reverse(Utils.ignoreFilesSort(Collections.list(map.keys())));
+        final List<IgnoreFile> files = ContainerUtil.reverse(Utils.ignoreFilesSort(ContainerUtil.newArrayList(map.keySet())));
 
         for (final IgnoreFile ignoreFile : files) {
             boolean outer = ignoreFile.isOuter();
