@@ -28,6 +28,7 @@ import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.progress.BackgroundTaskQueue;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.VcsListener;
@@ -382,42 +383,46 @@ public class IgnoreManager extends AbstractProjectComponent {
                     alarm.cancelAllRequests();
                     queue.clear();
 
-                    // Search for Ignore files in the project
-                    final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
-                    final List<IgnoreFile> files = ContainerUtil.newArrayList();
-                    for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                        if (language.isEnabled()) {
-                            try {
-                                Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(language.getFileType(), scope);
-                                for (VirtualFile virtualFile : virtualFiles) {
-                                    ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
-                                }
-                            } catch (IndexOutOfBoundsException ignored) {
-                            }
-                        }
-                    }
-                    Utils.ignoreFilesSort(files);
-
-                    addTasksFor(files);
-
-                    // Search for outer files
-                    if (settings.isOuterIgnoreRules()) {
-                        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                            if (!language.isEnabled()) {
-                                continue;
-                            }
-                            VirtualFile outerFile = language.getOuterFile(myProject);
-                            if (outerFile != null && outerFile.exists()) {
-                                PsiFile psiFile = psiManager.findFile(outerFile);
-                                if (psiFile != null) {
-                                    IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
-                                            .createFileFromText(language.getFilename(), language, psiFile.getText());
-                                    outerIgnoreFile.setOriginalFile(psiFile);
-                                    addTaskFor(outerIgnoreFile);
+                    DumbService.getInstance(myProject).smartInvokeLater(new Runnable() {
+                        public void run() {
+                            // Search for Ignore files in the project
+                            final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
+                            final List<IgnoreFile> files = ContainerUtil.newArrayList();
+                            for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                                if (language.isEnabled()) {
+                                    try {
+                                        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(language.getFileType(), scope);
+                                        for (VirtualFile virtualFile : virtualFiles) {
+                                            ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
+                                        }
+                                    } catch (IndexOutOfBoundsException ignored) {
+                                    }
                                 }
                             }
+                            Utils.ignoreFilesSort(files);
+
+                            addTasksFor(files);
+
+                            // Search for outer files
+                            if (settings.isOuterIgnoreRules()) {
+                                for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                                    if (!language.isEnabled()) {
+                                        continue;
+                                    }
+                                    VirtualFile outerFile = language.getOuterFile(myProject);
+                                    if (outerFile != null && outerFile.exists()) {
+                                        PsiFile psiFile = psiManager.findFile(outerFile);
+                                        if (psiFile != null) {
+                                            IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
+                                                    .createFileFromText(language.getFilename(), language, psiFile.getText());
+                                            outerIgnoreFile.setOriginalFile(psiFile);
+                                            addTaskFor(outerIgnoreFile);
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    }
+                    });
                 }
             }
 
