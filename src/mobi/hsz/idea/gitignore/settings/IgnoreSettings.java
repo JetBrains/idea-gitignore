@@ -159,7 +159,21 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
             languagesElement.addContent(languageElement);
         }
         element.addContent(languagesElement);
+        element.addContent(createTemplatesElement(userTemplates));
 
+        // settings fix for 1.1 - can be removed with further releases
+        element.setAttribute("settingsFixed", "true");
+
+        return element;
+    }
+
+    /**
+     * Creates {@link Element} with a list of the {@link UserTemplate} items.
+     *
+     * @param userTemplates templates
+     * @return {@link Element} instance with user templates
+     */
+    public static Element createTemplatesElement(@NotNull List<UserTemplate> userTemplates) {
         Element templates = new Element(KEY.USER_TEMPLATES.toString());
         for (UserTemplate userTemplate : userTemplates) {
             Element templateElement = new Element(KEY.USER_TEMPLATES_TEMPLATE.toString());
@@ -167,12 +181,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
             templateElement.addContent(userTemplate.getContent());
             templates.addContent(templateElement);
         }
-        element.addContent(templates);
-
-        // settings fix for 1.1 - can be removed with further releases
-        element.setAttribute("settingsFixed", "true");
-
-        return element;
+        return templates;
     }
 
     /**
@@ -211,13 +220,8 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
             }
         }
 
-        Element templates = element.getChild(KEY.USER_TEMPLATES.toString());
-        if (templates != null) {
-            userTemplates.clear();
-            for (Element template : templates.getChildren()) {
-                userTemplates.add(new UserTemplate(template.getAttributeValue(KEY.USER_TEMPLATES_NAME.toString()), template.getText()));
-            }
-        }
+        userTemplates.clear();
+        userTemplates.addAll(loadTemplates(element));
 
         // settings fix for 1.1 - can be removed with further releases
         value = element.getAttributeValue("settingsFixed");
@@ -228,6 +232,25 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
                 }
             }
         }
+    }
+
+    /**
+     * Loads {@link UserTemplate} objects from the {@link Element}.
+     *
+     * @param element source
+     * @return {@link UserTemplate} list
+     */
+    @NotNull
+    public static List<UserTemplate> loadTemplates(@NotNull Element element) {
+        final String key = KEY.USER_TEMPLATES.toString();
+        final List<UserTemplate> list = ContainerUtil.newArrayList();
+        if (!key.equals(element.getName())) {
+            element = element.getChild(key);
+        }
+        for (Element template : element.getChildren()) {
+            list.add(new UserTemplate(template.getAttributeValue(KEY.USER_TEMPLATES_NAME.toString()), template.getText()));
+        }
+        return list;
     }
 
     /**

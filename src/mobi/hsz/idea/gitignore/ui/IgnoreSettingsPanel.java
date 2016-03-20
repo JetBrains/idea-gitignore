@@ -24,7 +24,12 @@
 
 package mobi.hsz.idea.gitignore.ui;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Document;
@@ -32,12 +37,22 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
+import com.intellij.openapi.fileChooser.FileChooser;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.fileChooser.FileChooserFactory;
+import com.intellij.openapi.fileChooser.FileSaverDescriptor;
+import com.intellij.openapi.fileTypes.FileTypes;
+import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.ui.InputValidatorEx;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.Splitter;
+import com.intellij.openapi.util.JDOMUtil;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.AddEditDeleteListPanel;
 import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.ContainerUtil;
@@ -45,6 +60,8 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
+import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,6 +70,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -152,6 +170,8 @@ public class IgnoreSettingsPanel implements Disposable {
      */
     public class TemplatesListPanel extends AddEditDeleteListPanel<IgnoreSettings.UserTemplate> {
 
+        private static final String FILE_EXTENSION = "xml";
+
         /**
          * Constructs CRUD panel with list listener for editor updating.
          */
@@ -169,6 +189,84 @@ public class IgnoreSettingsPanel implements Disposable {
                     }
                 }
             });
+        }
+
+        @Override
+        protected void customizeDecorator(ToolbarDecorator decorator) {
+            super.customizeDecorator(decorator);
+
+            final DefaultActionGroup group = new DefaultActionGroup();
+            group.addSeparator();
+
+            group.add(new AnAction(IgnoreBundle.message("action.importTemplates"), IgnoreBundle.message("action.importTemplates.description"), AllIcons.Actions.Install) {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void actionPerformed(final AnActionEvent event) {
+                    final FileChooserDescriptor descriptor = new FileChooserDescriptor(true, false, true, false, true, false) {
+                        @Override
+                        public boolean isFileVisible(VirtualFile file, boolean showHiddenFiles) {
+                            return super.isFileVisible(file, showHiddenFiles) &&
+                                    (file.isDirectory() || FILE_EXTENSION.equals(file.getExtension()) || file.getFileType() == FileTypes.ARCHIVE);
+                        }
+
+                        @Override
+                        public boolean isFileSelectable(VirtualFile file) {
+                            return file.getFileType() == StdFileTypes.XML;
+                        }
+                    };
+                    descriptor.setDescription(IgnoreBundle.message("action.importTemplates.wrapper.description"));
+                    descriptor.setTitle(IgnoreBundle.message("action.importTemplates.wrapper"));
+                    descriptor.putUserData(LangDataKeys.MODULE_CONTEXT, LangDataKeys.MODULE.getData(event.getDataContext()));
+
+                    final VirtualFile file = FileChooser.chooseFile(descriptor, templatesListPanel, null, null);
+                    if (file != null) {
+                        try {
+                            final org.jdom.Document document = JDOMUtil.loadDocument(file.getInputStream());
+                            Element element = document.getRootElement();
+                            List<IgnoreSettings.UserTemplate> templates = IgnoreSettings.loadTemplates(element);
+                            for (IgnoreSettings.UserTemplate template : templates) {
+                                myListModel.addElement(template);
+                            }
+                            Messages.showInfoMessage(templatesListPanel, IgnoreBundle.message("action.importTemplates.success", templates.size()),
+                                    IgnoreBundle.message("action.exportTemplates.success.title"));
+                            return;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JDOMException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    Messages.showErrorDialog(templatesListPanel, IgnoreBundle.message("action.importTemplates.error"));
+                }
+            });
+
+            group.add(new AnAction(IgnoreBundle.message("action.exportTemplates"), IgnoreBundle.message("action.exportTemplates.description"), AllIcons.Actions.Export) {
+                @Override
+                public void actionPerformed(AnActionEvent event) {
+                    final VirtualFileWrapper wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
+                            new FileSaverDescriptor(IgnoreBundle.message("action.exportTemplates.wrapper"), "", FILE_EXTENSION), templatesListPanel
+                    ).save(null, null);
+
+                    if (wrapper != null) {
+                        final List<IgnoreSettings.UserTemplate> items = getCurrentItems();
+                        final org.jdom.Document document = new org.jdom.Document(IgnoreSettings.createTemplatesElement(items));
+                        try {
+                            JDOMUtil.writeDocument(document, wrapper.getFile(), "\n");
+                            Messages.showInfoMessage(templatesListPanel, IgnoreBundle.message("action.exportTemplates.success", items.size()),
+                                    IgnoreBundle.message("action.exportTemplates.success.title"));
+                        } catch (IOException e) {
+                            Messages.showErrorDialog(templatesListPanel, IgnoreBundle.message("action.exportTemplates.error"));
+                        }
+                    }
+                }
+
+                @Override
+                public void update(AnActionEvent e) {
+                    e.getPresentation().setEnabled(getCurrentItems().size() > 0);
+                }
+            });
+            decorator.setActionGroup(group);
         }
 
         /**
@@ -302,6 +400,20 @@ public class IgnoreSettingsPanel implements Disposable {
                 return null;
             }
             return (IgnoreSettings.UserTemplate) myListModel.get(index);
+        }
+
+        /**
+         * Returns selectet {@link IgnoreSettings.UserTemplate} elements.
+         *
+         * @return {@link IgnoreSettings.UserTemplate} list
+         */
+        public List<IgnoreSettings.UserTemplate> getCurrentItems() {
+            List<IgnoreSettings.UserTemplate> list = ContainerUtil.newArrayList();
+            int[] ids = myList.getSelectedIndices();
+            for (int i = 0; i < ids.length; i++) {
+                list.add(getList().get(i));
+            }
+            return list;
         }
     }
 
