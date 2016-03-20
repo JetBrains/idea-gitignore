@@ -58,7 +58,6 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,6 +65,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -237,23 +237,23 @@ public class Utils {
             return false;
         }
 
+        final Matcher matcher = pattern.matcher("");
         final VirtualFile projectRoot = project.getBaseDir();
         final List<VirtualFile> matched = ContainerUtil.newArrayList();
-        for (final VirtualFile root : getExcludedRoots(project)) {
-            VfsUtil.visitChildrenRecursively(root, new VirtualFileVisitor() {
-                @Override
-                public boolean visitFile(@NotNull VirtualFile file) {
-                    String path = getRelativePath(projectRoot, root);
-                    if (path == null) {
-                        return false;
-                    }
-                    if (pattern.matcher(path).matches()) {
-                        matched.add(file);
-                        return false;
-                    }
-                    return true;
+        final VirtualFileVisitor<VirtualFile> visitor = new VirtualFileVisitor<VirtualFile>() {
+            @Override
+            public boolean visitFile(@NotNull VirtualFile file) {
+                String path = getRelativePath(projectRoot, getCurrentValue());
+                if (Utils.match(matcher, path)) {
+                    matched.add(file);
+                    return false;
                 }
-            });
+                return true;
+            }
+        };
+        for (final VirtualFile root : getExcludedRoots(project)) {
+            visitor.setValueForChildren(root);
+            VfsUtil.visitChildrenRecursively(root, visitor);
 
             if (matched.size() > 0) {
                 return true;
@@ -451,7 +451,7 @@ public class Utils {
      * Escapes character in the given {@link String}.
      * Method is copied from the {@link StringUtil} class to keep the backward compatibility with IDEA 12.x
      *
-     * @param string to parse
+     * @param string    to parse
      * @param character to escape
      * @return escaped string
      */
@@ -471,7 +471,7 @@ public class Utils {
      * Trims leading character in the given {@link String}.
      * Method is copied from the {@link StringUtil} class to keep the backward compatibility with IDEA 12.x
      *
-     * @param string to parse
+     * @param string    to parse
      * @param character to trim
      * @return trimmed string
      */
@@ -483,4 +483,32 @@ public class Utils {
         return string.substring(index);
     }
 
+    /**
+     * Extracts alphanumeric parts from the regex pattern and checks if any of them is contained in the tested path.
+     * Looking for the parts speed ups the matching and prevents from running whole regex on the string.
+     *
+     * @param matcher to explode
+     * @param path to check
+     * @return path matches the pattern
+     */
+    public static boolean match(@Nullable Matcher matcher, @Nullable String path) {
+        if (matcher == null || path == null) {
+            return false;
+        }
+
+        String pattern = matcher.pattern().toString();
+        String part = "";
+        for (int i = 0; i < pattern.length(); i++) {
+            if (Character.isLetterOrDigit(pattern.charAt(i))) {
+                part += pattern.charAt(i);
+            } else if (!part.isEmpty()) {
+                if (!path.contains(part)) {
+                    return false;
+                }
+                part = "";
+            }
+        }
+
+        return matcher.reset(path).matches();
+    }
 }

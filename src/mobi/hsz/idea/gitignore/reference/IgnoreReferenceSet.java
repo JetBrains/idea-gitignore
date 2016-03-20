@@ -43,6 +43,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -201,15 +202,17 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
                     final VirtualFile root = isOuterFile ? contextVirtualFile : ( (parent != null) ? parent.getVirtualFile() : null );
                     final PsiManager manager = getElement().getManager();
+                    final Matcher matcher = pattern.matcher("");
 
-                    VfsUtil.visitChildrenRecursively(contextVirtualFile, new VirtualFileVisitor(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
+                    VirtualFileVisitor<?> fileVisitor = new VirtualFileVisitor(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
                         @Override
                         public boolean visitFile(@NotNull VirtualFile file) {
-                            String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
-                            if (name == null || Utils.isVcsDirectory(file)) {
+                            if (Utils.isVcsDirectory(file)) {
                                 return false;
                             }
-                            if (pattern.matcher(name).matches()) {
+
+                            String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
+                            if (Utils.match(matcher, name)) {
                                 PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
                                 if (psiFileSystemItem == null) {
                                     return false;
@@ -218,7 +221,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                             }
                             return true;
                         }
-                    });
+                    };
+                    VfsUtil.visitChildrenRecursively(contextVirtualFile, fileVisitor);
                 }
             }
         }

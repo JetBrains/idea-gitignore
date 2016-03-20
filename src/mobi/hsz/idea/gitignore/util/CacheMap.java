@@ -43,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -52,7 +53,7 @@ import java.util.regex.Pattern;
  * @since 1.0.2
  */
 public class CacheMap {
-    private final ConcurrentMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Pattern, Boolean>>>> map = ContainerUtil.newConcurrentMap();
+    private final ConcurrentMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Matcher, Boolean>>>> map = ContainerUtil.newConcurrentMap();
 
     /** Cache {@link HashMap} to store files statuses. */
     private final HashMap<VirtualFile, Status> statuses = new HashMap<VirtualFile, Status>();
@@ -98,19 +99,19 @@ public class CacheMap {
      * @param set  entries hashCodes set
      */
     protected void add(@NotNull final IgnoreFile file, Set<Integer> set) {
-        final List<Pair<Pattern, Boolean>> patterns = ContainerUtil.newArrayList();
+        final List<Pair<Matcher, Boolean>> matchers = ContainerUtil.newArrayList();
 
         runVisitorInReadAction(file, new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 Pattern pattern = Glob.createPattern(entry);
                 if (pattern != null) {
-                    patterns.add(Pair.create(pattern, entry.isNegated()));
+                    matchers.add(Pair.create(pattern.matcher(""), entry.isNegated()));
                 }
             }
         });
 
-        map.put(file, Pair.create(set, patterns));
+        map.put(file, Pair.create(set, matchers));
         statuses.clear();
         statusManager.fileStatusesChanged();
     }
@@ -121,7 +122,7 @@ public class CacheMap {
      * @param file to check
      */
     public void hasChanged(@NotNull IgnoreFile file) {
-        final Pair<Set<Integer>, List<Pair<Pattern, Boolean>>> recent = map.get(file);
+        final Pair<Set<Integer>, List<Pair<Matcher, Boolean>>> recent = map.get(file);
 
         final Set<Integer> set = ContainerUtil.newHashSet();
         file.acceptChildren(new IgnoreVisitor() {
@@ -194,9 +195,9 @@ public class CacheMap {
                 continue;
             }
 
-            List<Pair<Pattern, Boolean>> patterns = map.get(ignoreFile).getSecond();
-            for (Pair<Pattern, Boolean> pair : ContainerUtil.reverse(patterns)) {
-                if (pair.getFirst().matcher(path).matches()) {
+            List<Pair<Matcher, Boolean>> matchers = map.get(ignoreFile).getSecond();
+            for (Pair<Matcher, Boolean> pair : ContainerUtil.reverse(matchers)) {
+                if (Utils.match(pair.getFirst(), path)) {
                     status = pair.getSecond() ? Status.UNIGNORED : Status.IGNORED;
                     break;
                 }
@@ -246,7 +247,7 @@ public class CacheMap {
      * @param file to remove
      * @return removed value
      */
-    public Pair<Set<Integer>, List<Pair<Pattern, Boolean>>> remove(IgnoreFile file) {
+    public Pair<Set<Integer>, List<Pair<Matcher, Boolean>>> remove(IgnoreFile file) {
         return map.remove(file);
     }
 }

@@ -37,6 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -57,7 +58,7 @@ public class Glob {
     /**
      * Finds for {@link VirtualFile} list using glob rule in given root directory.
      *
-     * @param root root directory
+     * @param root  root directory
      * @param entry ignore entry
      * @return search result
      */
@@ -80,28 +81,28 @@ public class Glob {
         }
 
         final List<VirtualFile> files = ContainerUtil.newArrayList();
+        final Matcher matcher = pattern.matcher("");
 
-        VirtualFileVisitor<Pattern> visitor = new VirtualFileVisitor<Pattern>(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
+        VirtualFileVisitor<Matcher> visitor = new VirtualFileVisitor<Matcher>(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
             @Override
             public boolean visitFile(@NotNull VirtualFile file) {
                 boolean matches = false;
-                Pattern pattern = getCurrentValue();
                 String path = Utils.getRelativePath(root, file);
 
                 if (path == null || Utils.isVcsDirectory(file)) {
                     return false;
                 }
 
-                if (pattern == null || pattern.matcher(path).matches()) {
+                if (Utils.match(getCurrentValue(), path)) {
                     matches = true;
                     files.add(file);
                 }
 
-                setValueForChildren(includeNested && matches ? null : pattern);
+                setValueForChildren(includeNested && matches ? null : getCurrentValue());
                 return true;
             }
         };
-        visitor.setValueForChildren(pattern);
+        visitor.setValueForChildren(matcher);
         VfsUtil.visitChildrenRecursively(root, visitor);
 
         return files;
@@ -138,7 +139,7 @@ public class Glob {
     /**
      * Creates regex {@link Pattern} using glob rule.
      *
-     * @param rule rule value
+     * @param rule   rule value
      * @param syntax rule syntax
      * @return regex {@link Pattern}
      */
@@ -150,8 +151,8 @@ public class Glob {
     /**
      * Creates regex {@link Pattern} using glob rule.
      *
-     * @param rule rule value
-     * @param syntax rule syntax
+     * @param rule           rule value
+     * @param syntax         rule syntax
      * @param acceptChildren Matches directory children
      * @return regex {@link Pattern}
      */
@@ -179,7 +180,7 @@ public class Glob {
     /**
      * Creates regex {@link Pattern} using {@link IgnoreEntry}.
      *
-     * @param entry {@link IgnoreEntry}
+     * @param entry          {@link IgnoreEntry}
      * @param acceptChildren Matches directory children
      * @return regex {@link Pattern}
      */
@@ -191,7 +192,7 @@ public class Glob {
     /**
      * Creates regex {@link String} using glob rule.
      *
-     * @param glob rule
+     * @param glob           rule
      * @param acceptChildren Matches directory children
      * @return regex {@link String}
      */
@@ -208,7 +209,7 @@ public class Glob {
         int beginIndex = 0;
 
         if (StringUtil.startsWith(glob, "**")) {
-            sb.append("([^/]*?/)*");
+            sb.append("(?:[^/]*?/)*");
             beginIndex = 2;
             doubleStar = true;
         } else if (StringUtil.startsWith(glob, "*/")) {
@@ -220,7 +221,7 @@ public class Glob {
         } else if (StringUtil.startsWithChar(glob, '*')) {
             sb.append(".*?");
         } else if (!StringUtil.containsChar(glob, '/')) {
-            sb.append("([^/]*?/)*");
+            sb.append("(?:[^/]*?/)*");
         } else if (StringUtil.startsWithChar(glob, '/')) {
             beginIndex = 1;
         }
@@ -234,7 +235,7 @@ public class Glob {
             } else if (doubleStar) {
                 doubleStar = false;
                 if (ch == '/') {
-                    sb.append("([^/]*/)*?");
+                    sb.append("(?:[^/]*/)*?");
                     continue;
                 } else {
                     sb.append("[^/]*?");
@@ -333,7 +334,7 @@ public class Glob {
             if (StringUtil.endsWithChar(sb, '/')) {
                 sb.setLength(sb.length() - 1);
             }
-            sb.append(acceptChildren ? "(/.*)?" : "/?");
+            sb.append(acceptChildren ? "(?:/.*)?" : "/?");
         }
 
         sb.append('$');
