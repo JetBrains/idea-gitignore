@@ -112,12 +112,18 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
         if (vcsDirectory == null) {
             return null;
         }
-        VirtualFile gitDirectory = project.getBaseDir().findChild(vcsDirectory);
+
+        VirtualFile baseDir = project.getBaseDir();
+        if (baseDir == null) {
+            return null;
+        }
+
+        VirtualFile gitDirectory = baseDir.findChild(vcsDirectory);
         if (gitDirectory == null || !gitDirectory.isDirectory()) {
             return null;
         }
         // Break if there is Gitignore file already
-        VirtualFile gitignoreFile = project.getBaseDir().findChild(GitLanguage.INSTANCE.getFilename());
+        VirtualFile gitignoreFile = baseDir.findChild(GitLanguage.INSTANCE.getFilename());
         if (gitignoreFile != null) {
             return null;
         }
