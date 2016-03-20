@@ -57,7 +57,8 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
-        OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight");
+        OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight"),
+        VERSION("version");
 
         private final String key;
 
@@ -95,6 +96,11 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Enable outer ignore rules.
      */
     private boolean outerIgnoreRules = true;
+
+    /**
+     * Plugin version.
+     */
+    private String version;
 
     /**
      * Settings related to the {@link IgnoreLanguage}.
@@ -141,6 +147,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.IGNORED_FILE_STATUS.toString(), Boolean.toString(ignoredFileStatus));
         element.setAttribute(KEY.OUTER_IGNORE_RULES.toString(), Boolean.toString(outerIgnoreRules));
         element.setAttribute(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString(), Integer.toString(outerIgnoreWrapperHeight));
+        element.setAttribute(KEY.VERSION.toString(), version);
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
         for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
@@ -184,6 +191,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
         value = element.getAttributeValue(KEY.OUTER_IGNORE_RULES.toString());
         if (value != null) outerIgnoreRules = Boolean.parseBoolean(value);
+
+        value = element.getAttributeValue(KEY.VERSION.toString());
+        if (value != null) version = value;
 
         value = element.getAttributeValue(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString());
         if (value != null) outerIgnoreWrapperHeight = Integer.parseInt(value);
@@ -284,6 +294,25 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      */
     public int getOuterIgnoreWrapperHeight() {
         return outerIgnoreWrapperHeight;
+    }
+
+    /**
+     * Sets plugin version.
+     *
+     * @param version of the plugin
+     */
+    public void setVersion(@NotNull String version) {
+        this.notifyOnChange(KEY.VERSION, this.version, version);
+        this.version = version;
+    }
+
+    /**
+     * Returns plugin version.
+     *
+     * @return version
+     */
+    public String getVersion() {
+        return version;
     }
 
     /**

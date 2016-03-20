@@ -318,6 +318,12 @@
 
     </extensions>
 
+    <application-components>
+        <component>
+            <implementation-class>mobi.hsz.idea.gitignore.IgnoreApplicationComponent</implementation-class>
+        </component>
+    </application-components>
+
     <project-components>
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreManager</implementation-class>
