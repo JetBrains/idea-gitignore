@@ -21,6 +21,8 @@ Introduction
 - `.tfignore` (Team Foundation)
 - `.p4ignore` (Perforce)
 - `.flooignore` (Floobits)
+- `.eslintignore` (ESLint)
+- `.cfignore` (Cloud Foundry)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -54,7 +56,7 @@ Features
 - Navigation to entries in Project view
 - Renaming entries from ignore file
 - Close opened ignored files action
-
+- Custom user templates with import/export features
 
 Installation
 ------------
@@ -96,33 +98,30 @@ Usage
 Changelog
 ---------
 
-## [v1.2](https://github.com/hsz/idea-gitignore/tree/v1.2) (2015-08-13)
+## [v1.3](https://github.com/hsz/idea-gitignore/tree/v1.3) (2016-03-21)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.4...v1.2)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3)
 
 **Implemented enhancements:**
 
-- Prevent ignore file creation when dialog generator is canceled [\#156](https://github.com/hsz/idea-gitignore/issues/156)
-- Add leading slash to the entry when invoking `Add to ignore file` action [\#141](https://github.com/hsz/idea-gitignore/issues/141)
-- Floobits (.flooignore) support [\#152](https://github.com/hsz/idea-gitignore/issues/152)
-- Add ignore rules at the cursor position [\#153](https://github.com/hsz/idea-gitignore/issues/153)
-- Insert `syntax: glob` for non-glob ignore types when creating new file [\#158](https://github.com/hsz/idea-gitignore/issues/158)
-- Close ignored files action [\#160](https://github.com/hsz/idea-gitignore/issues/160)
+- Import / Export templates [\#194](https://github.com/hsz/idea-gitignore/issues/194)
+- Generate rules without duplicates [\#164](https://github.com/hsz/idea-gitignore/issues/164)
+- Global gitignore section resize [\#187](https://github.com/hsz/idea-gitignore/issues/187)
+- .eslintignore support [\#175](https://github.com/hsz/idea-gitignore/issues/175)
+- .cfignore support [\#161](https://github.com/hsz/idea-gitignore/issues/161)
 
 **Fixed bugs:**
 
-- Project base dir should not be null in Utils.isInProject [\#145](https://github.com/hsz/idea-gitignore/issues/145)
-- NPE in FossilLanguage.getOuterFile [\#157](https://github.com/hsz/idea-gitignore/issues/157)
-- Removed `\0` from the generated content. [\#155](https://github.com/hsz/idea-gitignore/issues/155)
-- ClassCastException while indexing [\#150](https://github.com/hsz/idea-gitignore/issues/150)
-- IllegalAccessError for StringUtil.escapeChar(String, char) in IntelliJ 12.x [\#149](https://github.com/hsz/idea-gitignore/issues/149)
-- Migration to JPanel because of the broken IntelliJ API (JBPanel NoClassDefFoundError) [\#146](https://github.com/hsz/idea-gitignore/issues/146)
-- IndexOutOfBoundsException [\#144](https://github.com/hsz/idea-gitignore/issues/144)
-- InvalidVirtualFileAccessException [\#107](https://github.com/hsz/idea-gitignore/issues/107)
-- Shorten ignore file path in the context menu [\#148](https://github.com/hsz/idea-gitignore/issues/148)
-- Assertion and NPE errors fix in Resources
-- Fix for including outer file rules
-- Performance fixes
+- CPU performance fixes [\#154](https://github.com/hsz/idea-gitignore/issues/154)
+- Ignored files are no longer being colored correctly [\#174](https://github.com/hsz/idea-gitignore/issues/174)
+- Fatal Error on changing project name [\#203](https://github.com/hsz/idea-gitignore/issues/203) [\#193](https://github.com/hsz/idea-gitignore/issues/193) [\#170](https://github.com/hsz/idea-gitignore/issues/170)
+- .gitignore\_global causes plugin to crash [\#198](https://github.com/hsz/idea-gitignore/issues/198)
+- ClassCastException when editing .gitignore on remote file system [\#196](https://github.com/hsz/idea-gitignore/issues/196)
+- ClassCastException on JSP [\#195](https://github.com/hsz/idea-gitignore/issues/195)
+- Global gitignore section scrolling [\#186](https://github.com/hsz/idea-gitignore/issues/186)
+- "Unclosed character class" warning is wrong [\#166](https://github.com/hsz/idea-gitignore/issues/166)
+- IgnoreSettings settings must produce stable state [\#162](https://github.com/hsz/idea-gitignore/issues/162)
+- Global ignore error [\#190](https://github.com/hsz/idea-gitignore/issues/190)
 
 
 [Full Changelog History](./CHANGELOG.md)
