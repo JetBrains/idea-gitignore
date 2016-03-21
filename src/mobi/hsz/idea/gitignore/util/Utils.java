@@ -509,6 +509,10 @@ public class Utils {
             }
         }
 
-        return matcher.reset(path).matches();
+        try {
+            return matcher.reset(path).matches();
+        } catch (StringIndexOutOfBoundsException e) {
+            return false;
+        }
     }
 }
