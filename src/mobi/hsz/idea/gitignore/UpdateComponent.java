@@ -24,9 +24,9 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ApplicationComponent;
-import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import com.intellij.notification.*;
+import com.intellij.openapi.components.ProjectComponent;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,33 +34,13 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3
  */
-public class IgnoreApplicationComponent implements ApplicationComponent {
+public class UpdateComponent implements ProjectComponent {
 
-    /** The settings storage object. */
-    private IgnoreSettings settings;
-
-    /** Plugin has been updated with the current run. */
-    private boolean updated;
-
-    /** Plugin update notification has been shown. */
-    private boolean updateNotificationShown;
-
-    /**
-     * Get Ignore Application Component
-     *
-     * @return Ignore Application Component
-     */
-    public static IgnoreApplicationComponent getInstance() {
-        return ApplicationManager.getApplication().getComponent(IgnoreApplicationComponent.class);
-    }
+    private IgnoreApplicationComponent application;
 
     @Override
     public void initComponent() {
-        settings = IgnoreSettings.getInstance();
-        updated = !Utils.getVersion().equals(settings.getVersion());
-        if (updated) {
-            settings.setVersion(Utils.getVersion());
-        }
+        application = IgnoreApplicationComponent.getInstance();
     }
 
     @Override
@@ -70,23 +50,26 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
     @NotNull
     @Override
     public String getComponentName() {
-        return "IgnoreApplicationComponent";
+        return "UpdateComponent";
     }
 
-    /**
-     * Checks if plugin was updated in the current run.
-     *
-     * @return plugin was updated
-     */
-    public boolean isUpdated() {
-        return updated;
+    @Override
+    public void projectOpened() {
+        if (application.isUpdated() && !application.isUpdateNotificationShown()) {
+            application.setUpdateNotificationShown(true);
+            NotificationGroup group = new NotificationGroup(IgnoreLanguage.GROUP, NotificationDisplayType.STICKY_BALLOON, true);
+            Notification notification = group.createNotification(
+                    IgnoreBundle.message("update.title", Utils.getVersion()),
+                    IgnoreBundle.message("update.content"),
+                    NotificationType.INFORMATION,
+                    NotificationListener.URL_OPENING_LISTENER
+            );
+            Notifications.Bus.notify(notification);
+        }
     }
 
-    public boolean isUpdateNotificationShown() {
-        return updateNotificationShown;
-    }
+    @Override
+    public void projectClosed() {
 
-    public void setUpdateNotificationShown(boolean shown) {
-        this.updateNotificationShown = shown;
     }
 }
