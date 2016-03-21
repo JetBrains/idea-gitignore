@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.2</version>
+    <version>1.3</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -18,7 +18,8 @@
       <b>.ignore</b> is a plugin for
         <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker), .chefignore (Chef),
            .cvsignore (CVS), .bzrignore (Bazaar), .boringignore (Darcs), .mtn-ignore (Monotone), ignore-glob (Fossil),
-           .jshintignore (JSHint), .tfignore (Team Foundation), .p4ignore (Perforce), .flooignore (Floobits)</i>
+           .jshintignore (JSHint), .tfignore (Team Foundation), .p4ignore (Perforce), .flooignore (Floobits),
+           .eslintignore (ESLint), .cfignore (Cloud Foundry)</i>,
         files in your project.
       <br/>
 
@@ -37,6 +38,7 @@
         <li>Navigation to entries in Project view</li>
         <li>Renaming entries from ignore file</li>
         <li>Close opened ignored files action</li>
+        <li>Custom user templates with import/export features</li>
       </ul>
 
       <br/>
@@ -50,35 +52,32 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.2"><b>v1.2</b></a> (2015-08-13) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.1.4...v1.2"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.3"><b>v1.3</b></a> (2016-03-21) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         
         <ul>
-            <li>Prevent ignore file creation when dialog generator is canceled <a href="https://github.com/hsz/idea-gitignore/issues/156">\#156</a></li>
-            <li>Add leading slash to the entry when invoking `Add to ignore file` action <a href="https://github.com/hsz/idea-gitignore/issues/141">\#141</a></li>
-            <li>Floobits (.flooignore) support <a href="https://github.com/hsz/idea-gitignore/issues/152">\#152</a></li>
-            <li>Add ignore rules at the cursor position <a href="https://github.com/hsz/idea-gitignore/issues/153">\#153</a></li>
-            <li>Insert `syntax: glob` for non-glob ignore types when creating new file <a href="https://github.com/hsz/idea-gitignore/issues/158">\#158</a></li>
-            <li>Close ignored files action <a href="https://github.com/hsz/idea-gitignore/issues/160">\#160</a></li>
+            <li>Import / Export templates (<a href="https://github.com/hsz/idea-gitignore/issues/194">194</a>)</li>
+            <li>Generate rules without duplicates (<a href="https://github.com/hsz/idea-gitignore/issues/164">164</a>)</li>
+            <li>Global gitignore section resize (<a href="https://github.com/hsz/idea-gitignore/issues/187">187</a>)</li>
+            <li>.eslintignore support (<a href="https://github.com/hsz/idea-gitignore/issues/175">175</a>)</li>
+            <li>.cfignore support (<a href="https://github.com/hsz/idea-gitignore/issues/161">161</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>Project base dir should not be null in Utils.isInProject <a href="https://github.com/hsz/idea-gitignore/issues/145">\#145</a></li>
-            <li>NPE in FossilLanguage.getOuterFile <a href="https://github.com/hsz/idea-gitignore/issues/157">\#157</a></li>
-            <li>Removed `\0` from the generated content. <a href="https://github.com/hsz/idea-gitignore/issues/155">\#155</a></li>
-            <li>ClassCastException while indexing <a href="https://github.com/hsz/idea-gitignore/issues/150">\#150</a></li>
-            <li>IllegalAccessError for StringUtil.escapeChar(String, char) in IntelliJ 12.x <a href="https://github.com/hsz/idea-gitignore/issues/149">\#149</a></li>
-            <li>Migration to JPanel because of the broken IntelliJ API (JBPanel NoClassDefFoundError) <a href="https://github.com/hsz/idea-gitignore/issues/146">\#146</a></li>
-            <li>IndexOutOfBoundsException <a href="https://github.com/hsz/idea-gitignore/issues/144">\#144</a></li>
-            <li>InvalidVirtualFileAccessException <a href="https://github.com/hsz/idea-gitignore/issues/107">\#107</a></li>
-            <li>Shorten ignore file path in the context menu <a href="https://github.com/hsz/idea-gitignore/issues/148">\#148</a></li>
-            <li>Assertion and NPE errors fix in Resources</li>
-            <li>Fix for including outer file rules</li>
-            <li>Performance fixes</li>
+            <li>CPU performance fixes (<a href="https://github.com/hsz/idea-gitignore/issues/154">154</a>)</li>
+            <li>Ignored files are no longer being colored correctly (<a href="https://github.com/hsz/idea-gitignore/issues/174">174</a>)</li>
+            <li>Fatal Error on changing project name (<a href="https://github.com/hsz/idea-gitignore/issues/203">203</a>, <a href="https://github.com/hsz/idea-gitignore/issues/193">193</a>, <a href="https://github.com/hsz/idea-gitignore/issues/170">170</a>)</li>
+            <li>.gitignore\_global causes plugin to crash (<a href="https://github.com/hsz/idea-gitignore/issues/198">198</a>)</li>
+            <li>ClassCastException when editing .gitignore on remote file system (<a href="https://github.com/hsz/idea-gitignore/issues/196">196</a>)</li>
+            <li>ClassCastException on JSP (<a href="https://github.com/hsz/idea-gitignore/issues/195">195</a>)</li>
+            <li>Global gitignore section scrolling (<a href="https://github.com/hsz/idea-gitignore/issues/186">186</a>)</li>
+            <li>"Unclosed character class" warning is wrong (<a href="https://github.com/hsz/idea-gitignore/issues/166">166</a>)</li>
+            <li>IgnoreSettings settings must produce stable state (<a href="https://github.com/hsz/idea-gitignore/issues/162">162</a>)</li>
+            <li>Global ignore error (<a href="https://github.com/hsz/idea-gitignore/issues/190">190</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
@@ -332,6 +331,9 @@
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent</implementation-class>
             <skipForDefaultProject/>
+        </component>
+        <component>
+            <implementation-class>mobi.hsz.idea.gitignore.UpdateComponent</implementation-class>
         </component>
     </project-components>
 

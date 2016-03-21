@@ -1,5 +1,30 @@
 # Change Log
 
+## [v1.3](https://github.com/hsz/idea-gitignore/tree/v1.3) (2016-03-21)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3)
+
+**Implemented enhancements:**
+
+- Import / Export templates [\#194](https://github.com/hsz/idea-gitignore/issues/194)
+- Generate rules without duplicates [\#164](https://github.com/hsz/idea-gitignore/issues/164)
+- Global gitignore section resize [\#187](https://github.com/hsz/idea-gitignore/issues/187)
+- .eslintignore support [\#175](https://github.com/hsz/idea-gitignore/issues/175)
+- .cfignore support [\#161](https://github.com/hsz/idea-gitignore/issues/161)
+
+**Fixed bugs:**
+
+- CPU performance fixes [\#154](https://github.com/hsz/idea-gitignore/issues/154)
+- Ignored files are no longer being colored correctly [\#174](https://github.com/hsz/idea-gitignore/issues/174)
+- Fatal Error on changing project name [\#203](https://github.com/hsz/idea-gitignore/issues/203) [\#193](https://github.com/hsz/idea-gitignore/issues/193) [\#170](https://github.com/hsz/idea-gitignore/issues/170)
+- .gitignore\_global causes plugin to crash [\#198](https://github.com/hsz/idea-gitignore/issues/198)
+- ClassCastException when editing .gitignore on remote file system [\#196](https://github.com/hsz/idea-gitignore/issues/196)
+- ClassCastException on JSP [\#195](https://github.com/hsz/idea-gitignore/issues/195)
+- Global gitignore section scrolling [\#186](https://github.com/hsz/idea-gitignore/issues/186)
+- "Unclosed character class" warning is wrong [\#166](https://github.com/hsz/idea-gitignore/issues/166)
+- IgnoreSettings settings must produce stable state [\#162](https://github.com/hsz/idea-gitignore/issues/162)
+- Global ignore error [\#190](https://github.com/hsz/idea-gitignore/issues/190)
+
 ## [v1.2](https://github.com/hsz/idea-gitignore/tree/v1.2) (2015-08-13)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.4...v1.2)
