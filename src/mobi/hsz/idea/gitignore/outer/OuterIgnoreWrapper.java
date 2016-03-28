@@ -77,7 +77,7 @@ public class OuterIgnoreWrapper implements Disposable {
 
         final JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         northPanel.add(label);
-        northPanel.add(new LinkLabel(outerFile.getPath(), null, new LinkListener() {
+        northPanel.add(new LinkLabel<Object>(outerFile.getPath(), null, new LinkListener<Object>() {
             @Override
             public void linkSelected(LinkLabel aSource, Object aLinkData) {
                 Utils.openFile(project, outerFile);

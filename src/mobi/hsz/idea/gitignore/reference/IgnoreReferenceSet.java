@@ -149,7 +149,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
 
         while (true) {
             final int nextSlash = str.indexOf(separatorString, currentSlash + sepLen);
-            final String subReferenceText = nextSlash > 0 ? str.substring(0, nextSlash) : str.substring(0);
+            final String subReferenceText = nextSlash > 0 ? str.substring(0, nextSlash) : str;
             TextRange range = new TextRange(startInElement + currentSlash + sepLen, startInElement + (nextSlash > 0 ? nextSlash : str.length()));
             final FileReference ref = createFileReference(range, index++, subReferenceText);
             referencesList.add(ref);

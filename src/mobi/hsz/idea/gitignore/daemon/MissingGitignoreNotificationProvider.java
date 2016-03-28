@@ -84,6 +84,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
      *
      * @return notification key
      */
+    @NotNull
     @Override
     public Key<EditorNotificationPanel> getKey() {
         return KEY;
@@ -98,7 +99,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
      */
     @Nullable
     @Override
-    public EditorNotificationPanel createNotificationPanel(VirtualFile file, FileEditor fileEditor) {
+    public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor) {
         // Break if feature is disabled in the Settings
         if (!settings.isMissingGitignore()) {
             return null;

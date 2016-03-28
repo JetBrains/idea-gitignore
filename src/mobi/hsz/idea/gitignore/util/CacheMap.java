@@ -174,6 +174,7 @@ public class CacheMap {
         }
 
         final List<IgnoreFile> files = ContainerUtil.reverse(Utils.ignoreFilesSort(ContainerUtil.newArrayList(map.keySet())));
+        final ProjectLevelVcsManager projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project);
 
         for (final IgnoreFile ignoreFile : files) {
             boolean outer = ignoreFile.isOuter();
@@ -184,7 +185,7 @@ public class CacheMap {
                     continue;
                 }
 
-                VirtualFile vcsRoot = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(file);
+                VirtualFile vcsRoot = projectLevelVcsManager.getVcsRootFor(file);
                 if (vcsRoot != null && !vcsRoot.equals(file) && !Utils.isUnder(ignoreFile.getVirtualFile(), vcsRoot)) {
                     continue;
                 }
