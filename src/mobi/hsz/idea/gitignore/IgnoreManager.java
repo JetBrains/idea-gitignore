@@ -63,6 +63,8 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @since 1.0
  */
 public class IgnoreManager extends AbstractProjectComponent {
+    private static final int REQUEST_DELAY = 2000;
+
     private final CacheMap cache;
     private final PsiManagerImpl psiManager;
     private final VirtualFileManager virtualFileManager;
@@ -479,7 +481,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                     }
                 });
             }
-        }, 200);
+        }, REQUEST_DELAY);
     }
 
     /**

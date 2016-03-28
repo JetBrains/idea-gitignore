@@ -165,7 +165,9 @@ public class IgnoreReferenceSet extends FileReferenceSet {
      * Custom definition of {@link FileReference}.
      */
     private class IgnoreReference extends FileReference {
-        /** Builds an instance of {@link IgnoreReferenceSet.IgnoreReference}. */
+        /**
+         * Builds an instance of {@link IgnoreReferenceSet.IgnoreReference}.
+         */
         public IgnoreReference(@NotNull FileReferenceSet fileReferenceSet, TextRange range, int index, String text) {
             super(fileReferenceSet, range, index, text);
         }
@@ -200,7 +202,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                 final Pattern pattern = Glob.createPattern(getCanonicalText(), entry.getSyntax());
                 if (pattern != null) {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
-                    final VirtualFile root = isOuterFile ? contextVirtualFile : ( (parent != null) ? parent.getVirtualFile() : null );
+                    final VirtualFile root = isOuterFile ? contextVirtualFile : ((parent != null) ? parent.getVirtualFile() : null);
                     final PsiManager manager = getElement().getManager();
                     final Matcher matcher = pattern.matcher("");
 
