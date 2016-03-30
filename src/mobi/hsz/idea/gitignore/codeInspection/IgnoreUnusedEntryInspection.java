@@ -26,16 +26,27 @@ package mobi.hsz.idea.gitignore.codeInspection;
 
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiPolyVariantReference;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveResult;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
+import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
+import mobi.hsz.idea.gitignore.util.Glob;
+import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Inspection tool that checks if entries are unused - does not cover any file or directory.
@@ -54,6 +65,8 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
+        final FilesIndexCacheProjectComponent cache = FilesIndexCacheProjectComponent.getInstance(holder.getProject());
+
         return new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
@@ -73,12 +86,50 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                 }
 
                 if (!resolved) {
-                    if (!Utils.isEntryExcluded(entry, holder.getProject())) {
+                    if (!isEntryExcluded(entry, holder.getProject())) {
                         holder.registerProblem(entry, IgnoreBundle.message("codeInspection.unusedEntry.message"), new IgnoreRemoveEntryFix(entry));
                     }
                 }
 
                 super.visitEntry(entry);
+            }
+
+            /**
+             * Checks if given {@link IgnoreEntry} is excluded in the current {@link Project}.
+             *
+             * @param entry   Gitignore entry
+             * @param project current project
+             * @return entry is excluded in current project
+             */
+            private boolean isEntryExcluded(@NotNull IgnoreEntry entry, @NotNull Project project) {
+                final Pattern pattern = Glob.createPattern(entry);
+                if (pattern == null) {
+                    return false;
+                }
+
+                final Matcher matcher = pattern.matcher("");
+                final VirtualFile projectRoot = project.getBaseDir();
+                final List<VirtualFile> matched = ContainerUtil.newArrayList();
+                final Collection<VirtualFile> files = cache.getFilesForPattern(project, pattern);
+
+                for (final VirtualFile root : Utils.getExcludedRoots(project)) {
+                    for (VirtualFile file : files) {
+                        if (!Utils.isUnder(file, root)) {
+                            continue;
+                        }
+                        String path = Utils.getRelativePath(projectRoot, root);
+                        if (MatcherUtil.match(matcher, path)) {
+                            matched.add(file);
+                            return false;
+                        }
+                    }
+
+                    if (matched.size() > 0) {
+                        return true;
+                    }
+                }
+
+                return false;
             }
         };
     }

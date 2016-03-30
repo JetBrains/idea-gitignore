@@ -329,6 +329,10 @@
             <loadForDefaultProject/>
         </component>
         <component>
+            <implementation-class>mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent</implementation-class>
+            <loadForDefaultProject/>
+        </component>
+        <component>
             <implementation-class>mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent</implementation-class>
             <skipForDefaultProject/>
         </component>

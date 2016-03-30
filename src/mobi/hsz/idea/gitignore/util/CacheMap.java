@@ -198,7 +198,7 @@ public class CacheMap {
 
             List<Pair<Matcher, Boolean>> matchers = map.get(ignoreFile).getSecond();
             for (Pair<Matcher, Boolean> pair : ContainerUtil.reverse(matchers)) {
-                if (Utils.match(pair.getFirst(), path)) {
+                if (MatcherUtil.match(pair.getFirst(), path)) {
                     status = pair.getSecond() ? Status.UNIGNORED : Status.IGNORED;
                     break;
                 }

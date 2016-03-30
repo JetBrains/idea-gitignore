@@ -26,16 +26,16 @@ package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
+import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.util.Glob;
+import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,8 +54,11 @@ import java.util.regex.Pattern;
  * @since 0.5
  */
 public class IgnoreReferenceSet extends FileReferenceSet {
+    private final FilesIndexCacheProjectComponent filesIndexCache;
+
     public IgnoreReferenceSet(@NotNull IgnoreEntry element) {
         super(element);
+        filesIndexCache = FilesIndexCacheProjectComponent.getInstance(element.getProject());
     }
 
     /**
@@ -206,25 +209,24 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     final PsiManager manager = getElement().getManager();
                     final Matcher matcher = pattern.matcher("");
 
-                    VirtualFileVisitor<?> fileVisitor = new VirtualFileVisitor(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
-                        @Override
-                        public boolean visitFile(@NotNull VirtualFile file) {
-                            if (Utils.isVcsDirectory(file)) {
-                                return false;
-                            }
-
-                            String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
-                            if (Utils.match(matcher, name)) {
-                                PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
-                                if (psiFileSystemItem == null) {
-                                    return false;
-                                }
-                                result.add(new PsiElementResolveResult(psiFileSystemItem));
-                            }
-                            return true;
+                    Collection<VirtualFile> files = filesIndexCache.getFilesForPattern(context.getProject(), pattern);
+                    if (files.isEmpty()) {
+                        files = ContainerUtil.newArrayList(context.getVirtualFile().getChildren());
+                    }
+                    for (VirtualFile file : files) {
+                        if (Utils.isVcsDirectory(file)) {
+                            continue;
                         }
-                    };
-                    VfsUtil.visitChildrenRecursively(contextVirtualFile, fileVisitor);
+
+                        String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
+                        if (MatcherUtil.match(matcher, name)) {
+                            PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
+                            if (psiFileSystemItem == null) {
+                                continue;
+                            }
+                            result.add(new PsiElementResolveResult(psiFileSystemItem));
+                        }
+                    }
                 }
             }
         }
@@ -248,6 +250,9 @@ public class IgnoreReferenceSet extends FileReferenceSet {
          */
         @Nullable
         private PsiFileSystemItem getPsiFileSystemItem(@NotNull PsiManager manager, @NotNull VirtualFile file) {
+            if (!file.isValid()) {
+                return null;
+            }
             return file.isDirectory() ? manager.findDirectory(file) : manager.findFile(file);
         }
     }

@@ -93,7 +93,7 @@ public class Glob {
                     return false;
                 }
 
-                if (Utils.match(getCurrentValue(), path)) {
+                if (MatcherUtil.match(getCurrentValue(), path)) {
                     matches = true;
                     files.add(file);
                 }

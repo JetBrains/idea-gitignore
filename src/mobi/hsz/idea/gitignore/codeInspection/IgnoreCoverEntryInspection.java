@@ -30,8 +30,9 @@ import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.*;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -47,6 +48,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Inspection tool that checks if entries are covered by others.
@@ -55,6 +57,62 @@ import java.util.Set;
  * @since 0.5
  */
 public class IgnoreCoverEntryInspection extends LocalInspectionTool {
+    private static final String SEPARATOR = "$";
+
+    private final ConcurrentMap<String, Set<String>> cacheMap;
+    private final VirtualFileManager virtualFileManager;
+
+    /** Watches for the changes in the files tree and triggers the cache clear. */
+    private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
+        @Override
+        public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
+            if (event.getPropertyName().equals("name")) {
+                cacheMap.clear();
+            }
+        }
+
+        @Override
+        public void fileCreated(@NotNull VirtualFileEvent event) {
+            cacheMap.clear();
+        }
+
+        @Override
+        public void fileDeleted(@NotNull VirtualFileEvent event) {
+            cacheMap.clear();
+        }
+
+        @Override
+        public void fileMoved(@NotNull VirtualFileMoveEvent event) {
+            cacheMap.clear();
+        }
+
+        @Override
+        public void fileCopied(@NotNull VirtualFileCopyEvent event) {
+            cacheMap.clear();
+        }
+    };
+
+    /**
+     * Builds a new instance of {@link IgnoreCoverEntryInspection}.
+     * Initializes {@link VirtualFileManager} and listens for the changes in the files tree.
+     */
+    public IgnoreCoverEntryInspection() {
+        cacheMap = ContainerUtil.newConcurrentMap();
+        virtualFileManager = VirtualFileManager.getInstance();
+        virtualFileManager.addVirtualFileListener(virtualFileListener);
+    }
+
+    /**
+     * Unregisters {@link #virtualFileListener} and clears the paths cache.
+     *
+     * @param project current project
+     */
+    @Override
+    public void cleanup(@NotNull Project project) {
+        virtualFileManager.removeVirtualFileListener(virtualFileListener);
+        cacheMap.clear();
+    }
+
     /**
      * Reports problems at file level. Checks if entries are covered by other entries.
      *
@@ -86,7 +144,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
         file.acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
-                Set<String> matched = ContainerUtil.newHashSet(Glob.findAsPaths(contextDirectory, entry, true));
+                Set<String> matched = getPathsSet(contextDirectory, entry);
                 Collection<String> intersection;
                 boolean modified;
 
@@ -136,6 +194,22 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
     }
 
     /**
+     * Returns the paths list for the given {@link IgnoreEntry} in {@link VirtualFile} context.
+     * Stores fetched data in {@link #cacheMap} to limit the queries to the files tree.
+     *
+     * @param contextDirectory current context
+     * @param entry to check
+     * @return paths list
+     */
+    private Set<String> getPathsSet(VirtualFile contextDirectory, IgnoreEntry entry) {
+        final String key = contextDirectory.getPath() + SEPARATOR + entry.getText();
+        if (!cacheMap.containsKey(key)) {
+            cacheMap.put(key, ContainerUtil.newHashSet(Glob.findAsPaths(contextDirectory, entry, true)));
+        }
+        return cacheMap.get(key);
+    }
+
+    /**
      * Helper for inspection message generating.
      *
      * @param coveringEntry entry that covers message related
@@ -148,7 +222,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
         if (onTheFly || document == null) {
             return IgnoreBundle.message("codeInspection.coverEntry.message", "'" + coveringEntry.getText() + "'");
         }
-        
+
         int startOffset = coveringEntry.getTextRange().getStartOffset();
         return IgnoreBundle.message("codeInspection.coverEntry.message",
                 "<a href=\"" + virtualFile.getUrl() + "#" + startOffset + "\">" + coveringEntry.getText() + "</a>");

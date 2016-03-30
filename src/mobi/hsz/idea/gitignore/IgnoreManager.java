@@ -75,7 +75,7 @@ public class IgnoreManager extends AbstractProjectComponent {
     private boolean working;
 
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
-        public boolean wasIgnoreFileType;
+        private boolean wasIgnoreFileType;
 
         /**
          * Fired when a virtual file is renamed from within IDEA, or its writable status is changed.
@@ -157,7 +157,7 @@ public class IgnoreManager extends AbstractProjectComponent {
          * @param event current event
          * @return event called on {@link IgnoreFileType}
          */
-        protected boolean isIgnoreFileType(VirtualFileEvent event) {
+        private boolean isIgnoreFileType(VirtualFileEvent event) {
             return event.getFile().getFileType() instanceof IgnoreFileType;
         }
     };

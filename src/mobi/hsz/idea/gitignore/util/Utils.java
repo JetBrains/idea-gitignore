@@ -43,10 +43,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
@@ -55,7 +53,6 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -65,8 +62,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * {@link Utils} class that contains various methods.
@@ -222,45 +217,6 @@ public class Utils {
             model.dispose();
         }
         return roots;
-    }
-
-    /**
-     * Checks if given {@link IgnoreEntry} is excluded in the current {@link Project}.
-     *
-     * @param entry   Gitignore entry
-     * @param project current project
-     * @return entry is excluded in current project
-     */
-    public static boolean isEntryExcluded(@NotNull IgnoreEntry entry, @NotNull Project project) {
-        final Pattern pattern = Glob.createPattern(entry);
-        if (pattern == null) {
-            return false;
-        }
-
-        final Matcher matcher = pattern.matcher("");
-        final VirtualFile projectRoot = project.getBaseDir();
-        final List<VirtualFile> matched = ContainerUtil.newArrayList();
-        final VirtualFileVisitor<VirtualFile> visitor = new VirtualFileVisitor<VirtualFile>() {
-            @Override
-            public boolean visitFile(@NotNull VirtualFile file) {
-                String path = getRelativePath(projectRoot, getCurrentValue());
-                if (Utils.match(matcher, path)) {
-                    matched.add(file);
-                    return false;
-                }
-                return true;
-            }
-        };
-        for (final VirtualFile root : getExcludedRoots(project)) {
-            visitor.setValueForChildren(root);
-            VfsUtil.visitChildrenRecursively(root, visitor);
-
-            if (matched.size() > 0) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -481,38 +437,5 @@ public class Utils {
         int index = 0;
         while (index < string.length() && string.charAt(index) == character) index++;
         return string.substring(index);
-    }
-
-    /**
-     * Extracts alphanumeric parts from the regex pattern and checks if any of them is contained in the tested path.
-     * Looking for the parts speed ups the matching and prevents from running whole regex on the string.
-     *
-     * @param matcher to explode
-     * @param path to check
-     * @return path matches the pattern
-     */
-    public static boolean match(@Nullable Matcher matcher, @Nullable String path) {
-        if (matcher == null || path == null) {
-            return false;
-        }
-
-        String pattern = matcher.pattern().toString();
-        String part = "";
-        for (int i = 0; i < pattern.length(); i++) {
-            if (Character.isLetterOrDigit(pattern.charAt(i))) {
-                part += pattern.charAt(i);
-            } else if (!part.isEmpty()) {
-                if (!path.contains(part)) {
-                    return false;
-                }
-                part = "";
-            }
-        }
-
-        try {
-            return matcher.reset(path).matches();
-        } catch (StringIndexOutOfBoundsException e) {
-            return false;
-        }
     }
 }
