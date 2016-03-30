@@ -122,7 +122,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     /**
      * Listeners list.
      */
-    private final List<Listener> listeners = ContainerUtil.createLockFreeCopyOnWriteList();
+    private final List<Listener> listeners = ContainerUtil.newArrayList();
 
     /**
      * Get the instance of this service.
