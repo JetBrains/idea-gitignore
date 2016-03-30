@@ -1,8 +1,8 @@
 # Change Log
 
-## [v1.3](https://github.com/hsz/idea-gitignore/tree/v1.3) (2016-03-21)
+## [v1.3.1](https://github.com/hsz/idea-gitignore/tree/v1.3.1) (2016-03-30)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.1)
 
 **Implemented enhancements:**
 
@@ -14,7 +14,7 @@
 
 **Fixed bugs:**
 
-- CPU performance fixes [\#154](https://github.com/hsz/idea-gitignore/issues/154)
+- CPU performance fixes [\#154](https://github.com/hsz/idea-gitignore/issues/154), [\#204](https://github.com/hsz/idea-gitignore/issues/204)
 - Ignored files are no longer being colored correctly [\#174](https://github.com/hsz/idea-gitignore/issues/174)
 - Fatal Error on changing project name [\#203](https://github.com/hsz/idea-gitignore/issues/203) [\#193](https://github.com/hsz/idea-gitignore/issues/193) [\#170](https://github.com/hsz/idea-gitignore/issues/170)
 - .gitignore\_global causes plugin to crash [\#198](https://github.com/hsz/idea-gitignore/issues/198)

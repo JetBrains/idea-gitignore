@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.3</version>
+    <version>1.3.1</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -52,8 +52,8 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.3"><b>v1.3</b></a> (2016-03-21) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.3.1"><b>v1.3.1</b></a> (2016-03-30) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.1"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         
@@ -68,7 +68,7 @@
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>CPU performance fixes (<a href="https://github.com/hsz/idea-gitignore/issues/154">154</a>)</li>
+            <li>CPU performance fixes (<a href="https://github.com/hsz/idea-gitignore/issues/154">154</a>, <a href="https://github.com/hsz/idea-gitignore/issues/204">204</a>)</li>
             <li>Ignored files are no longer being colored correctly (<a href="https://github.com/hsz/idea-gitignore/issues/174">174</a>)</li>
             <li>Fatal Error on changing project name (<a href="https://github.com/hsz/idea-gitignore/issues/203">203</a>, <a href="https://github.com/hsz/idea-gitignore/issues/193">193</a>, <a href="https://github.com/hsz/idea-gitignore/issues/170">170</a>)</li>
             <li>.gitignore\_global causes plugin to crash (<a href="https://github.com/hsz/idea-gitignore/issues/198">198</a>)</li>
