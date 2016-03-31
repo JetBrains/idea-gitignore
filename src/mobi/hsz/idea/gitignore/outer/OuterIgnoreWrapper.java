@@ -66,6 +66,7 @@ public class OuterIgnoreWrapper implements Disposable {
     private int dragYOnScreen;
     private boolean drag;
 
+    @SuppressWarnings("unchecked")
     public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final VirtualFile outerFile) {
         settings = IgnoreSettings.getInstance();
 
