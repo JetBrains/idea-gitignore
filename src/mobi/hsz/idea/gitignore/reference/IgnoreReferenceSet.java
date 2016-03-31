@@ -212,6 +212,12 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     Collection<VirtualFile> files = filesIndexCache.getFilesForPattern(context.getProject(), pattern);
                     if (files.isEmpty()) {
                         files = ContainerUtil.newArrayList(context.getVirtualFile().getChildren());
+                    } else if (getCanonicalText().endsWith("**")) {
+                        Collection<VirtualFile> children = ContainerUtil.newArrayList();
+                        for (VirtualFile file : files) {
+                            Collections.addAll(children, file.getChildren());
+                        }
+                        files.addAll(children);
                     }
                     for (VirtualFile file : files) {
                         if (Utils.isVcsDirectory(file)) {

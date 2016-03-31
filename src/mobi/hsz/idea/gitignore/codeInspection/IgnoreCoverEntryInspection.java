@@ -220,7 +220,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
     private static String message(@NotNull IgnoreEntry coveringEntry, @NotNull VirtualFile virtualFile, boolean onTheFly) {
         Document document = FileDocumentManager.getInstance().getDocument(virtualFile);
         if (onTheFly || document == null) {
-            return IgnoreBundle.message("codeInspection.coverEntry.message", "'" + coveringEntry.getText() + "'");
+            return IgnoreBundle.message("codeInspection.coverEntry.message", "\'" + coveringEntry.getText() + "\'");
         }
 
         int startOffset = coveringEntry.getTextRange().getStartOffset();
