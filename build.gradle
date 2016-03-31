@@ -67,9 +67,10 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
+
+
 import de.undercouch.gradle.tasks.download.Download
-
-
+import groovy.io.FileType
 // Tasks
 
 task downloadJFlexJar(type: Download) {
@@ -134,6 +135,26 @@ task generateParser(type: JavaExec) {
 
 task pullResources(type: Exec) {
     description 'Pulls gitignore resources from GIT.'
+
+    workingDir 'resources/gitignore'
     commandLine 'git', 'pull'
 }
 
+task generateTemplatesList() {
+    description 'Generates templates list based on the gitignore submodule.'
+    dependsOn pullResources
+
+    def content = "";
+    file('resources/gitignore').eachFileRecurse (FileType.FILES) { file ->
+        if (file.name.endsWith(".gitignore")) {
+            content += relativePath(file).substring(10) + "\n"
+        }
+    }
+    file('resources/templates.list').write(content)
+}
+
+task generateSources() {
+    dependsOn generateParser, generateLexer, generateTemplatesList
+}
+
+compileJava.dependsOn generateSources
