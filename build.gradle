@@ -1,0 +1,139 @@
+plugins {
+    id 'org.jetbrains.intellij' version '0.0.43'
+    id 'de.undercouch.download' version '2.1.0'
+}
+
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'java'
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaTargetVersion
+
+group pluginGroup
+version = pluginVersion
+
+tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+
+sourceSets {
+    main {
+        java.srcDirs 'src', 'gen'
+        resources.srcDir 'resources'
+    }
+    test {
+        java.srcDir 'tests'
+        resources.srcDir 'testData'
+    }
+}
+
+intellij {
+    version ideaVersion
+    pluginName pluginName
+    downloadSources Boolean.valueOf(sources)
+    sameSinceUntilBuild Boolean.valueOf(isEAP)
+
+    plugins 'git4idea'
+
+    publish {
+        username publishUsername
+        password publishPassword
+        pluginId pluginId
+        channel publishChannel
+    }
+}
+
+
+// Configurations
+
+configurations {
+    bnf
+    jflex
+}
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+dependencies {
+    bnf files("$buildDir/tools/GrammarKit/lib/grammar-kit.jar")
+//    bnf files("$buildDir/tools/light-psi-all.jar")
+    jflex files("$buildDir/tools/JFlex.jar")
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+import de.undercouch.gradle.tasks.download.Download
+
+
+// Tasks
+
+task downloadJFlexJar(type: Download) {
+    description 'Downloads JFlex.'
+
+    src 'https://github.com/JetBrains/intellij-community/raw/master/tools/lexer/jflex-1.4/lib/JFlex.jar'
+    dest "$buildDir/tools/JFlex.jar"
+    onlyIf { !file("$buildDir/tools/JFlex.jar").exists() }
+}
+
+task downloadJFlexSkeleton(type: Download) {
+    description 'Downloads JFlex skeleton.'
+
+    src 'https://raw.github.com/JetBrains/intellij-community/master/tools/lexer/idea-flex.skeleton'
+    dest "$buildDir/tools/idea-flex.skeleton"
+    onlyIf { !file("$buildDir/tools/idea-flex.skeleton").exists() }
+}
+
+task generateLexer(type: JavaExec) {
+    description 'Generates lexer sources with JFlex.'
+    dependsOn downloadJFlexJar, downloadJFlexSkeleton
+
+    main = 'JFlex.Main'
+    args = [
+            '-sliceandcharat',
+            '-skel',
+            "$buildDir/tools/idea-flex.skeleton",
+            '-d',
+            'gen/mobi/hsz/idea/gitignore/lexer/',
+            'src/mobi/hsz/idea/gitignore/lexer/Ignore.flex',
+    ]
+
+    classpath = configurations.jflex
+}
+
+task downloadGrammarKit(type: Download) {
+    description 'Downloads GrammarKit.'
+
+    src 'https://github.com/JetBrains/Grammar-Kit/files/172143/GrammarKit.zip'
+    dest "$buildDir/tools/GrammarKit.zip"
+    onlyIfNewer true
+}
+
+task unzipGrammarKit(type: Copy) {
+    description 'Extracts GrammarKit files.'
+    dependsOn downloadGrammarKit
+
+    from zipTree("$buildDir/tools/GrammarKit.zip")
+    into "${buildDir}/tools/"
+    include "GrammarKit/lib/*"
+}
+
+task generateParser(type: JavaExec) {
+    description 'Generates parser sources with GrammarKit.'
+    dependsOn unzipGrammarKit
+
+    main = 'org.intellij.grammar.Main'
+    args = [ 'gen', 'resources/bnf/Ignore.bnf' ]
+
+    classpath = configurations.bnf + configurations.compile
+}
+
+task pullResources(type: Exec) {
+    description 'Pulls gitignore resources from GIT.'
+    commandLine 'git', 'pull'
+}
+

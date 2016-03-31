@@ -99,7 +99,7 @@
         </javac>
 
         <copy todir="${project.build.classes}/META-INF">
-            <fileset dir="${project.basedir}/META-INF"/>
+            <fileset dir="/META-INF"/>
         </copy>
 
         <copy todir="${project.build.classes}">
