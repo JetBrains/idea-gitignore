@@ -137,7 +137,7 @@ task pullResources(type: Exec) {
     description 'Pulls gitignore resources from GIT.'
 
     workingDir 'resources/gitignore'
-    commandLine 'git', 'pull'
+    commandLine 'git', 'pull', 'origin', 'master'
 }
 
 task generateTemplatesList() {
