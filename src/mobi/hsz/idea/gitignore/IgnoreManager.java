@@ -24,11 +24,15 @@
 
 package mobi.hsz.idea.gitignore;
 
+import com.intellij.openapi.application.AccessToken;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.progress.BackgroundTaskQueue;
 import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.project.DumbAwareRunnable;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.VcsListener;
 import com.intellij.openapi.vfs.*;
@@ -39,13 +43,16 @@ import com.intellij.psi.impl.file.impl.FileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Alarm;
+import com.intellij.util.ConcurrencyUtil;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.io.storage.HeavyProcessLatch;
 import com.intellij.util.messages.MessageBusConnection;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.CacheMap;
+import mobi.hsz.idea.gitignore.util.RefreshProgress;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +60,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 
@@ -63,16 +71,17 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @since 1.0
  */
 public class IgnoreManager extends AbstractProjectComponent {
-    private static final int REQUEST_DELAY = 2000;
+    private static final int REQUEST_DELAY = 200;
+    private static final String PROCESS_NAME = "Ignore indexing";
 
     private final CacheMap cache;
     private final PsiManagerImpl psiManager;
     private final VirtualFileManager virtualFileManager;
-    private final Alarm alarm = new Alarm();
-    private final BackgroundTaskQueue queue;
     private final IgnoreSettings settings;
     private MessageBusConnection messageBus;
     private boolean working;
+    private final ExecutorService queue = ConcurrencyUtil.newSingleThreadExecutor(PROCESS_NAME);
+    private final ProgressIndicator refreshIndicator = new RefreshProgress(IgnoreBundle.message("cache.indexing"));
 
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
         private boolean wasIgnoreFileType;
@@ -232,7 +241,6 @@ public class IgnoreManager extends AbstractProjectComponent {
         cache = new CacheMap(project);
         psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
         virtualFileManager = VirtualFileManager.getInstance();
-        queue = new BackgroundTaskQueue(project, IgnoreBundle.message("cache.indexing"));
         settings = IgnoreSettings.getInstance();
     }
 
@@ -338,7 +346,6 @@ public class IgnoreManager extends AbstractProjectComponent {
      * Disable manager.
      */
     private void disable() {
-        alarm.cancelAllRequests();
         virtualFileManager.removeVirtualFileListener(virtualFileListener);
         psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
         settings.removeListener(settingsListener);
@@ -372,54 +379,89 @@ public class IgnoreManager extends AbstractProjectComponent {
             return;
         }
 
-        alarm.cancelAllRequests();
-        alarm.addRequest(new Runnable() {
+        queue.submit(new Runnable() {
             @Override
             public void run() {
-                FileManager fileManager = psiManager.getFileManager();
-                if (!(fileManager instanceof FileManagerImpl)) {
-                    return;
-                }
-                if (((FileManagerImpl) psiManager.getFileManager()).isInitialized()) {
-                    alarm.cancelAllRequests();
-                    queue.clear();
+                try {
+                    refreshIndicator.start();
+                    AccessToken token = HeavyProcessLatch.INSTANCE.processStarted(PROCESS_NAME);
+                    try {
+                        FileManager fileManager = psiManager.getFileManager();
+                        if (!(fileManager instanceof FileManagerImpl)) {
+                            return;
+                        }
 
-                    // Search for Ignore files in the project
-                    final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
-                    final List<IgnoreFile> files = ContainerUtil.newArrayList();
-                    for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                        if (language.isEnabled()) {
+                        while (!((FileManagerImpl) psiManager.getFileManager()).isInitialized()) {
                             try {
-                                Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(language.getFileType(), scope);
-                                for (VirtualFile virtualFile : virtualFiles) {
-                                    ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
-                                }
-                            } catch (IndexOutOfBoundsException ignored) {
+                                Thread.sleep(REQUEST_DELAY);
+                            } catch (InterruptedException ignored) {
                             }
                         }
-                    }
-                    Utils.ignoreFilesSort(files);
-
-                    addTasksFor(files);
-
-                    // Search for outer files
-                    if (settings.isOuterIgnoreRules()) {
-                        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                            if (!language.isEnabled()) {
-                                continue;
-                            }
-                            VirtualFile outerFile = language.getOuterFile(myProject);
-                            if (outerFile != null && outerFile.exists()) {
-                                PsiFile psiFile = psiManager.findFile(outerFile);
-                                if (psiFile != null) {
-                                    IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
-                                            .createFileFromText(language.getFilename(), language, psiFile.getText());
-                                    outerIgnoreFile.setOriginalFile(psiFile);
-                                    addTaskFor(outerIgnoreFile);
+                        // Search for Ignore files in the project
+                        final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
+                        final List<IgnoreFile> files = ContainerUtil.newArrayList();
+                        AccessToken readAccessToken = ApplicationManager.getApplication().acquireReadActionLock();
+                        try {
+                            for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                                if (language.isEnabled()) {
+                                    try {
+                                        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(language.getFileType(), scope);
+                                        for (VirtualFile virtualFile : virtualFiles) {
+                                            ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
+                                        }
+                                    } catch (IndexOutOfBoundsException ignored) {
+                                    }
                                 }
                             }
+                        } finally {
+                            readAccessToken.finish();
                         }
+                        Utils.ignoreFilesSort(files);
+
+                        addTasksFor(files);
+
+                        // Search for outer files
+                        if (settings.isOuterIgnoreRules()) {
+                            readAccessToken = ApplicationManager.getApplication().acquireReadActionLock();
+                            try {
+
+                                for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                                    if (!language.isEnabled()) {
+                                        continue;
+                                    }
+                                    VirtualFile outerFile = language.getOuterFile(myProject);
+                                    if (outerFile != null && outerFile.exists()) {
+                                        PsiFile psiFile = psiManager.findFile(outerFile);
+                                        if (psiFile != null) {
+                                            IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
+                                                    .createFileFromText(language.getFilename(), language, psiFile.getText());
+                                            outerIgnoreFile.setOriginalFile(psiFile);
+                                            addTaskFor(outerIgnoreFile);
+                                        }
+                                    }
+                                }
+                            } finally {
+                                readAccessToken.finish();
+                            }
+                        }
+                    } finally {
+                        token.finish();
+                        refreshIndicator.stop();
+                        FileStatusManager.getInstance(myProject).fileStatusesChanged();
+
                     }
+                } finally {
+                    final Application app = ApplicationManager.getApplication();
+                    app.invokeLater(new DumbAwareRunnable() {
+                        @Override
+                        public void run() {
+                            if (app.isDisposed()) {
+                                return;
+                            }
+                            FileStatusManager.getInstance(myProject).fileStatusesChanged();
+//                            session.fireEvents(false);
+                        }
+                    }, ModalityState.defaultModalityState());
                 }
             }
 
@@ -454,34 +496,29 @@ public class IgnoreManager extends AbstractProjectComponent {
                 if (file == null) {
                     return;
                 }
-                queue.run(new Task.Backgroundable(myProject, IgnoreBundle.message("cache.indexing")) {
-                    @Override
-                    public void run(@NotNull ProgressIndicator indicator) {
-                        final VirtualFile virtualFile = file.getVirtualFile();
-                        VirtualFile projectDir = myProject.getBaseDir();
+                final VirtualFile virtualFile = file.getVirtualFile();
+                VirtualFile projectDir = myProject.getBaseDir();
 
-                        if ((!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) || projectDir == null) {
-                            indicator.cancel();
-                        } else {
-                            String path = Utils.getRelativePath(projectDir, file.getVirtualFile());
-                            indicator.setText(path);
-                            cache.add(file);
-                        }
+                if ((!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) || projectDir == null) {
+                    return;
+                } else {
+                    String path = Utils.getRelativePath(projectDir, file.getVirtualFile());
+//                    indicator.setText(path);
+                    cache.add(file);
+                }
 
-                        if (dependentFiles == null || dependentFiles.isEmpty()) {
-                            return;
-                        }
+                if (dependentFiles == null || dependentFiles.isEmpty()) {
+                    return;
+                }
 
-                        for (IgnoreFile dependentFile : dependentFiles) {
-                            VirtualFile dependentVirtualFile = dependentFile.getVirtualFile();
-                            if (dependentVirtualFile != null && !isFileIgnored(dependentVirtualFile) && !isParentIgnored(dependentVirtualFile)) {
-                                addTaskFor(dependentFile);
-                            }
-                        }
+                for (IgnoreFile dependentFile : dependentFiles) {
+                    VirtualFile dependentVirtualFile = dependentFile.getVirtualFile();
+                    if (dependentVirtualFile != null && !isFileIgnored(dependentVirtualFile) && !isParentIgnored(dependentVirtualFile)) {
+                        addTaskFor(dependentFile);
                     }
-                });
+                }
             }
-        }, REQUEST_DELAY);
+        });
     }
 
     /**

@@ -30,6 +30,7 @@ intellij {
     pluginName pluginName
     downloadSources Boolean.valueOf(sources)
     sameSinceUntilBuild Boolean.valueOf(isEAP)
+    alternativeIdePath idePath
 
     plugins 'git4idea'
 
