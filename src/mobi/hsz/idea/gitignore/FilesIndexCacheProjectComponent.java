@@ -170,4 +170,9 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
 
         return ContainerUtil.newArrayList();
     }
+
+    /** Clears {@link #cacheMap}. */
+    public void clear() {
+        cacheMap.clear();
+    }
 }

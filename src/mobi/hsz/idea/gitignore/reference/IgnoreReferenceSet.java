@@ -26,14 +26,16 @@ package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.util.Glob;
 import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -43,6 +45,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -168,11 +171,15 @@ public class IgnoreReferenceSet extends FileReferenceSet {
      * Custom definition of {@link FileReference}.
      */
     private class IgnoreReference extends FileReference {
+        private final ConcurrentMap<String, Collection<VirtualFile>> cacheMap;
+
+
         /**
          * Builds an instance of {@link IgnoreReferenceSet.IgnoreReference}.
          */
         public IgnoreReference(@NotNull FileReferenceSet fileReferenceSet, TextRange range, int index, String text) {
             super(fileReferenceSet, range, index, text);
+            cacheMap = ContainerUtil.newConcurrentMap();
         }
 
         /**
@@ -213,11 +220,32 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     if (files.isEmpty()) {
                         files = ContainerUtil.newArrayList(context.getVirtualFile().getChildren());
                     } else if (getCanonicalText().endsWith("**")) {
-                        Collection<VirtualFile> children = ContainerUtil.newArrayList();
-                        for (VirtualFile file : files) {
-                            Collections.addAll(children, file.getChildren());
+                        final String key = entry.getText();
+                        if (!cacheMap.containsKey(key)) {
+                            final Collection<VirtualFile> children = ContainerUtil.newArrayList();
+                            final VirtualFileVisitor<?> visitor = new VirtualFileVisitor<Object>() {
+                                @Override
+                                public boolean visitFile(@NotNull VirtualFile file) {
+                                    if (file.isDirectory()) {
+                                        children.add(file);
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            };
+
+                            for (VirtualFile file : files) {
+                                if (!file.isDirectory()) {
+                                    continue;
+                                }
+                                VfsUtil.visitChildrenRecursively(file, visitor);
+                                children.remove(file);
+                            }
+                            cacheMap.put(key, children);
+
                         }
-                        files.addAll(children);
+                        files.clear();
+                        files.addAll(cacheMap.get(key));
                     }
                     for (VirtualFile file : files) {
                         if (Utils.isVcsDirectory(file)) {
