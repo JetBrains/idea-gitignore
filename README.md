@@ -1,4 +1,4 @@
-.ignore [![Build Status](https://travis-ci.org/hsz/idea-gitignore.svg)](https://travis-ci.org/hsz/idea-gitignore) [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL) <a href="http://blockchain.info/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1"><img src="https://www.gnu.org/software/octave/images/donate-bitcoin.png" width="100" height="21"/></a>
+.ignore [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 ==================
 
 
@@ -201,3 +201,13 @@ Copyright (c) 2015 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [build-xml]:              ./build.xml
 [hsz]:                    http://hsz.mobi
 [latest-release]:         https://github.com/hsz/idea-gitignore/releases/latest
+
+
+[badge-gitter-img]:       https://badges.gitter.im/hsz/idea-gitignore.svg
+[badge-gitter]:           https://gitter.im/hsz/idea-gitignore
+[badge-travis-img]:       https://travis-ci.org/hsz/idea-gitignore.svg
+[badge-travis]:           https://travis-ci.org/hsz/idea-gitignore
+[badge-paypal-img]:       https://img.shields.io/badge/donate-paypal-yellow.svg
+[badge-paypal]:           https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL
+[badge-bitcoin-img]:      https://img.shields.io/badge/donate-bitcoin-yellow.svg
+[badge-bitcoin]:          https://blockchain.info/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1
