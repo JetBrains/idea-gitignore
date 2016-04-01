@@ -1,6 +1,8 @@
 .ignore [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 ==================
 
+[![Join the chat at https://gitter.im/hsz/idea-gitignore](https://badges.gitter.im/hsz/idea-gitignore.svg)](https://gitter.im/hsz/idea-gitignore?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 Introduction
 ------------
