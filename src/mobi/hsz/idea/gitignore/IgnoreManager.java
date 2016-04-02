@@ -25,12 +25,10 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.openapi.application.AccessToken;
-import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.project.DumbAwareRunnable;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
@@ -379,144 +377,139 @@ public class IgnoreManager extends AbstractProjectComponent {
             return;
         }
 
-        queue.submit(new Runnable() {
+        DumbService.getInstance(myProject).smartInvokeLater(new Runnable() {
             @Override
             public void run() {
-                try {
-                    refreshIndicator.start();
-                    AccessToken token = HeavyProcessLatch.INSTANCE.processStarted(PROCESS_NAME);
-                    try {
-                        FileManager fileManager = psiManager.getFileManager();
-                        if (!(fileManager instanceof FileManagerImpl)) {
-                            return;
-                        }
-
-                        while (!((FileManagerImpl) psiManager.getFileManager()).isInitialized()) {
-                            try {
-                                Thread.sleep(REQUEST_DELAY);
-                            } catch (InterruptedException ignored) {
-                            }
-                        }
-                        // Search for Ignore files in the project
-                        final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
-                        final List<IgnoreFile> files = ContainerUtil.newArrayList();
-                        AccessToken readAccessToken = ApplicationManager.getApplication().acquireReadActionLock();
+                queue.submit(new Runnable() {
+                    @Override
+                    public void run() {
                         try {
-                            for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                                if (language.isEnabled()) {
+                            refreshIndicator.start();
+                            AccessToken token = HeavyProcessLatch.INSTANCE.processStarted(PROCESS_NAME);
+                            try {
+                                FileManager fileManager = psiManager.getFileManager();
+                                if (!(fileManager instanceof FileManagerImpl)) {
+                                    return;
+                                }
+
+                                while (!((FileManagerImpl) psiManager.getFileManager()).isInitialized()) {
                                     try {
-                                        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(language.getFileType(), scope);
-                                        for (VirtualFile virtualFile : virtualFiles) {
-                                            ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
-                                        }
-                                    } catch (IndexOutOfBoundsException ignored) {
+                                        Thread.sleep(REQUEST_DELAY);
+                                    } catch (InterruptedException ignored) {
                                     }
                                 }
-                            }
-                        } finally {
-                            readAccessToken.finish();
-                        }
-                        Utils.ignoreFilesSort(files);
-
-                        addTasksFor(files);
-
-                        // Search for outer files
-                        if (settings.isOuterIgnoreRules()) {
-                            readAccessToken = ApplicationManager.getApplication().acquireReadActionLock();
-                            try {
-
-                                for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                                    if (!language.isEnabled()) {
-                                        continue;
-                                    }
-                                    VirtualFile outerFile = language.getOuterFile(myProject);
-                                    if (outerFile != null && outerFile.exists()) {
-                                        PsiFile psiFile = psiManager.findFile(outerFile);
-                                        if (psiFile != null) {
-                                            IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
-                                                    .createFileFromText(language.getFilename(), language, psiFile.getText());
-                                            outerIgnoreFile.setOriginalFile(psiFile);
-                                            addTaskFor(outerIgnoreFile);
+                                // Search for Ignore files in the project
+                                final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
+                                final List<IgnoreFile> files = ContainerUtil.newArrayList();
+                                AccessToken readAccessToken = ApplicationManager.getApplication().acquireReadActionLock();
+                                try {
+                                    for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                                        if (language.isEnabled()) {
+                                            try {
+                                                Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(language.getFileType(), scope);
+                                                for (VirtualFile virtualFile : virtualFiles) {
+                                                    ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
+                                                }
+                                            } catch (IndexOutOfBoundsException ignored) {
+                                            }
                                         }
+                                    }
+                                } finally {
+                                    readAccessToken.finish();
+                                }
+                                Utils.ignoreFilesSort(files);
+
+                                addTasksFor(files);
+
+                                // Search for outer files
+                                if (settings.isOuterIgnoreRules()) {
+                                    readAccessToken = ApplicationManager.getApplication().acquireReadActionLock();
+                                    try {
+                                        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                                            if (!language.isEnabled()) {
+                                                continue;
+                                            }
+                                            VirtualFile outerFile = language.getOuterFile(myProject);
+                                            if (outerFile != null && outerFile.exists()) {
+                                                PsiFile psiFile = psiManager.findFile(outerFile);
+                                                if (psiFile != null) {
+                                                    IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
+                                                            .createFileFromText(language.getFilename(), language, psiFile.getText());
+                                                    outerIgnoreFile.setOriginalFile(psiFile);
+                                                    addTaskFor(outerIgnoreFile);
+                                                }
+                                            }
+                                        }
+                                    } finally {
+                                        readAccessToken.finish();
                                     }
                                 }
                             } finally {
-                                readAccessToken.finish();
+                                token.finish();
+                                refreshIndicator.stop();
+                            }
+                        } finally {
+                            DumbService.getInstance(myProject).runWhenSmart(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FileStatusManager.getInstance(myProject).fileStatusesChanged();
+                                }
+                            });
+                        }
+                    }
+
+                    /**
+                     * Adds {@link IgnoreFile} to the cache processor queue.
+                     *
+                     * @param files to cache
+                     */
+                    private void addTasksFor(@NotNull final List<IgnoreFile> files) {
+                        if (files.isEmpty()) {
+                            return;
+                        }
+                        addTaskFor(files.remove(0), files);
+                    }
+
+                    /**
+                     * Adds {@link IgnoreFile} to the cache processor queue.
+                     *
+                     * @param file to cache
+                     */
+                    private void addTaskFor(@Nullable final IgnoreFile file) {
+                        addTaskFor(file, null);
+                    }
+
+                    /**
+                     * Adds {@link IgnoreFile} to the cache processor queue.
+                     *
+                     * @param file to cache
+                     * @param dependentFiles files to cache if not ignored by given file
+                     */
+                    private void addTaskFor(@Nullable final IgnoreFile file, @Nullable final List<IgnoreFile> dependentFiles) {
+                        if (file == null) {
+                            return;
+                        }
+                        final VirtualFile virtualFile = file.getVirtualFile();
+                        VirtualFile projectDir = myProject.getBaseDir();
+
+                        if ((!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) || projectDir == null) {
+                            return;
+                        } else {
+                            cache.add(file);
+                        }
+
+                        if (dependentFiles == null || dependentFiles.isEmpty()) {
+                            return;
+                        }
+
+                        for (IgnoreFile dependentFile : dependentFiles) {
+                            VirtualFile dependentVirtualFile = dependentFile.getVirtualFile();
+                            if (dependentVirtualFile != null && !isFileIgnored(dependentVirtualFile) && !isParentIgnored(dependentVirtualFile)) {
+                                addTaskFor(dependentFile);
                             }
                         }
-                    } finally {
-                        token.finish();
-                        refreshIndicator.stop();
-                        FileStatusManager.getInstance(myProject).fileStatusesChanged();
-
                     }
-                } finally {
-                    final Application app = ApplicationManager.getApplication();
-                    app.invokeLater(new DumbAwareRunnable() {
-                        @Override
-                        public void run() {
-                            if (app.isDisposed()) {
-                                return;
-                            }
-                            FileStatusManager.getInstance(myProject).fileStatusesChanged();
-//                            session.fireEvents(false);
-                        }
-                    }, ModalityState.defaultModalityState());
-                }
-            }
-
-            /**
-             * Adds {@link IgnoreFile} to the cache processor queue.
-             *
-             * @param files to cache
-             */
-            private void addTasksFor(@NotNull final List<IgnoreFile> files) {
-                if (files.isEmpty()) {
-                    return;
-                }
-                addTaskFor(files.remove(0), files);
-            }
-
-            /**
-             * Adds {@link IgnoreFile} to the cache processor queue.
-             *
-             * @param file to cache
-             */
-            private void addTaskFor(@Nullable final IgnoreFile file) {
-                addTaskFor(file, null);
-            }
-
-            /**
-             * Adds {@link IgnoreFile} to the cache processor queue.
-             *
-             * @param file to cache
-             * @param dependentFiles files to cache if not ignored by given file
-             */
-            private void addTaskFor(@Nullable final IgnoreFile file, @Nullable final List<IgnoreFile> dependentFiles) {
-                if (file == null) {
-                    return;
-                }
-                final VirtualFile virtualFile = file.getVirtualFile();
-                VirtualFile projectDir = myProject.getBaseDir();
-
-                if ((!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) || projectDir == null) {
-                    return;
-                } else {
-                    String path = Utils.getRelativePath(projectDir, file.getVirtualFile());
-//                    indicator.setText(path);
-                    cache.add(file);
-                }
-
-                if (dependentFiles == null || dependentFiles.isEmpty()) {
-                    return;
-                }
-
-                for (IgnoreFile dependentFile : dependentFiles) {
-                    VirtualFile dependentVirtualFile = dependentFile.getVirtualFile();
-                    if (dependentVirtualFile != null && !isFileIgnored(dependentVirtualFile) && !isParentIgnored(dependentVirtualFile)) {
-                        addTaskFor(dependentFile);
-                    }
-                }
+                });
             }
         });
     }
