@@ -33,6 +33,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.util.ProcessWithTimeout;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -89,14 +90,21 @@ public class GitLanguage extends IgnoreLanguage {
                 try {
                     Process pr = Runtime.getRuntime().exec(bin + " config --global core.excludesfile");
                     pr.waitFor();
+
+                    ProcessWithTimeout processWithTimeout = new ProcessWithTimeout(pr);
+                    int exitCode = processWithTimeout.waitForProcess(3000);
+                    if (exitCode == Integer.MIN_VALUE) {
+                        pr.destroy();
+                    }
+
                     BufferedReader reader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
                     String path = Utils.resolveUserDir(reader.readLine());
                     if (StringUtil.isNotEmpty(path)) {
                         OUTER_FILE = VfsUtil.findFileByIoFile(new File(path), true);
                     }
+                } catch (IOException ignored) {
+                } catch (InterruptedException ignored) {
                 }
-                catch (IOException ignored) {}
-                catch (InterruptedException ignored) {}
             }
         }
         OUTER_FILE_FETCHED = true;
