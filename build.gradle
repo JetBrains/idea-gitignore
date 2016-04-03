@@ -31,6 +31,7 @@ intellij {
     downloadSources Boolean.valueOf(sources)
     sameSinceUntilBuild Boolean.valueOf(isEAP)
     alternativeIdePath idePath
+    updateSinceUntilBuild false
 
     plugins 'git4idea'
 
@@ -155,7 +156,7 @@ task generateTemplatesList() {
 }
 
 task generateSources() {
-    dependsOn generateParser, generateLexer, generateTemplatesList
+//    dependsOn generateParser, generateLexer, generateTemplatesList
 }
 
 compileJava.dependsOn generateSources
