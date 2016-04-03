@@ -156,7 +156,7 @@ task generateTemplatesList() {
 }
 
 task generateSources() {
-//    dependsOn generateParser, generateLexer, generateTemplatesList
+    dependsOn generateParser, generateLexer, generateTemplatesList
 }
 
 compileJava.dependsOn generateSources
