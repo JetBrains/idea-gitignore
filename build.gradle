@@ -39,7 +39,7 @@ intellij {
     publish {
         username publishUsername
         password publishPassword
-        pluginId pluginId
+        pluginId publishPluginId
         channel publishChannel
     }
 }

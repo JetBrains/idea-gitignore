@@ -1,8 +1,8 @@
 # Change Log
 
-## [v1.3.1](https://github.com/hsz/idea-gitignore/tree/v1.3.1) (2016-03-30)
+## [v1.3.2](https://github.com/hsz/idea-gitignore/tree/v1.3.2) (2016-04-04)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.1)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.2)
 
 **Implemented enhancements:**
 
