@@ -158,7 +158,7 @@ public class Resources {
          * Defines if template is fetched from resources ({@link Container#ROOT} directory or {@link Container#GLOBAL}
          * subdirectory) or is user defined and fetched from {@link IgnoreSettings}.
          */
-        public static enum Container {
+        public enum Container {
             USER, ROOT, GLOBAL
         }
 

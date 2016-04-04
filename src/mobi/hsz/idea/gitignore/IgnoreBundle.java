@@ -87,7 +87,7 @@ public class IgnoreBundle {
     ));
 
     /** Available syntax list. */
-    public static enum Syntax {
+    public enum Syntax {
         GLOB, REGEXP;
 
         private static final String KEY = "syntax:";
