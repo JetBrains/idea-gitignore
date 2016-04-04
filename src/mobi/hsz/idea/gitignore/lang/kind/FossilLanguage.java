@@ -24,14 +24,11 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.FossilFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Fossil {@link IgnoreLanguage} definition.
@@ -65,21 +62,12 @@ public class FossilLanguage extends IgnoreLanguage {
     }
 
     /**
-     * Returns path to the global excludes file.
+     * Defines if {@link FossilLanguage} supports outer ignore files.
      *
-     * @param project current project
-     * @return excludes file path
+     * @return supports outer ignore files
      */
-    @Nullable
     @Override
-    public VirtualFile getOuterFile(@Nullable final Project project) {
-        if (project == null) {
-            return null;
-        }
-        VirtualFile baseDir = project.getBaseDir();
-        if (baseDir == null) {
-            return null;
-        }
-        return baseDir.findFileByRelativePath("./.fossil-settings/ignore-glob");
+    public boolean isOuterFileSupported() {
+        return true;
     }
 }

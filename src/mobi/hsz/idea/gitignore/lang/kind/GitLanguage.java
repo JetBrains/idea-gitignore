@@ -24,24 +24,11 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import git4idea.config.GitVcsApplicationSettings;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
-import mobi.hsz.idea.gitignore.util.ProcessWithTimeout;
-import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * Gitignore {@link IgnoreLanguage} definition.
@@ -52,12 +39,6 @@ import java.io.InputStreamReader;
 public class GitLanguage extends IgnoreLanguage {
     /** The {@link GitLanguage} instance. */
     public static final GitLanguage INSTANCE = new GitLanguage();
-
-    /** The outer file. */
-    private static VirtualFile OUTER_FILE;
-
-    /** Flag to mark that outer file was fetched. */
-    private static boolean OUTER_FILE_FETCHED = false;
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private GitLanguage() {
@@ -71,43 +52,14 @@ public class GitLanguage extends IgnoreLanguage {
         return GitFileType.INSTANCE;
     }
 
+
     /**
-     * Returns path to the global excludes file.
+     * Defines if {@link GitLanguage} supports outer ignore files.
      *
-     * @param project current project
-     * @return excludes file path
+     * @return supports outer ignore files
      */
-    @Nullable
     @Override
-    public VirtualFile getOuterFile(@Nullable final Project project) {
-        if (OUTER_FILE_FETCHED && (OUTER_FILE != null && OUTER_FILE.exists())) {
-            return OUTER_FILE;
-        }
-
-        if (Utils.isGitPluginEnabled()) {
-            final String bin = GitVcsApplicationSettings.getInstance().getPathToGit();
-            if (StringUtil.isNotEmpty(bin)) {
-                try {
-                    Process pr = Runtime.getRuntime().exec(bin + " config --global core.excludesfile");
-                    pr.waitFor();
-
-                    ProcessWithTimeout processWithTimeout = new ProcessWithTimeout(pr);
-                    int exitCode = processWithTimeout.waitForProcess(3000);
-                    if (exitCode == Integer.MIN_VALUE) {
-                        pr.destroy();
-                    }
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-                    String path = Utils.resolveUserDir(reader.readLine());
-                    if (StringUtil.isNotEmpty(path)) {
-                        OUTER_FILE = VfsUtil.findFileByIoFile(new File(path), true);
-                    }
-                } catch (IOException ignored) {
-                } catch (InterruptedException ignored) {
-                }
-            }
-        }
-        OUTER_FILE_FETCHED = true;
-        return OUTER_FILE;
+    public boolean isOuterFileSupported() {
+        return true;
     }
 }

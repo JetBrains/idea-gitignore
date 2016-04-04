@@ -30,6 +30,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileViewProvider;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
@@ -177,8 +178,20 @@ public class IgnoreLanguage extends Language {
      * @return excludes file path
      */
     @Nullable
-    public VirtualFile getOuterFile(@Nullable final Project project) {
-        return null;
+    final public VirtualFile getOuterFile(@NotNull final Project project) {
+        if (!isOuterFileSupported()) {
+            return null;
+        }
+        return OuterIgnoreLoaderComponent.getInstance(project).getOuterFile(this);
+    }
+
+    /**
+     * Defines if current {@link IgnoreLanguage} supports outer ignore files.
+     *
+     * @return supports outer ignore files
+     */
+    public boolean isOuterFileSupported() {
+        return false;
     }
 
     /**
