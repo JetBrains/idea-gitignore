@@ -36,6 +36,7 @@ com_crashlytics_export_strings.xml
 # Release package
 idea-gitignore.jar
 resources/templates.list
+resources/gitignore/*
 build/
 build.properties
 junit*.properties
