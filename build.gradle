@@ -5,6 +5,7 @@ plugins {
 
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
+apply plugin: 'idea'
 
 sourceCompatibility = javaVersion
 targetCompatibility = javaTargetVersion
@@ -40,6 +41,17 @@ intellij {
         password publishPassword
         pluginId pluginId
         channel publishChannel
+    }
+}
+
+idea {
+    project {
+        jdkName         = javaVersion
+        languageLevel   = javaVersion
+    }
+
+    module {
+        generatedSourceDirs += file('gen')
     }
 }
 
