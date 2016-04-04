@@ -63,12 +63,10 @@ test {
 
 dependencies {
     bnf files("$buildDir/tools/GrammarKit/lib/grammar-kit.jar")
-//    bnf files("$buildDir/tools/light-psi-all.jar")
     jflex files("$buildDir/tools/JFlex.jar")
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
-
 
 
 import de.undercouch.gradle.tasks.download.Download
