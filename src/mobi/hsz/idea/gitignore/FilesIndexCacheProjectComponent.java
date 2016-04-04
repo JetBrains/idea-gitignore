@@ -112,7 +112,8 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
 
     /**
      * Initializes {@link #cacheMap} and {@link VirtualFileManager}.
-     * @param project
+     *
+     * @param project current project
      */
     protected FilesIndexCacheProjectComponent(@NotNull final Project project) {
         super(project);
