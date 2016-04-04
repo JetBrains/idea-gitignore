@@ -403,7 +403,7 @@ public class IgnoreSettingsPanel implements Disposable {
         }
 
         /**
-         * Returns selectet {@link IgnoreSettings.UserTemplate} elements.
+         * Returns selected {@link IgnoreSettings.UserTemplate} elements.
          *
          * @return {@link IgnoreSettings.UserTemplate} list
          */
