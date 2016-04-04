@@ -75,6 +75,7 @@ test {
 
 dependencies {
     bnf files("$buildDir/tools/GrammarKit/lib/grammar-kit.jar")
+    bnf files("$buildDir/tools/light-psi-all.jar")
     jflex files("$buildDir/tools/JFlex.jar")
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
@@ -121,8 +122,16 @@ task generateLexer(type: JavaExec) {
 task downloadGrammarKit(type: Download) {
     description 'Downloads GrammarKit.'
 
-    src 'https://github.com/JetBrains/Grammar-Kit/files/172143/GrammarKit.zip'
+    src 'https://github.com/JetBrains/Grammar-Kit/releases/download/1.2.0.1/GrammarKit.zip'
     dest "$buildDir/tools/GrammarKit.zip"
+    onlyIfNewer true
+}
+
+task downloadGrammarLightPsi(type: Download) {
+    description 'Downloads GrammarKit Light Psi.'
+
+    src 'https://github.com/JetBrains/Grammar-Kit/releases/download/1.2.0.1/light-psi-all.jar'
+    dest "$buildDir/tools/light-psi-all.jar"
     onlyIfNewer true
 }
 
@@ -137,7 +146,7 @@ task unzipGrammarKit(type: Copy) {
 
 task generateParser(type: JavaExec) {
     description 'Generates parser sources with GrammarKit.'
-    dependsOn unzipGrammarKit
+    dependsOn unzipGrammarKit, downloadGrammarLightPsi
 
     main = 'org.intellij.grammar.Main'
     args = [ 'gen', 'resources/bnf/Ignore.bnf' ]
