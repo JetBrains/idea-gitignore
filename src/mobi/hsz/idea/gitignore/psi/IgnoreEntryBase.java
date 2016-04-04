@@ -37,15 +37,15 @@ import java.util.regex.Pattern;
  */
 public interface IgnoreEntryBase extends PsiElement {
 
-    public boolean isNegated();
+    boolean isNegated();
 
     @NotNull
-    public IgnoreBundle.Syntax getSyntax();
+    IgnoreBundle.Syntax getSyntax();
 
     @NotNull
-    public String getValue();
+    String getValue();
 
     @Nullable
-    public Pattern getPattern();
+    Pattern getPattern();
 
 }
