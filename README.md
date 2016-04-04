@@ -172,6 +172,7 @@ Developed By
 **Contributors**
 
 - [**@zolotov** Alexander Zolotov](https://github.com/zolotov)
+- [**@76200** Bartłomiej Czyż](https://github.com/76200)
 - [**@bedla** Ivo Šmíd](https://github.com/bedla)
 - [**@danpfe**](https://github.com/danpfe)
 
