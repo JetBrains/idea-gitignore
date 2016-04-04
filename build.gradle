@@ -178,4 +178,8 @@ task generateSources() {
     dependsOn generateParser, generateLexer, generateTemplatesList
 }
 
+clean.doFirst {
+    delete 'gen', 'out'
+}
+
 compileJava.dependsOn generateSources
