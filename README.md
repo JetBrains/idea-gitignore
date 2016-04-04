@@ -98,9 +98,9 @@ Usage
 Changelog
 ---------
 
-## [v1.3.2](https://github.com/hsz/idea-gitignore/tree/v1.3.2) (2016-04-04)
+## [v1.3.3](https://github.com/hsz/idea-gitignore/tree/v1.3.3) (2016-04-04)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.2)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.3)
 
 **Implemented enhancements:**
 
@@ -122,6 +122,7 @@ Changelog
 - "Unclosed character class" warning is wrong [\#166](https://github.com/hsz/idea-gitignore/issues/166)
 - IgnoreSettings settings must produce stable state [\#162](https://github.com/hsz/idea-gitignore/issues/162)
 - Global ignore error [\#190](https://github.com/hsz/idea-gitignore/issues/190)
+- IgnoreParserUtil exception [\#211](https://github.com/hsz/idea-gitignore/issues/211)
 
 
 [Full Changelog History](./CHANGELOG.md)

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.3.2</version>
+    <version>1.3.3</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -52,8 +52,8 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.3.2"><b>v1.3.2</b></a> (2016-04-04) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.2"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.3.3"><b>v1.3.3</b></a> (2016-04-04) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.3"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         
@@ -78,6 +78,7 @@
             <li>"Unclosed character class" warning is wrong (<a href="https://github.com/hsz/idea-gitignore/issues/166">166</a>)</li>
             <li>IgnoreSettings settings must produce stable state (<a href="https://github.com/hsz/idea-gitignore/issues/162">162</a>)</li>
             <li>Global ignore error (<a href="https://github.com/hsz/idea-gitignore/issues/190">190</a>)</li>
+            <li>IgnoreParserUtil exception (<a href="https://github.com/hsz/idea-gitignore/issues/211">211</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
