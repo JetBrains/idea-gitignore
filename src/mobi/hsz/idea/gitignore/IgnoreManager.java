@@ -57,6 +57,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -433,10 +434,13 @@ public class IgnoreManager extends AbstractProjectComponent {
                                             if (outerFile != null && outerFile.exists()) {
                                                 PsiFile psiFile = psiManager.findFile(outerFile);
                                                 if (psiFile != null) {
-                                                    IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
-                                                            .createFileFromText(language.getFilename(), language, psiFile.getText());
-                                                    outerIgnoreFile.setOriginalFile(psiFile);
-                                                    addTaskFor(outerIgnoreFile);
+                                                    try {
+                                                        IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
+                                                                .createFileFromText(language.getFilename(), language, psiFile.getText());
+                                                        outerIgnoreFile.setOriginalFile(psiFile);
+                                                        addTaskFor(outerIgnoreFile);
+                                                    } catch (ConcurrentModificationException ignored) {
+                                                    }
                                                 }
                                             }
                                         }
