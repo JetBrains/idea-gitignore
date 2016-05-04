@@ -193,15 +193,18 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         @Override
         protected void innerResolveInContext(@NotNull String text, @NotNull PsiFileSystemItem context, final Collection<ResolveResult> result, boolean caseSensitive) {
             super.innerResolveInContext(text, context, result, caseSensitive);
-            VirtualFile contextVirtualFile;
 
             final PsiFile containingFile = getContainingFile();
-            boolean isOuterFile = isOuterFile((IgnoreFile) containingFile);
+            if (!(containingFile instanceof IgnoreFile)) {
+                return;
+            }
 
+            VirtualFile contextVirtualFile;
+            boolean isOuterFile = isOuterFile((IgnoreFile) containingFile);
             if (isOuterFile) {
                 contextVirtualFile = getElement().getProject().getBaseDir();
                 result.clear();
-            } else if (containingFile != null && Utils.isInProject(containingFile.getVirtualFile(), getElement().getProject())) {
+            } else if (Utils.isInProject(containingFile.getVirtualFile(), getElement().getProject())) {
                 contextVirtualFile = context.getVirtualFile();
             } else {
                 return;
