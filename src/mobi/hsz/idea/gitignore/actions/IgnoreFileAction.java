@@ -33,7 +33,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
@@ -109,7 +108,7 @@ public class IgnoreFileAction extends DumbAwareAction {
 
         PsiFile ignore = null;
         if (ignoreFile != null) {
-            ignore = PsiManager.getInstance(project).findFile(ignoreFile);
+            ignore = Utils.getPsiFile(project, ignoreFile);
         }
         if (ignore == null && fileType != null) {
             ignore = Utils.getIgnoreFile(project, fileType, null, true);

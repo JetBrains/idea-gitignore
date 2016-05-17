@@ -33,6 +33,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -77,18 +78,25 @@ public class NewFileAction extends AnAction implements DumbAware {
         }
 
         GeneratorDialog dialog;
-        PsiFile file = directory.findFile(fileType.getIgnoreLanguage().getFilename());
+        String filename = fileType.getIgnoreLanguage().getFilename();
+        PsiFile file = directory.findFile(filename);
+        VirtualFile virtualFile = file == null ? directory.getVirtualFile().findChild(filename) : file.getVirtualFile();
 
-        if (file == null) {
+        if (file == null && virtualFile == null) {
             CreateFileCommandAction action = new CreateFileCommandAction(project, directory, fileType);
             dialog = new GeneratorDialog(project, action);
         } else {
             Notifications.Bus.notify(new Notification(
                     fileType.getLanguageName(),
                     IgnoreBundle.message("action.newFile.exists", fileType.getLanguageName()),
-                    IgnoreBundle.message("action.newFile.exists.in", file.getVirtualFile().getPath()),
+                    IgnoreBundle.message("action.newFile.exists.in", virtualFile.getPath()),
                     NotificationType.INFORMATION
             ), project);
+
+            if (file == null) {
+                file = Utils.getPsiFile(project, virtualFile);
+            }
+
             dialog = new GeneratorDialog(project, file);
         }
 

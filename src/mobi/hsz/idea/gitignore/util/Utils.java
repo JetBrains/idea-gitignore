@@ -45,6 +45,7 @@ import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
@@ -130,12 +131,40 @@ public class Utils {
         }
 
         assert directory != null;
-        PsiFile file = directory.findFile(fileType.getIgnoreLanguage().getFilename());
-        if (file == null && createIfMissing) {
+        String filename = fileType.getIgnoreLanguage().getFilename();
+        PsiFile file = directory.findFile(filename);
+        VirtualFile virtualFile = file == null ? directory.getVirtualFile().findChild(filename) : file.getVirtualFile();
+
+        if (file == null && virtualFile == null && createIfMissing) {
             file = new CreateFileCommandAction(project, directory, fileType).execute().getResultObject();
         }
 
         return file;
+    }
+
+    /**
+     * Finds {@link PsiFile} for the given {@link VirtualFile} instance. If file is outside current project,
+     * it's required to create new {@link PsiFile} manually.
+     *
+     * @param project current project
+     * @param virtualFile to handle
+     * @return {@link PsiFile} instance
+     */
+    @Nullable
+    public static PsiFile getPsiFile(@NotNull Project project, @NotNull VirtualFile virtualFile) {
+        PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
+
+        if (psiFile == null) {
+            FileViewProvider viewProvider = PsiManager.getInstance(project).findViewProvider(virtualFile);
+            if (viewProvider != null) {
+                IgnoreLanguage language = IgnoreBundle.obtainLanguage(virtualFile);
+                if (language != null) {
+                    psiFile = language.createFile(viewProvider);
+                }
+            }
+        }
+
+        return psiFile;
     }
 
     /**

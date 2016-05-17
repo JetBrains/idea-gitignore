@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore;
 
 import com.intellij.CommonBundle;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.*;
@@ -138,9 +139,25 @@ public class IgnoreBundle {
      * @param params       the optional parameters for the specific resource
      * @return the {@link String} value or {@code null} if no resource found for the key
      */
-
     public static String messageOrDefault(@PropertyKey(resourceBundle = BUNDLE_NAME) String key, String defaultValue, Object... params) {
         return CommonBundle.messageOrDefault(BUNDLE, key, defaultValue, params);
+    }
+
+    /**
+     * Returns {@link IgnoreLanguage} matching to the givet {@link VirtualFile}.
+     *
+     * @param file to obtain
+     * @return matching language
+     */
+    @Nullable
+    public static IgnoreLanguage obtainLanguage(@NotNull VirtualFile file) {
+        final String filename = file.getName();
+        for (IgnoreLanguage language : LANGUAGES) {
+            if (language.getFilename().equals(filename)) {
+                return language;
+            }
+        }
+        return null;
     }
 
     /**
