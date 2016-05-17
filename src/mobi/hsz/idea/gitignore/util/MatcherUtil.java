@@ -58,7 +58,7 @@ public class MatcherUtil {
         }
 
         try {
-            return matcher.reset(path).matches();
+            return matcher.reset(path).find();
         } catch (StringIndexOutOfBoundsException e) {
             return false;
         }
