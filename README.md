@@ -23,6 +23,7 @@ Introduction
 - `.flooignore` (Floobits)
 - `.eslintignore` (ESLint)
 - `.cfignore` (Cloud Foundry)
+- `.jpmignore` (Jetpack)
 
 files in your project. It supports following JetBrains IDEs:
 

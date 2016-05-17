@@ -71,6 +71,9 @@ public class Icons {
     /** Mercurial icon. */
     public static final Icon MERCURIAL = IconLoader.getIcon("/icons/icon_mercurial.png");
 
+    /** Jetpack icon. */
+    public static final Icon JETPACK = IconLoader.getIcon("/icons/icon_jetpack.png");
+
     /** JSHint icon. */
     public static final Icon JSHINT = IconLoader.getIcon("/icons/icon_jshint.png");
 
