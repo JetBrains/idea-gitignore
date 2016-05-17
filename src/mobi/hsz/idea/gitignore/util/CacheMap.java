@@ -169,10 +169,6 @@ public class CacheMap {
             statuses.put(file, status);
         }
 
-        if (!status.equals(Status.UNTOUCHED)) {
-            return status.equals(Status.IGNORED);
-        }
-
         final List<IgnoreFile> files = ContainerUtil.reverse(Utils.ignoreFilesSort(ContainerUtil.newArrayList(map.keySet())));
         final ProjectLevelVcsManager projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project);
 
