@@ -89,7 +89,7 @@ import groovy.io.FileType
 task downloadJFlexJar(type: Download) {
     description 'Downloads JFlex.'
 
-    src 'https://github.com/JetBrains/intellij-community/raw/master/tools/lexer/jflex-1.4/lib/JFlex.jar'
+    src 'https://github.com/JetBrains/intellij-community/raw/master/tools/lexer/jflex-1.7.0-SNAPSHOT.jar'
     dest "$buildDir/tools/JFlex.jar"
     onlyIf { !file("$buildDir/tools/JFlex.jar").exists() }
 }
@@ -106,9 +106,8 @@ task generateLexer(type: JavaExec) {
     description 'Generates lexer sources with JFlex.'
     dependsOn downloadJFlexJar, downloadJFlexSkeleton
 
-    main = 'JFlex.Main'
+    main = 'jflex.Main'
     args = [
-            '-sliceandcharat',
             '-skel',
             "$buildDir/tools/idea-flex.skeleton",
             '-d',
