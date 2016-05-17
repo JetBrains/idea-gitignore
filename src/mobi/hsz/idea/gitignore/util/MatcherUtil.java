@@ -138,13 +138,17 @@ public class MatcherUtil {
         final String sPattern = pattern.toString();
 
         String part = "";
+        boolean inSquare = false;
         for (int i = 0; i < sPattern.length(); i++) {
-            if (Character.isLetterOrDigit(sPattern.charAt(i))) {
+            char ch = sPattern.charAt(i);
+            if (!inSquare && Character.isLetterOrDigit(ch)) {
                 part += sPattern.charAt(i);
             } else if (!part.isEmpty()) {
                 parts.add(part);
                 part = "";
             }
+
+            inSquare = ch != ']' && ((ch == '[') || inSquare);
         }
 
         return parts.toArray(new String[parts.size()]);
