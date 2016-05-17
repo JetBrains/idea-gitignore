@@ -326,15 +326,18 @@ public class Glob {
 
         if (star || doubleStar) {
             if (StringUtil.endsWithChar(sb, '/')) {
-                sb.append(acceptChildren ? ".+" : "[^/]+");
+                sb.append(acceptChildren ? ".+" : "[^/]+/?");
             } else {
-                sb.append("[^/]*");
+                sb.append("[^/]*/?");
             }
         } else {
             if (StringUtil.endsWithChar(sb, '/')) {
-                sb.setLength(sb.length() - 1);
+                if (acceptChildren) {
+                    sb.append("[^/]*");
+                }
+            } else {
+                sb.append(acceptChildren ? "(?:/.*)?" : "/?");
             }
-            sb.append(acceptChildren ? "(?:/.*)?" : "/?");
         }
 
         sb.append('$');

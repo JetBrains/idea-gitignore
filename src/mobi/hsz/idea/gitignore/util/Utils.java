@@ -86,7 +86,7 @@ public class Utils {
      */
     @Nullable
     public static String getRelativePath(@NotNull VirtualFile directory, @NotNull VirtualFile file) {
-        return VfsUtilCore.getRelativePath(file, directory, '/');
+        return VfsUtilCore.getRelativePath(file, directory, '/') + (file.isDirectory() ? '/' : "");
     }
 
     /**
