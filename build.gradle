@@ -28,6 +28,7 @@ sourceSets {
 
 intellij {
     version ideaVersion
+    type ideaType
     pluginName pluginName
     downloadSources Boolean.valueOf(sources)
     sameSinceUntilBuild Boolean.valueOf(isEAP)
