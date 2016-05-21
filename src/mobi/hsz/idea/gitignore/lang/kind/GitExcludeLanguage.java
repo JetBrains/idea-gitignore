@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2016 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,62 +27,64 @@ package mobi.hsz.idea.gitignore.lang.kind;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.FossilFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Fossil {@link IgnoreLanguage} definition.
+ * Gitignore Exclude {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.1
+ * @since 1.4
  */
-public class FossilLanguage extends IgnoreLanguage {
-    /** The {@link FossilLanguage} instance. */
-    public static final FossilLanguage INSTANCE = new FossilLanguage();
+public class GitExcludeLanguage extends IgnoreLanguage {
+    /** The {@link GitExcludeLanguage} instance. */
+    public static final GitExcludeLanguage INSTANCE = new GitExcludeLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private FossilLanguage() {
-        super("Fossil", "ignore-glob", ".fossil-settings", Icons.FOSSIL, new OuterFileFetcher[]{
-
-                /** Outer file fetched from the .fossil-settings/ignore-glob file. */
-                new OuterFileFetcher() {
-                    @Nullable
-                    @Override
-                    public VirtualFile fetch(@NotNull Project project) {
-                        return project.getBaseDir().findFileByRelativePath(INSTANCE.getVcsDirectory() + "/" + INSTANCE.getFilename());
-                    }
-                }
-
-        });
+    private GitExcludeLanguage() {
+        super("Git exclude", "exclude", ".git", Icons.GIT);
     }
 
     /** Language file type. */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {
-        return FossilFileType.INSTANCE;
+        return GitExcludeFileType.INSTANCE;
     }
 
     /**
-     * The Gitignore file extension.
+     * The Gitignore exclude filename.
+     *
+     * @return filename
      */
     @NotNull
     @Override
     public String getFilename() {
-        return getExtension();
+        return super.getExtension();
     }
 
     /**
-     * Defines if {@link FossilLanguage} supports outer ignore files.
+     * Defines if {@link GitExcludeLanguage} supports outer ignore files.
      *
      * @return supports outer ignore files
      */
     @Override
     public boolean isOuterFileSupported() {
         return true;
+    }
+
+    /**
+     * Returns fixed directory for the given {@link IgnoreLanguage}.
+     *
+     * @param project current project
+     * @return fixed directory
+     */
+    @Nullable
+    @Override
+    public VirtualFile getFixedDirectory(@NotNull Project project) {
+        return project.getBaseDir().findFileByRelativePath(getVcsDirectory() + "/info");
     }
 }

@@ -36,12 +36,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Creates new file or returns existing one.
@@ -58,7 +60,7 @@ public class NewFileAction extends AnAction implements DumbAware {
     /**
      * Builds a new instance of {@link NewFileAction}.
      */
-    public NewFileAction(IgnoreFileType fileType) {
+    public NewFileAction(@NotNull IgnoreFileType fileType) {
         this.fileType = fileType;
     }
 
@@ -72,7 +74,15 @@ public class NewFileAction extends AnAction implements DumbAware {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
         final IdeView view = e.getRequiredData(LangDataKeys.IDE_VIEW);
 
-        final PsiDirectory directory = view.getOrChooseDirectory();
+        VirtualFile fixedDirectory = fileType.getIgnoreLanguage().getFixedDirectory(project);
+        PsiDirectory directory;
+
+        if (fixedDirectory != null) {
+            directory = PsiManager.getInstance(project).findDirectory(fixedDirectory);
+        } else {
+            directory = view.getOrChooseDirectory();
+        }
+
         if (directory == null) {
             return;
         }

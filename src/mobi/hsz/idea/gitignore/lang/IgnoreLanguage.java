@@ -31,6 +31,7 @@ import com.intellij.psi.FileViewProvider;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
+import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
@@ -38,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.List;
 import java.util.TreeMap;
 
 /**
@@ -83,6 +85,12 @@ public class IgnoreLanguage extends Language {
     private final Icon icon;
 
     /**
+     * Outer files for the specified {@link IgnoreLanguage}.
+     */
+    @NotNull
+    private final OuterFileFetcher[] fetchers;
+
+    /**
      * {@link IgnoreLanguage} is a non-instantiable static class.
      */
     protected IgnoreLanguage() {
@@ -93,10 +101,19 @@ public class IgnoreLanguage extends Language {
      * {@link IgnoreLanguage} is a non-instantiable static class.
      */
     protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable String vcsDirectory, @Nullable Icon icon) {
+        this(name, extension, vcsDirectory, icon, new OuterFileFetcher[0]);
+    }
+
+    /**
+     * {@link IgnoreLanguage} is a non-instantiable static class.
+     */
+    protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable String vcsDirectory,
+                             @Nullable Icon icon, @NotNull OuterFileFetcher[] fetchers) {
         super(name);
         this.extension = extension;
         this.vcsDirectory = vcsDirectory;
         this.icon = icon;
+        this.fetchers = fetchers;
     }
 
     /**
@@ -120,7 +137,9 @@ public class IgnoreLanguage extends Language {
     }
 
     /**
-     * The Gitignore file extension.
+     * The Gitignore file filename.
+     *
+     * @return filename.
      */
     @NotNull
     public String getFilename() {
@@ -139,6 +158,8 @@ public class IgnoreLanguage extends Language {
 
     /**
      * Language file type.
+     *
+     * @return {@link IgnoreFileType} instance.
      */
     @NotNull
     public IgnoreFileType getFileType() {
@@ -147,6 +168,8 @@ public class IgnoreLanguage extends Language {
 
     /**
      * Creates {@link IgnoreFile} instance.
+     *
+     * @return {@link IgnoreFile} instance.
      */
     public IgnoreFile createFile(@NotNull final FileViewProvider viewProvider) {
         return new IgnoreFile(viewProvider, getFileType());
@@ -172,26 +195,34 @@ public class IgnoreLanguage extends Language {
     }
 
     /**
-     * Returns path to the global excludes file.
-     *
-     * @param project current project
-     * @return excludes file path
-     */
-    @Nullable
-    final public VirtualFile getOuterFile(@NotNull final Project project) {
-        if (!isOuterFileSupported()) {
-            return null;
-        }
-        return OuterIgnoreLoaderComponent.getInstance(project).getOuterFile(this);
-    }
-
-    /**
      * Defines if current {@link IgnoreLanguage} supports outer ignore files.
      *
      * @return supports outer ignore files
      */
     public boolean isOuterFileSupported() {
         return false;
+    }
+
+    /**
+     * Returns {@link OuterFileFetcher} instances. method is called when
+     * {@link #isOuterFileSupported()} returns <code>true</code> value.
+     *
+     * @return outer file fetcher array
+     */
+    @NotNull
+    public OuterFileFetcher[] getOuterFileFetchers() {
+        return fetchers;
+    }
+
+    /**
+     * Returns outer files for the current language.
+     *
+     * @param project current project
+     * @return outer files
+     */
+    @NotNull
+    final public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
+        return OuterIgnoreLoaderComponent.getInstance(project).getOuterFiles(this);
     }
 
     /**
@@ -229,5 +260,16 @@ public class IgnoreLanguage extends Language {
      */
     public boolean isVCS() {
         return true;
+    }
+
+    /**
+     * Returns fixed directory for the given {@link IgnoreLanguage}.
+     *
+     * @param project current project
+     * @return fixed directory
+     */
+    @Nullable
+    public VirtualFile getFixedDirectory(@NotNull Project project) {
+        return null;
     }
 }

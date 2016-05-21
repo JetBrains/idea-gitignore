@@ -32,20 +32,26 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.TabbedPaneWrapper;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.labels.LinkLabel;
 import com.intellij.ui.components.labels.LinkListener;
+import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.UIUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.List;
 
 /**
  * Wrapper that creates bottom editor component for displaying outer ignore rules.
@@ -57,77 +63,95 @@ public class OuterIgnoreWrapper implements Disposable {
     private static final int DRAG_OFFSET = 10;
 
     private final JPanel panel;
-    private final Editor outerEditor;
+    private final List<Editor> outerEditors = ContainerUtil.newArrayList();
 
     /** The settings storage object. */
     private final IgnoreSettings settings;
 
-    private int dragScrollPanelHeight;
+    private int dragPanelHeight;
     private int dragYOnScreen;
     private boolean drag;
 
     @SuppressWarnings("unchecked")
-    public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final VirtualFile outerFile) {
+    public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final IgnoreLanguage language, @NotNull final List<VirtualFile> outerFiles) {
         settings = IgnoreSettings.getInstance();
 
         panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
 
-        JBLabel label = new JBLabel(IgnoreBundle.message("outer.label"), UIUtil.ComponentStyle.REGULAR, UIUtil.FontColor.BRIGHTER);
-        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
         final JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
+
+        JBLabel label = new JBLabel(IgnoreBundle.message("outer.label"), UIUtil.ComponentStyle.REGULAR, UIUtil.FontColor.BRIGHTER);
+        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
         northPanel.add(label);
-        northPanel.add(new LinkLabel(outerFile.getPath(), null, new LinkListener() {
+
+
+        final TabbedPaneWrapper tabbedPanel = new TabbedPaneWrapper(project);
+        final JComponent tabbedPanelComponent = tabbedPanel.getComponent();
+        final LinkLabel linkLabel = new LinkLabel(outerFiles.get(0).getPath(), null, new LinkListener() {
             @Override
             public void linkSelected(LinkLabel aSource, Object aLinkData) {
-                Utils.openFile(project, outerFile);
+                Utils.openFile(project, outerFiles.get(tabbedPanel.getSelectedIndex()));
             }
-        }));
+        });
 
-        Document document = FileDocumentManager.getInstance().getDocument(outerFile);
-        outerEditor = document != null ? Utils.createPreviewEditor(document, project, true) : null;
+        for (final VirtualFile outerFile : outerFiles) {
+            Document document = FileDocumentManager.getInstance().getDocument(outerFile);
+            Editor outerEditor = document != null ? Utils.createPreviewEditor(document, project, true) : null;
 
-        if (outerEditor != null) {
-            final JScrollPane scrollPanel = ScrollPaneFactory.createScrollPane(outerEditor.getComponent());
-            scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-            scrollPanel.setPreferredSize(new Dimension(0, settings.getOuterIgnoreWrapperHeight()));
+            if (outerEditor != null) {
+                final JScrollPane scrollPanel = ScrollPaneFactory.createScrollPane(outerEditor.getComponent());
+                scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+                scrollPanel.setPreferredSize(new Dimension(0, settings.getOuterIgnoreWrapperHeight()));
 
-            northPanel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (e.getPoint().getY() <= DRAG_OFFSET) {
-                        dragScrollPanelHeight = scrollPanel.getHeight();
-                        dragYOnScreen = e.getYOnScreen();
-                        drag = true;
-                    }
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    drag = false;
-                    settings.setOuterIgnoreWrapperHeight(scrollPanel.getHeight());
-                }
-            });
-            northPanel.addMouseMotionListener(new MouseMotionAdapter() {
-                @Override
-                public void mouseMoved(MouseEvent e) {
-                    Cursor cursor = (e.getPoint().getY() <= DRAG_OFFSET) ? Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR) : Cursor.getDefaultCursor();
-                    panel.setCursor(cursor);
-                }
-
-                @Override
-                public void mouseDragged(MouseEvent e) {
-                    if (drag) {
-                        scrollPanel.setPreferredSize(new Dimension(0, dragScrollPanelHeight - e.getYOnScreen() + dragYOnScreen));
-                        panel.revalidate();
-                    }
-                }
-            });
-
-            panel.add(northPanel, BorderLayout.NORTH);
-            panel.add(scrollPanel, BorderLayout.CENTER);
+                tabbedPanel.addTab(outerFile.getCanonicalPath(), language.getIcon(), scrollPanel, outerFile.getCanonicalPath());
+                outerEditors.add(outerEditor);
+            }
         }
+
+        northPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getPoint().getY() <= DRAG_OFFSET) {
+                    dragPanelHeight = tabbedPanelComponent.getHeight();
+                    dragYOnScreen = e.getYOnScreen();
+                    drag = true;
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                drag = false;
+                settings.setOuterIgnoreWrapperHeight(tabbedPanelComponent.getHeight());
+            }
+        });
+        northPanel.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Cursor cursor = (e.getPoint().getY() <= DRAG_OFFSET) ? Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR) : Cursor.getDefaultCursor();
+                panel.setCursor(cursor);
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (drag) {
+                    tabbedPanelComponent.setPreferredSize(new Dimension(0, dragPanelHeight - e.getYOnScreen() + dragYOnScreen));
+                    panel.revalidate();
+                }
+            }
+        });
+
+        tabbedPanel.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                linkLabel.setText(outerFiles.get(tabbedPanel.getSelectedIndex()).getPath());
+            }
+        });
+
+        panel.add(northPanel, BorderLayout.NORTH);
+        panel.add(tabbedPanelComponent, BorderLayout.CENTER);
+        panel.add(linkLabel, BorderLayout.SOUTH);
     }
 
     /**
@@ -141,7 +165,7 @@ public class OuterIgnoreWrapper implements Disposable {
 
     @Override
     public void dispose() {
-        if (outerEditor != null) {
+        for (Editor outerEditor : outerEditors) {
             EditorFactory.getInstance().releaseEditor(outerEditor);
         }
     }

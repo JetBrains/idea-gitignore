@@ -30,28 +30,19 @@ import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
-import git4idea.config.GitVcsApplicationSettings;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.lang.kind.FossilLanguage;
-import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
-import mobi.hsz.idea.gitignore.util.ProcessWithTimeout;
-import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 
@@ -66,7 +57,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     private final Project project;
     
     /** Outer files map. */
-    private HashMap<IgnoreLanguage, VirtualFile> outerFile = ContainerUtil.newHashMap();
+    private HashMap<IgnoreLanguage, List<VirtualFile>> outerFiles = ContainerUtil.newHashMap();
 
     /**
      * Returns {@link OuterIgnoreLoaderComponent} service instance.
@@ -104,35 +95,16 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
 
     @Override
     public void projectOpened() {
-        // Outer file for {@link GitLanguage}
-        if (Utils.isGitPluginEnabled()) {
-            final String bin = GitVcsApplicationSettings.getInstance().getPathToGit();
-            if (StringUtil.isNotEmpty(bin)) {
-                try {
-                    Process pr = Runtime.getRuntime().exec(bin + " config --global core.excludesfile");
-                    pr.waitFor();
+        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+            List<VirtualFile> files = ContainerUtil.newArrayList();
 
-                    ProcessWithTimeout processWithTimeout = new ProcessWithTimeout(pr);
-                    int exitCode = processWithTimeout.waitForProcess(3000);
-                    if (exitCode == Integer.MIN_VALUE) {
-                        pr.destroy();
-                    }
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-                    String path = Utils.resolveUserDir(reader.readLine());
-                    if (StringUtil.isNotEmpty(path)) {
-                        outerFile.put(GitLanguage.INSTANCE, VfsUtil.findFileByIoFile(new File(path), true));
-                    }
-                } catch (IOException ignored) {
-                } catch (InterruptedException ignored) {
+            if (language.isOuterFileSupported()) {
+                for (OuterFileFetcher fetcher : language.getOuterFileFetchers()) {
+                    ContainerUtil.addIfNotNull(fetcher.fetch(project), files);
                 }
             }
-        }
 
-        // Outer file for {@link FossilLanguage}
-        VirtualFile baseDir = project.getBaseDir();
-        if (baseDir != null) {
-            outerFile.put(FossilLanguage.INSTANCE, baseDir.findFileByRelativePath("./.fossil-settings/ignore-glob"));
+            outerFiles.put(language, files);
         }
     }
 
@@ -142,9 +114,9 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
      * @param language of the outer file
      * @return outer file
      */
-    @Nullable
-    public VirtualFile getOuterFile(@NotNull IgnoreLanguage language) {
-        return outerFile.get(language);
+    @NotNull
+    public List<VirtualFile> getOuterFiles(@NotNull IgnoreLanguage language) {
+        return outerFiles.get(language);
     }
 
     /**
@@ -177,14 +149,14 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 return;
             }
 
-            VirtualFile outerFile = language.getOuterFile(project);
-            if (outerFile == null || outerFile.equals(file)) {
+            List<VirtualFile> outerFiles = language.getOuterFiles(project);
+            if (outerFiles.isEmpty() || outerFiles.contains(file)) {
                 return;
             }
 
             for (final FileEditor fileEditor : source.getEditors(file)) {
                 if (fileEditor instanceof TextEditor) {
-                    final OuterIgnoreWrapper wrapper = new OuterIgnoreWrapper(project, outerFile);
+                    final OuterIgnoreWrapper wrapper = new OuterIgnoreWrapper(project, language, outerFiles);
                     final JComponent c = wrapper.getComponent();
                     source.addBottomComponent(fileEditor, c);
 
@@ -207,5 +179,10 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 }
             }
         }
+    }
+
+    public interface OuterFileFetcher {
+        @Nullable
+        VirtualFile fetch(@NotNull Project project);
     }
 }

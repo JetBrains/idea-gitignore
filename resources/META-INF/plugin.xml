@@ -182,6 +182,7 @@
         <lang.parserDefinition language="Floobits"                  implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Fossil"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Git"                       implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Git exclude"               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Jetpack"                   implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="JSHint"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Mercurial"                 implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
@@ -266,6 +267,13 @@
         <lang.commenter                 language="Git"              implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory       key="Git"              implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git -->
+
+        <!-- Git exclude -->
+        <codeInsight.lineMarkerProvider language="Git exclude"      implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher              language="Git exclude"      implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter                 language="Git exclude"      implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory       key="Git exclude"      implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Git exclude -->
 
         <!-- Jetpack -->
         <codeInsight.lineMarkerProvider language="Jetpack"          implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>

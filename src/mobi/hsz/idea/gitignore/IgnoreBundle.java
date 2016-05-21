@@ -78,6 +78,7 @@ public class IgnoreBundle {
             FloobitsLanguage.INSTANCE,
             FossilLanguage.INSTANCE,
             GitLanguage.INSTANCE,
+            GitExcludeLanguage.INSTANCE,
             JetpackLanguage.INSTANCE,
             JSHintLanguage.INSTANCE,
             MercurialLanguage.INSTANCE,

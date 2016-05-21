@@ -430,16 +430,17 @@ public class IgnoreManager extends AbstractProjectComponent {
                                             if (!language.isEnabled()) {
                                                 continue;
                                             }
-                                            VirtualFile outerFile = language.getOuterFile(myProject);
-                                            if (outerFile != null && outerFile.exists()) {
-                                                PsiFile psiFile = psiManager.findFile(outerFile);
-                                                if (psiFile != null) {
-                                                    try {
-                                                        IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
-                                                                .createFileFromText(language.getFilename(), language, psiFile.getText());
-                                                        outerIgnoreFile.setOriginalFile(psiFile);
-                                                        addTaskFor(outerIgnoreFile);
-                                                    } catch (ConcurrentModificationException ignored) {
+                                            for (VirtualFile outerFile : language.getOuterFiles(myProject)) {
+                                                if (outerFile.exists()) {
+                                                    PsiFile psiFile = psiManager.findFile(outerFile);
+                                                    if (psiFile != null) {
+                                                        try {
+                                                            IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
+                                                                    .createFileFromText(language.getFilename(), language, psiFile.getText());
+                                                            outerIgnoreFile.setOriginalFile(psiFile);
+                                                            addTaskFor(outerIgnoreFile);
+                                                        } catch (ConcurrentModificationException ignored) {
+                                                        }
                                                     }
                                                 }
                                             }
