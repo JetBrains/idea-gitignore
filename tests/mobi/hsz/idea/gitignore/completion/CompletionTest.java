@@ -7,6 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class CompletionTest extends LightPlatformCodeInsightFixtureTestCase {
+    @Override
+    protected boolean isWriteActionRequired() {
+        return true;
+    }
+
     public void testSimple() {
         myFixture.getTempDirFixture().createFile("fileName.txt");
         doTest("fileN<caret>", "fileName.txt<caret>");

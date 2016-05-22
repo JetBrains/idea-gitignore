@@ -16,6 +16,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class ResolvingTest extends LightPlatformCodeInsightFixtureTestCase {
+    @Override
+    protected boolean isWriteActionRequired() {
+        return true;
+    }
+
     public void testSimple() {
         myFixture.getTempDirFixture().createFile("fileName.txt");
         doTest("fileNa<caret>me.txt", "fileName.txt");

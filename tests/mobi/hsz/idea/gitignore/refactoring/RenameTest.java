@@ -7,6 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class RenameTest extends LightPlatformCodeInsightFixtureTestCase {
+    @Override
+    protected boolean isWriteActionRequired() {
+        return true;
+    }
+
     public void testRenameFile() throws IOException {
         myFixture.getTempDirFixture().findOrCreateDir("dir").createChildData(this, "file.txt");
         doTest("*/fil<caret>e.txt", "newFile.txt", "dir/newFile.txt");
