@@ -68,8 +68,6 @@ VALUE           = ("\\\["|"\\\]"|"\\\/"|[^\[\]\r\n\/])+
             }
         }
     {FIRST_CHARACTER}   { yypushback(1); yybegin(IN_ENTRY); }
-
-    [^]                 { return BAD_CHARACTER; }
 }
 
 <IN_ENTRY> {
@@ -80,8 +78,3 @@ VALUE           = ("\\\["|"\\\]"|"\\\/"|[^\[\]\r\n\/])+
 
     {VALUE}             { yybegin(IN_ENTRY); return VALUE; }
 }
-
-//<IN_SYNTAX> {
-//    {SYNTAX_KEY}        { return SYNTAX_KEY; }
-//    {LINE_WS}*          { yybegin(IN_ENTRY); return CRLF; }
-//}
