@@ -109,6 +109,8 @@
         <colorSettingsPage
             implementation="mobi.hsz.idea.gitignore.highlighter.IgnoreColorSettingsPage"/>
 
+        <highlightRangeExtension implementation="mobi.hsz.idea.gitignore.codeInsight.IgnoreHighlightRangeExtension"/>
+
         <completion.contributor
             language="Ignore"
             implementationClass="mobi.hsz.idea.gitignore.codeInsight.SyntaxCompletionContributor"/>
