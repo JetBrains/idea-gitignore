@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.3.3</version>
+    <version>1.4</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -52,33 +52,31 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.3.3"><b>v1.3.3</b></a> (2016-04-04) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.3"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.4"><b>v1.4</b></a> (2016-05-23) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.3.3...1.4"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         
         <ul>
-            <li>Import / Export templates (<a href="https://github.com/hsz/idea-gitignore/issues/194">194</a>)</li>
-            <li>Generate rules without duplicates (<a href="https://github.com/hsz/idea-gitignore/issues/164">164</a>)</li>
-            <li>Global gitignore section resize (<a href="https://github.com/hsz/idea-gitignore/issues/187">187</a>)</li>
-            <li>.eslintignore support (<a href="https://github.com/hsz/idea-gitignore/issues/175">175</a>)</li>
-            <li>.cfignore support (<a href="https://github.com/hsz/idea-gitignore/issues/161">161</a>)</li>
+            <li>Add Unversioned Files to .gitignore (Git) (<a href="https://github.com/hsz/idea-gitignore/issues/124">124</a>)</li>
+            <li>Add to 'exclude' (Git) (<a href="https://github.com/hsz/idea-gitignore/issues/133">133</a>)</li>
+            <li>Exclude file preview (Git) (<a href="https://github.com/hsz/idea-gitignore/issues/132">132</a>)</li>
+            <li>Allow user to specify position of appended entries (<a href="https://github.com/hsz/idea-gitignore/issues/216">216</a>)</li>
+            <li>JetPack (.jpmignore) support (<a href="https://github.com/hsz/idea-gitignore/issues/215">215</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>CPU performance fixes (<a href="https://github.com/hsz/idea-gitignore/issues/154">154</a>, <a href="https://github.com/hsz/idea-gitignore/issues/204">204</a>)</li>
-            <li>Ignored files are no longer being colored correctly (<a href="https://github.com/hsz/idea-gitignore/issues/174">174</a>)</li>
-            <li>Fatal Error on changing project name (<a href="https://github.com/hsz/idea-gitignore/issues/203">203</a>, <a href="https://github.com/hsz/idea-gitignore/issues/193">193</a>, <a href="https://github.com/hsz/idea-gitignore/issues/170">170</a>)</li>
-            <li>.gitignore\_global causes plugin to crash (<a href="https://github.com/hsz/idea-gitignore/issues/198">198</a>)</li>
-            <li>ClassCastException when editing .gitignore on remote file system (<a href="https://github.com/hsz/idea-gitignore/issues/196">196</a>)</li>
-            <li>ClassCastException on JSP (<a href="https://github.com/hsz/idea-gitignore/issues/195">195</a>)</li>
-            <li>Global gitignore section scrolling (<a href="https://github.com/hsz/idea-gitignore/issues/186">186</a>)</li>
-            <li>"Unclosed character class" warning is wrong (<a href="https://github.com/hsz/idea-gitignore/issues/166">166</a>)</li>
-            <li>IgnoreSettings settings must produce stable state (<a href="https://github.com/hsz/idea-gitignore/issues/162">162</a>)</li>
-            <li>Global ignore error (<a href="https://github.com/hsz/idea-gitignore/issues/190">190</a>)</li>
-            <li>IgnoreParserUtil exception (<a href="https://github.com/hsz/idea-gitignore/issues/211">211</a>)</li>
+            <li>NoSuchMethodError in IDEA 2016.2 EAP (<a href="https://github.com/hsz/idea-gitignore/issues/225">225</a>)</li>
+            <li>ConcurrentModificationException (<a href="https://github.com/hsz/idea-gitignore/issues/221">221</a>)</li>
+            <li>ClassCastException: ...FileImpl cannot be cast to IgnoreFile (<a href="https://github.com/hsz/idea-gitignore/issues/220">220</a>)</li>
+            <li>Problem files coloring (<a href="https://github.com/hsz/idea-gitignore/issues/219">219</a>)</li>
+            <li>Subfolders recognition (<a href="https://github.com/hsz/idea-gitignore/issues/218">218</a>)</li>
+            <li>Tricky ignore rules issue (<a href="https://github.com/hsz/idea-gitignore/issues/214">214</a>)</li>
+            <li>"Entry never used" invalid (<a href="https://github.com/hsz/idea-gitignore/issues/213">213</a>)</li>
+            <li>NoSuchMethodError exception (<a href="https://github.com/hsz/idea-gitignore/issues/211">211</a>)</li>
+            <li>Double star pattern /\*\* doesn't gray out files in subdirectories (<a href="https://github.com/hsz/idea-gitignore/issues/165">165</a>)    
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

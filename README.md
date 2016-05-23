@@ -99,31 +99,29 @@ Usage
 Changelog
 ---------
 
-## [v1.3.3](https://github.com/hsz/idea-gitignore/tree/v1.3.3) (2016-04-04)
+## [v1.4](https://github.com/hsz/idea-gitignore/tree/v1.4) (2016-05-23)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.2...v1.3.3)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.3.3...v1.4)
 
 **Implemented enhancements:**
 
-- Import / Export templates [\#194](https://github.com/hsz/idea-gitignore/issues/194)
-- Generate rules without duplicates [\#164](https://github.com/hsz/idea-gitignore/issues/164)
-- Global gitignore section resize [\#187](https://github.com/hsz/idea-gitignore/issues/187)
-- .eslintignore support [\#175](https://github.com/hsz/idea-gitignore/issues/175)
-- .cfignore support [\#161](https://github.com/hsz/idea-gitignore/issues/161)
+- Add Unversioned Files to .gitignore (Git) [\#124](https://github.com/hsz/idea-gitignore/issues/124)
+- Add to 'exclude' (Git) [\#133](https://github.com/hsz/idea-gitignore/issues/133)
+- Exclude file preview (Git) [\#132](https://github.com/hsz/idea-gitignore/issues/132)
+- Allow user to specify position of appended entries [\#216](https://github.com/hsz/idea-gitignore/issues/216)
+- JetPack (.jpmignore) support [\#215](https://github.com/hsz/idea-gitignore/issues/215)
 
 **Fixed bugs:**
 
-- CPU performance fixes [\#154](https://github.com/hsz/idea-gitignore/issues/154), [\#204](https://github.com/hsz/idea-gitignore/issues/204)
-- Ignored files are no longer being colored correctly [\#174](https://github.com/hsz/idea-gitignore/issues/174)
-- Fatal Error on changing project name [\#203](https://github.com/hsz/idea-gitignore/issues/203) [\#193](https://github.com/hsz/idea-gitignore/issues/193) [\#170](https://github.com/hsz/idea-gitignore/issues/170)
-- .gitignore\_global causes plugin to crash [\#198](https://github.com/hsz/idea-gitignore/issues/198)
-- ClassCastException when editing .gitignore on remote file system [\#196](https://github.com/hsz/idea-gitignore/issues/196)
-- ClassCastException on JSP [\#195](https://github.com/hsz/idea-gitignore/issues/195)
-- Global gitignore section scrolling [\#186](https://github.com/hsz/idea-gitignore/issues/186)
-- "Unclosed character class" warning is wrong [\#166](https://github.com/hsz/idea-gitignore/issues/166)
-- IgnoreSettings settings must produce stable state [\#162](https://github.com/hsz/idea-gitignore/issues/162)
-- Global ignore error [\#190](https://github.com/hsz/idea-gitignore/issues/190)
-- IgnoreParserUtil exception [\#211](https://github.com/hsz/idea-gitignore/issues/211)
+- NoSuchMethodError in IDEA 2016.2 EAP [\#225](https://github.com/hsz/idea-gitignore/issues/225)
+- ConcurrentModificationException [\#221](https://github.com/hsz/idea-gitignore/issues/221)
+- ClassCastException: ...FileImpl cannot be cast to IgnoreFile [\#220](https://github.com/hsz/idea-gitignore/issues/220)
+- Problem files coloring [\#219](https://github.com/hsz/idea-gitignore/issues/219)
+- Subfolders recognition [\#218](https://github.com/hsz/idea-gitignore/issues/218)
+- Tricky ignore rules issue [\#214](https://github.com/hsz/idea-gitignore/issues/214)
+- "Entry never used" invalid [\#213](https://github.com/hsz/idea-gitignore/issues/213)
+- NoSuchMethodError exception [\#211](https://github.com/hsz/idea-gitignore/issues/211)
+- Double star pattern /\*\* doesn't gray out files in subdirectories [\#165](https://github.com/hsz/idea-gitignore/issues/165)
 
 
 [Full Changelog History](./CHANGELOG.md)
