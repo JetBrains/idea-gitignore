@@ -44,6 +44,7 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,13 +66,14 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
     /** Rules set to add. */
     private final Set<String> content;
 
-    /**
-     * {@link PsiDocumentManager} instance.
-     */
+    /** {@link PsiDocumentManager} instance. */
     private final PsiDocumentManager manager;
 
     /** Ignore duplicated entries. */
     private final boolean ignoreDuplicates;
+
+    /** Defines if new content should be inserted at the cursor's position or at the document end. */
+    private final boolean insertAtCursor;
 
     /**
      * Builds a new instance of {@link AppendFileCommandAction}.
@@ -89,6 +91,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         this.content = content;
         this.manager = PsiDocumentManager.getInstance(project);
         this.ignoreDuplicates = ignoreDuplicates;
+        this.insertAtCursor = IgnoreSettings.getInstance().isInsertAtCursor();
     }
 
     /**
@@ -135,11 +138,14 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
         });
 
         int offset = document.getTextLength();
-        Editor[] editors = EditorFactory.getInstance().getEditors(document);
-        if (editors.length > 0) {
-            VisualPosition position = editors[0].getSelectionModel().getSelectionStartPosition();
-            if (position != null) {
-                offset = document.getLineStartOffset(position.line);
+
+        if (insertAtCursor) {
+            Editor[] editors = EditorFactory.getInstance().getEditors(document);
+            if (editors.length > 0) {
+                VisualPosition position = editors[0].getSelectionModel().getSelectionStartPosition();
+                if (position != null) {
+                    offset = document.getLineStartOffset(position.line);
+                }
             }
         }
 
@@ -170,8 +176,12 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                 entry = StringUtil.join(entryLines, "\n");
             }
 
-            entry += "\n";
-            document.insertString(offset, StringUtil.replace(entry, "\r", ""));
+            entry = StringUtil.replace(entry, "\r", "") + "\n";
+            if (!insertAtCursor && !document.getText().endsWith("\n")) {
+                entry = "\n" + entry;
+            }
+
+            document.insertString(offset, entry);
             offset += entry.length();
         }
 

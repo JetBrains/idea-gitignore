@@ -112,6 +112,11 @@ public class IgnoreSettingsPanel implements Disposable {
     public JCheckBox outerIgnoreRules;
 
     /**
+     * Defines if new content should be inserted at the cursor's position or at the document end.
+     */
+    public JCheckBox insertAtCursor;
+
+    /**
      * Splitter element.
      */
     private Splitter templatesSplitter;

@@ -58,7 +58,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
         OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight"),
-        VERSION("version");
+        INSERT_AT_CURSOR("insertAtCursor"), VERSION("version");
 
         private final String key;
 
@@ -96,6 +96,11 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Enable outer ignore rules.
      */
     private boolean outerIgnoreRules = true;
+
+    /**
+     * Insert new entries at the cursor's position or at the document end.
+     */
+    private boolean insertAtCursor = false;
 
     /**
      * Plugin version.
@@ -308,6 +313,25 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     public void setOuterIgnoreRules(boolean outerIgnoreRules) {
         this.notifyOnChange(KEY.OUTER_IGNORE_RULES, this.outerIgnoreRules, outerIgnoreRules);
         this.outerIgnoreRules = outerIgnoreRules;
+    }
+
+    /**
+     * Check if new entries should be inserted at the cursor's position or at the document end.
+     *
+     * @return entries should be inserted at the cursor's position
+     */
+    public boolean isInsertAtCursor() {
+        return insertAtCursor;
+    }
+
+    /**
+     * Defines that new entries should be inserted at the cursor's position or at the document end.
+     *
+     * @param insertAtCursor position
+     */
+    public void setInsertAtCursor(boolean insertAtCursor) {
+        this.notifyOnChange(KEY.INSERT_AT_CURSOR, this.insertAtCursor, insertAtCursor);
+        this.insertAtCursor = insertAtCursor;
     }
 
     /**

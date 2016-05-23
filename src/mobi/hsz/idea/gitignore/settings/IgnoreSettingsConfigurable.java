@@ -102,6 +102,7 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
                 || settingsPanel.templatesListPanel == null || !Utils.equalLists(settings.getUserTemplates(), settingsPanel.templatesListPanel.getList())
                 || settingsPanel.ignoredFileStatus == null || settings.isIgnoredFileStatus() != settingsPanel.ignoredFileStatus.isSelected()
                 || settingsPanel.outerIgnoreRules == null || settings.isOuterIgnoreRules() != settingsPanel.outerIgnoreRules.isSelected()
+                || settingsPanel.insertAtCursor == null || settings.isInsertAtCursor() != settingsPanel.insertAtCursor.isSelected()
                 || settingsPanel.languagesTable == null
                     || !((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).equalSettings(settings.getLanguagesSettings())
                 ;
@@ -117,6 +118,7 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         settings.setUserTemplates(settingsPanel.templatesListPanel.getList());
         settings.setIgnoredFileStatus(settingsPanel.ignoredFileStatus != null && settingsPanel.ignoredFileStatus.isSelected());
         settings.setOuterIgnoreRules(settingsPanel.outerIgnoreRules != null && settingsPanel.outerIgnoreRules.isSelected());
+        settings.setInsertAtCursor(settingsPanel.insertAtCursor != null && settingsPanel.insertAtCursor.isSelected());
         settings.setLanguagesSettings(((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).getSettings());
     }
 
@@ -130,6 +132,7 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         if (settingsPanel.templatesListPanel != null) settingsPanel.templatesListPanel.resetForm(settings.getUserTemplates());
         if (settingsPanel.ignoredFileStatus != null) settingsPanel.ignoredFileStatus.setSelected(settings.isIgnoredFileStatus());
         if (settingsPanel.outerIgnoreRules != null) settingsPanel.outerIgnoreRules.setSelected(settings.isOuterIgnoreRules());
+        if (settingsPanel.insertAtCursor != null) settingsPanel.insertAtCursor.setSelected(settings.isInsertAtCursor());
         if (settingsPanel.languagesTable != null) {
             IgnoreSettingsPanel.LanguagesTableModel model = (IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel();
             model.update(settings.getLanguagesSettings().clone());
