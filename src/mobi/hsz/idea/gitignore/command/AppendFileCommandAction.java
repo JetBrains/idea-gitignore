@@ -176,8 +176,11 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                 entry = StringUtil.join(entryLines, "\n");
             }
 
-            entry = StringUtil.replace(entry, "\r", "") + "\n";
-            if (!insertAtCursor && !document.getText().endsWith("\n")) {
+            entry = StringUtil.replace(entry, "\r", "");
+            if (!StringUtil.isEmpty(entry)) {
+                entry += "\n";
+            }
+            if (!insertAtCursor && !document.getText().endsWith("\n") && !StringUtil.isEmpty(entry)) {
                 entry = "\n" + entry;
             }
 

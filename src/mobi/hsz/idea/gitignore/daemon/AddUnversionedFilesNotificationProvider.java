@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2016 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,36 +25,38 @@
 package mobi.hsz.idea.gitignore.daemon;
 
 import com.intellij.openapi.fileEditor.FileEditor;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
+import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.WeakKeyWeakValueHashMap;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
-import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
+import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
-import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
+import mobi.hsz.idea.gitignore.util.ExternalExec;
 import mobi.hsz.idea.gitignore.util.Properties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
- * Editor notification provider that checks if there is {@link mobi.hsz.idea.gitignore.lang.kind.GitLanguage#getFilename()} in root directory
- * and suggest to create one.
+ * Editor notification provider that suggests to add unversioned files to the .gitignore file.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.3.3
+ * @since 1.4
  */
-public class MissingGitignoreNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
+public class AddUnversionedFilesNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
     /** Notification key. */
     private static final Key<EditorNotificationPanel> KEY = Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
 
@@ -67,13 +69,20 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     /** Plugin settings holder. */
     private final IgnoreSettings settings;
 
+    /** List of unignored files. */
+    @NotNull
+    private List<String> unignoredFiles = ContainerUtil.newArrayList();
+
+    /** Map to obtain if file was handled. */
+    private final WeakKeyWeakValueHashMap<VirtualFile, Boolean> halndedMap = new WeakKeyWeakValueHashMap<VirtualFile, Boolean>();
+
     /**
-     * Builds a new instance of {@link MissingGitignoreNotificationProvider}.
+     * Builds a new instance of {@link AddUnversionedFilesNotificationProvider}.
      *
      * @param project       current project
      * @param notifications notifications component
      */
-    public MissingGitignoreNotificationProvider(Project project, @NotNull EditorNotifications notifications) {
+    public AddUnversionedFilesNotificationProvider(Project project, @NotNull EditorNotifications notifications) {
         this.project = project;
         this.notifications = notifications;
         this.settings = IgnoreSettings.getInstance();
@@ -101,31 +110,26 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     @Override
     public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor) {
         // Break if feature is disabled in the Settings
-        if (!settings.isMissingGitignore()) {
+        if (!settings.isAddUnversionedFiles()) {
             return null;
         }
         // Break if user canceled previously this notification
-        if (Properties.isIgnoreMissingGitignore(project)) {
-            return null;
-        }
-        // Break if there is no Git directory in the project
-        String vcsDirectory = GitLanguage.INSTANCE.getVcsDirectory();
-        if (vcsDirectory == null) {
+        if (Properties.isAddUnversionedFiles(project)) {
             return null;
         }
 
-        VirtualFile baseDir = project.getBaseDir();
-        if (baseDir == null) {
+        if (halndedMap.get(file) != null) {
             return null;
         }
 
-        VirtualFile gitDirectory = baseDir.findChild(vcsDirectory);
-        if (gitDirectory == null || !gitDirectory.isDirectory()) {
+        final IgnoreLanguage language = IgnoreBundle.obtainLanguage(file);
+        if (language == null || !language.isVCS()) {
             return null;
         }
-        // Break if there is Gitignore file already
-        VirtualFile gitignoreFile = baseDir.findChild(GitLanguage.INSTANCE.getFilename());
-        if (gitignoreFile != null) {
+
+        unignoredFiles.clear();
+        unignoredFiles.addAll(ExternalExec.getUnignoredFiles(GitLanguage.INSTANCE, file.getParent()));
+        if (unignoredFiles.isEmpty()) {
             return null;
         }
 
@@ -141,22 +145,25 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     private EditorNotificationPanel createPanel(@NotNull final Project project) {
         final EditorNotificationPanel panel = new EditorNotificationPanel();
         final IgnoreFileType fileType = GitFileType.INSTANCE;
-        panel.setText(IgnoreBundle.message("daemon.missingGitignore"));
-        panel.createActionLabel(IgnoreBundle.message("daemon.missingGitignore.create"), new Runnable() {
+        panel.setText(IgnoreBundle.message("daemon.addUnversionedFiles"));
+        panel.createActionLabel(IgnoreBundle.message("daemon.addUnversionedFiles.create"), new Runnable() {
             @Override
             public void run() {
-                PsiDirectory directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
-                if (directory != null) {
-                    PsiFile file = new CreateFileCommandAction(project, directory, fileType).execute().getResultObject();
-                    FileEditorManager.getInstance(project).openFile(file.getVirtualFile(), true);
-                    new GeneratorDialog(project, file).show();
+                final VirtualFile virtualFile = project.getBaseDir().findChild(GitLanguage.INSTANCE.getFilename());
+                final PsiFile file = virtualFile != null ? PsiManager.getInstance(project).findFile(virtualFile) : null;
+                if (file != null) {
+                    final String content = StringUtil.join(unignoredFiles, "\n");
+
+                    new AppendFileCommandAction(project, file, content, true).execute();
+                    halndedMap.put(virtualFile, true);
+                    notifications.updateAllNotifications();
                 }
             }
         });
         panel.createActionLabel(IgnoreBundle.message("daemon.cancel"), new Runnable() {
             @Override
             public void run() {
-                Properties.setIgnoreMissingGitignore(project);
+                Properties.setAddUnversionedFiles(project);
                 notifications.updateAllNotifications();
             }
         });

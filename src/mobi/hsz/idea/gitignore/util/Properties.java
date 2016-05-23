@@ -38,6 +38,9 @@ public class Properties {
     /** Ignore missing gitignore property key. */
     private static final String PROP_IGNORE_MISSING_GITIGNORE = "ignore_missing_gitignore";
 
+    /** Add unversioned files property key. */
+    private static final String PROP_ADD_UNVERSIONED_FILES = "prop_add_unversioned_files";
+
     /** Private constructor to prevent creating {@link Properties} instance. */
     private Properties() {
     }
@@ -59,5 +62,24 @@ public class Properties {
      */
     public static void setIgnoreMissingGitignore(@NotNull Project project) {
         PropertiesComponent.getInstance(project).setValue(PROP_IGNORE_MISSING_GITIGNORE, Boolean.TRUE.toString());
+    }
+
+    /**
+     * Checks value of {@link #PROP_ADD_UNVERSIONED_FILES} key in {@link PropertiesComponent}.
+     *
+     * @param project current project
+     * @return {@link #PROP_ADD_UNVERSIONED_FILES} value
+     */
+    public static boolean isAddUnversionedFiles(@NotNull Project project) {
+        return PropertiesComponent.getInstance(project).getBoolean(PROP_ADD_UNVERSIONED_FILES, false);
+    }
+
+    /**
+     * Sets value of {@link #PROP_ADD_UNVERSIONED_FILES} key in {@link PropertiesComponent} to <code>true</code>.
+     *
+     * @param project current project
+     */
+    public static void setAddUnversionedFiles(@NotNull Project project) {
+        PropertiesComponent.getInstance(project).setValue(PROP_ADD_UNVERSIONED_FILES, Boolean.TRUE.toString());
     }
 }

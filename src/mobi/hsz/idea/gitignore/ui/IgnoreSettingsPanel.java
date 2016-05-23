@@ -117,6 +117,11 @@ public class IgnoreSettingsPanel implements Disposable {
     public JCheckBox insertAtCursor;
 
     /**
+     * Suggest to add unversioned files to the .gitignore file.
+     */
+    public JCheckBox addUnversionedFiles;
+
+    /**
      * Splitter element.
      */
     private Splitter templatesSplitter;

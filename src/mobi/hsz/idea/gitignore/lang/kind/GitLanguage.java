@@ -25,24 +25,15 @@
 package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import git4idea.config.GitVcsApplicationSettings;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
+import mobi.hsz.idea.gitignore.util.ExternalExec;
 import mobi.hsz.idea.gitignore.util.Icons;
-import mobi.hsz.idea.gitignore.util.ProcessWithTimeout;
-import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * Gitignore {@link IgnoreLanguage} definition.
@@ -63,30 +54,7 @@ public class GitLanguage extends IgnoreLanguage {
                     @Nullable
                     @Override
                     public VirtualFile fetch(@NotNull Project project) {
-                        if (Utils.isGitPluginEnabled()) {
-                            final String bin = GitVcsApplicationSettings.getInstance().getPathToGit();
-                            if (StringUtil.isNotEmpty(bin)) {
-                                try {
-                                    Process pr = Runtime.getRuntime().exec(bin + " config --global core.excludesfile");
-                                    pr.waitFor();
-
-                                    ProcessWithTimeout processWithTimeout = new ProcessWithTimeout(pr);
-                                    int exitCode = processWithTimeout.waitForProcess(3000);
-                                    if (exitCode == Integer.MIN_VALUE) {
-                                        pr.destroy();
-                                    }
-
-                                    BufferedReader reader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-                                    String path = Utils.resolveUserDir(reader.readLine());
-                                    if (StringUtil.isNotEmpty(path)) {
-                                        return VfsUtil.findFileByIoFile(new File(path), true);
-                                    }
-                                } catch (IOException ignored) {
-                                } catch (InterruptedException ignored) {
-                                }
-                            }
-                        }
-                        return null;
+                        return ExternalExec.getGitExcludesFile();
                     }
                 },
 

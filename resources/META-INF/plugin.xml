@@ -117,6 +117,8 @@
 
         <editorNotificationProvider
             implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider"/>
+        <editorNotificationProvider
+            implementation="mobi.hsz.idea.gitignore.daemon.AddUnversionedFilesNotificationProvider"/>
 
         <fileTypeFactory
             implementation="mobi.hsz.idea.gitignore.file.IgnoreFileTypeFactory"/>

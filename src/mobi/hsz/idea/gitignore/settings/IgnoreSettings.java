@@ -58,7 +58,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
         OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight"),
-        INSERT_AT_CURSOR("insertAtCursor"), VERSION("version");
+        INSERT_AT_CURSOR("insertAtCursor"), ADD_UNVERSIONED_FILES("addUnversionedFiles"), VERSION("version");
 
         private final String key;
 
@@ -101,6 +101,11 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Insert new entries at the cursor's position or at the document end.
      */
     private boolean insertAtCursor = false;
+
+    /**
+     * Suggest to add unversioned files to the .gitignore file.
+     */
+    private boolean addUnversionedFiles = true;
 
     /**
      * Plugin version.
@@ -332,6 +337,25 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     public void setInsertAtCursor(boolean insertAtCursor) {
         this.notifyOnChange(KEY.INSERT_AT_CURSOR, this.insertAtCursor, insertAtCursor);
         this.insertAtCursor = insertAtCursor;
+    }
+
+    /**
+     * Check if suggesting of adding unversioned files to the .gitignore file is enabled.
+     *
+     * @return entries should be inserted at the cursor's position
+     */
+    public boolean isAddUnversionedFiles() {
+        return addUnversionedFiles;
+    }
+
+    /**
+     * Sets suggesting of adding unversioned files to the .gitignore file.
+     *
+     * @param addUnversionedFiles suggest for .gitignore files
+     */
+    public void setAddUnversionedFiles(boolean addUnversionedFiles) {
+        this.notifyOnChange(KEY.ADD_UNVERSIONED_FILES, this.addUnversionedFiles, addUnversionedFiles);
+        this.addUnversionedFiles = addUnversionedFiles;
     }
 
     /**
