@@ -45,7 +45,11 @@ public class BazaarLanguage extends IgnoreLanguage {
         super("Bazaar", "bzrignore", ".bzr", Icons.BAZAAR);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link BazaarFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

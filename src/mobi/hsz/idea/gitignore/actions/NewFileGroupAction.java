@@ -33,10 +33,13 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 
 /**
+ * Creates a group of {@link NewFileAction} instances.
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.9
  */
 public class NewFileGroupAction extends DefaultActionGroup implements DumbAware {
+    /** Constructor. */
     public NewFileGroupAction() {
         setPopup(true);
         Presentation presentation = getTemplatePresentation();

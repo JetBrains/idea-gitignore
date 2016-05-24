@@ -48,10 +48,16 @@ import java.util.List;
  * @since 1.4
  */
 public class ExternalExec {
+    /** Checks if Git plugin is enabled. */
     private static final boolean GIT_ENABLED = Utils.isGitPluginEnabled();
 
+    /** Git command to get user's excludesfile path. */
     private static final String GIT_CONFIG_EXCLUDES_FILE = "config --global core.excludesfile";
+
+    /** Git command to list unversioned files. */
     private static final String GIT_UNIGNORED_FILES = "clean -dn";
+
+    /** Prefix to remove from the {@link #GIT_UNIGNORED_FILES} command's result. */
     private static final String GIT_UNIGNORED_FILES_PREFIX = "Would remove";
 
     /**

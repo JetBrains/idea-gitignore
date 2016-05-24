@@ -24,6 +24,8 @@
 
 package mobi.hsz.idea.gitignore.util;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Abstracts a listenable object.
  *
@@ -31,19 +33,17 @@ package mobi.hsz.idea.gitignore.util;
  * @since 1.0.3
  */
 public interface Listenable<T> {
-
     /**
      * Add the given listener. The listener will be executed in the containing instance's thread.
      *
      * @param listener listener to add
      */
-    void addListener(T listener);
+    void addListener(@NotNull T listener);
 
     /**
      * Remove the given listener.
      *
      * @param listener listener to remove
      */
-    void removeListener(T listener);
-
+    void removeListener(@NotNull T listener);
 }

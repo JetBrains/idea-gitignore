@@ -47,10 +47,6 @@ import java.util.ResourceBundle;
  * @since 0.4
  */
 public class IgnoreBundle {
-    /** Plugin name. */
-    @NonNls
-    public static final String PLUGIN_NAME = ".ignore";
-
     /** Gitignore plugin ID. */
     @NonNls
     public static final String PLUGIN_ID = "mobi.hsz.idea.gitignore";

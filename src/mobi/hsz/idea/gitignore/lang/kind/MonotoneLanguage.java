@@ -32,7 +32,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Npm {@link IgnoreLanguage} definition.
+ * Monotone {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.0.1
@@ -46,7 +46,11 @@ public class MonotoneLanguage extends IgnoreLanguage {
         super("Monotone", "mtn-ignore", "_MTN", Icons.MONOTONE);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link MonotoneFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.reference;
 
+import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
@@ -57,8 +58,10 @@ import java.util.regex.Pattern;
  * @since 0.5
  */
 public class IgnoreReferenceSet extends FileReferenceSet {
+    /** Instance of the Cache {@link ProjectComponent} that retrieves matching files using given {@link Pattern}. */
     private final FilesIndexCacheProjectComponent filesIndexCache;
 
+    /** Constructor. */
     public IgnoreReferenceSet(@NotNull IgnoreEntry element) {
         super(element);
         filesIndexCache = FilesIndexCacheProjectComponent.getInstance(element.getProject());
@@ -125,9 +128,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         return false;
     }
 
-    /**
-     * Parses entry, searches for file references and stores them in {@link #myReferences}.
-     */
+    /** Parses entry, searches for file references and stores them in {@link #myReferences}. */
     @Override
     protected void reparse() {
         String str = StringUtil.trimEnd(getPathString(), getSeparatorString());
@@ -167,16 +168,12 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         myReferences = referencesList.toArray(new FileReference[referencesList.size()]);
     }
 
-    /**
-     * Custom definition of {@link FileReference}.
-     */
+    /** Custom definition of {@link FileReference}. */
     private class IgnoreReference extends FileReference {
+        /** Concurrent cache map. */
         private final ConcurrentMap<String, Collection<VirtualFile>> cacheMap;
 
-
-        /**
-         * Builds an instance of {@link IgnoreReferenceSet.IgnoreReference}.
-         */
+        /** Builds an instance of {@link IgnoreReferenceSet.IgnoreReference}. */
         public IgnoreReference(@NotNull FileReferenceSet fileReferenceSet, TextRange range, int index, String text) {
             super(fileReferenceSet, range, index, text);
             cacheMap = ContainerUtil.newConcurrentMap();

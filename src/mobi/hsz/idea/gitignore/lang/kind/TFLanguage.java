@@ -31,7 +31,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Npm {@link IgnoreLanguage} definition.
+ * TFLanguage {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.1
@@ -45,7 +45,11 @@ public class TFLanguage extends IgnoreLanguage {
         super("Team Foundation", "tfignore", null, Icons.TF);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link TFFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

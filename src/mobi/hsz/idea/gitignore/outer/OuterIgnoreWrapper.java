@@ -60,19 +60,29 @@ import java.util.List;
  * @since 1.1
  */
 public class OuterIgnoreWrapper implements Disposable {
+    /** Pixels offset to handle drag event. */
     private static final int DRAG_OFFSET = 10;
 
+    /** Main wrapper panel. */
     private final JPanel panel;
+
+    /** List of outer editors in the wrapper. */
     private final List<Editor> outerEditors = ContainerUtil.newArrayList();
 
     /** The settings storage object. */
     private final IgnoreSettings settings;
 
+    /** Current panel's height. */
     private int dragPanelHeight;
+
+    /** Y position of the drag event. */
     private int dragYOnScreen;
+
+    /** Obtains if it's in drag mode. */
     private boolean drag;
 
     @SuppressWarnings("unchecked")
+    /** Constructor. */
     public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final IgnoreLanguage language, @NotNull final List<VirtualFile> outerFiles) {
         settings = IgnoreSettings.getInstance();
 
@@ -163,6 +173,7 @@ public class OuterIgnoreWrapper implements Disposable {
         return panel;
     }
 
+    /** Disposes all outer editors stored in {@link #outerEditors}. */
     @Override
     public void dispose() {
         for (Editor outerEditor : outerEditors) {

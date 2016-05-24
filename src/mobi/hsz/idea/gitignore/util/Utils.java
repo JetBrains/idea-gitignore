@@ -143,7 +143,7 @@ public class Utils {
      * Finds {@link PsiFile} for the given {@link VirtualFile} instance. If file is outside current project,
      * it's required to create new {@link PsiFile} manually.
      *
-     * @param project current project
+     * @param project     current project
      * @param virtualFile to handle
      * @return {@link PsiFile} instance
      */
@@ -474,7 +474,7 @@ public class Utils {
      * @return read-only collection consisting of elements from both collections
      */
     @NotNull
-    @Contract(pure=true)
+    @Contract(pure = true)
     public static <T> List<T> intersection(@NotNull Collection<? extends T> collection1, @NotNull Collection<? extends T> collection2) {
         List<T> result = new ArrayList<T>();
         for (T t : collection1) {

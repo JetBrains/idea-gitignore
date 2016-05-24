@@ -166,7 +166,8 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
             if (icon != null) {
                 panel.icon(icon);
             }
-        } catch (NoSuchMethodError ignored) {}
+        } catch (NoSuchMethodError ignored) {
+        }
 
         return panel;
     }

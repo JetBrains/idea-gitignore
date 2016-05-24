@@ -61,7 +61,7 @@ public class IgnoreColorSettingsPage implements ColorSettingsPage {
      */
     private static final String SAMPLE_GITIGNORE = loadSampleGitignore();
 
-    /**  Attributes descriptor list. */
+    /** Attributes descriptor list. */
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor(IgnoreBundle.message("highlighter.header"), IgnoreHighlighterColors.HEADER),
             new AttributesDescriptor(IgnoreBundle.message("highlighter.section"), IgnoreHighlighterColors.SECTION),

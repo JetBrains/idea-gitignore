@@ -57,9 +57,13 @@ import java.util.concurrent.ConcurrentMap;
  * @since 0.5
  */
 public class IgnoreCoverEntryInspection extends LocalInspectionTool {
+    /** Cache key separator. */
     private static final String SEPARATOR = "$";
 
+    /** Cache map to store handled entries' paths. */
     private final ConcurrentMap<String, Set<String>> cacheMap;
+
+    /** {@link VirtualFileManager} instance. */
     private final VirtualFileManager virtualFileManager;
 
     /** Watches for the changes in the files tree and triggers the cache clear. */
@@ -198,7 +202,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
      * Stores fetched data in {@link #cacheMap} to limit the queries to the files tree.
      *
      * @param contextDirectory current context
-     * @param entry to check
+     * @param entry            to check
      * @return paths list
      */
     private Set<String> getPathsSet(VirtualFile contextDirectory, IgnoreEntry entry) {

@@ -69,6 +69,7 @@ public class CacheMap {
         IGNORED, UNIGNORED, UNTOUCHED
     }
 
+    /** Constructor. */
     public CacheMap(Project project) {
         this.project = project;
         this.statusManager = FileStatusManager.getInstance(project);

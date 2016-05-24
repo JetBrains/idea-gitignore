@@ -45,7 +45,11 @@ public class JetpackLanguage extends IgnoreLanguage {
         super("Jetpack", "jpmignore", null, Icons.JETPACK);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link JetpackFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

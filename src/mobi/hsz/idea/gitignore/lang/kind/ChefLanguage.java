@@ -45,7 +45,11 @@ public class ChefLanguage extends IgnoreLanguage {
         super("Chef", "chefignore", null, Icons.CHEF);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link ChefFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

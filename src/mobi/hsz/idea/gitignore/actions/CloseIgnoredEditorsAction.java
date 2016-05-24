@@ -41,17 +41,33 @@ import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider;
  * @since 1.2
  */
 public class CloseIgnoredEditorsAction extends CloseEditorsActionBase {
+    /**
+     * Obtains if editor is allowed to be closed.
+     *
+     * @return editor is allowed to be closed
+     */
     @Override
     protected boolean isFileToClose(final EditorComposite editor, final EditorWindow window) {
         final FileStatusManager fileStatusManager = FileStatusManager.getInstance(window.getManager().getProject());
         return fileStatusManager != null && fileStatusManager.getStatus(editor.getFile()).equals(IgnoreFileStatusProvider.IGNORED);
     }
 
+    /**
+     * Checks if action is available in UI.
+     *
+     * @return action is enabled
+     */
     @Override
     protected boolean isActionEnabled(final Project project, final AnActionEvent event) {
         return super.isActionEnabled(project, event) && ProjectLevelVcsManager.getInstance(project).getAllActiveVcss().length > 0;
     }
 
+    /**
+     * Returns presentation text.
+     *
+     * @param inSplitter is in splitter
+     * @return label text
+     */
     @Override
     protected String getPresentationText(final boolean inSplitter) {
         return inSplitter ? IgnoreBundle.message("action.closeIgnored.editors.in.tab.group") : IgnoreBundle.message("action.closeIgnored.editors");

@@ -44,6 +44,7 @@ import java.util.List;
  * @since 1.0
  */
 public class SyntaxCompletionContributor extends CompletionContributor {
+    /** Allowed values for the completion. */
     private static final List<LookupElementBuilder> SYNTAX_ELEMENTS = ContainerUtil.newArrayList();
     static {
         for (IgnoreBundle.Syntax syntax : IgnoreBundle.Syntax.values()) {
@@ -67,9 +68,7 @@ public class SyntaxCompletionContributor extends CompletionContributor {
         );
     }
 
-    /**
-     * Allow autoPopup to appear after custom symbol
-     */
+    /** Allow autoPopup to appear after custom symbol. */
     @Override
     public boolean invokeAutoPopup(@NotNull PsiElement position, char typeChar) {
         return true;

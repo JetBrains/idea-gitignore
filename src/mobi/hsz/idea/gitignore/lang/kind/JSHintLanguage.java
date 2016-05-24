@@ -45,7 +45,11 @@ public class JSHintLanguage extends IgnoreLanguage {
         super("JSHint", "jshintignore", null, Icons.JSHINT);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link JSHintFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

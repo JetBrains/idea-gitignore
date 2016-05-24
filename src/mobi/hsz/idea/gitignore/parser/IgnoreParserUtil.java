@@ -29,36 +29,61 @@ import com.intellij.lang.parser.GeneratedParserUtilBase;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Custom implementation of {@link GeneratedParserUtilBase}.
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8.1
  */
 public class IgnoreParserUtil extends GeneratedParserUtilBase {
-
+    /**
+     * Returns current position in the {@link PsiBuilder}.
+     *
+     * @param builder_ builder
+     * @return current position
+     */
     public static int current_position_(PsiBuilder builder_) {
         try {
             if (GeneratedParserUtilBase.class.getMethod("current_position_", PsiBuilder.class) != null) {
                 return GeneratedParserUtilBase.current_position_(builder_);
             }
-        } catch (NoSuchMethodException ignored) {}
+        } catch (NoSuchMethodException ignored) {
+        }
         return 0;
     }
 
+    /**
+     * Checks if next token of {@link PsiBuilder} is in the given tokens list.
+     *
+     * @param builder_  builder
+     * @param frameName frame name
+     * @param tokens    tokens list
+     * @return builder is in the tokens list
+     */
     public static boolean nextTokenIs(PsiBuilder builder_, String frameName, IElementType... tokens) {
         try {
             if (GeneratedParserUtilBase.class.getMethod("nextTokenIs", PsiBuilder.class, String.class, IElementType.class) != null) {
                 return GeneratedParserUtilBase.nextTokenIs(builder_, frameName, tokens);
             }
-        } catch (NoSuchMethodException ignored) {}
+        } catch (NoSuchMethodException ignored) {
+        }
         return true;
     }
 
+    /**
+     * Checks if at the given position there is empty element.
+     *
+     * @param builder_       builder
+     * @param funcName_      function name
+     * @param prev_position_ previous position
+     * @return empty element at the given position
+     */
     public static boolean empty_element_parsed_guard_(PsiBuilder builder_, String funcName_, int prev_position_) {
         try {
             if (GeneratedParserUtilBase.class.getMethod("nextTokenIs", PsiBuilder.class, String.class, int.class) != null) {
                 return GeneratedParserUtilBase.empty_element_parsed_guard_(builder_, funcName_, prev_position_);
             }
-        } catch (NoSuchMethodException ignored) {}
+        } catch (NoSuchMethodException ignored) {
+        }
         return true;
     }
-
 }

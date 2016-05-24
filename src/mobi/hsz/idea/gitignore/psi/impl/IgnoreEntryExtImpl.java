@@ -36,19 +36,42 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Pattern;
 
+/**
+ * Custom {@link IgnoreElementImpl} implementation.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.5
+ */
 public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl implements IgnoreEntry {
+    /** Constructor. */
     public IgnoreEntryExtImpl(ASTNode node) {
         super(node);
     }
 
+    /**
+     * Checks if the first child is negated - i.e. `!file.txt` entry.
+     *
+     * @return first child is negated
+     */
     public boolean isNegated() {
         return getFirstChild() instanceof IgnoreNegation;
     }
 
+    /**
+     * Checks if current entry is a directory - i.e. `dir/`.
+     *
+     * @return is directory
+     */
     public boolean isDirectory() {
         return this instanceof IgnoreEntryFile;
     }
 
+    /**
+     * Checks if current entry is a file - i.e. `file.txt`.
+     *
+     * @return is file
+     * @see {@link #isDirectory()}
+     */
     public boolean isFile() {
         return !isDirectory();
     }

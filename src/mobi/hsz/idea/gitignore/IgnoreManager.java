@@ -70,19 +70,39 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @since 1.0
  */
 public class IgnoreManager extends AbstractProjectComponent {
+    /** Delay between checking if psiManager was initialized. */
     private static final int REQUEST_DELAY = 200;
+
+    /** Thread executor name. */
     private static final String PROCESS_NAME = "Ignore indexing";
 
+    /** {@link CacheMap} instance. */
     private final CacheMap cache;
+
+    /** {@link PsiManager} instance. */
     private final PsiManagerImpl psiManager;
+
+    /** {@link VirtualFileManager} instance. */
     private final VirtualFileManager virtualFileManager;
+
+    /** {@link IgnoreSettings} instance. */
     private final IgnoreSettings settings;
+
+    /** {@link MessageBusConnection} instance. */
     private MessageBusConnection messageBus;
+
+    /** {@link IgnoreManager} working flag. */
     private boolean working;
+
+    /** {@link ExecutorService} thread queue. */
     private final ExecutorService queue = ConcurrencyUtil.newSingleThreadExecutor(PROCESS_NAME);
+
+    /** {@link ProgressIndicator} instance. */
     private final ProgressIndicator refreshIndicator = new RefreshProgress(IgnoreBundle.message("cache.indexing"));
 
+    /** {@link VirtualFileListener} instance to watch filesystem changes. */
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
+        /** Flag to obtain if file was {@link IgnoreFileType} before. */
         private boolean wasIgnoreFileType;
 
         /**
@@ -116,13 +136,18 @@ public class IgnoreManager extends AbstractProjectComponent {
         /**
          * Fired when a virtual file is created. This event is not fired for files discovered during initial VFS initialization.
          *
-         * @param event the event object containing information about the change.
+         * @param event the event object containing information about the change
          */
         @Override
         public void fileCreated(@NotNull VirtualFileEvent event) {
             addFile(event);
         }
 
+        /**
+         * Triggers {@link #removeFile(VirtualFileEvent)}.
+         *
+         * @param event current event
+         */
         @Override
         public void beforeFileDeletion(@NotNull VirtualFileEvent event) {
             removeFile(event);
@@ -140,6 +165,8 @@ public class IgnoreManager extends AbstractProjectComponent {
 
         /**
          * Adds {@link IgnoreFile} to the {@link CacheMap}.
+         *
+         * @param event current event
          */
         private void addFile(VirtualFileEvent event) {
             if (isIgnoreFileType(event)) {
@@ -152,6 +179,8 @@ public class IgnoreManager extends AbstractProjectComponent {
 
         /**
          * Removes {@link IgnoreFile} from the {@link CacheMap}.
+         *
+         * @param event current event
          */
         private void removeFile(VirtualFileEvent event) {
             if (isIgnoreFileType(event)) {
@@ -170,6 +199,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
     };
 
+    /** {@link PsiTreeChangeListener} isntance to check if {@link IgnoreFile} content was changed. */
     private final PsiTreeChangeListener psiTreeChangeListener = new PsiTreeChangeAdapter() {
         @Override
         public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
@@ -182,6 +212,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
     };
 
+    /** {@link IgnoreSettings} listener to watch changes in the plugin's settings. */
     private final IgnoreSettings.Listener settingsListener = new IgnoreSettings.Listener() {
         @Override
         public void onChange(@NotNull KEY key, Object value) {
@@ -207,6 +238,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
     };
 
+    /** {@link VcsListener} instance. */
     private final VcsListener vcsListener = new VcsListener() {
         private boolean initialized;
 

@@ -44,7 +44,6 @@ import javax.swing.*;
  * @since 0.6.1
  */
 public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsConfigurableProvider {
-
     /** The settings storage object. */
     private final IgnoreSettings settings;
 
@@ -105,13 +104,11 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
                 || settingsPanel.insertAtCursor == null || settings.isInsertAtCursor() != settingsPanel.insertAtCursor.isSelected()
                 || settingsPanel.addUnversionedFiles == null || settings.isAddUnversionedFiles() != settingsPanel.addUnversionedFiles.isSelected()
                 || settingsPanel.languagesTable == null
-                    || !((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).equalSettings(settings.getLanguagesSettings())
+                || !((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).equalSettings(settings.getLanguagesSettings())
                 ;
     }
 
-    /**
-     * Store the settings from configurable to other components.
-     */
+    /** Store the settings from configurable to other components. */
     @Override
     public void apply() throws ConfigurationException {
         if (settingsPanel == null) return;
@@ -124,45 +121,64 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         settings.setLanguagesSettings(((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).getSettings());
     }
 
-    /**
-     * Load settings from other components to configurable.
-     */
+    /** Load settings from other components to configurable. */
     @Override
     public void reset() {
         if (settingsPanel == null) return;
-        if (settingsPanel.missingGitignore != null) settingsPanel.missingGitignore.setSelected(settings.isMissingGitignore());
-        if (settingsPanel.templatesListPanel != null) settingsPanel.templatesListPanel.resetForm(settings.getUserTemplates());
-        if (settingsPanel.ignoredFileStatus != null) settingsPanel.ignoredFileStatus.setSelected(settings.isIgnoredFileStatus());
-        if (settingsPanel.outerIgnoreRules != null) settingsPanel.outerIgnoreRules.setSelected(settings.isOuterIgnoreRules());
+        if (settingsPanel.missingGitignore != null)
+            settingsPanel.missingGitignore.setSelected(settings.isMissingGitignore());
+        if (settingsPanel.templatesListPanel != null)
+            settingsPanel.templatesListPanel.resetForm(settings.getUserTemplates());
+        if (settingsPanel.ignoredFileStatus != null)
+            settingsPanel.ignoredFileStatus.setSelected(settings.isIgnoredFileStatus());
+        if (settingsPanel.outerIgnoreRules != null)
+            settingsPanel.outerIgnoreRules.setSelected(settings.isOuterIgnoreRules());
         if (settingsPanel.insertAtCursor != null) settingsPanel.insertAtCursor.setSelected(settings.isInsertAtCursor());
-        if (settingsPanel.addUnversionedFiles != null) settingsPanel.addUnversionedFiles.setSelected(settings.isAddUnversionedFiles());
+        if (settingsPanel.addUnversionedFiles != null)
+            settingsPanel.addUnversionedFiles.setSelected(settings.isAddUnversionedFiles());
         if (settingsPanel.languagesTable != null) {
             IgnoreSettingsPanel.LanguagesTableModel model = (IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel();
             model.update(settings.getLanguagesSettings().clone());
         }
     }
 
-    /**
-     * Disposes the Swing components used for displaying the configuration.
-     */
+    /** Disposes the Swing components used for displaying the configuration. */
     @Override
     public void disposeUIResources() {
         settingsPanel.dispose();
         settingsPanel = null;
     }
 
+    /**
+     * Returns current {@link Configurable} instance.
+     *
+     * @param project ignored
+     * @return current instance
+     */
     @Nullable
     @Override
     public Configurable getConfigurable(Project project) {
         return this;
     }
 
+    /**
+     * Returns help topic as an ID.
+     *
+     * @return id
+     * @see {@link #getHelpTopic()}
+     */
     @NotNull
     @Override
     public String getId() {
         return getHelpTopic();
     }
 
+    /**
+     * An action to perform when this configurable is opened.
+     *
+     * @param option setting search query
+     * @return null
+     */
     @Nullable
     @Override
     public Runnable enableSearch(String option) {

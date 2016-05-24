@@ -45,7 +45,11 @@ public class ESLintLanguage extends IgnoreLanguage {
         super("ESLint", "eslintignore", null, Icons.ESLINT);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link ESLintFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

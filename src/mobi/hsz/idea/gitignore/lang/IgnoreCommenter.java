@@ -38,6 +38,7 @@ public class IgnoreCommenter implements Commenter {
     /**
      * Returns the string which prefixes a line comment in the language, or null if the language
      * does not support line comments.
+     *
      * @return the line comment text, or null.
      */
     @Nullable
@@ -49,6 +50,7 @@ public class IgnoreCommenter implements Commenter {
     /**
      * Returns the string which marks the beginning of a block comment in the language,
      * or null if the language does not support block comments.
+     *
      * @return the block comment start text, or null.
      */
     @Nullable
@@ -60,6 +62,7 @@ public class IgnoreCommenter implements Commenter {
     /**
      * Returns the string which marks the end of a block comment in the language,
      * or null if the language does not support block comments.
+     *
      * @return the block comment end text, or null.
      */
     @Nullable
@@ -71,6 +74,7 @@ public class IgnoreCommenter implements Commenter {
     /**
      * Returns the string which marks the commented beginning of a block comment in the language,
      * or null if the language does not support block comments.
+     *
      * @return the commented block comment start text, or null.
      */
     @Nullable
@@ -82,6 +86,7 @@ public class IgnoreCommenter implements Commenter {
     /**
      * Returns the string which marks the commented end of a block comment in the language,
      * or null if the language does not support block comments.
+     *
      * @return the commented block comment end text, or null.
      */
     @Nullable

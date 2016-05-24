@@ -70,7 +70,11 @@ public class GitLanguage extends IgnoreLanguage {
         });
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link GitFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

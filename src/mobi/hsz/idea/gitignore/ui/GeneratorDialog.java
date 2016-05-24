@@ -78,16 +78,20 @@ public class GeneratorDialog extends DialogWrapper {
     private final Set<Resources.Template> checked = ContainerUtil.newHashSet();
 
     /** Current working project. */
-    @NotNull private final Project project;
+    @NotNull
+    private final Project project;
 
     /** Current working file. */
-    @Nullable private PsiFile file;
+    @Nullable
+    private PsiFile file;
 
     /** Templates tree root node. */
-    @NotNull private final TemplateTreeNode root;
+    @NotNull
+    private final TemplateTreeNode root;
 
     /** {@link CreateFileCommandAction} action instance to generate new file in the proper time. */
-    @Nullable private CreateFileCommandAction action;
+    @Nullable
+    private CreateFileCommandAction action;
 
     /** Templates tree with checkbox feature. */
     private CheckboxTree tree;
@@ -108,7 +112,7 @@ public class GeneratorDialog extends DialogWrapper {
      * Builds a new instance of {@link GeneratorDialog}.
      *
      * @param project current working project
-     * @param file current working file
+     * @param file    current working file
      */
     public GeneratorDialog(@NotNull Project project, @Nullable PsiFile file) {
         super(project, false);
@@ -127,7 +131,7 @@ public class GeneratorDialog extends DialogWrapper {
      * Builds a new instance of {@link GeneratorDialog}.
      *
      * @param project current working project
-     * @param action {@link CreateFileCommandAction} action instance to generate new file in the proper time
+     * @param action  {@link CreateFileCommandAction} action instance to generate new file in the proper time
      */
     public GeneratorDialog(@NotNull Project project, @Nullable CreateFileCommandAction action) {
         this(project, (PsiFile) null);
@@ -193,6 +197,7 @@ public class GeneratorDialog extends DialogWrapper {
         super.doOKAction();
     }
 
+    /** Creates default actions with appended {@link OptionOkAction} instance. */
     @Override
     protected void createDefaultActions() {
         super.createDefaultActions();
@@ -306,7 +311,7 @@ public class GeneratorDialog extends DialogWrapper {
         DefaultActionGroup actions = new DefaultActionGroup();
         actions.add(actionManager.createExpandAllAction(treeExpander, tree));
         actions.add(actionManager.createCollapseAllAction(treeExpander, tree));
-        actions.add(new AnAction(IgnoreBundle.message("dialog.generator.unselectAll"), null, AllIcons.Actions.Unselectall){
+        actions.add(new AnAction(IgnoreBundle.message("dialog.generator.unselectAll"), null, AllIcons.Actions.Unselectall) {
             @Override
             public void update(AnActionEvent e) {
                 e.getPresentation().setEnabled(!checked.isEmpty());
@@ -482,21 +487,22 @@ public class GeneratorDialog extends DialogWrapper {
         }
     }
 
-    /**
-     * Reloads tree model.
-     */
+    /** Reloads tree model. */
     private void reloadModel() {
         ((DefaultTreeModel) tree.getModel()).reload();
     }
 
+    /**
+     * Returns current file.
+     *
+     * @return file
+     */
     @Nullable
     public PsiFile getFile() {
         return file;
     }
 
-    /**
-     * Custom templates {@link FilterComponent}.
-     */
+    /** Custom templates {@link FilterComponent}. */
     private class TemplatesFilterComponent extends FilterComponent {
         /** Builds a new instance of {@link TemplatesFilterComponent}. */
         public TemplatesFilterComponent() {
@@ -510,17 +516,18 @@ public class GeneratorDialog extends DialogWrapper {
         }
     }
 
+    /** {@link OkAction} instance with additional `Generate without duplicates` action. */
     protected class OptionOkAction extends OkAction implements OptionAction {
 
         @NotNull
         @Override
         public Action[] getOptions() {
-            return new Action[]{ new DialogWrapperAction(IgnoreBundle.message("global.generate.without.duplicates")) {
+            return new Action[]{new DialogWrapperAction(IgnoreBundle.message("global.generate.without.duplicates")) {
                 @Override
                 protected void doAction(ActionEvent e) {
                     performAppendAction(true);
                 }
-            } };
+            }};
         }
 
     }

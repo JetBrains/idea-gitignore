@@ -49,10 +49,7 @@ import java.util.*;
         storages = @Storage(id = "other", file = "$APP_CONFIG$/ignore.xml")
 )
 public class IgnoreSettings implements PersistentStateComponent<Element>, Listenable<IgnoreSettings.Listener> {
-
-    /**
-     * Settings keys.
-     */
+    /** Settings keys. */
     public enum KEY {
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
@@ -72,49 +69,34 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         }
     }
 
+    /** Default user template. */
     private static final UserTemplate DEFAULT_TEMPLATE = new UserTemplate(
             IgnoreBundle.message("settings.userTemplates.default.name"),
             IgnoreBundle.message("settings.userTemplates.default.content")
     );
 
-    /**
-     * Notify about missing Gitignore file in the project.
-     */
+    /** Notify about missing Gitignore file in the project. */
     private boolean missingGitignore = true;
 
-    /**
-     * Enable ignored file status coloring.
-     */
+    /** Enable ignored file status coloring. */
     private boolean ignoredFileStatus = true;
 
-    /**
-     * Height of the outer ignore file wrapper panel.
-     */
+    /** Height of the outer ignore file wrapper panel. */
     private int outerIgnoreWrapperHeight = 100;
 
-    /**
-     * Enable outer ignore rules.
-     */
+    /** Enable outer ignore rules. */
     private boolean outerIgnoreRules = true;
 
-    /**
-     * Insert new entries at the cursor's position or at the document end.
-     */
+    /** Insert new entries at the cursor's position or at the document end. */
     private boolean insertAtCursor = false;
 
-    /**
-     * Suggest to add unversioned files to the .gitignore file.
-     */
+    /** Suggest to add unversioned files to the .gitignore file. */
     private boolean addUnversionedFiles = true;
 
-    /**
-     * Plugin version.
-     */
+    /** Plugin version. */
     private String version;
 
-    /**
-     * Settings related to the {@link IgnoreLanguage}.
-     */
+    /** Settings related to the {@link IgnoreLanguage}. */
     private IgnoreLanguagesSettings languagesSettings = new IgnoreLanguagesSettings() {{
         for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
             put(language, new TreeMap<KEY, Object>() {{
@@ -124,14 +106,10 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         }
     }};
 
-    /**
-     * Lists all user defined templates.
-     */
+    /** Lists all user defined templates. */
     private final List<UserTemplate> userTemplates = ContainerUtil.newArrayList(DEFAULT_TEMPLATE);
 
-    /**
-     * Listeners list.
-     */
+    /** Listeners list. */
     private final List<Listener> listeners = ContainerUtil.newArrayList();
 
     /**
@@ -441,7 +419,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * @param listener listener to add
      */
     @Override
-    public void addListener(Listener listener) {
+    public void addListener(@NotNull Listener listener) {
         listeners.add(listener);
     }
 
@@ -451,7 +429,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * @param listener listener to remove
      */
     @Override
-    public void removeListener(Listener listener) {
+    public void removeListener(@NotNull Listener listener) {
         listeners.remove(listener);
     }
 
@@ -470,30 +448,24 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         }
     }
 
-    /**
-     * Listener interface for onChange event.
-     */
+    /** Listener interface for onChange event. */
     public interface Listener {
         void onChange(@NotNull KEY key, Object value);
     }
 
-    /**
-     * User defined template model.
-     */
+    /** User defined template model. */
     public static class UserTemplate {
-        /**
-         * Template name.
-         */
+        /** Template name. */
         private String name = "";
 
-        /**
-         * Template content.
-         */
+        /** Template content. */
         private String content = "";
 
+        /** Constructor. */
         public UserTemplate() {
         }
 
+        /** Constructor. */
         public UserTemplate(@NotNull String name, @NotNull String content) {
             this.name = name;
             this.content = content;
@@ -575,7 +547,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         }
     }
 
+    /** Helper class for the {@link IgnoreLanguage} settings. */
     public static class IgnoreLanguagesSettings extends LinkedHashMap<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> {
+        /** Settings keys. */
         public enum KEY {
             NEW_FILE, ENABLE
         }

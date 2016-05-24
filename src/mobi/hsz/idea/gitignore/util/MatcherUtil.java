@@ -44,7 +44,7 @@ public class MatcherUtil {
      * Looking for the parts speed ups the matching and prevents from running whole regex on the string.
      *
      * @param matcher to explode
-     * @param path to check
+     * @param path    to check
      * @return path matches the pattern
      */
     public static boolean match(@Nullable Matcher matcher, @Nullable String path) {
@@ -68,7 +68,7 @@ public class MatcherUtil {
      * Checks if given path contains all of the path parts.
      *
      * @param parts that should be contained in path
-     * @param path to check
+     * @param path  to check
      * @return path contains all parts
      */
     public static boolean matchAllParts(@Nullable String[] parts, @Nullable String path) {
@@ -88,10 +88,10 @@ public class MatcherUtil {
     }
 
     /**
-     * Checks if given path contains any of the path parts
-     * .
+     * Checks if given path contains any of the path parts.
+     *
      * @param parts that should be contained in path
-     * @param path to check
+     * @param path  to check
      * @return path contains any of the parts
      */
     public static boolean matchAnyPart(@Nullable String[] parts, @Nullable String path) {

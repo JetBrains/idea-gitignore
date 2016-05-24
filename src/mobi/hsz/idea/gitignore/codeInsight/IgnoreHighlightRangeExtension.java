@@ -36,6 +36,12 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.4
  */
 public class IgnoreHighlightRangeExtension implements HighlightRangeExtension {
+    /**
+     * Checks if current {@link PsiFile} is allowed to enable range highlighting.
+     *
+     * @param file current file
+     * @return allowed to highlight
+     */
     @Override
     public boolean isForceHighlightParents(@NotNull PsiFile file) {
         return file.getLanguage() instanceof IgnoreLanguage;

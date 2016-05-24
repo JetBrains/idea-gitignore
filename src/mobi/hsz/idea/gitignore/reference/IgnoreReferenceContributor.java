@@ -50,7 +50,7 @@ public class IgnoreReferenceContributor extends PsiReferenceContributor {
         psiReferenceRegistrar.registerReferenceProvider(psiElement().inFile(psiFile(IgnoreFile.class)), new IgnoreReferenceProvider());
     }
 
-    /** Reference provider definition.  */
+    /** Reference provider definition. */
     private static class IgnoreReferenceProvider extends PsiReferenceProvider {
         /**
          * Returns references for given @{link PsiElement}.

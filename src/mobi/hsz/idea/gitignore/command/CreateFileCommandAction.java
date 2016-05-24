@@ -61,6 +61,7 @@ public class CreateFileCommandAction extends WriteCommandAction<PsiFile> {
 
     /**
      * Creates a new file using {@link IgnoreTemplatesFactory#createFromTemplate(PsiDirectory)} to fill it with content.
+     *
      * @param result command result
      * @throws Throwable
      */

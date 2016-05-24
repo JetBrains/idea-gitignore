@@ -55,7 +55,7 @@ public class Resources {
     }
 
     /**
-     * Returns list of gitignore templates
+     * Returns list of gitignore templates.
      *
      * @return Gitignore templates list
      */
@@ -99,7 +99,7 @@ public class Resources {
     }
 
     /**
-     * Returns gitignore templates directory
+     * Returns gitignore templates directory.
      *
      * @return Resources directory
      */
@@ -113,7 +113,7 @@ public class Resources {
     }
 
     /**
-     * Reads resource file and returns its content as a String
+     * Reads resource file and returns its content as a String.
      *
      * @param path Resource path
      * @return Content
@@ -124,7 +124,7 @@ public class Resources {
     }
 
     /**
-     * Converts InputStream resource to String
+     * Converts InputStream resource to String.
      *
      * @param inputStream Input stream
      * @return Content
@@ -138,9 +138,7 @@ public class Resources {
         return s.hasNext() ? s.next() : "";
     }
 
-    /**
-     * {@link Template} entity that defines template fetched from resources or {@link IgnoreSettings}.
-     */
+    /** {@link Template} entity that defines template fetched from resources or {@link IgnoreSettings}. */
     public static class Template implements Comparable<Template> {
         /** {@link File} pointer. <code>null</code> if template is fetched from {@link IgnoreSettings}. */
         private final File file;
@@ -246,5 +244,4 @@ public class Resources {
             return name.compareToIgnoreCase(template.name);
         }
     }
-
 }

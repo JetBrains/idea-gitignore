@@ -46,7 +46,11 @@ public class MercurialLanguage extends IgnoreLanguage {
         super("Mercurial", "hgignore", ".hg", Icons.MERCURIAL);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link MercurialFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

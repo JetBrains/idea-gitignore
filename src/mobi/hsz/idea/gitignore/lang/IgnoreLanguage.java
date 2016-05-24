@@ -49,64 +49,44 @@ import java.util.TreeMap;
  * @since 0.8
  */
 public class IgnoreLanguage extends Language {
-    /**
-     * The {@link IgnoreLanguage} instance.
-     */
+    /** The {@link IgnoreLanguage} instance. */
     public static final IgnoreLanguage INSTANCE = new IgnoreLanguage();
 
-    /**
-     * The dot.
-     */
+    /** The dot. */
     @NonNls
     private static final String DOT = ".";
 
-    /**
-     * Ignore languages group name.
-     */
+    /** Ignore languages group name. */
     @NonNls
     public static final String GROUP = "IGNORE_GROUP";
 
-    /**
-     * The Ignore file extension suffix.
-     */
+    /** The Ignore file extension suffix. */
     @NotNull
     private final String extension;
 
-    /**
-     * The Ignore VCS directory name.
-     */
+    /** The Ignore VCS directory name. */
     @Nullable
     private final String vcsDirectory;
 
-    /**
-     * The GitignoreLanguage icon.
-     */
+    /** The GitignoreLanguage icon. */
     @Nullable
     private final Icon icon;
 
-    /**
-     * Outer files for the specified {@link IgnoreLanguage}.
-     */
+    /** Outer files for the specified {@link IgnoreLanguage}. */
     @NotNull
     private final OuterFileFetcher[] fetchers;
 
-    /**
-     * {@link IgnoreLanguage} is a non-instantiable static class.
-     */
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage() {
         this("Ignore", "ignore", null, null);
     }
 
-    /**
-     * {@link IgnoreLanguage} is a non-instantiable static class.
-     */
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable String vcsDirectory, @Nullable Icon icon) {
         this(name, extension, vcsDirectory, icon, new OuterFileFetcher[0]);
     }
 
-    /**
-     * {@link IgnoreLanguage} is a non-instantiable static class.
-     */
+    /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable String vcsDirectory,
                              @Nullable Icon icon, @NotNull OuterFileFetcher[] fetchers) {
         super(name);

@@ -53,10 +53,16 @@ import java.util.regex.Pattern;
  * @since 1.3.1
  */
 public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
+    /** Cache key separator. */
     private static final String SEPARATOR = "$";
 
+    /** Concurrent cache map. */
     private final ConcurrentMap<String, Collection<VirtualFile>> cacheMap;
+
+    /** {@link VirtualFileManager} instance. */
     private final VirtualFileManager virtualFileManager;
+
+    /** {@link VirtualFileListener} instance to watch for operations on the filesystem. */
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
         @Override
         public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {

@@ -45,7 +45,11 @@ public class NpmLanguage extends IgnoreLanguage {
         super("Npm", "npmignore", null, Icons.NPM);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link NpmFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

@@ -35,7 +35,6 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.3
  */
 public class IgnoreApplicationComponent implements ApplicationComponent {
-
     /** The settings storage object. */
     private IgnoreSettings settings;
 
@@ -54,6 +53,7 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
         return ApplicationManager.getApplication().getComponent(IgnoreApplicationComponent.class);
     }
 
+    /** Component initialization method. */
     @Override
     public void initComponent() {
         settings = IgnoreSettings.getInstance();
@@ -63,10 +63,16 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
         }
     }
 
+    /** Component dispose method. */
     @Override
     public void disposeComponent() {
     }
 
+    /**
+     * Returns component's name.
+     *
+     * @return component's name
+     */
     @NotNull
     @Override
     public String getComponentName() {
@@ -82,10 +88,20 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
         return updated;
     }
 
+    /**
+     * Checks if update notification was shown.
+     *
+     * @return notification shown
+     */
     public boolean isUpdateNotificationShown() {
         return updateNotificationShown;
     }
 
+    /**
+     * Sets update notification shown status.
+     *
+     * @param shown notification
+     */
     public void setUpdateNotificationShown(boolean shown) {
         this.updateNotificationShown = shown;
     }

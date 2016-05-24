@@ -45,6 +45,7 @@ import java.util.List;
  * @since 0.5.4
  */
 public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
+    /** Unused entry {@link HighlightSeverity} instance. */
     private static final HighlightSeverity UNUSED_ENTRY = new HighlightSeverity("UNUSED ENTRY", 10);
 
     /**
@@ -60,7 +61,7 @@ public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
         result.add(new HighlightInfoType.HighlightInfoTypeImpl(
                 UNUSED_ENTRY,
                 TextAttributesKey.createTextAttributesKey(IgnoreBundle.message("codeInspection.unusedEntry"),
-                IgnoreHighlighterColors.UNUSED_ENTRY))
+                        IgnoreHighlighterColors.UNUSED_ENTRY))
         );
         return result;
     }

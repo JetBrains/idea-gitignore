@@ -45,7 +45,11 @@ public class CloudFoundryLanguage extends IgnoreLanguage {
         super("CloudFoundry", "cfignore", null, Icons.CLOUD_FOUNDRY);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link CloudFoundryFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

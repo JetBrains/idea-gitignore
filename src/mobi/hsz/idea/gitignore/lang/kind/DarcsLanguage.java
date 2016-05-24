@@ -46,7 +46,11 @@ public class DarcsLanguage extends IgnoreLanguage {
         super("Darcs", "boringignore", ".darcs", Icons.DARCS);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link DarcsFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

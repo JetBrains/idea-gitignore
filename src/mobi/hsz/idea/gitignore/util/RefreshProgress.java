@@ -33,16 +33,21 @@ import com.intellij.openapi.wm.ex.StatusBarEx;
 import javax.swing.*;
 
 /**
+ * Progress indicator implementation.
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3.2
  */
 public class RefreshProgress extends ProgressIndicatorBase {
-    private final String myMessage;
+    /** Progress message. */
+    private final String message;
 
+    /** Constructor. */
     public RefreshProgress(final String message) {
-        myMessage = message;
+        this.message = message;
     }
 
+    /** Progress start method. */
     @Override
     public void start() {
         super.start();
@@ -69,12 +74,13 @@ public class RefreshProgress extends ProgressIndicatorBase {
                         continue;
                     }
 
-                    statusBar.startRefreshIndication(myMessage);
+                    statusBar.startRefreshIndication(message);
                 }
             }
         });
     }
 
+    /** Progress stop method. */
     @Override
     public void stop() {
         super.stop();

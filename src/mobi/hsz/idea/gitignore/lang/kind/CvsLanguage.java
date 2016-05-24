@@ -45,7 +45,11 @@ public class CvsLanguage extends IgnoreLanguage {
         super("Cvs", "cvsignore", null, Icons.CVS);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link CvsFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

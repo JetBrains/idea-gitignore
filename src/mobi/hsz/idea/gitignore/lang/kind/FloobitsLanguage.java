@@ -45,7 +45,11 @@ public class FloobitsLanguage extends IgnoreLanguage {
         super("Floobits", "flooignore", null, Icons.FLOOBITS);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link FloobitsFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

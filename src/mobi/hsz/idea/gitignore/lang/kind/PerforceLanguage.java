@@ -31,7 +31,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Npm {@link IgnoreLanguage} definition.
+ * Perforce {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.1
@@ -45,7 +45,11 @@ public class PerforceLanguage extends IgnoreLanguage {
         super("Perforce", "p4ignore", null, Icons.PERFORCE);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link PerforceFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

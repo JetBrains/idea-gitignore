@@ -95,5 +95,4 @@ public class IgnoreDuplicateEntryInspection extends LocalInspectionTool {
     public boolean runForWholeFile() {
         return true;
     }
-
 }

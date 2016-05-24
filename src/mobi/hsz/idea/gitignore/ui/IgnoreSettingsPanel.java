@@ -86,64 +86,40 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSet
  * @since 0.6.1
  */
 public class IgnoreSettingsPanel implements Disposable {
-    /**
-     * The parent panel for the form.
-     */
+    /** The parent panel for the form. */
     public JPanel panel;
 
-    /**
-     * Form element for {@link IgnoreSettings#missingGitignore}.
-     */
+    /** Form element for {@link IgnoreSettings#missingGitignore}. */
     public JCheckBox missingGitignore;
 
-    /**
-     * Templates list panel.
-     */
+    /** Templates list panel. */
     public TemplatesListPanel templatesListPanel;
 
-    /**
-     * Enable ignored file status coloring.
-     */
+    /** Enable ignored file status coloring. */
     public JCheckBox ignoredFileStatus;
 
-    /**
-     * Enable outer ignore rules.
-     */
+    /** Enable outer ignore rules. */
     public JCheckBox outerIgnoreRules;
 
-    /**
-     * Defines if new content should be inserted at the cursor's position or at the document end.
-     */
+    /** Defines if new content should be inserted at the cursor's position or at the document end. */
     public JCheckBox insertAtCursor;
 
-    /**
-     * Suggest to add unversioned files to the .gitignore file.
-     */
+    /** Suggest to add unversioned files to the .gitignore file. */
     public JCheckBox addUnversionedFiles;
 
-    /**
-     * Splitter element.
-     */
+    /** Splitter element. */
     private Splitter templatesSplitter;
 
-    /**
-     * File types scroll panel with table.
-     */
+    /** File types scroll panel with table. */
     private JScrollPane languagesPanel;
 
-    /**
-     * {@link IgnoreLanguage} settings table.
-     */
+    /** {@link IgnoreLanguage} settings table. */
     public JBTable languagesTable;
 
-    /**
-     * Editor panel element.
-     */
+    /** Editor panel element. */
     private EditorPanel editorPanel;
 
-    /**
-     * Create UI components.
-     */
+    /** Create UI components. */
     private void createUIComponents() {
         templatesListPanel = new TemplatesListPanel();
         editorPanel = new EditorPanel();
@@ -168,6 +144,7 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
     }
 
+    /** Disposes current preview {@link #editorPanel}. */
     @Override
     public void dispose() {
         if (!editorPanel.preview.isDisposed()) {
@@ -175,16 +152,12 @@ public class IgnoreSettingsPanel implements Disposable {
         }
     }
 
-    /**
-     * Extension for the CRUD list panel.
-     */
+    /** Extension for the CRUD list panel. */
     public class TemplatesListPanel extends AddEditDeleteListPanel<IgnoreSettings.UserTemplate> {
-
+        /** Import/export file's extension. */
         private static final String FILE_EXTENSION = "xml";
 
-        /**
-         * Constructs CRUD panel with list listener for editor updating.
-         */
+        /** Constructs CRUD panel with list listener for editor updating. */
         public TemplatesListPanel() {
             super(null, ContainerUtil.<IgnoreSettings.UserTemplate>newArrayList());
             myList.addListSelectionListener(new ListSelectionListener() {
@@ -201,6 +174,11 @@ public class IgnoreSettingsPanel implements Disposable {
             });
         }
 
+        /**
+         * Customizes Import dialog.
+         *
+         * @param decorator toolbar
+         */
         @Override
         protected void customizeDecorator(ToolbarDecorator decorator) {
             super.customizeDecorator(decorator);
@@ -291,7 +269,7 @@ public class IgnoreSettingsPanel implements Disposable {
         }
 
         /**
-         * SHows edit dialog and validates user's input name.
+         * Shows edit dialog and validates user's input name.
          *
          * @param initialValue template
          * @return modified template
@@ -427,17 +405,18 @@ public class IgnoreSettingsPanel implements Disposable {
         }
     }
 
-    /**
-     * Editor panel class that displays document editor or label if no template is selected.
-     */
+    /** Editor panel class that displays document editor or label if no template is selected. */
     private class EditorPanel extends JPanel {
+        /** Preview editor. */
         private final Editor preview;
+
+        /** `No templates is selected` label. */
         private final JBLabel label;
+
+        /** Preview document. */
         private final Document previewDocument;
 
-        /**
-         * Constructor that creates document editor, empty content label.
-         */
+        /** Constructor that creates document editor, empty content label. */
         public EditorPanel() {
             super(new BorderLayout());
             this.previewDocument = EditorFactory.getInstance().createDocument("");
@@ -494,15 +473,19 @@ public class IgnoreSettingsPanel implements Disposable {
         }
     }
 
+    /** Languages table helper class. */
     public static class LanguagesTableModel extends AbstractTableModel {
+        /** Languages settings instance. */
         private final IgnoreSettings.IgnoreLanguagesSettings settings = new IgnoreSettings.IgnoreLanguagesSettings();
 
+        /** Table's columns names. */
         private final String[] columnNames = new String[]{
                 IgnoreBundle.message("settings.languagesSettings.table.name"),
                 IgnoreBundle.message("settings.languagesSettings.table.newFile"),
                 IgnoreBundle.message("settings.languagesSettings.table.enable")
         };
 
+        /** Table's columns classes. */
         private final Class[] columnClasses = new Class[]{
                 String.class, Boolean.class, Boolean.class
         };
@@ -616,15 +599,31 @@ public class IgnoreSettingsPanel implements Disposable {
             throw new IllegalArgumentException();
         }
 
+        /**
+         * Returns current settings.
+         *
+         * @return settings
+         */
         public IgnoreSettings.IgnoreLanguagesSettings getSettings() {
             return settings;
         }
 
+        /**
+         * Update settings model.
+         *
+         * @param settings to update
+         */
         public void update(@NotNull IgnoreSettings.IgnoreLanguagesSettings settings) {
             this.settings.clear();
             this.settings.putAll(settings);
         }
 
+        /**
+         * Checks if current settings are equal to the given one.
+         *
+         * @param settings to check
+         * @return equals
+         */
         public boolean equalSettings(IgnoreSettings.IgnoreLanguagesSettings settings) {
             return this.settings.equals(settings);
         }

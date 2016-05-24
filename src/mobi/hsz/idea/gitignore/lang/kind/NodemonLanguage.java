@@ -31,7 +31,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Npm {@link IgnoreLanguage} definition.
+ * Nodemon {@link IgnoreLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.1.2
@@ -45,7 +45,11 @@ public class NodemonLanguage extends IgnoreLanguage {
         super("Nodemon", "nodemonignore", null, Icons.NODEMON);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link NodemonFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

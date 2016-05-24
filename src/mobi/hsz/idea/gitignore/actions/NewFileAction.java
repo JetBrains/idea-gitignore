@@ -57,9 +57,7 @@ public class NewFileAction extends AnAction implements DumbAware {
     /** Current file type. */
     private final IgnoreFileType fileType;
 
-    /**
-     * Builds a new instance of {@link NewFileAction}.
-     */
+    /** Builds a new instance of {@link NewFileAction}. */
     public NewFileAction(@NotNull IgnoreFileType fileType) {
         this.fileType = fileType;
     }

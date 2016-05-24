@@ -29,13 +29,23 @@ package mobi.hsz.idea.gitignore.util;
  * @since 1.3.2
  */
 public class ProcessWithTimeout extends Thread {
+    /** Runtime exec process. */
     private Process process;
+
+    /** Result exit process code. */
     private int exitCode = Integer.MIN_VALUE;
 
+    /** Constructor. */
     public ProcessWithTimeout(Process process) {
         this.process = process;
     }
 
+    /**
+     * Process call helper.
+     *
+     * @param p_timeoutMilliseconds timeout
+     * @return {@link #exitCode}
+     */
     public int waitForProcess(int p_timeoutMilliseconds) {
         this.start();
 
@@ -48,6 +58,7 @@ public class ProcessWithTimeout extends Thread {
         return exitCode;
     }
 
+    /** Thread run method. */
     @Override
     public void run() {
         try {

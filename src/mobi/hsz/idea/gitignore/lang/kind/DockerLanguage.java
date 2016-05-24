@@ -45,7 +45,11 @@ public class DockerLanguage extends IgnoreLanguage {
         super("Docker", "dockerignore", null, Icons.DOCKER);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link DockerFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

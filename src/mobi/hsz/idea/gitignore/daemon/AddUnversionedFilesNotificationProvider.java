@@ -173,7 +173,8 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
             if (icon != null) {
                 panel.icon(icon);
             }
-        } catch (NoSuchMethodError ignored) {}
+        } catch (NoSuchMethodError ignored) {
+        }
 
         return panel;
     }

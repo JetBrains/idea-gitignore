@@ -55,7 +55,7 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Current project. */
     private final Project project;
-    
+
     /** Outer files map. */
     private HashMap<IgnoreLanguage, List<VirtualFile>> outerFiles = ContainerUtil.newHashMap();
 
@@ -68,7 +68,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     public static OuterIgnoreLoaderComponent getInstance(@NotNull final Project project) {
         return project.getComponent(OuterIgnoreLoaderComponent.class);
     }
-    
+
     /** Constructor. */
     public OuterIgnoreLoaderComponent(@NotNull final Project project) {
         super(project);
@@ -87,12 +87,13 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
         return "IgnoreOuterComponent";
     }
 
-    /** Initializes component.*/
+    /** Initializes component. */
     @Override
     public void initComponent() {
         myProject.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new IgnoreEditorManagerListener(project));
     }
 
+    /** Handles project opened event. */
     @Override
     public void projectOpened() {
         for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
@@ -110,7 +111,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
 
     /**
      * Returns outer file for the given {@link IgnoreLanguage}.
-     * 
+     *
      * @param language of the outer file
      * @return outer file
      */
@@ -135,7 +136,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
          * Handles file opening event and attaches outer ignore component.
          *
          * @param source editor manager
-         * @param file current file
+         * @param file   current file
          */
         @Override
         public void fileOpened(@NotNull final FileEditorManager source, @NotNull final VirtualFile file) {
@@ -181,6 +182,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
         }
     }
 
+    /** Outer file fetcher event interface. */
     public interface OuterFileFetcher {
         @Nullable
         VirtualFile fetch(@NotNull Project project);

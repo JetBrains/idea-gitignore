@@ -48,7 +48,11 @@ public class GitExcludeLanguage extends IgnoreLanguage {
         super("Git exclude", "exclude", ".git", Icons.GIT);
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link GitExcludeFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {

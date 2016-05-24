@@ -48,27 +48,19 @@ import java.util.Set;
  * @since 0.8
  */
 public class IgnoreFile extends PsiFileImpl {
-    /**
-     * Current language.
-     */
+    /** Current language. */
     @NotNull
     private final Language language;
 
-    /**
-     * Current parser definition.
-     */
+    /** Current parser definition. */
     @NotNull
     private final ParserDefinition parserDefinition;
 
-    /**
-     * Current file type.
-     */
+    /** Current file type. */
     @NotNull
     private final IgnoreFileType fileType;
 
-    /**
-     * Builds a new instance of {@link IgnoreFile}.
-     */
+    /** Builds a new instance of {@link IgnoreFile}. */
     public IgnoreFile(@NotNull FileViewProvider viewProvider, @NotNull IgnoreFileType fileType) {
         super(viewProvider);
 
@@ -160,8 +152,7 @@ public class IgnoreFile extends PsiFileImpl {
      */
     public boolean isOuter() {
         final List<VirtualFile> outerFiles = fileType.getIgnoreLanguage().getOuterFiles(getProject());
-        boolean isOuter = outerFiles.contains(getOriginalFile().getVirtualFile());
-        return isOuter;
+        return outerFiles.contains(getOriginalFile().getVirtualFile());
     }
 
     /**

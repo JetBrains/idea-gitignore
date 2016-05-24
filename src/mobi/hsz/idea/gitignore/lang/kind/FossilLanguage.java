@@ -60,7 +60,11 @@ public class FossilLanguage extends IgnoreLanguage {
         });
     }
 
-    /** Language file type. */
+    /**
+     * Language file type.
+     *
+     * @return {@link FossilFileType} instance
+     */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {
@@ -69,6 +73,8 @@ public class FossilLanguage extends IgnoreLanguage {
 
     /**
      * The Gitignore file extension.
+     *
+     * @return filename
      */
     @NotNull
     @Override

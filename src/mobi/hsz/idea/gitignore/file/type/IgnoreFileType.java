@@ -57,6 +57,7 @@ public class IgnoreFileType extends LanguageFileType {
 
     /**
      * Returns the name of the file type. The name must be unique among all file types registered in the system.
+     *
      * @return The file type name.
      */
     @NotNull
@@ -67,6 +68,7 @@ public class IgnoreFileType extends LanguageFileType {
 
     /**
      * Returns the name of the language.
+     *
      * @return The language name.
      */
     @NotNull

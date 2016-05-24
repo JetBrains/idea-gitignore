@@ -45,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Defines the implementation of a parser for a custom language.
- * 
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.1
  */

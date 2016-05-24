@@ -36,16 +36,35 @@ import java.util.regex.Pattern;
  * @since 1.0
  */
 public interface IgnoreEntryBase extends PsiElement {
-
+    /**
+     * Checks if current element is negated.
+     *
+     * @return is negated
+     */
     boolean isNegated();
 
+    /**
+     * Returns current element's syntax.
+     *
+     * @return current syntax
+     * @see {@link IgnoreBundle.Syntax}
+     */
     @NotNull
     IgnoreBundle.Syntax getSyntax();
 
+    /**
+     * Returns current value.
+     *
+     * @return value
+     */
     @NotNull
     String getValue();
 
+    /**
+     * Returns current pattern.
+     *
+     * @return pattern
+     */
     @Nullable
     Pattern getPattern();
-
 }

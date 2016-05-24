@@ -86,8 +86,8 @@ public class IgnoreRemoveEntryFix extends LocalQuickFixAndIntentionActionOnPsiEl
 
     /**
      * Shorthand method for removing CRLF element.
-     *  @param startElement working PSI element
      *
+     * @param startElement working PSI element
      */
     private void removeCrlf(PsiElement startElement) {
         ASTNode node = TreeUtil.findSibling(startElement.getNode(), IgnoreTypes.CRLF);
