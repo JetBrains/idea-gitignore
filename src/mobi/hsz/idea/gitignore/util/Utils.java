@@ -59,10 +59,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * {@link Utils} class that contains various methods.
@@ -466,5 +463,25 @@ public class Utils {
         int index = 0;
         while (index < string.length() && string.charAt(index) == character) index++;
         return string.substring(index);
+    }
+
+    /**
+     * Intersection method cloned from {@link ContainerUtil#intersection(Collection, Collection)} because of
+     * NoSuchMethodError exception errors related to the some API changes.
+     *
+     * @param collection1 left
+     * @param collection2 right
+     * @return read-only collection consisting of elements from both collections
+     */
+    @NotNull
+    @Contract(pure=true)
+    public static <T> List<T> intersection(@NotNull Collection<? extends T> collection1, @NotNull Collection<? extends T> collection2) {
+        List<T> result = new ArrayList<T>();
+        for (T t : collection1) {
+            if (collection2.contains(t)) {
+                result.add(t);
+            }
+        }
+        return result.isEmpty() ? ContainerUtil.<T>emptyList() : result;
     }
 }
