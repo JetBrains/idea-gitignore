@@ -1,6 +1,8 @@
 plugins {
+    id 'jacoco'
     id 'org.jetbrains.intellij' version '0.0.43'
     id 'de.undercouch.download' version '2.1.0'
+    id 'com.github.kt3k.coveralls' version '2.6.3'
 }
 
 apply plugin: 'org.jetbrains.intellij'
@@ -71,6 +73,13 @@ repositories {
 test {
     testLogging {
         exceptionFormat = 'full'
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
     }
 }
 
