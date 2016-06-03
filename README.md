@@ -1,4 +1,4 @@
-.ignore [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
+.ignore [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Coverage Status][badge-coveralls-img]][badge-coveralls] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 ==================
 
 
@@ -208,6 +208,8 @@ Copyright (c) 2015 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [badge-gitter]:           https://gitter.im/hsz/idea-gitignore
 [badge-travis-img]:       https://travis-ci.org/hsz/idea-gitignore.svg
 [badge-travis]:           https://travis-ci.org/hsz/idea-gitignore
+[badge-coveralls-img]:    https://coveralls.io/repos/github/hsz/idea-gitignore/badge.svg?branch=master
+[badge-coveralls]:        https://coveralls.io/github/hsz/idea-gitignore?branch=master
 [badge-paypal-img]:       https://img.shields.io/badge/donate-paypal-yellow.svg
 [badge-paypal]:           https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL
 [badge-bitcoin-img]:      https://img.shields.io/badge/donate-bitcoin-yellow.svg
