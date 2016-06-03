@@ -48,6 +48,10 @@ import java.util.List;
  * @since 1.4
  */
 public class ExternalExec {
+    /** Private constructor to prevent creating {@link Icons} instance. */
+    private ExternalExec() {
+    }
+
     /** Checks if Git plugin is enabled. */
     private static final boolean GIT_ENABLED = Utils.isGitPluginEnabled();
 

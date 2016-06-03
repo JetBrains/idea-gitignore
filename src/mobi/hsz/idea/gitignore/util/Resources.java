@@ -48,6 +48,7 @@ public class Resources {
     private static final String GITIGNORE_TEMPLATES_PATH = "/templates.list";
 
     /** List of fetched {@link Template} elements from resources. */
+    @Nullable
     private static List<Template> resourceTemplates;
 
     /** Private constructor to prevent creating {@link Resources} instance. */
@@ -141,15 +142,19 @@ public class Resources {
     /** {@link Template} entity that defines template fetched from resources or {@link IgnoreSettings}. */
     public static class Template implements Comparable<Template> {
         /** {@link File} pointer. <code>null</code> if template is fetched from {@link IgnoreSettings}. */
+        @Nullable
         private final File file;
 
         /** Template name. */
+        @NotNull
         private final String name;
 
         /** Template content. */
+        @Nullable
         private final String content;
 
         /** Template's {@link Container}. */
+        @NotNull
         private final Container container;
 
         /**
@@ -192,6 +197,7 @@ public class Resources {
          *
          * @return template's file
          */
+        @Nullable
         public File getFile() {
             return file;
         }
@@ -201,6 +207,7 @@ public class Resources {
          *
          * @return template's name
          */
+        @NotNull
         public String getName() {
             return name;
         }
@@ -210,6 +217,7 @@ public class Resources {
          *
          * @return template's content
          */
+        @Nullable
         public String getContent() {
             return content;
         }
@@ -219,6 +227,7 @@ public class Resources {
          *
          * @return template's container
          */
+        @NotNull
         public Container getContainer() {
             return container;
         }

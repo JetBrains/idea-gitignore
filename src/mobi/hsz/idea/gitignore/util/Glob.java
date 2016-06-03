@@ -62,6 +62,7 @@ public class Glob {
      * @param entry ignore entry
      * @return search result
      */
+    @NotNull
     public static List<VirtualFile> find(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry) {
         return find(root, entry, false);
     }
@@ -74,8 +75,9 @@ public class Glob {
      * @param includeNested attach children to the search result
      * @return search result
      */
+    @NotNull
     public static List<VirtualFile> find(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry, final boolean includeNested) {
-        Pattern pattern = createPattern(entry);
+        final Pattern pattern = createPattern(entry);
         if (pattern == null) {
             return Collections.emptyList();
         }
@@ -115,6 +117,7 @@ public class Glob {
      * @param entry ignore entry
      * @return search result
      */
+    @NotNull
     public static List<String> findAsPaths(@NotNull VirtualFile root, @NotNull IgnoreEntry entry) {
         return findAsPaths(root, entry, false);
     }
@@ -127,9 +130,10 @@ public class Glob {
      * @param includeNested attach children to the search result
      * @return search result
      */
+    @NotNull
     public static List<String> findAsPaths(@NotNull VirtualFile root, @NotNull IgnoreEntry entry, boolean includeNested) {
-        List<String> list = ContainerUtil.newArrayList();
-        List<VirtualFile> files = find(root, entry, includeNested);
+        final List<String> list = ContainerUtil.newArrayList();
+        final List<VirtualFile> files = find(root, entry, includeNested);
         for (VirtualFile file : files) {
             list.add(Utils.getRelativePath(root, file));
         }

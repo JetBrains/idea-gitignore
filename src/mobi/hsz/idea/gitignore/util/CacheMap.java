@@ -53,15 +53,20 @@ import java.util.regex.Pattern;
  * @since 1.0.2
  */
 public class CacheMap {
+    /** Main cache map instance. */
+    @NotNull
     private final ConcurrentMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Matcher, Boolean>>>> map = ContainerUtil.newConcurrentMap();
 
     /** Cache {@link HashMap} to store files statuses. */
+    @NotNull
     private final HashMap<VirtualFile, Status> statuses = new HashMap<VirtualFile, Status>();
 
     /** Current project. */
+    @NotNull
     private final Project project;
 
     /** {@link FileStatusManager} instance. */
+    @NotNull
     private final FileStatusManager statusManager;
 
     /** Status of the file. */
@@ -70,7 +75,7 @@ public class CacheMap {
     }
 
     /** Constructor. */
-    public CacheMap(Project project) {
+    public CacheMap(@NotNull Project project) {
         this.project = project;
         this.statusManager = FileStatusManager.getInstance(project);
     }
@@ -99,7 +104,7 @@ public class CacheMap {
      * @param file to add
      * @param set  entries hashCodes set
      */
-    protected void add(@NotNull final IgnoreFile file, Set<Integer> set) {
+    protected void add(@NotNull final IgnoreFile file, @NotNull Set<Integer> set) {
         final List<Pair<Matcher, Boolean>> matchers = ContainerUtil.newArrayList();
 
         runVisitorInReadAction(file, new IgnoreVisitor() {

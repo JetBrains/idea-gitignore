@@ -39,6 +39,10 @@ import java.util.regex.Pattern;
  * @since 1.3.1
  */
 public class MatcherUtil {
+    /** Private constructor to prevent creating {@link Icons} instance. */
+    private MatcherUtil() {
+    }
+
     /**
      * Extracts alphanumeric parts from the regex pattern and checks if any of them is contained in the tested path.
      * Looking for the parts speed ups the matching and prevents from running whole regex on the string.
