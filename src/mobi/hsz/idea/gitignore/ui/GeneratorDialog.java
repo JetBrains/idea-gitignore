@@ -163,6 +163,22 @@ public class GeneratorDialog extends DialogWrapper {
     }
 
     /**
+     * Show the dialog.
+     *
+     * @throws IllegalStateException if the method is invoked not on the event dispatch thread
+     * @see #showAndGet()
+     * @see #showAndGetOk()
+     */
+    @Override
+    public void show() {
+        if (ApplicationManager.getApplication().isUnitTestMode()) {
+            dispose();
+            return;
+        }
+        super.show();
+    }
+
+    /**
      * This method is invoked by default implementation of "OK" action. It just closes dialog
      * with <code>OK_EXIT_CODE</code>. This is convenient place to override functionality of "OK" action.
      * Note that the method does nothing if "OK" action isn't enabled.
