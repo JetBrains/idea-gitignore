@@ -134,34 +134,18 @@ Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
 
 ### Compiling the source code
 
-- Clone `idea-ignore` project from https://github.com/hsz/idea-gitignore.git
-- [Configure IntelliJ IDEA Plugin SDK][idea-sdk-configuration]
-- Install required plugins:
-  - Plugin DevKit *(bundled)*
-  - [Grammar-Kit][grammar-kit-plugin]
-  - [PsiViewer][psiviewer-plugin]
-  - [JFlex Support][jflex-support-plugin]
-- Create *New Project* as a *IntelliJ Platform Plugin* and set *Project location* to the **idea-gitignore** sources
-  - In <kbd>Project settings</kbd> > <kbd>Modules</kbd> section mark:
-    - `gen` as *Sources*
-    - `resources` as *Resources*
-    - `src` as *Sources*
-    - `tests` as *Test Sources*
-    - `.idea` as *Excluded*
-    - `out` as *Excluded*
-- Add new *Run/Debug configuration*
-  - <kbd>+</kbd> <kbd>Add new configuration</kbd> > <kbd>Plugin</kbd>
-  - Add `-Didea.is.internal=true` to *VM Options* (it will allow you run internal actions like `View PSI structure` action)
-  - Remove `-XX:MaxPermSize=250m` from *VM Options*
-- Generate PSI classes
-  - Go to [`Ignore.bnf`][bnf-file] file and **Generate Parser Code**
-    - <kbd>Tools</kbd> > <kbd>Generate Parser Code</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
-  - Go to [`Ignore.flex`][flex-file] file and **Run JFlex Generator**
-    - <kbd>Tools</kbd> > <kbd>Run JFlex Generator</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>)
-    - For the first time it will download `JFlex.jar` and `idea-flex.skeleton` files - save them in the root project directory
-- Set *Java Compiler* to **1.6**
-  - Go to <kbd>Settings</kbd> > <kbd>Compiler</kbd> > <kbd>Java Compiler</kbd> and set *Project bytecode version* to **1.6**
-- In *Ant Build* add [`build.xml`][build-xml] file and mark **generate-templates-list** task as <kbd>Execute on</kbd> > <kbd>Before compilation</kbd>
+Since the project has been migrated to the Gradle and [Gradle IntelliJ plugin][gradle-intellij-plugin],
+the build process is much simpler. The only thing to build the plugin is to run:
+
+    gradle build
+    
+All required dependencies like Grammar-Kit, JFlex are downloaded in the background and triggered properly
+during the build process. You can also test the plugin easily with running:
+
+    gradle runIdea
+    
+All of the gradle tasks can be connected to the IntelliJ debugger, so the development process is very easy.
+
 
 Developed By
 ------------
@@ -189,17 +173,11 @@ free open-source license of the [YourKit Java Profiler](https://www.yourkit.com/
 License
 -------
 
-Copyright (c) 2015 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for license rights and limitations (MIT).
+Copyright (c) 2016 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for license rights and limitations (MIT).
 
     
 [github-gitignore]:       https://github.com/github/gitignore
-[idea-sdk-configuration]: http://confluence.jetbrains.com/display/IntelliJIDEA/Prerequisites
-[grammar-kit-plugin]:     http://plugins.jetbrains.com/plugin/6606
-[psiviewer-plugin]:       http://plugins.jetbrains.com/plugin/227
-[jflex-support-plugin]:   http://plugins.jetbrains.com/plugin/263
-[bnf-file]:               ./resources/bnf/Ignore.bnf
-[flex-file]:              ./src/mobi/hsz/idea/gitignore/lexer/Ignore.flex
-[build-xml]:              ./build.xml
+[gradle-intellij-plugin]: https://github.com/JetBrains/gradle-intellij-plugin
 [hsz]:                    http://hsz.mobi
 [latest-release]:         https://github.com/hsz/idea-gitignore/releases/latest
 
