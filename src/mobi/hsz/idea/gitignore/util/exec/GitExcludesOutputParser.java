@@ -22,25 +22,35 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.actions;
+package mobi.hsz.idea.gitignore.util.exec;
 
-import com.intellij.openapi.actionSystem.Presentation;
-import mobi.hsz.idea.gitignore.Common;
-import mobi.hsz.idea.gitignore.IgnoreBundle;
-import org.junit.Assert;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFile;
+import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
+import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.File;
 
 /**
+ * Parser for the {@link ExternalExec#GIT_CONFIG_EXCLUDES_FILE} command that returns excludes Git file instance.
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.5
  */
-public class IgnoreFileActionTest extends Common<IgnoreFileAction> {
-    public void testAddTemplateActionInvocation() {
-        IgnoreFileAction action = new IgnoreFileAction();
-        Presentation presentation;
-
-        presentation = myFixture.testAction(action);
-        Assert.assertEquals(IgnoreBundle.message("action.addToIgnore", "null"), presentation.getText());
-        Assert.assertEquals(IgnoreBundle.message("action.addToIgnore.description", "null"), presentation.getDescription());
-        Assert.assertFalse("Action is not visible if there is no Ignore file context", presentation.isEnabledAndVisible());
+public class GitExcludesOutputParser extends ExecutionOutputParser<VirtualFile> {
+    /**
+     * Parses output and returns {@link VirtualFile} instance of the {@link GitFileType}.
+     *
+     * @param text input data
+     * @return excludes ignore file instance
+     */
+    @Nullable
+    @Override
+    protected VirtualFile parseOutput(@NotNull final String text) {
+        final String path = Utils.resolveUserDir(text);
+        return StringUtil.isNotEmpty(path) ? VfsUtil.findFileByIoFile(new File(path), true) : null;
     }
 }

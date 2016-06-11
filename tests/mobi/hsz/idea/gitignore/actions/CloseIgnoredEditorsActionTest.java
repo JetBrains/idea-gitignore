@@ -29,7 +29,7 @@ import mobi.hsz.idea.gitignore.Common;
 
 /**
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.4.2
+ * @since 1.5
  */
 public class CloseIgnoredEditorsActionTest extends Common {
     public void testCloseIgnoredEditorsActionInvocation() {

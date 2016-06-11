@@ -22,24 +22,29 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.util;
+package mobi.hsz.idea.gitignore.util.exec;
 
+import com.intellij.execution.process.BaseOSProcessHandler;
+import com.intellij.execution.process.ProcessHandler;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import git4idea.config.GitVcsApplicationSettings;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
+import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jps.service.SharedThreadPool;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * Class that holds util methods for calling external executables (i.e. git/hg)
@@ -61,9 +66,6 @@ public class ExternalExec {
     /** Git command to list unversioned files. */
     private static final String GIT_UNIGNORED_FILES = "clean -dn";
 
-    /** Prefix to remove from the {@link #GIT_UNIGNORED_FILES} command's result. */
-    private static final String GIT_UNIGNORED_FILES_PREFIX = "Would remove";
-
     /**
      * Returns {@link VirtualFile} instance of the Git excludes file if available.
      *
@@ -71,40 +73,25 @@ public class ExternalExec {
      */
     @Nullable
     public static VirtualFile getGitExcludesFile() {
-        return run(GitLanguage.INSTANCE, GIT_CONFIG_EXCLUDES_FILE, null, new Reader<VirtualFile>() {
-            @Override
-            @Nullable
-            VirtualFile read(@NotNull BufferedReader reader) throws IOException {
-                String path = Utils.resolveUserDir(reader.readLine());
-                return StringUtil.isNotEmpty(path) ? VfsUtil.findFileByIoFile(new File(path), true) : null;
-            }
-        });
+        return runForSingle(GitLanguage.INSTANCE, GIT_CONFIG_EXCLUDES_FILE, null, new GitExcludesOutputParser());
     }
 
     /**
      * Returns list of unignored files for the given directory.
      *
      * @param language to check
-     * @param directory current directory
+     * @param project  current project
+     * @param file     current file
      * @return unignored files list
      */
     @NotNull
-    public static List<String> getUnignoredFiles(@NotNull IgnoreLanguage language, @NotNull VirtualFile directory) {
-        return ContainerUtil.notNullize(run(language, GIT_UNIGNORED_FILES, directory, new Reader<List<String>>() {
-            @Override
-            @NotNull
-            List<String> read(@NotNull BufferedReader reader) throws IOException {
-                final ArrayList<String> result = ContainerUtil.newArrayList();
-                String line;
+    public static List<String> getUnignoredFiles(@NotNull IgnoreLanguage language, @NotNull Project project, @NotNull VirtualFile file) {
+        if (!Utils.isInProject(file, project)) {
+            return ContainerUtil.newArrayList();
+        }
 
-                while ((line = reader.readLine()) != null) {
-                    String entry = StringUtil.trim(StringUtil.trimStart(line, GIT_UNIGNORED_FILES_PREFIX));
-                    ContainerUtil.addIfNotNull(entry, result);
-                }
-
-                return result;
-            }
-        }));
+        ArrayList<String> result = run(language, GIT_UNIGNORED_FILES, file.getParent(), new GitUnignoredFilesOutputParser());
+        return ContainerUtil.notNullize(result);
     }
 
     /**
@@ -126,46 +113,65 @@ public class ExternalExec {
     /**
      * Runs {@link IgnoreLanguage} executable with the given command and current working directory.
      *
-     * @param language current language
-     * @param command to call
-     * @param directory current working directory
-     * @param reader {@link BufferedReader} wrapper
-     * @param <T> return type
+     * @param language     current language
+     * @param command      to call
+     * @param directory    current working directory
+     * @param parser       {@link ExecutionOutputParser} implementation
+     * @param <T>          return type
      * @return result of the call
      */
     @Nullable
-    private static <T> T run(@NotNull IgnoreLanguage language, @NotNull String command, @Nullable VirtualFile directory, @NotNull Reader<T> reader) {
+    private static <T> T runForSingle(@NotNull IgnoreLanguage language, @NotNull String command, @Nullable VirtualFile directory, @NotNull final ExecutionOutputParser<T> parser) {
+        return ContainerUtil.getFirstItem(run(language, command, directory, parser));
+    }
+
+    /**
+     * Runs {@link IgnoreLanguage} executable with the given command and current working directory.
+     *
+     * @param language  current language
+     * @param command   to call
+     * @param directory current working directory
+     * @param parser    {@link ExecutionOutputParser} implementation
+     * @param <T>       return type
+     * @return result of the call
+     */
+    @Nullable
+    private static <T> ArrayList<T> run(@NotNull IgnoreLanguage language, @NotNull String command, @Nullable VirtualFile directory, @NotNull final ExecutionOutputParser<T> parser) {
         final String bin = bin(language);
         if (bin == null) {
             return null;
         }
 
         try {
-            File workingDirectory = directory != null ? new File(directory.getPath()) : null;
-            Process pr = Runtime.getRuntime().exec(bin + " " + command, null, workingDirectory);
-            pr.waitFor();
+            final String cmd = bin + " " + command;
+            final File workingDirectory = directory != null ? new File(directory.getPath()) : null;
+            final Process process = Runtime.getRuntime().exec(cmd, null, workingDirectory);
 
-            ProcessWithTimeout processWithTimeout = new ProcessWithTimeout(pr);
-            int exitCode = processWithTimeout.waitForProcess(3000);
-            if (exitCode == Integer.MIN_VALUE) {
-                pr.destroy();
+            ProcessHandler handler = new BaseOSProcessHandler(process, StringUtil.join(cmd, " "), null) {
+                @NotNull
+                @Override
+                protected Future<?> executeOnPooledThread(@NotNull Runnable task) {
+                    return SharedThreadPool.getInstance().executeOnPooledThread(task);
+                }
+
+                @Override
+                public void notifyTextAvailable(String text, Key outputType) {
+                    parser.onTextAvailable(text, outputType);
+                }
+            };
+
+            handler.startNotify();
+            handler.waitFor();
+            parser.notifyFinished(process.exitValue());
+
+            if (parser.isErrorsReported()) {
+                return null;
             }
 
-            return reader.read(new BufferedReader(new InputStreamReader(pr.getInputStream())));
+            return parser.getOutput();
         } catch (IOException ignored) {
-        } catch (InterruptedException ignored) {
         }
 
         return null;
-    }
-
-    /**
-     * {@link BufferedReader} wrapper class
-     *
-     * @param <T> type
-     */
-    private abstract static class Reader<T> {
-        @Nullable
-        abstract T read(@NotNull BufferedReader reader) throws IOException;
     }
 }

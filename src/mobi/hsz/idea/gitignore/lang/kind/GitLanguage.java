@@ -30,7 +30,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
-import mobi.hsz.idea.gitignore.util.ExternalExec;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

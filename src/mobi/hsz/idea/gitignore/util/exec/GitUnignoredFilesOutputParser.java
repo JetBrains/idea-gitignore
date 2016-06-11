@@ -22,25 +22,31 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.actions;
+package mobi.hsz.idea.gitignore.util.exec;
 
-import com.intellij.openapi.actionSystem.Presentation;
-import mobi.hsz.idea.gitignore.Common;
-import mobi.hsz.idea.gitignore.IgnoreBundle;
-import org.junit.Assert;
+import com.intellij.openapi.util.text.StringUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
+ * Parser for the {@link ExternalExec#GIT_UNIGNORED_FILES} command that returns unignored files entries list.
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.5
  */
-public class IgnoreFileActionTest extends Common<IgnoreFileAction> {
-    public void testAddTemplateActionInvocation() {
-        IgnoreFileAction action = new IgnoreFileAction();
-        Presentation presentation;
+public class GitUnignoredFilesOutputParser extends ExecutionOutputParser<String> {
+    /** Prefix to remove from the {@link ExternalExec#GIT_UNIGNORED_FILES} command's result. */
+    private static final String GIT_UNIGNORED_FILES_PREFIX = "Would remove";
 
-        presentation = myFixture.testAction(action);
-        Assert.assertEquals(IgnoreBundle.message("action.addToIgnore", "null"), presentation.getText());
-        Assert.assertEquals(IgnoreBundle.message("action.addToIgnore.description", "null"), presentation.getDescription());
-        Assert.assertFalse("Action is not visible if there is no Ignore file context", presentation.isEnabledAndVisible());
+    /**
+     * Parses single entries and removes git output prefixes.
+     *
+     * @param text input data
+     * @return single unignored entry
+     */
+    @Nullable
+    @Override
+    protected String parseOutput(@NotNull String text) {
+        return StringUtil.trim(StringUtil.trimStart(text, GIT_UNIGNORED_FILES_PREFIX));
     }
 }

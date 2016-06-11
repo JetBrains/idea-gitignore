@@ -32,7 +32,7 @@ import org.junit.Assert;
 
 /**
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.4.2
+ * @since 1.5
  */
 public class AddTemplateActionTest extends Common<AddTemplateAction> {
     public void testAddTemplateActionInvocation() {

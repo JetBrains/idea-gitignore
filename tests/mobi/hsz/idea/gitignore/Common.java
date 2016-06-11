@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.4.2
+ * @since 1.5
  */
 public abstract class Common<T> extends LightPlatformCodeInsightFixtureTestCase {
 

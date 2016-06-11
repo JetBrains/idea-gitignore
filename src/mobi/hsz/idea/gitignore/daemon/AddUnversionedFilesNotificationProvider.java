@@ -42,7 +42,7 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
-import mobi.hsz.idea.gitignore.util.ExternalExec;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import mobi.hsz.idea.gitignore.util.Properties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -61,12 +61,15 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
     private static final Key<EditorNotificationPanel> KEY = Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
 
     /** Current project. */
+    @NotNull
     private final Project project;
 
     /** Notifications component. */
+    @NotNull
     private final EditorNotifications notifications;
 
     /** Plugin settings holder. */
+    @NotNull
     private final IgnoreSettings settings;
 
     /** List of unignored files. */
@@ -82,7 +85,7 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
      * @param project       current project
      * @param notifications notifications component
      */
-    public AddUnversionedFilesNotificationProvider(Project project, @NotNull EditorNotifications notifications) {
+    public AddUnversionedFilesNotificationProvider(@NotNull Project project, @NotNull EditorNotifications notifications) {
         this.project = project;
         this.notifications = notifications;
         this.settings = IgnoreSettings.getInstance();
@@ -101,6 +104,7 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
 
     /**
      * Creates notification panel for given file and checks if is allowed to show the notification.
+     * Only {@link GitLanguage} is currently supported.
      *
      * @param file       current file
      * @param fileEditor current file editor
@@ -123,12 +127,12 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
         }
 
         final IgnoreLanguage language = IgnoreBundle.obtainLanguage(file);
-        if (language == null || !language.isVCS()) {
+        if (language == null || !language.isVCS() || !(language instanceof GitLanguage)) {
             return null;
         }
 
         unignoredFiles.clear();
-        unignoredFiles.addAll(ExternalExec.getUnignoredFiles(GitLanguage.INSTANCE, file.getParent()));
+        unignoredFiles.addAll(ExternalExec.getUnignoredFiles(GitLanguage.INSTANCE, project, file));
         if (unignoredFiles.isEmpty()) {
             return null;
         }
