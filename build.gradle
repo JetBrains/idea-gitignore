@@ -1,6 +1,6 @@
 plugins {
     id 'jacoco'
-    id 'org.jetbrains.intellij' version '0.0.43'
+    id 'org.jetbrains.intellij' version '0.1.6'
     id 'de.undercouch.download' version '2.1.0'
     id 'com.github.kt3k.coveralls' version '2.6.3'
 }
@@ -68,6 +68,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
 }
 
 test {
