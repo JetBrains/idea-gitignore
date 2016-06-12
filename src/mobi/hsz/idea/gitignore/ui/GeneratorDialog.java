@@ -434,7 +434,7 @@ public class GeneratorDialog extends DialogWrapper {
                 CommandProcessor.getInstance().runUndoTransparentAction(new Runnable() {
                     @Override
                     public void run() {
-                        String content = template != null ? StringUtil.replaceChar(template.getContent(), '\r', '\0') : "";
+                        String content = template != null ? StringUtil.replaceChar(StringUtil.notNullize(template.getContent()), '\r', '\0') : "";
                         previewDocument.replaceString(0, previewDocument.getTextLength(), content);
 
                         List<Pair<Integer, Integer>> pairs = getFilterRanges(profileFilter.getTextEditor().getText(), content);
