@@ -131,7 +131,7 @@ public class IgnoreFileAction extends DumbAwareAction {
                 }
             }
             Utils.openFile(project, ignore);
-            new AppendFileCommandAction(project, ignore, paths, false).execute();
+            new AppendFileCommandAction(project, ignore, paths, false, false).execute();
         }
     }
 

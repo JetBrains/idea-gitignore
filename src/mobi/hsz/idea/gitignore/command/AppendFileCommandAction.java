@@ -72,6 +72,9 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
     /** Ignore duplicated entries. */
     private final boolean ignoreDuplicates;
 
+    /** Ignore comments and empty lines. */
+    private final boolean ignoreComments;
+
     /** Defines if new content should be inserted at the cursor's position or at the document end. */
     private final boolean insertAtCursor;
 
@@ -83,14 +86,17 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
      * @param file             working file
      * @param content          rule
      * @param ignoreDuplicates ignore duplicated entries
+     * @param ignoreComments   ignore comments and empty lines
      */
-    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull Set<String> content, boolean ignoreDuplicates) {
+    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull Set<String> content,
+                                   boolean ignoreDuplicates, boolean ignoreComments) {
         super(project, file);
         this.project = project;
         this.file = file;
         this.content = content;
         this.manager = PsiDocumentManager.getInstance(project);
         this.ignoreDuplicates = ignoreDuplicates;
+        this.ignoreComments = ignoreComments;
         this.insertAtCursor = IgnoreSettings.getInstance().isInsertAtCursor();
     }
 
@@ -102,9 +108,11 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
      * @param file             working file
      * @param content          rule
      * @param ignoreDuplicates ignore duplicated entries
+     * @param ignoreComments   ignore comments and empty lines
      */
-    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull final String content, boolean ignoreDuplicates) {
-        this(project, file, ContainerUtil.newHashSet(content), ignoreDuplicates);
+    public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull final String content,
+                                   boolean ignoreDuplicates, boolean ignoreComments) {
+        this(project, file, ContainerUtil.newHashSet(content), ignoreDuplicates, ignoreComments);
     }
 
     /**
@@ -161,7 +169,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                 List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split("\n")));
                 Iterator<String> iterator = entryLines.iterator();
                 while (iterator.hasNext()) {
-                    String line = iterator.next();
+                    String line = iterator.next().trim();
                     if (line.isEmpty() || line.startsWith("#")) {
                         continue;
                     }
@@ -170,6 +178,19 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                         iterator.remove();
                     } else {
                         currentLines.add(line);
+                    }
+                }
+
+                entry = StringUtil.join(entryLines, "\n");
+            }
+
+            if (ignoreComments) {
+                List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split("\n")));
+                Iterator<String> iterator = entryLines.iterator();
+                while (iterator.hasNext()) {
+                    String line = iterator.next().trim();
+                    if (line.isEmpty() || line.startsWith("#")) {
+                        iterator.remove();
                     }
                 }
 

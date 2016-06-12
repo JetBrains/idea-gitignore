@@ -158,7 +158,7 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
                 if (file != null) {
                     final String content = StringUtil.join(unignoredFiles, "\n");
 
-                    new AppendFileCommandAction(project, file, content, true).execute();
+                    new AppendFileCommandAction(project, file, content, true, false).execute();
                     halndedMap.put(virtualFile, true);
                     notifications.updateAllNotifications();
                 }

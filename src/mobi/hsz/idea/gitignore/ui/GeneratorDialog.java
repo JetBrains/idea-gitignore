@@ -201,7 +201,7 @@ public class GeneratorDialog extends DialogWrapper {
     @Override
     protected void doOKAction() {
         if (isOKActionEnabled()) {
-            performAppendAction(false);
+            performAppendAction(false, false);
         }
     }
 
@@ -209,8 +209,9 @@ public class GeneratorDialog extends DialogWrapper {
      * Performs {@link AppendFileCommandAction} action.
      *
      * @param ignoreDuplicates ignores duplicated rules
+     * @param ignoreComments   ignores comments and empty lines
      */
-    private void performAppendAction(boolean ignoreDuplicates) {
+    private void performAppendAction(boolean ignoreDuplicates, boolean ignoreComments) {
         String content = "";
         for (Resources.Template template : checked) {
             if (template == null) {
@@ -223,7 +224,7 @@ public class GeneratorDialog extends DialogWrapper {
             file = action.execute().getResultObject();
         }
         if (file != null && !content.isEmpty()) {
-            new AppendFileCommandAction(project, file, content, ignoreDuplicates).execute();
+            new AppendFileCommandAction(project, file, content, ignoreDuplicates, ignoreComments).execute();
         }
         super.doOKAction();
     }
@@ -613,17 +614,23 @@ public class GeneratorDialog extends DialogWrapper {
 
     /** {@link OkAction} instance with additional `Generate without duplicates` action. */
     protected class OptionOkAction extends OkAction implements OptionAction {
-
         @NotNull
         @Override
         public Action[] getOptions() {
-            return new Action[]{new DialogWrapperAction(IgnoreBundle.message("global.generate.without.duplicates")) {
-                @Override
-                protected void doAction(ActionEvent e) {
-                    performAppendAction(true);
-                }
-            }};
+            return new Action[]{
+                    new DialogWrapperAction(IgnoreBundle.message("global.generate.without.duplicates")) {
+                        @Override
+                        protected void doAction(ActionEvent e) {
+                            performAppendAction(true, false);
+                        }
+                    },
+                    new DialogWrapperAction(IgnoreBundle.message("global.generate.without.comments")) {
+                        @Override
+                        protected void doAction(ActionEvent e) {
+                            performAppendAction(false, true);
+                        }
+                    }
+            };
         }
-
     }
 }
