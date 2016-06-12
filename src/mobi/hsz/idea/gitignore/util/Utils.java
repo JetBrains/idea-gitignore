@@ -484,4 +484,17 @@ public class Utils {
         }
         return result.isEmpty() ? ContainerUtil.<T>emptyList() : result;
     }
+
+    /**
+     * Method cloned from {@link ContainerUtil#notNullize(List)} because of NoSuchMethodError exception
+     * errors related to the some API changes.
+     *
+     * @param list method to check
+     * @param <T> container type
+     * @return not null container
+     */
+    @NotNull
+    public static <T> List<T> notNullize(@Nullable List<T> list) {
+        return list == null ? ContainerUtil.<T>newArrayList() : list;
+    }
 }

@@ -91,7 +91,7 @@ public class ExternalExec {
         }
 
         ArrayList<String> result = run(language, GIT_UNIGNORED_FILES, file.getParent(), new GitUnignoredFilesOutputParser());
-        return ContainerUtil.notNullize(result);
+        return Utils.notNullize(result);
     }
 
     /**
