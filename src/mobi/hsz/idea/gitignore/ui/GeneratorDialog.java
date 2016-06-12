@@ -38,6 +38,7 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.OptionAction;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
@@ -48,6 +49,7 @@ import com.intellij.util.ui.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Resources;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -63,6 +65,8 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Set;
 
+import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.*;
+
 /**
  * {@link GeneratorDialog} responsible for displaying list of all available templates and adding selected ones
  * to the specified file.
@@ -74,12 +78,22 @@ public class GeneratorDialog extends DialogWrapper {
     /** {@link FilterComponent} search history key. */
     private static final String TEMPLATES_FILTER_HISTORY = "TEMPLATES_FILTER_HISTORY";
 
+    /** Star icon for the favorites action. */
+    private static final Icon STAR = AllIcons.Ide.Rating;
+
     /** Cache set to store checked templates for the current action. */
     private final Set<Resources.Template> checked = ContainerUtil.newHashSet();
+
+    /** Set of the starred templates. */
+    private final Set<String> starred = ContainerUtil.newHashSet();
 
     /** Current working project. */
     @NotNull
     private final Project project;
+
+    /** Settings instance. */
+    @NotNull
+    private final IgnoreSettings settings;
 
     /** Current working file. */
     @Nullable
@@ -120,6 +134,7 @@ public class GeneratorDialog extends DialogWrapper {
         this.file = file;
         this.root = new TemplateTreeNode();
         this.action = null;
+        this.settings = IgnoreSettings.getInstance();
 
         setTitle(IgnoreBundle.message("dialog.generator.title"));
         setOKButtonText(IgnoreBundle.message("global.generate"));
@@ -299,8 +314,9 @@ public class GeneratorDialog extends DialogWrapper {
 
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
-                if (tree.getSelectionPaths() != null && tree.getSelectionPaths().length == 1) {
-                    updateDescriptionPanel(tree.getSelectionPaths()[0]);
+                final TreePath path = getCurrentPath();
+                if (path != null) {
+                    updateDescriptionPanel(path);
                 }
             }
         });
@@ -313,6 +329,14 @@ public class GeneratorDialog extends DialogWrapper {
         profileFilter = new TemplatesFilterComponent();
 
         return scrollPane;
+    }
+
+    @Nullable
+    private TreePath getCurrentPath() {
+        if (tree.getSelectionPaths() != null && tree.getSelectionPaths().length == 1) {
+            return tree.getSelectionPaths()[0];
+        }
+        return null;
     }
 
     /**
@@ -339,6 +363,56 @@ public class GeneratorDialog extends DialogWrapper {
                 filterTree(profileFilter.getTextEditor().getText());
             }
         });
+        actions.add(new AnAction(IgnoreBundle.message("dialog.generator.star"), null, STAR) {
+            @Override
+            public void update(AnActionEvent e) {
+                final TemplateTreeNode node = getCurrentNode();
+                boolean disabled = node == null || USER.equals(node.getContainer()) || !node.isLeaf();
+                boolean unstar = node != null && STARRED.equals(node.getContainer());
+
+                final Icon icon = disabled ? IconLoader.getDisabledIcon(STAR) : (unstar ? IconLoader.getTransparentIcon(STAR) : STAR);
+                final String text = IgnoreBundle.message(unstar ? "dialog.generator.unstar" : "dialog.generator.star");
+
+                final Presentation presentation = e.getPresentation();
+                presentation.setEnabled(!disabled);
+                presentation.setIcon(icon);
+                presentation.setText(text);
+            }
+
+            @Override
+            public void actionPerformed(AnActionEvent e) {
+                final TemplateTreeNode node = getCurrentNode();
+                if (node == null) {
+                    return;
+                }
+
+                final Resources.Template template = node.getTemplate();
+                if (template != null) {
+                    boolean isStarred = !template.isStarred();
+                    template.setStarred(isStarred);
+                    refreshTree();
+
+                    if (isStarred) {
+                        starred.add(template.getName());
+                    } else {
+                        starred.remove(template.getName());
+                    }
+
+                    settings.setStarredTemplates(ContainerUtil.newArrayList(starred));
+                }
+            }
+
+            /**
+             * Returns current {@link TemplateTreeNode} node if available.
+             *
+             * @return current node
+             */
+            @Nullable
+            private TemplateTreeNode getCurrentNode() {
+                final TreePath path = getCurrentPath();
+                return path == null ? null : (TemplateTreeNode) path.getLastPathComponent();
+            }
+        });
 
         final ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions, true);
         actionToolbar.setTargetComponent(target);
@@ -350,7 +424,7 @@ public class GeneratorDialog extends DialogWrapper {
      *
      * @param path selected tree path
      */
-    private void updateDescriptionPanel(TreePath path) {
+    private void updateDescriptionPanel(@NotNull TreePath path) {
         final TemplateTreeNode node = (TemplateTreeNode) path.getLastPathComponent();
         final Resources.Template template = node.getTemplate();
 
@@ -377,7 +451,7 @@ public class GeneratorDialog extends DialogWrapper {
      * @param filter       templates filter
      * @param forceInclude force include
      */
-    private void fillTreeData(String filter, boolean forceInclude) {
+    private void fillTreeData(@Nullable String filter, boolean forceInclude) {
         root.removeAllChildren();
         root.setChecked(false);
 
@@ -477,7 +551,7 @@ public class GeneratorDialog extends DialogWrapper {
      *
      * @param filter text
      */
-    private void filterTree(String filter) {
+    private void filterTree(@Nullable String filter) {
         if (tree != null) {
             fillTreeData(filter, true);
             reloadModel();
@@ -486,6 +560,11 @@ public class GeneratorDialog extends DialogWrapper {
                 TreeUtil.selectFirstNode(tree);
             }
         }
+    }
+
+    /** Refreshes current tree. */
+    private void refreshTree() {
+        filterTree(profileFilter.getTextEditor().getText());
     }
 
     /**

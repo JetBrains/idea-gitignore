@@ -62,6 +62,9 @@ public class Resources {
      */
     @NotNull
     public static List<Template> getGitignoreTemplates() {
+        final IgnoreSettings settings = IgnoreSettings.getInstance();
+        final List<String> starredTempaltes = settings.getStarredTemplates();
+
         final List<Template> templates = ContainerUtil.newArrayList();
         if (resourceTemplates == null) {
             resourceTemplates = ContainerUtil.newArrayList();
@@ -77,7 +80,9 @@ public class Resources {
                         File file = getResource(line);
                         if (file != null) {
                             String content = getResourceContent(line);
-                            resourceTemplates.add(new Template(file, content));
+                            Template template = new Template(file, content);
+                            template.setStarred(starredTempaltes.contains(template.getName()));
+                            resourceTemplates.add(template);
                         }
                     }
                 }
@@ -91,7 +96,6 @@ public class Resources {
         templates.addAll(resourceTemplates);
 
         // fetch user templates
-        IgnoreSettings settings = IgnoreSettings.getInstance();
         for (IgnoreSettings.UserTemplate userTemplate : settings.getUserTemplates()) {
             templates.add(new Template(userTemplate));
         }
@@ -157,12 +161,15 @@ public class Resources {
         @NotNull
         private final Container container;
 
+        /** Template is starred. */
+        private boolean starred;
+
         /**
          * Defines if template is fetched from resources ({@link Container#ROOT} directory or {@link Container#GLOBAL}
          * subdirectory) or is user defined and fetched from {@link IgnoreSettings}.
          */
         public enum Container {
-            USER, ROOT, GLOBAL
+            USER, STARRED, ROOT, GLOBAL
         }
 
         /**
@@ -224,12 +231,31 @@ public class Resources {
 
         /**
          * Gets template's container.
+         * Returns {@link Container#STARRED} if template is starred.
          *
          * @return template's container
          */
         @NotNull
         public Container getContainer() {
-            return container;
+            return starred ? Container.STARRED : container;
+        }
+
+        /**
+         * Tempalte is starred.
+         *
+         * @return starred
+         */
+        public boolean isStarred() {
+            return starred;
+        }
+
+        /**
+         * Set or unset template as starred.
+         *
+         * @param starred current state
+         */
+        public void setStarred(boolean starred) {
+            this.starred = starred;
         }
 
         /**

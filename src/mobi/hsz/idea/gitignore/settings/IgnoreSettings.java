@@ -28,6 +28,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -49,13 +50,17 @@ import java.util.*;
         storages = @Storage(id = "other", file = "$APP_CONFIG$/ignore.xml")
 )
 public class IgnoreSettings implements PersistentStateComponent<Element>, Listenable<IgnoreSettings.Listener> {
+    /** Starred templates separator. */
+    private static final String STARRED_TEMPLATES_SEPARATOR = "$";
+
     /** Settings keys. */
     public enum KEY {
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
         OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight"),
-        INSERT_AT_CURSOR("insertAtCursor"), ADD_UNVERSIONED_FILES("addUnversionedFiles"), VERSION("version");
+        INSERT_AT_CURSOR("insertAtCursor"), ADD_UNVERSIONED_FILES("addUnversionedFiles"), VERSION("version"),
+        STARRED_TEMPLATES("starredTemplates");
 
         private final String key;
 
@@ -95,6 +100,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
     /** Plugin version. */
     private String version;
+
+    /** Starred templates. */
+    private final List<String> starredTemplates = ContainerUtil.newArrayList();
 
     /** Settings related to the {@link IgnoreLanguage}. */
     private IgnoreLanguagesSettings languagesSettings = new IgnoreLanguagesSettings() {{
@@ -136,6 +144,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.OUTER_IGNORE_RULES.toString(), Boolean.toString(outerIgnoreRules));
         element.setAttribute(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString(), Integer.toString(outerIgnoreWrapperHeight));
         element.setAttribute(KEY.VERSION.toString(), version);
+        element.setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, STARRED_TEMPLATES_SEPARATOR));
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
         for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
@@ -194,6 +203,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
         value = element.getAttributeValue(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString());
         if (value != null) outerIgnoreWrapperHeight = Integer.parseInt(value);
+
+        value = element.getAttributeValue(KEY.STARRED_TEMPLATES.toString());
+        if (value != null) setStarredTemplates(StringUtil.split(value, STARRED_TEMPLATES_SEPARATOR));
 
         Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
@@ -346,13 +358,13 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     }
 
     /**
-     * Sets plugin version.
+     * Sets outer ignore rules.
      *
-     * @param version of the plugin
+     * @param outerIgnoreWrapperHeight wrapper panel height
      */
-    public void setVersion(@NotNull String version) {
-        this.notifyOnChange(KEY.VERSION, this.version, version);
-        this.version = version;
+    public void setOuterIgnoreWrapperHeight(int outerIgnoreWrapperHeight) {
+        this.notifyOnChange(KEY.OUTER_IGNORE_WRAPPER_HEIGHT, this.outerIgnoreWrapperHeight, outerIgnoreWrapperHeight);
+        this.outerIgnoreWrapperHeight = outerIgnoreWrapperHeight;
     }
 
     /**
@@ -365,13 +377,33 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     }
 
     /**
-     * Sets outer ignore rules.
+     * Sets plugin version.
      *
-     * @param outerIgnoreWrapperHeight wrapper panel height
+     * @param version of the plugin
      */
-    public void setOuterIgnoreWrapperHeight(int outerIgnoreWrapperHeight) {
-        this.notifyOnChange(KEY.OUTER_IGNORE_WRAPPER_HEIGHT, this.outerIgnoreWrapperHeight, outerIgnoreWrapperHeight);
-        this.outerIgnoreWrapperHeight = outerIgnoreWrapperHeight;
+    public void setVersion(@NotNull String version) {
+        this.notifyOnChange(KEY.VERSION, this.version, version);
+        this.version = version;
+    }
+
+    /**
+     * Returns starred templates list.
+     *
+     * @return starred templates
+     */
+    @NotNull
+    public List<String> getStarredTemplates() {
+        return starredTemplates;
+    }
+
+    /**
+     * Clears current {@link #starredTemplates} lists and adds new elements.
+     *
+     * @param starredTemplates new templates list
+     */
+    public void setStarredTemplates(@NotNull List<String> starredTemplates) {
+        this.starredTemplates.clear();
+        this.starredTemplates.addAll(starredTemplates);
     }
 
     /**
