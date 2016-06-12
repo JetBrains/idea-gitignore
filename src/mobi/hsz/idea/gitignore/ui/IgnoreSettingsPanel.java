@@ -333,7 +333,7 @@ public class IgnoreSettingsPanel implements Disposable {
          * @param userTemplates templates list
          */
         @SuppressWarnings("unchecked")
-        public void resetForm(List<IgnoreSettings.UserTemplate> userTemplates) {
+        public void resetForm(@NotNull List<IgnoreSettings.UserTemplate> userTemplates) {
             myListModel.clear();
             for (IgnoreSettings.UserTemplate template : userTemplates) {
                 myListModel.addElement(new IgnoreSettings.UserTemplate(template.getName(), template.getContent()));
@@ -347,7 +347,7 @@ public class IgnoreSettingsPanel implements Disposable {
          * @return modified template
          */
         @Override
-        protected IgnoreSettings.UserTemplate editSelectedItem(IgnoreSettings.UserTemplate item) {
+        protected IgnoreSettings.UserTemplate editSelectedItem(@NotNull IgnoreSettings.UserTemplate item) {
             return showEditDialog(item);
         }
 

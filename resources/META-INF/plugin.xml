@@ -91,247 +91,309 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <additionalTextAttributes
-            file="colorSchemes/IgnoreDefault.xml"
-            scheme="Default"/>
+                file="colorSchemes/IgnoreDefault.xml"
+                scheme="Default"/>
         <additionalTextAttributes
-            file="colorSchemes/IgnoreDarcula.xml"
-            scheme="Darcula"/>
+                file="colorSchemes/IgnoreDarcula.xml"
+                scheme="Darcula"/>
 
         <vcsConfigurableProvider
-            implementation="mobi.hsz.idea.gitignore.settings.IgnoreSettingsConfigurable"/>
+                implementation="mobi.hsz.idea.gitignore.settings.IgnoreSettingsConfigurable"/>
 
         <applicationService
-            serviceInterface="mobi.hsz.idea.gitignore.settings.IgnoreSettings"
-            serviceImplementation="mobi.hsz.idea.gitignore.settings.IgnoreSettings"/>
+                serviceInterface="mobi.hsz.idea.gitignore.settings.IgnoreSettings"
+                serviceImplementation="mobi.hsz.idea.gitignore.settings.IgnoreSettings"/>
 
         <colorSettingsPage
-            implementation="mobi.hsz.idea.gitignore.highlighter.IgnoreColorSettingsPage"/>
+                implementation="mobi.hsz.idea.gitignore.highlighter.IgnoreColorSettingsPage"/>
 
         <highlightRangeExtension implementation="mobi.hsz.idea.gitignore.codeInsight.IgnoreHighlightRangeExtension"/>
 
         <completion.contributor
-            language="Ignore"
-            implementationClass="mobi.hsz.idea.gitignore.codeInsight.SyntaxCompletionContributor"/>
+                language="Ignore"
+                implementationClass="mobi.hsz.idea.gitignore.codeInsight.SyntaxCompletionContributor"/>
 
         <editorNotificationProvider
-            implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider"/>
+                implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider"/>
         <editorNotificationProvider
-            implementation="mobi.hsz.idea.gitignore.daemon.AddUnversionedFilesNotificationProvider"/>
+                implementation="mobi.hsz.idea.gitignore.daemon.AddUnversionedFilesNotificationProvider"/>
 
         <fileTypeFactory
-            implementation="mobi.hsz.idea.gitignore.file.IgnoreFileTypeFactory"/>
+                implementation="mobi.hsz.idea.gitignore.file.IgnoreFileTypeFactory"/>
 
         <lang.elementManipulator
-            forClass="mobi.hsz.idea.gitignore.psi.IgnoreEntry"
-            implementationClass="mobi.hsz.idea.gitignore.psi.IgnoreEntryManipulator"/>
+                forClass="mobi.hsz.idea.gitignore.psi.IgnoreEntry"
+                implementationClass="mobi.hsz.idea.gitignore.psi.IgnoreEntryManipulator"/>
 
         <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection"
-            key="codeInspection.coverEntry"
-            level="WARNING"/>
+                bundle="messages.IgnoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreCoverEntryInspection"
+                key="codeInspection.coverEntry"
+                level="WARNING"/>
         <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection"
-            key="codeInspection.duplicateEntry"
-            level="ERROR"/>
+                bundle="messages.IgnoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreDuplicateEntryInspection"
+                key="codeInspection.duplicateEntry"
+                level="ERROR"/>
         <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
-            key="codeInspection.unusedEntry"
-            level="UNUSED ENTRY"/>
+                bundle="messages.IgnoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
+                key="codeInspection.unusedEntry"
+                level="UNUSED ENTRY"/>
         <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
-            key="codeInspection.relativeEntry"
-            level="ERROR"/>
+                bundle="messages.IgnoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
+                key="codeInspection.relativeEntry"
+                level="ERROR"/>
         <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreSyntaxEntryInspection"
-            key="codeInspection.syntaxEntry"
-            level="ERROR"/>
+                bundle="messages.IgnoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreSyntaxEntryInspection"
+                key="codeInspection.syntaxEntry"
+                level="ERROR"/>
         <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreIncorrectEntryInspection"
-            key="codeInspection.incorrectEntry"
-            level="ERROR"/>
+                bundle="messages.IgnoreBundle"
+                enabledByDefault="true"
+                groupKey="codeInspection.group"
+                implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreIncorrectEntryInspection"
+                key="codeInspection.incorrectEntry"
+                level="ERROR"/>
 
         <severitiesProvider
-            implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
+                implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
         <vcs.fileStatusProvider
-            implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
+                implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
 
-        <lang.parserDefinition language="Ignore"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Bazaar"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Chef"                      implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="CloudFoundry"              implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Cvs"                       implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Darcs"                     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Docker"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Floobits"                  implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Fossil"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Git"                       implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Git exclude"               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Jetpack"                   implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="JSHint"                    implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Mercurial"                 implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Monotone"                  implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Nodemon"                   implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Npm"                       implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Perforce"                  implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Team Foundation"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Ignore"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Bazaar"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Chef"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="CloudFoundry"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Cvs"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Darcs"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Docker"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Floobits"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Fossil"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Git"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Git exclude"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Jetpack"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="JSHint"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Mercurial"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Monotone"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Nodemon"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Npm"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Perforce"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Team Foundation"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
 
 
         <!-- Common -->
-        <psi.referenceContributor       language="Ignore"           implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"/>
-        <lang.syntaxHighlighterFactory       key="Ignore"           implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <psi.referenceContributor language="Ignore"
+                                  implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"/>
+        <lang.syntaxHighlighterFactory key="Ignore"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Common -->
 
         <!-- Bazaar -->
-        <codeInsight.lineMarkerProvider language="Bazaar"           implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Bazaar"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Bazaar"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Bazaar"           implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Bazaar"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Bazaar" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Bazaar" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Bazaar"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Bazaar -->
 
         <!-- Chef -->
-        <codeInsight.lineMarkerProvider language="Chef"             implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Chef"             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Chef"             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Chef"             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Chef"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Chef" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Chef" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Chef"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Chef -->
 
         <!-- CloudFoundry -->
-        <codeInsight.lineMarkerProvider language="CloudFoundry"     implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="CloudFoundry"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="CloudFoundry"     implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="CloudFoundry"     implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="CloudFoundry"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="CloudFoundry"
+                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="CloudFoundry" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="CloudFoundry"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END CloudFoundry -->
 
         <!-- Cvs -->
-        <codeInsight.lineMarkerProvider language="Cvs"              implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Cvs"              implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Cvs"              implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Cvs"              implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Cvs"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Cvs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Cvs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Cvs"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Cvs -->
 
         <!-- Darcs -->
-        <codeInsight.lineMarkerProvider language="Darcs"            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Darcs"            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Darcs"            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Darcs"            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Darcs"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Darcs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Darcs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Darcs"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Darcs -->
 
         <!-- Docker -->
-        <codeInsight.lineMarkerProvider language="Docker"           implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Docker"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Docker"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Docker"           implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Docker"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Docker" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Docker" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Docker"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Docker -->
 
         <!-- ESLint -->
-        <codeInsight.lineMarkerProvider language="ESLint"           implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="ESLint"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="ESLint"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="ESLint"           implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="ESLint"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="ESLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="ESLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="ESLint"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END ESLint -->
 
         <!-- Floobits -->
-        <codeInsight.lineMarkerProvider language="Floobits"         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Floobits"         implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Floobits"         implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Floobits"         implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Floobits"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Floobits" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Floobits" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Floobits"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Floobits -->
 
         <!-- Fossil -->
-        <codeInsight.lineMarkerProvider language="Fossil"           implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Fossil"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Fossil"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Fossil"           implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Fossil"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Fossil" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Fossil" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Fossil"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Fossil -->
 
         <!-- Git -->
-        <codeInsight.lineMarkerProvider language="Git"              implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Git"              implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Git"              implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Git"              implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Git"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Git"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git -->
 
         <!-- Git exclude -->
-        <codeInsight.lineMarkerProvider language="Git exclude"      implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Git exclude"      implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Git exclude"      implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Git exclude"      implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Git exclude"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Git exclude"
+                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Git exclude" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Git exclude"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git exclude -->
 
         <!-- Jetpack -->
-        <codeInsight.lineMarkerProvider language="Jetpack"          implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Jetpack"          implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Jetpack"          implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Jetpack"          implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Jetpack"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Jetpack" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Jetpack" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Jetpack"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Jetpack -->
 
         <!-- JSHint -->
-        <codeInsight.lineMarkerProvider language="JSHint"           implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="JSHint"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="JSHint"           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="JSHint"           implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="JSHint"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="JSHint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="JSHint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="JSHint"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END JSHint -->
 
         <!-- Mercurial -->
-        <codeInsight.lineMarkerProvider language="Mercurial"        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Mercurial"        implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Mercurial"        implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Mercurial"        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Mercurial"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Mercurial"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Mercurial -->
 
 
         <!-- Monotone -->
-        <codeInsight.lineMarkerProvider language="Monotone"         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Monotone"         implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Monotone"         implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Monotone"         implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Monotone"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Monotone" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Monotone" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Monotone"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Monotone -->
 
         <!-- Nodemon -->
-        <codeInsight.lineMarkerProvider language="Nodemon"          implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Nodemon"          implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Nodemon"          implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Nodemon"          implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Nodemon"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Nodemon" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Nodemon" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Nodemon"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Nodemon -->
 
         <!-- Npm -->
-        <codeInsight.lineMarkerProvider language="Npm"              implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Npm"              implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Npm"              implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Npm"              implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Npm"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Npm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Npm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Npm"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Npm -->
 
         <!-- Perforce -->
-        <codeInsight.lineMarkerProvider language="Perforce"         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Perforce"         implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Perforce"         implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Perforce"         implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Perforce"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Perforce" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Perforce" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Perforce"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Perforce -->
 
         <!-- Team Foundation -->
-        <codeInsight.lineMarkerProvider language="Team Foundation"  implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher              language="Team Foundation"  implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter                 language="Team Foundation"  implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory       key="Team Foundation"  implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="Team Foundation"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Team Foundation"
+                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Team Foundation" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Team Foundation"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Team Foundation -->
 
     </extensions>
@@ -370,8 +432,9 @@
             <add-to-group group-id="EditorTabPopupMenu"/>
             <add-to-group group-id="ConsoleEditorPopupMenu"/>
         </group>
-        <group>
+        <group id="Ignore.TemplateGroup">
             <action id="Ignore.AddTemplate" class="mobi.hsz.idea.gitignore.actions.AddTemplateAction"/>
+            <action id="IgnoreCreateUserTemplate" class="mobi.hsz.idea.gitignore.actions.CreateUserTemplateAction"/>
             <add-to-group group-id="EditorPopupMenu"/>
             <add-to-group group-id="ProjectViewPopupMenu"/>
             <add-to-group group-id="EditorTabPopupMenu"/>
