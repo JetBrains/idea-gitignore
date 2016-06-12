@@ -345,7 +345,7 @@ public class GeneratorDialog extends DialogWrapper {
      * @param target templates tree
      * @return action toolbar
      */
-    private ActionToolbar createTreeActionsToolbarPanel(JComponent target) {
+    private ActionToolbar createTreeActionsToolbarPanel(@NotNull JComponent target) {
         final CommonActionsManager actionManager = CommonActionsManager.getInstance();
 
         DefaultActionGroup actions = new DefaultActionGroup();
@@ -486,7 +486,7 @@ public class GeneratorDialog extends DialogWrapper {
      * @param container container type to search
      * @return group node
      */
-    private static TemplateTreeNode getGroupNode(TemplateTreeNode root, Resources.Template.Container container) {
+    private static TemplateTreeNode getGroupNode(@NotNull TemplateTreeNode root, @NotNull Resources.Template.Container container) {
         final int childCount = root.getChildCount();
 
         for (int i = 0; i < childCount; i++) {
@@ -508,7 +508,7 @@ public class GeneratorDialog extends DialogWrapper {
      * @param content templates content
      * @return text ranges
      */
-    private List<Pair<Integer, Integer>> getFilterRanges(String filter, String content) {
+    private List<Pair<Integer, Integer>> getFilterRanges(@NotNull String filter, @NotNull String content) {
         List<Pair<Integer, Integer>> pairs = ContainerUtil.newArrayList();
         content = content.toLowerCase();
 
@@ -528,7 +528,7 @@ public class GeneratorDialog extends DialogWrapper {
      * @param filter   templates filter
      * @return template is accepted
      */
-    private boolean isTemplateAccepted(Resources.Template template, String filter) {
+    private boolean isTemplateAccepted(@NotNull Resources.Template template, @NotNull String filter) {
         filter = filter.toLowerCase();
 
         if (StringUtil.containsIgnoreCase(template.getName(), filter)) {
@@ -542,7 +542,7 @@ public class GeneratorDialog extends DialogWrapper {
             }
         }
 
-        List<Pair<Integer, Integer>> ranges = getFilterRanges(filter, template.getContent());
+        List<Pair<Integer, Integer>> ranges = getFilterRanges(filter, StringUtil.notNullize(template.getContent()));
         return nameAccepted || ranges.size() > 0;
     }
 
