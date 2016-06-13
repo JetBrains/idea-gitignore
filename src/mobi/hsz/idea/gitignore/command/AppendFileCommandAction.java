@@ -45,6 +45,7 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -159,18 +160,18 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
 
         for (String entry : content) {
             if (ignoreDuplicates) {
-                List<String> currentLines = ContainerUtil.filter(document.getText().split("\n"), new Condition<String>() {
+                List<String> currentLines = ContainerUtil.filter(document.getText().split(Constants.NEWLINE), new Condition<String>() {
                     @Override
                     public boolean value(String s) {
-                        return !s.isEmpty() && !s.startsWith("#");
+                        return !s.isEmpty() && !s.startsWith(Constants.HASH);
                     }
                 });
 
-                List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split("\n")));
+                List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
                 Iterator<String> iterator = entryLines.iterator();
                 while (iterator.hasNext()) {
                     String line = iterator.next().trim();
-                    if (line.isEmpty() || line.startsWith("#")) {
+                    if (line.isEmpty() || line.startsWith(Constants.HASH)) {
                         continue;
                     }
 
@@ -181,28 +182,28 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                     }
                 }
 
-                entry = StringUtil.join(entryLines, "\n");
+                entry = StringUtil.join(entryLines, Constants.NEWLINE);
             }
 
             if (ignoreComments) {
-                List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split("\n")));
+                List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
                 Iterator<String> iterator = entryLines.iterator();
                 while (iterator.hasNext()) {
                     String line = iterator.next().trim();
-                    if (line.isEmpty() || line.startsWith("#")) {
+                    if (line.isEmpty() || line.startsWith(Constants.HASH)) {
                         iterator.remove();
                     }
                 }
 
-                entry = StringUtil.join(entryLines, "\n");
+                entry = StringUtil.join(entryLines, Constants.NEWLINE);
             }
 
             entry = StringUtil.replace(entry, "\r", "");
             if (!StringUtil.isEmpty(entry)) {
-                entry += "\n";
+                entry += Constants.NEWLINE;
             }
-            if (!insertAtCursor && !document.getText().endsWith("\n") && !StringUtil.isEmpty(entry)) {
-                entry = "\n" + entry;
+            if (!insertAtCursor && !document.getText().endsWith(Constants.NEWLINE) && !StringUtil.isEmpty(entry)) {
+                entry = Constants.NEWLINE + entry;
             }
 
             document.insertString(offset, entry);

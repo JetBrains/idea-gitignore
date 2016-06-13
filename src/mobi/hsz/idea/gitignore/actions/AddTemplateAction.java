@@ -40,6 +40,7 @@ import mobi.hsz.idea.gitignore.util.CommonDataKeys;
  * @since 0.5.3
  */
 public class AddTemplateAction extends AnAction {
+    /** Builds a new instance of {@link AddTemplateAction}. */
     public AddTemplateAction() {
         super(IgnoreBundle.message("action.addTemplate"), IgnoreBundle.message("action.addTemplate.description"), null);
     }

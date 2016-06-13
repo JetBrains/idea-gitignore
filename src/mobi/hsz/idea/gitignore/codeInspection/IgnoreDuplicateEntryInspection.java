@@ -79,7 +79,8 @@ public class IgnoreDuplicateEntryInspection extends LocalInspectionTool {
             iterator.next();
             while (iterator.hasNext()) {
                 IgnoreEntry entry = iterator.next();
-                problemsHolder.registerProblem(entry, IgnoreBundle.message("codeInspection.duplicateEntry.message"), new IgnoreRemoveEntryFix(entry));
+                problemsHolder.registerProblem(entry, IgnoreBundle.message("codeInspection.duplicateEntry.message"),
+                        new IgnoreRemoveEntryFix(entry));
             }
         }
 

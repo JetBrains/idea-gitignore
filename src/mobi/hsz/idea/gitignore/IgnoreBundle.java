@@ -56,6 +56,7 @@ public class IgnoreBundle {
     private static final String BUNDLE_NAME = "messages.IgnoreBundle";
 
     /** The {@link ResourceBundle} instance. */
+    @NotNull
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
     /** {@link IgnoreBundle} is a non-instantiable static class. */
@@ -89,6 +90,7 @@ public class IgnoreBundle {
     public enum Syntax {
         GLOB, REGEXP;
 
+        @NonNls
         private static final String KEY = "syntax:";
 
         @Nullable
@@ -137,12 +139,13 @@ public class IgnoreBundle {
      * @param params       the optional parameters for the specific resource
      * @return the {@link String} value or {@code null} if no resource found for the key
      */
-    public static String messageOrDefault(@PropertyKey(resourceBundle = BUNDLE_NAME) String key, String defaultValue, Object... params) {
+    public static String messageOrDefault(@PropertyKey(resourceBundle = BUNDLE_NAME) String key, String defaultValue,
+                                          Object... params) {
         return CommonBundle.messageOrDefault(BUNDLE, key, defaultValue, params);
     }
 
     /**
-     * Returns {@link IgnoreLanguage} matching to the givet {@link VirtualFile}.
+     * Returns {@link IgnoreLanguage} matching to the given {@link VirtualFile}.
      *
      * @param file to obtain
      * @return matching language

@@ -47,7 +47,8 @@ import mobi.hsz.idea.gitignore.util.Icons;
  */
 public class CreateUserTemplateAction extends AnAction {
     public CreateUserTemplateAction() {
-        super(IgnoreBundle.message("action.createUserTemplate"), IgnoreBundle.message("action.createUserTemplate.description"), Icons.IGNORE);
+        super(IgnoreBundle.message("action.createUserTemplate"),
+                IgnoreBundle.message("action.createUserTemplate.description"), Icons.IGNORE);
     }
 
     /**

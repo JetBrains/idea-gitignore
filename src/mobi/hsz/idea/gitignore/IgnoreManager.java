@@ -74,18 +74,23 @@ public class IgnoreManager extends AbstractProjectComponent {
     private static final int REQUEST_DELAY = 200;
 
     /** Thread executor name. */
+    @NonNls
     private static final String PROCESS_NAME = "Ignore indexing";
 
     /** {@link CacheMap} instance. */
+    @NotNull
     private final CacheMap cache;
 
     /** {@link PsiManager} instance. */
+    @NotNull
     private final PsiManagerImpl psiManager;
 
     /** {@link VirtualFileManager} instance. */
+    @NotNull
     private final VirtualFileManager virtualFileManager;
 
     /** {@link IgnoreSettings} instance. */
+    @NotNull
     private final IgnoreSettings settings;
 
     /** {@link MessageBusConnection} instance. */
@@ -95,12 +100,15 @@ public class IgnoreManager extends AbstractProjectComponent {
     private boolean working;
 
     /** {@link ExecutorService} thread queue. */
+    @NotNull
     private final ExecutorService queue = ConcurrencyUtil.newSingleThreadExecutor(PROCESS_NAME);
 
     /** {@link ProgressIndicator} instance. */
+    @NotNull
     private final ProgressIndicator refreshIndicator = new RefreshProgress(IgnoreBundle.message("cache.indexing"));
 
     /** {@link VirtualFileListener} instance to watch filesystem changes. */
+    @NotNull
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
         /** Flag to obtain if file was {@link IgnoreFileType} before. */
         private boolean wasIgnoreFileType;
@@ -199,7 +207,8 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
     };
 
-    /** {@link PsiTreeChangeListener} isntance to check if {@link IgnoreFile} content was changed. */
+    /** {@link PsiTreeChangeListener} instance to check if {@link IgnoreFile} content was changed. */
+    @NotNull
     private final PsiTreeChangeListener psiTreeChangeListener = new PsiTreeChangeAdapter() {
         @Override
         public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
@@ -213,6 +222,7 @@ public class IgnoreManager extends AbstractProjectComponent {
     };
 
     /** {@link IgnoreSettings} listener to watch changes in the plugin's settings. */
+    @NotNull
     private final IgnoreSettings.Listener settingsListener = new IgnoreSettings.Listener() {
         @Override
         public void onChange(@NotNull KEY key, Object value) {
@@ -239,6 +249,7 @@ public class IgnoreManager extends AbstractProjectComponent {
     };
 
     /** {@link VcsListener} instance. */
+    @NotNull
     private final VcsListener vcsListener = new VcsListener() {
         private boolean initialized;
 
@@ -258,6 +269,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @param project current project
      * @return {@link IgnoreManager instance}
      */
+    @NotNull
     public static IgnoreManager getInstance(@NotNull final Project project) {
         return project.getComponent(IgnoreManager.class);
     }
@@ -394,7 +406,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      *
      * @param enable or disable
      */
-    private void toggle(Boolean enable) {
+    private void toggle(@NotNull Boolean enable) {
         if (enable) {
             enable();
         } else {

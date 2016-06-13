@@ -30,6 +30,7 @@ import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCa
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
+import mobi.hsz.idea.gitignore.util.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
@@ -52,7 +53,7 @@ public abstract class Common<T> extends LightPlatformCodeInsightFixtureTestCase 
 
     @NotNull
     protected String createIgnoreContent(String... entries) {
-        return StringUtil.join(entries, "\n");
+        return StringUtil.join(entries, Constants.NEWLINE);
     }
 
     @NotNull

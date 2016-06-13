@@ -36,6 +36,7 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.FileBasedIndex;
 import com.intellij.util.indexing.IdFilter;
 import gnu.trove.THashSet;
+import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,16 +54,16 @@ import java.util.regex.Pattern;
  * @since 1.3.1
  */
 public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
-    /** Cache key separator. */
-    private static final String SEPARATOR = "$";
-
     /** Concurrent cache map. */
+    @NotNull
     private final ConcurrentMap<String, Collection<VirtualFile>> cacheMap;
 
     /** {@link VirtualFileManager} instance. */
+    @NotNull
     private final VirtualFileManager virtualFileManager;
 
     /** {@link VirtualFileListener} instance to watch for operations on the filesystem. */
+    @NotNull
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
         @Override
         public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
@@ -98,7 +99,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
 
         private void removeAffectedCaches(@NotNull VirtualFileEvent event) {
             for (String key : cacheMap.keySet()) {
-                List<String> parts = StringUtil.split(key, SEPARATOR);
+                List<String> parts = StringUtil.split(key, Constants.DOLLAR);
                 if (MatcherUtil.matchAnyPart(parts.toArray(new String[parts.size()]), event.getFile().getPath())) {
                     cacheMap.remove(key);
                 }
@@ -153,7 +154,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
         final String[] parts = MatcherUtil.getParts(pattern);
 
         if (parts.length > 0) {
-            final String key = StringUtil.join(parts, SEPARATOR);
+            final String key = StringUtil.join(parts, Constants.DOLLAR);
             if (cacheMap.get(key) == null) {
                 final THashSet<VirtualFile> files = new THashSet<VirtualFile>(1000);
                 FileBasedIndex.getInstance().processAllKeys(FilenameIndex.NAME, new Processor<String>() {
@@ -176,10 +177,5 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
         }
 
         return ContainerUtil.newArrayList();
-    }
-
-    /** Clears {@link #cacheMap}. */
-    public void clear() {
-        cacheMap.clear();
     }
 }

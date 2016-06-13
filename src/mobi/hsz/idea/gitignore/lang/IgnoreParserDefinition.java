@@ -81,8 +81,8 @@ public class IgnoreParserDefinition implements ParserDefinition {
     public static final IFileElementType FILE = new IFileElementType(Language.findInstance(IgnoreLanguage.class));
 
     /**
-     * Returns the lexer for lexing files in the specified project. This lexer does not need to support incremental relexing - it is always
-     * called for the entire file.
+     * Returns the lexer for lexing files in the specified project. This lexer does not need to support incremental
+     * relexing - it is always called for the entire file.
      *
      * @param project the project to which the lexer is connected.
      * @return the lexer instance.

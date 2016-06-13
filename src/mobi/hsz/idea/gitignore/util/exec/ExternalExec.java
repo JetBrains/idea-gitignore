@@ -36,6 +36,7 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jps.service.SharedThreadPool;
@@ -61,9 +62,11 @@ public class ExternalExec {
     private static final boolean GIT_ENABLED = Utils.isGitPluginEnabled();
 
     /** Git command to get user's excludesfile path. */
+    @NonNls
     private static final String GIT_CONFIG_EXCLUDES_FILE = "config --global core.excludesfile";
 
     /** Git command to list unversioned files. */
+    @NonNls
     private static final String GIT_UNIGNORED_FILES = "clean -dn";
 
     /**
@@ -85,7 +88,8 @@ public class ExternalExec {
      * @return unignored files list
      */
     @NotNull
-    public static List<String> getUnignoredFiles(@NotNull IgnoreLanguage language, @NotNull Project project, @NotNull VirtualFile file) {
+    public static List<String> getUnignoredFiles(@NotNull IgnoreLanguage language, @NotNull Project project,
+                                                 @NotNull VirtualFile file) {
         if (!Utils.isInProject(file, project)) {
             return ContainerUtil.newArrayList();
         }
@@ -121,7 +125,8 @@ public class ExternalExec {
      * @return result of the call
      */
     @Nullable
-    private static <T> T runForSingle(@NotNull IgnoreLanguage language, @NotNull String command, @Nullable VirtualFile directory, @NotNull final ExecutionOutputParser<T> parser) {
+    private static <T> T runForSingle(@NotNull IgnoreLanguage language, @NotNull String command,
+                                      @Nullable VirtualFile directory, @NotNull final ExecutionOutputParser<T> parser) {
         return ContainerUtil.getFirstItem(run(language, command, directory, parser));
     }
 
@@ -136,7 +141,8 @@ public class ExternalExec {
      * @return result of the call
      */
     @Nullable
-    private static <T> ArrayList<T> run(@NotNull IgnoreLanguage language, @NotNull String command, @Nullable VirtualFile directory, @NotNull final ExecutionOutputParser<T> parser) {
+    private static <T> ArrayList<T> run(@NotNull IgnoreLanguage language, @NotNull String command,
+                                        @Nullable VirtualFile directory, @NotNull final ExecutionOutputParser<T> parser) {
         final String bin = bin(language);
         if (bin == null) {
             return null;

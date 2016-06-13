@@ -37,14 +37,14 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Inspection tool that checks if entry has correct form in specific according to the specific {@link mobi.hsz.idea.gitignore.IgnoreBundle.Syntax}.
+ * Inspection tool that checks if entry has correct form in specific according to the specific {@link IgnoreBundle.Syntax}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.0
  */
 public class IgnoreIncorrectEntryInspection extends LocalInspectionTool {
     /**
-     * Checks if entry has correct form in specific according to the specific {@link mobi.hsz.idea.gitignore.IgnoreBundle.Syntax}.
+     * Checks if entry has correct form in specific according to the specific {@link IgnoreBundle.Syntax}.
      *
      * @param holder     where visitor will register problems found.
      * @param isOnTheFly true if inspection was run in non-batch mode
@@ -52,6 +52,7 @@ public class IgnoreIncorrectEntryInspection extends LocalInspectionTool {
      */
     @NotNull
     @Override
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new IgnoreVisitor() {
             @Override
@@ -64,7 +65,8 @@ public class IgnoreIncorrectEntryInspection extends LocalInspectionTool {
                 try {
                     Pattern.compile(regex);
                 } catch (PatternSyntaxException e) {
-                    holder.registerProblem(entry, IgnoreBundle.message("codeInspection.incorrectEntry.message", e.getDescription()));
+                    holder.registerProblem(entry,
+                            IgnoreBundle.message("codeInspection.incorrectEntry.message", e.getDescription()));
                 }
             }
         };

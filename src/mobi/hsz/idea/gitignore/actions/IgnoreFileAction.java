@@ -87,7 +87,8 @@ public class IgnoreFileAction extends DumbAwareAction {
      */
     public IgnoreFileAction(@Nullable IgnoreFileType fileType, @Nullable VirtualFile virtualFile) {
         super(IgnoreBundle.message("action.addToIgnore", fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
-                IgnoreBundle.message("action.addToIgnore.description", fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
+                IgnoreBundle.message("action.addToIgnore.description",
+                        fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
                 fileType != null ? fileType.getIcon() : null);
         this.ignoreFile = virtualFile;
         this.fileType = fileType;
@@ -97,7 +98,8 @@ public class IgnoreFileAction extends DumbAwareAction {
      * Adds currently selected {@link VirtualFile} to the {@link #ignoreFile}.
      * If {@link #ignoreFile} is null, default project's Gitignore file will be used.
      * Files that cannot be covered with Gitignore file produces error notification.
-     * When action is performed, Gitignore file is opened with additional content added using {@link AppendFileCommandAction}.
+     * When action is performed, Gitignore file is opened with additional content added
+     * using {@link AppendFileCommandAction}.
      *
      * @param e action event
      */
@@ -122,8 +124,10 @@ public class IgnoreFileAction extends DumbAwareAction {
                     final VirtualFile baseDir = project.getBaseDir();
                     if (baseDir != null) {
                         Notifications.Bus.notify(new Notification(IgnoreLanguage.GROUP,
-                                IgnoreBundle.message("action.ignoreFile.addError", Utils.getRelativePath(baseDir, file)),
-                                IgnoreBundle.message("action.ignoreFile.addError.to", Utils.getRelativePath(baseDir, ignore.getVirtualFile())),
+                                IgnoreBundle.message("action.ignoreFile.addError",
+                                        Utils.getRelativePath(baseDir, file)),
+                                IgnoreBundle.message("action.ignoreFile.addError.to",
+                                        Utils.getRelativePath(baseDir, ignore.getVirtualFile())),
                                 NotificationType.ERROR), project);
                     }
                 } else {
@@ -157,6 +161,7 @@ public class IgnoreFileAction extends DumbAwareAction {
      * @param file file used for generating output path
      * @return relative path
      */
+    @NotNull
     private static String getPath(@NotNull VirtualFile root, @NotNull VirtualFile file) {
         String path = StringUtil.notNullize(Utils.getRelativePath(root, file));
         path = Utils.escapeChar(path, '[');

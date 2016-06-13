@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Inspection tool that checks if entry is relative/
+ * Inspection tool that checks if entry is relative.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
@@ -65,7 +65,8 @@ public class IgnoreRelativeEntryInspection extends LocalInspectionTool {
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 String path = entry.getText().replaceAll("\\\\(.)", "$1");
                 if (path.contains("./")) {
-                    problemsHolder.registerProblem(entry, IgnoreBundle.message("codeInspection.relativeEntry.message"), new IgnoreRelativeEntryFix(entry));
+                    problemsHolder.registerProblem(entry, IgnoreBundle.message("codeInspection.relativeEntry.message"),
+                            new IgnoreRelativeEntryFix(entry));
                 }
                 super.visitEntry(entry);
             }

@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.util.exec;
 
 import com.intellij.openapi.util.text.StringUtil;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,6 +37,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class GitUnignoredFilesOutputParser extends ExecutionOutputParser<String> {
     /** Prefix to remove from the {@link ExternalExec#GIT_UNIGNORED_FILES} command's result. */
+    @NonNls
     private static final String GIT_UNIGNORED_FILES_PREFIX = "Would remove";
 
     /**

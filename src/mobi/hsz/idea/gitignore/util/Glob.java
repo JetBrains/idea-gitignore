@@ -76,7 +76,8 @@ public class Glob {
      * @return search result
      */
     @NotNull
-    public static List<VirtualFile> find(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry, final boolean includeNested) {
+    public static List<VirtualFile> find(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry,
+                                         final boolean includeNested) {
         final Pattern pattern = createPattern(entry);
         if (pattern == null) {
             return Collections.emptyList();
@@ -212,7 +213,7 @@ public class Glob {
         boolean escape = false, star = false, doubleStar = false, bracket = false;
         int beginIndex = 0;
 
-        if (StringUtil.startsWith(glob, "**")) {
+        if (StringUtil.startsWith(glob, Constants.DOUBLESTAR)) {
             sb.append("(?:[^/]*?/)*");
             beginIndex = 2;
             doubleStar = true;
@@ -220,7 +221,7 @@ public class Glob {
             sb.append("[^/]*");
             beginIndex = 1;
             star = true;
-        } else if (StringUtil.equals("*", glob)) {
+        } else if (StringUtil.equals(Constants.STAR, glob)) {
             sb.append(".*");
         } else if (StringUtil.startsWithChar(glob, '*')) {
             sb.append(".*?");

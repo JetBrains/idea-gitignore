@@ -59,6 +59,7 @@ import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -134,7 +135,8 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         languagesTable.setColumnSelectionAllowed(false);
         languagesTable.setRowHeight(22);
-        languagesTable.setPreferredScrollableViewportSize(new Dimension(-1, languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size()));
+        languagesTable.setPreferredScrollableViewportSize(new Dimension(-1,
+                languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size()));
 
         languagesTable.setStriped(true);
         languagesTable.setShowGrid(false);
@@ -194,7 +196,8 @@ public class IgnoreSettingsPanel implements Disposable {
                         @Override
                         public boolean isFileVisible(VirtualFile file, boolean showHiddenFiles) {
                             return super.isFileVisible(file, showHiddenFiles) &&
-                                    (file.isDirectory() || FILE_EXTENSION.equals(file.getExtension()) || file.getFileType() == FileTypes.ARCHIVE);
+                                    (file.isDirectory() || FILE_EXTENSION.equals(file.getExtension()) ||
+                                            file.getFileType() == FileTypes.ARCHIVE);
                         }
 
                         @Override
@@ -215,7 +218,8 @@ public class IgnoreSettingsPanel implements Disposable {
                             for (IgnoreSettings.UserTemplate template : templates) {
                                 myListModel.addElement(template);
                             }
-                            Messages.showInfoMessage(templatesListPanel, IgnoreBundle.message("action.importTemplates.success", templates.size()),
+                            Messages.showInfoMessage(templatesListPanel,
+                                    IgnoreBundle.message("action.importTemplates.success", templates.size()),
                                     IgnoreBundle.message("action.exportTemplates.success.title"));
                             return;
                         } catch (IOException e) {
@@ -233,15 +237,17 @@ public class IgnoreSettingsPanel implements Disposable {
                 @Override
                 public void actionPerformed(AnActionEvent event) {
                     final VirtualFileWrapper wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
-                            new FileSaverDescriptor(IgnoreBundle.message("action.exportTemplates.wrapper"), "", FILE_EXTENSION), templatesListPanel
+                            new FileSaverDescriptor(IgnoreBundle.message("action.exportTemplates.wrapper"), "", FILE_EXTENSION),
+                            templatesListPanel
                     ).save(null, null);
 
                     if (wrapper != null) {
                         final List<IgnoreSettings.UserTemplate> items = getCurrentItems();
                         final org.jdom.Document document = new org.jdom.Document(IgnoreSettings.createTemplatesElement(items));
                         try {
-                            JDOMUtil.writeDocument(document, wrapper.getFile(), "\n");
-                            Messages.showInfoMessage(templatesListPanel, IgnoreBundle.message("action.exportTemplates.success", items.size()),
+                            JDOMUtil.writeDocument(document, wrapper.getFile(), Constants.NEWLINE);
+                            Messages.showInfoMessage(templatesListPanel,
+                                    IgnoreBundle.message("action.exportTemplates.success", items.size()),
                                     IgnoreBundle.message("action.exportTemplates.success.title"));
                         } catch (IOException e) {
                             Messages.showErrorDialog(templatesListPanel, IgnoreBundle.message("action.exportTemplates.error"));

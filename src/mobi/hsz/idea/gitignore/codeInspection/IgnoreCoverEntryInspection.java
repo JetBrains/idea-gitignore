@@ -39,6 +39,7 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
+import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.Glob;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -57,9 +58,6 @@ import java.util.concurrent.ConcurrentMap;
  * @since 0.5
  */
 public class IgnoreCoverEntryInspection extends LocalInspectionTool {
-    /** Cache key separator. */
-    private static final String SEPARATOR = "$";
-
     /** Cache map to store handled entries' paths. */
     private final ConcurrentMap<String, Set<String>> cacheMap;
 
@@ -205,8 +203,9 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
      * @param entry            to check
      * @return paths list
      */
-    private Set<String> getPathsSet(VirtualFile contextDirectory, IgnoreEntry entry) {
-        final String key = contextDirectory.getPath() + SEPARATOR + entry.getText();
+    @NotNull
+    private Set<String> getPathsSet(@NotNull VirtualFile contextDirectory, @NotNull IgnoreEntry entry) {
+        final String key = contextDirectory.getPath() + Constants.DOLLAR + entry.getText();
         if (!cacheMap.containsKey(key)) {
             cacheMap.put(key, ContainerUtil.newHashSet(Glob.findAsPaths(contextDirectory, entry, true)));
         }
@@ -221,6 +220,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
      * @param onTheFly      true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
      * @return generated message {@link String}
      */
+    @NotNull
     private static String message(@NotNull IgnoreEntry coveringEntry, @NotNull VirtualFile virtualFile, boolean onTheFly) {
         Document document = FileDocumentManager.getInstance().getDocument(virtualFile);
         if (onTheFly || document == null) {
@@ -229,7 +229,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
 
         int startOffset = coveringEntry.getTextRange().getStartOffset();
         return IgnoreBundle.message("codeInspection.coverEntry.message",
-                "<a href=\"" + virtualFile.getUrl() + "#" + startOffset + "\">" + coveringEntry.getText() + "</a>");
+                "<a href=\"" + virtualFile.getUrl() + Constants.HASH + startOffset + "\">" + coveringEntry.getText() + "</a>");
     }
 
     /**

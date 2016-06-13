@@ -42,12 +42,12 @@ import java.util.ArrayList;
 public abstract class ExecutionOutputParser<T> {
     /** Outputs list. */
     @NotNull
-    private ArrayList<T> outputs = ContainerUtil.newArrayList();
+    private final ArrayList<T> outputs = ContainerUtil.newArrayList();
 
     /** Exit code value. */
     private int exitCode;
 
-    /** Error occured during the output parsing. */
+    /** Error occurred during the output parsing. */
     private boolean errorsReported;
 
     /**
@@ -98,7 +98,7 @@ public abstract class ExecutionOutputParser<T> {
     }
 
     /**
-     * Checks if any error occured during the parsing.
+     * Checks if any error occurred during the parsing.
      *
      * @return error was reported
      */

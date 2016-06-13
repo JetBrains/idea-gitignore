@@ -46,6 +46,7 @@ import java.util.List;
  */
 public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
     /** Unused entry {@link HighlightSeverity} instance. */
+    @NotNull
     private static final HighlightSeverity UNUSED_ENTRY = new HighlightSeverity("UNUSED ENTRY", 10);
 
     /**

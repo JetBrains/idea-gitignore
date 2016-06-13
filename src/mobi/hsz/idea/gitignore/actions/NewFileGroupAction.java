@@ -39,7 +39,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
  * @since 0.9
  */
 public class NewFileGroupAction extends DefaultActionGroup implements DumbAware {
-    /** Constructor. */
+    /** Builds a new instance of {@link NewFileGroupAction}. */
     public NewFileGroupAction() {
         setPopup(true);
         Presentation presentation = getTemplatePresentation();

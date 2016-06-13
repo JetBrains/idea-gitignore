@@ -67,9 +67,11 @@ public class OuterIgnoreWrapper implements Disposable {
     private final JPanel panel;
 
     /** List of outer editors in the wrapper. */
+    @NotNull
     private final List<Editor> outerEditors = ContainerUtil.newArrayList();
 
     /** The settings storage object. */
+    @NotNull
     private final IgnoreSettings settings;
 
     /** Current panel's height. */
@@ -83,7 +85,8 @@ public class OuterIgnoreWrapper implements Disposable {
 
     @SuppressWarnings("unchecked")
     /** Constructor. */
-    public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final IgnoreLanguage language, @NotNull final List<VirtualFile> outerFiles) {
+    public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final IgnoreLanguage language,
+                              @NotNull final List<VirtualFile> outerFiles) {
         settings = IgnoreSettings.getInstance();
 
         panel = new JPanel(new BorderLayout());

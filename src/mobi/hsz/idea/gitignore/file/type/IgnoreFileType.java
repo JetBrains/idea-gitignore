@@ -39,9 +39,11 @@ import javax.swing.*;
  */
 public class IgnoreFileType extends LanguageFileType {
     /** Contains {@link IgnoreFileType} singleton. */
+    @NotNull
     public static final IgnoreFileType INSTANCE = new IgnoreFileType();
 
     /** Current file type language. */
+    @NotNull
     private final IgnoreLanguage language;
 
     /** Protected constructor to prevent direct object creation. */

@@ -47,18 +47,18 @@ import java.util.Map;
 
 /**
  * Group action that ignores specified file or directory.
- * {@link ActionGroup} expands single action into a more child options to allow user specify the {@link mobi.hsz.idea.gitignore.psi.IgnoreFile}
- * that will be used for file's path storage.
+ * {@link ActionGroup} expands single action into a more child options to allow user specify
+ * the {@link mobi.hsz.idea.gitignore.psi.IgnoreFile} that will be used for file's path storage.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.5
  */
 public class IgnoreFileGroupAction extends ActionGroup {
-
     /** Maximum filename length for the action name. */
     private static final int FILENAME_MAX_LENGTH = 30;
 
     /** List of suitable Gitignore {@link VirtualFile}s that can be presented in an IgnoreFile action. */
+    @NotNull
     private final Map<IgnoreFileType, List<VirtualFile>> files = ContainerUtil.newHashMap();
 
     /** {@link Project}'s base directory. */

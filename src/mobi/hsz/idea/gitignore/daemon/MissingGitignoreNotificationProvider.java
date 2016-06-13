@@ -56,15 +56,19 @@ import javax.swing.*;
  */
 public class MissingGitignoreNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
     /** Notification key. */
+    @NotNull
     private static final Key<EditorNotificationPanel> KEY = Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
 
     /** Current project. */
+    @NotNull
     private final Project project;
 
     /** Notifications component. */
+    @NotNull
     private final EditorNotifications notifications;
 
     /** Plugin settings holder. */
+    @NotNull
     private final IgnoreSettings settings;
 
     /**
@@ -73,7 +77,7 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
      * @param project       current project
      * @param notifications notifications component
      */
-    public MissingGitignoreNotificationProvider(Project project, @NotNull EditorNotifications notifications) {
+    public MissingGitignoreNotificationProvider(@NotNull Project project, @NotNull EditorNotifications notifications) {
         this.project = project;
         this.notifications = notifications;
         this.settings = IgnoreSettings.getInstance();

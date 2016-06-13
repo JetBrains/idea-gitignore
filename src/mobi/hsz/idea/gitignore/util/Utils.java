@@ -68,9 +68,7 @@ import java.util.*;
  * @since 0.3.3
  */
 public class Utils {
-    /**
-     * Private constructor to prevent creating {@link Utils} instance.
-     */
+    /** Private constructor to prevent creating {@link Utils} instance. */
     private Utils() {
     }
 
@@ -107,7 +105,8 @@ public class Utils {
      * @return Ignore file
      */
     @Nullable
-    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType, @Nullable PsiDirectory directory) {
+    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType,
+                                        @Nullable PsiDirectory directory) {
         return getIgnoreFile(project, fileType, directory, false);
     }
 
@@ -122,7 +121,8 @@ public class Utils {
      * @return Ignore file
      */
     @Nullable
-    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType, @Nullable PsiDirectory directory, boolean createIfMissing) {
+    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType,
+                                        @Nullable PsiDirectory directory, boolean createIfMissing) {
         if (directory == null) {
             directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
         }
@@ -192,10 +192,12 @@ public class Utils {
      * @return collection of suitable Ignore files
      * @throws ExternalFileException
      */
-    public static List<VirtualFile> getSuitableIgnoreFiles(@NotNull Project project, @NotNull IgnoreFileType fileType, @NotNull VirtualFile file)
+    public static List<VirtualFile> getSuitableIgnoreFiles(@NotNull Project project, @NotNull IgnoreFileType fileType,
+                                                           @NotNull VirtualFile file)
             throws ExternalFileException {
         List<VirtualFile> files = ContainerUtil.newArrayList();
-        if (file.getCanonicalPath() == null || project.getBaseDir() == null || !VfsUtilCore.isAncestor(project.getBaseDir(), file, true)) {
+        if (file.getCanonicalPath() == null || project.getBaseDir() == null ||
+                !VfsUtilCore.isAncestor(project.getBaseDir(), file, true)) {
             throw new ExternalFileException();
         }
         VirtualFile baseDir = project.getBaseDir();
@@ -346,7 +348,8 @@ public class Utils {
      * @return file is under directory
      */
     public static boolean isInProject(@NotNull final VirtualFile file, @NotNull final Project project) {
-        return project.getBaseDir() != null && (isUnder(file, project.getBaseDir()) || StringUtil.startsWith(file.getUrl(), "temp://"));
+        return project.getBaseDir() != null && (isUnder(file, project.getBaseDir()) ||
+                StringUtil.startsWith(file.getUrl(), "temp://"));
     }
 
     /**
@@ -358,7 +361,8 @@ public class Utils {
      */
     @NotNull
     public static Editor createPreviewEditor(@NotNull Document document, @Nullable Project project, boolean isViewer) {
-        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, project, IgnoreFileType.INSTANCE, isViewer);
+        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(document, project,
+                IgnoreFileType.INSTANCE, isViewer);
         editor.setCaretEnabled(!isViewer);
 
         final EditorSettings settings = editor.getSettings();
@@ -475,7 +479,8 @@ public class Utils {
      */
     @NotNull
     @Contract(pure = true)
-    public static <T> List<T> intersection(@NotNull Collection<? extends T> collection1, @NotNull Collection<? extends T> collection2) {
+    public static <T> List<T> intersection(@NotNull Collection<? extends T> collection1,
+                                           @NotNull Collection<? extends T> collection2) {
         List<T> result = new ArrayList<T>();
         for (T t : collection1) {
             if (collection2.contains(t)) {

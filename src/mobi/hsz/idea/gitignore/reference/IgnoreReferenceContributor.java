@@ -47,7 +47,8 @@ public class IgnoreReferenceContributor extends PsiReferenceContributor {
      */
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar psiReferenceRegistrar) {
-        psiReferenceRegistrar.registerReferenceProvider(psiElement().inFile(psiFile(IgnoreFile.class)), new IgnoreReferenceProvider());
+        psiReferenceRegistrar.registerReferenceProvider(psiElement().inFile(psiFile(IgnoreFile.class)),
+                new IgnoreReferenceProvider());
     }
 
     /** Reference provider definition. */
@@ -61,7 +62,8 @@ public class IgnoreReferenceContributor extends PsiReferenceContributor {
          */
         @NotNull
         @Override
-        public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {
+        public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement,
+                                                     @NotNull ProcessingContext processingContext) {
             if (psiElement instanceof IgnoreEntry) {
                 return new IgnoreReferenceSet((IgnoreEntry) psiElement).getAllReferences();
             }

@@ -54,10 +54,12 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  */
 public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Current project. */
+    @NotNull
     private final Project project;
 
     /** Outer files map. */
-    private HashMap<IgnoreLanguage, List<VirtualFile>> outerFiles = ContainerUtil.newHashMap();
+    @NotNull
+    private final HashMap<IgnoreLanguage, List<VirtualFile>> outerFiles = ContainerUtil.newHashMap();
 
     /**
      * Returns {@link OuterIgnoreLoaderComponent} service instance.
@@ -65,6 +67,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
      * @param project current project
      * @return {@link OuterIgnoreLoaderComponent instance}
      */
+    @NotNull
     public static OuterIgnoreLoaderComponent getInstance(@NotNull final Project project) {
         return project.getComponent(OuterIgnoreLoaderComponent.class);
     }
@@ -90,7 +93,8 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Initializes component. */
     @Override
     public void initComponent() {
-        myProject.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new IgnoreEditorManagerListener(project));
+        myProject.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER,
+                new IgnoreEditorManagerListener(project));
     }
 
     /** Handles project opened event. */
@@ -120,9 +124,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
         return outerFiles.get(language);
     }
 
-    /**
-     * Listener for ignore editor manager.
-     */
+    /** Listener for ignore editor manager. */
     private static class IgnoreEditorManagerListener extends FileEditorManagerAdapter {
         /** Current project. */
         private final Project project;

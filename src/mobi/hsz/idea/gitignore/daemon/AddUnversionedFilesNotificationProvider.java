@@ -42,6 +42,7 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import mobi.hsz.idea.gitignore.util.Properties;
 import org.jetbrains.annotations.NotNull;
@@ -58,6 +59,7 @@ import java.util.List;
  */
 public class AddUnversionedFilesNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
     /** Notification key. */
+    @NotNull
     private static final Key<EditorNotificationPanel> KEY = Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
 
     /** Current project. */
@@ -74,10 +76,10 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
 
     /** List of unignored files. */
     @NotNull
-    private List<String> unignoredFiles = ContainerUtil.newArrayList();
+    private final List<String> unignoredFiles = ContainerUtil.newArrayList();
 
     /** Map to obtain if file was handled. */
-    private final WeakKeyWeakValueHashMap<VirtualFile, Boolean> halndedMap = new WeakKeyWeakValueHashMap<VirtualFile, Boolean>();
+    private final WeakKeyWeakValueHashMap<VirtualFile, Boolean> handledMap = new WeakKeyWeakValueHashMap<VirtualFile, Boolean>();
 
     /**
      * Builds a new instance of {@link AddUnversionedFilesNotificationProvider}.
@@ -122,7 +124,7 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
             return null;
         }
 
-        if (halndedMap.get(file) != null) {
+        if (handledMap.get(file) != null) {
             return null;
         }
 
@@ -156,10 +158,10 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
                 final VirtualFile virtualFile = project.getBaseDir().findChild(GitLanguage.INSTANCE.getFilename());
                 final PsiFile file = virtualFile != null ? PsiManager.getInstance(project).findFile(virtualFile) : null;
                 if (file != null) {
-                    final String content = StringUtil.join(unignoredFiles, "\n");
+                    final String content = StringUtil.join(unignoredFiles, Constants.NEWLINE);
 
                     new AppendFileCommandAction(project, file, content, true, false).execute();
-                    halndedMap.put(virtualFile, true);
+                    handledMap.put(virtualFile, true);
                     notifications.updateAllNotifications();
                 }
             }

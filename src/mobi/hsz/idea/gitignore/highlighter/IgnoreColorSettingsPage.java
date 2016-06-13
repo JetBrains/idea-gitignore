@@ -45,7 +45,6 @@ import java.util.Map;
  * @since 0.1
  */
 public class IgnoreColorSettingsPage implements ColorSettingsPage {
-
     /** The path to the sample .gitignore file. */
     @NonNls
     private static final String SAMPLE_GITIGNORE_PATH = "/sample.gitignore";
@@ -59,6 +58,7 @@ public class IgnoreColorSettingsPage implements ColorSettingsPage {
      *
      * @see #loadSampleGitignore()
      */
+    @NotNull
     private static final String SAMPLE_GITIGNORE = loadSampleGitignore();
 
     /** Attributes descriptor list. */
@@ -165,7 +165,10 @@ public class IgnoreColorSettingsPage implements ColorSettingsPage {
      * @see #SAMPLE_GITIGNORE_PATH
      * @see #SAMPLE_GITIGNORE
      */
+    @NotNull
     private static String loadSampleGitignore() {
-        return Resources.getResourceContent(SAMPLE_GITIGNORE_PATH);
+        final String content = Resources.getResourceContent(SAMPLE_GITIGNORE_PATH);
+        assert content != null;
+        return content;
     }
 }

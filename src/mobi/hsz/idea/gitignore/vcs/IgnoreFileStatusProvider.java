@@ -46,7 +46,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class IgnoreFileStatusProvider implements FileStatusProvider {
     /** Ignored status. */
-    public static final FileStatus IGNORED = FileStatusFactory.getInstance().createFileStatus("IGNORE.PROJECT_VIEW.IGNORED", IgnoreBundle.message("projectView.ignored"), JBColor.GRAY);
+    public static final FileStatus IGNORED = FileStatusFactory.getInstance().createFileStatus(
+            "IGNORE.PROJECT_VIEW.IGNORED", IgnoreBundle.message("projectView.ignored"), JBColor.GRAY);
 
     /** Instance of {@link IgnoreManager}. */
     private final IgnoreManager ignoreManager;

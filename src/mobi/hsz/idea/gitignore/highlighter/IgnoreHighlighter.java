@@ -61,9 +61,11 @@ public class IgnoreHighlighter extends SyntaxHighlighterBase {
     }
 
     /** Current project. */
+    @Nullable
     private final Project project;
 
     /** Current file. */
+    @Nullable
     private final VirtualFile virtualFile;
 
     /** Builds a new instance of {@link IgnoreHighlighter}. */

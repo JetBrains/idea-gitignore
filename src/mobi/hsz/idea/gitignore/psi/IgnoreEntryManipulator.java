@@ -51,7 +51,8 @@ public class IgnoreEntryManipulator extends AbstractElementManipulator<IgnoreEnt
      * @throws IncorrectOperationException if something goes wrong
      */
     @Override
-    public IgnoreEntry handleContentChange(@NotNull IgnoreEntry entry, @NotNull TextRange range, String newContent) throws IncorrectOperationException {
+    public IgnoreEntry handleContentChange(@NotNull IgnoreEntry entry, @NotNull TextRange range, String newContent)
+            throws IncorrectOperationException {
         if (!(entry.getLanguage() instanceof IgnoreLanguage)) {
             return entry;
         }

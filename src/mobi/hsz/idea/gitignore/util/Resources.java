@@ -63,7 +63,7 @@ public class Resources {
     @NotNull
     public static List<Template> getGitignoreTemplates() {
         final IgnoreSettings settings = IgnoreSettings.getInstance();
-        final List<String> starredTempaltes = settings.getStarredTemplates();
+        final List<String> starredTemplates = settings.getStarredTemplates();
 
         final List<Template> templates = ContainerUtil.newArrayList();
         if (resourceTemplates == null) {
@@ -81,7 +81,7 @@ public class Resources {
                         if (file != null) {
                             String content = getResourceContent(line);
                             Template template = new Template(file, content);
-                            template.setStarred(starredTempaltes.contains(template.getName()));
+                            template.setStarred(starredTemplates.contains(template.getName()));
                             resourceTemplates.add(template);
                         }
                     }
@@ -241,7 +241,7 @@ public class Resources {
         }
 
         /**
-         * Tempalte is starred.
+         * Template is starred.
          *
          * @return starred
          */

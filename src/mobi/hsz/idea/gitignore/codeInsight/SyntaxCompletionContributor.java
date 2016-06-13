@@ -45,6 +45,7 @@ import java.util.List;
  */
 public class SyntaxCompletionContributor extends CompletionContributor {
     /** Allowed values for the completion. */
+    @NotNull
     private static final List<LookupElementBuilder> SYNTAX_ELEMENTS = ContainerUtil.newArrayList();
     static {
         for (IgnoreBundle.Syntax syntax : IgnoreBundle.Syntax.values()) {
@@ -58,7 +59,8 @@ public class SyntaxCompletionContributor extends CompletionContributor {
                 StandardPatterns.instanceOf(PsiElement.class),
                 new CompletionProvider<CompletionParameters>() {
                     @Override
-                    protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result) {
+                    protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context,
+                                                  @NotNull CompletionResultSet result) {
                         PsiElement current = parameters.getPosition();
                         if (current.getParent() instanceof IgnoreSyntax && current.getPrevSibling() != null) {
                             result.addAllElements(SYNTAX_ELEMENTS);

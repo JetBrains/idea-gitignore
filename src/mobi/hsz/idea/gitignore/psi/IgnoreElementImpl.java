@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.5
  */
 public class IgnoreElementImpl extends ASTWrapperPsiElement {
+    /** Build a new instance of {@link IgnoreElementImpl}. */
     public IgnoreElementImpl(ASTNode node) {
         super(node);
     }

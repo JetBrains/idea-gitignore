@@ -74,7 +74,8 @@ public class IgnoreRelativeEntryFix extends LocalQuickFixOnPsiElement {
      * @param endElement   the {@link PsiElement} which is ignored in invoked action
      */
     @Override
-    public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+    public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, @NotNull PsiElement startElement,
+                       @NotNull PsiElement endElement) {
         if (startElement instanceof IgnoreEntry) {
             Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
             if (document != null) {

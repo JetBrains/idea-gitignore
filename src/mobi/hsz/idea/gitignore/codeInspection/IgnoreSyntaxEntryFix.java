@@ -73,7 +73,9 @@ public class IgnoreSyntaxEntryFix extends LocalQuickFixAndIntentionActionOnPsiEl
      * @param endElement   the {@link PsiElement} which is ignored in invoked action
      */
     @Override
-    public void invoke(@NotNull Project project, @NotNull PsiFile file, @Nullable("is null when called from inspection") Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+    public void invoke(@NotNull Project project, @NotNull PsiFile file,
+                       @Nullable("is null when called from inspection") Editor editor,
+                       @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         if (startElement instanceof IgnoreSyntax) {
             PsiElement value = ((IgnoreSyntax) startElement).getValue();
             if (editor != null) {

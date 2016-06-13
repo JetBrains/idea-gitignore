@@ -55,13 +55,15 @@ abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCellRendere
      * @param row      node is a row
      * @param hasFocus node has focus
      */
-    public void customizeRenderer(final JTree tree, final Object value, final boolean selected, final boolean expanded, final boolean leaf, final int row, final boolean hasFocus) {
+    public void customizeRenderer(final JTree tree, final Object value, final boolean selected, final boolean expanded,
+                                  final boolean leaf, final int row, final boolean hasFocus) {
         if (!(value instanceof TemplateTreeNode)) return;
         TemplateTreeNode node = (TemplateTreeNode) value;
 
         final Color background = selected ? UIUtil.getTreeSelectionBackground() : UIUtil.getTreeTextBackground();
         UIUtil.changeBackGround(this, background);
-        Color foreground = selected ? UIUtil.getTreeSelectionForeground() : node.getTemplate() == null ? PlatformColors.BLUE : UIUtil.getTreeTextForeground();
+        Color foreground = selected ? UIUtil.getTreeSelectionForeground() : node.getTemplate() == null ?
+                PlatformColors.BLUE : UIUtil.getTreeTextForeground();
         int style = SimpleTextAttributes.STYLE_PLAIN;
 
         String text = "", hint = "";
@@ -73,7 +75,8 @@ abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCellRendere
         }
 
         SearchUtil.appendFragments(getFilter(), text, style, foreground, background, getTextRenderer());
-        getTextRenderer().append(hint, selected ? new SimpleTextAttributes(Font.PLAIN, foreground) : SimpleTextAttributes.GRAYED_ATTRIBUTES);
+        getTextRenderer().append(hint, selected ? new SimpleTextAttributes(Font.PLAIN, foreground) :
+                SimpleTextAttributes.GRAYED_ATTRIBUTES);
         setForeground(foreground);
     }
 }

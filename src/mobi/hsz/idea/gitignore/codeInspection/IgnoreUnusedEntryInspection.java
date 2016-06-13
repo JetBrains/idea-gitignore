@@ -87,7 +87,8 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
 
                 if (!resolved) {
                     if (!isEntryExcluded(entry, holder.getProject())) {
-                        holder.registerProblem(entry, IgnoreBundle.message("codeInspection.unusedEntry.message"), new IgnoreRemoveEntryFix(entry));
+                        holder.registerProblem(entry, IgnoreBundle.message("codeInspection.unusedEntry.message"),
+                                new IgnoreRemoveEntryFix(entry));
                     }
                 }
 

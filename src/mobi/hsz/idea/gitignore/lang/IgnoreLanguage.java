@@ -82,7 +82,8 @@ public class IgnoreLanguage extends Language {
     }
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable String vcsDirectory, @Nullable Icon icon) {
+    protected IgnoreLanguage(@NotNull String name, @NotNull String extension, @Nullable String vcsDirectory,
+                             @Nullable Icon icon) {
         this(name, extension, vcsDirectory, icon, new OuterFileFetcher[0]);
     }
 

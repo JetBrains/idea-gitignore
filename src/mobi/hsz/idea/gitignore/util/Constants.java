@@ -24,47 +24,36 @@
 
 package mobi.hsz.idea.gitignore.util;
 
+import org.jetbrains.annotations.NonNls;
+
 /**
+ * Class containing common constant variables.
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.3.2
+ * @since 1.5
  */
-public class ProcessWithTimeout extends Thread {
-    /** Runtime exec process. */
-    private Process process;
+public class Constants {
+    /** New line character. */
+    @NonNls
+    public static final String NEWLINE = "\n";
 
-    /** Result exit process code. */
-    private int exitCode = Integer.MIN_VALUE;
+    /** Hash sign. */
+    @NonNls
+    public static final String HASH = "#";
 
-    /** Constructor. */
-    public ProcessWithTimeout(Process process) {
-        this.process = process;
-    }
+    /** Dollar sign separator. */
+    @NonNls
+    public static final String DOLLAR = "$";
 
-    /**
-     * Process call helper.
-     *
-     * @param p_timeoutMilliseconds timeout
-     * @return {@link #exitCode}
-     */
-    public int waitForProcess(int p_timeoutMilliseconds) {
-        this.start();
+    /** Star sign. */
+    @NonNls
+    public static final String STAR = "*";
 
-        try {
-            this.join(p_timeoutMilliseconds);
-        } catch (InterruptedException e) {
-            this.interrupt();
-        }
+    /** Star sign. */
+    @NonNls
+    public static final String DOUBLESTAR = "**";
 
-        return exitCode;
-    }
-
-    /** Thread run method. */
-    @Override
-    public void run() {
-        try {
-            exitCode = process.waitFor();
-        } catch (InterruptedException ignore) {
-        } catch (Exception ignored) {
-        }
+    /** Private constructor to prevent creating {@link Utils} instance. */
+    private Constants() {
     }
 }

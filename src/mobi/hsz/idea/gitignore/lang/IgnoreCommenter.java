@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.lang;
 
 import com.intellij.lang.Commenter;
+import mobi.hsz.idea.gitignore.util.Constants;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -44,7 +45,7 @@ public class IgnoreCommenter implements Commenter {
     @Nullable
     @Override
     public String getLineCommentPrefix() {
-        return "#";
+        return Constants.HASH;
     }
 
     /**

@@ -49,7 +49,8 @@ public class CloseIgnoredEditorsAction extends CloseEditorsActionBase {
     @Override
     protected boolean isFileToClose(final EditorComposite editor, final EditorWindow window) {
         final FileStatusManager fileStatusManager = FileStatusManager.getInstance(window.getManager().getProject());
-        return fileStatusManager != null && fileStatusManager.getStatus(editor.getFile()).equals(IgnoreFileStatusProvider.IGNORED);
+        return fileStatusManager != null &&
+                fileStatusManager.getStatus(editor.getFile()).equals(IgnoreFileStatusProvider.IGNORED);
     }
 
     /**
@@ -59,7 +60,8 @@ public class CloseIgnoredEditorsAction extends CloseEditorsActionBase {
      */
     @Override
     protected boolean isActionEnabled(final Project project, final AnActionEvent event) {
-        return super.isActionEnabled(project, event) && ProjectLevelVcsManager.getInstance(project).getAllActiveVcss().length > 0;
+        return super.isActionEnabled(project, event) &&
+                ProjectLevelVcsManager.getInstance(project).getAllActiveVcss().length > 0;
     }
 
     /**

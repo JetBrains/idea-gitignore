@@ -104,7 +104,7 @@ public class CacheMap {
      * @param file to add
      * @param set  entries hashCodes set
      */
-    protected void add(@NotNull final IgnoreFile file, @NotNull Set<Integer> set) {
+    private void add(@NotNull final IgnoreFile file, @NotNull Set<Integer> set) {
         final List<Pair<Matcher, Boolean>> matchers = ContainerUtil.newArrayList();
 
         runVisitorInReadAction(file, new IgnoreVisitor() {
@@ -222,7 +222,7 @@ public class CacheMap {
      * @return any of the parents is ignored
      */
     @NotNull
-    protected Status getParentStatus(@NotNull VirtualFile file) {
+    private Status getParentStatus(@NotNull VirtualFile file) {
         VirtualFile parent = file.getParent();
         VirtualFile vcsRoot = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(file);
 
@@ -248,9 +248,8 @@ public class CacheMap {
      * Wrapper for {link #map.remove}.
      *
      * @param file to remove
-     * @return removed value
      */
-    public Pair<Set<Integer>, List<Pair<Matcher, Boolean>>> remove(IgnoreFile file) {
-        return map.remove(file);
+    public void remove(IgnoreFile file) {
+        map.remove(file);
     }
 }

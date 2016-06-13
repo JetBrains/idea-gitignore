@@ -35,9 +35,6 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.3
  */
 public class IgnoreApplicationComponent implements ApplicationComponent {
-    /** The settings storage object. */
-    private IgnoreSettings settings;
-
     /** Plugin has been updated with the current run. */
     private boolean updated;
 
@@ -49,6 +46,7 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
      *
      * @return Ignore Application Component
      */
+    @NotNull
     public static IgnoreApplicationComponent getInstance() {
         return ApplicationManager.getApplication().getComponent(IgnoreApplicationComponent.class);
     }
@@ -56,7 +54,8 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
     /** Component initialization method. */
     @Override
     public void initComponent() {
-        settings = IgnoreSettings.getInstance();
+        /* The settings storage object. */
+        IgnoreSettings settings = IgnoreSettings.getInstance();
         updated = !Utils.getVersion().equals(settings.getVersion());
         if (updated) {
             settings.setVersion(Utils.getVersion());

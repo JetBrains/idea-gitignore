@@ -32,12 +32,16 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.Listenable;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Persistent global settings object for the Ignore plugin.
@@ -50,9 +54,6 @@ import java.util.*;
         storages = @Storage(id = "other", file = "$APP_CONFIG$/ignore.xml")
 )
 public class IgnoreSettings implements PersistentStateComponent<Element>, Listenable<IgnoreSettings.Listener> {
-    /** Starred templates separator. */
-    private static final String STARRED_TEMPLATES_SEPARATOR = "$";
-
     /** Settings keys. */
     public enum KEY {
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
@@ -75,6 +76,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     }
 
     /** Default user template. */
+    @NotNull
     private static final UserTemplate DEFAULT_TEMPLATE = new UserTemplate(
             IgnoreBundle.message("settings.userTemplates.default.name"),
             IgnoreBundle.message("settings.userTemplates.default.content")
@@ -102,9 +104,11 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     private String version;
 
     /** Starred templates. */
+    @NotNull
     private final List<String> starredTemplates = ContainerUtil.newArrayList();
 
     /** Settings related to the {@link IgnoreLanguage}. */
+    @NotNull
     private IgnoreLanguagesSettings languagesSettings = new IgnoreLanguagesSettings() {{
         for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
             put(language, new TreeMap<KEY, Object>() {{
@@ -144,7 +148,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.OUTER_IGNORE_RULES.toString(), Boolean.toString(outerIgnoreRules));
         element.setAttribute(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString(), Integer.toString(outerIgnoreWrapperHeight));
         element.setAttribute(KEY.VERSION.toString(), version);
-        element.setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, STARRED_TEMPLATES_SEPARATOR));
+        element.setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, Constants.DOLLAR));
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
         for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
@@ -205,7 +209,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         if (value != null) outerIgnoreWrapperHeight = Integer.parseInt(value);
 
         value = element.getAttributeValue(KEY.STARRED_TEMPLATES.toString());
-        if (value != null) setStarredTemplates(StringUtil.split(value, STARRED_TEMPLATES_SEPARATOR));
+        if (value != null) setStarredTemplates(StringUtil.split(value, Constants.DOLLAR));
 
         Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
@@ -411,6 +415,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      *
      * @return fileType settings
      */
+    @NotNull
     public IgnoreLanguagesSettings getLanguagesSettings() {
         return languagesSettings;
     }
@@ -420,9 +425,10 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      *
      * @param languagesSettings languagesSettings
      */
-    public void setLanguagesSettings(IgnoreLanguagesSettings languagesSettings) {
+    public void setLanguagesSettings(@NotNull IgnoreLanguagesSettings languagesSettings) {
         this.notifyOnChange(KEY.LANGUAGES, this.languagesSettings, languagesSettings);
-        this.languagesSettings = languagesSettings;
+        this.languagesSettings.clear();
+        this.languagesSettings.putAll(languagesSettings);
     }
 
     /**

@@ -34,6 +34,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Class that assigns file types with languages.
+ *
+ * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @since 0.1
  */
 public class IgnoreFileTypeFactory extends FileTypeFactory {
     /**
@@ -55,7 +58,7 @@ public class IgnoreFileTypeFactory extends FileTypeFactory {
      * @param consumer file types consumer
      * @param fileType file type to consume
      */
-    private void consume(FileTypeConsumer consumer, IgnoreFileType fileType) {
+    private void consume(@NotNull FileTypeConsumer consumer, @NotNull IgnoreFileType fileType) {
         consumer.consume(fileType, new ExactFileNameMatcher(fileType.getIgnoreLanguage().getFilename()));
         consumer.consume(fileType, fileType.getIgnoreLanguage().getExtension());
     }

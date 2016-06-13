@@ -37,6 +37,7 @@ import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
+import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.Glob;
 import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -59,6 +60,7 @@ import java.util.regex.Pattern;
  */
 public class IgnoreReferenceSet extends FileReferenceSet {
     /** Instance of the Cache {@link ProjectComponent} that retrieves matching files using given {@link Pattern}. */
+    @NotNull
     private final FilesIndexCacheProjectComponent filesIndexCache;
 
     /** Constructor. */
@@ -100,7 +102,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
     public Collection<PsiFileSystemItem> computeDefaultContexts() {
         PsiFile containingFile = getElement().getContainingFile();
         PsiDirectory containingDirectory = containingFile.getParent();
-        return containingDirectory != null ? Collections.<PsiFileSystemItem>singletonList(containingDirectory) : super.computeDefaultContexts();
+        return containingDirectory != null ? Collections.<PsiFileSystemItem>singletonList(containingDirectory) :
+                super.computeDefaultContexts();
     }
 
     /**
@@ -112,7 +115,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
     public FileReference getLastReference() {
         FileReference lastReference = super.getLastReference();
         if (lastReference != null && lastReference.getCanonicalText().endsWith(getSeparatorString())) {
-            return this.myReferences != null && this.myReferences.length > 1 ? this.myReferences[this.myReferences.length - 2] : null;
+            return this.myReferences != null && this.myReferences.length > 1 ?
+                    this.myReferences[this.myReferences.length - 2] : null;
         }
         return lastReference;
     }
@@ -144,7 +148,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
             currentSlash++;
         }
 
-        if (currentSlash + sepLen + sepLen < str.length() && str.substring(currentSlash + sepLen, currentSlash + sepLen + sepLen).equals(separatorString)) {
+        if (currentSlash + sepLen + sepLen < str.length() && str.substring(currentSlash + sepLen,
+                currentSlash + sepLen + sepLen).equals(separatorString)) {
             currentSlash += sepLen;
         }
         int index = 0;
@@ -157,7 +162,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         while (true) {
             final int nextSlash = str.indexOf(separatorString, currentSlash + sepLen);
             final String subReferenceText = nextSlash > 0 ? str.substring(0, nextSlash) : str;
-            TextRange range = new TextRange(startInElement + currentSlash + sepLen, startInElement + (nextSlash > 0 ? nextSlash : str.length()));
+            TextRange range = new TextRange(startInElement + currentSlash + sepLen, startInElement +
+                    (nextSlash > 0 ? nextSlash : str.length()));
             final FileReference ref = createFileReference(range, index++, subReferenceText);
             referencesList.add(ref);
             if ((currentSlash = nextSlash) < 0) {
@@ -188,7 +194,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
          * @param caseSensitive is ignored
          */
         @Override
-        protected void innerResolveInContext(@NotNull String text, @NotNull PsiFileSystemItem context, final Collection<ResolveResult> result, boolean caseSensitive) {
+        protected void innerResolveInContext(@NotNull String text, @NotNull PsiFileSystemItem context,
+                                             @NotNull final Collection<ResolveResult> result, boolean caseSensitive) {
             super.innerResolveInContext(text, context, result, caseSensitive);
 
             final PsiFile containingFile = getContainingFile();
@@ -212,14 +219,15 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                 final Pattern pattern = Glob.createPattern(getCanonicalText(), entry.getSyntax());
                 if (pattern != null) {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
-                    final VirtualFile root = isOuterFile ? contextVirtualFile : ((parent != null) ? parent.getVirtualFile() : null);
+                    final VirtualFile root = isOuterFile ? contextVirtualFile : ((parent != null) ?
+                            parent.getVirtualFile() : null);
                     final PsiManager manager = getElement().getManager();
                     final Matcher matcher = pattern.matcher("");
 
                     Collection<VirtualFile> files = filesIndexCache.getFilesForPattern(context.getProject(), pattern);
                     if (files.isEmpty()) {
                         files = ContainerUtil.newArrayList(context.getVirtualFile().getChildren());
-                    } else if (getCanonicalText().endsWith("**")) {
+                    } else if (getCanonicalText().endsWith(Constants.DOUBLESTAR)) {
                         final String key = entry.getText();
                         if (!cacheMap.containsKey(key)) {
                             final Collection<VirtualFile> children = ContainerUtil.newArrayList();

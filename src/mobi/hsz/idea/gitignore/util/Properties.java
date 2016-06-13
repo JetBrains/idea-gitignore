@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -36,9 +37,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Properties {
     /** Ignore missing gitignore property key. */
+    @NonNls
     private static final String PROP_IGNORE_MISSING_GITIGNORE = "ignore_missing_gitignore";
 
     /** Add unversioned files property key. */
+    @NonNls
     private static final String PROP_ADD_UNVERSIONED_FILES = "prop_add_unversioned_files";
 
     /** Private constructor to prevent creating {@link Properties} instance. */

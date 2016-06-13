@@ -31,28 +31,38 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * {@link ProjectComponent} instance to display plugin's update information.
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3
  */
 public class UpdateComponent implements ProjectComponent {
-
+    /** {@link IgnoreApplicationComponent} instance. */
     private IgnoreApplicationComponent application;
 
+    /** Component initialization method. */
     @Override
     public void initComponent() {
         application = IgnoreApplicationComponent.getInstance();
     }
 
+    /** Component dispose method. */
     @Override
     public void disposeComponent() {
     }
 
+    /**
+     * Returns component's name.
+     *
+     * @return component's name
+     */
     @NotNull
     @Override
     public String getComponentName() {
         return "UpdateComponent";
     }
 
+    /** Method called when project is opened. */
     @Override
     public void projectOpened() {
         if (application.isUpdated() && !application.isUpdateNotificationShown()) {
@@ -68,8 +78,8 @@ public class UpdateComponent implements ProjectComponent {
         }
     }
 
+    /** Method called when project is closed. */
     @Override
     public void projectClosed() {
-
     }
 }

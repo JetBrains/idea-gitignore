@@ -65,7 +65,8 @@ public class IgnoreSyntaxEntryInspection extends LocalInspectionTool {
                     }
                 }
 
-                holder.registerProblem(syntax, IgnoreBundle.message("codeInspection.syntaxEntry.message"), new IgnoreSyntaxEntryFix(syntax));
+                holder.registerProblem(syntax, IgnoreBundle.message("codeInspection.syntaxEntry.message"),
+                        new IgnoreSyntaxEntryFix(syntax));
             }
         };
     }
