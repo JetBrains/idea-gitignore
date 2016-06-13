@@ -1,4 +1,4 @@
-.ignore [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
+.ignore v1.5 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 ==================
 
 
@@ -99,30 +99,20 @@ Usage
 Changelog
 ---------
 
-## [v1.4.1](https://github.com/hsz/idea-gitignore/tree/v1.4.1) (2016-05-24)
+## [v1.5](https://github.com/hsz/idea-gitignore/tree/v1.5) (2016-06-13)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.3.3...v1.4.1)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.4.1...v1.5)
 
 **Implemented enhancements:**
 
-- Add Unversioned Files to .gitignore (Git) [\#124](https://github.com/hsz/idea-gitignore/issues/124)
-- Add to 'exclude' (Git) [\#133](https://github.com/hsz/idea-gitignore/issues/133)
-- Exclude file preview (Git) [\#132](https://github.com/hsz/idea-gitignore/issues/132)
-- Allow user to specify position of appended entries [\#216](https://github.com/hsz/idea-gitignore/issues/216)
-- JetPack (.jpmignore) support [\#215](https://github.com/hsz/idea-gitignore/issues/215)
+- Create user templates with existing ignore entries
+- Favorite templates feature [\#236](https://github.com/hsz/idea-gitignore/issues/236)
+- Generate without comments and empty lines [\#229](https://github.com/hsz/idea-gitignore/issues/229)
 
 **Fixed bugs:**
 
-- NoSuchMethodError in IDEA 2016.2 EAP [\#225](https://github.com/hsz/idea-gitignore/issues/225)
-- ConcurrentModificationException [\#221](https://github.com/hsz/idea-gitignore/issues/221)
-- ClassCastException: ...FileImpl cannot be cast to IgnoreFile [\#220](https://github.com/hsz/idea-gitignore/issues/220)
-- Problem files coloring [\#219](https://github.com/hsz/idea-gitignore/issues/219)
-- Subfolders recognition [\#218](https://github.com/hsz/idea-gitignore/issues/218)
-- Tricky ignore rules issue [\#214](https://github.com/hsz/idea-gitignore/issues/214)
-- "Entry never used" invalid [\#213](https://github.com/hsz/idea-gitignore/issues/213)
-- NoSuchMethodError exception [\#211](https://github.com/hsz/idea-gitignore/issues/211)
-- Double star pattern /\*\* doesn't gray out files in subdirectories [\#165](https://github.com/hsz/idea-gitignore/issues/165)
-
+- NoSuchMethodError on ContainerUtil.notNullize [\#232](https://github.com/hsz/idea-gitignore/issues/232)
+- Refactoring of the external executable process [\#233](https://github.com/hsz/idea-gitignore/issues/233)
 
 [Full Changelog History](./CHANGELOG.md)
 

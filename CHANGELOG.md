@@ -1,5 +1,20 @@
 # Change Log
 
+## [v1.5](https://github.com/hsz/idea-gitignore/tree/v1.5) (2016-06-13)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.4.1...v1.5)
+
+**Implemented enhancements:**
+
+- Create user templates with existing ignore entries
+- Favorite templates feature [\#236](https://github.com/hsz/idea-gitignore/issues/236)
+- Generate without comments and empty lines [\#229](https://github.com/hsz/idea-gitignore/issues/229)
+
+**Fixed bugs:**
+
+- NoSuchMethodError on ContainerUtil.notNullize [\#232](https://github.com/hsz/idea-gitignore/issues/232)
+- Refactoring of the external executable process [\#233](https://github.com/hsz/idea-gitignore/issues/233)
+
 ## [v1.4.1](https://github.com/hsz/idea-gitignore/tree/v1.4.1) (2016-05-24)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.3.3...v1.4.1)

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.4.1</version>
+    <version>1.5</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -39,6 +39,8 @@
         <li>Renaming entries from ignore file</li>
         <li>Close opened ignored files action</li>
         <li>Custom user templates with import/export features</li>
+        <li>Create custom templates from existing rules</li>
+        <li>Favorite templates</li>
       </ul>
 
       <br/>
@@ -52,31 +54,22 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.4.1"><b>v1.4.1</b></a> (2016-05-24) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.3.3...1.4.1"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.5"><b>v1.5</b></a> (2016-06-13) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.4.1...v1.5"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         
         <ul>
-            <li>Add Unversioned Files to .gitignore (Git) (<a href="https://github.com/hsz/idea-gitignore/issues/124">124</a>)</li>
-            <li>Add to 'exclude' (Git) (<a href="https://github.com/hsz/idea-gitignore/issues/133">133</a>)</li>
-            <li>Exclude file preview (Git) (<a href="https://github.com/hsz/idea-gitignore/issues/132">132</a>)</li>
-            <li>Allow user to specify position of appended entries (<a href="https://github.com/hsz/idea-gitignore/issues/216">216</a>)</li>
-            <li>JetPack (.jpmignore) support (<a href="https://github.com/hsz/idea-gitignore/issues/215">215</a>)</li>
+            <li>Create user templates with existing ignore entries</li>
+            <li>Favorite templates feature (<a href="https://github.com/hsz/idea-gitignore/issues/236">236</a>)</li>
+            <li>Generate without comments and empty lines (<a href="https://github.com/hsz/idea-gitignore/issues/229">229</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>NoSuchMethodError in IDEA 2016.2 EAP (<a href="https://github.com/hsz/idea-gitignore/issues/225">225</a>)</li>
-            <li>ConcurrentModificationException (<a href="https://github.com/hsz/idea-gitignore/issues/221">221</a>)</li>
-            <li>ClassCastException: ...FileImpl cannot be cast to IgnoreFile (<a href="https://github.com/hsz/idea-gitignore/issues/220">220</a>)</li>
-            <li>Problem files coloring (<a href="https://github.com/hsz/idea-gitignore/issues/219">219</a>)</li>
-            <li>Subfolders recognition (<a href="https://github.com/hsz/idea-gitignore/issues/218">218</a>)</li>
-            <li>Tricky ignore rules issue (<a href="https://github.com/hsz/idea-gitignore/issues/214">214</a>)</li>
-            <li>"Entry never used" invalid (<a href="https://github.com/hsz/idea-gitignore/issues/213">213</a>)</li>
-            <li>NoSuchMethodError exception (<a href="https://github.com/hsz/idea-gitignore/issues/211">211</a>)</li>
-            <li>Double star pattern /\*\* doesn't gray out files in subdirectories (<a href="https://github.com/hsz/idea-gitignore/issues/165">165</a>)    
+            <li>NoSuchMethodError on ContainerUtil.notNullize (<a href="https://github.com/hsz/idea-gitignore/issues/232">232</a>)</li>
+            <li>Refactoring of the external executable process (<a href="https://github.com/hsz/idea-gitignore/issues/233">233</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
