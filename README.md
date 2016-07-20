@@ -24,6 +24,7 @@ Introduction
 - `.eslintignore` (ESLint)
 - `.cfignore` (Cloud Foundry)
 - `.jpmignore` (Jetpack)
+- `.stylelintignore` (StyleLint)
 
 files in your project. It supports following JetBrains IDEs:
 

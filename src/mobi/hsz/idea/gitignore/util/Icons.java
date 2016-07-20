@@ -92,6 +92,9 @@ public class Icons {
     /** TeamFoundation icon. */
     public static final Icon TF = IconLoader.getIcon("/icons/icon_tf.png");
 
+    /** StyleLint icon. */
+    public static final Icon STYLELINT = IconLoader.getIcon("/icons/icon_stylelint.png");
+
     /** Private constructor to prevent creating {@link Icons} instance. */
     private Icons() {
     }
