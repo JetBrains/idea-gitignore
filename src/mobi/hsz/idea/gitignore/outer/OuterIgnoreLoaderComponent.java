@@ -121,7 +121,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
      */
     @NotNull
     public List<VirtualFile> getOuterFiles(@NotNull IgnoreLanguage language) {
-        return outerFiles.get(language);
+        return ContainerUtil.notNullize(outerFiles.get(language));
     }
 
     /** Listener for ignore editor manager. */
