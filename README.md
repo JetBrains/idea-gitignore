@@ -1,6 +1,9 @@
 .ignore v1.5 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 ==================
 
+[![Version](http://phpstorm.espend.de/badge/7495/version)](https://plugins.jetbrains.com/plugin/7495)
+[![Downloads](http://phpstorm.espend.de/badge/7495/downloads)](https://plugins.jetbrains.com/plugin/7495)
+[![Downloads last month](http://phpstorm.espend.de/badge/7495/last-month)](https://plugins.jetbrains.com/plugin/7495)
 
 Introduction
 ------------
