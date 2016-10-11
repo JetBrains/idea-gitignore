@@ -34,6 +34,7 @@ import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -78,7 +79,7 @@ public class IgnoreLanguage extends Language {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage() {
-        this("Ignore", "ignore", null, null);
+        this("Ignore", "ignore", null, Icons.IGNORE);
     }
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
