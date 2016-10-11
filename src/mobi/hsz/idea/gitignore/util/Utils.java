@@ -502,4 +502,16 @@ public class Utils {
     public static <T> List<T> notNullize(@Nullable List<T> list) {
         return list == null ? ContainerUtil.<T>newArrayList() : list;
     }
+
+    /**
+     * Method cloned from {@link ContainerUtil#getFirstItem(List)} because of NoSuchMethodError exception
+     * errors related to the some API changes.
+     *
+     * @param items method to check
+     * @param <T> container type
+     * @return not null container
+     */
+    public static <T> T getFirstItem(@Nullable List<T> items) {
+        return items == null || items.isEmpty() ? null : items.get(0);
+    }
 }
