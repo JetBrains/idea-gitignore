@@ -36,6 +36,7 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -121,7 +122,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
      */
     @NotNull
     public List<VirtualFile> getOuterFiles(@NotNull IgnoreLanguage language) {
-        return ContainerUtil.notNullize(outerFiles.get(language));
+        return Utils.notNullize(outerFiles.get(language));
     }
 
     /** Listener for ignore editor manager. */
