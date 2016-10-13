@@ -117,6 +117,9 @@ public class IgnoreSettingsPanel implements Disposable {
     /** {@link IgnoreLanguage} settings table. */
     public JBTable languagesTable;
 
+    /** Enable unignore files group. */
+    public JCheckBox unignoreFiles;
+
     /** Editor panel element. */
     private EditorPanel editorPanel;
 

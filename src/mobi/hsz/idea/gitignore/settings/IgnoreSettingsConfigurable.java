@@ -105,6 +105,7 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
                 || settingsPanel.addUnversionedFiles == null || settings.isAddUnversionedFiles() != settingsPanel.addUnversionedFiles.isSelected()
                 || settingsPanel.languagesTable == null
                 || !((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).equalSettings(settings.getLanguagesSettings())
+                || settingsPanel.unignoreFiles == null || settings.isUnignoreActions() != settingsPanel.unignoreFiles.isSelected()
                 ;
     }
 
@@ -119,6 +120,7 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         settings.setInsertAtCursor(settingsPanel.insertAtCursor != null && settingsPanel.insertAtCursor.isSelected());
         settings.setAddUnversionedFiles(settingsPanel.addUnversionedFiles != null && settingsPanel.addUnversionedFiles.isSelected());
         settings.setLanguagesSettings(((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).getSettings());
+        settings.setUnignoreActions(settingsPanel.unignoreFiles != null && settingsPanel.unignoreFiles.isSelected());
     }
 
     /** Load settings from other components to configurable. */
@@ -140,6 +142,8 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
             IgnoreSettingsPanel.LanguagesTableModel model = (IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel();
             model.update(settings.getLanguagesSettings().clone());
         }
+        if (settingsPanel.unignoreFiles != null)
+            settingsPanel.unignoreFiles.setSelected(settings.isUnignoreActions());
     }
 
     /** Disposes the Swing components used for displaying the configuration. */

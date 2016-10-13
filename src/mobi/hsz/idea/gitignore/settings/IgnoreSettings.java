@@ -61,7 +61,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
         OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight"),
         INSERT_AT_CURSOR("insertAtCursor"), ADD_UNVERSIONED_FILES("addUnversionedFiles"), VERSION("version"),
-        STARRED_TEMPLATES("starredTemplates");
+        STARRED_TEMPLATES("starredTemplates"), UNIGNORE_ACTIONS("unignoreActions");
 
         private final String key;
 
@@ -102,6 +102,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
     /** Plugin version. */
     private String version;
+
+    /** Enable unignore actions in context menus. */
+    private boolean unignoreActions = true;
 
     /** Starred templates. */
     @NotNull
@@ -149,6 +152,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString(), Integer.toString(outerIgnoreWrapperHeight));
         element.setAttribute(KEY.VERSION.toString(), version);
         element.setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, Constants.DOLLAR));
+        element.setAttribute(KEY.UNIGNORE_ACTIONS.toString(), Boolean.toString(unignoreActions));
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
         for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
@@ -224,6 +228,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
             }
         }
 
+        value = element.getAttributeValue(KEY.UNIGNORE_ACTIONS.toString());
+        if (value != null) unignoreActions = Boolean.parseBoolean(value);
+        
         userTemplates.clear();
         userTemplates.addAll(loadTemplates(element));
 
@@ -451,6 +458,25 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         this.userTemplates.addAll(userTemplates);
     }
 
+    /**
+     * Check if unignore actions group is enabled.
+     *
+     * @return unignore actions group is enabled
+     */
+    public boolean isUnignoreActions() {
+        return unignoreActions;
+    }
+
+    /**
+     * Sets unignore actions group.
+     *
+     * @param unignoreActions unignore actions group
+     */
+    public void setUnignoreActions(boolean unignoreActions) {
+        this.notifyOnChange(KEY.UNIGNORE_ACTIONS, this.unignoreActions, unignoreActions);
+        this.unignoreActions = unignoreActions;
+    }
+    
     /**
      * Add the given listener. The listener will be executed in the containing instance's thread.
      *

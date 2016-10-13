@@ -53,7 +53,7 @@ public class IgnoreBundle {
 
     /** The {@link ResourceBundle} path. */
     @NonNls
-    private static final String BUNDLE_NAME = "messages.IgnoreBundle";
+    public static final String BUNDLE_NAME = "messages.IgnoreBundle";
 
     /** The {@link ResourceBundle} instance. */
     @NotNull

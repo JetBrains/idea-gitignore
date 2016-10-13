@@ -35,20 +35,24 @@ import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.ExternalFileException;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.PropertyKey;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static mobi.hsz.idea.gitignore.IgnoreBundle.BUNDLE_NAME;
+
 /**
  * Group action that ignores specified file or directory.
  * {@link ActionGroup} expands single action into a more child options to allow user specify
- * the {@link mobi.hsz.idea.gitignore.psi.IgnoreFile} that will be used for file's path storage.
+ * the {@link IgnoreFile} that will be used for file's path storage.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.5
@@ -61,6 +65,10 @@ public class IgnoreFileGroupAction extends ActionGroup {
     @NotNull
     private final Map<IgnoreFileType, List<VirtualFile>> files = ContainerUtil.newHashMap();
 
+    /** Action presentation's text for single element. */
+    @PropertyKey(resourceBundle = BUNDLE_NAME)
+    private final String presentationTextSingleKey;
+
     /** {@link Project}'s base directory. */
     private VirtualFile baseDir;
 
@@ -69,9 +77,23 @@ public class IgnoreFileGroupAction extends ActionGroup {
      * Describes action's presentation.
      */
     public IgnoreFileGroupAction() {
-        Presentation p = getTemplatePresentation();
-        p.setText(IgnoreBundle.message("action.addToIgnore.group"));
-        p.setDescription(IgnoreBundle.message("action.addToIgnore.group.description"));
+        this("action.addToIgnore.group", "action.addToIgnore.group.description", "action.addToIgnore.group.noPopup");
+    }
+
+    /**
+     * Builds a new instance of {@link IgnoreFileGroupAction}.
+     * Describes action's presentation.
+     *
+     * @param textKey        Action presentation's text key
+     * @param descriptionKey Action presentation's description key
+     */
+    public IgnoreFileGroupAction(@PropertyKey(resourceBundle = BUNDLE_NAME) String textKey,
+                                 @PropertyKey(resourceBundle = BUNDLE_NAME) String descriptionKey,
+                                 @PropertyKey(resourceBundle = BUNDLE_NAME) String textSingleKey) {
+        final Presentation p = getTemplatePresentation();
+        p.setText(IgnoreBundle.message(textKey));
+        p.setDescription(IgnoreBundle.message(descriptionKey));
+        this.presentationTextSingleKey = textSingleKey;
     }
 
     /**
@@ -126,7 +148,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
             int i = 0;
             for (Map.Entry<IgnoreFileType, List<VirtualFile>> entry : files.entrySet()) {
                 for (VirtualFile file : entry.getValue()) {
-                    IgnoreFileAction action = new IgnoreFileAction(file);
+                    IgnoreFileAction action = createAction(file);
                     actions[i++] = action;
 
                     String name = Utils.getRelativePath(baseDir, file);
@@ -135,7 +157,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
                     }
 
                     if (count == 1) {
-                        name = IgnoreBundle.message("action.addToIgnore.group.noPopup", name);
+                        name = IgnoreBundle.message(presentationTextSingleKey, name);
                     }
 
                     Presentation presentation = action.getTemplatePresentation();
@@ -145,6 +167,16 @@ public class IgnoreFileGroupAction extends ActionGroup {
             }
         }
         return actions;
+    }
+
+    /**
+     * Creates new {@link IgnoreFileAction} action instance.
+     * 
+     * @param file current file
+     * @return action instance
+     */
+    protected IgnoreFileAction createAction(@NotNull VirtualFile file) {
+        return new IgnoreFileAction(file);
     }
 
     /**
