@@ -42,8 +42,11 @@ import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.PropertyKey;
 
 import java.util.Set;
+
+import static mobi.hsz.idea.gitignore.IgnoreBundle.BUNDLE_NAME;
 
 /**
  * Action that adds currently selected {@link VirtualFile} to the specified Ignore {@link VirtualFile}.
@@ -86,9 +89,23 @@ public class IgnoreFileAction extends DumbAwareAction {
      * @param virtualFile Gitignore file
      */
     public IgnoreFileAction(@Nullable IgnoreFileType fileType, @Nullable VirtualFile virtualFile) {
-        super(IgnoreBundle.message("action.addToIgnore", fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
-                IgnoreBundle.message("action.addToIgnore.description",
-                        fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
+        this(fileType, virtualFile, "action.addToIgnore", "action.addToIgnore.description");
+    }
+
+    /**
+     * Builds a new instance of {@link IgnoreFileAction}.
+     * Describes action's presentation.
+     *
+     * @param fileType       Current file type
+     * @param virtualFile    Gitignore file
+     * @param textKey        Action presentation's text key
+     * @param descriptionKey Action presentation's description key
+     */
+    public IgnoreFileAction(@Nullable IgnoreFileType fileType, @Nullable VirtualFile virtualFile,
+                            @PropertyKey(resourceBundle = BUNDLE_NAME) String textKey,
+                            @PropertyKey(resourceBundle = BUNDLE_NAME) String descriptionKey) {
+        super(IgnoreBundle.message(textKey, fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
+                IgnoreBundle.message(descriptionKey, fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
                 fileType != null ? fileType.getIcon() : null);
         this.ignoreFile = virtualFile;
         this.fileType = fileType;
@@ -119,7 +136,7 @@ public class IgnoreFileAction extends DumbAwareAction {
         if (ignore != null) {
             Set<String> paths = ContainerUtil.newHashSet();
             for (VirtualFile file : files) {
-                String path = getPath(ignore.getVirtualFile().getParent(), file);
+                final String path = getPath(ignore.getVirtualFile().getParent(), file);
                 if (path.isEmpty()) {
                     final VirtualFile baseDir = project.getBaseDir();
                     if (baseDir != null) {
@@ -162,11 +179,11 @@ public class IgnoreFileAction extends DumbAwareAction {
      * @return relative path
      */
     @NotNull
-    private static String getPath(@NotNull VirtualFile root, @NotNull VirtualFile file) {
+    protected String getPath(@NotNull VirtualFile root, @NotNull VirtualFile file) {
         String path = StringUtil.notNullize(Utils.getRelativePath(root, file));
         path = Utils.escapeChar(path, '[');
         path = Utils.escapeChar(path, ']');
         path = Utils.trimLeading(path, '/');
-        return '/' + path;
+        return path.isEmpty() ? path : '/' + path;
     }
 }

@@ -437,6 +437,12 @@
             <add-to-group group-id="EditorTabPopupMenu"/>
             <add-to-group group-id="ConsoleEditorPopupMenu"/>
         </group>
+        <group id="Ignore.UnignoreGroup" class="mobi.hsz.idea.gitignore.actions.UnignoreFileGroupAction">
+            <add-to-group group-id="EditorPopupMenu"/>
+            <add-to-group group-id="ProjectViewPopupMenu"/>
+            <add-to-group group-id="EditorTabPopupMenu"/>
+            <add-to-group group-id="ConsoleEditorPopupMenu"/>
+        </group>
         <group id="Ignore.TemplateGroup">
             <action id="Ignore.AddTemplate" class="mobi.hsz.idea.gitignore.actions.AddTemplateAction"/>
             <action id="IgnoreCreateUserTemplate" class="mobi.hsz.idea.gitignore.actions.CreateUserTemplateAction"/>
