@@ -185,7 +185,11 @@ task generateTemplatesList() {
 }
 
 task generateSources() {
-    dependsOn generateParser, generateLexer, generateTemplatesList
+    [generateParser, generateLexer, generateTemplatesList].each { task ->
+        task.onlyIf {
+            runGenerators.toBoolean()
+        }
+    }
 }
 
 clean.doFirst {
