@@ -185,10 +185,8 @@ task generateTemplatesList() {
 }
 
 task generateSources() {
-    [generateParser, generateLexer, generateTemplatesList].each { task ->
-        task.onlyIf {
-            runGenerators.toBoolean()
-        }
+    if (Boolean.valueOf(runGenerators)) {
+        dependsOn generateParser, generateLexer, generateTemplatesList
     }
 }
 
