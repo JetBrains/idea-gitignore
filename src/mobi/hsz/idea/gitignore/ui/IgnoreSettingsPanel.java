@@ -91,22 +91,22 @@ public class IgnoreSettingsPanel implements Disposable {
     public JPanel panel;
 
     /** Form element for {@link IgnoreSettings#missingGitignore}. */
-    public JCheckBox missingGitignore;
+    private JCheckBox missingGitignore;
 
     /** Templates list panel. */
-    public TemplatesListPanel templatesListPanel;
+    private TemplatesListPanel templatesListPanel;
 
     /** Enable ignored file status coloring. */
-    public JCheckBox ignoredFileStatus;
+    private JCheckBox ignoredFileStatus;
 
     /** Enable outer ignore rules. */
-    public JCheckBox outerIgnoreRules;
+    private JCheckBox outerIgnoreRules;
 
     /** Defines if new content should be inserted at the cursor's position or at the document end. */
-    public JCheckBox insertAtCursor;
+    private JCheckBox insertAtCursor;
 
     /** Suggest to add unversioned files to the .gitignore file. */
-    public JCheckBox addUnversionedFiles;
+    private JCheckBox addUnversionedFiles;
 
     /** Splitter element. */
     private Splitter templatesSplitter;
@@ -115,13 +115,16 @@ public class IgnoreSettingsPanel implements Disposable {
     private JScrollPane languagesPanel;
 
     /** {@link IgnoreLanguage} settings table. */
-    public JBTable languagesTable;
+    private JBTable languagesTable;
 
     /** Enable unignore files group. */
     public JCheckBox unignoreFiles;
 
     /** Editor panel element. */
     private EditorPanel editorPanel;
+    private
+    @NotNull
+    List<IgnoreSettings.UserTemplate> userTemplates;
 
     /** Create UI components. */
     private void createUIComponents() {
@@ -155,6 +158,142 @@ public class IgnoreSettingsPanel implements Disposable {
         if (!editorPanel.preview.isDisposed()) {
             EditorFactory.getInstance().releaseEditor(editorPanel.preview);
         }
+    }
+
+    /**
+     * Returns value of @{link {@link #missingGitignore}} field.
+     * 
+     * @return {@link #missingGitignore} is selected
+     */
+    public boolean isMissingGitignore() {
+        return missingGitignore.isSelected();
+    }
+
+    /**
+     * Sets value of {@link #missingGitignore} field.
+     * 
+     * @param selected value for {@link #missingGitignore}
+     */
+    public void setMissingGitignore(boolean selected) {
+        this.missingGitignore.setSelected(selected);
+    }
+
+    /**
+     * Returns value of @{link {@link #ignoredFileStatus}} field.
+     * 
+     * @return {@link #ignoredFileStatus} is selected
+     */
+    public boolean isIgnoredFileStatus() {
+        return ignoredFileStatus.isSelected();
+    }
+
+    /**
+     * Sets value of {@link #ignoredFileStatus} field.
+     * 
+     * @param selected value for {@link #ignoredFileStatus}
+     */
+    public void setIgnoredFileStatus(boolean selected) {
+        this.ignoredFileStatus.setSelected(selected);
+    }
+
+    /**
+     * Returns {@link IgnoreSettings.UserTemplate} list of {@link #templatesListPanel}.
+     *
+     * @return {@link IgnoreSettings.UserTemplate} list
+     */
+    @NotNull
+    public List<IgnoreSettings.UserTemplate> getUserTemplates() {
+        return this.templatesListPanel.getList();
+    }
+
+    /**
+     * Sets new {@link IgnoreSettings.UserTemplate} list to {@link #templatesListPanel}.
+     * 
+     * @param userTemplates {@link IgnoreSettings.UserTemplate} list
+     */
+    public void setUserTemplates(@NotNull List<IgnoreSettings.UserTemplate> userTemplates) {
+        this.templatesListPanel.resetForm(userTemplates);
+    }
+
+    /**
+     * Returns value of @{link {@link #outerIgnoreRules}} field.
+     *
+     * @return {@link #outerIgnoreRules} is selected
+     */
+    public boolean isOuterIgnoreRules() {
+        return outerIgnoreRules.isSelected();
+    }
+
+    /**
+     * Sets value of {@link #outerIgnoreRules} field.
+     *
+     * @param selected value for {@link #outerIgnoreRules}
+     */
+    public void setOuterIgnoreRules(boolean selected) {
+        this.outerIgnoreRules.setSelected(selected);
+    }
+
+    /**
+     * Returns value of @{link {@link #insertAtCursor}} field.
+     *
+     * @return {@link #insertAtCursor} is selected
+     */
+    public boolean isInsertAtCursor() {
+        return insertAtCursor.isSelected();
+    }
+
+    /**
+     * Sets value of {@link #insertAtCursor} field.
+     *
+     * @param selected value for {@link #insertAtCursor}
+     */
+    public void setInsertAtCursor(boolean selected) {
+        this.insertAtCursor.setSelected(selected);
+    }
+
+    /**
+     * Returns value of @{link {@link #addUnversionedFiles}} field.
+     *
+     * @return {@link #addUnversionedFiles} is selected
+     */
+    public boolean isAddUnversionedFiles() {
+        return addUnversionedFiles.isSelected();
+    }
+
+    /**
+     * Sets value of {@link #addUnversionedFiles} field.
+     *
+     * @param selected value for {@link #addUnversionedFiles}
+     */
+    public void setAddUnversionedFiles(boolean selected) {
+        this.addUnversionedFiles.setSelected(selected);
+    }
+
+    /**
+     * Returns value of @{link {@link #unignoreFiles}} field.
+     *
+     * @return {@link #unignoreFiles} is selected
+     */
+    public boolean isUnignoreActions() {
+        return unignoreFiles.isSelected();
+    }
+
+    /**
+     * Sets value of {@link #unignoreFiles} field.
+     *
+     * @param selected value for {@link #unignoreFiles}
+     */
+    public void setUnignoreActions(boolean selected) {
+        this.unignoreFiles.setSelected(selected);
+    }
+
+    /**
+     * Returns model of {@link #languagesTable}.
+     *
+     * @return {@link #languagesTable} model
+     */
+    public LanguagesTableModel getLanguagesSettings() {
+        return (LanguagesTableModel) this.languagesTable.getModel();
     }
 
     /** Extension for the CRUD list panel. */

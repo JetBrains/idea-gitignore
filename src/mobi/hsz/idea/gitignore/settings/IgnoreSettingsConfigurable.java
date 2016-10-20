@@ -28,6 +28,7 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.vcs.VcsConfigurableProvider;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.ui.IgnoreSettingsPanel;
@@ -97,15 +98,14 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
     @Override
     public boolean isModified() {
         return settingsPanel == null
-                || settingsPanel.missingGitignore == null || settings.isMissingGitignore() != settingsPanel.missingGitignore.isSelected()
-                || settingsPanel.templatesListPanel == null || !Utils.equalLists(settings.getUserTemplates(), settingsPanel.templatesListPanel.getList())
-                || settingsPanel.ignoredFileStatus == null || settings.isIgnoredFileStatus() != settingsPanel.ignoredFileStatus.isSelected()
-                || settingsPanel.outerIgnoreRules == null || settings.isOuterIgnoreRules() != settingsPanel.outerIgnoreRules.isSelected()
-                || settingsPanel.insertAtCursor == null || settings.isInsertAtCursor() != settingsPanel.insertAtCursor.isSelected()
-                || settingsPanel.addUnversionedFiles == null || settings.isAddUnversionedFiles() != settingsPanel.addUnversionedFiles.isSelected()
-                || settingsPanel.languagesTable == null
-                || !((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).equalSettings(settings.getLanguagesSettings())
-                || settingsPanel.unignoreFiles == null || settings.isUnignoreActions() != settingsPanel.unignoreFiles.isSelected()
+                || !Comparing.equal(settings.isMissingGitignore(), settingsPanel.isMissingGitignore())
+                || !Utils.equalLists(settings.getUserTemplates(), settingsPanel.getUserTemplates())
+                || !Comparing.equal(settings.isIgnoredFileStatus(), settingsPanel.isIgnoredFileStatus())
+                || !Comparing.equal(settings.isOuterIgnoreRules(), settingsPanel.isOuterIgnoreRules())
+                || !Comparing.equal(settings.isInsertAtCursor(), settingsPanel.isInsertAtCursor())
+                || !Comparing.equal(settings.isAddUnversionedFiles(), settingsPanel.isAddUnversionedFiles())
+                || !Comparing.equal(settings.isUnignoreActions(), settingsPanel.isUnignoreActions())
+                || !settingsPanel.getLanguagesSettings().equalSettings(settings.getLanguagesSettings())
                 ;
     }
 
@@ -113,37 +113,30 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
     @Override
     public void apply() throws ConfigurationException {
         if (settingsPanel == null) return;
-        settings.setMissingGitignore(settingsPanel.missingGitignore != null && settingsPanel.missingGitignore.isSelected());
-        settings.setUserTemplates(settingsPanel.templatesListPanel.getList());
-        settings.setIgnoredFileStatus(settingsPanel.ignoredFileStatus != null && settingsPanel.ignoredFileStatus.isSelected());
-        settings.setOuterIgnoreRules(settingsPanel.outerIgnoreRules != null && settingsPanel.outerIgnoreRules.isSelected());
-        settings.setInsertAtCursor(settingsPanel.insertAtCursor != null && settingsPanel.insertAtCursor.isSelected());
-        settings.setAddUnversionedFiles(settingsPanel.addUnversionedFiles != null && settingsPanel.addUnversionedFiles.isSelected());
-        settings.setLanguagesSettings(((IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel()).getSettings());
-        settings.setUnignoreActions(settingsPanel.unignoreFiles != null && settingsPanel.unignoreFiles.isSelected());
+        settings.setMissingGitignore(settingsPanel.isMissingGitignore());
+        settings.setUserTemplates(settingsPanel.getUserTemplates());
+        settings.setIgnoredFileStatus(settingsPanel.isIgnoredFileStatus());
+        settings.setOuterIgnoreRules(settingsPanel.isOuterIgnoreRules());
+        settings.setInsertAtCursor(settingsPanel.isInsertAtCursor());
+        settings.setAddUnversionedFiles(settingsPanel.isAddUnversionedFiles());
+        settings.setLanguagesSettings(settingsPanel.getLanguagesSettings().getSettings());
+        settings.setUnignoreActions(settingsPanel.isUnignoreActions());
     }
 
     /** Load settings from other components to configurable. */
     @Override
     public void reset() {
         if (settingsPanel == null) return;
-        if (settingsPanel.missingGitignore != null)
-            settingsPanel.missingGitignore.setSelected(settings.isMissingGitignore());
-        if (settingsPanel.templatesListPanel != null)
-            settingsPanel.templatesListPanel.resetForm(settings.getUserTemplates());
-        if (settingsPanel.ignoredFileStatus != null)
-            settingsPanel.ignoredFileStatus.setSelected(settings.isIgnoredFileStatus());
-        if (settingsPanel.outerIgnoreRules != null)
-            settingsPanel.outerIgnoreRules.setSelected(settings.isOuterIgnoreRules());
-        if (settingsPanel.insertAtCursor != null) settingsPanel.insertAtCursor.setSelected(settings.isInsertAtCursor());
-        if (settingsPanel.addUnversionedFiles != null)
-            settingsPanel.addUnversionedFiles.setSelected(settings.isAddUnversionedFiles());
-        if (settingsPanel.languagesTable != null) {
-            IgnoreSettingsPanel.LanguagesTableModel model = (IgnoreSettingsPanel.LanguagesTableModel) settingsPanel.languagesTable.getModel();
-            model.update(settings.getLanguagesSettings().clone());
-        }
-        if (settingsPanel.unignoreFiles != null)
-            settingsPanel.unignoreFiles.setSelected(settings.isUnignoreActions());
+        settingsPanel.setMissingGitignore(settings.isMissingGitignore());
+        settingsPanel.setUserTemplates(settings.getUserTemplates());
+        settingsPanel.setIgnoredFileStatus(settings.isIgnoredFileStatus());
+        settingsPanel.setOuterIgnoreRules(settings.isOuterIgnoreRules());
+        settingsPanel.setInsertAtCursor(settings.isInsertAtCursor());
+        settingsPanel.setAddUnversionedFiles(settings.isAddUnversionedFiles());
+        settingsPanel.setUnignoreActions(settings.isUnignoreActions());
+        
+        IgnoreSettingsPanel.LanguagesTableModel model =  settingsPanel.getLanguagesSettings();
+        model.update(settings.getLanguagesSettings().clone());
     }
 
     /** Disposes the Swing components used for displaying the configuration. */
