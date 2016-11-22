@@ -54,6 +54,9 @@ import java.util.concurrent.Future;
  * @since 1.4
  */
 public class ExternalExec {
+    /** Default external exec timeout. */
+    private static final int DEFAULT_TIMEOUT = 5000;
+
     /** Private constructor to prevent creating {@link Icons} instance. */
     private ExternalExec() {
     }
@@ -167,7 +170,9 @@ public class ExternalExec {
             };
 
             handler.startNotify();
-            handler.waitFor();
+            if (!handler.waitFor(DEFAULT_TIMEOUT)) {
+                return null;
+            }
             parser.notifyFinished(process.exitValue());
 
             if (parser.isErrorsReported()) {
