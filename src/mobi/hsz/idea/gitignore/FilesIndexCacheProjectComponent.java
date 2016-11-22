@@ -27,14 +27,13 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ContentIterator;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.Processor;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.indexing.FileBasedIndex;
-import com.intellij.util.indexing.IdFilter;
 import gnu.trove.THashSet;
 import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.MatcherUtil;
@@ -157,11 +156,13 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
             final String key = StringUtil.join(parts, Constants.DOLLAR);
             if (cacheMap.get(key) == null) {
                 final THashSet<VirtualFile> files = new THashSet<VirtualFile>(1000);
-                FileBasedIndex.getInstance().processAllKeys(FilenameIndex.NAME, new Processor<String>() {
+
+                ProjectRootManager.getInstance(project).getFileIndex().iterateContent(new ContentIterator() {
                     @Override
-                    public boolean process(String s) {
-                        if (MatcherUtil.matchAnyPart(parts, s)) {
-                            for (VirtualFile file : FilenameIndex.getVirtualFilesByName(project, s, scope)) {
+                    public boolean processFile(VirtualFile fileOrDir) {
+                        final String name = fileOrDir.getName();
+                        if (MatcherUtil.matchAnyPart(parts, name)) {
+                            for (VirtualFile file : FilenameIndex.getVirtualFilesByName(project, name, scope)) {
                                 if (file.isValid() && MatcherUtil.matchAllParts(parts, file.getPath())) {
                                     files.add(file);
                                 }
@@ -169,7 +170,8 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
                         }
                         return true;
                     }
-                }, scope, IdFilter.getProjectIdFilter(project, false));
+                });
+                
                 cacheMap.put(key, files);
             }
 
