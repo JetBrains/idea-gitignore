@@ -24,12 +24,14 @@
 
 package mobi.hsz.idea.gitignore;
 
+import com.intellij.ide.startup.StartupManagerEx;
 import com.intellij.openapi.application.AccessToken;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.VcsListener;
@@ -430,19 +432,21 @@ public class IgnoreManager extends AbstractProjectComponent {
                     public void run() {
                         try {
                             refreshIndicator.start();
-                            AccessToken token = HeavyProcessLatch.INSTANCE.processStarted(PROCESS_NAME);
+                            final AccessToken token = HeavyProcessLatch.INSTANCE.processStarted(PROCESS_NAME);
                             try {
                                 FileManager fileManager = psiManager.getFileManager();
                                 if (!(fileManager instanceof FileManagerImpl)) {
                                     return;
                                 }
 
-                                while (!((FileManagerImpl) psiManager.getFileManager()).isInitialized()) {
+                                final StartupManagerEx startupManager = (StartupManagerEx) StartupManager.getInstance(myProject);
+                                while (!startupManager.postStartupActivityPassed()) {
                                     try {
                                         Thread.sleep(REQUEST_DELAY);
                                     } catch (InterruptedException ignored) {
                                     }
                                 }
+
                                 // Search for Ignore files in the project
                                 final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
                                 final List<IgnoreFile> files = ContainerUtil.newArrayList();
