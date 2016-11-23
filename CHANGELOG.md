@@ -1,5 +1,25 @@
 # Change Log
 
+## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.6) (2016-11-23)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6)
+
+**Implemented enhancements:**
+
+- Unignore Files [\#250](https://github.com/hsz/idea-gitignore/issues/250)
+- Default icon for .ignore files [\#258](https://github.com/hsz/idea-gitignore/issues/258)
+- StyleLint (.stylelintignore) support [\#241](https://github.com/hsz/idea-gitignore/issues/241)
+
+**Fixed bugs:**
+
+- Method OuterIgnoreLoaderComponent.getOuterFiles must not return null [\#240](https://github.com/hsz/idea-gitignore/issues/240)
+- Coloring problem at project startup [\#246](https://github.com/hsz/idea-gitignore/issues/246)
+- Fixed freeze report in ExternalExec [\#256](https://github.com/hsz/idea-gitignore/issues/256)
+- ConcurrentModificationException in IgnoreReferenceSet [\#269](https://github.com/hsz/idea-gitignore/issues/269)
+- Stop indexing excluded files/directories [\#273](https://github.com/hsz/idea-gitignore/issues/273)
+- NoSuchMethodError: com.intellij.util.containers.ContainerUtil.getFirstItem [\#263](https://github.com/hsz/idea-gitignore/issues/263)
+- CacheMap.getParentStatus must not return null [\#242](https://github.com/hsz/idea-gitignore/issues/242)
+  
 ## [v1.5](https://github.com/hsz/idea-gitignore/tree/v1.5) (2016-06-13)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.4.1...v1.5)

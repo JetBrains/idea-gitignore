@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.5</version>
+    <version>1.6</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -54,22 +54,27 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.5"><b>v1.5</b></a> (2016-06-13) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.4.1...v1.5"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.6"><b>v1.6</b></a> (2016-11-23) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         
         <ul>
-            <li>Create user templates with existing ignore entries</li>
-            <li>Favorite templates feature (<a href="https://github.com/hsz/idea-gitignore/issues/236">236</a>)</li>
-            <li>Generate without comments and empty lines (<a href="https://github.com/hsz/idea-gitignore/issues/229">229</a>)</li>
+            <li>Unignore Files (<a href="https://github.com/hsz/idea-gitignore/issues/250">250</a>)</li>
+            <li>Default icon for .ignore files (<a href="https://github.com/hsz/idea-gitignore/issues/258">258</a>)</li>
+            <li>StyleLint (.stylelintignore) support (<a href="https://github.com/hsz/idea-gitignore/issues/241">241</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>NoSuchMethodError on ContainerUtil.notNullize (<a href="https://github.com/hsz/idea-gitignore/issues/232">232</a>)</li>
-            <li>Refactoring of the external executable process (<a href="https://github.com/hsz/idea-gitignore/issues/233">233</a>)</li>
+            <li>Method OuterIgnoreLoaderComponent.getOuterFiles must not return null (<a href="https://github.com/hsz/idea-gitignore/issues/240">240</a>)</li>
+            <li>Coloring problem at project startup (<a href="https://github.com/hsz/idea-gitignore/issues/246">246</a>)</li>
+            <li>Fixed freeze report in ExternalExec (<a href="https://github.com/hsz/idea-gitignore/issues/256">256</a>)</li>
+            <li>ConcurrentModificationException in IgnoreReferenceSet (<a href="https://github.com/hsz/idea-gitignore/issues/269">269</a>)</li>
+            <li>Stop indexing excluded files/directories (<a href="https://github.com/hsz/idea-gitignore/issues/273">273</a>)</li>
+            <li>NoSuchMethodError: com.intellij.util.containers.ContainerUtil.getFirstItem (<a href="https://github.com/hsz/idea-gitignore/issues/263">263</a>)</li>
+            <li>CacheMap.getParentStatus must not return null (<a href="https://github.com/hsz/idea-gitignore/issues/242">242</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

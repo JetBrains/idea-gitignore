@@ -1,4 +1,4 @@
-.ignore v1.5 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
+.ignore v1.6 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 ==================
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)](https://plugins.jetbrains.com/plugin/7495)
@@ -103,20 +103,25 @@ Usage
 Changelog
 ---------
 
-## [v1.5](https://github.com/hsz/idea-gitignore/tree/v1.5) (2016-06-13)
+## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.6) (2016-11-23)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.4.1...v1.5)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6)
 
 **Implemented enhancements:**
 
-- Create user templates with existing ignore entries
-- Favorite templates feature [\#236](https://github.com/hsz/idea-gitignore/issues/236)
-- Generate without comments and empty lines [\#229](https://github.com/hsz/idea-gitignore/issues/229)
+- Unignore Files [\#250](https://github.com/hsz/idea-gitignore/issues/250)
+- Default icon for .ignore files [\#258](https://github.com/hsz/idea-gitignore/issues/258)
+- StyleLint (.stylelintignore) support [\#241](https://github.com/hsz/idea-gitignore/issues/241)
 
 **Fixed bugs:**
 
-- NoSuchMethodError on ContainerUtil.notNullize [\#232](https://github.com/hsz/idea-gitignore/issues/232)
-- Refactoring of the external executable process [\#233](https://github.com/hsz/idea-gitignore/issues/233)
+- Method OuterIgnoreLoaderComponent.getOuterFiles must not return null [\#240](https://github.com/hsz/idea-gitignore/issues/240)
+- Coloring problem at project startup [\#246](https://github.com/hsz/idea-gitignore/issues/246)
+- Fixed freeze report in ExternalExec [\#256](https://github.com/hsz/idea-gitignore/issues/256)
+- ConcurrentModificationException in IgnoreReferenceSet [\#269](https://github.com/hsz/idea-gitignore/issues/269)
+- Stop indexing excluded files/directories [\#273](https://github.com/hsz/idea-gitignore/issues/273)
+- NoSuchMethodError: com.intellij.util.containers.ContainerUtil.getFirstItem [\#263](https://github.com/hsz/idea-gitignore/issues/263)
+- CacheMap.getParentStatus must not return null [\#242](https://github.com/hsz/idea-gitignore/issues/242)
 
 [Full Changelog History](./CHANGELOG.md)
 
