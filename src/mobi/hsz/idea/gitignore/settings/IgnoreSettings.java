@@ -159,7 +159,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.VERSION.toString(), version);
         element.setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, Constants.DOLLAR));
         element.setAttribute(KEY.UNIGNORE_ACTIONS.toString(), Boolean.toString(unignoreActions));
-        element.setAttribute(KEY.HIDE_IGNORED_FILES_ON_PROJECT_VIEW.toString(), Boolean.toString(unignoreActions));
+        element.setAttribute(KEY.HIDE_IGNORED_FILES_ON_PROJECT_VIEW.toString(), Boolean.toString(hideIgnoredFiles));
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
         for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
