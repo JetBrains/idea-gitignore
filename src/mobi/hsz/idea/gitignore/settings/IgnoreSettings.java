@@ -110,7 +110,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     private boolean unignoreActions = true;
 
     /* Hide ignored files or folder in the project tree view*/
-    private boolean hideIgnoredFilesOnProjectView = false;
+    private boolean hideIgnoredFiles = false;
 
     /** Starred templates. */
     @NotNull
@@ -223,8 +223,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         if (value != null) setStarredTemplates(StringUtil.split(value, Constants.DOLLAR));
 
         value = element.getAttributeValue(KEY.HIDE_IGNORED_FILES_ON_PROJECT_VIEW.toString());
-        System.out.println(value);
-        hideIgnoredFilesOnProjectView = (value != null) && Boolean.parseBoolean(value);
+        hideIgnoredFiles = (value != null) && Boolean.parseBoolean(value);
 
         Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
@@ -376,18 +375,19 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * @return true if the files should be ignored and false if they should be showed
      */
     public boolean shouldHideIgnoredFilesOnProjectView() {
-        return hideIgnoredFilesOnProjectView;
+        return hideIgnoredFiles;
     }
 
     /**
-     * Defines if ignored files should be hidden in the project tree view or not
+     * Changes the configuration to determine if ignored files should be hidden in the project tree view or not
      *
-     * @param filesShouldBeHidden value to define if ignored files should be hidden in the project tree view or not
      */
-    public void hideIgnoredFilesOnProjectView(boolean filesShouldBeHidden) {
+    public void toggleIgnoredFilesOnProjectViewVisibility() {
+        boolean newValue = !this.hideIgnoredFiles;
+
         this.notifyOnChange(KEY.HIDE_IGNORED_FILES_ON_PROJECT_VIEW,
-                this.hideIgnoredFilesOnProjectView, filesShouldBeHidden);
-        this.hideIgnoredFilesOnProjectView = filesShouldBeHidden;
+                this.hideIgnoredFiles, newValue);
+        this.hideIgnoredFiles = newValue;
 
         ProjectView.getInstance(ProjectManager.getInstance().getOpenProjects()[0]).refresh();
     }

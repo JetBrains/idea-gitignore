@@ -23,7 +23,7 @@ public class TextOnlyTreeStructureProvider implements TreeStructureProvider {
     public Collection<AbstractTreeNode> modify(@NotNull AbstractTreeNode parent,
                                                @NotNull Collection<AbstractTreeNode> children,
                                                ViewSettings settings) {
-        if (! IgnoreSettings.getInstance().shouldHideIgnoredFilesOnProjectView() ){
+        if (! IgnoreSettings.getInstance().shouldHideIgnoredFilesOnProjectView()) {
             return children;
         }
         ArrayList<AbstractTreeNode> nodes = new ArrayList<AbstractTreeNode>();
