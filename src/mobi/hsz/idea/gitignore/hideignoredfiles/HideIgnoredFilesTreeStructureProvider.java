@@ -1,4 +1,4 @@
-package mobi.hsz.idea.gitignore.treeviewfilter;
+package mobi.hsz.idea.gitignore.hideignoredfiles;
 
 import com.intellij.ide.projectView.*;
 import com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode;

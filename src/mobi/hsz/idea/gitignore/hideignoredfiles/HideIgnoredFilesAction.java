@@ -1,4 +1,4 @@
-package mobi.hsz.idea.gitignore.treeviewfilter;
+package mobi.hsz.idea.gitignore.hideignoredfiles;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
