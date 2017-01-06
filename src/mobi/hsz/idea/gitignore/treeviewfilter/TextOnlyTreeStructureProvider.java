@@ -4,11 +4,11 @@ import com.intellij.ide.projectView.*;
 import com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode;
 import com.intellij.ide.projectView.impl.nodes.PsiFileNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
-import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.IgnoreManager;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.*;
 
 import java.util.*;
@@ -23,6 +23,9 @@ public class TextOnlyTreeStructureProvider implements TreeStructureProvider {
     public Collection<AbstractTreeNode> modify(@NotNull AbstractTreeNode parent,
                                                @NotNull Collection<AbstractTreeNode> children,
                                                ViewSettings settings) {
+        if (! IgnoreSettings.getInstance().shouldHideIgnoredFilesOnProjectView() ){
+            return children;
+        }
         ArrayList<AbstractTreeNode> nodes = new ArrayList<AbstractTreeNode>();
 
         for (AbstractTreeNode child : children) {
