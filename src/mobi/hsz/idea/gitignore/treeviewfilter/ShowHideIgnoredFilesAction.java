@@ -1,4 +1,4 @@
-package mobi.hsz.idea.gitignore.treeviewfilter.actions;
+package mobi.hsz.idea.gitignore.treeviewfilter;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -30,16 +30,8 @@ public class ShowHideIgnoredFilesAction extends AnAction {
 
 //        presentation.setDescription(description);
 //        presentation.setIcon(icon);
-/*
 
-//        IgnoreManager ignoreManager = IgnoreManager.getInstance(e.getProject());
 
-        final VirtualFile[] files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
-        for (VirtualFile f : files) {
-//            System.out.println(f.getName());
-//            System.out.println("ignored: " + ignoreManager.isFileIgnored(f));
-        }
-*/
     }
 
 }
