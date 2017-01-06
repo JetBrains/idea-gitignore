@@ -409,7 +409,7 @@
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <treeStructureProvider implementation="mobi.hsz.idea.gitignore.treeviewfilter.filter.TextOnlyTreeStructureProvider"/>
+        <treeStructureProvider implementation="mobi.hsz.idea.gitignore.treeviewfilter.TextOnlyTreeStructureProvider"/>
     </extensions>
 
     <application-components>
@@ -466,7 +466,7 @@
             <add-to-group group-id="CloseEditorsGroup" anchor="before" relative-to-action="CloseAllUnpinnedEditors"/>
         </action>
 
-        <action id="toggleIgnoredVisibility" class="mobi.hsz.idea.gitignore.treeviewfilter.actions.ShowHideIgnoredFilesAction">
+        <action id="toggleIgnoredVisibility" class="mobi.hsz.idea.gitignore.treeviewfilter.ShowHideIgnoredFilesAction">
             <add-to-group group-id="ProjectViewPopupMenu"/>
         </action>
 
