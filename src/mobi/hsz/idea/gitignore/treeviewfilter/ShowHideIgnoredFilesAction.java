@@ -7,28 +7,23 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Icons;
 
-import javax.swing.*;
 
 /**
  * Created by maxi on 03/01/17.
  */
 public class ShowHideIgnoredFilesAction extends AnAction {
 
-    private static Icon getIcon() {
+    private static String getText() {
         if (IgnoreSettings.getInstance().shouldHideIgnoredFilesOnProjectView()) {
-            return Icons.IGNORE;
+            return IgnoreBundle.message("action.showIgnoredVisibility");
         }
         else {
-            return null;
+            return IgnoreBundle.message("action.hideIgnoredVisibility");
         }
     }
 
     public ShowHideIgnoredFilesAction() {
-        super(
-                IgnoreBundle.message("action.hideIgnoredVisibility"),
-                IgnoreBundle.message("action.hideIgnoredVisibility.description"),
-                getIcon()
-        );
+        super(getText(),"", Icons.IGNORE);
     }
 
     @Override
@@ -36,7 +31,7 @@ public class ShowHideIgnoredFilesAction extends AnAction {
         IgnoreSettings.getInstance().toggleIgnoredFilesOnProjectViewVisibility();
 
         Presentation presentation = this.getTemplatePresentation();
-        presentation.setIcon(getIcon());
+        presentation.setText(getText());
     }
 
 }
