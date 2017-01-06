@@ -13,7 +13,7 @@ import org.jetbrains.annotations.*;
 
 import java.util.*;
 
-public class TextOnlyTreeStructureProvider implements TreeStructureProvider {
+public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvider {
 
     private final Project project = ProjectManager.getInstance().getOpenProjects()[0];
     private final IgnoreManager ignoreManager = IgnoreManager.getInstance(project);
@@ -23,33 +23,16 @@ public class TextOnlyTreeStructureProvider implements TreeStructureProvider {
     public Collection<AbstractTreeNode> modify(@NotNull AbstractTreeNode parent,
                                                @NotNull Collection<AbstractTreeNode> children,
                                                ViewSettings settings) {
+
         if (! IgnoreSettings.getInstance().shouldHideIgnoredFilesOnProjectView()) {
             return children;
         }
+
         ArrayList<AbstractTreeNode> nodes = new ArrayList<AbstractTreeNode>();
-
         for (AbstractTreeNode child : children) {
-            System.out.println("all:" +  child.toString());
-            System.out.println("val:" +  child.getValue());
-
-
-            if (child instanceof PsiFileNode) {
-                VirtualFile file = ((PsiFileNode) child).getVirtualFile();
-                if (ignoreManager.isFileIgnored(file)) {
-                    System.out.println("ignored:" +  file.getName());
-                    continue;
-                }
-                System.out.println("not ignored:" +  file.getName());
-            } else {
-                if (child instanceof PsiDirectoryNode) {
-                    VirtualFile file = ((PsiDirectoryNode) child).getVirtualFile();
-                    if (ignoreManager.isFileIgnored(file)) {
-                        System.out.println("ignored:" + file.getName());
-                        continue;
-                    }
-                }
+            if (!isAnIgnoredFile(child)) {
+                nodes.add(child);
             }
-            nodes.add(child);
         }
         return nodes;
     }
@@ -59,4 +42,21 @@ public class TextOnlyTreeStructureProvider implements TreeStructureProvider {
     public Object getData(Collection<AbstractTreeNode> collection, String s) {
         return null;
     }
+
+    private boolean isAnIgnoredFile(AbstractTreeNode node) {
+        try {
+            VirtualFile file = ((PsiFileNode) node).getVirtualFile();
+            return ignoreManager.isFileIgnored(file);
+        }
+        catch (Exception e) {
+            try {
+                VirtualFile file = ((PsiDirectoryNode) node).getVirtualFile();
+                return ignoreManager.isFileIgnored(file);
+            }
+            catch (Exception ex) {
+                return false;
+            }
+        }
+    }
+
 }

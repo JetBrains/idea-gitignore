@@ -11,7 +11,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
 /**
  * Created by maxi on 03/01/17.
  */
-public class ShowHideIgnoredFilesAction extends AnAction {
+public class HideIgnoredFilesAction extends AnAction {
 
     private static String getText() {
         if (IgnoreSettings.getInstance().shouldHideIgnoredFilesOnProjectView()) {
@@ -22,13 +22,13 @@ public class ShowHideIgnoredFilesAction extends AnAction {
         }
     }
 
-    public ShowHideIgnoredFilesAction() {
+    public HideIgnoredFilesAction() {
         super(getText(),"", Icons.IGNORE);
     }
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        IgnoreSettings.getInstance().toggleIgnoredFilesOnProjectViewVisibility();
+        IgnoreSettings.getInstance().toggleIgnoredFilesVisibility();
 
         Presentation presentation = this.getTemplatePresentation();
         presentation.setText(getText());

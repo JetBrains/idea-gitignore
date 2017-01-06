@@ -382,7 +382,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Changes the configuration to determine if ignored files should be hidden in the project tree view or not
      *
      */
-    public void toggleIgnoredFilesOnProjectViewVisibility() {
+    public void toggleIgnoredFilesVisibility() {
         boolean newValue = !this.hideIgnoredFiles;
 
         this.notifyOnChange(KEY.HIDE_IGNORED_FILES_ON_PROJECT_VIEW,
