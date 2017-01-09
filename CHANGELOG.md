@@ -1,5 +1,17 @@
 # Change Log
 
+## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.7) (wip)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7)
+
+**Implemented enhancements:**
+
+- Hide ignored files in the project tree view
+
+**Fixed bugs:**
+
+- 
+  
 ## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.6) (2016-11-23)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6)
