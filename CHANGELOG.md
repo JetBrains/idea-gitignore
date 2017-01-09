@@ -1,5 +1,17 @@
 # Change Log
 
+## [v1.7](https://github.com/hsz/idea-gitignore/tree/v1.7) (wip)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7)
+
+**Implemented enhancements:**
+
+- Hide ignored files in the project tree view
+
+**Fixed bugs:**
+
+-
+
 ## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.6) (2016-11-23)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6)
@@ -19,7 +31,7 @@
 - Stop indexing excluded files/directories [\#273](https://github.com/hsz/idea-gitignore/issues/273)
 - NoSuchMethodError: com.intellij.util.containers.ContainerUtil.getFirstItem [\#263](https://github.com/hsz/idea-gitignore/issues/263)
 - CacheMap.getParentStatus must not return null [\#242](https://github.com/hsz/idea-gitignore/issues/242)
-  
+
 ## [v1.5](https://github.com/hsz/idea-gitignore/tree/v1.5) (2016-06-13)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.4.1...v1.5)
@@ -167,7 +179,7 @@
 **Implemented enhancements:**
 
 - Handling outside ignore rules (.gitignore global file)
-- Languages settings (configurable list in `New file`, marking as ignored in Project tree) 
+- Languages settings (configurable list in `New file`, marking as ignored in Project tree)
 - `.jshintignore` support (JSHint)
 - `ignore-glob` support (Fossil)
 - `.tfignore` support (Team Foundation)

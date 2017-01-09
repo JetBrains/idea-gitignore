@@ -9,21 +9,23 @@ import mobi.hsz.idea.gitignore.util.Icons;
 
 
 /**
- * Created by maxi on 03/01/17.
+ * Action that hides or show ignored files in the project tree view.
+ *
+ * @author Maximiliano Najle <maximilianonajle@gmail.com>
+ * @since 1.7
  */
 public class HideIgnoredFilesAction extends AnAction {
 
     private static String getText() {
         if (IgnoreSettings.getInstance().shouldHideIgnoredFilesOnProjectView()) {
             return IgnoreBundle.message("action.showIgnoredVisibility");
-        }
-        else {
+        } else {
             return IgnoreBundle.message("action.hideIgnoredVisibility");
         }
     }
 
     public HideIgnoredFilesAction() {
-        super(getText(),"", Icons.IGNORE);
+        super(getText(), "", Icons.IGNORE);
     }
 
     @Override
