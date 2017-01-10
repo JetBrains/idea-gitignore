@@ -10,8 +10,7 @@
 
 **Fixed bugs:**
 
--
-
+- 
 ## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.6) (2016-11-23)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6)
