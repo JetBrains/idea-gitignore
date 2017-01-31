@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore;
 
+import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.startup.StartupManagerEx;
 import com.intellij.openapi.application.AccessToken;
 import com.intellij.openapi.application.ApplicationManager;
@@ -244,6 +245,10 @@ public class IgnoreManager extends AbstractProjectComponent {
                             enable();
                         }
                     }
+                    break;
+                    
+                case HIDE_IGNORED_FILES:
+                    ProjectView.getInstance(myProject).refresh();
                     break;
 
             }

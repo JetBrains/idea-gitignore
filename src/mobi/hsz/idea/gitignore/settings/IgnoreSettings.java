@@ -24,12 +24,10 @@
 
 package mobi.hsz.idea.gitignore.settings;
 
-import com.intellij.ide.projectView.ProjectView;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -386,8 +384,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     public void setHideIgnoredFiles(boolean hideIgnoredFiles) {
         this.notifyOnChange(KEY.HIDE_IGNORED_FILES, this.hideIgnoredFiles, hideIgnoredFiles);
         this.hideIgnoredFiles = hideIgnoredFiles;
-
-        ProjectView.getInstance(ProjectManager.getInstance().getOpenProjects()[0]).refresh();
     }
 
     /**
