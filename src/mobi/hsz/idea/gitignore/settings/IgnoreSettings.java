@@ -24,10 +24,12 @@
 
 package mobi.hsz.idea.gitignore.settings;
 
+import com.intellij.ide.projectView.ProjectView;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -61,7 +63,8 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
         OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight"),
         INSERT_AT_CURSOR("insertAtCursor"), ADD_UNVERSIONED_FILES("addUnversionedFiles"), VERSION("version"),
-        STARRED_TEMPLATES("starredTemplates"), UNIGNORE_ACTIONS("unignoreActions");
+        STARRED_TEMPLATES("starredTemplates"), UNIGNORE_ACTIONS("unignoreActions"),
+        HIDE_IGNORED_FILES_ON_PROJECT_VIEW("hideIgnoredFilesOnProjectView");
 
         private final String key;
 
@@ -105,6 +108,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
     /** Enable unignore actions in context menus. */
     private boolean unignoreActions = true;
+
+    /* Hide ignored files or folder in the project tree view*/
+    private boolean hideIgnoredFiles = false;
 
     /** Starred templates. */
     @NotNull
@@ -153,6 +159,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.VERSION.toString(), version);
         element.setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, Constants.DOLLAR));
         element.setAttribute(KEY.UNIGNORE_ACTIONS.toString(), Boolean.toString(unignoreActions));
+        element.setAttribute(KEY.HIDE_IGNORED_FILES_ON_PROJECT_VIEW.toString(), Boolean.toString(hideIgnoredFiles));
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
         for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
@@ -214,6 +221,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
         value = element.getAttributeValue(KEY.STARRED_TEMPLATES.toString());
         if (value != null) setStarredTemplates(StringUtil.split(value, Constants.DOLLAR));
+
+        value = element.getAttributeValue(KEY.HIDE_IGNORED_FILES_ON_PROJECT_VIEW.toString());
+        hideIgnoredFiles = (value != null) && Boolean.parseBoolean(value);
 
         Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
@@ -357,6 +367,29 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     public void setAddUnversionedFiles(boolean addUnversionedFiles) {
         this.notifyOnChange(KEY.ADD_UNVERSIONED_FILES, this.addUnversionedFiles, addUnversionedFiles);
         this.addUnversionedFiles = addUnversionedFiles;
+    }
+
+    /**
+     * Check if ignored files should be hidden in the project tree view
+     *
+     * @return true if the files should be ignored and false if they should be showed
+     */
+    public boolean shouldHideIgnoredFilesOnProjectView() {
+        return hideIgnoredFiles;
+    }
+
+    /**
+     * Changes the configuration to determine if ignored files should be hidden in the project tree view or not
+     *
+     */
+    public void toggleIgnoredFilesVisibility() {
+        boolean newValue = !this.hideIgnoredFiles;
+
+        this.notifyOnChange(KEY.HIDE_IGNORED_FILES_ON_PROJECT_VIEW,
+                this.hideIgnoredFiles, newValue);
+        this.hideIgnoredFiles = newValue;
+
+        ProjectView.getInstance(ProjectManager.getInstance().getOpenProjects()[0]).refresh();
     }
 
     /**

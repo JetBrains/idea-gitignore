@@ -406,6 +406,8 @@
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END StyleLint -->
 
+        <treeStructureProvider implementation="mobi.hsz.idea.gitignore.hideignoredfiles.HideIgnoredFilesTreeStructureProvider"/>
+
     </extensions>
 
     <application-components>
@@ -461,5 +463,10 @@
         <action id="CloseIgnoredEditors" class="mobi.hsz.idea.gitignore.actions.CloseIgnoredEditorsAction">
             <add-to-group group-id="CloseEditorsGroup" anchor="before" relative-to-action="CloseAllUnpinnedEditors"/>
         </action>
+
+        <action id="toggleIgnoredVisibility" class="mobi.hsz.idea.gitignore.hideignoredfiles.HideIgnoredFilesAction">
+            <add-to-group group-id="ProjectViewPopupMenu"/>
+        </action>
+
     </actions>
 </idea-plugin>
