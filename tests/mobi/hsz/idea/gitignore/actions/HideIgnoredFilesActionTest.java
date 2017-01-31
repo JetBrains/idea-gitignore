@@ -27,13 +27,11 @@ package mobi.hsz.idea.gitignore.actions;
 import com.intellij.openapi.actionSystem.Presentation;
 import mobi.hsz.idea.gitignore.Common;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.hideignoredfiles.HideIgnoredFilesAction;
 import org.junit.Assert;
 
 /**
- * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.5
+ * @author Maximiliano Najle <maximilianonajle@gmail.com>
+ * @since 1.7
  */
 public class HideIgnoredFilesActionTest extends Common<AddTemplateAction> {
     public void testHideIgnoredFilesActionInvocation() {
