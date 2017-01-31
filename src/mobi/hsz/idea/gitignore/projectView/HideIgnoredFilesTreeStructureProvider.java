@@ -24,20 +24,19 @@
 
 package mobi.hsz.idea.gitignore.projectView;
 
+import com.intellij.ide.projectView.ProjectViewNode;
 import com.intellij.ide.projectView.TreeStructureProvider;
 import com.intellij.ide.projectView.ViewSettings;
-import com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode;
-import com.intellij.ide.projectView.impl.nodes.PsiFileNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -48,11 +47,28 @@ import java.util.Collection;
  * @since 1.7
  */
 public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvider {
+    /** {@link IgnoreSettings} instance. */
+    private final IgnoreSettings ignoreSettings;
 
-    private final IgnoreSettings ignoreSettings = IgnoreSettings.getInstance();
-    private final Project project = ProjectManager.getInstance().getOpenProjects()[0];
-    private final IgnoreManager ignoreManager = IgnoreManager.getInstance(project);
+    /** {@link IgnoreManager} instance. */
+    private final IgnoreManager ignoreManager;
 
+//    private final Project project = ProjectManager.getInstance().getOpenProjects()[0];
+    /** Builds a new instance of {@link HideIgnoredFilesTreeStructureProvider}. */
+    public HideIgnoredFilesTreeStructureProvider(@NotNull Project project) {
+        this.ignoreSettings = IgnoreSettings.getInstance();
+        this.ignoreManager = IgnoreManager.getInstance(project);
+    }
+
+    /**
+     * If {@link IgnoreSettings#hideIgnoredFiles} is set to <code>true</code>, checks if specific
+     * nodes are ignored and filters them out.
+     *
+     * @param parent   the parent node
+     * @param children the list of child nodes according to the default project structure
+     * @param settings the current project view settings
+     * @return the modified collection of child nodes
+     */
     @NotNull
     @Override
     public Collection<AbstractTreeNode> modify(@NotNull AbstractTreeNode parent,
@@ -63,33 +79,23 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
             return children;
         }
 
-        final ArrayList<AbstractTreeNode> nodes = new ArrayList<AbstractTreeNode>();
-        for (AbstractTreeNode child : children) {
-            if (!isAnIgnoredFile(child)) {
-                nodes.add(child);
+        return ContainerUtil.filter(children, new Condition<AbstractTreeNode>() {
+            @Override
+            public boolean value(AbstractTreeNode node) {
+                if (node instanceof ProjectViewNode) {
+                    final VirtualFile file = ((ProjectViewNode) node).getVirtualFile();
+                    if (file != null) {
+                        return !ignoreManager.isFileIgnored(file);
+                    }
+                }
+                return true;
             }
-        }
-        
-        return nodes;
+        });
     }
 
     @Nullable
     @Override
     public Object getData(Collection<AbstractTreeNode> collection, String s) {
         return null;
-    }
-
-    private boolean isAnIgnoredFile(AbstractTreeNode node) {
-        try {
-            final VirtualFile file = ((PsiFileNode) node).getVirtualFile();
-            return ignoreManager.isFileIgnored(file);
-        } catch (Exception e) {
-            try {
-                final VirtualFile file = ((PsiDirectoryNode) node).getVirtualFile();
-                return ignoreManager.isFileIgnored(file);
-            } catch (Exception ex) {
-                return false;
-            }
-        }
     }
 }
