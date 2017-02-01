@@ -707,8 +707,11 @@ public class IgnoreSettingsPanel implements Disposable {
          */
         @Override
         public Object getValueAt(int row, int column) {
-            IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
-            TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = settings.get(language);
+            final IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
+            if (language == null) {
+                return null;
+            }
+            final TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = settings.get(language);
 
             switch (column) {
                 case 0:

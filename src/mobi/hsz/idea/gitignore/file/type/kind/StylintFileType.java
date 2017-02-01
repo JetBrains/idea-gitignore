@@ -25,20 +25,20 @@
 package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.kind.StyleLintLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.StylintLanguage;
 
 /**
- * Describes StyleLint file type.
+ * Describes Stylint file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.6
  */
-public class StyleLintFileType extends IgnoreFileType {
-    /** Contains {@link StyleLintFileType} singleton. */
-    public static final StyleLintFileType INSTANCE = new StyleLintFileType();
+public class StylintFileType extends IgnoreFileType {
+    /** Contains {@link StylintFileType} singleton. */
+    public static final StylintFileType INSTANCE = new StylintFileType();
 
     /** Private constructor to prevent direct object creation. */
-    private StyleLintFileType() {
-        super(StyleLintLanguage.INSTANCE);
+    private StylintFileType() {
+        super(StylintLanguage.INSTANCE);
     }
 }

@@ -161,6 +161,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
         for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
+            if (entry.getKey() == null) {
+                continue;
+            }
             Element languageElement = new Element(KEY.LANGUAGES_LANGUAGE.toString());
             languageElement.setAttribute(KEY.LANGUAGES_ID.toString(), entry.getKey().getID());
             for (Map.Entry<IgnoreLanguagesSettings.KEY, Object> data : entry.getValue().entrySet()) {
