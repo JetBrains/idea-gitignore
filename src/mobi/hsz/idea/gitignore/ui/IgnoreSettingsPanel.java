@@ -51,7 +51,6 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.AddEditDeleteListPanel;
-import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.table.JBTable;
@@ -111,9 +110,6 @@ public class IgnoreSettingsPanel implements Disposable {
     /** Splitter element. */
     private Splitter templatesSplitter;
 
-    /** File types scroll panel with table. */
-    private JScrollPane languagesPanel;
-
     /** {@link IgnoreLanguage} settings table. */
     private JBTable languagesTable;
 
@@ -148,8 +144,6 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.setShowGrid(false);
         languagesTable.setBorder(null);
         languagesTable.setDragEnabled(false);
-
-        languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
     }
 
     /** Disposes current preview {@link #editorPanel}. */
