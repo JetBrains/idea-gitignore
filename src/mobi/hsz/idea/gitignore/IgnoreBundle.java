@@ -83,7 +83,7 @@ public class IgnoreBundle {
             NodemonLanguage.INSTANCE,
             NpmLanguage.INSTANCE,
             PerforceLanguage.INSTANCE,
-            StyleLintLanguage.INSTANCE,
+            StylintLanguage.INSTANCE,
             TFLanguage.INSTANCE
     ));
 

@@ -19,7 +19,7 @@
         <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker), .chefignore (Chef),
            .cvsignore (CVS), .bzrignore (Bazaar), .boringignore (Darcs), .mtn-ignore (Monotone), ignore-glob (Fossil),
            .jshintignore (JSHint), .tfignore (Team Foundation), .p4ignore (Perforce), .flooignore (Floobits),
-           .eslintignore (ESLint), .cfignore (Cloud Foundry)</i>, .jpmignore (Jetpack), .stylelintignore (StyleLint)
+           .eslintignore (ESLint), .cfignore (Cloud Foundry)</i>, .jpmignore (Jetpack), .stylintignore (Stylint)
         files in your project.
       <br/>
 
@@ -211,7 +211,7 @@
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Perforce"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="StyleLint"
+        <lang.parserDefinition language="Stylint"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Team Foundation"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
@@ -399,15 +399,15 @@
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Team Foundation -->
 
-        <!-- StyleLint -->
-        <codeInsight.lineMarkerProvider language="StyleLint"
+        <!-- Stylint -->
+        <codeInsight.lineMarkerProvider language="Stylint"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher language="StyleLint"
+        <lang.braceMatcher language="Stylint"
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter language="StyleLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="StyleLint"
+        <lang.commenter language="Stylint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Stylint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
-        <!-- END StyleLint -->
+        <!-- END Stylint -->
         
     </extensions>
 
