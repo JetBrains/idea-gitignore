@@ -103,6 +103,18 @@ Usage
 Changelog
 ---------
 
+## [v1.7](https://github.com/hsz/idea-gitignore/tree/v1.7) (wip)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7)
+
+**Implemented enhancements:**
+
+- Hide ignored files and directories in the project tree view
+
+**Fixed bugs:**
+
+- 
+
 ## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.6) (2016-11-23)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6)
@@ -158,6 +170,7 @@ Developed By
 - [**@76200** Bartłomiej Czyż](https://github.com/76200)
 - [**@bedla** Ivo Šmíd](https://github.com/bedla)
 - [**@danpfe**](https://github.com/danpfe)
+- [**@maximilianonajle** Maximiliano Najle](https://github.com/maximilianonajle)
 
 
 Tools

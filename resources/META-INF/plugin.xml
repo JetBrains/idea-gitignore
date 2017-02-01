@@ -169,6 +169,9 @@
         <severitiesProvider
                 implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
+        <treeStructureProvider
+                implementation="mobi.hsz.idea.gitignore.projectView.HideIgnoredFilesTreeStructureProvider"/>
+
         <vcs.fileStatusProvider
                 implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
 
@@ -405,7 +408,7 @@
         <lang.syntaxHighlighterFactory key="StyleLint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END StyleLint -->
-
+        
     </extensions>
 
     <application-components>
@@ -460,6 +463,10 @@
 
         <action id="CloseIgnoredEditors" class="mobi.hsz.idea.gitignore.actions.CloseIgnoredEditorsAction">
             <add-to-group group-id="CloseEditorsGroup" anchor="before" relative-to-action="CloseAllUnpinnedEditors"/>
+        </action>
+
+        <action id="HideIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HideIgnoredFilesAction">
+            <add-to-group group-id="ProjectViewPopupMenu"/>
         </action>
     </actions>
 </idea-plugin>

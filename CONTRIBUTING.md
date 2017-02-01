@@ -23,6 +23,7 @@ Author
 - [**@76200** Bartłomiej Czyż](https://github.com/76200)
 - [**@bedla** Ivo Šmíd](https://github.com/bedla)
 - [**@danpfe**](https://github.com/danpfe)
+- [**@maximilianonajle** Maximiliano Najle](https://github.com/maximilianonajle)
 
 License
 -------
