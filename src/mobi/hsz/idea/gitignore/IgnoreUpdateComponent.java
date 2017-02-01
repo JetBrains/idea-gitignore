@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3
  */
-public class UpdateComponent implements ProjectComponent {
+public class IgnoreUpdateComponent implements ProjectComponent {
     /** {@link IgnoreApplicationComponent} instance. */
     private IgnoreApplicationComponent application;
 
@@ -59,7 +59,7 @@ public class UpdateComponent implements ProjectComponent {
     @NotNull
     @Override
     public String getComponentName() {
-        return "UpdateComponent";
+        return "IgnoreUpdateComponent";
     }
 
     /** Method called when project is opened. */

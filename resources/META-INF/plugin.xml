@@ -431,7 +431,7 @@
             <skipForDefaultProject/>
         </component>
         <component>
-            <implementation-class>mobi.hsz.idea.gitignore.UpdateComponent</implementation-class>
+            <implementation-class>mobi.hsz.idea.gitignore.IgnoreUpdateComponent</implementation-class>
         </component>
     </project-components>
 
