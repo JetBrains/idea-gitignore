@@ -64,7 +64,7 @@ public class TrackedIndexedFilesComponent extends AbstractProjectComponent imple
     @Override
     public void initComponent() {
         messageBus = myProject.getMessageBus().connect();
-        messageBus.subscribe(IgnoreManager.TRACKED_INDEXED, this);
+        messageBus.subscribe(IgnoreManager.TrackedIndexedListener.TRACKED_INDEXED, this);
     }
 
     /** Component dispose method. */

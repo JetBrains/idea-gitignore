@@ -24,8 +24,6 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.dvcs.repo.Repository;
-import com.intellij.dvcs.repo.VcsRepositoryManager;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.startup.StartupManagerEx;
 import com.intellij.openapi.application.AccessToken;
@@ -51,7 +49,6 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.io.storage.HeavyProcessLatch;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
-import git4idea.repo.GitRepository;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
@@ -59,7 +56,6 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.CacheMap;
 import mobi.hsz.idea.gitignore.util.RefreshProgress;
 import mobi.hsz.idea.gitignore.util.Utils;
-import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -81,10 +77,6 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 public class IgnoreManager extends AbstractProjectComponent {
     /** Delay between checking if psiManager was initialized. */
     private static final int REQUEST_DELAY = 200;
-
-    /** Topic for detected tracked and indexed files. */
-    public static final Topic<TrackedIndexedListener> TRACKED_INDEXED =
-            Topic.create("New tracked and indexed files detected", TrackedIndexedListener.class);
 
     /** Thread executor name. */
     @NonNls
@@ -205,7 +197,10 @@ public class IgnoreManager extends AbstractProjectComponent {
          */
         private void removeFile(VirtualFileEvent event) {
             if (isIgnoreFileType(event)) {
-                cache.remove(getIgnoreFile(event.getFile()));
+                IgnoreFile file = getIgnoreFile(event.getFile());
+                if (file != null) {
+                    cache.remove(file);                    
+                }
             }
         }
 
@@ -330,6 +325,16 @@ public class IgnoreManager extends AbstractProjectComponent {
      */
     public boolean isFileIgnored(@NotNull final VirtualFile file) {
         return isEnabled() && cache.isFileIgnored(file);
+    }
+
+    /**
+     * Checks if file is ignored and tracked.
+     *
+     * @param file current file
+     * @return file is ignored and tracked
+     */
+    public boolean isFileIgnoredAndTracked(@NotNull final VirtualFile file) {
+        return isEnabled() && cache.isFileIgnoredAndTracked(file);
     }
 
     /**
@@ -524,8 +529,6 @@ public class IgnoreManager extends AbstractProjectComponent {
                                 }
                             });
                         }
-
-                        handleTrackedIgnoredFiles();
                     }
 
                     /**
@@ -585,33 +588,14 @@ public class IgnoreManager extends AbstractProjectComponent {
     }
 
     /**
-     * Method loops over {@link GitRepository} repositories and checks if they contain any of
-     * tracked files that are also ignored with .gitignore files.
+     * Listener bounded with {@link TrackedIndexedListener#TRACKED_INDEXED} topic to inform
+     * about new entries.
      */
-    private void handleTrackedIgnoredFiles() {
-        queue.submit(new Runnable() {
-            @Override
-            public void run() {
-                final Collection<Repository> repositories = VcsRepositoryManager.getInstance(myProject).getRepositories();
-                final ArrayList<VirtualFile> result = ContainerUtil.newArrayList();
-                for (Repository repository : repositories) {
-                    if (!(repository instanceof GitRepository)) {
-                        continue;
-                    }
-                    for (String path : ExternalExec.getIgnoredTrackedFiles(repository)) {
-                        result.add(repository.getRoot().findFileByRelativePath(path));
-                    }
-                }
-
-                if (!result.isEmpty()) {
-                    myProject.getMessageBus().syncPublisher(TRACKED_INDEXED).handleFiles(result);
-                }
-            }
-        });
-    }
-
-    /** Listener bounded with {@link #TRACKED_INDEXED} topic to inform about new entries. */
     public interface TrackedIndexedListener {
+        /** Topic for detected tracked and indexed files. */
+        Topic<TrackedIndexedListener> TRACKED_INDEXED =
+                Topic.create("New tracked and indexed files detected", TrackedIndexedListener.class);
+
         void handleFiles(@NotNull ArrayList<VirtualFile> files);
     }
 
