@@ -25,6 +25,8 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.concurrency.JobScheduler;
+import com.intellij.dvcs.repo.Repository;
+import com.intellij.dvcs.repo.VcsRepositoryManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
@@ -41,9 +43,12 @@ import git4idea.repo.GitRepository;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
@@ -51,6 +56,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIndexedListener.TRACKED_INDEXED;
 
 /**
  * {@link HashMap} cache helper.
@@ -83,28 +90,31 @@ public class CacheMap {
     @NotNull
     private final MessageBus messageBus;
 
+    /** {@link VcsRepositoryManager} instance. */
+    @NotNull
+    private VcsRepositoryManager vcsRepositoryManager;
+    
     /** Task to fetch tracked and ignored files using Git repositories. */
     @NotNull
     private Runnable trackedIgnoredFilesRunnable = new Runnable() {
         @Override
         public void run() {
-            System.out.println("xxx");
-//            final Collection<Repository> repositories = VcsRepositoryManager.getInstance(project).getRepositories();
-//            final ArrayList<VirtualFile> result = ContainerUtil.newArrayList();
-//            for (Repository repository : repositories) {
-//                if (!(repository instanceof GitRepository)) {
-//                    continue;
-//                }
-//                VirtualFile root = repository.getRoot();
-//                for (String path : ExternalExec.getIgnoredTrackedFiles(repository)) {
-//                    result.add(root.findFileByRelativePath(path));
-//                }
-//            }
-//
-//            if (!result.isEmpty()) {
-//                messageBus.syncPublisher(IgnoreManager.TrackedIndexedListener.TRACKED_INDEXED).handleFiles(result);
-//            }
-//            trackedIgnoredFiles.addAll(result);
+            final Collection<Repository> repositories = vcsRepositoryManager.getRepositories();
+            final ArrayList<VirtualFile> result = ContainerUtil.newArrayList();
+            for (Repository repository : repositories) {
+                if (!(repository instanceof GitRepository)) {
+                    continue;
+                }
+                VirtualFile root = repository.getRoot();
+                for (String path : ExternalExec.getIgnoredTrackedFiles(repository)) {
+                    result.add(root.findFileByRelativePath(path));
+                }
+            }
+
+            if (!result.isEmpty()) {
+                messageBus.syncPublisher(TRACKED_INDEXED).handleFiles(result);
+            }
+            trackedIgnoredFiles.addAll(result);
         }
     };
 
@@ -122,6 +132,7 @@ public class CacheMap {
     public CacheMap(@NotNull Project project) {
         this.project = project;
         this.statusManager = FileStatusManager.getInstance(project);
+        this.vcsRepositoryManager = VcsRepositoryManager.getInstance(project);
         this.messageBus = project.getMessageBus();
     }
 
