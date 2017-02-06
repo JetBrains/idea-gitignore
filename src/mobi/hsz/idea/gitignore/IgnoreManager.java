@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore;
 
+import com.intellij.dvcs.repo.Repository;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.startup.StartupManagerEx;
 import com.intellij.openapi.application.AccessToken;
@@ -46,6 +47,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Alarm;
 import com.intellij.util.ConcurrencyUtil;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.HashMap;
 import com.intellij.util.io.storage.HeavyProcessLatch;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
@@ -60,7 +62,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -596,7 +597,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         Topic<TrackedIndexedListener> TRACKED_INDEXED =
                 Topic.create("New tracked and indexed files detected", TrackedIndexedListener.class);
 
-        void handleFiles(@NotNull ArrayList<VirtualFile> files);
+        void handleFiles(@NotNull HashMap<VirtualFile, Repository> files);
     }
 
     /**

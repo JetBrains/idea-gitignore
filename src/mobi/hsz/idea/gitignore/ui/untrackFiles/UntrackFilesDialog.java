@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.ui.untrackFiles;
 
+import com.intellij.dvcs.repo.Repository;
 import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.DefaultTreeExpander;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -37,15 +38,16 @@ import com.intellij.ui.CheckboxTree;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.HashMap;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,7 +64,7 @@ public class UntrackFilesDialog extends DialogWrapper {
 
     /** A list of the tracked but ignored files. */
     @NotNull
-    private final List<VirtualFile> files;
+    private final HashMap<VirtualFile, Repository> files;
 
     /** Templates tree root node. */
     @NotNull
@@ -82,12 +84,13 @@ public class UntrackFilesDialog extends DialogWrapper {
      * Constructor.
      *
      * @param project current project
+     * @param files
      */
-    public UntrackFilesDialog(@NotNull Project project, @NotNull List<VirtualFile> files) {
+    public UntrackFilesDialog(@NotNull Project project, @NotNull HashMap<VirtualFile, Repository> files) {
         super(project, false);
         this.project = project;
         this.files = files;
-        this.root = createDirectoryNodes(project.getBaseDir());
+        this.root = createDirectoryNodes(project.getBaseDir(), null);
 
         setTitle(IgnoreBundle.message("dialog.untrackFiles.title"));
         setOKButtonText(IgnoreBundle.message("global.ok"));
@@ -99,22 +102,23 @@ public class UntrackFilesDialog extends DialogWrapper {
      * Builds recursively nested {@link FileTreeNode} nodes structure.
      * 
      * @param file current {@link VirtualFile} instance
+     * @param repository {@link Repository} of given file 
      * @return leaf
      */
     @NotNull
-    private FileTreeNode createDirectoryNodes(@NotNull VirtualFile file) {
+    private FileTreeNode createDirectoryNodes(@NotNull VirtualFile file, @Nullable Repository repository) {
         final FileTreeNode node = nodes.get(file);
         if (node != null) {
             return node;
         }
 
-        final FileTreeNode newNode = new FileTreeNode(project, file);
+        final FileTreeNode newNode = new FileTreeNode(project, file, repository);
         nodes.put(file, newNode);
 
         if (nodes.size() != 1) {
             final VirtualFile parent = file.getParent();
             if (parent != null) {
-                createDirectoryNodes(parent).add(newNode);
+                createDirectoryNodes(parent, null).add(newNode);
             }
         }
 
@@ -156,8 +160,8 @@ public class UntrackFilesDialog extends DialogWrapper {
      * @return scroll panel
      */
     private JScrollPane createTreeScrollPanel() {
-        for (VirtualFile file : files) {
-            createDirectoryNodes(file);
+        for (Map.Entry<VirtualFile, Repository> entry : files.entrySet()) {
+            createDirectoryNodes(entry.getKey(), entry.getValue());
         }
 
         final FileTreeRenderer renderer = new FileTreeRenderer();
@@ -195,5 +199,32 @@ public class UntrackFilesDialog extends DialogWrapper {
         actionToolbar.setTargetComponent(target);
         
         return actionToolbar;
+    }
+
+    /**
+     * This method is invoked by default implementation of "OK" action. It just closes dialog with
+     * <code>OK_EXIT_CODE</code>. This is convenient place to override functionality of "OK" action.
+     * Note that the method does nothing if "OK" action isn't enabled.
+     */
+    @Override
+    protected void doOKAction() {
+        super.doOKAction();
+        FileTreeNode leaf = (FileTreeNode) root.getFirstLeaf();
+        if (leaf == null) {
+            return;
+        }
+        
+        do {
+            if (!leaf.isChecked()) {
+                continue;
+            }
+            
+            final Repository repository = leaf.getRepository();
+            final VirtualFile file = leaf.getFile();
+            if (repository == null) {
+                continue;
+            }
+            ExternalExec.removeFileFromTracking(file, repository);
+        } while ((leaf = (FileTreeNode) leaf.getNextLeaf()) != null);
     }
 }

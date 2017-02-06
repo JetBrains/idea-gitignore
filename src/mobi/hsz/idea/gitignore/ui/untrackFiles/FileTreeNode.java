@@ -24,10 +24,12 @@
 
 package mobi.hsz.idea.gitignore.ui.untrackFiles;
 
+import com.intellij.dvcs.repo.Repository;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.CheckedTreeNode;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@link FileTreeNode} is an implementation of checkbox tree node.
@@ -43,16 +45,21 @@ public class FileTreeNode extends CheckedTreeNode {
     /** Current {@link Project} element. */
     @NotNull
     private final Project project;
+    
+    /** {@link Repository} of the given {@link #file}. */
+    @Nullable
+    private final Repository repository;
 
     /**
      * Creates a new instance of {@link FileTreeNode}.
      *
      * @param file current file to render
      */
-    public FileTreeNode(@NotNull Project project, @NotNull VirtualFile file) {
+    public FileTreeNode(@NotNull Project project, @NotNull VirtualFile file, @Nullable Repository repository) {
         super(file);
         this.project = project;
         this.file = file;
+        this.repository = repository;
     }
 
     /**
@@ -73,5 +80,15 @@ public class FileTreeNode extends CheckedTreeNode {
     @NotNull
     public VirtualFile getFile() {
         return file;
+    }
+
+    /**
+     * Returns {@link Repository} for given {@link #file}.
+     * 
+     * @return repository
+     */
+    @Nullable
+    public Repository getRepository() {
+        return repository;
     }
 }

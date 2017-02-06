@@ -47,7 +47,6 @@ import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -76,7 +75,7 @@ public class CacheMap {
 
     /** List of the files that are ignored and also tracked by Git. */
     @NotNull
-    private final List<VirtualFile> trackedIgnoredFiles = ContainerUtil.newArrayList();
+    private final HashMap<VirtualFile, Repository> trackedIgnoredFiles = new HashMap<VirtualFile, Repository>();
 
     /** Current project. */
     @NotNull
@@ -100,21 +99,23 @@ public class CacheMap {
         @Override
         public void run() {
             final Collection<Repository> repositories = vcsRepositoryManager.getRepositories();
-            final ArrayList<VirtualFile> result = ContainerUtil.newArrayList();
+            final HashMap<VirtualFile, Repository> result = new HashMap<VirtualFile, Repository>();
             for (Repository repository : repositories) {
                 if (!(repository instanceof GitRepository)) {
                     continue;
                 }
                 VirtualFile root = repository.getRoot();
-                for (String path : ExternalExec.getIgnoredTrackedFiles(repository)) {
-                    result.add(root.findFileByRelativePath(path));
+                for (String path : ExternalExec.getTrackedIgnoredFiles(repository)) {
+                    final VirtualFile file = root.findFileByRelativePath(path);
+                    result.put(file, repository);
                 }
             }
 
             if (!result.isEmpty()) {
                 messageBus.syncPublisher(TRACKED_INDEXED).handleFiles(result);
             }
-            trackedIgnoredFiles.addAll(result);
+            trackedIgnoredFiles.putAll(result);
+            statusManager.fileStatusesChanged();
         }
     };
 
@@ -300,7 +301,7 @@ public class CacheMap {
      * @return file is ignored and tracked
      */
     public boolean isFileIgnoredAndTracked(@NotNull VirtualFile file) {
-        return trackedIgnoredFiles.contains(file);
+        return trackedIgnoredFiles.keySet().contains(file);
     }
 
     /**
