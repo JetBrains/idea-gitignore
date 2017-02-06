@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2017 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,36 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.util.exec;
+package mobi.hsz.idea.gitignore.util;
 
-import com.intellij.openapi.util.text.StringUtil;
-import org.jetbrains.annotations.NonNls;
+import com.intellij.notification.*;
+import com.intellij.openapi.project.Project;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Parser for the {@link ExternalExec#GIT_UNIGNORED_FILES} command that returns unignored files entries list.
+ * Wrapper function for showing {@link Notification}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.5
+ * @since 1.7
  */
-public class GitUnignoredFilesOutputParser extends ExecutionOutputParser<String> {
-    /** Prefix to remove from the {@link ExternalExec#GIT_UNIGNORED_FILES} command's result. */
-    @NonNls
-    private static final String GIT_UNIGNORED_FILES_PREFIX = "Would remove";
-
+public class Notify {
     /**
-     * Parses single entries and removes git output prefixes.
+     * Show {@link Notification} in {@link IgnoreLanguage#GROUP} group.
      *
-     * @param text input data
-     * @return single unignored entry
+     * @param project  current project
+     * @param title    notification title
+     * @param content  notification text
+     * @param type     notification type
+     * @param listener optional listener
      */
-    @Nullable
-    @Override
-    protected String parseOutput(@NotNull String text) {
-        return StringUtil.trim(StringUtil.trimStart(text, GIT_UNIGNORED_FILES_PREFIX));
+    public static void show(@NotNull Project project, @NotNull String title, @NotNull String content,
+                            @NotNull NotificationType type, @Nullable NotificationListener listener) {
+        NotificationGroup group = new NotificationGroup(
+                IgnoreLanguage.GROUP, NotificationDisplayType.STICKY_BALLOON, true
+        );
+        Notification notification = group.createNotification(title, content, type, listener);
+        Notifications.Bus.notify(notification, project);
     }
 }

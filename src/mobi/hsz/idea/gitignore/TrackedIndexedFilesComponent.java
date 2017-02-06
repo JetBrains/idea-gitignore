@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2017 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,44 +24,55 @@
 
 package mobi.hsz.idea.gitignore;
 
+import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.messages.MessageBusConnection;
+import mobi.hsz.idea.gitignore.ui.untrackFiles.UntrackFilesDialog;
 import mobi.hsz.idea.gitignore.util.Notify;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.event.HyperlinkEvent;
+import java.util.ArrayList;
+
 /**
- * {@link ProjectComponent} instance to display plugin's update information.
+ * {@link ProjectComponent} instance to handle {@link IgnoreManager.TrackedIndexedListener} event
+ * and display {@link Notification} about tracked and ignored files which invokes {@link UntrackFilesDialog}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.3
+ * @since 1.7
  */
-public class IgnoreUpdateComponent extends AbstractProjectComponent {
-    /** {@link IgnoreApplicationComponent} instance. */
-    private IgnoreApplicationComponent application;
+public class TrackedIndexedFilesComponent extends AbstractProjectComponent implements IgnoreManager.TrackedIndexedListener {
+    /** {@link MessageBusConnection} instance. */
+    private MessageBusConnection messageBus;
 
     /**
      * Constructor.
-     * 
+     *
      * @param project current project
      */
-    protected IgnoreUpdateComponent(@NotNull Project project) {
+    protected TrackedIndexedFilesComponent(Project project) {
         super(project);
     }
 
     /** Component initialization method. */
     @Override
     public void initComponent() {
-        application = IgnoreApplicationComponent.getInstance();
+        messageBus = myProject.getMessageBus().connect();
+        messageBus.subscribe(IgnoreManager.TRACKED_INDEXED, this);
     }
 
     /** Component dispose method. */
     @Override
     public void disposeComponent() {
-        application = null;
+        if (messageBus != null) {
+            messageBus.disconnect();
+        }
     }
 
     /**
@@ -72,21 +83,29 @@ public class IgnoreUpdateComponent extends AbstractProjectComponent {
     @NotNull
     @Override
     public String getComponentName() {
-        return "IgnoreUpdateComponent";
+        return "TrackedIndexedFilesComponent";
     }
 
-    /** Method called when project is opened. */
+    /**
+     * {@link IgnoreManager.TrackedIndexedListener} method implementation to handle incoming
+     * files.
+     * 
+     * @param files tracked and ignored files list
+     */
     @Override
-    public void projectOpened() {
-        if (application.isUpdated() && !application.isUpdateNotificationShown()) {
-            application.setUpdateNotificationShown(true);
-            Notify.show(
-                    myProject,
-                    IgnoreBundle.message("notification.update.title", Utils.getVersion()),
-                    IgnoreBundle.message("notification.update.content"),
-                    NotificationType.INFORMATION,
-                    NotificationListener.URL_OPENING_LISTENER
-            );
-        }
+    public void handleFiles(@NotNull final ArrayList<VirtualFile> files) {
+        Notify.show(
+                myProject,
+                IgnoreBundle.message("notification.untrack.title", Utils.getVersion()),
+                IgnoreBundle.message("notification.untrack.content"),
+                NotificationType.WARNING,
+                new NotificationListener() {
+                    @Override
+                    public void hyperlinkUpdate(@NotNull Notification notification, @NotNull HyperlinkEvent event) {
+                        new UntrackFilesDialog(myProject, files).show();
+                        notification.expire();
+                    }
+                }
+        );
     }
 }

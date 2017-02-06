@@ -24,6 +24,8 @@
 
 package mobi.hsz.idea.gitignore;
 
+import com.intellij.dvcs.repo.Repository;
+import com.intellij.dvcs.repo.VcsRepositoryManager;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.startup.StartupManagerEx;
 import com.intellij.openapi.application.AccessToken;
@@ -48,6 +50,8 @@ import com.intellij.util.ConcurrencyUtil;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.io.storage.HeavyProcessLatch;
 import com.intellij.util.messages.MessageBusConnection;
+import com.intellij.util.messages.Topic;
+import git4idea.repo.GitRepository;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
@@ -55,10 +59,12 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.CacheMap;
 import mobi.hsz.idea.gitignore.util.RefreshProgress;
 import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -75,6 +81,10 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 public class IgnoreManager extends AbstractProjectComponent {
     /** Delay between checking if psiManager was initialized. */
     private static final int REQUEST_DELAY = 200;
+
+    /** Topic for detected tracked and indexed files. */
+    public static final Topic<TrackedIndexedListener> TRACKED_INDEXED =
+            Topic.create("New tracked and indexed files detected", TrackedIndexedListener.class);
 
     /** Thread executor name. */
     @NonNls
@@ -246,7 +256,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                         }
                     }
                     break;
-                    
+
                 case HIDE_IGNORED_FILES:
                     ProjectView.getInstance(myProject).refresh();
                     break;
@@ -514,6 +524,8 @@ public class IgnoreManager extends AbstractProjectComponent {
                                 }
                             });
                         }
+
+                        handleTrackedIgnoredFiles();
                     }
 
                     /**
@@ -570,6 +582,37 @@ public class IgnoreManager extends AbstractProjectComponent {
                 });
             }
         });
+    }
+
+    /**
+     * Method loops over {@link GitRepository} repositories and checks if they contain any of
+     * tracked files that are also ignored with .gitignore files.
+     */
+    private void handleTrackedIgnoredFiles() {
+        queue.submit(new Runnable() {
+            @Override
+            public void run() {
+                final Collection<Repository> repositories = VcsRepositoryManager.getInstance(myProject).getRepositories();
+                final ArrayList<VirtualFile> result = ContainerUtil.newArrayList();
+                for (Repository repository : repositories) {
+                    if (!(repository instanceof GitRepository)) {
+                        continue;
+                    }
+                    for (String path : ExternalExec.getIgnoredTrackedFiles(repository)) {
+                        result.add(repository.getRoot().findFileByRelativePath(path));
+                    }
+                }
+
+                if (!result.isEmpty()) {
+                    myProject.getMessageBus().syncPublisher(TRACKED_INDEXED).handleFiles(result);
+                }
+            }
+        });
+    }
+
+    /** Listener bounded with {@link #TRACKED_INDEXED} topic to inform about new entries. */
+    public interface TrackedIndexedListener {
+        void handleFiles(@NotNull ArrayList<VirtualFile> files);
     }
 
     /**

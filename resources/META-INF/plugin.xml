@@ -433,6 +433,10 @@
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreUpdateComponent</implementation-class>
         </component>
+        <component>
+            <implementation-class>mobi.hsz.idea.gitignore.TrackedIndexedFilesComponent</implementation-class>
+            <loadForDefaultProject/>
+        </component>
     </project-components>
 
     <actions>

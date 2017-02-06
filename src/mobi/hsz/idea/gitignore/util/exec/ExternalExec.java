@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.util.exec;
 
+import com.intellij.dvcs.repo.Repository;
 import com.intellij.execution.process.BaseOSProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.openapi.project.Project;
@@ -36,6 +37,10 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.exec.parser.ExecutionOutputParser;
+import mobi.hsz.idea.gitignore.util.exec.parser.GitExcludesOutputParser;
+import mobi.hsz.idea.gitignore.util.exec.parser.GitUnignoredFilesOutputParser;
+import mobi.hsz.idea.gitignore.util.exec.parser.SimpleOutputParser;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -72,6 +77,10 @@ public class ExternalExec {
     @NonNls
     private static final String GIT_UNIGNORED_FILES = "clean -dn";
 
+    /** Git command to list ignored but tracked files. */
+    @NonNls
+    private static final String GIT_IGNORED_TRACKED_FILES = "ls-files --ignored --exclude-standard";
+
     /**
      * Returns {@link VirtualFile} instance of the Git excludes file if available.
      *
@@ -98,6 +107,18 @@ public class ExternalExec {
         }
 
         ArrayList<String> result = run(language, GIT_UNIGNORED_FILES, file.getParent(), new GitUnignoredFilesOutputParser());
+        return Utils.notNullize(result);
+    }
+
+    /**
+     * Returns list of ignored and tracked files for the given directory.
+     *
+     * @param repository repository to check
+     * @return unignored files list
+     */
+    @NotNull
+    public static List<String> getIgnoredTrackedFiles(@NotNull Repository repository) {
+        ArrayList<String> result = run(GitLanguage.INSTANCE, GIT_IGNORED_TRACKED_FILES, repository.getRoot(), new SimpleOutputParser());
         return Utils.notNullize(result);
     }
 

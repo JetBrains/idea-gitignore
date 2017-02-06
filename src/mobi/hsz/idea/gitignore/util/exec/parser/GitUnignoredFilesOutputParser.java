@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2017 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +22,34 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.ui;
+package mobi.hsz.idea.gitignore.util.exec.parser;
 
-import java.util.Comparator;
+import com.intellij.openapi.util.text.StringUtil;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * {@link TemplateTreeComparator} class implements {@link Comparator} for the template nodes.
+ * Parser for the {@link ExternalExec#GIT_UNIGNORED_FILES} command that returns unignored files entries list.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.6
+ * @since 1.5
  */
-public class TemplateTreeComparator implements Comparator<TemplateTreeNode> {
+public class GitUnignoredFilesOutputParser extends ExecutionOutputParser<String> {
+    /** Prefix to remove from the {@link ExternalExec#GIT_UNIGNORED_FILES} command's result. */
+    @NonNls
+    private static final String GIT_UNIGNORED_FILES_PREFIX = "Would remove";
+
     /**
-     * Compares its two arguments for order. If any of given object isn't a template, returns <code>0</code>.
+     * Parses single entries and removes git output prefixes.
      *
-     * @param o1 first object
-     * @param o2 second object
-     * @return comparison result
+     * @param text input data
+     * @return single unignored entry
      */
+    @Nullable
     @Override
-    public int compare(TemplateTreeNode o1, TemplateTreeNode o2) {
-        if (o2.getTemplate() == null || o1.getTemplate() == null) {
-            return 0;
-        }
-        return o1.toString().compareTo(o2.toString());
+    protected String parseOutput(@NotNull String text) {
+        return StringUtil.trim(StringUtil.trimStart(text, GIT_UNIGNORED_FILES_PREFIX));
     }
 }

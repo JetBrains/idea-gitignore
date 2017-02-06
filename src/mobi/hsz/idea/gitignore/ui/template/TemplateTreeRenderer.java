@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2017 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.ui;
+package mobi.hsz.idea.gitignore.ui.template;
 
 import com.intellij.ide.ui.search.SearchUtil;
 import com.intellij.ui.CheckboxTree;
@@ -40,7 +40,7 @@ import java.awt.*;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.6
  */
-abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCellRenderer {
+public abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCellRenderer {
     /** Returns current filter. */
     protected abstract String getFilter();
 

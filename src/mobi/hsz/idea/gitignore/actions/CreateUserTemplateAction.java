@@ -35,7 +35,7 @@ import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
-import mobi.hsz.idea.gitignore.ui.UserTemplateDialog;
+import mobi.hsz.idea.gitignore.ui.template.UserTemplateDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.Icons;
 

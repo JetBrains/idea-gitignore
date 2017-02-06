@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2017 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,14 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.util.exec;
+package mobi.hsz.idea.gitignore.util.exec.parser;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
