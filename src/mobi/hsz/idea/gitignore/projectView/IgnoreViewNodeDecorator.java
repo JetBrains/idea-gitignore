@@ -33,7 +33,10 @@ import com.intellij.packageDependencies.ui.PackageDependenciesNode;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
+
+import static com.intellij.ui.SimpleTextAttributes.GRAYED_SMALL_ATTRIBUTES;
 
 /**
  * {@link ProjectViewNodeDecorator} implementation to show on the Project Tree if ignored file is
@@ -65,7 +68,11 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
     public void decorate(ProjectViewNode node, PresentationData data) {
         final VirtualFile file = node.getVirtualFile();
         if (file != null && manager.isFileIgnoredAndTracked(file)) {
-            data.setLocationString(IgnoreBundle.message("projectView.tracked"));
+            Utils.addColoredText(
+                    data,
+                    IgnoreBundle.message("projectView.tracked"),
+                    GRAYED_SMALL_ATTRIBUTES
+            );
         }
     }
 

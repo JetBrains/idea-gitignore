@@ -118,8 +118,7 @@ public class CacheMap {
             statusManager.fileStatusesChanged();
         }
     };
-
-
+    
     /** Timer for {@link #trackedIgnoredFilesRunnable}. */
     @Nullable
     private ScheduledFuture<?> trackedIgnoredFilesTimer;

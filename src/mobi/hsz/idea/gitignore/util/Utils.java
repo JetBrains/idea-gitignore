@@ -27,6 +27,8 @@ package mobi.hsz.idea.gitignore.util;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
 import com.intellij.ide.plugins.PluginManager;
+import com.intellij.ide.projectView.PresentationData;
+import com.intellij.ide.util.treeView.PresentableNodeDescriptor.ColoredFragment;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -49,6 +51,7 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
@@ -60,6 +63,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static com.intellij.ui.SimpleTextAttributes.REGULAR_ATTRIBUTES;
 
 /**
  * {@link Utils} class that contains various methods.
@@ -513,5 +518,21 @@ public class Utils {
      */
     public static <T> T getFirstItem(@Nullable List<T> items) {
         return items == null || items.isEmpty() ? null : items.get(0);
+    }
+
+    /**
+     * Adds {@link ColoredFragment} to the node's presentation.
+     * 
+     * @param data node's presentation data
+     * @param text text to add
+     * @param attributes custom {@link SimpleTextAttributes}
+     */
+    public static void addColoredText(@NotNull PresentationData data, @NotNull String text,
+                                      @NotNull SimpleTextAttributes attributes) {
+        final List<ColoredFragment> coloredList = data.getColoredText();
+        if (coloredList.isEmpty()) {
+            coloredList.add(new ColoredFragment(data.getPresentableText(), REGULAR_ATTRIBUTES));
+        }
+        coloredList.add(new ColoredFragment(" " + text, attributes));
     }
 }

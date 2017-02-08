@@ -30,14 +30,20 @@ import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
+import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.List;
+
+import static com.intellij.ui.SimpleTextAttributes.GRAYED_SMALL_ATTRIBUTES;
 
 /**
  * Extension for the {@link TreeStructureProvider} that provides the ability to hide ignored files
@@ -48,16 +54,22 @@ import java.util.Collection;
  */
 public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvider {
     /** {@link IgnoreSettings} instance. */
+    @NotNull
     private final IgnoreSettings ignoreSettings;
 
     /** {@link IgnoreManager} instance. */
+    @NotNull
     private final IgnoreManager ignoreManager;
 
-//    private final Project project = ProjectManager.getInstance().getOpenProjects()[0];
+    /** {@link FileStatusManager} instance. */
+    @NotNull
+    private final FileStatusManager statusManager;
+
     /** Builds a new instance of {@link HideIgnoredFilesTreeStructureProvider}. */
     public HideIgnoredFilesTreeStructureProvider(@NotNull Project project) {
         this.ignoreSettings = IgnoreSettings.getInstance();
         this.ignoreManager = IgnoreManager.getInstance(project);
+        this.statusManager = FileStatusManager.getInstance(project);
     }
 
     /**
@@ -79,18 +91,31 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
             return children;
         }
 
-        return ContainerUtil.filter(children, new Condition<AbstractTreeNode>() {
+        final List<AbstractTreeNode> result = ContainerUtil.filter(children, new Condition<AbstractTreeNode>() {
             @Override
             public boolean value(AbstractTreeNode node) {
                 if (node instanceof ProjectViewNode) {
                     final VirtualFile file = ((ProjectViewNode) node).getVirtualFile();
                     if (file != null) {
-                        return !ignoreManager.isFileIgnored(file);
+                        return !ignoreManager.isFileIgnored(file) || ignoreManager.isFileIgnoredAndTracked(file);
                     }
                 }
                 return true;
             }
         });
+
+        int diff = children.size() - result.size();
+        if (diff > 0) {
+            Utils.addColoredText(
+                    parent.getPresentation(),
+                    IgnoreBundle.message("projectView.containsHidden", diff),
+                    GRAYED_SMALL_ATTRIBUTES
+            );
+//            statusManager.fileStatusesChanged();
+//            statusManager.fileStatusChanged(parent);
+        }
+
+        return result;
     }
 
     @Nullable
