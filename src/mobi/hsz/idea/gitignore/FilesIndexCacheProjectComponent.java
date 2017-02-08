@@ -180,4 +180,15 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
 
         return ContainerUtil.newArrayList();
     }
+
+    /**
+     * Returns component's name.
+     *
+     * @return component's name
+     */
+    @NotNull
+    @Override
+    public String getComponentName() {
+        return "FilesIndexCacheProjectComponent";
+    }
 }
