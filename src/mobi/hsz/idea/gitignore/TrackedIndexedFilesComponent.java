@@ -52,6 +52,9 @@ public class TrackedIndexedFilesComponent extends AbstractProjectComponent imple
     /** {@link MessageBusConnection} instance. */
     private MessageBusConnection messageBus;
 
+    /** Notification about tracked files was shown for current project. */
+    private boolean notificationShown;
+
     /**
      * Constructor.
      *
@@ -95,6 +98,11 @@ public class TrackedIndexedFilesComponent extends AbstractProjectComponent imple
      */
     @Override
     public void handleFiles(@NotNull final HashMap<VirtualFile, Repository> files) {
+        if (notificationShown) {
+            return;
+        }
+
+        notificationShown = true;
         Notify.show(
                 myProject,
                 IgnoreBundle.message("notification.untrack.title", Utils.getVersion()),

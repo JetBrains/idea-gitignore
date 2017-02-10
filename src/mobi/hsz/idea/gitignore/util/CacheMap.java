@@ -206,7 +206,6 @@ public class CacheMap {
     /** Refreshes statuses and {@link #trackedIgnoredFiles} list. */
     private void refresh() {
         statuses.clear();
-        trackedIgnoredFiles.clear();
 
         fetchTrackedIgnoredFiles();
         statusManager.fileStatusesChanged();
