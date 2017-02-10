@@ -121,9 +121,6 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /** Editor panel element. */
     private EditorPanel editorPanel;
-    private
-    @NotNull
-    List<IgnoreSettings.UserTemplate> userTemplates;
 
     /** Create UI components. */
     private void createUIComponents() {
