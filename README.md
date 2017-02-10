@@ -185,7 +185,7 @@ free open-source license of the [YourKit Java Profiler](https://www.yourkit.com/
 License
 -------
 
-Copyright (c) 2016 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for license rights and limitations (MIT).
+Copyright (c) 2017 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for license rights and limitations (MIT).
 
     
 [github-gitignore]:       https://github.com/github/gitignore
