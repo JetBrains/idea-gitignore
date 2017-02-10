@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 hsz Jakub Chrzanowski <jakub@hsz.mobi>
+ * Copyright (c) 2017 hsz Jakub Chrzanowski <jakub@hsz.mobi>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -121,9 +121,6 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /** Editor panel element. */
     private EditorPanel editorPanel;
-    private
-    @NotNull
-    List<IgnoreSettings.UserTemplate> userTemplates;
 
     /** Create UI components. */
     private void createUIComponents() {
