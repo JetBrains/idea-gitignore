@@ -39,11 +39,9 @@ intellij {
 
     plugins 'git4idea'
 
-    publish {
+    publishPlugin {
         username publishUsername
         password publishPassword
-        pluginId publishPluginId
-        channel publishChannel
     }
 }
 
