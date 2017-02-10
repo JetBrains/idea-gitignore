@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.util.exec;
 
+import com.intellij.dvcs.repo.Repository;
 import com.intellij.execution.process.BaseOSProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.openapi.project.Project;
@@ -36,6 +37,10 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.exec.parser.ExecutionOutputParser;
+import mobi.hsz.idea.gitignore.util.exec.parser.GitExcludesOutputParser;
+import mobi.hsz.idea.gitignore.util.exec.parser.GitUnignoredFilesOutputParser;
+import mobi.hsz.idea.gitignore.util.exec.parser.SimpleOutputParser;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -72,6 +77,15 @@ public class ExternalExec {
     @NonNls
     private static final String GIT_UNIGNORED_FILES = "clean -dn";
 
+    /** Git command to list ignored but tracked files. */
+    @NonNls
+    private static final String GIT_TRACKED_IGNORED_FILES = "ls-files --ignored --exclude-standard";
+
+
+    /** Git command to remove file from tracking. */
+    @NonNls
+    private static final String GIT_REMOVE_FILE_FROM_TRACKING = "rm --cached";
+
     /**
      * Returns {@link VirtualFile} instance of the Git excludes file if available.
      *
@@ -102,6 +116,30 @@ public class ExternalExec {
     }
 
     /**
+     * Returns list of ignored and tracked files for the given directory.
+     *
+     * @param repository repository to check
+     * @return unignored files list
+     */
+    @NotNull
+    public static List<String> getTrackedIgnoredFiles(@NotNull Repository repository) {
+        ArrayList<String> result = run(GitLanguage.INSTANCE, GIT_TRACKED_IGNORED_FILES, repository.getRoot(), new SimpleOutputParser());
+        return Utils.notNullize(result);
+    }
+
+    /**
+     * Removes given files from the git tracking.
+     *
+     * @param file       to untrack
+     * @param repository file's repository
+     */
+    public static void removeFileFromTracking(@NotNull VirtualFile file, @NotNull Repository repository) {
+        final VirtualFile root = repository.getRoot();
+        final String command = GIT_REMOVE_FILE_FROM_TRACKING + " " + Utils.getRelativePath(root, file);
+        run(GitLanguage.INSTANCE, command, root);
+    }
+
+    /**
      * Returns path to the {@link IgnoreLanguage} binary or null if not available.
      * Currently only  {@link GitLanguage} is supported.
      *
@@ -120,11 +158,11 @@ public class ExternalExec {
     /**
      * Runs {@link IgnoreLanguage} executable with the given command and current working directory.
      *
-     * @param language     current language
-     * @param command      to call
-     * @param directory    current working directory
-     * @param parser       {@link ExecutionOutputParser} implementation
-     * @param <T>          return type
+     * @param language  current language
+     * @param command   to call
+     * @param directory current working directory
+     * @param parser    {@link ExecutionOutputParser} implementation
+     * @param <T>       return type
      * @return result of the call
      */
     @Nullable
@@ -139,13 +177,24 @@ public class ExternalExec {
      * @param language  current language
      * @param command   to call
      * @param directory current working directory
+     */
+    private static void run(@NotNull IgnoreLanguage language, @NotNull String command, @Nullable VirtualFile directory) {
+        run(language, command, directory, null);
+    }
+
+    /**
+     * Runs {@link IgnoreLanguage} executable with the given command and current working directory.
+     *
+     * @param language  current language
+     * @param command   to call
+     * @param directory current working directory
      * @param parser    {@link ExecutionOutputParser} implementation
      * @param <T>       return type
      * @return result of the call
      */
     @Nullable
     private static <T> ArrayList<T> run(@NotNull IgnoreLanguage language, @NotNull String command,
-                                        @Nullable VirtualFile directory, @NotNull final ExecutionOutputParser<T> parser) {
+                                        @Nullable VirtualFile directory, @Nullable final ExecutionOutputParser<T> parser) {
         final String bin = bin(language);
         if (bin == null) {
             return null;
@@ -165,7 +214,9 @@ public class ExternalExec {
 
                 @Override
                 public void notifyTextAvailable(String text, Key outputType) {
-                    parser.onTextAvailable(text, outputType);
+                    if (parser != null) {
+                        parser.onTextAvailable(text, outputType);
+                    }
                 }
             };
 
@@ -173,13 +224,13 @@ public class ExternalExec {
             if (!handler.waitFor(DEFAULT_TIMEOUT)) {
                 return null;
             }
-            parser.notifyFinished(process.exitValue());
-
-            if (parser.isErrorsReported()) {
-                return null;
+            if (parser != null) {
+                parser.notifyFinished(process.exitValue());
+                if (parser.isErrorsReported()) {
+                    return null;
+                }
+                return parser.getOutput();
             }
-
-            return parser.getOutput();
         } catch (IOException ignored) {
         }
 

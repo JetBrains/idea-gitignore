@@ -24,9 +24,9 @@
 
 package mobi.hsz.idea.gitignore.projectView;
 
-import com.intellij.ide.projectView.ProjectViewNode;
 import com.intellij.ide.projectView.TreeStructureProvider;
 import com.intellij.ide.projectView.ViewSettings;
+import com.intellij.ide.projectView.impl.nodes.BasePsiNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
@@ -48,12 +48,13 @@ import java.util.Collection;
  */
 public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvider {
     /** {@link IgnoreSettings} instance. */
+    @NotNull
     private final IgnoreSettings ignoreSettings;
 
     /** {@link IgnoreManager} instance. */
+    @NotNull
     private final IgnoreManager ignoreManager;
 
-//    private final Project project = ProjectManager.getInstance().getOpenProjects()[0];
     /** Builds a new instance of {@link HideIgnoredFilesTreeStructureProvider}. */
     public HideIgnoredFilesTreeStructureProvider(@NotNull Project project) {
         this.ignoreSettings = IgnoreSettings.getInstance();
@@ -73,19 +74,19 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
     @Override
     public Collection<AbstractTreeNode> modify(@NotNull AbstractTreeNode parent,
                                                @NotNull Collection<AbstractTreeNode> children,
-                                               ViewSettings settings) {
-
-        if (!ignoreSettings.isHideIgnoredFiles()) {
+                                               @NotNull ViewSettings settings) {
+        if (!ignoreSettings.isHideIgnoredFiles() || children.isEmpty()) {
             return children;
         }
 
         return ContainerUtil.filter(children, new Condition<AbstractTreeNode>() {
             @Override
             public boolean value(AbstractTreeNode node) {
-                if (node instanceof ProjectViewNode) {
-                    final VirtualFile file = ((ProjectViewNode) node).getVirtualFile();
-                    if (file != null) {
-                        return !ignoreManager.isFileIgnored(file);
+                if (node instanceof BasePsiNode) {
+                    final VirtualFile file = ((BasePsiNode) node).getVirtualFile();
+                    if (file == null || (ignoreManager.isFileIgnored(file) &&
+                            !ignoreManager.isFileIgnoredAndTracked(file))) {
+                        return false;
                     }
                 }
                 return true;

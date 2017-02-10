@@ -171,6 +171,9 @@
 
         <treeStructureProvider
                 implementation="mobi.hsz.idea.gitignore.projectView.HideIgnoredFilesTreeStructureProvider"/>
+        
+        <projectViewNodeDecorator
+                implementation="mobi.hsz.idea.gitignore.projectView.IgnoreViewNodeDecorator"/>
 
         <vcs.fileStatusProvider
                 implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
@@ -432,6 +435,10 @@
         </component>
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreUpdateComponent</implementation-class>
+        </component>
+        <component>
+            <implementation-class>mobi.hsz.idea.gitignore.TrackedIgnoredFilesComponent</implementation-class>
+            <loadForDefaultProject/>
         </component>
     </project-components>
 

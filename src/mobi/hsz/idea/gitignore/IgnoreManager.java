@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore;
 
+import com.intellij.dvcs.repo.Repository;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.startup.StartupManagerEx;
 import com.intellij.openapi.application.AccessToken;
@@ -46,8 +47,10 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Alarm;
 import com.intellij.util.ConcurrencyUtil;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.HashMap;
 import com.intellij.util.io.storage.HeavyProcessLatch;
 import com.intellij.util.messages.MessageBusConnection;
+import com.intellij.util.messages.Topic;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
@@ -129,7 +132,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                 if (isIgnoreFileType && !wasIgnoreFileType) {
                     addFile(event);
                 } else if (!isIgnoreFileType && wasIgnoreFileType) {
-                    removeFile(event);
+                    cache.cleanup(event.getFile());
                 }
             }
         }
@@ -155,13 +158,13 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
 
         /**
-         * Triggers {@link #removeFile(VirtualFileEvent)}.
+         * Triggers {@link CacheMap#cleanup(VirtualFile)}.
          *
          * @param event current event
          */
         @Override
-        public void beforeFileDeletion(@NotNull VirtualFileEvent event) {
-            removeFile(event);
+        public void fileDeleted(@NotNull VirtualFileEvent event) {
+            cache.cleanup(event.getFile());
         }
 
         /**
@@ -179,7 +182,7 @@ public class IgnoreManager extends AbstractProjectComponent {
          *
          * @param event current event
          */
-        private void addFile(VirtualFileEvent event) {
+        private void addFile(@NotNull VirtualFileEvent event) {
             if (isIgnoreFileType(event)) {
                 IgnoreFile file = getIgnoreFile(event.getFile());
                 if (file != null) {
@@ -189,23 +192,12 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
 
         /**
-         * Removes {@link IgnoreFile} from the {@link CacheMap}.
-         *
-         * @param event current event
-         */
-        private void removeFile(VirtualFileEvent event) {
-            if (isIgnoreFileType(event)) {
-                cache.remove(getIgnoreFile(event.getFile()));
-            }
-        }
-
-        /**
          * Checks if event was fired on the {@link IgnoreFileType} file.
          *
          * @param event current event
          * @return event called on {@link IgnoreFileType}
          */
-        private boolean isIgnoreFileType(VirtualFileEvent event) {
+        private boolean isIgnoreFileType(@NotNull VirtualFileEvent event) {
             return event.getFile().getFileType() instanceof IgnoreFileType;
         }
     };
@@ -246,7 +238,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                         }
                     }
                     break;
-                    
+
                 case HIDE_IGNORED_FILES:
                     ProjectView.getInstance(myProject).refresh();
                     break;
@@ -320,6 +312,16 @@ public class IgnoreManager extends AbstractProjectComponent {
      */
     public boolean isFileIgnored(@NotNull final VirtualFile file) {
         return isEnabled() && cache.isFileIgnored(file);
+    }
+
+    /**
+     * Checks if file is ignored and tracked.
+     *
+     * @param file current file
+     * @return file is ignored and tracked
+     */
+    public boolean isFileIgnoredAndTracked(@NotNull final VirtualFile file) {
+        return isEnabled() && cache.isFileTrackedIgnored(file);
     }
 
     /**
@@ -570,6 +572,18 @@ public class IgnoreManager extends AbstractProjectComponent {
                 });
             }
         });
+    }
+
+    /**
+     * Listener bounded with {@link TrackedIgnoredListener#TRACKED_IGNORED} topic to inform
+     * about new entries.
+     */
+    public interface TrackedIgnoredListener {
+        /** Topic for detected tracked and indexed files. */
+        Topic<TrackedIgnoredListener> TRACKED_IGNORED =
+                Topic.create("New tracked and indexed files detected", TrackedIgnoredListener.class);
+
+        void handleFiles(@NotNull HashMap<VirtualFile, Repository> files);
     }
 
     /**

@@ -24,9 +24,12 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.notification.*;
+import com.intellij.notification.NotificationListener;
+import com.intellij.notification.NotificationType;
+import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ProjectComponent;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import com.intellij.openapi.project.Project;
+import mobi.hsz.idea.gitignore.util.Notify;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,9 +39,18 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3
  */
-public class IgnoreUpdateComponent implements ProjectComponent {
+public class IgnoreUpdateComponent extends AbstractProjectComponent {
     /** {@link IgnoreApplicationComponent} instance. */
     private IgnoreApplicationComponent application;
+
+    /**
+     * Constructor.
+     * 
+     * @param project current project
+     */
+    protected IgnoreUpdateComponent(@NotNull Project project) {
+        super(project);
+    }
 
     /** Component initialization method. */
     @Override
@@ -49,6 +61,7 @@ public class IgnoreUpdateComponent implements ProjectComponent {
     /** Component dispose method. */
     @Override
     public void disposeComponent() {
+        application = null;
     }
 
     /**
@@ -67,19 +80,13 @@ public class IgnoreUpdateComponent implements ProjectComponent {
     public void projectOpened() {
         if (application.isUpdated() && !application.isUpdateNotificationShown()) {
             application.setUpdateNotificationShown(true);
-            NotificationGroup group = new NotificationGroup(IgnoreLanguage.GROUP, NotificationDisplayType.STICKY_BALLOON, true);
-            Notification notification = group.createNotification(
-                    IgnoreBundle.message("update.title", Utils.getVersion()),
-                    IgnoreBundle.message("update.content"),
+            Notify.show(
+                    myProject,
+                    IgnoreBundle.message("notification.update.title", Utils.getVersion()),
+                    IgnoreBundle.message("notification.update.content"),
                     NotificationType.INFORMATION,
                     NotificationListener.URL_OPENING_LISTENER
             );
-            Notifications.Bus.notify(notification);
         }
-    }
-
-    /** Method called when project is closed. */
-    @Override
-    public void projectClosed() {
     }
 }

@@ -101,7 +101,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
     public IgnoreCoverEntryInspection() {
         cacheMap = ContainerUtil.newConcurrentMap();
         virtualFileManager = VirtualFileManager.getInstance();
-        virtualFileManager.addVirtualFileListener(virtualFileListener);
+//        virtualFileManager.addVirtualFileListener(virtualFileListener);
     }
 
     /**

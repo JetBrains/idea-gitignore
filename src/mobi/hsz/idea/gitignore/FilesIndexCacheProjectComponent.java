@@ -46,8 +46,8 @@ import java.util.regex.Pattern;
 
 /**
  * Cache {@link ProjectComponent} that retrieves matching files using given {@link Pattern}.
- * It uses {@link VirtualFileListener} to handle changes in the files tree and clear cached entries for the specific
- * pattern parts.
+ * It uses {@link VirtualFileListener} to handle changes in the files tree and clear cached entries
+ * for the specific pattern parts.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3.1

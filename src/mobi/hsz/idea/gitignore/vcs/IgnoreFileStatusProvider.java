@@ -66,7 +66,7 @@ public class IgnoreFileStatusProvider implements FileStatusProvider {
     @Nullable
     @Override
     public FileStatus getFileStatus(@NotNull VirtualFile virtualFile) {
-        return ignoreManager.isFileIgnored(virtualFile) ? IGNORED : null;
+        return ignoreManager.isFileIgnored(virtualFile) && !ignoreManager.isFileIgnoredAndTracked(virtualFile) ? IGNORED : null;
     }
 
     /** Does nothing. */

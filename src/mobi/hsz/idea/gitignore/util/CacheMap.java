@@ -24,7 +24,12 @@
 
 package mobi.hsz.idea.gitignore.util;
 
+import com.intellij.concurrency.JobScheduler;
+import com.intellij.dvcs.repo.Repository;
+import com.intellij.dvcs.repo.VcsRepositoryManager;
+import com.intellij.ide.projectView.impl.AbstractProjectViewPane;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
@@ -35,16 +40,25 @@ import com.intellij.openapi.vfs.VirtualFileWithId;
 import com.intellij.testFramework.LightVirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
+import com.intellij.util.messages.MessageBus;
+import git4idea.repo.GitRepository;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED;
 
 /**
  * {@link HashMap} cache helper.
@@ -61,6 +75,10 @@ public class CacheMap {
     @NotNull
     private final HashMap<VirtualFile, Status> statuses = new HashMap<VirtualFile, Status>();
 
+    /** List of the files that are ignored and also tracked by Git. */
+    @NotNull
+    private final HashMap<VirtualFile, Repository> trackedIgnoredFiles = new HashMap<VirtualFile, Repository>();
+
     /** Current project. */
     @NotNull
     private final Project project;
@@ -68,6 +86,49 @@ public class CacheMap {
     /** {@link FileStatusManager} instance. */
     @NotNull
     private final FileStatusManager statusManager;
+
+    /** {@link MessageBus} instance. */
+    @NotNull
+    private final MessageBus messageBus;
+
+    /** {@link VcsRepositoryManager} instance. */
+    @NotNull
+    private VcsRepositoryManager vcsRepositoryManager;
+    
+    /** Task to fetch tracked and ignored files using Git repositories. */
+    @NotNull
+    private Runnable trackedIgnoredFilesRunnable = new Runnable() {
+        @Override
+        public void run() {
+            final Collection<Repository> repositories = vcsRepositoryManager.getRepositories();
+            final HashMap<VirtualFile, Repository> result = new HashMap<VirtualFile, Repository>();
+            for (Repository repository : repositories) {
+                if (!(repository instanceof GitRepository)) {
+                    continue;
+                }
+                VirtualFile root = repository.getRoot();
+                for (String path : ExternalExec.getTrackedIgnoredFiles(repository)) {
+                    final VirtualFile file = root.findFileByRelativePath(path);
+                    result.put(file, repository);
+                }
+            }
+
+            if (!result.isEmpty()) {
+                messageBus.syncPublisher(TRACKED_IGNORED).handleFiles(result);
+            }
+            trackedIgnoredFiles.clear();
+            trackedIgnoredFiles.putAll(result);
+            statusManager.fileStatusesChanged();
+
+            for (AbstractProjectViewPane pane : Extensions.getExtensions(AbstractProjectViewPane.EP_NAME, project)) {
+                pane.getTreeBuilder().queueUpdate();
+            }
+        }
+    };
+    
+    /** Timer for {@link #trackedIgnoredFilesRunnable}. */
+    @Nullable
+    private ScheduledFuture<?> trackedIgnoredFilesTimer;
 
     /** Status of the file. */
     private enum Status {
@@ -78,6 +139,8 @@ public class CacheMap {
     public CacheMap(@NotNull Project project) {
         this.project = project;
         this.statusManager = FileStatusManager.getInstance(project);
+        this.vcsRepositoryManager = VcsRepositoryManager.getInstance(project);
+        this.messageBus = project.getMessageBus();
     }
 
     /**
@@ -118,8 +181,51 @@ public class CacheMap {
         });
 
         map.put(file, Pair.create(set, matchers));
+        refresh();
+    }
+
+    /**
+     * Looks for given {@link VirtualFile} and removes it from the cache map.
+     * 
+     * @param file to remove
+     */
+    public void cleanup(@NotNull VirtualFile file) {
+        for (IgnoreFile ignoreFile : map.keySet()) {
+            if (ignoreFile.getVirtualFile().equals(file)) {
+                map.remove(ignoreFile);
+            }
+        }
+        refresh();
+    }
+    
+    /** Clears cache. */
+    public void clear() {
+        map.clear();
+        refresh();
+    }
+    
+    /** Refreshes statuses and {@link #trackedIgnoredFiles} list. */
+    private void refresh() {
         statuses.clear();
+
+        fetchTrackedIgnoredFiles();
         statusManager.fileStatusesChanged();
+    }
+    
+    /**
+     * Method loops over {@link GitRepository} repositories and checks if they contain any of
+     * tracked files that are also ignored with .gitignore files.
+     */
+    private void fetchTrackedIgnoredFiles() {
+        if (trackedIgnoredFilesTimer != null) {
+            trackedIgnoredFilesTimer.cancel(false);
+        }
+
+        trackedIgnoredFilesTimer = JobScheduler.getScheduler().schedule(
+                trackedIgnoredFilesRunnable,
+                2000,
+                TimeUnit.MILLISECONDS
+        );
     }
 
     /**
@@ -216,6 +322,16 @@ public class CacheMap {
     }
 
     /**
+     * Checks if given {@link VirtualFile} is ignored and still tracked.
+     *
+     * @param file to check
+     * @return file is ignored and tracked
+     */
+    public boolean isFileTrackedIgnored(@NotNull VirtualFile file) {
+        return trackedIgnoredFiles.keySet().contains(file);
+    }
+
+    /**
      * Returns the status of the parent.
      *
      * @param file to check
@@ -234,23 +350,5 @@ public class CacheMap {
             parent = parent.getParent();
         }
         return Status.UNTOUCHED;
-    }
-
-    /**
-     * Clears cache.
-     */
-    public void clear() {
-        map.clear();
-        statuses.clear();
-        statusManager.fileStatusesChanged();
-    }
-
-    /**
-     * Wrapper for {link #map.remove}.
-     *
-     * @param file to remove
-     */
-    public void remove(IgnoreFile file) {
-        map.remove(file);
     }
 }
