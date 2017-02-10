@@ -34,6 +34,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.messages.MessageBusConnection;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.ui.untrackFiles.UntrackFilesDialog;
 import mobi.hsz.idea.gitignore.util.Notify;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -52,6 +53,9 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent imple
     /** {@link MessageBusConnection} instance. */
     private MessageBusConnection messageBus;
 
+    /** {@link IgnoreSettings} instance. */
+    private IgnoreSettings settings;
+
     /** Notification about tracked files was shown for current project. */
     private boolean notificationShown;
 
@@ -67,6 +71,7 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent imple
     /** Component initialization method. */
     @Override
     public void initComponent() {
+        settings = IgnoreSettings.getInstance();
         messageBus = myProject.getMessageBus().connect();
         messageBus.subscribe(IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED, this);
     }
@@ -98,7 +103,7 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent imple
      */
     @Override
     public void handleFiles(@NotNull final HashMap<VirtualFile, Repository> files) {
-        if (notificationShown) {
+        if (!settings.isInformTrackedIgnored() || notificationShown) {
             return;
         }
 

@@ -118,6 +118,7 @@ public class CacheMap {
             }
             trackedIgnoredFiles.clear();
             trackedIgnoredFiles.putAll(result);
+            statusManager.fileStatusesChanged();
 
             for (AbstractProjectViewPane pane : Extensions.getExtensions(AbstractProjectViewPane.EP_NAME, project)) {
                 pane.getTreeBuilder().queueUpdate();
@@ -222,7 +223,7 @@ public class CacheMap {
 
         trackedIgnoredFilesTimer = JobScheduler.getScheduler().schedule(
                 trackedIgnoredFilesRunnable,
-                5000,
+                2000,
                 TimeUnit.MILLISECONDS
         );
     }

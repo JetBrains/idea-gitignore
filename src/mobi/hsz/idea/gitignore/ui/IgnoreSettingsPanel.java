@@ -115,6 +115,9 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /** Enable unignore files group. */
     public JCheckBox unignoreFiles;
+    
+    /** Inform about ignored files that are still tracked. */
+    public JCheckBox informTrackedIgnored;
 
     /** Editor panel element. */
     private EditorPanel editorPanel;
@@ -279,6 +282,24 @@ public class IgnoreSettingsPanel implements Disposable {
      */
     public void setUnignoreActions(boolean selected) {
         this.unignoreFiles.setSelected(selected);
+    }
+
+    /**
+     * Returns value of @{link {@link #informTrackedIgnored}} field.
+     *
+     * @return {@link #informTrackedIgnored} is selected
+     */
+    public boolean isInformTrackedIgnored() {
+        return informTrackedIgnored.isSelected();
+    }
+
+    /**
+     * Sets value of {@link #informTrackedIgnored} field.
+     *
+     * @param selected value for {@link #informTrackedIgnored}
+     */
+    public void setInformTrackedIgnored(boolean selected) {
+        this.informTrackedIgnored.setSelected(selected);
     }
 
     /**
