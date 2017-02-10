@@ -27,7 +27,9 @@ package mobi.hsz.idea.gitignore.util;
 import com.intellij.concurrency.JobScheduler;
 import com.intellij.dvcs.repo.Repository;
 import com.intellij.dvcs.repo.VcsRepositoryManager;
+import com.intellij.ide.projectView.impl.AbstractProjectViewPane;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
@@ -114,8 +116,12 @@ public class CacheMap {
             if (!result.isEmpty()) {
                 messageBus.syncPublisher(TRACKED_INDEXED).handleFiles(result);
             }
+            trackedIgnoredFiles.clear();
             trackedIgnoredFiles.putAll(result);
-            statusManager.fileStatusesChanged();
+
+            for (AbstractProjectViewPane pane : Extensions.getExtensions(AbstractProjectViewPane.EP_NAME, project)) {
+                pane.getTreeBuilder().queueUpdate();
+            }
         }
     };
     
@@ -178,6 +184,35 @@ public class CacheMap {
     }
 
     /**
+     * Looks for given {@link VirtualFile} and removes it from the cache map.
+     * 
+     * @param file to remove
+     */
+    public void cleanup(@NotNull VirtualFile file) {
+        for (IgnoreFile ignoreFile : map.keySet()) {
+            if (ignoreFile.getVirtualFile().equals(file)) {
+                map.remove(ignoreFile);
+            }
+        }
+        refresh();
+    }
+    
+    /** Clears cache. */
+    public void clear() {
+        map.clear();
+        refresh();
+    }
+    
+    /** Refreshes statuses and {@link #trackedIgnoredFiles} list. */
+    private void refresh() {
+        statuses.clear();
+        trackedIgnoredFiles.clear();
+
+        fetchTrackedIgnoredFiles();
+        statusManager.fileStatusesChanged();
+    }
+    
+    /**
      * Method loops over {@link GitRepository} repositories and checks if they contain any of
      * tracked files that are also ignored with .gitignore files.
      */
@@ -191,13 +226,6 @@ public class CacheMap {
                 5000,
                 TimeUnit.MILLISECONDS
         );
-    }
-
-    /** Refreshes statuses and {@link #trackedIgnoredFiles} list. */
-    private void refresh() {
-        statuses.clear();
-        statusManager.fileStatusesChanged();
-        fetchTrackedIgnoredFiles();
     }
 
     /**
@@ -322,24 +350,5 @@ public class CacheMap {
             parent = parent.getParent();
         }
         return Status.UNTOUCHED;
-    }
-
-    /**
-     * Clears cache.
-     */
-    public void clear() {
-        map.clear();
-        statuses.clear();
-        trackedIgnoredFiles.clear();
-        statusManager.fileStatusesChanged();
-    }
-
-    /**
-     * Wrapper for {link #map.remove}.
-     *
-     * @param file to remove
-     */
-    public void remove(@NotNull IgnoreFile file) {
-        map.remove(file);
     }
 }

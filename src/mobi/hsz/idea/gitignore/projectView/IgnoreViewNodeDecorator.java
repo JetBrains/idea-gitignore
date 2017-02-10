@@ -35,6 +35,7 @@ import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
+import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,6 +52,10 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
     /** {@link IgnoreManager} instance. */
     private final IgnoreManager manager;
 
+    /** {@link IgnoreSettings} instance. */
+    @NotNull
+    private final IgnoreSettings ignoreSettings;
+
     /**
      * Constructor.
      * 
@@ -58,6 +63,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
      */
     public IgnoreViewNodeDecorator(@NotNull Project project) {
         this.manager = IgnoreManager.getInstance(project);
+        this.ignoreSettings = IgnoreSettings.getInstance();
     }
 
     /**
@@ -79,7 +85,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
                     IgnoreBundle.message("projectView.tracked"),
                     GRAYED_SMALL_ATTRIBUTES
             );
-        } else if (file.isDirectory()) {
+        } else if (file.isDirectory() && ignoreSettings.isHideIgnoredFiles()) {
             int count = ContainerUtil.filter(file.getChildren(), new Condition<VirtualFile>() {
                 @Override
                 public boolean value(VirtualFile file) {

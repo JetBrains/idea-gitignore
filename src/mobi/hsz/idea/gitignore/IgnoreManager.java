@@ -132,7 +132,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                 if (isIgnoreFileType && !wasIgnoreFileType) {
                     addFile(event);
                 } else if (!isIgnoreFileType && wasIgnoreFileType) {
-                    removeFile(event);
+                    cache.cleanup(event.getFile());
                 }
             }
         }
@@ -158,13 +158,13 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
 
         /**
-         * Triggers {@link #removeFile(VirtualFileEvent)}.
+         * Triggers {@link CacheMap#cleanup(VirtualFile)}.
          *
          * @param event current event
          */
         @Override
-        public void beforeFileDeletion(@NotNull VirtualFileEvent event) {
-            removeFile(event);
+        public void fileDeleted(@NotNull VirtualFileEvent event) {
+            cache.cleanup(event.getFile());
         }
 
         /**
@@ -182,25 +182,11 @@ public class IgnoreManager extends AbstractProjectComponent {
          *
          * @param event current event
          */
-        private void addFile(VirtualFileEvent event) {
+        private void addFile(@NotNull VirtualFileEvent event) {
             if (isIgnoreFileType(event)) {
                 IgnoreFile file = getIgnoreFile(event.getFile());
                 if (file != null) {
                     cache.add(file);
-                }
-            }
-        }
-
-        /**
-         * Removes {@link IgnoreFile} from the {@link CacheMap}.
-         *
-         * @param event current event
-         */
-        private void removeFile(VirtualFileEvent event) {
-            if (isIgnoreFileType(event)) {
-                IgnoreFile file = getIgnoreFile(event.getFile());
-                if (file != null) {
-                    cache.remove(file);                    
                 }
             }
         }
@@ -211,7 +197,7 @@ public class IgnoreManager extends AbstractProjectComponent {
          * @param event current event
          * @return event called on {@link IgnoreFileType}
          */
-        private boolean isIgnoreFileType(VirtualFileEvent event) {
+        private boolean isIgnoreFileType(@NotNull VirtualFileEvent event) {
             return event.getFile().getFileType() instanceof IgnoreFileType;
         }
     };

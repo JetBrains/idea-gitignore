@@ -30,7 +30,6 @@ import com.intellij.ide.projectView.impl.nodes.BasePsiNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreManager;
@@ -47,7 +46,7 @@ import java.util.Collection;
  * @author Maximiliano Najle <maximilianonajle@gmail.com>
  * @since 1.7
  */
-    public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvider {
+public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvider {
     /** {@link IgnoreSettings} instance. */
     @NotNull
     private final IgnoreSettings ignoreSettings;
@@ -56,15 +55,10 @@ import java.util.Collection;
     @NotNull
     private final IgnoreManager ignoreManager;
 
-    /** {@link FileStatusManager} instance. */
-    @NotNull
-    private final FileStatusManager statusManager;
-
     /** Builds a new instance of {@link HideIgnoredFilesTreeStructureProvider}. */
     public HideIgnoredFilesTreeStructureProvider(@NotNull Project project) {
         this.ignoreSettings = IgnoreSettings.getInstance();
         this.ignoreManager = IgnoreManager.getInstance(project);
-        this.statusManager = FileStatusManager.getInstance(project);
     }
 
     /**
