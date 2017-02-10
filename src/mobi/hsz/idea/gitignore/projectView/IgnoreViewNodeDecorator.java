@@ -28,9 +28,11 @@ import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectViewNode;
 import com.intellij.ide.projectView.ProjectViewNodeDecorator;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.packageDependencies.ui.PackageDependenciesNode;
 import com.intellij.ui.ColoredTreeCellRenderer;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -67,12 +69,31 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
     @Override
     public void decorate(ProjectViewNode node, PresentationData data) {
         final VirtualFile file = node.getVirtualFile();
-        if (file != null && manager.isFileIgnoredAndTracked(file)) {
+        if (file == null) {
+            return;
+        }
+        
+        if (manager.isFileIgnoredAndTracked(file)) {
             Utils.addColoredText(
                     data,
                     IgnoreBundle.message("projectView.tracked"),
                     GRAYED_SMALL_ATTRIBUTES
             );
+        } else if (file.isDirectory()) {
+            int count = ContainerUtil.filter(file.getChildren(), new Condition<VirtualFile>() {
+                @Override
+                public boolean value(VirtualFile file) {
+                    return manager.isFileIgnored(file) && !manager.isFileIgnoredAndTracked(file);
+                }
+            }).size();
+
+            if (count > 0) {
+                Utils.addColoredText(
+                        data,
+                        IgnoreBundle.message("projectView.containsHidden", count),
+                        GRAYED_SMALL_ATTRIBUTES
+                );
+            }
         }
     }
 

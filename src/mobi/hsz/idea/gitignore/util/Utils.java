@@ -529,10 +529,9 @@ public class Utils {
      */
     public static void addColoredText(@NotNull PresentationData data, @NotNull String text,
                                       @NotNull SimpleTextAttributes attributes) {
-        final List<ColoredFragment> coloredList = data.getColoredText();
-        if (coloredList.isEmpty()) {
-            coloredList.add(new ColoredFragment(data.getPresentableText(), REGULAR_ATTRIBUTES));
+        if (data.getColoredText().isEmpty()) {
+            data.addText(data.getPresentableText(), REGULAR_ATTRIBUTES);
         }
-        coloredList.add(new ColoredFragment(" " + text, attributes));
+        data.addText(" " + text, attributes);
     }
 }
