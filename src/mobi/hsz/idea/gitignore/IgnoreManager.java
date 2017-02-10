@@ -321,7 +321,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @return file is ignored and tracked
      */
     public boolean isFileIgnoredAndTracked(@NotNull final VirtualFile file) {
-        return isEnabled() && cache.isFileIgnoredAndTracked(file);
+        return isEnabled() && cache.isFileTrackedIgnored(file);
     }
 
     /**
@@ -575,13 +575,13 @@ public class IgnoreManager extends AbstractProjectComponent {
     }
 
     /**
-     * Listener bounded with {@link TrackedIndexedListener#TRACKED_INDEXED} topic to inform
+     * Listener bounded with {@link TrackedIgnoredListener#TRACKED_IGNORED} topic to inform
      * about new entries.
      */
-    public interface TrackedIndexedListener {
+    public interface TrackedIgnoredListener {
         /** Topic for detected tracked and indexed files. */
-        Topic<TrackedIndexedListener> TRACKED_INDEXED =
-                Topic.create("New tracked and indexed files detected", TrackedIndexedListener.class);
+        Topic<TrackedIgnoredListener> TRACKED_IGNORED =
+                Topic.create("New tracked and indexed files detected", TrackedIgnoredListener.class);
 
         void handleFiles(@NotNull HashMap<VirtualFile, Repository> files);
     }

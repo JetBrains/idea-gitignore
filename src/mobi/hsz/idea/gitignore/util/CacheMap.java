@@ -58,7 +58,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIndexedListener.TRACKED_INDEXED;
+import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED;
 
 /**
  * {@link HashMap} cache helper.
@@ -114,7 +114,7 @@ public class CacheMap {
             }
 
             if (!result.isEmpty()) {
-                messageBus.syncPublisher(TRACKED_INDEXED).handleFiles(result);
+                messageBus.syncPublisher(TRACKED_IGNORED).handleFiles(result);
             }
             trackedIgnoredFiles.clear();
             trackedIgnoredFiles.putAll(result);
@@ -326,7 +326,7 @@ public class CacheMap {
      * @param file to check
      * @return file is ignored and tracked
      */
-    public boolean isFileIgnoredAndTracked(@NotNull VirtualFile file) {
+    public boolean isFileTrackedIgnored(@NotNull VirtualFile file) {
         return trackedIgnoredFiles.keySet().contains(file);
     }
 

@@ -42,13 +42,13 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.event.HyperlinkEvent;
 
 /**
- * {@link ProjectComponent} instance to handle {@link IgnoreManager.TrackedIndexedListener} event
+ * {@link ProjectComponent} instance to handle {@link IgnoreManager.TrackedIgnoredListener} event
  * and display {@link Notification} about tracked and ignored files which invokes {@link UntrackFilesDialog}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.7
  */
-public class TrackedIndexedFilesComponent extends AbstractProjectComponent implements IgnoreManager.TrackedIndexedListener {
+public class TrackedIgnoredFilesComponent extends AbstractProjectComponent implements IgnoreManager.TrackedIgnoredListener {
     /** {@link MessageBusConnection} instance. */
     private MessageBusConnection messageBus;
 
@@ -60,7 +60,7 @@ public class TrackedIndexedFilesComponent extends AbstractProjectComponent imple
      *
      * @param project current project
      */
-    protected TrackedIndexedFilesComponent(Project project) {
+    protected TrackedIgnoredFilesComponent(Project project) {
         super(project);
     }
 
@@ -68,7 +68,7 @@ public class TrackedIndexedFilesComponent extends AbstractProjectComponent imple
     @Override
     public void initComponent() {
         messageBus = myProject.getMessageBus().connect();
-        messageBus.subscribe(IgnoreManager.TrackedIndexedListener.TRACKED_INDEXED, this);
+        messageBus.subscribe(IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED, this);
     }
 
     /** Component dispose method. */
@@ -87,11 +87,11 @@ public class TrackedIndexedFilesComponent extends AbstractProjectComponent imple
     @NotNull
     @Override
     public String getComponentName() {
-        return "TrackedIndexedFilesComponent";
+        return "TrackedIgnoredFilesComponent";
     }
 
     /**
-     * {@link IgnoreManager.TrackedIndexedListener} method implementation to handle incoming
+     * {@link IgnoreManager.TrackedIgnoredListener} method implementation to handle incoming
      * files.
      *
      * @param files tracked and ignored files list
