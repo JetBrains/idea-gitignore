@@ -1,5 +1,7 @@
-.ignore v1.7 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
+.ignore v1.7.1
 ==================
+
+[![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)](https://plugins.jetbrains.com/plugin/7495)
 [![Downloads](http://phpstorm.espend.de/badge/7495/downloads)](https://plugins.jetbrains.com/plugin/7495)
@@ -28,6 +30,7 @@ Introduction
 - `.cfignore` (Cloud Foundry)
 - `.jpmignore` (Jetpack)
 - `.stylelintignore` (StyleLint)
+- `.stylintignore` (Stylint)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -103,9 +106,9 @@ Usage
 Changelog
 ---------
 
-## [v1.7](https://github.com/hsz/idea-gitignore/tree/v1.7) (2017-02-11)
+## [v1.7.1](https://github.com/hsz/idea-gitignore/tree/v1.7.1) (2017-02-12)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.1)
 
 **Implemented enhancements:**
 

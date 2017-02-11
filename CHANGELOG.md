@@ -1,8 +1,8 @@
 # Change Log
 
-## [v1.7](https://github.com/hsz/idea-gitignore/tree/v1.7) (2017-02-11)
+## [v1.7.1](https://github.com/hsz/idea-gitignore/tree/v1.7.1) (2017-02-12)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.1)
 
 **Implemented enhancements:**
 
@@ -15,6 +15,9 @@
 **Fixed bugs:**
 
 - *Fixed colors for tracked and ignored files, additional info label is implemented* [\#296](https://github.com/hsz/idea-gitignore/issues/296) [\#295](https://github.com/hsz/idea-gitignore/issues/295) [\#284](https://github.com/hsz/idea-gitignore/issues/284)
+- *IllegalArgumentException on IDEA startup* [\#302](https://github.com/hsz/idea-gitignore/issues/302)
+- NoSuchFieldError: GRAYED_SMALL_ATTRIBUTES [\#305](https://github.com/hsz/idea-gitignore/issues/305)
+- Ignored entries coloring [\#304](https://github.com/hsz/idea-gitignore/issues/304) [\#301](https://github.com/hsz/idea-gitignore/issues/301)
 - ClassNotFoundException: mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent [\#297](https://github.com/hsz/idea-gitignore/issues/297)
 - Assertion failed: Registering post-startup activity that will never be run [\#290](https://github.com/hsz/idea-gitignore/issues/290)
 - Component name collision: UpdateComponent [\#289](https://github.com/hsz/idea-gitignore/issues/289)
