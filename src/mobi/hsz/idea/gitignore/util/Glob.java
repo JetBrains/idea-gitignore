@@ -354,4 +354,9 @@ public class Glob {
 
         return sb.toString();
     }
+
+    /** Clears {@link Glob#cache} cache. */
+    public static void clearCache() {
+        cache.clear();
+    }
 }

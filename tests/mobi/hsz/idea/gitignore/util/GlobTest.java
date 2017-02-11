@@ -21,6 +21,7 @@ public class GlobTest extends Common<Glob> {
 
     @Test
     public void testFind() {
+        Glob.clearCache();
         myFixture.configureByText(GitFileType.INSTANCE, createIgnoreContent("foo.txt", "bar.txt", "buz.txt", "vcsdir", "dir"));
 
         final VirtualFile rootFile = getFixtureRootFile();
@@ -91,6 +92,7 @@ public class GlobTest extends Common<Glob> {
 
     @Test
     public void testFindAsPaths() {
+        Glob.clearCache();
         myFixture.configureByText(GitFileType.INSTANCE, createIgnoreContent("foo.txt", "bar.txt", "buz.txt", "vcsdir", "dir"));
 
         final VirtualFile rootFile = getFixtureRootFile();
@@ -131,6 +133,7 @@ public class GlobTest extends Common<Glob> {
 
     @Test
     public void testCreatePattern() throws Exception {
+        Glob.clearCache();
         Pattern pattern;
 
         pattern = Glob.createPattern("file.txt", IgnoreBundle.Syntax.GLOB);
