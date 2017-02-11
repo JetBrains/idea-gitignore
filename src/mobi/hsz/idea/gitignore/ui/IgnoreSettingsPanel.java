@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.ui;
 
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -54,6 +55,8 @@ import com.intellij.ui.AddEditDeleteListPanel;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBLabel;
+import com.intellij.ui.components.JBPanel;
+import com.intellij.ui.components.labels.ActionLink;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -67,6 +70,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -123,6 +127,9 @@ public class IgnoreSettingsPanel implements Disposable {
     
     /** Inform about ignored files that are still tracked. */
     public JCheckBox informTrackedIgnored;
+    
+    /** Panel with information about donations. */
+    private JPanel donatePanel;
 
     /** Editor panel element. */
     private EditorPanel editorPanel;
@@ -151,6 +158,30 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.setDragEnabled(false);
 
         languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
+
+        donatePanel = new JBPanel(new BorderLayout());
+        donatePanel.setBorder(new EmptyBorder(10, 0, 10, 0));
+        donatePanel.add(new JBLabel(IgnoreBundle.message("settings.general.donate")), BorderLayout.WEST);
+        donatePanel.add(createLink("PayPal", "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL"), BorderLayout.CENTER);
+        donatePanel.add(createLink("BTC", "https://blockchain.info/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1"), BorderLayout.EAST);
+    }
+
+    /**
+     * Creates {@link ActionLink} component with URL open action.
+     * 
+     * @param title title of link
+     * @param url url to open
+     * @return {@link ActionLink} component
+     */
+    private ActionLink createLink(@NotNull String title, @NotNull final String url) {
+        final ActionLink action = new ActionLink(title, new AnAction() {
+            @Override
+            public void actionPerformed(AnActionEvent anActionEvent) {
+                BrowserUtil.browse(url);
+            }
+        });
+        action.setBorder(new EmptyBorder(0, 5, 0, 5));
+        return action;
     }
 
     /** Disposes current preview {@link #editorPanel}. */
