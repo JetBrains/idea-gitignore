@@ -90,17 +90,13 @@ public class CacheMap {
     /** {@link MessageBus} instance. */
     @NotNull
     private final MessageBus messageBus;
-
-    /** {@link VcsRepositoryManager} instance. */
-    @NotNull
-    private VcsRepositoryManager vcsRepositoryManager;
     
     /** Task to fetch tracked and ignored files using Git repositories. */
     @NotNull
     private Runnable trackedIgnoredFilesRunnable = new Runnable() {
         @Override
         public void run() {
-            final Collection<Repository> repositories = vcsRepositoryManager.getRepositories();
+            final Collection<Repository> repositories = VcsRepositoryManager.getInstance(project).getRepositories();
             final HashMap<VirtualFile, Repository> result = new HashMap<VirtualFile, Repository>();
             for (Repository repository : repositories) {
                 if (!(repository instanceof GitRepository)) {
@@ -139,7 +135,6 @@ public class CacheMap {
     public CacheMap(@NotNull Project project) {
         this.project = project;
         this.statusManager = FileStatusManager.getInstance(project);
-        this.vcsRepositoryManager = VcsRepositoryManager.getInstance(project);
         this.messageBus = project.getMessageBus();
     }
 
