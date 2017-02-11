@@ -51,6 +51,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.AddEditDeleteListPanel;
+import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.table.JBTable;
@@ -75,6 +76,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import static com.intellij.ui.IdeBorderFactory.createEmptyBorder;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE;
 
@@ -110,6 +112,9 @@ public class IgnoreSettingsPanel implements Disposable {
     /** Splitter element. */
     private Splitter templatesSplitter;
 
+    /** File types scroll panel with table. */
+    private JScrollPane languagesPanel;
+
     /** {@link IgnoreLanguage} settings table. */
     private JBTable languagesTable;
 
@@ -138,12 +143,14 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.setColumnSelectionAllowed(false);
         languagesTable.setRowHeight(22);
         languagesTable.setPreferredScrollableViewportSize(new Dimension(-1,
-                languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size()));
+                languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size() / 2));
 
         languagesTable.setStriped(true);
         languagesTable.setShowGrid(false);
-        languagesTable.setBorder(null);
+        languagesTable.setBorder(createEmptyBorder());
         languagesTable.setDragEnabled(false);
+
+        languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
     }
 
     /** Disposes current preview {@link #editorPanel}. */
@@ -667,7 +674,7 @@ public class IgnoreSettingsPanel implements Disposable {
          */
         @Override
         public int getColumnCount() {
-            return 3;
+            return columnNames.length;
         }
 
         /**
