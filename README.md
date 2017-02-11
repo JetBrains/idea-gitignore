@@ -1,4 +1,4 @@
-.ignore v1.6 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
+.ignore v1.7 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 ==================
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)](https://plugins.jetbrains.com/plugin/7495)
@@ -103,37 +103,28 @@ Usage
 Changelog
 ---------
 
-## [v1.7](https://github.com/hsz/idea-gitignore/tree/v1.7) (wip)
+## [v1.7](https://github.com/hsz/idea-gitignore/tree/v1.7) (2017-02-11)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7)
 
 **Implemented enhancements:**
 
-- Hide ignored files and directories in the project tree view
+- *Hide ignored files and directories in the project tree view*
+- *Indicate that parent contains extra elements if children are hidden*
+- Dialog box that allows to untrack ignored files (performs git rm --cached command)
+- Stylint (.stylintignore) support [\#279](https://github.com/hsz/idea-gitignore/issues/279)
+- Project Tree View coloring refactoring (performance)
 
 **Fixed bugs:**
 
-- 
-
-## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.6) (2016-11-23)
-
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6)
-
-**Implemented enhancements:**
-
-- Unignore Files [\#250](https://github.com/hsz/idea-gitignore/issues/250)
-- Default icon for .ignore files [\#258](https://github.com/hsz/idea-gitignore/issues/258)
-- StyleLint (.stylelintignore) support [\#241](https://github.com/hsz/idea-gitignore/issues/241)
-
-**Fixed bugs:**
-
-- Method OuterIgnoreLoaderComponent.getOuterFiles must not return null [\#240](https://github.com/hsz/idea-gitignore/issues/240)
-- Coloring problem at project startup [\#246](https://github.com/hsz/idea-gitignore/issues/246)
-- Fixed freeze report in ExternalExec [\#256](https://github.com/hsz/idea-gitignore/issues/256)
-- ConcurrentModificationException in IgnoreReferenceSet [\#269](https://github.com/hsz/idea-gitignore/issues/269)
-- Stop indexing excluded files/directories [\#273](https://github.com/hsz/idea-gitignore/issues/273)
-- NoSuchMethodError: com.intellij.util.containers.ContainerUtil.getFirstItem [\#263](https://github.com/hsz/idea-gitignore/issues/263)
-- CacheMap.getParentStatus must not return null [\#242](https://github.com/hsz/idea-gitignore/issues/242)
+- *Fixed colors for tracked and ignored files, additional info label is implemented* [\#296](https://github.com/hsz/idea-gitignore/issues/296) [\#295](https://github.com/hsz/idea-gitignore/issues/295) [\#284](https://github.com/hsz/idea-gitignore/issues/284)
+- ClassNotFoundException: mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent [\#297](https://github.com/hsz/idea-gitignore/issues/297)
+- Assertion failed: Registering post-startup activity that will never be run [\#290](https://github.com/hsz/idea-gitignore/issues/290)
+- Component name collision: UpdateComponent [\#289](https://github.com/hsz/idea-gitignore/issues/289)
+- Ignore Files Support pane scrollbar issue [\#286](https://github.com/hsz/idea-gitignore/issues/286)
+- Outer ignore file panel now has max height rule [\#257](https://github.com/hsz/idea-gitignore/issues/257)
+- Properly coloring of subdirectories [\#255](https://github.com/hsz/idea-gitignore/issues/255)
+- Setting "Enable ignoring" does not really work [\#238](https://github.com/hsz/idea-gitignore/issues/238)
 
 [Full Changelog History](./CHANGELOG.md)
 

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.6</version>
+    <version>1.7</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -19,7 +19,8 @@
         <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker), .chefignore (Chef),
            .cvsignore (CVS), .bzrignore (Bazaar), .boringignore (Darcs), .mtn-ignore (Monotone), ignore-glob (Fossil),
            .jshintignore (JSHint), .tfignore (Team Foundation), .p4ignore (Perforce), .flooignore (Floobits),
-           .eslintignore (ESLint), .cfignore (Cloud Foundry)</i>, .jpmignore (Jetpack), .stylintignore (Stylint)
+           .eslintignore (ESLint), .cfignore (Cloud Foundry)</i>, .jpmignore (Jetpack), .stylelintignore (StyleLint),
+           .stylintignore (Stylint)
         files in your project.
       <br/>
 
@@ -29,6 +30,7 @@
         <li>Coloring ignored files in the Project View</li>
         <li>Gitignore templates filtering and selecting in rules generator by name and content</li>
         <li>Show ignored files by specified ignore file (right click on <i>.gitignore</i> file)</li>
+        <li>Hide ignored files in Project View</li>
         <li>Create file in currently selected directory</li>
         <li>Generate Gitignore rules basing on <a href="https://github.com/github/gitignore">GitHub's templates collection</a></li>
         <li>Add selected file/directory to ignore rules from popup menu</li>
@@ -54,27 +56,40 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.6"><b>v1.6</b></a> (2016-11-23) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.7"><b>v1.7</b></a> (2017-02-11) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         
         <ul>
-            <li>Unignore Files (<a href="https://github.com/hsz/idea-gitignore/issues/250">250</a>)</li>
-            <li>Default icon for .ignore files (<a href="https://github.com/hsz/idea-gitignore/issues/258">258</a>)</li>
-            <li>StyleLint (.stylelintignore) support (<a href="https://github.com/hsz/idea-gitignore/issues/241">241</a>)</li>
+            <li><b>Hide ignored files and directories in the project tree view</b></li>
+            <li><b>Indicate that parent contains extra elements if children are hidden</b></li>
+            <li>Dialog box that allows to untrack ignored files (performs git rm --cached command)</li>
+            <li>Stylint (.stylintignore) support (<a href="https://github.com/hsz/idea-gitignore/issues/279">279</a>)</li>
+            <li>Project Tree View coloring refactoring (performance)</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>Method OuterIgnoreLoaderComponent.getOuterFiles must not return null (<a href="https://github.com/hsz/idea-gitignore/issues/240">240</a>)</li>
-            <li>Coloring problem at project startup (<a href="https://github.com/hsz/idea-gitignore/issues/246">246</a>)</li>
-            <li>Fixed freeze report in ExternalExec (<a href="https://github.com/hsz/idea-gitignore/issues/256">256</a>)</li>
-            <li>ConcurrentModificationException in IgnoreReferenceSet (<a href="https://github.com/hsz/idea-gitignore/issues/269">269</a>)</li>
-            <li>Stop indexing excluded files/directories (<a href="https://github.com/hsz/idea-gitignore/issues/273">273</a>)</li>
-            <li>NoSuchMethodError: com.intellij.util.containers.ContainerUtil.getFirstItem (<a href="https://github.com/hsz/idea-gitignore/issues/263">263</a>)</li>
-            <li>CacheMap.getParentStatus must not return null (<a href="https://github.com/hsz/idea-gitignore/issues/242">242</a>)</li>
+            <li><b>Fixed colors for tracked and ignored files, additional info label is implemented</b> (
+                <a href="https://github.com/hsz/idea-gitignore/issues/296">296</a>,
+                <a href="https://github.com/hsz/idea-gitignore/issues/295">295</a>,
+                <a href="https://github.com/hsz/idea-gitignore/issues/284">284</a>)</li>
+            <li>ClassNotFoundException: mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent
+                (<a href="https://github.com/hsz/idea-gitignore/issues/297">297</a>)</li>
+            <li>Assertion failed: Registering post-startup activity that will never be run
+                (<a href="https://github.com/hsz/idea-gitignore/issues/290">290</a>)</li>
+            <li>Component name collision: UpdateComponent
+                (<a href="https://github.com/hsz/idea-gitignore/issues/289">289</a>)</li>
+            <li>Ignore Files Support pane scrollbar issue
+                (<a href="https://github.com/hsz/idea-gitignore/issues/286">286</a>)</li>
+            <li>Outer ignore file panel now has max height rule
+                (<a href="https://github.com/hsz/idea-gitignore/issues/257">257</a>)</li>
+            <li>Properly coloring of subdirectories
+                (<a href="https://github.com/hsz/idea-gitignore/issues/255">255</a>)</li>
+            <li>Setting "Enable ignoring" does not really work
+                (<a href="https://github.com/hsz/idea-gitignore/issues/238">238</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

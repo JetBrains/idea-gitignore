@@ -1,16 +1,27 @@
 # Change Log
 
-## [v1.7](https://github.com/hsz/idea-gitignore/tree/v1.7) (wip)
+## [v1.7](https://github.com/hsz/idea-gitignore/tree/v1.7) (2017-02-11)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7)
 
 **Implemented enhancements:**
 
-- Hide ignored files and directories in the project tree view
+- *Hide ignored files and directories in the project tree view*
+- *Indicate that parent contains extra elements if children are hidden*
+- Dialog box that allows to untrack ignored files (performs git rm --cached command)
+- Stylint (.stylintignore) support [\#279](https://github.com/hsz/idea-gitignore/issues/279)
+- Project Tree View coloring refactoring (performance)
 
 **Fixed bugs:**
 
-- 
+- *Fixed colors for tracked and ignored files, additional info label is implemented* [\#296](https://github.com/hsz/idea-gitignore/issues/296) [\#295](https://github.com/hsz/idea-gitignore/issues/295) [\#284](https://github.com/hsz/idea-gitignore/issues/284)
+- ClassNotFoundException: mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent [\#297](https://github.com/hsz/idea-gitignore/issues/297)
+- Assertion failed: Registering post-startup activity that will never be run [\#290](https://github.com/hsz/idea-gitignore/issues/290)
+- Component name collision: UpdateComponent [\#289](https://github.com/hsz/idea-gitignore/issues/289)
+- Ignore Files Support pane scrollbar issue [\#286](https://github.com/hsz/idea-gitignore/issues/286)
+- Outer ignore file panel now has max height rule [\#257](https://github.com/hsz/idea-gitignore/issues/257)
+- Properly coloring of subdirectories [\#255](https://github.com/hsz/idea-gitignore/issues/255)
+- Setting "Enable ignoring" does not really work [\#298](https://github.com/hsz/idea-gitignore/issues/238)
 
 ## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.6) (2016-11-23)
 
