@@ -63,6 +63,9 @@ public class OuterIgnoreWrapper implements Disposable {
     /** Pixels offset to handle drag event. */
     private static final int DRAG_OFFSET = 10;
 
+    /** Maximum height of the component to avoid losing it from view. */
+    private static final int MAX_HEIGHT = 300;
+
     /** Main wrapper panel. */
     private final JPanel panel;
 
@@ -149,7 +152,11 @@ public class OuterIgnoreWrapper implements Disposable {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (drag) {
-                    tabbedPanelComponent.setPreferredSize(new Dimension(0, dragPanelHeight - e.getYOnScreen() + dragYOnScreen));
+                    int height = dragPanelHeight - e.getYOnScreen() + dragYOnScreen;
+                    if (height > MAX_HEIGHT) {
+                        height = MAX_HEIGHT;
+                    }
+                    tabbedPanelComponent.setPreferredSize(new Dimension(0, height));
                     panel.revalidate();
                 }
             }
