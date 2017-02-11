@@ -25,35 +25,35 @@
 package mobi.hsz.idea.gitignore.lang.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.StylintFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.StyleLintFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Stylint {@link StylintLanguage} definition.
+ * StyleLint {@link StyleLintLanguage} definition.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.7
+ * @since 1.6
  */
-public class StylintLanguage extends IgnoreLanguage {
-    /** The {@link StylintLanguage} instance. */
-    public static final StylintLanguage INSTANCE = new StylintLanguage();
+public class StyleLintLanguage extends IgnoreLanguage {
+    /** The {@link StyleLintLanguage} instance. */
+    public static final StyleLintLanguage INSTANCE = new StyleLintLanguage();
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private StylintLanguage() {
-        super("Stylint", "stylintignore", null, Icons.STYLINT);
+    private StyleLintLanguage() {
+        super("StyleLint", "stylelintignore", null, Icons.STYLELINT);
     }
 
     /**
      * Language file type.
      *
-     * @return {@link StylintFileType} instance
+     * @return {@link StyleLintFileType} instance
      */
     @NotNull
     @Override
     public IgnoreFileType getFileType() {
-        return StylintFileType.INSTANCE;
+        return StyleLintFileType.INSTANCE;
     }
 
     /**

@@ -22,47 +22,23 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.lang.kind;
+package mobi.hsz.idea.gitignore.file.type.kind;
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.file.type.kind.StylintFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.util.Icons;
-import org.jetbrains.annotations.NotNull;
+import mobi.hsz.idea.gitignore.lang.kind.StyleLintLanguage;
 
 /**
- * Stylint {@link StylintLanguage} definition.
+ * Describes StyleLint file type.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 1.7
+ * @since 1.6
  */
-public class StylintLanguage extends IgnoreLanguage {
-    /** The {@link StylintLanguage} instance. */
-    public static final StylintLanguage INSTANCE = new StylintLanguage();
+public class StyleLintFileType extends IgnoreFileType {
+    /** Contains {@link StyleLintFileType} singleton. */
+    public static final StyleLintFileType INSTANCE = new StyleLintFileType();
 
-    /** {@link IgnoreLanguage} is a non-instantiable static class. */
-    private StylintLanguage() {
-        super("Stylint", "stylintignore", null, Icons.STYLINT);
-    }
-
-    /**
-     * Language file type.
-     *
-     * @return {@link StylintFileType} instance
-     */
-    @NotNull
-    @Override
-    public IgnoreFileType getFileType() {
-        return StylintFileType.INSTANCE;
-    }
-
-    /**
-     * Language is related to the VCS.
-     *
-     * @return is VCS
-     */
-    @Override
-    public boolean isVCS() {
-        return false;
+    /** Private constructor to prevent direct object creation. */
+    private StyleLintFileType() {
+        super(StyleLintLanguage.INSTANCE);
     }
 }
