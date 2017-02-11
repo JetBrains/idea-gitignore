@@ -229,6 +229,8 @@ public class Glob {
             sb.append("(?:[^/]*?/)*");
         } else if (StringUtil.startsWithChar(glob, '/')) {
             beginIndex = 1;
+        } else {
+            sb.append(".*?/");
         }
 
         char[] chars = glob.substring(beginIndex).toCharArray();
