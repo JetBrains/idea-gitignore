@@ -32,14 +32,16 @@ import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.packageDependencies.ui.PackageDependenciesNode;
 import com.intellij.ui.ColoredTreeCellRenderer;
+import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.ui.UIUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
-import static com.intellij.ui.SimpleTextAttributes.GRAYED_SMALL_ATTRIBUTES;
+import static com.intellij.ui.SimpleTextAttributes.STYLE_SMALLER;
 
 /**
  * {@link ProjectViewNodeDecorator} implementation to show on the Project Tree if ignored file is
@@ -49,6 +51,10 @@ import static com.intellij.ui.SimpleTextAttributes.GRAYED_SMALL_ATTRIBUTES;
  * @since 1.7
  */
 public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
+    /** Label text attribute for ignored content. */
+    private static final SimpleTextAttributes GRAYED_SMALL_ATTRIBUTES =
+            new SimpleTextAttributes(STYLE_SMALLER, UIUtil.getInactiveTextColor());
+
     /** {@link IgnoreManager} instance. */
     private final IgnoreManager manager;
 
