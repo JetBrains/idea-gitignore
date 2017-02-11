@@ -225,12 +225,13 @@ public class Glob {
             sb.append(".*");
         } else if (StringUtil.startsWithChar(glob, '*')) {
             sb.append(".*?");
-        } else if (!StringUtil.containsChar(glob, '/')) {
-            sb.append("(?:[^/]*?/)*");
         } else if (StringUtil.startsWithChar(glob, '/')) {
             beginIndex = 1;
         } else {
-            sb.append(".*?/");
+            int slashes = StringUtil.countChars(glob, '/');
+            if (slashes == 0 || (slashes == 1 && StringUtil.endsWithChar(glob, '/'))) {
+                sb.append("(?:[^/]*?/)*");
+            }
         }
 
         char[] chars = glob.substring(beginIndex).toCharArray();

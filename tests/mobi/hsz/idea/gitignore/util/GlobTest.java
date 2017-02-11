@@ -186,6 +186,18 @@ public class GlobTest extends Common<Glob> {
         assertTrue(pattern.matcher("dir/file.txt").matches());
         assertTrue(pattern.matcher("dir/subdir/").matches());
         Assert.assertFalse(pattern.matcher("dir/").matches());
+
+        pattern = Glob.createPattern("subdir", IgnoreBundle.Syntax.GLOB, true);
+        assertNotNull(pattern);
+        assertTrue(pattern.matcher("dir/subdir/file.txt").matches());
+        assertTrue(pattern.matcher("dir/subdir/").matches());
+        Assert.assertFalse(pattern.matcher("dir/foo/bar.txt").matches());
+
+        pattern = Glob.createPattern("subdir/", IgnoreBundle.Syntax.GLOB, true);
+        assertNotNull(pattern);
+        assertTrue(pattern.matcher("dir/subdir/file.txt").matches());
+        assertTrue(pattern.matcher("dir/subdir/").matches());
+        Assert.assertFalse(pattern.matcher("dir/foo/bar.txt").matches());
     }
 
 }
