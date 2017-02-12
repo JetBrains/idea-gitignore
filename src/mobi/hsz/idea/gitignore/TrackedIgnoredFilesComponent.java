@@ -103,7 +103,7 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent imple
      */
     @Override
     public void handleFiles(@NotNull final HashMap<VirtualFile, Repository> files) {
-        if (!settings.isInformTrackedIgnored() || notificationShown) {
+        if (!settings.isInformTrackedIgnored() || notificationShown || myProject.getBaseDir() == null) {
             return;
         }
 
