@@ -50,6 +50,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
+import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
+
 /**
  * Dialog that lists all untracked but indexed files in a tree view, allows select specific files
  * and perform command to untrack them.
@@ -226,5 +228,7 @@ public class UntrackFilesDialog extends DialogWrapper {
             }
             ExternalExec.removeFileFromTracking(file, repository);
         } while ((leaf = (FileTreeNode) leaf.getNextLeaf()) != null);
+
+        project.getMessageBus().syncPublisher(TRACKED_IGNORED_REFRESH).refresh();
     }
 }

@@ -42,6 +42,7 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.messages.MessageBus;
 import git4idea.repo.GitRepository;
+import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
@@ -58,6 +59,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
 import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED;
 
 /**
@@ -93,38 +95,21 @@ public class CacheMap {
     
     /** Task to fetch tracked and ignored files using Git repositories. */
     @NotNull
-    private Runnable trackedIgnoredFilesRunnable = new Runnable() {
-        @Override
-        public void run() {
-            final Collection<Repository> repositories = VcsRepositoryManager.getInstance(project).getRepositories();
-            final HashMap<VirtualFile, Repository> result = new HashMap<VirtualFile, Repository>();
-            for (Repository repository : repositories) {
-                if (!(repository instanceof GitRepository)) {
-                    continue;
-                }
-                VirtualFile root = repository.getRoot();
-                for (String path : ExternalExec.getTrackedIgnoredFiles(repository)) {
-                    final VirtualFile file = root.findFileByRelativePath(path);
-                    result.put(file, repository);
-                }
-            }
-
-            if (!result.isEmpty()) {
-                messageBus.syncPublisher(TRACKED_IGNORED).handleFiles(result);
-            }
-            trackedIgnoredFiles.clear();
-            trackedIgnoredFiles.putAll(result);
-            statusManager.fileStatusesChanged();
-
-            for (AbstractProjectViewPane pane : Extensions.getExtensions(AbstractProjectViewPane.EP_NAME, project)) {
-                pane.getTreeBuilder().queueUpdate();
-            }
-        }
-    };
+    private TrackedIgnoredFilesRunnable trackedIgnoredFilesRunnable = new TrackedIgnoredFilesRunnable();
     
     /** Timer for {@link #trackedIgnoredFilesRunnable}. */
     @Nullable
     private ScheduledFuture<?> trackedIgnoredFilesTimer;
+
+    /**
+     * Returns tracked and ignored files stored in {@link #trackedIgnoredFiles}.
+     * 
+     * @return tracked and ignored files map
+     */
+    @NotNull
+    public HashMap<VirtualFile, Repository> getTrackedIgnoredFiles() {
+        return trackedIgnoredFiles;
+    }
 
     /** Status of the file. */
     private enum Status {
@@ -136,6 +121,7 @@ public class CacheMap {
         this.project = project;
         this.statusManager = FileStatusManager.getInstance(project);
         this.messageBus = project.getMessageBus();
+        this.messageBus.connect().subscribe(TRACKED_IGNORED_REFRESH, trackedIgnoredFilesRunnable);
     }
 
     /**
@@ -200,7 +186,7 @@ public class CacheMap {
     }
     
     /** Refreshes statuses and {@link #trackedIgnoredFiles} list. */
-    private void refresh() {
+    public void refresh() {
         statuses.clear();
 
         fetchTrackedIgnoredFiles();
@@ -218,7 +204,7 @@ public class CacheMap {
 
         trackedIgnoredFilesTimer = JobScheduler.getScheduler().schedule(
                 trackedIgnoredFilesRunnable,
-                2000,
+                1000,
                 TimeUnit.MILLISECONDS
         );
     }
@@ -345,5 +331,53 @@ public class CacheMap {
             parent = parent.getParent();
         }
         return Status.UNTOUCHED;
+    }
+
+    /** {@link Runnable} implementation to rebuild {@link #trackedIgnoredFiles}. */
+    class TrackedIgnoredFilesRunnable implements Runnable, IgnoreManager.RefreshTrackedIgnoredListener {
+        /** Default {@link Runnable} run method that invokes rebuilding with bus event propagating. */
+        @Override
+        public void run() {
+            run(false);
+        }
+
+        /** Rebuilds {@link #trackedIgnoredFiles} map in silent mode. */
+        @Override
+        public void refresh() {
+            this.run(true);
+        }
+
+        /**
+         * Rebuilds {@link #trackedIgnoredFiles} map.
+         * 
+         * @param silent propagate {@link IgnoreManager.TrackedIgnoredListener#TRACKED_IGNORED} event
+         */
+        public void run(boolean silent) {
+            final Collection<Repository> repositories = VcsRepositoryManager.getInstance(project).getRepositories();
+            final HashMap<VirtualFile, Repository> result = new HashMap<VirtualFile, Repository>();
+            for (Repository repository : repositories) {
+                if (!(repository instanceof GitRepository)) {
+                    continue;
+                }
+                VirtualFile root = repository.getRoot();
+                for (String path : ExternalExec.getTrackedIgnoredFiles(repository)) {
+                    final VirtualFile file = root.findFileByRelativePath(path);
+                    result.put(file, repository);
+                }
+            }
+
+            if (!silent && !result.isEmpty()) {
+                messageBus.syncPublisher(TRACKED_IGNORED).handleFiles(result);
+            }
+            trackedIgnoredFiles.clear();
+            trackedIgnoredFiles.putAll(result);
+            statusManager.fileStatusesChanged();
+
+            for (AbstractProjectViewPane pane : Extensions.getExtensions(AbstractProjectViewPane.EP_NAME, project)) {
+                if (pane.getTreeBuilder() != null) {
+                    pane.getTreeBuilder().queueUpdate();
+                }
+            }
+        }
     }
 }

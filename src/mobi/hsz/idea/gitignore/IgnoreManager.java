@@ -24,12 +24,17 @@
 
 package mobi.hsz.idea.gitignore;
 
+import com.intellij.AppTopics;
 import com.intellij.dvcs.repo.Repository;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.startup.StartupManagerEx;
 import com.intellij.openapi.application.AccessToken;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.fileEditor.FileDocumentManagerAdapter;
+import com.intellij.openapi.fileEditor.FileDocumentManagerListener;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
@@ -260,6 +265,9 @@ public class IgnoreManager extends AbstractProjectComponent {
             initialized = true;
         }
     };
+    
+    /** Document listener to trigger */
+    private DocumentSyncListener documentSyncListener = new DocumentSyncListener();
 
     /**
      * Returns {@link IgnoreManager} service instance.
@@ -378,6 +386,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         settings.addListener(settingsListener);
         messageBus = myProject.getMessageBus().connect();
         messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, vcsListener);
+        messageBus.subscribe(AppTopics.FILE_DOCUMENT_SYNC, documentSyncListener);
         working = true;
 
         retrieve();
@@ -565,6 +574,15 @@ public class IgnoreManager extends AbstractProjectComponent {
     }
 
     /**
+     * Returns tracked and ignored files stored in {@link CacheMap#trackedIgnoredFiles}.
+     *
+     * @return tracked and ignored files map
+     */
+    public HashMap<VirtualFile, Repository> getTrackedIgnoredFiles() {
+        return cache.getTrackedIgnoredFiles();
+    }
+
+    /**
      * Listener bounded with {@link TrackedIgnoredListener#TRACKED_IGNORED} topic to inform
      * about new entries.
      */
@@ -574,6 +592,46 @@ public class IgnoreManager extends AbstractProjectComponent {
                 Topic.create("New tracked and indexed files detected", TrackedIgnoredListener.class);
 
         void handleFiles(@NotNull HashMap<VirtualFile, Repository> files);
+    }
+    
+    /**
+     * Listener bounded with {@link RefreshTrackedIgnoredListener#TRACKED_IGNORED_REFRESH} topic to
+     * trigger tracked and ignored files list.
+     */
+    public interface RefreshTrackedIgnoredListener {
+        /** Topic for refresh tracked and indexed files. */
+        Topic<RefreshTrackedIgnoredListener> TRACKED_IGNORED_REFRESH =
+                Topic.create("New tracked and indexed files detected", RefreshTrackedIgnoredListener.class);
+
+        void refresh();
+    }
+
+    /**
+     * {@link FileDocumentManagerListener} implementation to trigger {@link CacheMap#refresh()}
+     * on every {@link IgnoreFileType} file save event.
+     */
+    public class DocumentSyncListener extends FileDocumentManagerAdapter {
+        /** {@link FileDocumentManager} instance. */
+        private final FileDocumentManager manager;
+
+        /** Constructor. */
+        DocumentSyncListener() {
+            manager = FileDocumentManager.getInstance();
+        }
+
+        /**
+         * Checks if saved {@link Document} has type of {@link IgnoreFileType} and triggers
+         * {@link CacheMap#refresh()} method.
+         * 
+         * @param document saved document
+         */
+        @Override
+        public void beforeDocumentSaving(@NotNull Document document) {
+            final VirtualFile file = manager.getFile(document);
+            if (Utils.getFileType(file) != null && Utils.isInProject(file, myProject)) {
+                cache.refresh();
+            }
+        }
     }
 
     /**

@@ -497,5 +497,9 @@
         <action id="HideIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HideIgnoredFilesAction">
             <add-to-group group-id="ProjectViewPopupMenu"/>
         </action>
+
+        <action id="HandleTrackedIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HandleTrackedIgnoredFilesAction">
+            <add-to-group group-id="ProjectViewPopupMenu"/>
+        </action>
     </actions>
 </idea-plugin>

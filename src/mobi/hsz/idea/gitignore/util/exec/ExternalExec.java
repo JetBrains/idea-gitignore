@@ -84,7 +84,7 @@ public class ExternalExec {
 
     /** Git command to remove file from tracking. */
     @NonNls
-    private static final String GIT_REMOVE_FILE_FROM_TRACKING = "rm --cached";
+    private static final String GIT_REMOVE_FILE_FROM_TRACKING = "rm --cached --force";
 
     /**
      * Returns {@link VirtualFile} instance of the Git excludes file if available.
