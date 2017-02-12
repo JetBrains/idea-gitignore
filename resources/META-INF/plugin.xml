@@ -65,6 +65,7 @@
             <li><b>Hide ignored files and directories in the project tree view</b></li>
             <li><b>Indicate that parent contains extra elements if children are hidden</b></li>
             <li>Dialog box that allows to untrack ignored files (performs git rm --cached command)</li>
+            <li>Untrack files dialog invoked automatically + from Project view context menu</li>
             <li>Stylint (.stylintignore) support (<a href="https://github.com/hsz/idea-gitignore/issues/279">279</a>)</li>
             <li>Project Tree View coloring refactoring (performance)</li>
         </ul>
@@ -78,6 +79,8 @@
                 <a href="https://github.com/hsz/idea-gitignore/issues/284">284</a>)</li>
             <li><b>IllegalArgumentException on IDEA startup</b>
                 (<a href="https://github.com/hsz/idea-gitignore/issues/302">302</a>)</li>
+            <li>File of UntrackFilesDialog.createDirectoryNodes must not be null
+                (<a href="https://github.com/hsz/idea-gitignore/issues/307">307</a>)</li>
             <li>NoSuchFieldError: GRAYED_SMALL_ATTRIBUTES
                 (<a href="https://github.com/hsz/idea-gitignore/issues/305">305</a>)</li>
             <li>Ignored entries coloring (
