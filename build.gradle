@@ -8,6 +8,7 @@ plugins {
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'checkstyle'
 
 sourceCompatibility = javaVersion
 targetCompatibility = javaTargetVersion
@@ -56,6 +57,9 @@ idea {
     }
 }
 
+checkstyle {
+    configFile = new File(rootDir, "gradle/checkstyle.xml")
+}
 
 // Configurations
 
