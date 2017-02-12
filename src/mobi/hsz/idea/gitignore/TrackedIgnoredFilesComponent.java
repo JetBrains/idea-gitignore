@@ -50,6 +50,9 @@ import javax.swing.event.HyperlinkEvent;
  * @since 1.7
  */
 public class TrackedIgnoredFilesComponent extends AbstractProjectComponent implements IgnoreManager.TrackedIgnoredListener {
+    /** Disable action event. */
+    private static final String DISABLE_ACTION = "#disable";
+    
     /** {@link MessageBusConnection} instance. */
     private MessageBusConnection messageBus;
 
@@ -116,7 +119,11 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent imple
                 new NotificationListener() {
                     @Override
                     public void hyperlinkUpdate(@NotNull Notification notification, @NotNull HyperlinkEvent event) {
-                        new UntrackFilesDialog(myProject, files).show();
+                        if (DISABLE_ACTION.equals(event.getDescription())) {
+                            settings.setInformTrackedIgnored(false);
+                        } else {
+                            new UntrackFilesDialog(myProject, files).show();
+                        }
                         notification.expire();
                     }
                 }
