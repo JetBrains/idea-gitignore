@@ -35,7 +35,6 @@ import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.ExternalFileException;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -52,7 +51,7 @@ import static mobi.hsz.idea.gitignore.IgnoreBundle.BUNDLE_NAME;
 /**
  * Group action that ignores specified file or directory.
  * {@link ActionGroup} expands single action into a more child options to allow user specify
- * the {@link IgnoreFile} that will be used for file's path storage.
+ * the IgnoreFile that will be used for file's path storage.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.5

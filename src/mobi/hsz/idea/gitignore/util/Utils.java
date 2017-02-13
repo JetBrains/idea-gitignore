@@ -28,7 +28,6 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.ide.projectView.PresentationData;
-import com.intellij.ide.util.treeView.PresentableNodeDescriptor.ColoredFragment;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -524,7 +523,7 @@ public class Utils {
     }
 
     /**
-     * Adds {@link ColoredFragment} to the node's presentation.
+     * Adds ColoredFragment to the node's presentation.
      *
      * @param data       node's presentation data
      * @param text       text to add

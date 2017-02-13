@@ -24,17 +24,15 @@
 
 package mobi.hsz.idea.gitignore.actions;
 
-import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.vfs.VirtualFile;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Group action that unignores specified file or directory.
- * {@link ActionGroup} expands single action into a more child options to allow user specify
- * the {@link IgnoreFile} that will be used for file's path storage.
+ * ActionGroup expands single action into a more child options to allow user specify
+ * the IgnoreFile that will be used for file's path storage.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.6

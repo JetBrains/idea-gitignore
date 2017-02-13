@@ -24,7 +24,6 @@
 
 package mobi.hsz.idea.gitignore.reference;
 
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
@@ -60,7 +59,7 @@ import java.util.regex.Pattern;
  * @since 0.5
  */
 public class IgnoreReferenceSet extends FileReferenceSet {
-    /** Instance of the Cache {@link ProjectComponent} that retrieves matching files using given {@link Pattern}. */
+    /** Instance of the Cache ProjectComponent that retrieves matching files using given {@link Pattern}. */
     @NotNull
     private final FilesIndexCacheProjectComponent filesIndexCache;
 

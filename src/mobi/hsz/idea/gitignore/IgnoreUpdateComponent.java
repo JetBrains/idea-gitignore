@@ -27,14 +27,13 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import mobi.hsz.idea.gitignore.util.Notify;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * {@link ProjectComponent} instance to display plugin's update information.
+ * ProjectComponent instance to display plugin's update information.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3

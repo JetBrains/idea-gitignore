@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentIterator;
 import com.intellij.openapi.roots.ProjectRootManager;
@@ -45,7 +44,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 
 /**
- * Cache {@link ProjectComponent} that retrieves matching files using given {@link Pattern}.
+ * Cache that retrieves matching files using given {@link Pattern}.
  * It uses {@link VirtualFileListener} to handle changes in the files tree and clear cached entries
  * for the specific pattern parts.
  *

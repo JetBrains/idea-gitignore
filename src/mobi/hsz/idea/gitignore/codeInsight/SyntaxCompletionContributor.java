@@ -32,13 +32,12 @@ import com.intellij.util.ProcessingContext;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreSyntax;
-import mobi.hsz.idea.gitignore.psi.IgnoreTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * Class provides completion feature for {@link IgnoreTypes#SYNTAX} element.
+ * Class provides completion feature for {@link mobi.hsz.idea.gitignore.psi.IgnoreTypes#SYNTAX} element.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.0

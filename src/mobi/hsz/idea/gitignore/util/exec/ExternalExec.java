@@ -35,7 +35,6 @@ import com.intellij.util.containers.ContainerUtil;
 import git4idea.config.GitVcsApplicationSettings;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
-import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.parser.ExecutionOutputParser;
 import mobi.hsz.idea.gitignore.util.exec.parser.GitExcludesOutputParser;
@@ -62,7 +61,7 @@ public class ExternalExec {
     /** Default external exec timeout. */
     private static final int DEFAULT_TIMEOUT = 5000;
 
-    /** Private constructor to prevent creating {@link Icons} instance. */
+    /** Private constructor to prevent creating Icons instance. */
     private ExternalExec() {
     }
 

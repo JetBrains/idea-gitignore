@@ -28,14 +28,13 @@ import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
-import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
 /**
- * Abstract output parser for the {@link ExternalExec} process outputs.
+ * Abstract output parser for the ExternalExec process outputs.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.5

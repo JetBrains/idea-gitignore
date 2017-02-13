@@ -34,7 +34,6 @@ import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileDocumentManagerAdapter;
-import com.intellij.openapi.fileEditor.FileDocumentManagerListener;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
@@ -618,7 +617,7 @@ public class IgnoreManager extends AbstractProjectComponent {
     }
 
     /**
-     * {@link FileDocumentManagerListener} implementation to trigger {@link CacheMap#refresh()}
+     * FileDocumentManagerListener implementation to trigger {@link CacheMap#refresh()}
      * on every {@link IgnoreFileType} file save event.
      */
     public class DocumentSyncListener extends FileDocumentManagerAdapter {

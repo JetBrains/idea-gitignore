@@ -34,7 +34,6 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.ui.template.UserTemplateDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.Icons;
@@ -53,7 +52,7 @@ public class CreateUserTemplateAction extends AnAction {
 
     /**
      * Handles an action of adding new template.
-     * Ignores action if selected file is not a {@link IgnoreFile} instance, otherwise shows {@link GeneratorDialog}.
+     * Ignores action if selected file is not a {@link IgnoreFile} instance, otherwise shows GeneratorDialog.
      *
      * @param e action event
      */

@@ -29,7 +29,6 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.HashMap;
@@ -43,7 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.event.HyperlinkEvent;
 
 /**
- * {@link ProjectComponent} instance to handle {@link IgnoreManager.TrackedIgnoredListener} event
+ * ProjectComponent instance to handle {@link IgnoreManager.TrackedIgnoredListener} event
  * and display {@link Notification} about tracked and ignored files which invokes {@link UntrackFilesDialog}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>

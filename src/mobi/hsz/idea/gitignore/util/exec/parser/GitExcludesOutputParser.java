@@ -27,23 +27,22 @@ package mobi.hsz.idea.gitignore.util.exec.parser;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.util.Utils;
-import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
 /**
- * Parser for the {@link ExternalExec#GIT_CONFIG_EXCLUDES_FILE} command that returns excludes Git file instance.
+ * Parser for the {@link mobi.hsz.idea.gitignore.util.exec.ExternalExec}#GIT_CONFIG_EXCLUDES_FILE command that
+ * returns excludes Git file instance.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.5
  */
 public class GitExcludesOutputParser extends ExecutionOutputParser<VirtualFile> {
     /**
-     * Parses output and returns {@link VirtualFile} instance of the {@link GitFileType}.
+     * Parses output and returns {@link VirtualFile} instance of the GitFileType.
      *
      * @param text input data
      * @return excludes ignore file instance

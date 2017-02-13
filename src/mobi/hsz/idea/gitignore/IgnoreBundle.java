@@ -27,7 +27,6 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.CommonBundle;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.*;
 import org.jetbrains.annotations.NonNls;
@@ -63,7 +62,7 @@ public class IgnoreBundle {
     private IgnoreBundle() {
     }
 
-    /** Available {@link IgnoreFileType} instances. */
+    /** Available IgnoreFileType instances. */
     public static final IgnoreLanguages LANGUAGES = new IgnoreLanguages(Arrays.asList(
             BazaarLanguage.INSTANCE,
             CloudFoundryLanguage.INSTANCE,

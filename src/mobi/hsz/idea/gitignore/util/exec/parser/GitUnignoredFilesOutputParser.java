@@ -25,19 +25,19 @@
 package mobi.hsz.idea.gitignore.util.exec.parser;
 
 import com.intellij.openapi.util.text.StringUtil;
-import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Parser for the {@link ExternalExec#GIT_UNIGNORED_FILES} command that returns unignored files entries list.
+ * Parser for the {@link mobi.hsz.idea.gitignore.util.exec.ExternalExec#GIT_UNIGNORED_FILES} command that
+ * returns unignored files entries list.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.5
  */
 public class GitUnignoredFilesOutputParser extends ExecutionOutputParser<String> {
-    /** Prefix to remove from the {@link ExternalExec#GIT_UNIGNORED_FILES} command's result. */
+    /** Prefix to remove from the command's result. */
     @NonNls
     private static final String GIT_UNIGNORED_FILES_PREFIX = "Would remove";
 
