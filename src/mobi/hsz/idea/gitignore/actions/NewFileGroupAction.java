@@ -40,6 +40,7 @@ import mobi.hsz.idea.gitignore.util.Icons;
  */
 public class NewFileGroupAction extends DefaultActionGroup implements DumbAware {
     /** Builds a new instance of {@link NewFileGroupAction}. */
+    @SuppressWarnings("checkstyle:whitespacearound")
     public NewFileGroupAction() {
         setPopup(true);
         Presentation presentation = getTemplatePresentation();
