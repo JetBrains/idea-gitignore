@@ -95,13 +95,15 @@ public class OuterIgnoreWrapper implements Disposable {
         panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
 
-
         final JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
 
-        JBLabel label = new JBLabel(IgnoreBundle.message("outer.label"), UIUtil.ComponentStyle.REGULAR, UIUtil.FontColor.BRIGHTER);
+        JBLabel label = new JBLabel(
+                IgnoreBundle.message("outer.label"),
+                UIUtil.ComponentStyle.REGULAR,
+                UIUtil.FontColor.BRIGHTER
+        );
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
         northPanel.add(label);
-
 
         final TabbedPaneWrapper tabbedPanel = new TabbedPaneWrapper(project);
         final JComponent tabbedPanelComponent = tabbedPanel.getComponent();
@@ -121,7 +123,12 @@ public class OuterIgnoreWrapper implements Disposable {
                 scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
                 scrollPanel.setPreferredSize(new Dimension(0, settings.getOuterIgnoreWrapperHeight()));
 
-                tabbedPanel.addTab(outerFile.getCanonicalPath(), language.getIcon(), scrollPanel, outerFile.getCanonicalPath());
+                tabbedPanel.addTab(
+                        outerFile.getCanonicalPath(),
+                        language.getIcon(),
+                        scrollPanel,
+                        outerFile.getCanonicalPath()
+                );
                 outerEditors.add(outerEditor);
             }
         }
@@ -145,7 +152,8 @@ public class OuterIgnoreWrapper implements Disposable {
         northPanel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                Cursor cursor = (e.getPoint().getY() <= DRAG_OFFSET) ? Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR) : Cursor.getDefaultCursor();
+                Cursor cursor = (e.getPoint().getY() <= DRAG_OFFSET) ?
+                        Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR) : Cursor.getDefaultCursor();
                 panel.setCursor(cursor);
             }
 

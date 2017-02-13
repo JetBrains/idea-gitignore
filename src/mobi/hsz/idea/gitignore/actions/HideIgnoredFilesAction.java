@@ -39,8 +39,8 @@ import mobi.hsz.idea.gitignore.util.Icons;
  */
 public class HideIgnoredFilesAction extends AnAction {
     /** {@link IgnoreSettings} instance. */
-    public static final IgnoreSettings settings = IgnoreSettings.getInstance();
-    
+    public static final IgnoreSettings SETTINGS = IgnoreSettings.getInstance();
+
     /** Builds a new instance of {@link HideIgnoredFilesAction}. */
     public HideIgnoredFilesAction() {
         super(getText(), "", Icons.IGNORE);
@@ -48,21 +48,22 @@ public class HideIgnoredFilesAction extends AnAction {
 
     /**
      * Returns proper action's presentation text depending on the {@link IgnoreSettings#hideIgnoredFiles} value.
-     * 
+     *
      * @return presentation text
      */
     private static String getText() {
-        final boolean hideIgnoredFiles = settings.isHideIgnoredFiles();
+        final boolean hideIgnoredFiles = SETTINGS.isHideIgnoredFiles();
         return IgnoreBundle.message(hideIgnoredFiles ? "action.showIgnoredVisibility" : "action.hideIgnoredVisibility");
     }
 
     /**
      * Toggles {@link IgnoreSettings#hideIgnoredFiles} value.
+     *
      * @param e action event
      */
     @Override
     public void actionPerformed(AnActionEvent e) {
-        settings.setHideIgnoredFiles(!settings.isHideIgnoredFiles());
+        SETTINGS.setHideIgnoredFiles(!SETTINGS.isHideIgnoredFiles());
 
         final Presentation presentation = this.getTemplatePresentation();
         presentation.setText(getText());

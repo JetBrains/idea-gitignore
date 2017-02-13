@@ -171,7 +171,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
 
     /**
      * Creates new {@link IgnoreFileAction} action instance.
-     * 
+     *
      * @param file current file
      * @return action instance
      */

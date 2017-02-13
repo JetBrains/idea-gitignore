@@ -43,7 +43,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * {@link LineMarkerProvider} that marks entry lines with directory icon if they point to the directory in virtual system.
+ * {@link LineMarkerProvider} that marks entry lines with directory icon if they point to the directory in virtual
+ * system.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.5

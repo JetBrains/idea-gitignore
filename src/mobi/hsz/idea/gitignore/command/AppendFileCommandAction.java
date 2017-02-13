@@ -139,7 +139,10 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
                 if (content.contains(entry.getText()) && baseDir != null) {
                     Notifications.Bus.notify(new Notification(IgnoreLanguage.GROUP,
                             IgnoreBundle.message("action.appendFile.entryExists", entry.getText()),
-                            IgnoreBundle.message("action.appendFile.entryExists.in", Utils.getRelativePath(baseDir, file.getVirtualFile())),
+                            IgnoreBundle.message(
+                                    "action.appendFile.entryExists.in",
+                                    Utils.getRelativePath(baseDir, file.getVirtualFile())
+                            ),
                             NotificationType.WARNING), project);
                     content.remove(entry.getText());
                 }
@@ -160,12 +163,13 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
 
         for (String entry : content) {
             if (ignoreDuplicates) {
-                List<String> currentLines = ContainerUtil.filter(document.getText().split(Constants.NEWLINE), new Condition<String>() {
-                    @Override
-                    public boolean value(String s) {
-                        return !s.isEmpty() && !s.startsWith(Constants.HASH);
-                    }
-                });
+                List<String> currentLines =
+                        ContainerUtil.filter(document.getText().split(Constants.NEWLINE), new Condition<String>() {
+                            @Override
+                            public boolean value(String s) {
+                                return !s.isEmpty() && !s.startsWith(Constants.HASH);
+                            }
+                        });
 
                 List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
                 Iterator<String> iterator = entryLines.iterator();

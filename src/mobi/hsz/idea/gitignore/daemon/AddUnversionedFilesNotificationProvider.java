@@ -43,8 +43,8 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Constants;
-import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import mobi.hsz.idea.gitignore.util.Properties;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,7 +60,8 @@ import java.util.List;
 public class AddUnversionedFilesNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
     /** Notification key. */
     @NotNull
-    private static final Key<EditorNotificationPanel> KEY = Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
+    private static final Key<EditorNotificationPanel> KEY =
+            Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
 
     /** Current project. */
     @NotNull
@@ -79,7 +80,8 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
     private final List<String> unignoredFiles = ContainerUtil.newArrayList();
 
     /** Map to obtain if file was handled. */
-    private final WeakKeyWeakValueHashMap<VirtualFile, Boolean> handledMap = new WeakKeyWeakValueHashMap<VirtualFile, Boolean>();
+    private final WeakKeyWeakValueHashMap<VirtualFile, Boolean> handledMap =
+            new WeakKeyWeakValueHashMap<VirtualFile, Boolean>();
 
     /**
      * Builds a new instance of {@link AddUnversionedFilesNotificationProvider}.
@@ -87,7 +89,8 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
      * @param project       current project
      * @param notifications notifications component
      */
-    public AddUnversionedFilesNotificationProvider(@NotNull Project project, @NotNull EditorNotifications notifications) {
+    public AddUnversionedFilesNotificationProvider(@NotNull Project project,
+                                                   @NotNull EditorNotifications notifications) {
         this.project = project;
         this.notifications = notifications;
         this.settings = IgnoreSettings.getInstance();

@@ -147,6 +147,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
      * Get the settings state as a DOM element.
      *
      * @return an ready to serialize DOM {@link Element}.
+     *
      * @see {@link #loadState(Element)}
      */
     @Nullable
@@ -164,7 +165,8 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.INFORM_TRACKED_IGNORED.toString(), Boolean.toString(informTrackedIgnored));
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
-        for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry : languagesSettings.entrySet()) {
+        for (Map.Entry<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> entry :
+                languagesSettings.entrySet()) {
             if (entry.getKey() == null) {
                 continue;
             }
@@ -210,28 +212,44 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     @Override
     public void loadState(Element element) {
         String value = element.getAttributeValue(KEY.MISSING_GITIGNORE.toString());
-        if (value != null) missingGitignore = Boolean.parseBoolean(value);
+        if (value != null) {
+            missingGitignore = Boolean.parseBoolean(value);
+        }
 
         value = element.getAttributeValue(KEY.IGNORED_FILE_STATUS.toString());
-        if (value != null) ignoredFileStatus = Boolean.parseBoolean(value);
+        if (value != null) {
+            ignoredFileStatus = Boolean.parseBoolean(value);
+        }
 
         value = element.getAttributeValue(KEY.OUTER_IGNORE_RULES.toString());
-        if (value != null) outerIgnoreRules = Boolean.parseBoolean(value);
+        if (value != null) {
+            outerIgnoreRules = Boolean.parseBoolean(value);
+        }
 
         value = element.getAttributeValue(KEY.VERSION.toString());
-        if (value != null) version = value;
+        if (value != null) {
+            version = value;
+        }
 
         value = element.getAttributeValue(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString());
-        if (value != null) outerIgnoreWrapperHeight = Integer.parseInt(value);
+        if (value != null) {
+            outerIgnoreWrapperHeight = Integer.parseInt(value);
+        }
 
         value = element.getAttributeValue(KEY.STARRED_TEMPLATES.toString());
-        if (value != null) setStarredTemplates(StringUtil.split(value, Constants.DOLLAR));
+        if (value != null) {
+            setStarredTemplates(StringUtil.split(value, Constants.DOLLAR));
+        }
 
         value = element.getAttributeValue(KEY.HIDE_IGNORED_FILES.toString());
-        if (value != null) hideIgnoredFiles = Boolean.parseBoolean(value);
+        if (value != null) {
+            hideIgnoredFiles = Boolean.parseBoolean(value);
+        }
 
         value = element.getAttributeValue(KEY.INFORM_TRACKED_IGNORED.toString());
-        if (value != null) informTrackedIgnored = Boolean.parseBoolean(value);
+        if (value != null) {
+            informTrackedIgnored = Boolean.parseBoolean(value);
+        }
 
         Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
@@ -247,8 +265,10 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         }
 
         value = element.getAttributeValue(KEY.UNIGNORE_ACTIONS.toString());
-        if (value != null) unignoreActions = Boolean.parseBoolean(value);
-        
+        if (value != null) {
+            unignoreActions = Boolean.parseBoolean(value);
+        }
+
         userTemplates.clear();
         userTemplates.addAll(loadTemplates(element));
 
@@ -277,7 +297,10 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
             element = element.getChild(key);
         }
         for (Element template : element.getChildren()) {
-            list.add(new UserTemplate(template.getAttributeValue(KEY.USER_TEMPLATES_NAME.toString()), template.getText()));
+            list.add(new UserTemplate(
+                    template.getAttributeValue(KEY.USER_TEMPLATES_NAME.toString()),
+                    template.getText()
+            ));
         }
         return list;
     }
@@ -532,7 +555,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         this.notifyOnChange(KEY.UNIGNORE_ACTIONS, this.unignoreActions, unignoreActions);
         this.unignoreActions = unignoreActions;
     }
-    
+
     /**
      * Add the given listener. The listener will be executed in the containing instance's thread.
      *
@@ -663,12 +686,14 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
             UserTemplate t = (UserTemplate) obj;
             return (getName() != null && getName().equals(t.getName()) || (getName() == null && t.getName() == null))
-                    && (getContent() != null && getContent().equals(t.getContent()) || (getContent() == null && t.getContent() == null));
+                    && (getContent() != null && getContent().equals(t.getContent()) ||
+                    (getContent() == null && t.getContent() == null));
         }
     }
 
     /** Helper class for the {@link IgnoreLanguage} settings. */
-    public static class IgnoreLanguagesSettings extends LinkedHashMap<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> {
+    public static class IgnoreLanguagesSettings
+            extends LinkedHashMap<IgnoreLanguage, TreeMap<IgnoreLanguagesSettings.KEY, Object>> {
         /** Settings keys. */
         public enum KEY {
             NEW_FILE, ENABLE

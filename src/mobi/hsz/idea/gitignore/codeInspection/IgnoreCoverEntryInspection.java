@@ -120,12 +120,15 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
      *
      * @param file       current working file to check
      * @param manager    {@link InspectionManager} to ask for {@link ProblemDescriptor}'s from
-     * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
+     * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action
+     *                   otherwise
      * @return <code>null</code> if no problems found or not applicable at file level
      */
     @Nullable
     @Override
-    public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
+    public ProblemDescriptor[] checkFile(@NotNull PsiFile file,
+                                         @NotNull InspectionManager manager,
+                                         boolean isOnTheFly) {
         final VirtualFile virtualFile = file.getVirtualFile();
         if (!(file instanceof IgnoreFile) || !Utils.isInProject(virtualFile, file.getProject())) {
             return null;
@@ -217,19 +220,28 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
      *
      * @param coveringEntry entry that covers message related
      * @param virtualFile   current working file
-     * @param onTheFly      true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
+     * @param onTheFly      true if called during on the fly editor highlighting. Called from Inspect Code action
+     *                      otherwise
      * @return generated message {@link String}
      */
     @NotNull
-    private static String message(@NotNull IgnoreEntry coveringEntry, @NotNull VirtualFile virtualFile, boolean onTheFly) {
+    private static String message(@NotNull IgnoreEntry coveringEntry,
+                                  @NotNull VirtualFile virtualFile,
+                                  boolean onTheFly) {
         Document document = FileDocumentManager.getInstance().getDocument(virtualFile);
         if (onTheFly || document == null) {
-            return IgnoreBundle.message("codeInspection.coverEntry.message", "\'" + coveringEntry.getText() + "\'");
+            return IgnoreBundle.message(
+                    "codeInspection.coverEntry.message",
+                    "\'" + coveringEntry.getText() + "\'"
+            );
         }
 
         int startOffset = coveringEntry.getTextRange().getStartOffset();
-        return IgnoreBundle.message("codeInspection.coverEntry.message",
-                "<a href=\"" + virtualFile.getUrl() + Constants.HASH + startOffset + "\">" + coveringEntry.getText() + "</a>");
+        return IgnoreBundle.message(
+                "codeInspection.coverEntry.message",
+                "<a href=\"" + virtualFile.getUrl() + Constants.HASH + startOffset + "\">" +
+                        coveringEntry.getText() + "</a>"
+        );
     }
 
     /**

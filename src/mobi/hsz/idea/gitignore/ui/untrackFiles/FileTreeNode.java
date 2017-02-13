@@ -45,7 +45,7 @@ public class FileTreeNode extends CheckedTreeNode {
     /** Current {@link Project} element. */
     @NotNull
     private final Project project;
-    
+
     /** {@link Repository} of the given {@link #file}. */
     @Nullable
     private final Repository repository;
@@ -84,7 +84,7 @@ public class FileTreeNode extends CheckedTreeNode {
 
     /**
      * Returns {@link Repository} for given {@link #file}.
-     * 
+     *
      * @return repository
      */
     @Nullable

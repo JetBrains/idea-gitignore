@@ -70,7 +70,8 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Set;
 
-import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.*;
+import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.STARRED;
+import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.USER;
 
 /**
  * {@link GeneratorDialog} responsible for displaying list of all available templates and adding selected ones
@@ -362,7 +363,10 @@ public class GeneratorDialog extends DialogWrapper {
         DefaultActionGroup actions = new DefaultActionGroup();
         actions.add(actionManager.createExpandAllAction(treeExpander, tree));
         actions.add(actionManager.createCollapseAllAction(treeExpander, tree));
-        actions.add(new AnAction(IgnoreBundle.message("dialog.generator.unselectAll"), null, AllIcons.Actions.Unselectall) {
+        actions.add(new AnAction(
+                IgnoreBundle.message("dialog.generator.unselectAll"),
+                null,
+                AllIcons.Actions.Unselectall) {
             @Override
             public void update(AnActionEvent e) {
                 e.getPresentation().setEnabled(!checked.isEmpty());
@@ -451,7 +455,8 @@ public class GeneratorDialog extends DialogWrapper {
                                 StringUtil.replaceChar(StringUtil.notNullize(template.getContent()), '\r', '\0') : "";
                         previewDocument.replaceString(0, previewDocument.getTextLength(), content);
 
-                        List<Pair<Integer, Integer>> pairs = getFilterRanges(profileFilter.getTextEditor().getText(), content);
+                        List<Pair<Integer, Integer>> pairs =
+                                getFilterRanges(profileFilter.getTextEditor().getText(), content);
                         highlightWords(pairs);
                     }
                 });

@@ -65,7 +65,8 @@ public class IgnoreBraceMatcher implements PairedBraceMatcher {
      * @return true / false as described
      */
     @Override
-    public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType, @Nullable IElementType contextType) {
+    public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType,
+                                                   @Nullable IElementType contextType) {
         return true;
     }
 

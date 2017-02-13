@@ -49,10 +49,11 @@ import javax.swing.event.HyperlinkEvent;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.7
  */
-public class TrackedIgnoredFilesComponent extends AbstractProjectComponent implements IgnoreManager.TrackedIgnoredListener {
+public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
+        implements IgnoreManager.TrackedIgnoredListener {
     /** Disable action event. */
     private static final String DISABLE_ACTION = "#disable";
-    
+
     /** {@link MessageBusConnection} instance. */
     private MessageBusConnection messageBus;
 

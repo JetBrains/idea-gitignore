@@ -71,7 +71,8 @@ import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIgnoredListener.TRACK
 public class CacheMap {
     /** Main cache map instance. */
     @NotNull
-    private final ConcurrentMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Matcher, Boolean>>>> map = ContainerUtil.newConcurrentMap();
+    private final ConcurrentMap<IgnoreFile, Pair<Set<Integer>, List<Pair<Matcher, Boolean>>>> map =
+            ContainerUtil.newConcurrentMap();
 
     /** Cache {@link HashMap} to store files statuses. */
     @NotNull
@@ -92,18 +93,18 @@ public class CacheMap {
     /** {@link MessageBus} instance. */
     @NotNull
     private final MessageBus messageBus;
-    
+
     /** Task to fetch tracked and ignored files using Git repositories. */
     @NotNull
     private TrackedIgnoredFilesRunnable trackedIgnoredFilesRunnable = new TrackedIgnoredFilesRunnable();
-    
+
     /** Timer for {@link #trackedIgnoredFilesRunnable}. */
     @Nullable
     private ScheduledFuture<?> trackedIgnoredFilesTimer;
 
     /**
      * Returns tracked and ignored files stored in {@link #trackedIgnoredFiles}.
-     * 
+     *
      * @return tracked and ignored files map
      */
     @NotNull
@@ -167,7 +168,7 @@ public class CacheMap {
 
     /**
      * Looks for given {@link VirtualFile} and removes it from the cache map.
-     * 
+     *
      * @param file to remove
      */
     public void cleanup(@NotNull VirtualFile file) {
@@ -178,13 +179,13 @@ public class CacheMap {
         }
         refresh();
     }
-    
+
     /** Clears cache. */
     public void clear() {
         map.clear();
         refresh();
     }
-    
+
     /** Refreshes statuses and {@link #trackedIgnoredFiles} list. */
     public void refresh() {
         statuses.clear();
@@ -192,7 +193,7 @@ public class CacheMap {
         fetchTrackedIgnoredFiles();
         statusManager.fileStatusesChanged();
     }
-    
+
     /**
      * Method loops over {@link GitRepository} repositories and checks if they contain any of
      * tracked files that are also ignored with .gitignore files.
@@ -240,8 +241,8 @@ public class CacheMap {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             public void run() {
                 VirtualFile virtualFile = file.getVirtualFile();
-                if (virtualFile != null && (virtualFile instanceof LightVirtualFile
-                        || (virtualFile instanceof VirtualFileWithId && ((VirtualFileWithId) virtualFile).getId() > 0))) {
+                if (virtualFile != null && (virtualFile instanceof LightVirtualFile ||
+                        (virtualFile instanceof VirtualFileWithId && ((VirtualFileWithId) virtualFile).getId() > 0))) {
                     file.acceptChildren(visitor);
                 }
             }
@@ -262,7 +263,8 @@ public class CacheMap {
             statuses.put(file, status);
         }
 
-        final List<IgnoreFile> files = ContainerUtil.reverse(Utils.ignoreFilesSort(ContainerUtil.newArrayList(map.keySet())));
+        final List<IgnoreFile> files =
+                ContainerUtil.reverse(Utils.ignoreFilesSort(ContainerUtil.newArrayList(map.keySet())));
         final ProjectLevelVcsManager projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project);
 
         for (final IgnoreFile ignoreFile : files) {
@@ -349,7 +351,7 @@ public class CacheMap {
 
         /**
          * Rebuilds {@link #trackedIgnoredFiles} map.
-         * 
+         *
          * @param silent propagate {@link IgnoreManager.TrackedIgnoredListener#TRACKED_IGNORED} event
          */
         public void run(boolean silent) {

@@ -35,7 +35,7 @@ import com.intellij.psi.PsiFile;
 
 /**
  * Util class that holds common {@link DataKey} list.
- * 
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.6
  */

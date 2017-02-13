@@ -115,12 +115,11 @@ public class IgnoreParserDefinition implements ParserDefinition {
     }
 
     /**
-     * Returns the set of token types which are treated as whitespace by the PSI builder.
-     * Tokens of those types are automatically skipped by PsiBuilder. Whitespace elements
-     * on the bounds of nodes built by PsiBuilder are automatically excluded from the text
-     * range of the nodes.
-     * <p><strong>It is strongly advised you return TokenSet that only contains {@link com.intellij.psi.TokenType#WHITE_SPACE},
-     * which is suitable for all the languages unless you really need to use special whitespace token</strong>
+     * Returns the set of token types which are treated as whitespace by the PSI builder. Tokens of those types are
+     * automatically skipped by PsiBuilder. Whitespace elements on the bounds of nodes built by PsiBuilder are
+     * automatically excluded from the text range of the nodes. <p><strong>It is strongly advised you return TokenSet
+     * that only contains {@link com.intellij.psi.TokenType#WHITE_SPACE}, which is suitable for all the languages unless
+     * you really need to use special whitespace token</strong>
      *
      * @return the set of whitespace token types.
      */
@@ -184,13 +183,14 @@ public class IgnoreParserDefinition implements ParserDefinition {
     }
 
     /**
-     * Checks if the specified two token types need to be separated by a space according to the language grammar.
-     * For example, in Java two keywords are always separated by a space; a keyword and an opening parenthesis may
-     * be separated or not separated. This is used for automatic whitespace insertion during AST modification operations.
+     * Checks if the specified two token types need to be separated by a space according to the language grammar. For
+     * example, in Java two keywords are always separated by a space; a keyword and an opening parenthesis may be
+     * separated or not separated. This is used for automatic whitespace insertion during AST modification operations.
      *
      * @param left  the first token to check.
      * @param right the second token to check.
      * @return the spacing requirements.
+     *
      * @since 6.0
      */
     @Override

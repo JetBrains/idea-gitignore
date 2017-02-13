@@ -44,10 +44,11 @@ public class IgnoreEntryManipulator extends AbstractElementManipulator<IgnoreEnt
     /**
      * Changes the element's text to a new value
      *
-     * @param entry element to be changed
-     * @param range range within the element
+     * @param entry      element to be changed
+     * @param range      range within the element
      * @param newContent new element text
      * @return changed element
+     *
      * @throws IncorrectOperationException if something goes wrong
      */
     @Override
@@ -77,7 +78,10 @@ public class IgnoreEntryManipulator extends AbstractElementManipulator<IgnoreEnt
     public TextRange getRangeInElement(@NotNull IgnoreEntry element) {
         IgnoreNegation negation = element.getNegation();
         if (negation != null) {
-            return TextRange.create(negation.getStartOffsetInParent() + negation.getTextLength(), element.getTextLength());
+            return TextRange.create(
+                    negation.getStartOffsetInParent() + negation.getTextLength(),
+                    element.getTextLength()
+            );
         }
         return super.getRangeInElement(element);
     }

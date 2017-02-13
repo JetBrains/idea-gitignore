@@ -203,7 +203,7 @@ public class IgnoreLanguage extends Language {
      * @return outer files
      */
     @NotNull
-    final public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
+    public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
         return OuterIgnoreLoaderComponent.getInstance(project).getOuterFiles(this);
     }
 
@@ -213,7 +213,8 @@ public class IgnoreLanguage extends Language {
      * @return language is enabled
      */
     public boolean isEnabled() {
-        TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = IgnoreSettings.getInstance().getLanguagesSettings().get(this);
+        TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data =
+                IgnoreSettings.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {
             value = Boolean.valueOf(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE).toString());
@@ -227,7 +228,8 @@ public class IgnoreLanguage extends Language {
      * @return new file action is allowed
      */
     public boolean isNewAllowed() {
-        TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = IgnoreSettings.getInstance().getLanguagesSettings().get(this);
+        TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data =
+                IgnoreSettings.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {
             value = Boolean.valueOf(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE).toString());

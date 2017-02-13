@@ -53,7 +53,8 @@ public class FossilLanguage extends IgnoreLanguage {
                     @Nullable
                     @Override
                     public VirtualFile fetch(@NotNull Project project) {
-                        return project.getBaseDir().findFileByRelativePath(INSTANCE.getVcsDirectory() + "/" + INSTANCE.getFilename());
+                        return project.getBaseDir()
+                                .findFileByRelativePath(INSTANCE.getVcsDirectory() + "/" + INSTANCE.getFilename());
                     }
                 }
 

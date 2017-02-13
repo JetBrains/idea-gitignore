@@ -81,7 +81,6 @@ public class ExternalExec {
     @NonNls
     private static final String GIT_TRACKED_IGNORED_FILES = "ls-files --ignored --exclude-standard";
 
-
     /** Git command to remove file from tracking. */
     @NonNls
     private static final String GIT_REMOVE_FILE_FROM_TRACKING = "rm --cached --force";
@@ -111,7 +110,12 @@ public class ExternalExec {
             return ContainerUtil.newArrayList();
         }
 
-        ArrayList<String> result = run(language, GIT_UNIGNORED_FILES, file.getParent(), new GitUnignoredFilesOutputParser());
+        ArrayList<String> result = run(
+                language,
+                GIT_UNIGNORED_FILES,
+                file.getParent(),
+                new GitUnignoredFilesOutputParser()
+        );
         return Utils.notNullize(result);
     }
 
@@ -123,7 +127,12 @@ public class ExternalExec {
      */
     @NotNull
     public static List<String> getTrackedIgnoredFiles(@NotNull Repository repository) {
-        ArrayList<String> result = run(GitLanguage.INSTANCE, GIT_TRACKED_IGNORED_FILES, repository.getRoot(), new SimpleOutputParser());
+        ArrayList<String> result = run(
+                GitLanguage.INSTANCE,
+                GIT_TRACKED_IGNORED_FILES,
+                repository.getRoot(),
+                new SimpleOutputParser()
+        );
         return Utils.notNullize(result);
     }
 
@@ -178,7 +187,9 @@ public class ExternalExec {
      * @param command   to call
      * @param directory current working directory
      */
-    private static void run(@NotNull IgnoreLanguage language, @NotNull String command, @Nullable VirtualFile directory) {
+    private static void run(@NotNull IgnoreLanguage language,
+                            @NotNull String command,
+                            @Nullable VirtualFile directory) {
         run(language, command, directory, null);
     }
 
@@ -193,8 +204,10 @@ public class ExternalExec {
      * @return result of the call
      */
     @Nullable
-    private static <T> ArrayList<T> run(@NotNull IgnoreLanguage language, @NotNull String command,
-                                        @Nullable VirtualFile directory, @Nullable final ExecutionOutputParser<T> parser) {
+    private static <T> ArrayList<T> run(@NotNull IgnoreLanguage language,
+                                        @NotNull String command,
+                                        @Nullable VirtualFile directory,
+                                        @Nullable final ExecutionOutputParser<T> parser) {
         final String bin = bin(language);
         if (bin == null) {
             return null;

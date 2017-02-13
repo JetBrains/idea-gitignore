@@ -75,7 +75,7 @@ public class Resources {
                 if (list != null) {
                     BufferedReader br = new BufferedReader(new StringReader(list));
 
-                    for (String line; (line = br.readLine()) != null; ) {
+                    for (String line; (line = br.readLine()) != null;) {
                         line = "/" + line;
                         File file = getResource(line);
                         if (file != null) {
@@ -173,8 +173,8 @@ public class Resources {
         }
 
         /**
-         * Builds a new instance of {@link Template}.
-         * {@link Container} will be set to {@link Container#ROOT} or {@link Container#GLOBAL} depending on its location.
+         * Builds a new instance of {@link Template}. {@link Container} will be set to {@link Container#ROOT} or {@link
+         * Container#GLOBAL} depending on its location.
          *
          * @param file    template's file
          * @param content template's content

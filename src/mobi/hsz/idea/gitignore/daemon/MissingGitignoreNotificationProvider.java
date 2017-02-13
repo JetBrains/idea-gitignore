@@ -36,8 +36,8 @@ import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
-import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
@@ -48,8 +48,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 /**
- * Editor notification provider that checks if there is {@link mobi.hsz.idea.gitignore.lang.kind.GitLanguage#getFilename()} in root directory
- * and suggest to create one.
+ * Editor notification provider that checks if there is {@link GitLanguage#getFilename()}
+ * in root directory and suggest to create one.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.3.3
@@ -57,7 +57,8 @@ import javax.swing.*;
 public class MissingGitignoreNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
     /** Notification key. */
     @NotNull
-    private static final Key<EditorNotificationPanel> KEY = Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
+    private static final Key<EditorNotificationPanel> KEY =
+            Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
 
     /** Current project. */
     @NotNull
@@ -151,7 +152,8 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
             public void run() {
                 PsiDirectory directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
                 if (directory != null) {
-                    PsiFile file = new CreateFileCommandAction(project, directory, fileType).execute().getResultObject();
+                    PsiFile file = new CreateFileCommandAction(project, directory, fileType)
+                            .execute().getResultObject();
                     FileEditorManager.getInstance(project).openFile(file.getVirtualFile(), true);
                     new GeneratorDialog(project, file).show();
                 }

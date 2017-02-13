@@ -102,9 +102,9 @@ public class UntrackFilesDialog extends DialogWrapper {
 
     /**
      * Builds recursively nested {@link FileTreeNode} nodes structure.
-     * 
-     * @param file current {@link VirtualFile} instance
-     * @param repository {@link Repository} of given file 
+     *
+     * @param file       current {@link VirtualFile} instance
+     * @param repository {@link Repository} of given file
      * @return leaf
      */
     @NotNull
@@ -129,7 +129,7 @@ public class UntrackFilesDialog extends DialogWrapper {
 
     /**
      * Creates center panel of {@link DialogWrapper}.
-     * 
+     *
      * @return panel
      */
     @Nullable
@@ -199,7 +199,7 @@ public class UntrackFilesDialog extends DialogWrapper {
         final ActionToolbar actionToolbar = ActionManager.getInstance()
                 .createActionToolbar(ActionPlaces.UNKNOWN, actions, true);
         actionToolbar.setTargetComponent(target);
-        
+
         return actionToolbar;
     }
 
@@ -215,12 +215,12 @@ public class UntrackFilesDialog extends DialogWrapper {
         if (leaf == null) {
             return;
         }
-        
+
         do {
             if (!leaf.isChecked()) {
                 continue;
             }
-            
+
             final Repository repository = leaf.getRepository();
             final VirtualFile file = leaf.getFile();
             if (repository == null) {

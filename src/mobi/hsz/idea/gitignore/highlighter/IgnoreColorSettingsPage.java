@@ -161,6 +161,7 @@ public class IgnoreColorSettingsPage implements ColorSettingsPage {
      * Loads sample .gitignore file
      *
      * @return the text loaded from {@link #SAMPLE_GITIGNORE_PATH}
+     *
      * @see #getDemoText()
      * @see #SAMPLE_GITIGNORE_PATH
      * @see #SAMPLE_GITIGNORE

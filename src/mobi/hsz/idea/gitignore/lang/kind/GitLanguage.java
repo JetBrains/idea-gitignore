@@ -30,8 +30,8 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
-import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,7 +63,8 @@ public class GitLanguage extends IgnoreLanguage {
                     @Nullable
                     @Override
                     public VirtualFile fetch(@NotNull Project project) {
-                        return project.getBaseDir().findFileByRelativePath(INSTANCE.getVcsDirectory() + "/info/exclude");
+                        return project.getBaseDir().
+                                findFileByRelativePath(INSTANCE.getVcsDirectory() + "/info/exclude");
                     }
                 }
 

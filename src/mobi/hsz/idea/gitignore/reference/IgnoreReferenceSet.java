@@ -156,7 +156,11 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         int index = 0;
 
         if (str.equals(separatorString)) {
-            final FileReference fileReference = createFileReference(new TextRange(startInElement, startInElement + sepLen), index++, separatorString);
+            final FileReference fileReference = createFileReference(
+                    new TextRange(startInElement, startInElement + sepLen),
+                    index++,
+                    separatorString
+            );
             referencesList.add(fileReference);
         }
 

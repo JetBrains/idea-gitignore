@@ -84,7 +84,6 @@ import static com.intellij.ui.IdeBorderFactory.createEmptyBorder;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE;
 
-
 /**
  * UI form for {@link IgnoreSettings} edition.
  *
@@ -124,10 +123,10 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /** Enable unignore files group. */
     public JCheckBox unignoreFiles;
-    
+
     /** Inform about ignored files that are still tracked. */
     public JCheckBox informTrackedIgnored;
-    
+
     /** Panel with information about donations. */
     private JPanel donatePanel;
 
@@ -162,15 +161,21 @@ public class IgnoreSettingsPanel implements Disposable {
         donatePanel = new JBPanel(new BorderLayout());
         donatePanel.setBorder(new EmptyBorder(10, 0, 10, 0));
         donatePanel.add(new JBLabel(IgnoreBundle.message("settings.general.donate")), BorderLayout.WEST);
-        donatePanel.add(createLink("PayPal", "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL"), BorderLayout.CENTER);
-        donatePanel.add(createLink("BTC", "https://blockchain.info/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1"), BorderLayout.EAST);
+        donatePanel.add(createLink(
+                "PayPal",
+                "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL"
+        ), BorderLayout.CENTER);
+        donatePanel.add(createLink(
+                "BTC",
+                "https://blockchain.info/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1"
+        ), BorderLayout.EAST);
     }
 
     /**
      * Creates {@link ActionLink} component with URL open action.
-     * 
+     *
      * @param title title of link
-     * @param url url to open
+     * @param url   url to open
      * @return {@link ActionLink} component
      */
     private ActionLink createLink(@NotNull String title, @NotNull final String url) {
@@ -194,7 +199,7 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /**
      * Returns value of @{link {@link #missingGitignore}} field.
-     * 
+     *
      * @return {@link #missingGitignore} is selected
      */
     public boolean isMissingGitignore() {
@@ -203,7 +208,7 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /**
      * Sets value of {@link #missingGitignore} field.
-     * 
+     *
      * @param selected value for {@link #missingGitignore}
      */
     public void setMissingGitignore(boolean selected) {
@@ -212,7 +217,7 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /**
      * Returns value of @{link {@link #ignoredFileStatus}} field.
-     * 
+     *
      * @return {@link #ignoredFileStatus} is selected
      */
     public boolean isIgnoredFileStatus() {
@@ -221,7 +226,7 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /**
      * Sets value of {@link #ignoredFileStatus} field.
-     * 
+     *
      * @param selected value for {@link #ignoredFileStatus}
      */
     public void setIgnoredFileStatus(boolean selected) {
@@ -240,7 +245,7 @@ public class IgnoreSettingsPanel implements Disposable {
 
     /**
      * Sets new {@link IgnoreSettings.UserTemplate} list to {@link #templatesListPanel}.
-     * 
+     *
      * @param userTemplates {@link IgnoreSettings.UserTemplate} list
      */
     public void setUserTemplates(@NotNull List<IgnoreSettings.UserTemplate> userTemplates) {
@@ -380,26 +385,34 @@ public class IgnoreSettingsPanel implements Disposable {
             final DefaultActionGroup group = new DefaultActionGroup();
             group.addSeparator();
 
-            group.add(new AnAction(IgnoreBundle.message("action.importTemplates"), IgnoreBundle.message("action.importTemplates.description"), AllIcons.Actions.Install) {
+            group.add(new AnAction(
+                    IgnoreBundle.message("action.importTemplates"),
+                    IgnoreBundle.message("action.importTemplates.description"),
+                    AllIcons.Actions.Install
+            ) {
                 @SuppressWarnings("unchecked")
                 @Override
                 public void actionPerformed(final AnActionEvent event) {
-                    final FileChooserDescriptor descriptor = new FileChooserDescriptor(true, false, true, false, true, false) {
-                        @Override
-                        public boolean isFileVisible(VirtualFile file, boolean showHiddenFiles) {
-                            return super.isFileVisible(file, showHiddenFiles) &&
-                                    (file.isDirectory() || FILE_EXTENSION.equals(file.getExtension()) ||
-                                            file.getFileType() == FileTypes.ARCHIVE);
-                        }
+                    final FileChooserDescriptor descriptor =
+                            new FileChooserDescriptor(true, false, true, false, true, false) {
+                                @Override
+                                public boolean isFileVisible(VirtualFile file, boolean showHiddenFiles) {
+                                    return super.isFileVisible(file, showHiddenFiles) &&
+                                            (file.isDirectory() || FILE_EXTENSION.equals(file.getExtension()) ||
+                                                    file.getFileType() == FileTypes.ARCHIVE);
+                                }
 
-                        @Override
-                        public boolean isFileSelectable(VirtualFile file) {
-                            return file.getFileType() == StdFileTypes.XML;
-                        }
-                    };
+                                @Override
+                                public boolean isFileSelectable(VirtualFile file) {
+                                    return file.getFileType() == StdFileTypes.XML;
+                                }
+                            };
                     descriptor.setDescription(IgnoreBundle.message("action.importTemplates.wrapper.description"));
                     descriptor.setTitle(IgnoreBundle.message("action.importTemplates.wrapper"));
-                    descriptor.putUserData(LangDataKeys.MODULE_CONTEXT, LangDataKeys.MODULE.getData(event.getDataContext()));
+                    descriptor.putUserData(
+                            LangDataKeys.MODULE_CONTEXT,
+                            LangDataKeys.MODULE.getData(event.getDataContext())
+                    );
 
                     final VirtualFile file = FileChooser.chooseFile(descriptor, templatesListPanel, null, null);
                     if (file != null) {
@@ -425,24 +438,37 @@ public class IgnoreSettingsPanel implements Disposable {
                 }
             });
 
-            group.add(new AnAction(IgnoreBundle.message("action.exportTemplates"), IgnoreBundle.message("action.exportTemplates.description"), AllIcons.Actions.Export) {
+            group.add(new AnAction(
+                    IgnoreBundle.message("action.exportTemplates"),
+                    IgnoreBundle.message("action.exportTemplates.description"),
+                    AllIcons.Actions.Export
+            ) {
                 @Override
                 public void actionPerformed(AnActionEvent event) {
                     final VirtualFileWrapper wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
-                            new FileSaverDescriptor(IgnoreBundle.message("action.exportTemplates.wrapper"), "", FILE_EXTENSION),
+                            new FileSaverDescriptor(
+                                    IgnoreBundle.message("action.exportTemplates.wrapper"),
+                                    "",
+                                    FILE_EXTENSION
+                            ),
                             templatesListPanel
                     ).save(null, null);
 
                     if (wrapper != null) {
                         final List<IgnoreSettings.UserTemplate> items = getCurrentItems();
-                        final org.jdom.Document document = new org.jdom.Document(IgnoreSettings.createTemplatesElement(items));
+                        final org.jdom.Document document = new org.jdom.Document(
+                                IgnoreSettings.createTemplatesElement(items)
+                        );
                         try {
                             JDOMUtil.writeDocument(document, wrapper.getFile(), Constants.NEWLINE);
                             Messages.showInfoMessage(templatesListPanel,
                                     IgnoreBundle.message("action.exportTemplates.success", items.size()),
                                     IgnoreBundle.message("action.exportTemplates.success.title"));
                         } catch (IOException e) {
-                            Messages.showErrorDialog(templatesListPanel, IgnoreBundle.message("action.exportTemplates.error"));
+                            Messages.showErrorDialog(
+                                    templatesListPanel,
+                                    IgnoreBundle.message("action.exportTemplates.error")
+                            );
                         }
                     }
                 }
@@ -738,6 +764,7 @@ public class IgnoreSettingsPanel implements Disposable {
          * @param row    the row whose value is to be queried
          * @param column the column whose value is to be queried
          * @return true
+         *
          * @see #setValueAt
          */
         @Override
@@ -752,8 +779,8 @@ public class IgnoreSettingsPanel implements Disposable {
          * @param row    the row whose value is to be queried
          * @param column the column whose value is to be queried
          * @return the value Object at the specified cell
-         * @throws ArrayIndexOutOfBoundsException if an invalid row or
-         *                                        column was given
+         *
+         * @throws ArrayIndexOutOfBoundsException if an invalid row or column was given
          */
         @Override
         public Object getValueAt(int row, int column) {

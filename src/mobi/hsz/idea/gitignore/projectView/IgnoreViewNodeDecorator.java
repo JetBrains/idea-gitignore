@@ -46,7 +46,7 @@ import static com.intellij.ui.SimpleTextAttributes.STYLE_SMALLER;
 /**
  * {@link ProjectViewNodeDecorator} implementation to show on the Project Tree if ignored file is
  * still tracked with Git.
- * 
+ *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.7
  */
@@ -64,7 +64,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
 
     /**
      * Constructor.
-     * 
+     *
      * @param project current project
      */
     public IgnoreViewNodeDecorator(@NotNull Project project) {
@@ -75,7 +75,8 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
     /**
      * Modifies the presentation of a project view node.
      *
-     * @param node the node to modify (use {@link ProjectViewNode#getValue()} to get the object represented by the node).
+     * @param node the node to modify (use {@link ProjectViewNode#getValue()} to get the object represented by the
+     *             node).
      * @param data the current presentation of the node, which you can modify as necessary.
      */
     @Override
@@ -84,7 +85,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
         if (file == null) {
             return;
         }
-        
+
         if (manager.isFileIgnoredAndTracked(file)) {
             Utils.addColoredText(
                     data,
@@ -112,7 +113,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
     /**
      * Modifies the presentation of a package dependencies view node.
      *
-     * @param node the node to modify.
+     * @param node         the node to modify.
      * @param cellRenderer the current renderer for the node, which you can modify as necessary.
      */
     @Override

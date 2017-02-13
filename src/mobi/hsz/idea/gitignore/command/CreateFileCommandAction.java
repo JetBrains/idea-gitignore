@@ -53,7 +53,9 @@ public class CreateFileCommandAction extends WriteCommandAction<PsiFile> {
      * @param directory working directory
      * @param fileType  working file type
      */
-    public CreateFileCommandAction(@NotNull Project project, @NotNull PsiDirectory directory, @NotNull IgnoreFileType fileType) {
+    public CreateFileCommandAction(@NotNull Project project,
+                                   @NotNull PsiDirectory directory,
+                                   @NotNull IgnoreFileType fileType) {
         super(project);
         this.directory = directory;
         this.fileType = fileType;

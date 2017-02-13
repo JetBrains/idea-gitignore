@@ -45,7 +45,7 @@ public class IgnoreUpdateComponent extends AbstractProjectComponent {
 
     /**
      * Constructor.
-     * 
+     *
      * @param project current project
      */
     protected IgnoreUpdateComponent(@NotNull Project project) {

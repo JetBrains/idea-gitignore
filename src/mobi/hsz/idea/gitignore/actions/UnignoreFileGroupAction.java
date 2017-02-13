@@ -48,7 +48,11 @@ public class UnignoreFileGroupAction extends IgnoreFileGroupAction {
      * Describes action's presentation.
      */
     public UnignoreFileGroupAction() {
-        super("action.addToUnignore.group", "action.addToUnignore.group.description", "action.addToUnignore.group.noPopup");
+        super(
+                "action.addToUnignore.group",
+                "action.addToUnignore.group.description",
+                "action.addToUnignore.group.noPopup"
+        );
         settings = IgnoreSettings.getInstance();
     }
 

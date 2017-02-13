@@ -195,6 +195,7 @@ public class Utils {
      * @param project current project
      * @param file    current file
      * @return collection of suitable Ignore files
+     *
      * @throws ExternalFileException
      */
     public static List<VirtualFile> getSuitableIgnoreFiles(@NotNull Project project, @NotNull IgnoreFileType fileType,
@@ -470,7 +471,9 @@ public class Utils {
     @Contract(pure = true)
     public static String trimLeading(@NotNull String string, final char character) {
         int index = 0;
-        while (index < string.length() && string.charAt(index) == character) index++;
+        while (index < string.length() && string.charAt(index) == character) {
+            index++;
+        }
         return string.substring(index);
     }
 
@@ -500,7 +503,7 @@ public class Utils {
      * errors related to the some API changes.
      *
      * @param list method to check
-     * @param <T> container type
+     * @param <T>  container type
      * @return not null container
      */
     @NotNull
@@ -513,7 +516,7 @@ public class Utils {
      * errors related to the some API changes.
      *
      * @param items method to check
-     * @param <T> container type
+     * @param <T>   container type
      * @return not null container
      */
     public static <T> T getFirstItem(@Nullable List<T> items) {
@@ -522,9 +525,9 @@ public class Utils {
 
     /**
      * Adds {@link ColoredFragment} to the node's presentation.
-     * 
-     * @param data node's presentation data
-     * @param text text to add
+     *
+     * @param data       node's presentation data
+     * @param text       text to add
      * @param attributes custom {@link SimpleTextAttributes}
      */
     public static void addColoredText(@NotNull PresentationData data, @NotNull String text,

@@ -79,7 +79,10 @@ public class IgnoreSyntaxEntryFix extends LocalQuickFixAndIntentionActionOnPsiEl
         if (startElement instanceof IgnoreSyntax) {
             PsiElement value = ((IgnoreSyntax) startElement).getValue();
             if (editor != null) {
-                editor.getSelectionModel().setSelection(value.getTextOffset(), value.getTextOffset() + value.getTextLength());
+                editor.getSelectionModel().setSelection(
+                        value.getTextOffset(),
+                        value.getTextOffset() + value.getTextLength()
+                );
             }
             new CodeCompletionHandlerBase(CompletionType.BASIC).invokeCompletion(project, editor);
         }

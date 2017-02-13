@@ -48,12 +48,14 @@ public class IgnoreRelativeEntryInspection extends LocalInspectionTool {
      *
      * @param file       current working file yo check
      * @param manager    {@link InspectionManager} to ask for {@link ProblemDescriptor}'s from
-     * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
+     * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action
+     *                   otherwise
      * @return <code>null</code> if no problems found or not applicable at file level
      */
     @Nullable
     @Override
-    public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
+    public ProblemDescriptor[] checkFile(@NotNull PsiFile file,
+                                         @NotNull InspectionManager manager, boolean isOnTheFly) {
         if (!(file instanceof IgnoreFile)) {
             return null;
         }

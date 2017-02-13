@@ -35,38 +35,56 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
  */
 public class IgnoreHighlighterColors {
     /** Default style for regular comment started with # */
-    public static final TextAttributesKey COMMENT = TextAttributesKey.createTextAttributesKey("IGNORE.COMMENT",
-            DefaultLanguageHighlighterColors.LINE_COMMENT);
+    public static final TextAttributesKey COMMENT = TextAttributesKey.createTextAttributesKey(
+            "IGNORE.COMMENT",
+            DefaultLanguageHighlighterColors.LINE_COMMENT
+    );
 
     /** Default style for section comment started with ## */
-    public static final TextAttributesKey SECTION = TextAttributesKey.createTextAttributesKey("IGNORE.SECTION",
-            DefaultLanguageHighlighterColors.DOC_COMMENT);
+    public static final TextAttributesKey SECTION = TextAttributesKey.createTextAttributesKey(
+            "IGNORE.SECTION",
+            DefaultLanguageHighlighterColors.DOC_COMMENT
+    );
 
     /** Default style for header comment started with ### */
-    public static final TextAttributesKey HEADER = TextAttributesKey.createTextAttributesKey("IGNORE.HEADER",
-            DefaultLanguageHighlighterColors.DOC_COMMENT_TAG);
+    public static final TextAttributesKey HEADER = TextAttributesKey.createTextAttributesKey(
+            "IGNORE.HEADER",
+            DefaultLanguageHighlighterColors.DOC_COMMENT_TAG
+    );
 
     /** Default style for negation element - ! in the beginning of the entry */
-    public static final TextAttributesKey NEGATION = TextAttributesKey.createTextAttributesKey("IGNORE.NEGATION",
-            DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey NEGATION = TextAttributesKey.createTextAttributesKey(
+            "IGNORE.NEGATION",
+            DefaultLanguageHighlighterColors.KEYWORD
+    );
 
     /** Default style for negation element - ! in the beginning of the entry */
-    public static final TextAttributesKey BRACKET = TextAttributesKey.createTextAttributesKey("IGNORE.BRACKET",
-            DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey BRACKET = TextAttributesKey.createTextAttributesKey(
+            "IGNORE.BRACKET",
+            DefaultLanguageHighlighterColors.KEYWORD
+    );
 
     /** Default style for negation element - ! in the beginning of the entry */
-    public static final TextAttributesKey SLASH = TextAttributesKey.createTextAttributesKey("IGNORE.SLASH",
-            DefaultLanguageHighlighterColors.COMMA);
+    public static final TextAttributesKey SLASH = TextAttributesKey.createTextAttributesKey(
+            "IGNORE.SLASH",
+            DefaultLanguageHighlighterColors.COMMA
+    );
 
     /** Default style for syntax element - syntax: */
-    public static final TextAttributesKey SYNTAX = TextAttributesKey.createTextAttributesKey("IGNORE.SYNTAX",
-            DefaultLanguageHighlighterColors.INSTANCE_FIELD);
+    public static final TextAttributesKey SYNTAX = TextAttributesKey.createTextAttributesKey(
+            "IGNORE.SYNTAX",
+            DefaultLanguageHighlighterColors.INSTANCE_FIELD
+    );
 
     /** Default style for negation element - ! in the beginning of the entry */
-    public static final TextAttributesKey VALUE = TextAttributesKey.createTextAttributesKey("IGNORE.VALUE",
-            DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey VALUE = TextAttributesKey.createTextAttributesKey(
+            "IGNORE.VALUE",
+            DefaultLanguageHighlighterColors.STRING
+    );
 
     /** Default style for unused entry */
-    public static final TextAttributesKey UNUSED_ENTRY = TextAttributesKey.createTextAttributesKey("IGNORE.UNUSED_ENTRY",
-            DefaultLanguageHighlighterColors.DOC_COMMENT);
+    public static final TextAttributesKey UNUSED_ENTRY = TextAttributesKey.createTextAttributesKey(
+            "IGNORE.UNUSED_ENTRY",
+            DefaultLanguageHighlighterColors.DOC_COMMENT
+    );
 }

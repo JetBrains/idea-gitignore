@@ -55,7 +55,10 @@ public class IgnoreTemplatesFactory implements FileTemplateGroupDescriptorFactor
 
     /** Builds a new instance of {@link IgnoreTemplatesFactory}. */
     public IgnoreTemplatesFactory(IgnoreFileType fileType) {
-        templateGroup = new FileTemplateGroupDescriptor(fileType.getIgnoreLanguage().getDisplayName(), fileType.getIcon());
+        templateGroup = new FileTemplateGroupDescriptor(
+                fileType.getIgnoreLanguage().getDisplayName(),
+                fileType.getIcon()
+        );
         templateGroup.addTemplate(fileType.getIgnoreLanguage().getFilename());
         this.fileType = fileType;
     }
@@ -75,6 +78,7 @@ public class IgnoreTemplatesFactory implements FileTemplateGroupDescriptorFactor
      *
      * @param directory working directory
      * @return file
+     *
      * @throws IncorrectOperationException
      */
     @Nullable
@@ -89,7 +93,12 @@ public class IgnoreTemplatesFactory implements FileTemplateGroupDescriptorFactor
 
         String content = StringUtil.join(TEMPLATE_NOTE, Constants.NEWLINE);
         if (language.isSyntaxSupported() && !IgnoreBundle.Syntax.GLOB.equals(language.getDefaultSyntax())) {
-            content = StringUtil.join(content, IgnoreBundle.Syntax.GLOB.getPresentation(), Constants.NEWLINE, Constants.NEWLINE);
+            content = StringUtil.join(
+                    content,
+                    IgnoreBundle.Syntax.GLOB.getPresentation(),
+                    Constants.NEWLINE,
+                    Constants.NEWLINE
+            );
         }
         final PsiFile file = factory.createFileFromText(filename, fileType, content);
         return (PsiFile) directory.add(file);

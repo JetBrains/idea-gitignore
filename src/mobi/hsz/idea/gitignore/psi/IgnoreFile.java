@@ -69,7 +69,9 @@ public class IgnoreFile extends PsiFileImpl {
 
         final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(this.language);
         if (parserDefinition == null) {
-            throw new RuntimeException("PsiFileBase: language.getParserDefinition() returned null for: " + this.language);
+            throw new RuntimeException(
+                    "PsiFileBase: language.getParserDefinition() returned null for: " + this.language
+            );
         }
         this.parserDefinition = parserDefinition;
 

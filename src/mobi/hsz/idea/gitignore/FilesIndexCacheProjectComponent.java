@@ -171,7 +171,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
                         return true;
                     }
                 });
-                
+
                 cacheMap.put(key, files);
             }
 

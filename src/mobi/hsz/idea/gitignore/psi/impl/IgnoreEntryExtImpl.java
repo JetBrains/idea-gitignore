@@ -70,6 +70,7 @@ public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl implements Ig
      * Checks if current entry is a file - i.e. `file.txt`.
      *
      * @return is file
+     *
      * @see {@link #isDirectory()}
      */
     public boolean isFile() {
@@ -86,7 +87,8 @@ public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl implements Ig
         PsiElement previous = getPrevSibling();
         while (previous != null) {
             if (previous.getNode().getElementType().equals(IgnoreTypes.SYNTAX)) {
-                IgnoreBundle.Syntax syntax = IgnoreBundle.Syntax.find(((IgnoreSyntaxImpl) previous).getValue().getText());
+                IgnoreBundle.Syntax syntax =
+                        IgnoreBundle.Syntax.find(((IgnoreSyntaxImpl) previous).getValue().getText());
                 if (syntax != null) {
                     return syntax;
                 }

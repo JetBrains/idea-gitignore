@@ -105,7 +105,10 @@ public class IgnoreFileAction extends DumbAwareAction {
                             @PropertyKey(resourceBundle = BUNDLE_NAME) String textKey,
                             @PropertyKey(resourceBundle = BUNDLE_NAME) String descriptionKey) {
         super(IgnoreBundle.message(textKey, fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
-                IgnoreBundle.message(descriptionKey, fileType != null ? fileType.getIgnoreLanguage().getFilename() : null),
+                IgnoreBundle.message(
+                        descriptionKey,
+                        fileType != null ? fileType.getIgnoreLanguage().getFilename() : null
+                ),
                 fileType != null ? fileType.getIcon() : null);
         this.ignoreFile = virtualFile;
         this.fileType = fileType;

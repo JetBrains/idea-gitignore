@@ -49,7 +49,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class Glob {
     /** Cache map that holds processed regex statements to the glob rules. */
-    private static final HashMap<String, String> cache = ContainerUtil.newHashMap();
+    private static final HashMap<String, String> CACHE = ContainerUtil.newHashMap();
 
     /** Private constructor to prevent creating {@link Glob} instance. */
     private Glob() {
@@ -132,7 +132,9 @@ public class Glob {
      * @return search result
      */
     @NotNull
-    public static List<String> findAsPaths(@NotNull VirtualFile root, @NotNull IgnoreEntry entry, boolean includeNested) {
+    public static List<String> findAsPaths(@NotNull VirtualFile root,
+                                           @NotNull IgnoreEntry entry,
+                                           boolean includeNested) {
         final List<String> list = ContainerUtil.newArrayList();
         final List<VirtualFile> files = find(root, entry, includeNested);
         for (VirtualFile file : files) {
@@ -162,7 +164,9 @@ public class Glob {
      * @return regex {@link Pattern}
      */
     @Nullable
-    public static Pattern createPattern(@NotNull String rule, @NotNull IgnoreBundle.Syntax syntax, boolean acceptChildren) {
+    public static Pattern createPattern(@NotNull String rule,
+                                        @NotNull IgnoreBundle.Syntax syntax,
+                                        boolean acceptChildren) {
         final String regex = syntax.equals(IgnoreBundle.Syntax.GLOB) ? createRegex(rule, acceptChildren) : rule;
         try {
             return Pattern.compile(regex);
@@ -204,7 +208,7 @@ public class Glob {
     @NotNull
     public static String createRegex(@NotNull String glob, boolean acceptChildren) {
         glob = glob.trim();
-        String cached = cache.get(glob);
+        String cached = CACHE.get(glob);
         if (cached != null) {
             return cached;
         }
@@ -235,7 +239,6 @@ public class Glob {
         }
 
         char[] chars = glob.substring(beginIndex).toCharArray();
-
         for (char ch : chars) {
             if (bracket && ch != ']') {
                 sb.append(ch);
@@ -349,14 +352,13 @@ public class Glob {
         }
 
         sb.append('$');
-
-        cache.put(glob, sb.toString());
+        CACHE.put(glob, sb.toString());
 
         return sb.toString();
     }
 
-    /** Clears {@link Glob#cache} cache. */
+    /** Clears {@link Glob#CACHE} cache. */
     public static void clearCache() {
-        cache.clear();
+        CACHE.clear();
     }
 }

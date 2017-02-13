@@ -72,6 +72,8 @@ public class CloseIgnoredEditorsAction extends CloseEditorsActionBase {
      */
     @Override
     protected String getPresentationText(final boolean inSplitter) {
-        return inSplitter ? IgnoreBundle.message("action.closeIgnored.editors.in.tab.group") : IgnoreBundle.message("action.closeIgnored.editors");
+        return inSplitter ?
+                IgnoreBundle.message("action.closeIgnored.editors.in.tab.group") :
+                IgnoreBundle.message("action.closeIgnored.editors");
     }
 }

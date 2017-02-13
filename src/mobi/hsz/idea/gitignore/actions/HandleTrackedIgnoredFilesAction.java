@@ -46,15 +46,20 @@ import org.jetbrains.annotations.NotNull;
  */
 public class HandleTrackedIgnoredFilesAction extends AnAction {
     /** {@link IgnoreSettings} instance. */
-    public static final IgnoreSettings settings = IgnoreSettings.getInstance();
-    
+    public static final IgnoreSettings SETTINGS = IgnoreSettings.getInstance();
+
     /** Builds a new instance of {@link HandleTrackedIgnoredFilesAction}. */
     public HandleTrackedIgnoredFilesAction() {
-        super(IgnoreBundle.message("action.handleTrackedIgnoredFiles"), IgnoreBundle.message("action.handleTrackedIgnoredFiles.description"), Icons.IGNORE);
+        super(IgnoreBundle.message(
+                "action.handleTrackedIgnoredFiles"),
+                IgnoreBundle.message("action.handleTrackedIgnoredFiles.description"),
+                Icons.IGNORE
+        );
     }
-    
+
     /**
      * Toggles {@link IgnoreSettings#hideIgnoredFiles} value.
+     *
      * @param e action event
      */
     @Override
@@ -80,7 +85,7 @@ public class HandleTrackedIgnoredFilesAction extends AnAction {
 
     /**
      * Helper method to return tracked and ignored files map.
-     * 
+     *
      * @param event current event
      * @return map of files
      */

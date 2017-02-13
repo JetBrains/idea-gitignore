@@ -85,7 +85,9 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
     @Nullable
     @Override
     public JComponent createComponent() {
-        if (settingsPanel == null) settingsPanel = new IgnoreSettingsPanel();
+        if (settingsPanel == null) {
+            settingsPanel = new IgnoreSettingsPanel();
+        }
         reset();
         return settingsPanel.panel;
     }
@@ -106,14 +108,15 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
                 || !Comparing.equal(settings.isAddUnversionedFiles(), settingsPanel.isAddUnversionedFiles())
                 || !Comparing.equal(settings.isUnignoreActions(), settingsPanel.isUnignoreActions())
                 || !Comparing.equal(settings.isInformTrackedIgnored(), settingsPanel.isInformTrackedIgnored())
-                || !settingsPanel.getLanguagesSettings().equalSettings(settings.getLanguagesSettings())
-                ;
+                || !settingsPanel.getLanguagesSettings().equalSettings(settings.getLanguagesSettings());
     }
 
     /** Store the settings from configurable to other components. */
     @Override
     public void apply() throws ConfigurationException {
-        if (settingsPanel == null) return;
+        if (settingsPanel == null) {
+            return;
+        }
         settings.setMissingGitignore(settingsPanel.isMissingGitignore());
         settings.setUserTemplates(settingsPanel.getUserTemplates());
         settings.setIgnoredFileStatus(settingsPanel.isIgnoredFileStatus());
@@ -128,7 +131,9 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
     /** Load settings from other components to configurable. */
     @Override
     public void reset() {
-        if (settingsPanel == null) return;
+        if (settingsPanel == null) {
+            return;
+        }
         settingsPanel.setMissingGitignore(settings.isMissingGitignore());
         settingsPanel.setUserTemplates(settings.getUserTemplates());
         settingsPanel.setIgnoredFileStatus(settings.isIgnoredFileStatus());
@@ -137,8 +142,8 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         settingsPanel.setAddUnversionedFiles(settings.isAddUnversionedFiles());
         settingsPanel.setUnignoreActions(settings.isUnignoreActions());
         settingsPanel.setInformTrackedIgnored(settings.isInformTrackedIgnored());
-        
-        IgnoreSettingsPanel.LanguagesTableModel model =  settingsPanel.getLanguagesSettings();
+
+        IgnoreSettingsPanel.LanguagesTableModel model = settingsPanel.getLanguagesSettings();
         model.update(settings.getLanguagesSettings().clone());
     }
 
@@ -165,6 +170,7 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
      * Returns help topic as an ID.
      *
      * @return id
+     *
      * @see {@link #getHelpTopic()}
      */
     @NotNull

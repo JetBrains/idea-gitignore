@@ -37,7 +37,8 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Inspection tool that checks if entry has correct form in specific according to the specific {@link IgnoreBundle.Syntax}.
+ * Inspection tool that checks if entry has correct form in specific according to the specific {@link
+ * IgnoreBundle.Syntax}.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.0

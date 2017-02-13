@@ -161,7 +161,8 @@ public class UserTemplateDialog extends DialogWrapper {
      * Creates new user template.
      */
     private void performCreateAction() {
-        IgnoreSettings.UserTemplate template = new IgnoreSettings.UserTemplate(name.getText(), previewDocument.getText());
+        IgnoreSettings.UserTemplate template =
+                new IgnoreSettings.UserTemplate(name.getText(), previewDocument.getText());
         settings.getUserTemplates().add(template);
 
         Notifications.Bus.notify(new Notification(

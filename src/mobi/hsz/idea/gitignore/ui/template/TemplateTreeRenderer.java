@@ -57,7 +57,9 @@ public abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCell
      */
     public void customizeRenderer(final JTree tree, final Object value, final boolean selected, final boolean expanded,
                                   final boolean leaf, final int row, final boolean hasFocus) {
-        if (!(value instanceof TemplateTreeNode)) return;
+        if (!(value instanceof TemplateTreeNode)) {
+            return;
+        }
         TemplateTreeNode node = (TemplateTreeNode) value;
 
         final Color background = selected ? UIUtil.getTreeSelectionBackground() : UIUtil.getTreeTextBackground();
