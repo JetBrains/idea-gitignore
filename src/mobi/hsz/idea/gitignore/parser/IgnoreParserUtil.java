@@ -34,7 +34,7 @@ import com.intellij.psi.tree.IElementType;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8.1
  */
-@SuppressWarnings("parametername")
+@SuppressWarnings({"checkstyle:parametername", "checkstyle:linelength"})
 public class IgnoreParserUtil extends GeneratedParserUtilBase {
     /**
      * Returns current position in the {@link PsiBuilder}.

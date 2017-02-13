@@ -147,12 +147,13 @@ public class IgnoreManager extends AbstractProjectComponent {
          * @param event the event object containing information about the change.
          */
         @Override
-        final public void beforePropertyChange(@NotNull VirtualFilePropertyEvent event) {
+        public void beforePropertyChange(@NotNull VirtualFilePropertyEvent event) {
             wasIgnoreFileType = isIgnoreFileType(event);
         }
 
         /**
-         * Fired when a virtual file is created. This event is not fired for files discovered during initial VFS initialization.
+         * Fired when a virtual file is created. This event is not fired for files discovered during initial
+         * VFS initialization.
          *
          * @param event the event object containing information about the change
          */
@@ -265,7 +266,7 @@ public class IgnoreManager extends AbstractProjectComponent {
             initialized = true;
         }
     };
-    
+
     /** Document listener to trigger */
     private DocumentSyncListener documentSyncListener = new DocumentSyncListener();
 
@@ -453,7 +454,8 @@ public class IgnoreManager extends AbstractProjectComponent {
                                 return;
                             }
 
-                            final StartupManagerEx startupManager = (StartupManagerEx) StartupManager.getInstance(myProject);
+                            final StartupManagerEx startupManager =
+                                    (StartupManagerEx) StartupManager.getInstance(myProject);
                             while (!startupManager.postStartupActivityPassed()) {
                                 try {
                                     Thread.sleep(REQUEST_DELAY);
@@ -469,7 +471,8 @@ public class IgnoreManager extends AbstractProjectComponent {
                                 for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                                     if (language.isEnabled()) {
                                         try {
-                                            Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(language.getFileType(), scope);
+                                            Collection<VirtualFile> virtualFiles = FileTypeIndex
+                                                    .getFiles(language.getFileType(), scope);
                                             for (VirtualFile virtualFile : virtualFiles) {
                                                 ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
                                             }
@@ -497,8 +500,13 @@ public class IgnoreManager extends AbstractProjectComponent {
                                                 PsiFile psiFile = psiManager.findFile(outerFile);
                                                 if (psiFile != null) {
                                                     try {
-                                                        IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory.getInstance(myProject)
-                                                                .createFileFromText(language.getFilename(), language, psiFile.getText());
+                                                        IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory
+                                                                .getInstance(myProject)
+                                                                .createFileFromText(
+                                                                        language.getFilename(),
+                                                                        language,
+                                                                        psiFile.getText()
+                                                                );
                                                         outerIgnoreFile.setOriginalFile(psiFile);
                                                         addTaskFor(outerIgnoreFile);
                                                     } catch (ConcurrentModificationException ignored) {
@@ -544,14 +552,16 @@ public class IgnoreManager extends AbstractProjectComponent {
                      * @param file to cache
                      * @param dependentFiles files to cache if not ignored by given file
                      */
-                    private void addTaskFor(@Nullable final IgnoreFile file, @Nullable final List<IgnoreFile> dependentFiles) {
+                    private void addTaskFor(@Nullable final IgnoreFile file,
+                                            @Nullable final List<IgnoreFile> dependentFiles) {
                         if (file == null) {
                             return;
                         }
                         final VirtualFile virtualFile = file.getVirtualFile();
                         VirtualFile projectDir = myProject.getBaseDir();
 
-                        if ((!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) || projectDir == null) {
+                        if ((!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) ||
+                                projectDir == null) {
                             return;
                         } else {
                             cache.add(file);
@@ -563,7 +573,8 @@ public class IgnoreManager extends AbstractProjectComponent {
 
                         for (IgnoreFile dependentFile : dependentFiles) {
                             VirtualFile dependentVirtualFile = dependentFile.getVirtualFile();
-                            if (dependentVirtualFile != null && !isFileIgnored(dependentVirtualFile) && !isParentIgnored(dependentVirtualFile)) {
+                            if (dependentVirtualFile != null && !isFileIgnored(dependentVirtualFile) &&
+                                    !isParentIgnored(dependentVirtualFile)) {
                                 addTaskFor(dependentFile);
                             }
                         }
@@ -593,7 +604,7 @@ public class IgnoreManager extends AbstractProjectComponent {
 
         void handleFiles(@NotNull HashMap<VirtualFile, Repository> files);
     }
-    
+
     /**
      * Listener bounded with {@link RefreshTrackedIgnoredListener#TRACKED_IGNORED_REFRESH} topic to
      * trigger tracked and ignored files list.
@@ -622,7 +633,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         /**
          * Checks if saved {@link Document} has type of {@link IgnoreFileType} and triggers
          * {@link CacheMap#refresh()} method.
-         * 
+         *
          * @param document saved document
          */
         @Override
