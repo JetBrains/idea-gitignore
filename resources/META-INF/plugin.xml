@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.7.3</version>
+    <version>1.7.4</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -56,11 +56,11 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.7.3"><b>v1.7.3</b></a> (2017-02-12) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.3"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.7.4"><b>v1.7.4</b></a> (2017-02-13) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.4"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
-        
+
         <ul>
             <li><b>Hide ignored files and directories in the project tree view</b></li>
             <li><b>Indicate that parent contains extra elements if children are hidden</b></li>
@@ -79,8 +79,9 @@
                 <a href="https://github.com/hsz/idea-gitignore/issues/284">284</a>)</li>
             <li><b>IllegalArgumentException on IDEA startup</b>
                 (<a href="https://github.com/hsz/idea-gitignore/issues/302">302</a>)</li>
-            <li>File of UntrackFilesDialog.createDirectoryNodes must not be null
-                (<a href="https://github.com/hsz/idea-gitignore/issues/307">307</a>)</li>
+            <li>File of UntrackFilesDialog.createDirectoryNodes must not be null (
+                <a href="https://github.com/hsz/idea-gitignore/issues/307">307</a>,
+                <a href="https://github.com/hsz/idea-gitignore/issues/307">307</a>)</li>
             <li>NoSuchFieldError: GRAYED_SMALL_ATTRIBUTES
                 (<a href="https://github.com/hsz/idea-gitignore/issues/305">305</a>)</li>
             <li>Ignored entries coloring (
@@ -196,7 +197,7 @@
 
         <treeStructureProvider
                 implementation="mobi.hsz.idea.gitignore.projectView.HideIgnoredFilesTreeStructureProvider"/>
-        
+
         <projectViewNodeDecorator
                 implementation="mobi.hsz.idea.gitignore.projectView.IgnoreViewNodeDecorator"/>
 
@@ -436,7 +437,7 @@
         <lang.syntaxHighlighterFactory key="Stylint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Stylint -->
-        
+
     </extensions>
 
     <application-components>

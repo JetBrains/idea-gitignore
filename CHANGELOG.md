@@ -1,8 +1,8 @@
 # Change Log
 
-## [v1.7.3](https://github.com/hsz/idea-gitignore/tree/v1.7.3) (2017-02-12)
+## [v1.7.4](https://github.com/hsz/idea-gitignore/tree/v1.7.4) (2017-02-13)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.3)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.4)
 
 **Implemented enhancements:**
 
@@ -17,7 +17,7 @@
 
 - *Fixed colors for tracked and ignored files, additional info label is implemented* [\#296](https://github.com/hsz/idea-gitignore/issues/296) [\#295](https://github.com/hsz/idea-gitignore/issues/295) [\#284](https://github.com/hsz/idea-gitignore/issues/284)
 - *IllegalArgumentException on IDEA startup* [\#302](https://github.com/hsz/idea-gitignore/issues/302)
-- File of UntrackFilesDialog.createDirectoryNodes must not be null [\#307](https://github.com/hsz/idea-gitignore/issues/307)
+- File of UntrackFilesDialog.createDirectoryNodes must not be null [\#307](https://github.com/hsz/idea-gitignore/issues/307) [\#309](https://github.com/hsz/idea-gitignore/issues/309)
 - NoSuchFieldError: GRAYED_SMALL_ATTRIBUTES [\#305](https://github.com/hsz/idea-gitignore/issues/305)
 - Ignored entries coloring [\#304](https://github.com/hsz/idea-gitignore/issues/304) [\#301](https://github.com/hsz/idea-gitignore/issues/301)
 - ClassNotFoundException: mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent [\#297](https://github.com/hsz/idea-gitignore/issues/297)
