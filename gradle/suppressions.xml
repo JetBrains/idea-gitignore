@@ -6,4 +6,5 @@
 
 <suppressions>
     <suppress files="[\\/]gen[\\/]" checks="."/>
+    <suppress files="[\\/]tests[\\/]" checks="."/>
 </suppressions>
