@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.notification.*;
 import com.intellij.openapi.project.Project;
+import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,18 +39,52 @@ import org.jetbrains.annotations.Nullable;
  */
 public class Notify {
     /**
-     * Show {@link Notification} in {@link IgnoreLanguage#GROUP} group.
+     * Shows {@link Notification} in IGNORE_GROUP_UPDATE group.
      *
      * @param project  current project
-     * @param title    notification title
-     * @param content  notification text
-     * @param type     notification type
-     * @param listener optional listener
+     */
+    public static void showUpdate(@NotNull Project project) {
+        show(
+                project,
+                IgnoreBundle.message("notification.update.title", Utils.getVersion()),
+                IgnoreBundle.message("notification.update.content"),
+                IgnoreLanguage.GROUP + "_UPDATE",
+                NotificationType.INFORMATION,
+                NotificationListener.URL_OPENING_LISTENER
+        );
+    }
+
+    /**
+     * Shows {@link Notification} in {@link IgnoreLanguage#GROUP} group.
+     *
+     * @param project   current project
+     * @param title     notification title
+     * @param content   notification text
+     * @param type      notification type
+     * @param listener  optional listener
      */
     public static void show(@NotNull Project project, @NotNull String title, @NotNull String content,
                             @NotNull NotificationType type, @Nullable NotificationListener listener) {
+        show(project, title, content, IgnoreLanguage.GROUP, type, listener);
+    }
+
+    /**
+     * Shows {@link Notification}.
+     *
+     * @param project   current project
+     * @param title     notification title
+     * @param displayId notification group
+     * @param content   notification text
+     * @param type      notification type
+     * @param listener  optional listener
+     */
+    public static void show(@NotNull Project project, @NotNull String title, @NotNull String content,
+                            @NotNull String displayId, @NotNull NotificationType type,
+                            @Nullable NotificationListener listener) {
         NotificationGroup group = new NotificationGroup(
-                IgnoreLanguage.GROUP, NotificationDisplayType.STICKY_BALLOON, true
+                displayId,
+                NotificationDisplayType.STICKY_BALLOON,
+                true
         );
         Notification notification = group.createNotification(title, content, type, listener);
         Notifications.Bus.notify(notification, project);

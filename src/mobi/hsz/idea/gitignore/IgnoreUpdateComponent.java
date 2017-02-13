@@ -24,12 +24,9 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.notification.NotificationListener;
-import com.intellij.notification.NotificationType;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import mobi.hsz.idea.gitignore.util.Notify;
-import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -77,15 +74,9 @@ public class IgnoreUpdateComponent extends AbstractProjectComponent {
     /** Method called when project is opened. */
     @Override
     public void projectOpened() {
-        if (application.isUpdated() && !application.isUpdateNotificationShown()) {
+        if (true || application.isUpdated() && !application.isUpdateNotificationShown()) {
             application.setUpdateNotificationShown(true);
-            Notify.show(
-                    myProject,
-                    IgnoreBundle.message("notification.update.title", Utils.getVersion()),
-                    IgnoreBundle.message("notification.update.content"),
-                    NotificationType.INFORMATION,
-                    NotificationListener.URL_OPENING_LISTENER
-            );
+            Notify.showUpdate(myProject);
         }
     }
 }
