@@ -1,4 +1,4 @@
-.ignore v1.7.4
+.ignore v1.7.5
 ==================
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
@@ -106,9 +106,9 @@ Usage
 Changelog
 ---------
 
-## [v1.7.4](https://github.com/hsz/idea-gitignore/tree/v1.7.4) (2017-02-13)
+## [v1.7.5](https://github.com/hsz/idea-gitignore/tree/v1.7.5) (2017-02-14)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.4)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.5)
 
 **Implemented enhancements:**
 

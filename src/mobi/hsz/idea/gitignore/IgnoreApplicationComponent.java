@@ -56,7 +56,7 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
     public void initComponent() {
         /* The settings storage object. */
         IgnoreSettings settings = IgnoreSettings.getInstance();
-        updated = !Utils.getVersion().equals(settings.getVersion());
+        updated = !Utils.getVersion().equals(settings.getVersion()) && !settings.getVersion().equals("1.7.4");
         if (updated) {
             settings.setVersion(Utils.getVersion());
         }

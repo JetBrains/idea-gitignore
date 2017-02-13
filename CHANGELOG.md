@@ -1,8 +1,8 @@
 # Change Log
 
-## [v1.7.4](https://github.com/hsz/idea-gitignore/tree/v1.7.4) (2017-02-13)
+## [v1.7.5](https://github.com/hsz/idea-gitignore/tree/v1.7.5) (2017-02-14)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.4)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.5)
 
 **Implemented enhancements:**
 
