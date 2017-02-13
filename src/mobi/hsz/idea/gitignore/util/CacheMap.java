@@ -364,7 +364,9 @@ public class CacheMap {
                 VirtualFile root = repository.getRoot();
                 for (String path : ExternalExec.getTrackedIgnoredFiles(repository)) {
                     final VirtualFile file = root.findFileByRelativePath(path);
-                    result.put(file, repository);
+                    if (file != null) {
+                        result.put(file, repository);
+                    }
                 }
             }
 
