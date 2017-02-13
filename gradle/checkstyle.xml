@@ -3,22 +3,6 @@
         "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
         "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 
-<!--
-  Checkstyle configuration that checks the sun coding conventions from:
-    - the Java Language Specification at
-      http://java.sun.com/docs/books/jls/second_edition/html/index.html
-    - the Sun Code Conventions at http://java.sun.com/docs/codeconv/
-    - the Javadoc guidelines at
-      http://java.sun.com/j2se/javadoc/writingdoccomments/index.html
-    - the JDK Api documentation http://java.sun.com/j2se/docs/api/index.html
-    - some best practices
-  Checkstyle is very configurable. Be sure to read the documentation at
-  http://checkstyle.sf.net (or in your downloaded distribution).
-  Most Checks are configurable, be sure to consult the documentation.
-  To completely disable a check, just comment it out or delete it from the file.
-  Finally, it is worth reading the documentation.
--->
-
 <module name="Checker">
     <property name="severity" value="error"/>
     <property name="charset" value="UTF-8"/>
@@ -46,12 +30,14 @@
         <property name="fileExtensions" value="java"/>
     </module>
 
-    <module name="SuppressionCommentFilter"/>
-    <module name="SuppressWarningsFilter" />
+    <module name="SuppressionFilter">
+        <property name="file" value="./gradle/suppressions.xml"/>
+    </module>
+    <module name="SuppressWarningsFilter"/>
 
     <module name="TreeWalker">
 
-        <module name="SuppressWarningsHolder" />
+        <module name="SuppressWarningsHolder"/>
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <!-- <module name="JavadocMethod">
