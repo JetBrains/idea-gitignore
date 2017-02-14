@@ -42,7 +42,7 @@ files in your project. It supports following JetBrains IDEs:
 - PyCharm
 - RubyMine
 - WebStorm
-- 0xDBE
+- DataGrip
 
 *Compiled with Java 1.6*
 
