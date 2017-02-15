@@ -32,7 +32,6 @@ import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
-import com.intellij.util.containers.ConcurrentList;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
@@ -228,7 +227,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     final PsiManager manager = getElement().getManager();
                     final Matcher matcher = pattern.matcher("");
 
-                    final ConcurrentList<VirtualFile> files = ContainerUtil.createConcurrentList();
+                    final List<VirtualFile> files = ContainerUtil.createLockFreeCopyOnWriteList();
                     files.addAll(filesIndexCache.getFilesForPattern(context.getProject(), pattern));
                     if (files.isEmpty()) {
                         files.addAll(ContainerUtil.newArrayList(context.getVirtualFile().getChildren()));
