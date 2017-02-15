@@ -108,6 +108,7 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
                 || !Comparing.equal(settings.isAddUnversionedFiles(), settingsPanel.isAddUnversionedFiles())
                 || !Comparing.equal(settings.isUnignoreActions(), settingsPanel.isUnignoreActions())
                 || !Comparing.equal(settings.isInformTrackedIgnored(), settingsPanel.isInformTrackedIgnored())
+                || !Comparing.equal(settings.isNotifyIgnoredEditing(), settingsPanel.isNotifyIgnoredEditing())
                 || !settingsPanel.getLanguagesSettings().equalSettings(settings.getLanguagesSettings());
     }
 
@@ -126,6 +127,7 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         settings.setLanguagesSettings(settingsPanel.getLanguagesSettings().getSettings());
         settings.setUnignoreActions(settingsPanel.isUnignoreActions());
         settings.setInformTrackedIgnored(settingsPanel.isInformTrackedIgnored());
+        settings.setNotifyIgnoredEditing(settingsPanel.isNotifyIgnoredEditing());
     }
 
     /** Load settings from other components to configurable. */
@@ -142,6 +144,7 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         settingsPanel.setAddUnversionedFiles(settings.isAddUnversionedFiles());
         settingsPanel.setUnignoreActions(settings.isUnignoreActions());
         settingsPanel.setInformTrackedIgnored(settings.isInformTrackedIgnored());
+        settingsPanel.setNotifyIgnoredEditing(settings.isNotifyIgnoredEditing());
 
         IgnoreSettingsPanel.LanguagesTableModel model = settingsPanel.getLanguagesSettings();
         model.update(settings.getLanguagesSettings().clone());

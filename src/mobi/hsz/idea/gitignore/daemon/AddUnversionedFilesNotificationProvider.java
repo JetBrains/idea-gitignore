@@ -60,8 +60,7 @@ import java.util.List;
 public class AddUnversionedFilesNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
     /** Notification key. */
     @NotNull
-    private static final Key<EditorNotificationPanel> KEY =
-            Key.create(IgnoreBundle.message("daemon.missingGitignore.create"));
+    private static final Key<EditorNotificationPanel> KEY = Key.create("AddUnversionedFilesNotificationProvider");
 
     /** Current project. */
     @NotNull

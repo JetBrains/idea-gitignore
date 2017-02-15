@@ -3,12 +3,12 @@
   <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="1618" height="400"/>
+      <xy x="20" y="20" width="1618" height="401"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="b1a6e" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="b1a6e" layout-manager="GridLayoutManager" row-count="8" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="true"/>
@@ -16,9 +16,6 @@
         <properties>
           <enabled value="true"/>
         </properties>
-        <clientProperties>
-          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
-        </clientProperties>
         <border type="none" title-resource-bundle="messages/IgnoreBundle" title-key="settings.general"/>
         <children>
           <component id="7e9b" class="javax.swing.JCheckBox" binding="missingGitignore">
@@ -77,6 +74,14 @@
               <text resource-bundle="messages/IgnoreBundle" key="settings.general.informTrackedIgnored"/>
             </properties>
           </component>
+          <component id="ebecf" class="javax.swing.JCheckBox" binding="notifyIgnoredEditing">
+            <constraints>
+              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="messages/IgnoreBundle" key="settings.general.notifyIgnoredEditing"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="24ddc" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -85,9 +90,6 @@
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
-        <clientProperties>
-          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
-        </clientProperties>
         <border type="none" title-resource-bundle="messages/IgnoreBundle" title-key="settings.userTemplates"/>
         <children>
           <component id="85fc4" class="com.intellij.openapi.ui.Splitter" binding="templatesSplitter" custom-create="true">
@@ -104,9 +106,6 @@
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
-        <clientProperties>
-          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
-        </clientProperties>
         <border type="none" title-resource-bundle="messages/IgnoreBundle" title-key="settings.languagesSettings"/>
         <children>
           <scrollpane id="9895d" class="com.intellij.ui.components.JBScrollPane" binding="languagesPanel" custom-create="true">

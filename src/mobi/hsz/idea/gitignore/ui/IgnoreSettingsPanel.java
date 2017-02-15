@@ -130,6 +130,9 @@ public class IgnoreSettingsPanel implements Disposable {
     /** Panel with information about donations. */
     private JPanel donatePanel;
 
+    /** Inform about editing ignored file. */
+    private JCheckBox notifyIgnoredEditing;
+
     /** Editor panel element. */
     private EditorPanel editorPanel;
 
@@ -340,6 +343,24 @@ public class IgnoreSettingsPanel implements Disposable {
      */
     public void setInformTrackedIgnored(boolean selected) {
         this.informTrackedIgnored.setSelected(selected);
+    }
+
+    /**
+     * Returns value of @{link {@link #notifyIgnoredEditing}} field.
+     *
+     * @return {@link #notifyIgnoredEditing} is selected
+     */
+    public boolean isNotifyIgnoredEditing() {
+        return notifyIgnoredEditing.isSelected();
+    }
+
+    /**
+     * Sets value of {@link #notifyIgnoredEditing} field.
+     *
+     * @param selected value for {@link #notifyIgnoredEditing}
+     */
+    public void setNotifyIgnoredEditing(boolean selected) {
+        this.notifyIgnoredEditing.setSelected(selected);
     }
 
     /**
