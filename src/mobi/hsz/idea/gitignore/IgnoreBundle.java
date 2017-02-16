@@ -25,8 +25,10 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.CommonBundle;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.*;
 import org.jetbrains.annotations.NonNls;
@@ -86,6 +88,16 @@ public class IgnoreBundle {
             StylintLanguage.INSTANCE,
             TFLanguage.INSTANCE
     ));
+
+    /** Available IgnoreFileType instances filtered with {@link IgnoreLanguage#isVCS()} condition. */
+    public static final IgnoreLanguages VCS_LANGUAGES = new IgnoreLanguages(
+            ContainerUtil.filter(LANGUAGES, new Condition<IgnoreLanguage>() {
+                @Override
+                public boolean value(IgnoreLanguage language) {
+                    return language.isVCS();
+                }
+            })
+    );
 
     /** Available syntax list. */
     public enum Syntax {

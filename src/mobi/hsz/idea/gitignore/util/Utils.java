@@ -217,7 +217,7 @@ public class Utils {
     }
 
     /**
-     * Checks if given directory is a {@link mobi.hsz.idea.gitignore.lang.IgnoreLanguage#getVcsDirectory()}.
+     * Checks if given directory is a {@link IgnoreLanguage#getVcsDirectory()}.
      *
      * @param directory to check
      * @return given file is VCS directory
@@ -226,9 +226,9 @@ public class Utils {
         if (!directory.isDirectory()) {
             return false;
         }
-        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+        for (IgnoreLanguage language : IgnoreBundle.VCS_LANGUAGES) {
             String vcsName = language.getVcsDirectory();
-            if (language.isVCS() && language.isEnabled() && directory.getName().equals(vcsName)) {
+            if (language.isEnabled() && directory.getName().equals(vcsName)) {
                 return true;
             }
         }
