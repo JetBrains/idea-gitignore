@@ -431,9 +431,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
     }
 
-    /**
-     * Triggers caching actions.
-     */
+    /** Triggers caching actions. */
     private void retrieve() {
         if (!Alarm.isEventDispatchThread()) {
             return;
@@ -473,7 +471,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                                             Collection<VirtualFile> virtualFiles = FileTypeIndex
                                                     .getFiles(language.getFileType(), scope);
                                             for (VirtualFile virtualFile : virtualFiles) {
-                                                ContainerUtil.addIfNotNull(getIgnoreFile(virtualFile), files);
+                                                ContainerUtil.addIfNotNull(files, getIgnoreFile(virtualFile));
                                             }
                                         } catch (IndexOutOfBoundsException ignored) {
                                         }

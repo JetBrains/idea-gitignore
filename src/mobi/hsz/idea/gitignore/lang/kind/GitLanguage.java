@@ -49,7 +49,7 @@ public class GitLanguage extends IgnoreLanguage {
     private GitLanguage() {
         super("Git", "gitignore", ".git", Icons.GIT, new OuterFileFetcher[]{
 
-                /** Outer file fetched from the `git config core.excludesfile`. */
+                // Outer file fetched from the `git config core.excludesfile`.
                 new OuterFileFetcher() {
                     @Nullable
                     @Override
@@ -58,7 +58,7 @@ public class GitLanguage extends IgnoreLanguage {
                     }
                 },
 
-                /** Outer file fetched from the .git/info directory. */
+                // Outer file fetched from the .git/info directory.
                 new OuterFileFetcher() {
                     @Nullable
                     @Override
