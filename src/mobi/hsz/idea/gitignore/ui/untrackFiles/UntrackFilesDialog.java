@@ -31,23 +31,33 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.CheckboxTree;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.ui.UIUtil;
+import com.intellij.util.ui.tree.TreeModelAdapter;
 import com.intellij.util.ui.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
@@ -76,17 +86,46 @@ public class UntrackFilesDialog extends DialogWrapper {
     @NotNull
     private final Map<VirtualFile, FileTreeNode> nodes = ContainerUtil.newHashMap();
 
+    /** Commands editor with syntax highlight. */
+    private Editor commands;
+
+    /** {@link Document} related to the {@link Editor} feature. */
+    private Document commandsDocument;
+
     /** Templates tree with checkbox feature. */
     private CheckboxTree tree;
 
     /** Tree expander responsible for expanding and collapsing tree structure. */
     private DefaultTreeExpander treeExpander;
 
+    /** Listener that checks if files list has been changed and rewrites commands in {@link #commandsDocument}. */
+    @NotNull
+    private TreeModelListener treeModelListener = new TreeModelAdapter() {
+        /**
+         * Invoked after a tree has changed.
+         *
+         * @param event the event object specifying changed nodes
+         * @param type  the event type specifying a kind of changes
+         */
+        @Override
+        protected void process(TreeModelEvent event, EventType type) {
+            final String text = getCommandsText();
+
+            ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                @Override
+                public void run() {
+                    commandsDocument.setText(text);
+                }
+            });
+
+        }
+    };
+
     /**
      * Constructor.
      *
      * @param project current project
-     * @param files
+     * @param files files map to present
      */
     public UntrackFilesDialog(@NotNull Project project, @NotNull HashMap<VirtualFile, Repository> files) {
         super(project, false);
@@ -136,7 +175,7 @@ public class UntrackFilesDialog extends DialogWrapper {
     @Override
     protected JComponent createCenterPanel() {
         final JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setPreferredSize(new Dimension(300, 300));
+        centerPanel.setPreferredSize(new Dimension(500, 400));
 
         final JPanel treePanel = new JPanel(new BorderLayout());
         centerPanel.add(treePanel, BorderLayout.CENTER);
@@ -152,6 +191,20 @@ public class UntrackFilesDialog extends DialogWrapper {
                         GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0)
         );
         treePanel.add(northPanel, BorderLayout.NORTH);
+
+        // Create commands preview section
+        commandsDocument = EditorFactory.getInstance().createDocument(getCommandsText());
+        commands = Utils.createPreviewEditor(commandsDocument, project, true);
+
+        final JPanel commandsPanel = new JPanel(new BorderLayout());
+        final JLabel commandsLabel = new JBLabel(IgnoreBundle.message("dialog.untrackFiles.commands.label"));
+        commandsLabel.setBorder(IdeBorderFactory.createEmptyBorder(10, 0, 10, 0));
+        commandsPanel.add(commandsLabel, BorderLayout.NORTH);
+
+        JComponent commandsComponent = commands.getComponent();
+        commandsComponent.setPreferredSize(new Dimension(0, 200));
+        commandsPanel.add(commandsComponent, BorderLayout.CENTER);
+        centerPanel.add(commandsPanel, BorderLayout.SOUTH);
 
         return centerPanel;
     }
@@ -179,6 +232,7 @@ public class UntrackFilesDialog extends DialogWrapper {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         TreeUtil.expandAll(tree);
 
+        tree.getModel().addTreeModelListener(treeModelListener);
         treeExpander = new DefaultTreeExpander(tree);
 
         return scrollPane;
@@ -211,9 +265,29 @@ public class UntrackFilesDialog extends DialogWrapper {
     @Override
     protected void doOKAction() {
         super.doOKAction();
+
+        HashMap<Repository, ArrayList<VirtualFile>> checked = getCheckedFiles();
+        for (Map.Entry<Repository, ArrayList<VirtualFile>> entry : checked.entrySet()) {
+            for (VirtualFile file : entry.getValue()) {
+                ExternalExec.removeFileFromTracking(file, entry.getKey());
+            }
+        }
+
+        project.getMessageBus().syncPublisher(TRACKED_IGNORED_REFRESH).refresh();
+    }
+
+    /**
+     * Returns structured map of selected {@link VirtualFile} list sorted by {@link Repository}.
+     *
+     * @return sorted files map
+     */
+    @NotNull
+    private HashMap<Repository, ArrayList<VirtualFile>> getCheckedFiles() {
+        final HashMap<Repository, ArrayList<VirtualFile>> result = new HashMap<Repository, ArrayList<VirtualFile>>();
+
         FileTreeNode leaf = (FileTreeNode) root.getFirstLeaf();
         if (leaf == null) {
-            return;
+            return result;
         }
 
         do {
@@ -226,9 +300,42 @@ public class UntrackFilesDialog extends DialogWrapper {
             if (repository == null) {
                 continue;
             }
-            ExternalExec.removeFileFromTracking(file, repository);
+
+            ArrayList<VirtualFile> list = ContainerUtil.getOrCreate(result, repository, new ArrayList<VirtualFile>());
+            list.add(file);
+
+            result.put(repository, list);
         } while ((leaf = (FileTreeNode) leaf.getNextLeaf()) != null);
 
-        project.getMessageBus().syncPublisher(TRACKED_IGNORED_REFRESH).refresh();
+        return result;
+    }
+
+    /**
+     * Returns ready to present commands list.
+     *
+     * @return commands list
+     */
+    @NotNull
+    private String getCommandsText() {
+        final StringBuilder builder = new StringBuilder();
+
+        HashMap<Repository, ArrayList<VirtualFile>> checked = getCheckedFiles();
+        for (Map.Entry<Repository, ArrayList<VirtualFile>> entry : checked.entrySet()) {
+            VirtualFile repository = entry.getKey().getRoot();
+            builder.append(IgnoreBundle.message(
+                    "dialog.untrackFiles.commands.repository",
+                    repository.getCanonicalPath()
+            )).append("\n");
+
+            for (VirtualFile file : entry.getValue()) {
+                builder.append(IgnoreBundle.message(
+                        "dialog.untrackFiles.commands.command",
+                        Utils.getRelativePath(repository, file)
+                )).append("\n");
+            }
+
+            builder.append("\n");
+        }
+        return builder.toString();
     }
 }
