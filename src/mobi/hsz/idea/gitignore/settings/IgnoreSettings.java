@@ -186,9 +186,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.addContent(languagesElement);
         element.addContent(createTemplatesElement(userTemplates));
 
-        // settings fix for 1.1 - can be removed with further releases
-        element.setAttribute("settingsFixed", "true");
-
         return element;
     }
 
@@ -283,13 +280,9 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         userTemplates.clear();
         userTemplates.addAll(loadTemplates(element));
 
-        // settings fix for 1.1 - can be removed with further releases
-        value = element.getAttributeValue("settingsFixed");
-        if (value == null) {
-            for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                if (!language.isVCS()) {
-                    languagesSettings.get(language).put(IgnoreLanguagesSettings.KEY.ENABLE, false);
-                }
+        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+            if (!language.isVCS()) {
+                languagesSettings.get(language).put(IgnoreLanguagesSettings.KEY.ENABLE, false);
             }
         }
     }

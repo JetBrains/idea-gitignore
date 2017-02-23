@@ -1,4 +1,4 @@
-.ignore v1.7.5
+.ignore v1.7.6
 ==================
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
@@ -106,33 +106,19 @@ Usage
 Changelog
 ---------
 
-## [v1.7.5](https://github.com/hsz/idea-gitignore/tree/v1.7.5) (2017-02-14)
+## [v1.7.6](https://github.com/hsz/idea-gitignore/tree/v1.7.6) (2017-02-23)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.5)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.5...v1.7.6)
 
 **Implemented enhancements:**
 
-- *Hide ignored files and directories in the project tree view*
-- *Indicate that parent contains extra elements if children are hidden*
-- Dialog box that allows to untrack ignored files (performs git rm --cached command)
-- Untrack files dialog invoked automatically + from Project view context menu
-- Stylint (.stylintignore) support [\#279](https://github.com/hsz/idea-gitignore/issues/279)
-- Project Tree View coloring refactoring (performance)
+- Preventing or Notification for editing ignored files [\#319](https://github.com/hsz/idea-gitignore/issues/319)
+- Present untrack git commands to the user in UntrackFilesDialog before execution
 
 **Fixed bugs:**
 
-- *Fixed colors for tracked and ignored files, additional info label is implemented* [\#296](https://github.com/hsz/idea-gitignore/issues/296) [\#295](https://github.com/hsz/idea-gitignore/issues/295) [\#284](https://github.com/hsz/idea-gitignore/issues/284)
-- *IllegalArgumentException on IDEA startup* [\#302](https://github.com/hsz/idea-gitignore/issues/302)
-- File of UntrackFilesDialog.createDirectoryNodes must not be null [\#307](https://github.com/hsz/idea-gitignore/issues/307) [\#309](https://github.com/hsz/idea-gitignore/issues/309)
-- NoSuchFieldError: GRAYED_SMALL_ATTRIBUTES [\#305](https://github.com/hsz/idea-gitignore/issues/305)
-- Ignored entries coloring [\#304](https://github.com/hsz/idea-gitignore/issues/304) [\#301](https://github.com/hsz/idea-gitignore/issues/301)
-- ClassNotFoundException: mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent [\#297](https://github.com/hsz/idea-gitignore/issues/297)
-- Assertion failed: Registering post-startup activity that will never be run [\#290](https://github.com/hsz/idea-gitignore/issues/290)
-- Component name collision: UpdateComponent [\#289](https://github.com/hsz/idea-gitignore/issues/289)
-- Ignore Files Support pane scrollbar issue [\#286](https://github.com/hsz/idea-gitignore/issues/286)
-- Outer ignore file panel now has max height rule [\#257](https://github.com/hsz/idea-gitignore/issues/257)
-- Properly coloring of subdirectories [\#255](https://github.com/hsz/idea-gitignore/issues/255)
-- Setting "Enable ignoring" does not really work [\#298](https://github.com/hsz/idea-gitignore/issues/238)
+- *NullPointerException on PhpStorm startup* [\#315](https://github.com/hsz/idea-gitignore/issues/315)
+- NoSuchMethodError: ContainerUtil.createConcurrentList() [\#320](https://github.com/hsz/idea-gitignore/issues/320)
 
 [Full Changelog History](./CHANGELOG.md)
 

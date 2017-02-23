@@ -1,5 +1,19 @@
 # Change Log
 
+## [v1.7.6](https://github.com/hsz/idea-gitignore/tree/v1.7.6) (2017-02-23)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.5...v1.7.6)
+
+**Implemented enhancements:**
+
+- Preventing or Notification for editing ignored files [\#319](https://github.com/hsz/idea-gitignore/issues/319)
+- Present untrack git commands to the user in UntrackFilesDialog before execution
+
+**Fixed bugs:**
+
+- *NullPointerException on PhpStorm startup* [\#315](https://github.com/hsz/idea-gitignore/issues/315)
+- NoSuchMethodError: ContainerUtil.createConcurrentList() [\#320](https://github.com/hsz/idea-gitignore/issues/320)
+
 ## [v1.7.5](https://github.com/hsz/idea-gitignore/tree/v1.7.5) (2017-02-14)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.5)

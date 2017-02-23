@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.7.5</version>
+    <version>1.7.6</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -56,51 +56,23 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.7.5"><b>v1.7.5</b></a> (2017-02-14) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.6...v1.7.5"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v1.7.6"><b>v1.7.6</b></a> (2017-02-23) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.7.5...v1.7.6"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
 
         <ul>
-            <li><b>Hide ignored files and directories in the project tree view</b></li>
-            <li><b>Indicate that parent contains extra elements if children are hidden</b></li>
-            <li>Dialog box that allows to untrack ignored files (performs git rm --cached command)</li>
-            <li>Untrack files dialog invoked automatically + from Project view context menu</li>
-            <li>Stylint (.stylintignore) support (<a href="https://github.com/hsz/idea-gitignore/issues/279">279</a>)</li>
-            <li>Project Tree View coloring refactoring (performance)</li>
+            <li>Preventing or Notification for editing ignored files (<a href="https://github.com/hsz/idea-gitignore/issues/319">319</a>)</li>
+            <li>Present untrack git commands to the user in UntrackFilesDialog before execution</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li><b>Fixed colors for tracked and ignored files, additional info label is implemented</b> (
-                <a href="https://github.com/hsz/idea-gitignore/issues/296">296</a>,
-                <a href="https://github.com/hsz/idea-gitignore/issues/295">295</a>,
-                <a href="https://github.com/hsz/idea-gitignore/issues/284">284</a>)</li>
-            <li><b>IllegalArgumentException on IDEA startup</b>
-                (<a href="https://github.com/hsz/idea-gitignore/issues/302">302</a>)</li>
-            <li>File of UntrackFilesDialog.createDirectoryNodes must not be null (
-                <a href="https://github.com/hsz/idea-gitignore/issues/307">307</a>,
-                <a href="https://github.com/hsz/idea-gitignore/issues/307">307</a>)</li>
-            <li>NoSuchFieldError: GRAYED_SMALL_ATTRIBUTES
-                (<a href="https://github.com/hsz/idea-gitignore/issues/305">305</a>)</li>
-            <li>Ignored entries coloring (
-                <a href="https://github.com/hsz/idea-gitignore/issues/304">304</a>,
-                <a href="https://github.com/hsz/idea-gitignore/issues/301">301</a>)</li>
-            <li>ClassNotFoundException: mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent
-                (<a href="https://github.com/hsz/idea-gitignore/issues/297">297</a>)</li>
-            <li>Assertion failed: Registering post-startup activity that will never be run
-                (<a href="https://github.com/hsz/idea-gitignore/issues/290">290</a>)</li>
-            <li>Component name collision: UpdateComponent
-                (<a href="https://github.com/hsz/idea-gitignore/issues/289">289</a>)</li>
-            <li>Ignore Files Support pane scrollbar issue
-                (<a href="https://github.com/hsz/idea-gitignore/issues/286">286</a>)</li>
-            <li>Outer ignore file panel now has max height rule
-                (<a href="https://github.com/hsz/idea-gitignore/issues/257">257</a>)</li>
-            <li>Properly coloring of subdirectories
-                (<a href="https://github.com/hsz/idea-gitignore/issues/255">255</a>)</li>
-            <li>Setting "Enable ignoring" does not really work
-                (<a href="https://github.com/hsz/idea-gitignore/issues/238">238</a>)</li>
+            <li><b>NullPointerException on PhpStorm startup</b>
+                (<a href="https://github.com/hsz/idea-gitignore/issues/315">315</a>)</li>
+            <li>NoSuchMethodError: ContainerUtil.createConcurrentList()
+                (<a href="https://github.com/hsz/idea-gitignore/issues/320">320</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
