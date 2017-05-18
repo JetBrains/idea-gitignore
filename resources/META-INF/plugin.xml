@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.7.6</version>
+    <version>1.7.7</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -20,7 +20,7 @@
            .cvsignore (CVS), .bzrignore (Bazaar), .boringignore (Darcs), .mtn-ignore (Monotone), ignore-glob (Fossil),
            .jshintignore (JSHint), .tfignore (Team Foundation), .p4ignore (Perforce), .flooignore (Floobits),
            .eslintignore (ESLint), .cfignore (Cloud Foundry)</i>, .jpmignore (Jetpack), .stylelintignore (StyleLint),
-           .stylintignore (Stylint)
+           .stylintignore (Stylint), .swagger-codegen-ignore (Swagger Codegen)
         files in your project.
       <br/>
 
@@ -412,6 +412,15 @@
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Stylint -->
 
+        <!-- Swagger Codegen -->
+        <codeInsight.lineMarkerProvider language="Swagger Codegen"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Swagger Codegen"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Swagger Codegen" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Swagger Codegen"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Swagger Codegen -->
     </extensions>
 
     <application-components>

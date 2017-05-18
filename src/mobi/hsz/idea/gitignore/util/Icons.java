@@ -98,6 +98,9 @@ public class Icons {
     /** Stylint icon. */
     public static final Icon STYLINT = IconLoader.getIcon("/icons/icon_stylint.png");
 
+    /** Swagger Codegen icon. */
+    public static final Icon SWAGGER_CODEGEN = IconLoader.getIcon("/icons/icon_swagger-codegen.png");
+
     /** Private constructor to prevent creating {@link Icons} instance. */
     private Icons() {
     }

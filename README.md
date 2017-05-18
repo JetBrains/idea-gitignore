@@ -31,6 +31,7 @@ Introduction
 - `.jpmignore` (Jetpack)
 - `.stylelintignore` (StyleLint)
 - `.stylintignore` (Stylint)
+- `.swagger-codegen-ignore` (Swagger Codegen)
 
 files in your project. It supports following JetBrains IDEs:
 
