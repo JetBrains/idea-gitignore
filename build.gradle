@@ -209,4 +209,10 @@ tasks.withType(JavaCompile) {
     }
 }
 
+afterEvaluate {
+    tasks.getByName('runIde') {
+        jvmArgs(javaArguments)
+    }
+}
+
 compileJava.dependsOn generateSources
