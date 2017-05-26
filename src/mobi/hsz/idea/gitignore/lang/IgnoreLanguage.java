@@ -26,15 +26,18 @@ package mobi.hsz.idea.gitignore.lang;
 
 import com.intellij.lang.Language;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileViewProvider;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
+import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -204,7 +207,12 @@ public class IgnoreLanguage extends Language {
      */
     @NotNull
     public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
-        return OuterIgnoreLoaderComponent.getInstance(project).getOuterFiles(this);
+        return ContainerUtil.filter(IgnoreFilesIndex.getFiles(project, getFileType()), new Condition<VirtualFile>() {
+            @Override
+            public boolean value(@NotNull VirtualFile virtualFile) {
+                return !Utils.isInProject(virtualFile, project);
+            }
+        });
     }
 
     /**

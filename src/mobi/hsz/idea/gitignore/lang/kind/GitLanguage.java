@@ -56,16 +56,6 @@ public class GitLanguage extends IgnoreLanguage {
                     public VirtualFile fetch(@NotNull Project project) {
                         return ExternalExec.getGitExcludesFile();
                     }
-                },
-
-                // Outer file fetched from the .git/info directory.
-                new OuterFileFetcher() {
-                    @Nullable
-                    @Override
-                    public VirtualFile fetch(@NotNull Project project) {
-                        return project.getBaseDir().
-                                findFileByRelativePath(INSTANCE.getVcsDirectory() + "/info/exclude");
-                    }
                 }
 
         });

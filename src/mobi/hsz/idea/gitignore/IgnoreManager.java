@@ -24,51 +24,41 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.AppTopics;
 import com.intellij.dvcs.repo.Repository;
 import com.intellij.ide.projectView.ProjectView;
-import com.intellij.ide.startup.StartupManagerEx;
-import com.intellij.openapi.application.AccessToken;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.FileDocumentManagerAdapter;
-import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.startup.StartupManager;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsListener;
-import com.intellij.openapi.vfs.*;
-import com.intellij.psi.*;
+import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vcs.FileStatusManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiTreeChangeAdapter;
+import com.intellij.psi.PsiTreeChangeEvent;
+import com.intellij.psi.PsiTreeChangeListener;
 import com.intellij.psi.impl.PsiManagerImpl;
-import com.intellij.psi.impl.file.impl.FileManager;
-import com.intellij.psi.impl.file.impl.FileManagerImpl;
-import com.intellij.psi.search.FileTypeIndex;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.Alarm;
-import com.intellij.util.ConcurrencyUtil;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
-import com.intellij.util.io.storage.HeavyProcessLatch;
+import com.intellij.util.indexing.FileBasedIndex;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
+import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor;
+import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence;
+import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.CacheMap;
-import mobi.hsz.idea.gitignore.util.RefreshProgress;
+import mobi.hsz.idea.gitignore.util.Debounced;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.ConcurrentModificationException;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
+import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 
@@ -78,133 +68,32 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.0
  */
-public class IgnoreManager extends AbstractProjectComponent {
-    /** Delay between checking if psiManager was initialized. */
-    private static final int REQUEST_DELAY = 200;
-
-    /** Thread executor name. */
-    @NonNls
-    private static final String PROCESS_NAME = "Ignore indexing";
-
-    /** {@link CacheMap} instance. */
-    @NotNull
-    private final CacheMap cache;
-
+public class IgnoreManager extends AbstractProjectComponent implements DumbAware {
     /** {@link PsiManager} instance. */
     @NotNull
     private final PsiManagerImpl psiManager;
-
-    /** {@link VirtualFileManager} instance. */
-    @NotNull
-    private final VirtualFileManager virtualFileManager;
 
     /** {@link IgnoreSettings} instance. */
     @NotNull
     private final IgnoreSettings settings;
 
+    /** {@link FileStatusManager} instance. */
+    @NotNull
+    private final FileStatusManager statusManager;
+
     /** {@link MessageBusConnection} instance. */
     private MessageBusConnection messageBus;
 
-    /** {@link IgnoreManager} working flag. */
-    private boolean working;
-
-    /** {@link ExecutorService} thread queue. */
-    @NotNull
-    private final ExecutorService queue = ConcurrencyUtil.newSingleThreadExecutor(PROCESS_NAME);
-
-    /** {@link ProgressIndicator} instance. */
-    @NotNull
-    private final ProgressIndicator refreshIndicator = new RefreshProgress(IgnoreBundle.message("cache.indexing"));
-
-    /** {@link VirtualFileListener} instance to watch filesystem changes. */
-    @NotNull
-    private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
-        /** Flag to obtain if file was {@link IgnoreFileType} before. */
-        private boolean wasIgnoreFileType;
-
-        /**
-         * Fired when a virtual file is renamed from within IDEA, or its writable status is changed.
-         * For files renamed externally, {@link #fileCreated} and {@link #fileDeleted} events will be fired.
-         *
-         * @param event the event object containing information about the change.
-         */
+    private final Debounced debouncedFileStatusesChanged = new Debounced(1000) {
         @Override
-        public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
-            if (event.getPropertyName().equals("name")) {
-                boolean isIgnoreFileType = isIgnoreFileType(event);
-                if (isIgnoreFileType && !wasIgnoreFileType) {
-                    addFile(event);
-                } else if (!isIgnoreFileType && wasIgnoreFileType) {
-                    cache.cleanup(event.getFile());
-                }
-            }
-        }
-
-        /**
-         * Fired before the change of a name or writable status of a file is processed.
-         *
-         * @param event the event object containing information about the change.
-         */
-        @Override
-        public void beforePropertyChange(@NotNull VirtualFilePropertyEvent event) {
-            wasIgnoreFileType = isIgnoreFileType(event);
-        }
-
-        /**
-         * Fired when a virtual file is created. This event is not fired for files discovered during initial
-         * VFS initialization.
-         *
-         * @param event the event object containing information about the change
-         */
-        @Override
-        public void fileCreated(@NotNull VirtualFileEvent event) {
-            addFile(event);
-        }
-
-        /**
-         * Triggers {@link CacheMap#cleanup(VirtualFile)}.
-         *
-         * @param event current event
-         */
-        @Override
-        public void fileDeleted(@NotNull VirtualFileEvent event) {
-            cache.cleanup(event.getFile());
-        }
-
-        /**
-         * Fired when a virtual file is copied from within IDEA.
-         *
-         * @param event the event object containing information about the change.
-         */
-        @Override
-        public void fileCopied(@NotNull VirtualFileCopyEvent event) {
-            addFile(event);
-        }
-
-        /**
-         * Adds {@link IgnoreFile} to the {@link CacheMap}.
-         *
-         * @param event current event
-         */
-        private void addFile(@NotNull VirtualFileEvent event) {
-            if (isIgnoreFileType(event)) {
-                IgnoreFile file = getIgnoreFile(event.getFile());
-                if (file != null) {
-                    cache.add(file);
-                }
-            }
-        }
-
-        /**
-         * Checks if event was fired on the {@link IgnoreFileType} file.
-         *
-         * @param event current event
-         * @return event called on {@link IgnoreFileType}
-         */
-        private boolean isIgnoreFileType(@NotNull VirtualFileEvent event) {
-            return event.getFile().getFileType() instanceof IgnoreFileType;
+        protected void task() {
+            // ((FileStatusManagerImpl) FileStatusManager.getInstance(myProject)).disposeComponent(); // just in case
+            statusManager.fileStatusesChanged();
         }
     };
+
+    /** {@link IgnoreManager} working flag. */
+    private boolean working;
 
     /** {@link PsiTreeChangeListener} instance to check if {@link IgnoreFile} content was changed. */
     @NotNull
@@ -212,10 +101,7 @@ public class IgnoreManager extends AbstractProjectComponent {
         @Override
         public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
             if (event.getParent() instanceof IgnoreFile) {
-                IgnoreFile ignoreFile = (IgnoreFile) event.getParent();
-                if (((IgnoreLanguage) ignoreFile.getLanguage()).isEnabled()) {
-                    cache.hasChanged(ignoreFile);
-                }
+                debouncedFileStatusesChanged.run();
             }
         }
     };
@@ -235,8 +121,7 @@ public class IgnoreManager extends AbstractProjectComponent {
                 case LANGUAGES:
                     if (isEnabled()) {
                         if (working) {
-                            cache.clear();
-                            retrieve();
+                            debouncedFileStatusesChanged.run();
                         } else {
                             enable();
                         }
@@ -250,24 +135,6 @@ public class IgnoreManager extends AbstractProjectComponent {
             }
         }
     };
-
-    /** {@link VcsListener} instance. */
-    @NotNull
-    private final VcsListener vcsListener = new VcsListener() {
-        private boolean initialized;
-
-        @Override
-        public void directoryMappingChanged() {
-            if (working && initialized) {
-                cache.clear();
-                retrieve();
-            }
-            initialized = true;
-        }
-    };
-
-    /** Document listener to trigger */
-    private DocumentSyncListener documentSyncListener = new DocumentSyncListener();
 
     /**
      * Returns {@link IgnoreManager} service instance.
@@ -287,28 +154,9 @@ public class IgnoreManager extends AbstractProjectComponent {
      */
     public IgnoreManager(@NotNull final Project project) {
         super(project);
-        cache = new CacheMap(project);
-        psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
-        virtualFileManager = VirtualFileManager.getInstance();
-        settings = IgnoreSettings.getInstance();
-    }
-
-    /**
-     * Helper for fetching {@link IgnoreFile} using {@link VirtualFile}.
-     *
-     * @param file current file
-     * @return {@link IgnoreFile}
-     */
-    @Nullable
-    private IgnoreFile getIgnoreFile(@Nullable VirtualFile file) {
-        if (file == null || !file.exists()) {
-            return null;
-        }
-        PsiFile psiFile = psiManager.findFile(file);
-        if (psiFile == null || !(psiFile instanceof IgnoreFile)) {
-            return null;
-        }
-        return (IgnoreFile) psiFile;
+        this.psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
+        this.settings = IgnoreSettings.getInstance();
+        this.statusManager = FileStatusManager.getInstance(project);
     }
 
     /**
@@ -318,7 +166,61 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @return file is ignored
      */
     public boolean isFileIgnored(@NotNull final VirtualFile file) {
-        return isEnabled() && cache.isFileIgnored(file);
+        if (DumbService.isDumb(myProject) || !isEnabled() || !Utils.isUnder(file, myProject.getBaseDir())) {
+            return false;
+        }
+
+        boolean ignored = false;
+        for (IgnoreFileType fileType : IgnoreFilesIndex.getKeys(myProject)) {
+            if (!fileType.getIgnoreLanguage().isEnabled()) {
+                continue;
+            }
+
+            Collection<IgnoreEntryOccurrence> values = IgnoreFilesIndex.getEntries(myProject, fileType);
+            for (IgnoreEntryOccurrence value : values) {
+                String relativePath;
+                if (fileType instanceof GitExcludeFileType) {
+                    VirtualFile workingDirectory = GitExcludeFileType.getWorkingDirectory(myProject, value.getFile());
+                    if (workingDirectory == null || !Utils.isUnder(file, workingDirectory)) {
+                        continue;
+                    }
+                    relativePath = StringUtil.trimStart(file.getPath(), workingDirectory.getPath());
+                } else {
+                    String parentPath = value.getFile().getParent().getPath();
+                    if (!StringUtil.startsWith(file.getPath(), parentPath)) {
+                        HashSet<VirtualFile> externalFiles = ExternalIndexableSetContributor.getAdditionalFiles(myProject);
+                        if (!externalFiles.contains(value.getFile())) {
+                            continue;
+                        }
+                    }
+                    relativePath = StringUtil.trimStart(file.getPath(), parentPath);
+                }
+
+                relativePath = StringUtil.trimEnd(StringUtil.trimStart(relativePath, "/"), "/");
+                if (StringUtil.isEmpty(relativePath)) {
+                    continue;
+                }
+
+                if (file.isDirectory()) {
+                    relativePath += "/";
+                }
+
+                for (Pair<Pattern, Boolean> item : value.getItems()) {
+                    if (item.first.matcher(relativePath).matches()) {
+                        ignored = !item.second;
+                    }
+                }
+            }
+        }
+
+        if (!ignored) {
+            VirtualFile directory = file.getParent();
+            if (directory != null && !directory.equals(myProject.getBaseDir())) {
+                return isFileIgnored(directory);
+            }
+        }
+
+        return ignored;
     }
 
     /**
@@ -328,37 +230,7 @@ public class IgnoreManager extends AbstractProjectComponent {
      * @return file is ignored and tracked
      */
     public boolean isFileIgnoredAndTracked(@NotNull final VirtualFile file) {
-        return isEnabled() && cache.isFileTrackedIgnored(file);
-    }
-
-    /**
-     * Checks if file's parents are ignored.
-     *
-     * @param file current file
-     * @return file's parents are ignored
-     */
-    public boolean isParentIgnored(@NotNull final VirtualFile file) {
-        if (!isEnabled()) {
-            return false;
-        }
-
-        VirtualFile parent = file.getParent();
-        while (parent != null && Utils.isInProject(parent, myProject)) {
-            if (isFileIgnored(parent)) {
-                return true;
-            }
-            parent = parent.getParent();
-        }
         return false;
-    }
-
-    /**
-     * Checks if ignored files watching is enabled.
-     *
-     * @return enabled
-     */
-    private boolean isEnabled() {
-        return settings.isIgnoredFileStatus();
     }
 
     /**
@@ -374,25 +246,6 @@ public class IgnoreManager extends AbstractProjectComponent {
     }
 
     /**
-     * Enable manager.
-     */
-    private void enable() {
-        if (working) {
-            return;
-        }
-
-        virtualFileManager.addVirtualFileListener(virtualFileListener);
-        psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
-        settings.addListener(settingsListener);
-        messageBus = myProject.getMessageBus().connect();
-        messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, vcsListener);
-        messageBus.subscribe(AppTopics.FILE_DOCUMENT_SYNC, documentSyncListener);
-        working = true;
-
-        retrieve();
-    }
-
-    /**
      * Invoked when the project corresponding to this component instance is closed.<p>
      * Note that components may be created for even unopened projects and this method can be never
      * invoked for a particular component instance (for example for default project).
@@ -403,10 +256,36 @@ public class IgnoreManager extends AbstractProjectComponent {
     }
 
     /**
+     * Checks if ignored files watching is enabled.
+     *
+     * @return enabled
+     */
+    private boolean isEnabled() {
+        return settings.isIgnoredFileStatus();
+    }
+
+    /**
+     * Enable manager.
+     */
+    private void enable() {
+        if (working) {
+            return;
+        }
+
+        FileBasedIndex.getInstance().requestRebuild(IgnoreFilesIndex.KEY);
+        DumbService.getInstance(myProject).smartInvokeLater(debouncedFileStatusesChanged);
+
+        psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
+        settings.addListener(settingsListener);
+        messageBus = myProject.getMessageBus().connect();
+
+        working = true;
+    }
+
+    /**
      * Disable manager.
      */
     private void disable() {
-        virtualFileManager.removeVirtualFileListener(virtualFileListener);
         psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
         settings.removeListener(settingsListener);
 
@@ -414,7 +293,6 @@ public class IgnoreManager extends AbstractProjectComponent {
             messageBus.disconnect();
         }
 
-        cache.clear();
         working = false;
     }
 
@@ -431,163 +309,13 @@ public class IgnoreManager extends AbstractProjectComponent {
         }
     }
 
-    /** Triggers caching actions. */
-    private void retrieve() {
-        if (!Alarm.isEventDispatchThread()) {
-            return;
-        }
-
-        DumbService.getInstance(myProject).smartInvokeLater(new Runnable() {
-            @Override
-            public void run() {
-                queue.submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshIndicator.start();
-                        final AccessToken token = HeavyProcessLatch.INSTANCE.processStarted(PROCESS_NAME);
-                        try {
-                            FileManager fileManager = psiManager.getFileManager();
-                            if (!(fileManager instanceof FileManagerImpl)) {
-                                return;
-                            }
-
-                            final StartupManagerEx startupManager =
-                                    (StartupManagerEx) StartupManager.getInstance(myProject);
-                            while (!startupManager.postStartupActivityPassed()) {
-                                try {
-                                    Thread.sleep(REQUEST_DELAY);
-                                } catch (InterruptedException ignored) {
-                                }
-                            }
-
-                            // Search for Ignore files in the project
-                            final GlobalSearchScope scope = GlobalSearchScope.allScope(myProject);
-                            final List<IgnoreFile> files = ContainerUtil.newArrayList();
-                            AccessToken readAccessToken = ApplicationManager.getApplication().acquireReadActionLock();
-                            try {
-                                for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                                    if (language.isEnabled()) {
-                                        try {
-                                            Collection<VirtualFile> virtualFiles = FileTypeIndex
-                                                    .getFiles(language.getFileType(), scope);
-                                            for (VirtualFile virtualFile : virtualFiles) {
-                                                ContainerUtil.addIfNotNull(files, getIgnoreFile(virtualFile));
-                                            }
-                                        } catch (IndexOutOfBoundsException ignored) {
-                                        }
-                                    }
-                                }
-                            } finally {
-                                readAccessToken.finish();
-                            }
-                            Utils.ignoreFilesSort(files);
-
-                            addTasksFor(files);
-
-                            // Search for outer files
-                            if (settings.isOuterIgnoreRules()) {
-                                readAccessToken = ApplicationManager.getApplication().acquireReadActionLock();
-                                try {
-                                    for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                                        if (!language.isEnabled()) {
-                                            continue;
-                                        }
-                                        for (VirtualFile outerFile : language.getOuterFiles(myProject)) {
-                                            if (outerFile.exists()) {
-                                                PsiFile psiFile = psiManager.findFile(outerFile);
-                                                if (psiFile != null) {
-                                                    try {
-                                                        IgnoreFile outerIgnoreFile = (IgnoreFile) PsiFileFactory
-                                                                .getInstance(myProject)
-                                                                .createFileFromText(
-                                                                        language.getFilename(),
-                                                                        language,
-                                                                        psiFile.getText()
-                                                                );
-                                                        outerIgnoreFile.setOriginalFile(psiFile);
-                                                        addTaskFor(outerIgnoreFile);
-                                                    } catch (ConcurrentModificationException ignored) {
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                } finally {
-                                    readAccessToken.finish();
-                                }
-                            }
-                        } finally {
-                            token.finish();
-                            refreshIndicator.stop();
-                        }
-                    }
-
-                    /**
-                     * Adds {@link IgnoreFile} to the cache processor queue.
-                     *
-                     * @param files to cache
-                     */
-                    private void addTasksFor(@NotNull final List<IgnoreFile> files) {
-                        if (files.isEmpty()) {
-                            return;
-                        }
-                        addTaskFor(files.remove(0), files);
-                    }
-
-                    /**
-                     * Adds {@link IgnoreFile} to the cache processor queue.
-                     *
-                     * @param file to cache
-                     */
-                    private void addTaskFor(@Nullable final IgnoreFile file) {
-                        addTaskFor(file, null);
-                    }
-
-                    /**
-                     * Adds {@link IgnoreFile} to the cache processor queue.
-                     *
-                     * @param file to cache
-                     * @param dependentFiles files to cache if not ignored by given file
-                     */
-                    private void addTaskFor(@Nullable final IgnoreFile file,
-                                            @Nullable final List<IgnoreFile> dependentFiles) {
-                        if (file == null) {
-                            return;
-                        }
-                        final VirtualFile virtualFile = file.getVirtualFile();
-                        VirtualFile projectDir = myProject.getBaseDir();
-
-                        if ((!file.isOuter() && (virtualFile == null || isFileIgnored(virtualFile))) ||
-                                projectDir == null) {
-                            return;
-                        } else {
-                            cache.add(file);
-                        }
-
-                        if (dependentFiles == null || dependentFiles.isEmpty()) {
-                            return;
-                        }
-
-                        for (IgnoreFile dependentFile : dependentFiles) {
-                            VirtualFile dependentVirtualFile = dependentFile.getVirtualFile();
-                            if (dependentVirtualFile != null && !isFileIgnored(dependentVirtualFile) &&
-                                    !isParentIgnored(dependentVirtualFile)) {
-                                addTaskFor(dependentFile);
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    }
-
     /**
      * Returns tracked and ignored files stored in {@link CacheMap#trackedIgnoredFiles}.
      *
      * @return tracked and ignored files map
      */
     public HashMap<VirtualFile, Repository> getTrackedIgnoredFiles() {
-        return cache.getTrackedIgnoredFiles();
+        return new HashMap<VirtualFile, Repository>(); // TODO: feature temporarily disabled
     }
 
     /**
@@ -612,34 +340,6 @@ public class IgnoreManager extends AbstractProjectComponent {
                 Topic.create("New tracked and indexed files detected", RefreshTrackedIgnoredListener.class);
 
         void refresh();
-    }
-
-    /**
-     * FileDocumentManagerListener implementation to trigger {@link CacheMap#refresh()}
-     * on every {@link IgnoreFileType} file save event.
-     */
-    public class DocumentSyncListener extends FileDocumentManagerAdapter {
-        /** {@link FileDocumentManager} instance. */
-        private final FileDocumentManager manager;
-
-        /** Constructor. */
-        DocumentSyncListener() {
-            manager = FileDocumentManager.getInstance();
-        }
-
-        /**
-         * Checks if saved {@link Document} has type of {@link IgnoreFileType} and triggers
-         * {@link CacheMap#refresh()} method.
-         *
-         * @param document saved document
-         */
-        @Override
-        public void beforeDocumentSaving(@NotNull Document document) {
-            final VirtualFile file = manager.getFile(document);
-            if (Utils.getFileType(file) != null && Utils.isInProject(file, myProject)) {
-                cache.refresh();
-            }
-        }
     }
 
     /**

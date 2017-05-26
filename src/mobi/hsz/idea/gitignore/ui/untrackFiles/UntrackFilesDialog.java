@@ -117,7 +117,6 @@ public class UntrackFilesDialog extends DialogWrapper {
                     commandsDocument.setText(text);
                 }
             });
-
         }
     };
 

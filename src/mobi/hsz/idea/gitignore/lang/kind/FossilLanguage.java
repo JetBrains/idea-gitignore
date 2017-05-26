@@ -48,7 +48,7 @@ public class FossilLanguage extends IgnoreLanguage {
     private FossilLanguage() {
         super("Fossil", "ignore-glob", ".fossil-settings", Icons.FOSSIL, new OuterFileFetcher[]{
 
-                /** Outer file fetched from the .fossil-settings/ignore-glob file. */
+                // Outer file fetched from the .fossil-settings/ignore-glob file.
                 new OuterFileFetcher() {
                     @Nullable
                     @Override

@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.vcs;
 
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.openapi.vcs.FileStatusFactory;
@@ -44,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.0
  */
-public class IgnoreFileStatusProvider implements FileStatusProvider {
+public class IgnoreFileStatusProvider implements FileStatusProvider, DumbAware {
     /** Ignored status. */
     public static final FileStatus IGNORED = FileStatusFactory.getInstance().createFileStatus(
             "IGNORE.PROJECT_VIEW.IGNORED", IgnoreBundle.message("projectView.ignored"), JBColor.GRAY);
@@ -53,7 +54,7 @@ public class IgnoreFileStatusProvider implements FileStatusProvider {
     private final IgnoreManager ignoreManager;
 
     /** Constructor. */
-    public IgnoreFileStatusProvider(Project project) {
+    public IgnoreFileStatusProvider(@NotNull Project project) {
         this.ignoreManager = IgnoreManager.getInstance(project);
     }
 

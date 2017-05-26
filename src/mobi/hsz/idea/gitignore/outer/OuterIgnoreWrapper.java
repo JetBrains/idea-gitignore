@@ -30,6 +30,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.TabbedPaneWrapper;
@@ -113,6 +114,7 @@ public class OuterIgnoreWrapper implements Disposable {
                 Utils.openFile(project, outerFiles.get(tabbedPanel.getSelectedIndex()));
             }
         });
+        final VirtualFile userHomeDir = VfsUtil.getUserHomeDir();
 
         for (final VirtualFile outerFile : outerFiles) {
             Document document = FileDocumentManager.getInstance().getDocument(outerFile);
@@ -123,8 +125,13 @@ public class OuterIgnoreWrapper implements Disposable {
                 scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
                 scrollPanel.setPreferredSize(new Dimension(0, settings.getOuterIgnoreWrapperHeight()));
 
+                String path = outerFile.getPath();
+                if (userHomeDir != null) {
+                    path = path.replace(userHomeDir.getPath(), "~");
+                }
+
                 tabbedPanel.addTab(
-                        outerFile.getCanonicalPath(),
+                        path,
                         language.getIcon(),
                         scrollPanel,
                         outerFile.getCanonicalPath()

@@ -28,21 +28,18 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
-import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.HashMap;
 import java.util.List;
 
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
@@ -54,14 +51,6 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @since 1.1
  */
 public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
-    /** Current project. */
-    @NotNull
-    private final Project project;
-
-    /** Outer files map. */
-    @NotNull
-    private final HashMap<IgnoreLanguage, List<VirtualFile>> outerFiles = ContainerUtil.newHashMap();
-
     /**
      * Returns {@link OuterIgnoreLoaderComponent} service instance.
      *
@@ -76,7 +65,6 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Constructor. */
     public OuterIgnoreLoaderComponent(@NotNull final Project project) {
         super(project);
-        this.project = project;
     }
 
     /**
@@ -94,39 +82,14 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Initializes component. */
     @Override
     public void initComponent() {
-        myProject.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER,
-                new IgnoreEditorManagerListener(project));
-    }
-
-    /** Handles project opened event. */
-    @Override
-    public void projectOpened() {
-        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-            List<VirtualFile> files = ContainerUtil.newArrayList();
-
-            if (language.isOuterFileSupported()) {
-                for (OuterFileFetcher fetcher : language.getOuterFileFetchers()) {
-                    ContainerUtil.addIfNotNull(fetcher.fetch(project), files);
-                }
-            }
-
-            outerFiles.put(language, files);
-        }
-    }
-
-    /**
-     * Returns outer file for the given {@link IgnoreLanguage}.
-     *
-     * @param language of the outer file
-     * @return outer file
-     */
-    @NotNull
-    public List<VirtualFile> getOuterFiles(@NotNull IgnoreLanguage language) {
-        return Utils.notNullize(outerFiles.get(language));
+        myProject.getMessageBus().connect().subscribe(
+                FileEditorManagerListener.FILE_EDITOR_MANAGER,
+                new IgnoreEditorManagerListener(myProject)
+        );
     }
 
     /** Listener for ignore editor manager. */
-    private static class IgnoreEditorManagerListener extends FileEditorManagerAdapter {
+    private class IgnoreEditorManagerListener extends FileEditorManagerAdapter {
         /** Current project. */
         private final Project project;
 
@@ -148,40 +111,45 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 return;
             }
 
-            IgnoreLanguage language = ((IgnoreFileType) fileType).getIgnoreLanguage();
+            final IgnoreLanguage language = ((IgnoreFileType) fileType).getIgnoreLanguage();
             if (!language.isEnabled()) {
                 return;
             }
 
-            List<VirtualFile> outerFiles = language.getOuterFiles(project);
-            if (outerFiles.isEmpty() || outerFiles.contains(file)) {
-                return;
-            }
+            DumbService.getInstance(project).runWhenSmart(new Runnable() {
+                @Override
+                public void run() {
+                    List<VirtualFile> outerFiles = language.getOuterFiles(myProject);
+                    if (outerFiles.isEmpty() || outerFiles.contains(file)) {
+                        return;
+                    }
 
-            for (final FileEditor fileEditor : source.getEditors(file)) {
-                if (fileEditor instanceof TextEditor) {
-                    final OuterIgnoreWrapper wrapper = new OuterIgnoreWrapper(project, language, outerFiles);
-                    final JComponent c = wrapper.getComponent();
-                    source.addBottomComponent(fileEditor, c);
+                    for (final FileEditor fileEditor : source.getEditors(file)) {
+                        if (fileEditor instanceof TextEditor) {
+                            final OuterIgnoreWrapper wrapper = new OuterIgnoreWrapper(project, language, outerFiles);
+                            final JComponent c = wrapper.getComponent();
+                            source.addBottomComponent(fileEditor, c);
 
-                    IgnoreSettings.getInstance().addListener(new IgnoreSettings.Listener() {
-                        @Override
-                        public void onChange(@NotNull KEY key, Object value) {
-                            if (KEY.OUTER_IGNORE_RULES.equals(key)) {
-                                c.setVisible((Boolean) value);
-                            }
+                            IgnoreSettings.getInstance().addListener(new IgnoreSettings.Listener() {
+                                @Override
+                                public void onChange(@NotNull KEY key, Object value) {
+                                    if (KEY.OUTER_IGNORE_RULES.equals(key)) {
+                                        c.setVisible((Boolean) value);
+                                    }
+                                }
+                            });
+
+                            Disposer.register(fileEditor, wrapper);
+                            Disposer.register(fileEditor, new Disposable() {
+                                @Override
+                                public void dispose() {
+                                    source.removeBottomComponent(fileEditor, c);
+                                }
+                            });
                         }
-                    });
-
-                    Disposer.register(fileEditor, wrapper);
-                    Disposer.register(fileEditor, new Disposable() {
-                        @Override
-                        public void dispose() {
-                            source.removeBottomComponent(fileEditor, c);
-                        }
-                    });
+                    }
                 }
-            }
+            });
         }
     }
 

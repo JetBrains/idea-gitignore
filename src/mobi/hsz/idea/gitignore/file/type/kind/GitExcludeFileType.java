@@ -24,8 +24,13 @@
 
 package mobi.hsz.idea.gitignore.file.type.kind;
 
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
+import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Describes Git exclude file type.
@@ -40,5 +45,24 @@ public class GitExcludeFileType extends IgnoreFileType {
     /** Private constructor to prevent direct object creation. */
     private GitExcludeFileType() {
         super(GitExcludeLanguage.INSTANCE);
+    }
+
+    @Nullable
+    public static VirtualFile getWorkingDirectory(@NotNull Project project, @NotNull VirtualFile outerFile) {
+        final VirtualFile baseDir = project.getBaseDir();
+        final VirtualFile infoDir = baseDir.findFileByRelativePath(".git/info");
+        if (infoDir != null && Utils.isUnder(outerFile, infoDir)) {
+            return baseDir;
+        }
+
+        final VirtualFile gitModules = baseDir.findFileByRelativePath(".git/modules");
+        if (gitModules != null && Utils.isUnder(outerFile, gitModules)) {
+            String path = Utils.getRelativePath(gitModules, outerFile.getParent().getParent());
+            if (path != null) {
+                return baseDir.findFileByRelativePath(path);
+            }
+        }
+
+        return null;
     }
 }

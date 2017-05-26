@@ -120,4 +120,14 @@ public class IgnoreFileType extends LanguageFileType {
     public IgnoreLanguage getIgnoreLanguage() {
         return language;
     }
+
+    /**
+     * Returns hashCode of the current {@link IgnoreLanguage}.
+     *
+     * @return hashCode
+     */
+    @Override
+    public int hashCode() {
+        return language.getDisplayName().hashCode();
+    }
 }

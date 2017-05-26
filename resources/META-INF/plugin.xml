@@ -116,6 +116,11 @@
         <editorNotificationProvider
                 implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider"/>
 
+        <fileBasedIndex
+                implementation="mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex"/>
+        <indexedRootsProvider
+                implementation="mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor"/>
+
         <fileTypeFactory
                 implementation="mobi.hsz.idea.gitignore.file.IgnoreFileTypeFactory"/>
 
