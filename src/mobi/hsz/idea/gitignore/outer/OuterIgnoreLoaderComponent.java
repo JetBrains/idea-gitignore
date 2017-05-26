@@ -119,7 +119,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
             DumbService.getInstance(project).runWhenSmart(new Runnable() {
                 @Override
                 public void run() {
-                    List<VirtualFile> outerFiles = language.getOuterFiles(myProject);
+                    final List<VirtualFile> outerFiles = language.getOuterFiles(myProject);
                     if (outerFiles.isEmpty() || outerFiles.contains(file)) {
                         return;
                     }

@@ -126,7 +126,7 @@ public class IgnoreEntryOccurrence implements Serializable {
     /**
      * Adds new element to {@link #items}.
      *
-     * @param pattern entry converted to {@link Pattern}
+     * @param pattern   entry converted to {@link Pattern}
      * @param isNegated entry is negated
      */
     public void add(@NotNull Pattern pattern, boolean isNegated) {
@@ -136,11 +136,12 @@ public class IgnoreEntryOccurrence implements Serializable {
     /**
      * Static helper to write given {@link IgnoreEntryOccurrence} to the output stream.
      *
-     * @param out output stream
+     * @param out   output stream
      * @param entry entry to write
      * @throws IOException I/O exception
      */
-    public static synchronized void serialize(@NotNull DataOutput out, @NotNull IgnoreEntryOccurrence entry) throws IOException {
+    public static synchronized void serialize(@NotNull DataOutput out, @NotNull IgnoreEntryOccurrence entry)
+            throws IOException {
         out.writeUTF(entry.getFile().getPath());
         out.writeInt(entry.items.size());
         for (Pair<Pattern, Boolean> item : entry.items) {

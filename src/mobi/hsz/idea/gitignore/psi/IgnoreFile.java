@@ -151,7 +151,7 @@ public class IgnoreFile extends PsiFileImpl {
      * @return is outer file
      */
     public boolean isOuter() {
-        return false;
+        return false; // TODO handle this case
 //        final Collection<IgnoreEntryOccurrence> outerFiles = fileType.getIgnoreLanguage().getOuterFiles(getProject());
 //        return outerFiles.contains(getOriginalFile().getVirtualFile());
     }

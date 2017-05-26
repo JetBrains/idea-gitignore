@@ -109,7 +109,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileType, I
     /**
      * Saves data to the indexing output stream.
      *
-     * @param out output stream
+     * @param out   output stream
      * @param value filetype to write
      * @throws IOException if an I/O error occurs
      */
@@ -123,6 +123,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileType, I
      *
      * @param in input stream
      * @return {@link IgnoreFileType} instance read from the stream
+     *
      * @throws IOException if an I/O error occurs
      */
     @Override
@@ -210,7 +211,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileType, I
     /**
      * Returns collection of indexed {@link IgnoreEntryOccurrence} for given {@link Project} and {@link IgnoreFileType}.
      *
-     * @param project current project
+     * @param project  current project
      * @param fileType filetype
      * @return {@link IgnoreEntryOccurrence} collection
      */
@@ -223,7 +224,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileType, I
     /**
      * Returns collection of indexed {@link VirtualFile} for given {@link Project} and {@link IgnoreFileType}.
      *
-     * @param project current project
+     * @param project  current project
      * @param fileType filetype
      * @return {@link VirtualFile} collection
      */

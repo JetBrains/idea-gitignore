@@ -124,7 +124,7 @@ public class UntrackFilesDialog extends DialogWrapper {
      * Constructor.
      *
      * @param project current project
-     * @param files files map to present
+     * @param files   files map to present
      */
     public UntrackFilesDialog(@NotNull Project project, @NotNull HashMap<VirtualFile, Repository> files) {
         super(project, false);

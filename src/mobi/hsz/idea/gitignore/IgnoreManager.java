@@ -57,7 +57,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.regex.Pattern;
 
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
@@ -188,8 +187,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 } else {
                     String parentPath = value.getFile().getParent().getPath();
                     if (!StringUtil.startsWith(file.getPath(), parentPath)) {
-                        HashSet<VirtualFile> externalFiles = ExternalIndexableSetContributor.getAdditionalFiles(myProject);
-                        if (!externalFiles.contains(value.getFile())) {
+                        if (!ExternalIndexableSetContributor.getAdditionalFiles(myProject).contains(value.getFile())) {
                             continue;
                         }
                     }
