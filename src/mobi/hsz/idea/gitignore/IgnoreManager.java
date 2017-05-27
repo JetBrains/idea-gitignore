@@ -50,7 +50,7 @@ import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
-import mobi.hsz.idea.gitignore.util.CacheMap;
+//import mobi.hsz.idea.gitignore.util.CacheMap;
 import mobi.hsz.idea.gitignore.util.Debounced;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
