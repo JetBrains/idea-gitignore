@@ -28,6 +28,8 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.ide.projectView.PresentationData;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -535,5 +537,13 @@ public class Utils {
             data.addText(data.getPresentableText(), REGULAR_ATTRIBUTES);
         }
         data.addText(" " + text, attributes);
+    }
+
+    /**
+     * Wrapper for {@link Application#isUnitTestMode()}
+     * @return unit test mode
+     */
+    public static boolean isUnitTestMode() {
+        return ApplicationManager.getApplication().isUnitTestMode();
     }
 }

@@ -128,6 +128,6 @@ public class IgnoreFileType extends LanguageFileType {
      */
     @Override
     public int hashCode() {
-        return language.getDisplayName().hashCode();
+        return language.hashCode();
     }
 }

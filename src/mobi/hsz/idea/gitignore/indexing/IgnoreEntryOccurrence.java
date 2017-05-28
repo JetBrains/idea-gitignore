@@ -25,10 +25,11 @@
 package mobi.hsz.idea.gitignore.indexing;
 
 import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.util.containers.ContainerUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,11 +72,10 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     @Override
     public int hashCode() {
-        int hashCode = file.hashCode();
-        for (Pair<Pattern, Boolean> item : items) {
-            hashCode += item.first.pattern().hashCode() + item.second.hashCode();
-        }
-        return hashCode;
+        return new HashCodeBuilder()
+                .append(file)
+                .append(items.toString())
+                .toHashCode();
     }
 
     /**
@@ -91,14 +91,8 @@ public class IgnoreEntryOccurrence implements Serializable {
         }
         final IgnoreEntryOccurrence entry = (IgnoreEntryOccurrence) obj;
         boolean equals = file.equals(entry.file) && items.size() == entry.items.size();
-        if (equals) {
-            for (int i = 0; i < items.size(); i++) {
-                equals = items.get(i).first.pattern().equals(entry.items.get(i).first.pattern()) &&
-                        items.get(i).second.equals(entry.items.get(i).second);
-                if (!equals) {
-                    return false;
-                }
-            }
+        for (int i = 0; i < items.size(); i++) {
+            equals = equals && items.get(i).toString().equals(entry.items.get(i).toString());
         }
         return equals;
     }
@@ -142,7 +136,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     public static synchronized void serialize(@NotNull DataOutput out, @NotNull IgnoreEntryOccurrence entry)
             throws IOException {
-        out.writeUTF(entry.getFile().getPath());
+        out.writeUTF(entry.getFile().toString());
         out.writeInt(entry.items.size());
         for (Pair<Pattern, Boolean> item : entry.items) {
             out.writeUTF(item.first.pattern());
@@ -159,22 +153,24 @@ public class IgnoreEntryOccurrence implements Serializable {
     @Nullable
     public static synchronized IgnoreEntryOccurrence deserialize(@NotNull DataInput in) {
         try {
-            String path = in.readUTF();
+            final String path = in.readUTF();
             if (StringUtils.isEmpty(path)) {
                 return null;
             }
-            VirtualFile file = LocalFileSystem.getInstance().findFileByPath(path);
-            if (file == null || !file.exists() || file.isDirectory()) {
+
+            final VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(path);
+            if (file == null) {
                 return null;
             }
 
-            IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(file);
+            final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(file);
             int size = in.readInt();
             for (int i = 0; i < size; i++) {
                 Pattern pattern = Pattern.compile(in.readUTF());
                 Boolean isNegated = in.readBoolean();
                 entry.add(pattern, isNegated);
             }
+
             return entry;
         } catch (IOException e) {
             return null;
