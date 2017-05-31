@@ -327,10 +327,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         return new HashMap<VirtualFile, Repository>(); // TODO: feature temporarily disabled
     }
 
-    /**
-     * Listener bounded with {@link TrackedIgnoredListener#TRACKED_IGNORED} topic to inform
-     * about new entries.
-     */
+    /** Listener bounded with {@link TrackedIgnoredListener#TRACKED_IGNORED} topic to inform about new entries. */
     public interface TrackedIgnoredListener {
         /** Topic for detected tracked and indexed files. */
         Topic<TrackedIgnoredListener> TRACKED_IGNORED =

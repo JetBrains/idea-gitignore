@@ -217,7 +217,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     }
 
     /**
-     * Returns collection of indexed {@link IgnoreEntryOccurrence} for given {@link Project} and {@link IgnoreFileTypeKey}.
+     * Returns collection of indexed {@link IgnoreEntryOccurrence} for given {@link Project} and {@link IgnoreFileType}.
      *
      * @param project  current project
      * @param fileType filetype
