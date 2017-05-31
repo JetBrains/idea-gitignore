@@ -38,7 +38,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 2.0
  */
-public abstract class AbstractIgnoreFilesIndex<K extends IgnoreFileType, V> extends FileBasedIndexExtension<K, V>
+public abstract class AbstractIgnoreFilesIndex<K, V> extends FileBasedIndexExtension<K, V>
         implements KeyDescriptor<K>, DataIndexer<K, V, FileContent>, FileBasedIndex.InputFilter {
 
     /**

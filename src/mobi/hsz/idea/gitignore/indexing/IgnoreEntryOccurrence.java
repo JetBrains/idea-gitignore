@@ -159,21 +159,19 @@ public class IgnoreEntryOccurrence implements Serializable {
             }
 
             final VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(path);
-            if (file == null) {
-                return null;
-            }
+            if (file != null) {
+                final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(file);
+                int size = in.readInt();
+                for (int i = 0; i < size; i++) {
+                    Pattern pattern = Pattern.compile(in.readUTF());
+                    Boolean isNegated = in.readBoolean();
+                    entry.add(pattern, isNegated);
+                }
 
-            final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(file);
-            int size = in.readInt();
-            for (int i = 0; i < size; i++) {
-                Pattern pattern = Pattern.compile(in.readUTF());
-                Boolean isNegated = in.readBoolean();
-                entry.add(pattern, isNegated);
+                return entry;
             }
-
-            return entry;
-        } catch (IOException e) {
-            return null;
+        } catch (IOException ignored) {
         }
+        return null;
     }
 }

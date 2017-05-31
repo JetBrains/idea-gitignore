@@ -40,7 +40,6 @@ import com.intellij.psi.PsiTreeChangeEvent;
 import com.intellij.psi.PsiTreeChangeListener;
 import com.intellij.psi.impl.PsiManagerImpl;
 import com.intellij.util.containers.HashMap;
-import com.intellij.util.indexing.FileBasedIndex;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -50,8 +49,8 @@ import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
-//import mobi.hsz.idea.gitignore.util.CacheMap;
 import mobi.hsz.idea.gitignore.util.Debounced;
+import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -83,13 +82,17 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** {@link MessageBusConnection} instance. */
     private MessageBusConnection messageBus;
 
-    private final Debounced debouncedFileStatusesChanged = new Debounced(1000) {
+    /** {@link FileStatusManager#fileStatusesChanged()} method wrapped with {@link Debounced}. */
+    private final Debounced debouncedStatusesChanged = new Debounced(1000) {
         @Override
         protected void task() {
-            // ((FileStatusManagerImpl) FileStatusManager.getInstance(myProject)).disposeComponent(); // just in case
             statusManager.fileStatusesChanged();
         }
     };
+
+    /** Scheduled feature connected with {@link #debouncedStatusesChanged}. */
+    @NotNull
+    private final InterruptibleScheduledFuture statusesChangedScheduledFeature;
 
     /** {@link IgnoreManager} working flag. */
     private boolean working;
@@ -100,7 +103,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         @Override
         public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
             if (event.getParent() instanceof IgnoreFile) {
-                debouncedFileStatusesChanged.run();
+                debouncedStatusesChanged.run();
             }
         }
     };
@@ -120,7 +123,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 case LANGUAGES:
                     if (isEnabled()) {
                         if (working) {
-                            debouncedFileStatusesChanged.run();
+                            debouncedStatusesChanged.run();
                         } else {
                             enable();
                         }
@@ -156,6 +159,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         this.psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
         this.settings = IgnoreSettings.getInstance();
         this.statusManager = FileStatusManager.getInstance(project);
+        this.statusesChangedScheduledFeature =
+                new InterruptibleScheduledFuture(debouncedStatusesChanged, 5000, 15);
     }
 
     /**
@@ -170,12 +175,14 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
 
         boolean ignored = false;
+        int valuesCount = 0;
         for (IgnoreFileType fileType : IgnoreFilesIndex.getKeys(myProject)) {
             if (!fileType.getIgnoreLanguage().isEnabled()) {
                 continue;
             }
 
             Collection<IgnoreEntryOccurrence> values = IgnoreFilesIndex.getEntries(myProject, fileType);
+            valuesCount += values.size();
             for (IgnoreEntryOccurrence value : values) {
                 String relativePath;
                 if (fileType instanceof GitExcludeFileType) {
@@ -211,13 +218,14 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             }
         }
 
-        if (!ignored) {
+        if (valuesCount > 0 && !ignored) {
             VirtualFile directory = file.getParent();
             if (directory != null && !directory.equals(myProject.getBaseDir())) {
                 return isFileIgnored(directory);
             }
         }
 
+        statusesChangedScheduledFeature.cancel();
         return ignored;
     }
 
@@ -262,17 +270,13 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         return settings.isIgnoredFileStatus();
     }
 
-    /**
-     * Enable manager.
-     */
+    /** Enable manager. */
     private void enable() {
         if (working) {
             return;
         }
 
-        FileBasedIndex.getInstance().requestRebuild(IgnoreFilesIndex.KEY);
-        DumbService.getInstance(myProject).smartInvokeLater(debouncedFileStatusesChanged);
-
+        statusesChangedScheduledFeature.run();
         psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
         settings.addListener(settingsListener);
         messageBus = myProject.getMessageBus().connect();
@@ -280,18 +284,25 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         working = true;
     }
 
-    /**
-     * Disable manager.
-     */
+    /** Disable manager. */
     private void disable() {
+        statusesChangedScheduledFeature.cancel();
         psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
         settings.removeListener(settingsListener);
 
         if (messageBus != null) {
             messageBus.disconnect();
+            messageBus = null;
         }
 
         working = false;
+    }
+
+    /** Dispose and disable component. */
+    @Override
+    public void disposeComponent() {
+        super.disposeComponent();
+        disable();
     }
 
     /**
