@@ -28,6 +28,7 @@ import com.intellij.lang.Language;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.impl.source.PsiFileImpl;
@@ -37,6 +38,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -151,9 +153,8 @@ public class IgnoreFile extends PsiFileImpl {
      * @return is outer file
      */
     public boolean isOuter() {
-        return false; // TODO handle this case
-//        final Collection<IgnoreEntryOccurrence> outerFiles = fileType.getIgnoreLanguage().getOuterFiles(getProject());
-//        return outerFiles.contains(getOriginalFile().getVirtualFile());
+        final List<VirtualFile> outerFiles = fileType.getIgnoreLanguage().getOuterFiles(getProject());
+        return outerFiles.contains(getOriginalFile().getVirtualFile());
     }
 
     /**
