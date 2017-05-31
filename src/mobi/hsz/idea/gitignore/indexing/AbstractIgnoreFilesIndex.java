@@ -29,7 +29,6 @@ import com.intellij.util.indexing.FileBasedIndex;
 import com.intellij.util.indexing.FileBasedIndexExtension;
 import com.intellij.util.indexing.FileContent;
 import com.intellij.util.io.KeyDescriptor;
-import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -64,7 +63,7 @@ public abstract class AbstractIgnoreFilesIndex<K, V> extends FileBasedIndexExten
     }
 
     /**
-     * Checks if given {@link IgnoreFileType} objects are equal.
+     * Checks if given types objects are equal.
      *
      * @param val1 object to compare
      * @param val2 object to compare
@@ -76,9 +75,9 @@ public abstract class AbstractIgnoreFilesIndex<K, V> extends FileBasedIndexExten
     }
 
     /**
-     * Returns hashCode for given {@link IgnoreFileType} object.
+     * Returns hashCode for given type object.
      *
-     * @param value {@link IgnoreFileType} object
+     * @param value type object
      * @return object's hashCode
      */
     @Override
