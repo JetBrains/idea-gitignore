@@ -33,12 +33,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiTreeChangeAdapter;
-import com.intellij.psi.PsiTreeChangeEvent;
-import com.intellij.psi.PsiTreeChangeListener;
-import com.intellij.psi.impl.PsiManagerImpl;
+import com.intellij.openapi.vfs.*;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
@@ -67,9 +62,9 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @since 1.0
  */
 public class IgnoreManager extends AbstractProjectComponent implements DumbAware {
-    /** {@link PsiManager} instance. */
+    /** {@link VirtualFileManager} instance. */
     @NotNull
-    private final PsiManagerImpl psiManager;
+    private final VirtualFileManager virtualFileManager;
 
     /** {@link IgnoreSettings} instance. */
     @NotNull
@@ -97,12 +92,12 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** {@link IgnoreManager} working flag. */
     private boolean working;
 
-    /** {@link PsiTreeChangeListener} instance to check if {@link IgnoreFile} content was changed. */
+    /** {@link VirtualFileListener} instance to check if {@link IgnoreFile} content was changed. */
     @NotNull
-    private final PsiTreeChangeListener psiTreeChangeListener = new PsiTreeChangeAdapter() {
+    private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
         @Override
-        public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
-            if (event.getParent() instanceof IgnoreFile) {
+        public void contentsChanged(@NotNull VirtualFileEvent event) {
+            if (event.getFile().getFileType() instanceof IgnoreFileType) {
                 debouncedStatusesChanged.run();
             }
         }
@@ -156,7 +151,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      */
     public IgnoreManager(@NotNull final Project project) {
         super(project);
-        this.psiManager = (PsiManagerImpl) PsiManager.getInstance(project);
+        this.virtualFileManager = VirtualFileManager.getInstance();
         this.settings = IgnoreSettings.getInstance();
         this.statusManager = FileStatusManager.getInstance(project);
         this.statusesChangedScheduledFeature =
@@ -175,6 +170,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
 
         boolean ignored = false;
+        boolean matched = false;
         int valuesCount = 0;
         for (IgnoreFileType fileType : IgnoreFilesIndex.getKeys(myProject)) {
             if (!fileType.getIgnoreLanguage().isEnabled()) {
@@ -213,12 +209,13 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 for (Pair<Pattern, Boolean> item : value.getItems()) {
                     if (item.first.matcher(relativePath).matches()) {
                         ignored = !item.second;
+                        matched = true;
                     }
                 }
             }
         }
 
-        if (valuesCount > 0 && !ignored) {
+        if (valuesCount > 0 && !ignored && !matched) {
             VirtualFile directory = file.getParent();
             if (directory != null && !directory.equals(myProject.getBaseDir())) {
                 return isFileIgnored(directory);
@@ -277,7 +274,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
 
         statusesChangedScheduledFeature.run();
-        psiManager.addPsiTreeChangeListener(psiTreeChangeListener);
+        virtualFileManager.addVirtualFileListener(virtualFileListener);
         settings.addListener(settingsListener);
         messageBus = myProject.getMessageBus().connect();
 
@@ -287,7 +284,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** Disable manager. */
     private void disable() {
         statusesChangedScheduledFeature.cancel();
-        psiManager.removePsiTreeChangeListener(psiTreeChangeListener);
+        virtualFileManager.removeVirtualFileListener(virtualFileListener);
         settings.removeListener(settingsListener);
 
         if (messageBus != null) {
