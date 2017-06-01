@@ -42,7 +42,6 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor;
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Debounced;
 import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture;
@@ -92,7 +91,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** {@link IgnoreManager} working flag. */
     private boolean working;
 
-    /** {@link VirtualFileListener} instance to check if {@link IgnoreFile} content was changed. */
+    /** {@link VirtualFileListener} instance to check if file's content was changed. */
     @NotNull
     private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
         @Override
