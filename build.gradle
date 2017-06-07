@@ -30,7 +30,7 @@ sourceSets {
 }
 
 intellij {
-    version ideaVersion
+    version System.getenv().getOrDefault('IDEA_VERSION', ideaVersion)
     type ideaType
     pluginName pluginName
     downloadSources Boolean.valueOf(sources)
