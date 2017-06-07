@@ -86,6 +86,7 @@ public class IgnoreBundle {
             PerforceLanguage.INSTANCE,
             StyleLintLanguage.INSTANCE,
             StylintLanguage.INSTANCE,
+            SwaggerCodegenLanguage.INSTANCE,
             TFLanguage.INSTANCE
     ));
 
