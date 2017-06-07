@@ -25,13 +25,20 @@
 package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileVisitor;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
 
 /**
  * Gitignore Exclude {@link IgnoreLanguage} definition.
@@ -45,7 +52,56 @@ public class GitExcludeLanguage extends IgnoreLanguage {
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     private GitExcludeLanguage() {
-        super("Git exclude", "exclude", ".git", Icons.GIT);
+        super("Git exclude", "exclude", ".git", Icons.GIT, new OuterFileFetcher[]{
+
+                // `exclude` files located in .git directory
+                new OuterFileFetcher() {
+                    /** Relative path to the exclude file. */
+                    @NonNls
+                    private static final String EXCLUDE = "info/exclude";
+
+                    @NotNull
+                    @Override
+                    public Collection<VirtualFile> fetch(@NotNull Project project) {
+                        final Collection<VirtualFile> files = ContainerUtil.newArrayList();
+                        final VirtualFile root = project.getBaseDir().findChild(".git");
+
+                        return processExcludes(root, files);
+                    }
+
+                    /**
+                     * Recursively finds exclude files in given root directory.
+                     *
+                     * @param root  current root
+                     * @param files collection of {@link VirtualFile}
+                     * @return exclude files collection
+                     */
+                    @NotNull
+                    private Collection<VirtualFile> processExcludes(@Nullable final VirtualFile root,
+                                                                    @NotNull final Collection<VirtualFile> files) {
+                        if (root != null) {
+                            ContainerUtil.addIfNotNull(files, root.findFileByRelativePath(EXCLUDE));
+
+                            final VirtualFile modules = root.findChild("modules");
+                            if (modules != null) {
+                                VfsUtil.visitChildrenRecursively(modules, new VirtualFileVisitor() {
+                                    @Override
+                                    public boolean visitFile(@NotNull VirtualFile dir) {
+                                        if (dir.findChild("index") != null) {
+                                            processExcludes(dir, files);
+                                            return false;
+                                        }
+                                        return dir.isDirectory();
+                                    }
+                                });
+                            }
+                        }
+
+                        return files;
+                    }
+                }
+
+        });
     }
 
     /**

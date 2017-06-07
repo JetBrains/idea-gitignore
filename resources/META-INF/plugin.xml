@@ -445,6 +445,9 @@
             <implementation-class>mobi.hsz.idea.gitignore.TrackedIgnoredFilesComponent</implementation-class>
             <loadForDefaultProject/>
         </component>
+        <component>
+            <implementation-class>mobi.hsz.idea.gitignore.IgnoreFileBasedIndexProjectHandler</implementation-class>
+        </component>
     </project-components>
 
     <actions>

@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -33,7 +34,8 @@ import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
 
 /**
  * Gitignore {@link IgnoreLanguage} definition.
@@ -51,10 +53,10 @@ public class GitLanguage extends IgnoreLanguage {
 
                 // Outer file fetched from the `git config core.excludesfile`.
                 new OuterFileFetcher() {
-                    @Nullable
+                    @NotNull
                     @Override
-                    public VirtualFile fetch(@NotNull Project project) {
-                        return ExternalExec.getGitExcludesFile();
+                    public Collection<VirtualFile> fetch(@NotNull Project project) {
+                        return ContainerUtil.newArrayList(ExternalExec.getGitExcludesFile());
                     }
                 }
 

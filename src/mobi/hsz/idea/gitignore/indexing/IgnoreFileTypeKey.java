@@ -66,8 +66,8 @@ public class IgnoreFileTypeKey {
      */
     @Override
     public boolean equals(@Nullable Object o) {
-        return o != null && o instanceof IgnoreFileType &&
-                ((IgnoreFileType) o).getLanguageName().equals(this.type.getLanguageName());
+        return o != null && o instanceof IgnoreFileTypeKey &&
+                ((IgnoreFileTypeKey) o).getType().getLanguageName().equals(this.type.getLanguageName());
     }
 
     /**

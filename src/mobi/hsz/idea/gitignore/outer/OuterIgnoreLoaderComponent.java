@@ -32,14 +32,17 @@ import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.Collection;
 import java.util.List;
 
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
@@ -120,6 +123,9 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 @Override
                 public void run() {
                     final List<VirtualFile> outerFiles = language.getOuterFiles(myProject);
+                    if (language instanceof GitLanguage) {
+                        ContainerUtil.addAllNotNull(outerFiles, GitExcludeLanguage.INSTANCE.getOuterFiles(myProject));
+                    }
                     if (outerFiles.isEmpty() || outerFiles.contains(file)) {
                         return;
                     }
@@ -155,7 +161,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
 
     /** Outer file fetcher event interface. */
     public interface OuterFileFetcher {
-        @Nullable
-        VirtualFile fetch(@NotNull Project project);
+        @NotNull
+        Collection<VirtualFile> fetch(@NotNull Project project);
     }
 }

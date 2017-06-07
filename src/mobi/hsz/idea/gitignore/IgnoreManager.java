@@ -48,6 +48,7 @@ import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.regex.Pattern;
@@ -74,6 +75,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     private final FileStatusManager statusManager;
 
     /** {@link MessageBusConnection} instance. */
+    @Nullable
     private MessageBusConnection messageBus;
 
     /** {@link FileStatusManager#fileStatusesChanged()} method wrapped with {@link Debounced}. */
@@ -276,6 +278,12 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         virtualFileManager.addVirtualFileListener(virtualFileListener);
         settings.addListener(settingsListener);
         messageBus = myProject.getMessageBus().connect();
+        messageBus.subscribe(RefreshStatusesListener.REFRESH_STATUSES, new RefreshStatusesListener() {
+            @Override
+            public void refresh() {
+                statusesChangedScheduledFeature.run();
+            }
+        });
 
         working = true;
     }
@@ -340,6 +348,14 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         /** Topic for refresh tracked and indexed files. */
         Topic<RefreshTrackedIgnoredListener> TRACKED_IGNORED_REFRESH =
                 Topic.create("New tracked and indexed files detected", RefreshTrackedIgnoredListener.class);
+
+        void refresh();
+    }
+
+    public interface RefreshStatusesListener {
+        /** Topic to refresh files statuses using {@link MessageBusConnection}. */
+        Topic<RefreshStatusesListener> REFRESH_STATUSES =
+                new Topic<RefreshStatusesListener>("Refresh files statuses", RefreshStatusesListener.class);
 
         void refresh();
     }

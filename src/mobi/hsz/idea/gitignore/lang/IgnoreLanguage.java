@@ -32,6 +32,7 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
@@ -156,7 +157,7 @@ public class IgnoreLanguage extends Language {
      *
      * @return {@link IgnoreFile} instance.
      */
-    public IgnoreFile createFile(@NotNull final FileViewProvider viewProvider) {
+    public final IgnoreFile createFile(@NotNull final FileViewProvider viewProvider) {
         return new IgnoreFile(viewProvider, getFileType());
     }
 
@@ -195,7 +196,7 @@ public class IgnoreLanguage extends Language {
      * @return outer file fetcher array
      */
     @NotNull
-    public OuterFileFetcher[] getOuterFileFetchers() {
+    public final OuterFileFetcher[] getOuterFileFetchers() {
         return fetchers;
     }
 
@@ -206,11 +207,12 @@ public class IgnoreLanguage extends Language {
      * @return outer files
      */
     @NotNull
-    public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
+    public final List<VirtualFile> getOuterFiles(@NotNull final Project project) {
         return ContainerUtil.filter(IgnoreFilesIndex.getFiles(project, getFileType()), new Condition<VirtualFile>() {
             @Override
             public boolean value(@NotNull VirtualFile virtualFile) {
-                return !Utils.isInProject(virtualFile, project);
+                boolean inProject = Utils.isInProject(virtualFile, project);
+                return (virtualFile.getFileType() instanceof GitExcludeFileType && inProject) || !inProject;
             }
         });
     }
@@ -220,7 +222,7 @@ public class IgnoreLanguage extends Language {
      *
      * @return language is enabled
      */
-    public boolean isEnabled() {
+    public final boolean isEnabled() {
         TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data =
                 IgnoreSettings.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
@@ -235,8 +237,8 @@ public class IgnoreLanguage extends Language {
      *
      * @return new file action is allowed
      */
-    public boolean isNewAllowed() {
-        TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data =
+    public final boolean isNewAllowed() {
+        final TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data =
                 IgnoreSettings.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {

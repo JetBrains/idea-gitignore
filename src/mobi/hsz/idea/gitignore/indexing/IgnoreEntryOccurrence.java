@@ -72,10 +72,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(file)
-                .append(items.toString())
-                .toHashCode();
+        return new HashCodeBuilder().append(file).append(items.toString()).toHashCode();
     }
 
     /**
@@ -89,11 +86,13 @@ public class IgnoreEntryOccurrence implements Serializable {
         if (!(obj instanceof IgnoreEntryOccurrence)) {
             return false;
         }
+
         final IgnoreEntryOccurrence entry = (IgnoreEntryOccurrence) obj;
         boolean equals = file.equals(entry.file) && items.size() == entry.items.size();
         for (int i = 0; i < items.size(); i++) {
             equals = equals && items.get(i).toString().equals(entry.items.get(i).toString());
         }
+
         return equals;
     }
 
@@ -172,6 +171,7 @@ public class IgnoreEntryOccurrence implements Serializable {
             }
         } catch (IOException ignored) {
         }
+
         return null;
     }
 }

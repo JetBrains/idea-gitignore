@@ -24,7 +24,6 @@
 
 package mobi.hsz.idea.gitignore.indexing;
 
-import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -59,13 +58,12 @@ import java.util.regex.Pattern;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 2.0
  */
-public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntryOccurrence>
-        implements DumbAware {
+public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntryOccurrence> {
     /** Indexer ID. */
     public static final ID<IgnoreFileTypeKey, IgnoreEntryOccurrence> KEY = ID.create("IgnoreFilesIndex");
 
     /** Current indexer version. Has to be increased if significant changes have been done. */
-    private static final int VERSION = 20;
+    private static final int VERSION = 1;
 
     /**
      * Returns indexer's name.

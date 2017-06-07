@@ -69,7 +69,7 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
                 continue;
             }
             for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : language.getOuterFileFetchers()) {
-                ContainerUtil.addIfNotNull(files, fetcher.fetch(project));
+                ContainerUtil.addAllNotNull(files, fetcher.fetch(project));
             }
         }
 

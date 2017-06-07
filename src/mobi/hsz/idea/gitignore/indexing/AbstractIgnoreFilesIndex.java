@@ -24,10 +24,8 @@
 
 package mobi.hsz.idea.gitignore.indexing;
 
-import com.intellij.util.indexing.DataIndexer;
-import com.intellij.util.indexing.FileBasedIndex;
-import com.intellij.util.indexing.FileBasedIndexExtension;
-import com.intellij.util.indexing.FileContent;
+import com.intellij.openapi.project.DumbAware;
+import com.intellij.util.indexing.*;
 import com.intellij.util.io.KeyDescriptor;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +36,8 @@ import org.jetbrains.annotations.NotNull;
  * @since 2.0
  */
 public abstract class AbstractIgnoreFilesIndex<K, V> extends FileBasedIndexExtension<K, V>
-        implements KeyDescriptor<K>, DataIndexer<K, V, FileContent>, FileBasedIndex.InputFilter {
+        implements KeyDescriptor<K>, DataIndexer<K, V, FileContent>, FileBasedIndex.InputFilter, DumbAware,
+        PsiDependentIndex {
 
     /**
      * Returns {@link DataIndexer} implementation.
