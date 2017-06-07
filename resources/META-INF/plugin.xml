@@ -1,7 +1,7 @@
-<idea-plugin version="2">
+<idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>1.7.7</version>
+    <version>2.0.0-rc.1</version>
     <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -56,23 +56,27 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v1.7.6"><b>v1.7.6</b></a> (2017-02-23) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.7.5...v1.7.6"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.0.0-rc.1"><b>v2.0.0-rc.1</b></a> (2017-06-07) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.0-rc.1"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
 
         <ul>
-            <li>Preventing or Notification for editing ignored files (<a href="https://github.com/hsz/idea-gitignore/issues/319">319</a>)</li>
-            <li>Present untrack git commands to the user in UntrackFilesDialog before execution</li>
+            <li><b>Migration to the native IDE indexing</b></li>
+            <li>Git submodules `info/exclude` files support (<a href="https://github.com/hsz/idea-gitignore/issues/287">287</a>)</li>
+            <li>Swagger Codegen (.swagger-codegen-ignore) support (thanks to @jimschubert)</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li><b>NullPointerException on PhpStorm startup</b>
-                (<a href="https://github.com/hsz/idea-gitignore/issues/315">315</a>)</li>
-            <li>NoSuchMethodError: ContainerUtil.createConcurrentList()
-                (<a href="https://github.com/hsz/idea-gitignore/issues/320">320</a>)</li>
+            <li>Tracking of ignored files showing false positives (<a href="https://github.com/hsz/idea-gitignore/issues/310">310</a>)</li>
+            <li>Correct handle of leading slash on directory name (<a href="https://github.com/hsz/idea-gitignore/issues/340">340</a>)</li>
+            <li>Fixed handling excluding (!) entries (<a href="https://github.com/hsz/idea-gitignore/issues/350">350</a>, <a href="https://github.com/hsz/idea-gitignore/issues/344">344</a>, <a href="https://github.com/hsz/idea-gitignore/issues/361">361</a>, <a href="https://github.com/hsz/idea-gitignore/issues/364">364</a>)</li>
+            <li>Fixed nested ignoring (<a href="https://github.com/hsz/idea-gitignore/issues/346">346</a>)</li>
+            <li>Fixed "You are editing..." message display conditions (<a href="https://github.com/hsz/idea-gitignore/issues/351">351</a>, <a href="https://github.com/hsz/idea-gitignore/issues/352">352</a>, <a href="https://github.com/hsz/idea-gitignore/issues/356">356</a>)</li>
+            <li>It's prohibited to access index during event dispatching (<a href="https://github.com/hsz/idea-gitignore/issues/358">358</a>, <a href="https://github.com/hsz/idea-gitignore/issues/355">355</a>, <a href="https://github.com/hsz/idea-gitignore/issues/369">369</a>)</li>
+            <li>Already disposed: com.intellij.util.messages.impl.MessageBusImpl (<a href="https://github.com/hsz/idea-gitignore/issues/360">360</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

@@ -1,5 +1,5 @@
-.ignore v1.7.6
-==================
+.ignore v2.0.0-rc.1
+===================
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 
@@ -107,19 +107,25 @@ Usage
 Changelog
 ---------
 
-## [v1.7.6](https://github.com/hsz/idea-gitignore/tree/v1.7.6) (2017-02-23)
+## [v2.0.0-rc.1](https://github.com/hsz/idea-gitignore/tree/v2.0.0-rc.1) (2017-06-07)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.5...v1.7.6)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.0-rc.1)
 
 **Implemented enhancements:**
 
-- Preventing or Notification for editing ignored files [\#319](https://github.com/hsz/idea-gitignore/issues/319)
-- Present untrack git commands to the user in UntrackFilesDialog before execution
+- **Migration to the native IDE indexing**
+- Git submodules `info/exclude` files support [\#287](https://github.com/hsz/idea-gitignore/issues/287)
+- Swagger Codegen (.swagger-codegen-ignore) support (thanks to @jimschubert)
 
 **Fixed bugs:**
 
-- *NullPointerException on PhpStorm startup* [\#315](https://github.com/hsz/idea-gitignore/issues/315)
-- NoSuchMethodError: ContainerUtil.createConcurrentList() [\#320](https://github.com/hsz/idea-gitignore/issues/320)
+- Tracking of ignored files showing false positives [\#310](https://github.com/hsz/idea-gitignore/issues/310)
+- Correct handle of leading slash on directory name [\#340](https://github.com/hsz/idea-gitignore/issues/340)
+- Fixed handling excluding (!) entries [\#350](https://github.com/hsz/idea-gitignore/issues/350) [\#344](https://github.com/hsz/idea-gitignore/issues/344) [\#361](https://github.com/hsz/idea-gitignore/issues/361) [\#364](https://github.com/hsz/idea-gitignore/issues/364)
+- Fixed nested ignoring [\#346](https://github.com/hsz/idea-gitignore/issues/346)
+- Fixed "You are editing..." message display conditions [\#351](https://github.com/hsz/idea-gitignore/issues/351) [\#352](https://github.com/hsz/idea-gitignore/issues/352) [\#356](https://github.com/hsz/idea-gitignore/issues/356)
+- It's prohibited to access index during event dispatching [\#358](https://github.com/hsz/idea-gitignore/issues/358) [\#355](https://github.com/hsz/idea-gitignore/issues/355) [\#369](https://github.com/hsz/idea-gitignore/issues/369)
+- Already disposed: com.intellij.util.messages.impl.MessageBusImpl [\#360](https://github.com/hsz/idea-gitignore/issues/360)
 
 [Full Changelog History](./CHANGELOG.md)
 
@@ -157,6 +163,7 @@ Developed By
 - [**@bedla** Ivo Šmíd](https://github.com/bedla)
 - [**@danpfe**](https://github.com/danpfe)
 - [**@maximilianonajle** Maximiliano Najle](https://github.com/maximilianonajle)
+- [**@jimschubert** Jim Schubert](https://github.com/jimschubert)
 
 
 Tools

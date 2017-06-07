@@ -24,6 +24,7 @@ Author
 - [**@bedla** Ivo Šmíd](https://github.com/bedla)
 - [**@danpfe**](https://github.com/danpfe)
 - [**@maximilianonajle** Maximiliano Najle](https://github.com/maximilianonajle)
+- [**@jimschubert** Jim Schubert](https://github.com/jimschubert)
 
 License
 -------

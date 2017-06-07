@@ -1,5 +1,25 @@
 # Change Log
 
+## [v2.0.0-rc.1](https://github.com/hsz/idea-gitignore/tree/v2.0.0-rc.1) (2017-06-07)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.0-rc.1)
+
+**Implemented enhancements:**
+
+- **Migration to the native IDE indexing**
+- Git submodules `info/exclude` files support [\#287](https://github.com/hsz/idea-gitignore/issues/287)
+- Swagger Codegen (.swagger-codegen-ignore) support (thanks to @jimschubert)
+
+**Fixed bugs:**
+
+- Tracking of ignored files showing false positives [\#310](https://github.com/hsz/idea-gitignore/issues/310)
+- Correct handle of leading slash on directory name [\#340](https://github.com/hsz/idea-gitignore/issues/340)
+- Fixed handling excluding (!) entries [\#350](https://github.com/hsz/idea-gitignore/issues/350) [\#344](https://github.com/hsz/idea-gitignore/issues/344) [\#361](https://github.com/hsz/idea-gitignore/issues/361) [\#364](https://github.com/hsz/idea-gitignore/issues/364)
+- Fixed nested ignoring [\#346](https://github.com/hsz/idea-gitignore/issues/346)
+- Fixed "You are editing..." message display conditions [\#351](https://github.com/hsz/idea-gitignore/issues/351) [\#352](https://github.com/hsz/idea-gitignore/issues/352) [\#356](https://github.com/hsz/idea-gitignore/issues/356)
+- It's prohibited to access index during event dispatching [\#358](https://github.com/hsz/idea-gitignore/issues/358) [\#355](https://github.com/hsz/idea-gitignore/issues/355) [\#369](https://github.com/hsz/idea-gitignore/issues/369)
+- Already disposed: com.intellij.util.messages.impl.MessageBusImpl [\#360](https://github.com/hsz/idea-gitignore/issues/360)
+
 ## [v1.7.6](https://github.com/hsz/idea-gitignore/tree/v1.7.6) (2017-02-23)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.5...v1.7.6)
