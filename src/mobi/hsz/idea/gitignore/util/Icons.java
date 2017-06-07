@@ -89,9 +89,6 @@ public class Icons {
     /** Perforce icon. */
     public static final Icon PERFORCE = IconLoader.getIcon("/icons/icon_perforce.png");
 
-    /** TeamFoundation icon. */
-    public static final Icon TF = IconLoader.getIcon("/icons/icon_tf.png");
-
     /** StyleLint icon. */
     public static final Icon STYLELINT = IconLoader.getIcon("/icons/icon_stylelint.png");
 
@@ -100,6 +97,9 @@ public class Icons {
 
     /** Swagger Codegen icon. */
     public static final Icon SWAGGER_CODEGEN = IconLoader.getIcon("/icons/icon_swagger-codegen.png");
+
+    /** TeamFoundation icon. */
+    public static final Icon TF = IconLoader.getIcon("/icons/icon_tf.png");
 
     /** Private constructor to prevent creating {@link Icons} instance. */
     private Icons() {

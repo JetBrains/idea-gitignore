@@ -31,7 +31,7 @@ import mobi.hsz.idea.gitignore.lang.kind.SwaggerCodegenLanguage;
  * Describes Swagger Codegen file type.
  *
  * @author Jim Schubert <james.schubert@gmail.com>
- * @since 1.7.7
+ * @since 2.0.0
  */
 public class SwaggerCodegenFileType extends IgnoreFileType  {
     /** Contains {@link SwaggerCodegenFileType} singleton. */

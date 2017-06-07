@@ -31,10 +31,10 @@ import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Swagger Codegen {@link SwaggerCodegenLanguage} Definition
+ * Swagger Codegen {@link SwaggerCodegenLanguage} definition
  *
  * @author Jim Schubert <james.schubert@gmail.com>
- * @since 1.7.7
+ * @since 2.0.0
  */
 public class SwaggerCodegenLanguage extends IgnoreLanguage {
     /** The {@link SwaggerCodegenLanguage} instance */
