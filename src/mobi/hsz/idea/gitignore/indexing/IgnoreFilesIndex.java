@@ -224,7 +224,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     @NotNull
     public static List<IgnoreEntryOccurrence> getEntries(@NotNull Project project, @NotNull IgnoreFileType fileType) {
         try {
-            final GlobalSearchScope scope = IgnoreSearchScope.projectScope(project);
+            final GlobalSearchScope scope = IgnoreSearchScope.get(project);
             return FileBasedIndex.getInstance().getValues(IgnoreFilesIndex.KEY, new IgnoreFileTypeKey(fileType), scope);
         } catch (RuntimeException e) {
             return ContainerUtil.emptyList();

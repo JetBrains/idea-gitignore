@@ -24,9 +24,12 @@
 
 package mobi.hsz.idea.gitignore.indexing;
 
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.SearchScope;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -37,7 +40,11 @@ import java.util.HashSet;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 2.0
  */
-public class IgnoreSearchScope {
+public class IgnoreSearchScope extends GlobalSearchScope {
+    private IgnoreSearchScope(@NotNull Project project) {
+        super(project);
+    }
+
     /**
      * Returns {@link GlobalSearchScope#projectScope(Project)} instance united with additional files.
      *
@@ -45,9 +52,51 @@ public class IgnoreSearchScope {
      * @return extended instance of {@link GlobalSearchScope}
      */
     @NotNull
-    public static GlobalSearchScope projectScope(@NotNull Project project) {
-        final GlobalSearchScope scope = GlobalSearchScope.everythingScope(project);
+    public static GlobalSearchScope get(@NotNull Project project) {
+        IgnoreSearchScope scope = new IgnoreSearchScope(project);
         final HashSet<VirtualFile> files = ExternalIndexableSetContributor.getAdditionalFiles(project);
         return scope.uniteWith(GlobalSearchScope.filesScope(project, files));
+    }
+
+    @Override
+    public int compare(@NotNull final VirtualFile file1, @NotNull final VirtualFile file2) {
+        return 0;
+    }
+
+    @Override
+    public boolean contains(@NotNull final VirtualFile file) {
+        return file.getFileType() instanceof IgnoreFileType;
+    }
+
+    @Override
+    public boolean isSearchInLibraries() {
+        return true;
+    }
+
+    @Override
+    public boolean isForceSearchingInLibrarySources() {
+        return true;
+    }
+
+    @Override
+    public boolean isSearchInModuleContent(@NotNull final Module aModule) {
+        return true;
+    }
+
+    @Override
+    public boolean isSearchOutsideRootModel() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public GlobalSearchScope union(@NotNull SearchScope scope) {
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public SearchScope intersectWith(@NotNull SearchScope scope2) {
+        return scope2;
     }
 }

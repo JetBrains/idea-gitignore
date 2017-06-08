@@ -223,7 +223,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             }
         }
 
-        statusesChangedScheduledFeature.cancel();
+        if (ignored) {
+            statusesChangedScheduledFeature.cancel();
+        }
+
         return ignored;
     }
 

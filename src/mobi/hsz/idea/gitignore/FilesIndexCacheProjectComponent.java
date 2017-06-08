@@ -34,6 +34,7 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.containers.ContainerUtil;
 import gnu.trove.THashSet;
+import mobi.hsz.idea.gitignore.indexing.IgnoreSearchScope;
 import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import org.jetbrains.annotations.NotNull;
@@ -148,7 +149,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
      */
     @NotNull
     public Collection<VirtualFile> getFilesForPattern(@NotNull final Project project, @NotNull Pattern pattern) {
-        final GlobalSearchScope scope = GlobalSearchScope.allScope(project);
+        final GlobalSearchScope scope = IgnoreSearchScope.get(project);
         final String[] parts = MatcherUtil.getParts(pattern);
 
         if (parts.length > 0) {
