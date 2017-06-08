@@ -55,7 +55,7 @@ public class FossilLanguage extends IgnoreLanguage {
                     @NotNull
                     @Override
                     public Collection<VirtualFile> fetch(@NotNull Project project) {
-                        return ContainerUtil.newArrayList(project.getBaseDir()
+                        return ContainerUtil.createMaybeSingletonList(project.getBaseDir()
                                 .findFileByRelativePath(INSTANCE.getVcsDirectory() + "/" + INSTANCE.getFilename()));
                     }
                 }
