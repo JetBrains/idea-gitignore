@@ -66,7 +66,7 @@ public abstract class ExecutionOutputParser<T> {
             return;
         }
 
-        ContainerUtil.addIfNotNull(parseOutput(StringUtil.trimEnd(text, "\n").trim()), outputs);
+        ContainerUtil.addIfNotNull(outputs, parseOutput(StringUtil.trimEnd(text, "\n").trim()));
     }
 
     /**

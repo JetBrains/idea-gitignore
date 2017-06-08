@@ -210,7 +210,7 @@ public class Utils {
             do {
                 file = file.getParent();
                 VirtualFile ignoreFile = file.findChild(fileType.getIgnoreLanguage().getFilename());
-                ContainerUtil.addIfNotNull(ignoreFile, files);
+                ContainerUtil.addIfNotNull(files, ignoreFile);
             } while (!file.equals(project.getBaseDir()));
         }
         return files;
