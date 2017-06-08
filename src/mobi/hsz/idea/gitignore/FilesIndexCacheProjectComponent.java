@@ -27,6 +27,7 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentIterator;
+import com.intellij.openapi.roots.FileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.*;
@@ -34,7 +35,6 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.containers.ContainerUtil;
 import gnu.trove.THashSet;
-import mobi.hsz.idea.gitignore.indexing.IgnoreSearchScope;
 import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +60,10 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
     /** {@link VirtualFileManager} instance. */
     @NotNull
     private final VirtualFileManager virtualFileManager;
+
+    /** {@link FileIndex} instance. */
+    @NotNull
+    private final FileIndex projectFileIndex;
 
     /** {@link VirtualFileListener} instance to watch for operations on the filesystem. */
     @NotNull
@@ -125,6 +129,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
         super(project);
         cacheMap = ContainerUtil.newConcurrentMap();
         virtualFileManager = VirtualFileManager.getInstance();
+        projectFileIndex = ProjectRootManager.getInstance(project).getFileIndex();
     }
 
     /** Registers {@link #virtualFileListener} when project is opened. */
@@ -149,7 +154,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
      */
     @NotNull
     public Collection<VirtualFile> getFilesForPattern(@NotNull final Project project, @NotNull Pattern pattern) {
-        final GlobalSearchScope scope = IgnoreSearchScope.get(project);
+        final GlobalSearchScope scope = GlobalSearchScope.projectScope(project);
         final String[] parts = MatcherUtil.getParts(pattern);
 
         if (parts.length > 0) {
@@ -157,7 +162,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
             if (cacheMap.get(key) == null) {
                 final THashSet<VirtualFile> files = new THashSet<VirtualFile>(1000);
 
-                ProjectRootManager.getInstance(project).getFileIndex().iterateContent(new ContentIterator() {
+                projectFileIndex.iterateContent(new ContentIterator() {
                     @Override
                     public boolean processFile(VirtualFile fileOrDir) {
                         final String name = fileOrDir.getName();
