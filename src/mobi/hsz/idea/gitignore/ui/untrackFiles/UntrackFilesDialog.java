@@ -105,10 +105,9 @@ public class UntrackFilesDialog extends DialogWrapper {
          * Invoked after a tree has changed.
          *
          * @param event the event object specifying changed nodes
-         * @param type  the event type specifying a kind of changes
          */
         @Override
-        protected void process(TreeModelEvent event, EventType type) {
+        public void treeNodesChanged(@NotNull TreeModelEvent event) {
             final String text = getCommandsText();
 
             ApplicationManager.getApplication().runWriteAction(new Runnable() {
