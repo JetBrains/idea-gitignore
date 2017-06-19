@@ -6,6 +6,7 @@ jdk:
   - oraclejdk8
 
 env:
+  - IDEA_VERSION=2017.1.4
   - IDEA_VERSION=2016.3.7
   - IDEA_VERSION=2016.2.5
   - IDEA_VERSION=2016.1.4
