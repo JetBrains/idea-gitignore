@@ -1,6 +1,8 @@
 .ignore v2.0.0-rc.1
 ===================
 
+[ignore.hsz.mobi][website]
+
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)](https://plugins.jetbrains.com/plugin/7495)
@@ -184,6 +186,7 @@ Copyright (c) 2017 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [github-gitignore]:       https://github.com/github/gitignore
 [gradle-intellij-plugin]: https://github.com/JetBrains/gradle-intellij-plugin
 [hsz]:                    http://hsz.mobi
+[website]:                http://ignore.hsz.mobi
 [latest-release]:         https://github.com/hsz/idea-gitignore/releases/latest
 
 

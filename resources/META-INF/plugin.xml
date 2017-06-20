@@ -2,12 +2,13 @@
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
     <version>2.0.0-rc.1</version>
-    <vendor email="jakub@hsz.mobi" url="http://www.hsz.mobi">hsz</vendor>
+    <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
       <h1>.ignore</h1>
       <br/>
 
+      <a href="http://ignore.hsz.mobi">Website</a> |
       <a href="https://github.com/hsz/idea-gitignore">GitHub</a> |
       <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a> | Donate (
       <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL">PayPal</a> or
