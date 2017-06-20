@@ -37,6 +37,7 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.ui.untrackFiles.UntrackFilesDialog;
 import mobi.hsz.idea.gitignore.util.Notify;
 import mobi.hsz.idea.gitignore.util.Utils;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.event.HyperlinkEvent;
@@ -51,6 +52,7 @@ import javax.swing.event.HyperlinkEvent;
 public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
         implements IgnoreManager.TrackedIgnoredListener {
     /** Disable action event. */
+    @NonNls
     private static final String DISABLE_ACTION = "#disable";
 
     /** {@link MessageBusConnection} instance. */
@@ -67,7 +69,7 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
      *
      * @param project current project
      */
-    protected TrackedIgnoredFilesComponent(Project project) {
+    protected TrackedIgnoredFilesComponent(@NotNull Project project) {
         super(project);
     }
 

@@ -45,9 +45,6 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.7.2
  */
 public class HandleTrackedIgnoredFilesAction extends AnAction {
-    /** {@link IgnoreSettings} instance. */
-    public static final IgnoreSettings SETTINGS = IgnoreSettings.getInstance();
-
     /** Builds a new instance of {@link HandleTrackedIgnoredFilesAction}. */
     public HandleTrackedIgnoredFilesAction() {
         super(IgnoreBundle.message(
@@ -63,7 +60,7 @@ public class HandleTrackedIgnoredFilesAction extends AnAction {
      * @param e action event
      */
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull AnActionEvent e) {
         final Project project = e.getData(CommonDataKeys.PROJECT);
 
         if (project == null) {
@@ -93,7 +90,7 @@ public class HandleTrackedIgnoredFilesAction extends AnAction {
         final Project project = event.getProject();
 
         if (project != null) {
-            return IgnoreManager.getInstance(project).getTrackedIgnoredFiles();
+            return IgnoreManager.getInstance(project).getConfirmedIgnoredFiles();
         }
 
         return new HashMap<VirtualFile, Repository>();

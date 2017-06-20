@@ -39,7 +39,7 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.parser.ExecutionOutputParser;
 import mobi.hsz.idea.gitignore.util.exec.parser.GitExcludesOutputParser;
 import mobi.hsz.idea.gitignore.util.exec.parser.GitUnignoredFilesOutputParser;
-import mobi.hsz.idea.gitignore.util.exec.parser.SimpleOutputParser;
+import mobi.hsz.idea.gitignore.util.exec.parser.IgnoredFilesParser;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -78,7 +78,7 @@ public class ExternalExec {
 
     /** Git command to list ignored but tracked files. */
     @NonNls
-    private static final String GIT_TRACKED_IGNORED_FILES = "ls-files --ignored --exclude-standard";
+    private static final String GIT_IGNORED_FILES = "status --ignored --porcelain";
 
     /** Git command to remove file from tracking. */
     @NonNls
@@ -119,18 +119,18 @@ public class ExternalExec {
     }
 
     /**
-     * Returns list of ignored and tracked files for the given directory.
+     * Returns list of ignored files for the given repository.
      *
      * @param repository repository to check
      * @return unignored files list
      */
     @NotNull
-    public static List<String> getTrackedIgnoredFiles(@NotNull Repository repository) {
+    public static List<String> getIgnoredFiles(@NotNull Repository repository) {
         ArrayList<String> result = run(
                 GitLanguage.INSTANCE,
-                GIT_TRACKED_IGNORED_FILES,
+                GIT_IGNORED_FILES,
                 repository.getRoot(),
-                new SimpleOutputParser()
+                new IgnoredFilesParser()
         );
         return Utils.notNullize(result);
     }

@@ -22,58 +22,28 @@
  * SOFTWARE.
  */
 
-package mobi.hsz.idea.gitignore.util;
+package mobi.hsz.idea.gitignore.util.exec.parser;
 
-import com.intellij.concurrency.JobScheduler;
-import com.intellij.openapi.project.DumbAwareRunnable;
+import com.intellij.openapi.util.text.StringUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
 /**
- * Debounced runnable class that allows to run command just once in case it was triggered to often.
+ * Parser for {@link mobi.hsz.idea.gitignore.util.exec.ExternalExec#GIT_IGNORED_FILES} output.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 2.0
  */
-public abstract class Debounced<T> implements DumbAwareRunnable {
-    /** Timer that depends on the given {@link #delay} value. */
-    @Nullable
-    private ScheduledFuture<?> timer;
-
-    /** Debounce time. */
-    private final int delay;
-
+public class IgnoredFilesParser extends ExecutionOutputParser<String> {
     /**
-     * Constructor.
+     * Parses single entries and removes git output prefixes.
      *
-     * @param delay debounce time
+     * @param text input data
+     * @return single unignored entry
      */
-    public Debounced(int delay) {
-        this.delay = delay;
-    }
-
-    /** Wrapper run() method to invoke {@link #timer} properly. */
+    @Nullable
     @Override
-    public final void run() {
-        run(null);
+    protected String parseOutput(@NotNull String text) {
+        return StringUtil.startsWith(text, "!! ") ? text.substring(3) : null;
     }
-
-    /** Wrapper run() method to invoke {@link #timer} properly. */
-    public final void run(@Nullable final T argument) {
-        if (timer != null) {
-            timer.cancel(false);
-        }
-
-        timer = JobScheduler.getScheduler().schedule(new DumbAwareRunnable() {
-            @Override
-            public void run() {
-                task(argument);
-            }
-        }, delay, TimeUnit.MILLISECONDS);
-    }
-
-    /** Task to run in debounce way. */
-    protected abstract void task(@Nullable T argument);
 }

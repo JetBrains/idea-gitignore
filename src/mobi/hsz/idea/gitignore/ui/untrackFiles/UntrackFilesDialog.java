@@ -340,6 +340,7 @@ public class UntrackFilesDialog extends DialogWrapper {
     /** Disposes current preview {@link #commands}. */
     @Override
     public void dispose() {
+        super.dispose();
         if (!commands.isDisposed()) {
             EditorFactory.getInstance().releaseEditor(commands);
         }

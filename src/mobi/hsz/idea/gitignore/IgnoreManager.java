@@ -25,8 +25,11 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.dvcs.repo.Repository;
+import com.intellij.dvcs.repo.VcsRepositoryManager;
 import com.intellij.ide.projectView.ProjectView;
+import com.intellij.ide.projectView.impl.AbstractProjectViewPane;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
@@ -37,6 +40,7 @@ import com.intellij.openapi.vfs.*;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
+import git4idea.repo.GitRepository;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor;
@@ -46,6 +50,7 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Debounced;
 import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture;
 import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,6 +58,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
+import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
+import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 
 /**
@@ -74,21 +81,45 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     @NotNull
     private final FileStatusManager statusManager;
 
+    /** {@link RefreshTrackedIgnoredRunnable} instance. */
+    @NotNull
+    private final RefreshTrackedIgnoredRunnable refreshTrackedIgnoredRunnable;
+
     /** {@link MessageBusConnection} instance. */
     @Nullable
     private MessageBusConnection messageBus;
 
+    /** List of the files that are ignored and also tracked by Git. */
+    @NotNull
+    private final HashMap<VirtualFile, Repository> confirmedIgnoredFiles = new HashMap<VirtualFile, Repository>();
+
     /** {@link FileStatusManager#fileStatusesChanged()} method wrapped with {@link Debounced}. */
     private final Debounced debouncedStatusesChanged = new Debounced(1000) {
         @Override
-        protected void task() {
+        protected void task(@Nullable Object argument) {
             statusManager.fileStatusesChanged();
+        }
+    };
+
+    /** {@link FileStatusManager#fileStatusesChanged()} method wrapped with {@link Debounced}. */
+    private final Debounced<Boolean> debouncedRefreshTrackedIgnores = new Debounced<Boolean>(5000) {
+        @Override
+        protected void task(@Nullable Boolean refresh) {
+            if (Boolean.TRUE.equals(refresh)) {
+                refreshTrackedIgnoredRunnable.refresh();
+            } else {
+                refreshTrackedIgnoredRunnable.run();
+            }
         }
     };
 
     /** Scheduled feature connected with {@link #debouncedStatusesChanged}. */
     @NotNull
     private final InterruptibleScheduledFuture statusesChangedScheduledFeature;
+
+    /** Scheduled feature connected with {@link #debouncedRefreshTrackedIgnores}. */
+    @NotNull
+    private final InterruptibleScheduledFuture refreshTrackedIgnoredFeature;
 
     /** {@link IgnoreManager} working flag. */
     private boolean working;
@@ -100,6 +131,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         public void contentsChanged(@NotNull VirtualFileEvent event) {
             if (event.getFile().getFileType() instanceof IgnoreFileType) {
                 debouncedStatusesChanged.run();
+                debouncedRefreshTrackedIgnores.run();
             }
         }
     };
@@ -120,6 +152,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     if (isEnabled()) {
                         if (working) {
                             debouncedStatusesChanged.run();
+                            debouncedRefreshTrackedIgnores.run();
                         } else {
                             enable();
                         }
@@ -155,8 +188,11 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         this.virtualFileManager = VirtualFileManager.getInstance();
         this.settings = IgnoreSettings.getInstance();
         this.statusManager = FileStatusManager.getInstance(project);
+        this.refreshTrackedIgnoredRunnable = new RefreshTrackedIgnoredRunnable();
         this.statusesChangedScheduledFeature =
                 new InterruptibleScheduledFuture(debouncedStatusesChanged, 5000, 15);
+        this.refreshTrackedIgnoredFeature =
+                new InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5);
     }
 
     /**
@@ -225,6 +261,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
         if (ignored) {
             statusesChangedScheduledFeature.cancel();
+            refreshTrackedIgnoredFeature.cancel();
         }
 
         return ignored;
@@ -237,7 +274,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      * @return file is ignored and tracked
      */
     public boolean isFileIgnoredAndTracked(@NotNull final VirtualFile file) {
-        return false;
+        return !confirmedIgnoredFiles.containsKey(file) && isFileIgnored(file);
     }
 
     /**
@@ -278,6 +315,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
 
         statusesChangedScheduledFeature.run();
+        refreshTrackedIgnoredFeature.run();
         virtualFileManager.addVirtualFileListener(virtualFileListener);
         settings.addListener(settingsListener);
         messageBus = myProject.getMessageBus().connect();
@@ -285,6 +323,12 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             @Override
             public void refresh() {
                 statusesChangedScheduledFeature.run();
+            }
+        });
+        messageBus.subscribe(TRACKED_IGNORED_REFRESH, new RefreshTrackedIgnoredListener() {
+            @Override
+            public void refresh() {
+                debouncedRefreshTrackedIgnores.run(false);
             }
         });
 
@@ -326,12 +370,67 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     }
 
     /**
-     * Returns tracked and ignored files stored in {@link CacheMap#trackedIgnoredFiles}.
+     * Returns tracked and ignored files stored in {@link #confirmedIgnoredFiles}.
      *
      * @return tracked and ignored files map
      */
-    public HashMap<VirtualFile, Repository> getTrackedIgnoredFiles() {
-        return new HashMap<VirtualFile, Repository>(); // TODO: feature temporarily disabled
+    @NotNull
+    public HashMap<VirtualFile, Repository> getConfirmedIgnoredFiles() {
+        return confirmedIgnoredFiles;
+    }
+
+    /** {@link Runnable} implementation to rebuild {@link #confirmedIgnoredFiles}. */
+    class RefreshTrackedIgnoredRunnable implements Runnable, IgnoreManager.RefreshTrackedIgnoredListener {
+        /** Default {@link Runnable} run method that invokes rebuilding with bus event propagating. */
+        @Override
+        public void run() {
+            run(false);
+        }
+
+        /** Rebuilds {@link #confirmedIgnoredFiles} map in silent mode. */
+        @Override
+        public void refresh() {
+            this.run(true);
+        }
+
+        /**
+         * Rebuilds {@link #confirmedIgnoredFiles} map.
+         *
+         * @param silent propagate {@link IgnoreManager.TrackedIgnoredListener#TRACKED_IGNORED} event
+         */
+        public void run(boolean silent) {
+            if (!settings.isInformTrackedIgnored()) {
+                return;
+            }
+
+            final Collection<Repository> repositories = VcsRepositoryManager.getInstance(myProject).getRepositories();
+            final HashMap<VirtualFile, Repository> result = new HashMap<VirtualFile, Repository>();
+            for (Repository repository : repositories) {
+                if (!(repository instanceof GitRepository)) {
+                    continue;
+                }
+                final VirtualFile root = repository.getRoot();
+                for (String path : ExternalExec.getIgnoredFiles(repository)) {
+                    final VirtualFile file = root.findFileByRelativePath(path);
+                    if (file != null) {
+                        result.put(file, repository);
+                    }
+                }
+            }
+
+            if (!silent && !result.isEmpty()) {
+                myProject.getMessageBus().syncPublisher(TRACKED_IGNORED).handleFiles(result);
+            }
+            confirmedIgnoredFiles.clear();
+            confirmedIgnoredFiles.putAll(result);
+            statusManager.fileStatusesChanged();
+
+            for (AbstractProjectViewPane pane : Extensions.getExtensions(AbstractProjectViewPane.EP_NAME, myProject)) {
+                if (pane.getTreeBuilder() != null) {
+                    pane.getTreeBuilder().queueUpdate();
+                }
+            }
+        }
     }
 
     /** Listener bounded with {@link TrackedIgnoredListener#TRACKED_IGNORED} topic to inform about new entries. */
