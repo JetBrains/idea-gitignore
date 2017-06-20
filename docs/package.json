@@ -1,0 +1,18 @@
+{
+  "name": "idea-gitignore-docs",
+  "version": "1.0.0",
+  "description": ".ignore plugin website",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hsz <jakub@hsz.mobi>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^3.0.0",
+    "semantic-ui-css": "^2.2.10"
+  }
+}

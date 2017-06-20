@@ -1,0 +1,42 @@
+@import '~semantic-ui-css/semantic';
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f9f9f9;
+}
+
+@font-face {
+  font-family: 'Icons';
+  src: url("./icons.eot");
+  src: url("./icons.eot?#iefix") format('embedded-opentype'), url("./icons.woff2") format('woff2'), url("./icons.woff") format('woff'), url("./icons.ttf") format('truetype'), url("./icons.svg#icons") format('svg');
+}
+
+.ui {
+  &.header, &.menu {
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  &.menu {
+    border-radius: 0;
+    border: none;
+    margin: 0;
+    font-size: 1.5rem;
+
+    .paypal {
+      color: #009cde;
+    }
+    .bitcoin {
+      color: #ffd900;
+    }
+  }
+}
+
+header {
+  min-height: 700px;
+  padding: 1rem 0;
+
+  .ui.header {
+    font-size: 6rem;
+  }
+}
