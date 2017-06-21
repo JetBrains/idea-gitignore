@@ -32,7 +32,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.HashMap;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
-import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.ui.untrackFiles.UntrackFilesDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.Icons;
@@ -55,7 +54,7 @@ public class HandleTrackedIgnoredFilesAction extends AnAction {
     }
 
     /**
-     * Toggles {@link IgnoreSettings#hideIgnoredFiles} value.
+     * Toggles {@link mobi.hsz.idea.gitignore.settings.IgnoreSettings#hideIgnoredFiles} value.
      *
      * @param e action event
      */
