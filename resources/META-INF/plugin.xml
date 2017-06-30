@@ -16,13 +16,30 @@
       <br/>
       <br/>
 
-      <b>.ignore</b> is a plugin for
-        <i>.gitignore (GIT), .hgignore (Mercurial), .npmignore (NPM), .dockerignore (Docker), .chefignore (Chef),
-           .cvsignore (CVS), .bzrignore (Bazaar), .boringignore (Darcs), .mtn-ignore (Monotone), ignore-glob (Fossil),
-           .jshintignore (JSHint), .tfignore (Team Foundation), .p4ignore (Perforce), .flooignore (Floobits),
-           .eslintignore (ESLint), .cfignore (Cloud Foundry)</i>, .jpmignore (Jetpack), .stylelintignore (StyleLint),
-           .stylintignore (Stylint), .swagger-codegen-ignore (Swagger Codegen)
-        files in your project.
+      <b>.ignore</b> is a plugin for<i>
+      .gitignore (GIT),
+      .hgignore (Mercurial),
+      .npmignore (NPM),
+      .dockerignore (Docker),
+      .chefignore (Chef),
+      .cvsignore (CVS),
+      .bzrignore (Bazaar),
+      .boringignore (Darcs),
+      .mtn-ignore (Monotone),
+      ignore-glob (Fossil),
+      .jshintignore (JSHint),
+      .tfignore (Team Foundation),
+      .p4ignore (Perforce),
+      .flooignore (Floobits),
+      .eslintignore (ESLint),
+      .cfignore (Cloud Foundry),
+      .jpmignore (Jetpack),
+      .stylelintignore (StyleLint),
+      .stylintignore (Stylint),
+      .swagger-codegen-ignore (Swagger Codegen),
+      .helmignore (Kubernetes Helm)
+      </i>files in your project.
+      <br/>
       <br/>
 
       <b>Features</b>
@@ -210,6 +227,8 @@
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Git exclude"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Kubernetes Helm"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Jetpack"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="JSHint"
@@ -225,6 +244,8 @@
         <lang.parserDefinition language="Perforce"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Stylint"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Swagger Codegen"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Team Foundation"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
@@ -431,6 +452,16 @@
         <lang.syntaxHighlighterFactory key="Swagger Codegen"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Swagger Codegen -->
+
+        <!-- Kubernetes Helm -->
+        <codeInsight.lineMarkerProvider language="Kubernetes Helm"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Kubernetes Helm"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Kubernetes Helm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Kubernetes Helm"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Kubernetes Helm -->
     </extensions>
 
     <application-components>

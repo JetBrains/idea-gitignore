@@ -62,6 +62,9 @@ public class Icons {
     /** Git icon. */
     public static final Icon GIT = IconLoader.getIcon("/icons/icon_git.png");
 
+    /** Kubernetes Helm icon. */
+    public static final Icon HELM = IconLoader.getIcon("/icons/icon_helm.png");
+
     /** Floobits icon. */
     public static final Icon FLOOBITS = IconLoader.getIcon("/icons/icon_floobits.png");
 

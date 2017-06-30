@@ -161,7 +161,7 @@ task generateParser(type: JavaExec) {
     dependsOn unzipGrammarKit, downloadGrammarLightPsi
 
     main = 'org.intellij.grammar.Main'
-    args = [ 'gen', 'resources/bnf/Ignore.bnf' ]
+    args = [ 'gen', file('resources/bnf/Ignore.bnf').absolutePath ]
 
     classpath = configurations.bnf + configurations.compile
 }

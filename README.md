@@ -14,9 +14,9 @@ Introduction
 
 **.ignore** is a plugin for:
  
-- `.gitignore` (GIT),
-- `.hgignore` (Mercurial),
-- `.npmignore` (NPM),
+- `.gitignore` (GIT)
+- `.hgignore` (Mercurial)
+- `.npmignore` (NPM)
 - `.dockerignore` (Docker)
 - `.chefignore` (Chef)
 - `.cvsignore` (CVS)
@@ -34,6 +34,7 @@ Introduction
 - `.stylelintignore` (StyleLint)
 - `.stylintignore` (Stylint)
 - `.swagger-codegen-ignore` (Swagger Codegen)
+- `.helmignore` (Kubernetes Helm)
 
 files in your project. It supports following JetBrains IDEs:
 
