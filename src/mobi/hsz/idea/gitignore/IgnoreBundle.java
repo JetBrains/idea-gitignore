@@ -77,6 +77,7 @@ public class IgnoreBundle {
             FossilLanguage.INSTANCE,
             GitLanguage.INSTANCE,
             GitExcludeLanguage.INSTANCE,
+            HelmLanguage.INSTANCE,
             JetpackLanguage.INSTANCE,
             JSHintLanguage.INSTANCE,
             MercurialLanguage.INSTANCE,
