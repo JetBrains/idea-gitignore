@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.indexing;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.IndexableSetContributor;
@@ -33,10 +34,7 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * IndexedRootsProvider implementation that provides additional paths to index - like external/global ignore files.
@@ -59,17 +57,24 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
      */
     @NotNull
     public static HashSet<VirtualFile> getAdditionalFiles(@NotNull Project project) {
-        if (CACHE.containsKey(project)) {
-            return CACHE.get(project);
-        }
-
         final HashSet<VirtualFile> files = ContainerUtil.newHashSet();
-        for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-            if (!language.isOuterFileSupported()) {
-                continue;
-            }
-            for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : language.getOuterFileFetchers()) {
-                ContainerUtil.addAllNotNull(files, fetcher.fetch(project));
+
+        if (CACHE.containsKey(project)) {
+            final List<VirtualFile> valid = ContainerUtil.filter(CACHE.get(project), new Condition<VirtualFile>() {
+                @Override
+                public boolean value(@NotNull VirtualFile file) {
+                    return file.isValid();
+                }
+            });
+            files.addAll(valid);
+        } else {
+            for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                if (!language.isOuterFileSupported()) {
+                    continue;
+                }
+                for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : language.getOuterFileFetchers()) {
+                    ContainerUtil.addAllNotNull(files, fetcher.fetch(project));
+                }
             }
         }
 
@@ -96,5 +101,14 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
     @Override
     public Set<VirtualFile> getAdditionalRootsToIndex() {
         return EMPTY_SET;
+    }
+
+    /**
+     * Removes cached files for the given project.
+     *
+     * @param project current project
+     */
+    public static void invalidateCache(@NotNull Project project) {
+        CACHE.remove(project);
     }
 }

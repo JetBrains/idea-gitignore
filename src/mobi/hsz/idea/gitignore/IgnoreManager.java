@@ -36,6 +36,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
+import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import com.intellij.openapi.vcs.VcsListener;
 import com.intellij.openapi.vfs.*;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.messages.MessageBusConnection;
@@ -164,6 +166,15 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     break;
 
             }
+        }
+    };
+
+    /** {@link VcsListener} instance. */
+    @NotNull
+    private final VcsListener vcsListener = new VcsListener() {
+        @Override
+        public void directoryMappingChanged() {
+            ExternalIndexableSetContributor.invalidateCache(myProject);
         }
     };
 
@@ -331,6 +342,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 debouncedRefreshTrackedIgnores.run(false);
             }
         });
+        messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, vcsListener);
 
         working = true;
     }
