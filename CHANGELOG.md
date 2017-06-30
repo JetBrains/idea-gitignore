@@ -9,6 +9,7 @@
 - **Migration to the native IDE indexing**
 - Git submodules `info/exclude` files support [\#287](https://github.com/hsz/idea-gitignore/issues/287)
 - Swagger Codegen (.swagger-codegen-ignore) support (thanks to @jimschubert)
+- Kubernetes Helm (.helmignore) support (thanks to @sergei-ivanov)
 
 **Fixed bugs:**
 

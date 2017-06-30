@@ -16,28 +16,29 @@
       <br/>
       <br/>
 
-      <b>.ignore</b> is a plugin for<i>
-      .gitignore (GIT),
-      .hgignore (Mercurial),
-      .npmignore (NPM),
-      .dockerignore (Docker),
-      .chefignore (Chef),
-      .cvsignore (CVS),
-      .bzrignore (Bazaar),
-      .boringignore (Darcs),
-      .mtn-ignore (Monotone),
-      ignore-glob (Fossil),
-      .jshintignore (JSHint),
-      .tfignore (Team Foundation),
-      .p4ignore (Perforce),
-      .flooignore (Floobits),
-      .eslintignore (ESLint),
-      .cfignore (Cloud Foundry),
-      .jpmignore (Jetpack),
-      .stylelintignore (StyleLint),
-      .stylintignore (Stylint),
-      .swagger-codegen-ignore (Swagger Codegen),
-      .helmignore (Kubernetes Helm)
+      <b>.ignore</b> is a plugin for
+      <i>
+        .gitignore (GIT),
+        .hgignore (Mercurial),
+        .npmignore (NPM),
+        .dockerignore (Docker),
+        .chefignore (Chef),
+        .cvsignore (CVS),
+        .bzrignore (Bazaar),
+        .boringignore (Darcs),
+        .mtn-ignore (Monotone),
+        ignore-glob (Fossil),
+        .jshintignore (JSHint),
+        .tfignore (Team Foundation),
+        .p4ignore (Perforce),
+        .flooignore (Floobits),
+        .eslintignore (ESLint),
+        .cfignore (Cloud Foundry),
+        .jpmignore (Jetpack),
+        .stylelintignore (StyleLint),
+        .stylintignore (Stylint),
+        .swagger-codegen-ignore (Swagger Codegen),
+        .helmignore (Kubernetes Helm)
       </i>files in your project.
       <br/>
       <br/>
@@ -83,6 +84,7 @@
             <li><b>Migration to the native IDE indexing</b></li>
             <li>Git submodules `info/exclude` files support (<a href="https://github.com/hsz/idea-gitignore/issues/287">287</a>)</li>
             <li>Swagger Codegen (.swagger-codegen-ignore) support (thanks to @jimschubert)</li>
+            <li>Kubernetes Helm (.helmignore) support (thanks to @sergei-ivanov)</li>
         </ul>
 
         <i>Fixed bugs:</i>

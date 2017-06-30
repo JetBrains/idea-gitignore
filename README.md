@@ -167,6 +167,7 @@ Developed By
 - [**@danpfe**](https://github.com/danpfe)
 - [**@maximilianonajle** Maximiliano Najle](https://github.com/maximilianonajle)
 - [**@jimschubert** Jim Schubert](https://github.com/jimschubert)
+- [**@sergei-ivanov** Sergei Ivanov](https://github.com/sergei-ivanov)
 
 
 Tools
