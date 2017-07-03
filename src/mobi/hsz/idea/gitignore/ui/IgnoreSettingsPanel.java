@@ -166,7 +166,7 @@ public class IgnoreSettingsPanel implements Disposable {
         donatePanel.add(new JBLabel(IgnoreBundle.message("settings.general.donate")), BorderLayout.WEST);
         donatePanel.add(createLink(
                 "PayPal",
-                "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL"
+                "https://www.paypal.me/hsz"
         ), BorderLayout.CENTER);
         donatePanel.add(createLink(
                 "BTC",

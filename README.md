@@ -201,6 +201,6 @@ Copyright (c) 2017 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [badge-coveralls-img]:    https://coveralls.io/repos/github/hsz/idea-gitignore/badge.svg?branch=master
 [badge-coveralls]:        https://coveralls.io/github/hsz/idea-gitignore?branch=master
 [badge-paypal-img]:       https://img.shields.io/badge/donate-paypal-yellow.svg
-[badge-paypal]:           https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJAU4XWQ584QL
+[badge-paypal]:           https://www.paypal.me/hsz
 [badge-bitcoin-img]:      https://img.shields.io/badge/donate-bitcoin-yellow.svg
 [badge-bitcoin]:          https://blockchain.info/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1
