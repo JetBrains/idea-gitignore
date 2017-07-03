@@ -58,6 +58,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
@@ -94,6 +95,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** List of the files that are ignored and also tracked by Git. */
     @NotNull
     private final HashMap<VirtualFile, Repository> confirmedIgnoredFiles = new HashMap<VirtualFile, Repository>();
+
+    /** List of the new files that were not covered by {@link #confirmedIgnoredFiles} yet. */
+    @NotNull
+    private final HashSet<VirtualFile> notConfirmedIgnoredFiles = new HashSet<VirtualFile>();
 
     /** {@link FileStatusManager#fileStatusesChanged()} method wrapped with {@link Debounced}. */
     private final Debounced debouncedStatusesChanged = new Debounced(1000) {
@@ -135,6 +140,30 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 debouncedStatusesChanged.run();
                 debouncedRefreshTrackedIgnores.run();
             }
+        }
+
+        @Override
+        public void fileCreated(@NotNull VirtualFileEvent event) {
+            notConfirmedIgnoredFiles.add(event.getFile());
+//            debouncedRefreshTrackedIgnores.run(true);
+        }
+
+        @Override
+        public void fileDeleted(@NotNull VirtualFileEvent event) {
+            notConfirmedIgnoredFiles.add(event.getFile());
+//            debouncedRefreshTrackedIgnores.run(true);
+        }
+
+        @Override
+        public void fileMoved(@NotNull VirtualFileMoveEvent event) {
+            notConfirmedIgnoredFiles.add(event.getFile());
+//            debouncedRefreshTrackedIgnores.run(true);
+        }
+
+        @Override
+        public void fileCopied(@NotNull VirtualFileCopyEvent event) {
+            notConfirmedIgnoredFiles.add(event.getFile());
+//            debouncedRefreshTrackedIgnores.run(true);
         }
     };
 
@@ -285,7 +314,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      * @return file is ignored and tracked
      */
     public boolean isFileIgnoredAndTracked(@NotNull final VirtualFile file) {
-        return !confirmedIgnoredFiles.containsKey(file) && isFileIgnored(file);
+        return !notConfirmedIgnoredFiles.contains(file) && isFileIgnored(file) &&
+                !confirmedIgnoredFiles.isEmpty() && !confirmedIgnoredFiles.containsKey(file);
     }
 
     /**
@@ -435,6 +465,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             }
             confirmedIgnoredFiles.clear();
             confirmedIgnoredFiles.putAll(result);
+            notConfirmedIgnoredFiles.clear();
             statusManager.fileStatusesChanged();
 
             for (AbstractProjectViewPane pane : Extensions.getExtensions(AbstractProjectViewPane.EP_NAME, myProject)) {
