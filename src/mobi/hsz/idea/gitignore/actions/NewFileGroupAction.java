@@ -51,8 +51,8 @@ public class NewFileGroupAction extends DefaultActionGroup implements DumbAware 
             final IgnoreFileType fileType = language.getFileType();
             add(new NewFileAction(fileType) {{
                 Presentation p = getTemplatePresentation();
-                p.setText(IgnoreBundle.message("action.newFile", language.getFilename(), language.getDisplayName()));
-                p.setDescription(IgnoreBundle.message("action.newFile.description", language.getDisplayName()));
+                p.setText(IgnoreBundle.message("action.newFile", language.getFilename(), language.getID()));
+                p.setDescription(IgnoreBundle.message("action.newFile.description", language.getID()));
                 p.setIcon(fileType.getIcon());
             }});
         }

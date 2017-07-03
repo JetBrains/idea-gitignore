@@ -132,6 +132,12 @@ public class IgnoreLanguage extends Language {
         return DOT + getExtension();
     }
 
+    @NotNull
+    @Override
+    public String getDisplayName() {
+        return getFilename() + " (" + getID() + ")";
+    }
+
     /**
      * Returns Ignore file icon.
      *

@@ -56,7 +56,7 @@ public class IgnoreTemplatesFactory implements FileTemplateGroupDescriptorFactor
     /** Builds a new instance of {@link IgnoreTemplatesFactory}. */
     public IgnoreTemplatesFactory(IgnoreFileType fileType) {
         templateGroup = new FileTemplateGroupDescriptor(
-                fileType.getIgnoreLanguage().getDisplayName(),
+                fileType.getIgnoreLanguage().getID(),
                 fileType.getIcon()
         );
         templateGroup.addTemplate(fileType.getIgnoreLanguage().getFilename());
