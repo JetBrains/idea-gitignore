@@ -64,8 +64,12 @@ public class GitExcludeLanguage extends IgnoreLanguage {
                     @Override
                     public Collection<VirtualFile> fetch(@NotNull Project project) {
                         final Collection<VirtualFile> files = ContainerUtil.newArrayList();
-                        final VirtualFile root = project.getBaseDir().findChild(".git");
+                        final VirtualFile baseDir = project.getBaseDir();
+                        if (baseDir == null) {
+                            return files;
+                        }
 
+                        final VirtualFile root = baseDir.findChild(".git");
                         return processExcludes(root, files);
                     }
 
