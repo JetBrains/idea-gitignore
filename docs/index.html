@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <title>.ignore</title>
   <meta name="description" content=".ignore plugin for IntelliJ IDEA">
@@ -12,21 +12,19 @@
 </head>
 <body>
 
-<div class="ui menu">
-  <div class="ui container">
-    <div class="header item">
-      .ignore
-    </div>
+<div class="ui menu fixed">
+  <div class="ui text container">
+    <div class="header item">.ignore</div>
     <a class="item">Features</a>
     <a class="item">Credits</a>
     <div class="right menu">
-      <a class="item" href="https://github.com/hsz/idea-gitignore">
+      <a class="item" href="https://github.com/hsz/idea-gitignore" data-title="Sources">
         <i class="github icon"></i>
       </a>
-      <a class="item" href="https://www.paypal.me/hsz">
+      <a class="item" href="https://www.paypal.me/hsz" data-title="Donate my work with PayPal">
         <i class="paypal icon"></i>
       </a>
-      <a class="item" href="https://blockchain.info/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1">
+      <a class="item" href="https://blockchain.info/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1" data-title="Donate my work with Bitcoin">
         <i class="bitcoin icon"></i>
       </a>
     </div>
@@ -34,16 +32,40 @@
 </div>
 
 <header class="ui inverted vertical center aligned segment">
-
   <div class="ui text container">
     <h1 class="ui inverted header">
       .ignore
     </h1>
     <h2>...because ignoring things is a serious business ;-)</h2>
-    <div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div>
   </div>
-
 </header>
 
+<section class="ui container segment">
+  <h1 class="ui header">What's that?</h1>
+
+  <p>By default, <em><span class="ide">IntelliJ IDEA</span></em> IDE doesn't support
+    in any way the <em>.*ignore</em> files.</p>
+  <p>This plugin allows you to mark matched files in project view, assists in editing them
+    or generate the ignore rules using templates. These are just a few of the features!</p>
+</section>
+
+<section class="ui container segment" id="features">
+  <h1 class="ui header">Features</h1>
+
+  <h3>Create .ignore file</h3>
+  <p>Create file from the context menu. You can control this list from <a href="#settings">Settings</a></p>
+</section>
+
+<script type="text/javascript" src="./assets/libs.js"></script>
+<script type="text/javascript" src="./assets/scripts.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-102054617-1', 'auto');
+  ga('send', 'pageview');
+</script>
 </body>
 </html>
