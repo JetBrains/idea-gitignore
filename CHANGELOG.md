@@ -21,6 +21,7 @@
 - Fixed "You are editing..." message display conditions [\#351](https://github.com/hsz/idea-gitignore/issues/351) [\#352](https://github.com/hsz/idea-gitignore/issues/352) [\#356](https://github.com/hsz/idea-gitignore/issues/356)
 - It's prohibited to access index during event dispatching [\#358](https://github.com/hsz/idea-gitignore/issues/358) [\#355](https://github.com/hsz/idea-gitignore/issues/355) [\#369](https://github.com/hsz/idea-gitignore/issues/369)
 - Already disposed: com.intellij.util.messages.impl.MessageBusImpl [\#360](https://github.com/hsz/idea-gitignore/issues/360)
+- NotNull error when changing directory name [\##391](https://github.com/hsz/idea-gitignore/issues/#391)
 
 ## [v1.7.6](https://github.com/hsz/idea-gitignore/tree/v1.7.6) (2017-02-23)
 

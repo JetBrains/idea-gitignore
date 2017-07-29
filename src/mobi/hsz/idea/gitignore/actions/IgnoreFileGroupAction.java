@@ -69,6 +69,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
     private final String presentationTextSingleKey;
 
     /** {@link Project}'s base directory. */
+    @Nullable
     private VirtualFile baseDir;
 
     /**
@@ -139,7 +140,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
         AnAction[] actions;
         int count = countFiles();
 
-        if (count == 0) {
+        if (count == 0 || baseDir == null) {
             actions = new AnAction[0];
         } else {
             actions = new AnAction[count];

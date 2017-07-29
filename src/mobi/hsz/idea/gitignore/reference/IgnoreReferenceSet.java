@@ -264,7 +264,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                             continue;
                         }
 
-                        String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
+                        final String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
                         if (MatcherUtil.match(matcher, name)) {
                             PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
                             if (psiFileSystemItem == null) {

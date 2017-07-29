@@ -97,6 +97,7 @@
             <li>Fixed "You are editing..." message display conditions (<a href="https://github.com/hsz/idea-gitignore/issues/351">351</a>, <a href="https://github.com/hsz/idea-gitignore/issues/352">352</a>, <a href="https://github.com/hsz/idea-gitignore/issues/356">356</a>)</li>
             <li>It's prohibited to access index during event dispatching (<a href="https://github.com/hsz/idea-gitignore/issues/358">358</a>, <a href="https://github.com/hsz/idea-gitignore/issues/355">355</a>, <a href="https://github.com/hsz/idea-gitignore/issues/369">369</a>)</li>
             <li>Already disposed: com.intellij.util.messages.impl.MessageBusImpl (<a href="https://github.com/hsz/idea-gitignore/issues/360">360</a>)</li>
+            <li>NotNull error when changing directory name (<a href="https://github.com/hsz/idea-gitignore/issues/391">391</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

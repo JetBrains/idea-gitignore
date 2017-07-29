@@ -113,6 +113,10 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                 final List<VirtualFile> matched = ContainerUtil.newArrayList();
                 final Collection<VirtualFile> files = cache.getFilesForPattern(project, pattern);
 
+                if (projectRoot == null) {
+                    return false;
+                }
+
                 for (final VirtualFile root : Utils.getExcludedRoots(project)) {
                     for (VirtualFile file : files) {
                         if (!Utils.isUnder(file, root)) {
