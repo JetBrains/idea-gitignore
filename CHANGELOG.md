@@ -1,8 +1,8 @@
 # Change Log
 
-## [v2.0.0-rc.1](https://github.com/hsz/idea-gitignore/tree/v2.0.0-rc.1) (2017-06-07)
+## [v2.0.0](https://github.com/hsz/idea-gitignore/tree/v2.0.0) (2017-07-30)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.0-rc.1)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.0)
 
 **Implemented enhancements:**
 
