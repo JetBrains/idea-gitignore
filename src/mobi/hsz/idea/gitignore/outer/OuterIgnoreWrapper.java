@@ -130,13 +130,15 @@ public class OuterIgnoreWrapper implements Disposable {
                     path = path.replace(userHomeDir.getPath(), "~");
                 }
 
-                tabbedPanel.addTab(
-                        path,
-                        language.getIcon(),
-                        scrollPanel,
-                        outerFile.getCanonicalPath()
-                );
-                outerEditors.add(outerEditor);
+                if (path != null) {
+                    tabbedPanel.addTab(
+                            path,
+                            language.getIcon(),
+                            scrollPanel,
+                            outerFile.getCanonicalPath()
+                    );
+                    outerEditors.add(outerEditor);
+                }
             }
         }
 

@@ -135,6 +135,7 @@ Changelog
 - NotNull error when changing directory name [\##391](https://github.com/hsz/idea-gitignore/issues/#391)
 - Fixed missing ESLint parserDefinition [\##394](https://github.com/hsz/idea-gitignore/issues/#394)
 - Wrap `git rm` command with quotes [\##339](https://github.com/hsz/idea-gitignore/issues/#339)
+- Argument for @NotNull parameter 'fragment' must not be null [\##345](https://github.com/hsz/idea-gitignore/issues/#345)
 
 [Full Changelog History](./CHANGELOG.md)
 
