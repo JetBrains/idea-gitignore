@@ -134,6 +134,7 @@ Changelog
 - Already disposed: com.intellij.util.messages.impl.MessageBusImpl [\#360](https://github.com/hsz/idea-gitignore/issues/360)
 - NotNull error when changing directory name [\##391](https://github.com/hsz/idea-gitignore/issues/#391)
 - Fixed missing ESLint parserDefinition [\##394](https://github.com/hsz/idea-gitignore/issues/#394)
+- Wrap `git rm` command with quotes [\##339](https://github.com/hsz/idea-gitignore/issues/#339)
 
 [Full Changelog History](./CHANGELOG.md)
 

@@ -100,6 +100,7 @@
             <li>Already disposed: com.intellij.util.messages.impl.MessageBusImpl (<a href="https://github.com/hsz/idea-gitignore/issues/360">360</a>)</li>
             <li>NotNull error when changing directory name (<a href="https://github.com/hsz/idea-gitignore/issues/391">391</a>)</li>
             <li>Fixed missing ESLint parserDefinition (<a href="https://github.com/hsz/idea-gitignore/issues/394">394</a>)</li>
+            <li>Wrap `git rm` command with quotes (<a href="https://github.com/hsz/idea-gitignore/issues/339">339</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
