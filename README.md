@@ -110,9 +110,9 @@ Usage
 Changelog
 ---------
 
-## [v2.0.0](https://github.com/hsz/idea-gitignore/tree/v2.0.0-) (2017-07-30)
+## [v2.0.1](https://github.com/hsz/idea-gitignore/tree/v2.0.1) (2017-07-30)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.0)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.1)
 
 **Implemented enhancements:**
 
@@ -132,6 +132,7 @@ Changelog
 - It's prohibited to access index during event dispatching [\#358](https://github.com/hsz/idea-gitignore/issues/358) [\#355](https://github.com/hsz/idea-gitignore/issues/355) [\#369](https://github.com/hsz/idea-gitignore/issues/369)
 - Already disposed: com.intellij.util.messages.impl.MessageBusImpl [\#360](https://github.com/hsz/idea-gitignore/issues/360)
 - NotNull error when changing directory name [\##391](https://github.com/hsz/idea-gitignore/issues/#391)
+- Fixed missing ESLint parserDefinition [\##394](https://github.com/hsz/idea-gitignore/issues/#394)
 
 [Full Changelog History](./CHANGELOG.md)
 
