@@ -75,8 +75,8 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.0.0"><b>v2.0.0</b></a> (2017-07-30) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.0"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.0.3"><b>v2.0.3</b></a> (2017-07-30) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.3"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
 
@@ -90,6 +90,7 @@
         <i>Fixed bugs:</i>
 
         <ul>
+            <li><b>Files are not marked at startup</b> (<a href="https://github.com/hsz/idea-gitignore/issues/379">379</a>)</li>
             <li>Tracking of ignored files showing false positives (<a href="https://github.com/hsz/idea-gitignore/issues/310">310</a>)</li>
             <li>Correct handle of leading slash on directory name (<a href="https://github.com/hsz/idea-gitignore/issues/340">340</a>)</li>
             <li>Fixed handling excluding (!) entries (<a href="https://github.com/hsz/idea-gitignore/issues/350">350</a>, <a href="https://github.com/hsz/idea-gitignore/issues/344">344</a>, <a href="https://github.com/hsz/idea-gitignore/issues/361">361</a>, <a href="https://github.com/hsz/idea-gitignore/issues/364">364</a>)</li>

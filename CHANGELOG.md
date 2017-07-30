@@ -1,8 +1,8 @@
 # Change Log
 
-## [v2.0.1](https://github.com/hsz/idea-gitignore/tree/v2.0.1) (2017-07-30)
+## [v2.0.3](https://github.com/hsz/idea-gitignore/tree/v2.0.3) (2017-07-30)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.1)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.3)
 
 **Implemented enhancements:**
 
@@ -14,6 +14,7 @@
 
 **Fixed bugs:**
 
+- *Files are not marked at startup* [\#379](https://github.com/hsz/idea-gitignore/issues/379)
 - Tracking of ignored files showing false positives [\#310](https://github.com/hsz/idea-gitignore/issues/310)
 - Correct handle of leading slash on directory name [\#340](https://github.com/hsz/idea-gitignore/issues/340)
 - Fixed handling excluding (!) entries [\#350](https://github.com/hsz/idea-gitignore/issues/350) [\#344](https://github.com/hsz/idea-gitignore/issues/344) [\#361](https://github.com/hsz/idea-gitignore/issues/361) [\#364](https://github.com/hsz/idea-gitignore/issues/364)

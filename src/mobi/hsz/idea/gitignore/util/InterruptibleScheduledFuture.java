@@ -57,6 +57,15 @@ public class InterruptibleScheduledFuture implements DumbAwareRunnable {
     @Nullable
     private ScheduledFuture<?> future;
 
+    /** Specify invoking on the leading edge of the timeout. */
+    private boolean leading = false;
+
+    /** Specify invoking on the trailing edge of the timeout. */
+    private boolean trailing = false;
+
+    /** Flag to distinguish the trailing task. */
+    private boolean trailingTask = false;
+
     /**
      * Constructor.
      *
@@ -74,11 +83,15 @@ public class InterruptibleScheduledFuture implements DumbAwareRunnable {
     @Override
     public void run() {
         cancel();
+        if (leading) {
+            task.run();
+        }
         future = JobScheduler.getScheduler().scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
                 task.run();
-                if (++attempt == maxAttempts) {
+                if (++attempt == maxAttempts || trailingTask) {
+                    trailing = false;
                     cancel();
                 }
             }
@@ -88,8 +101,30 @@ public class InterruptibleScheduledFuture implements DumbAwareRunnable {
     /** Function that cancels current {@link #future}. */
     public void cancel() {
         if (future != null) {
-            future.cancel(true);
-            future = null;
+            if (trailing) {
+                trailingTask = true;
+            } else {
+                future.cancel(false);
+                future = null;
+            }
         }
+    }
+
+    /**
+     * Specify invoking on the leading edge of the timeout.
+     *
+     * @param leading edge
+     */
+    public void setLeading(boolean leading) {
+        this.leading = leading;
+    }
+
+    /**
+     * Specify invoking on the trailing edge of the timeout.
+     *
+     * @param trailing edge
+     */
+    public void setTrailing(boolean trailing) {
+        this.trailing = trailing;
     }
 }
