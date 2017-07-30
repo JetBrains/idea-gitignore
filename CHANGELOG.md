@@ -15,6 +15,7 @@
 **Fixed bugs:**
 
 - *Files are not marked at startup* [\#379](https://github.com/hsz/idea-gitignore/issues/379)
+- *Handle multiple submodules in project (reset parent rules)* [\#383](https://github.com/hsz/idea-gitignore/issues/383)
 - Tracking of ignored files showing false positives [\#310](https://github.com/hsz/idea-gitignore/issues/310)
 - Correct handle of leading slash on directory name [\#340](https://github.com/hsz/idea-gitignore/issues/340)
 - Fixed handling excluding (!) entries [\#350](https://github.com/hsz/idea-gitignore/issues/350) [\#344](https://github.com/hsz/idea-gitignore/issues/344) [\#361](https://github.com/hsz/idea-gitignore/issues/361) [\#364](https://github.com/hsz/idea-gitignore/issues/364)

@@ -91,6 +91,7 @@
 
         <ul>
             <li><b>Files are not marked at startup</b> (<a href="https://github.com/hsz/idea-gitignore/issues/379">379</a>)</li>
+            <li><b>Handle multiple submodules in project (reset parent rules)</b> (<a href="https://github.com/hsz/idea-gitignore/issues/383">383</a>)</li>
             <li>Tracking of ignored files showing false positives (<a href="https://github.com/hsz/idea-gitignore/issues/310">310</a>)</li>
             <li>Correct handle of leading slash on directory name (<a href="https://github.com/hsz/idea-gitignore/issues/340">340</a>)</li>
             <li>Fixed handling excluding (!) entries (<a href="https://github.com/hsz/idea-gitignore/issues/350">350</a>, <a href="https://github.com/hsz/idea-gitignore/issues/344">344</a>, <a href="https://github.com/hsz/idea-gitignore/issues/361">361</a>, <a href="https://github.com/hsz/idea-gitignore/issues/364">364</a>)</li>

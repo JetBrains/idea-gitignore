@@ -48,6 +48,7 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor;
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Debounced;
 import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture;
@@ -59,6 +60,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
@@ -250,6 +252,9 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         boolean ignored = false;
         boolean matched = false;
         int valuesCount = 0;
+        final List<VirtualFile> outerFiles = GitLanguage.INSTANCE.getOuterFiles(myProject);
+        final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
+
         for (IgnoreFileType fileType : IgnoreFilesIndex.getKeys(myProject)) {
             if (!fileType.getIgnoreLanguage().isEnabled()) {
                 continue;
@@ -266,6 +271,12 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     }
                     relativePath = StringUtil.trimStart(file.getPath(), workingDirectory.getPath());
                 } else {
+                    final Repository repository = vcsRepositoryManager.getRepositoryForFile(file);
+                    if (repository != null && !Utils.isUnder(value.getFile(), repository.getRoot())
+                            && !outerFiles.contains(value.getFile())) {
+                        continue;
+                    }
+
                     String parentPath = value.getFile().getParent().getPath();
                     if (!StringUtil.startsWith(file.getPath(), parentPath)) {
                         if (!ExternalIndexableSetContributor.getAdditionalFiles(myProject).contains(value.getFile())) {
@@ -294,8 +305,13 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
 
         if (valuesCount > 0 && !ignored && !matched) {
-            VirtualFile directory = file.getParent();
+            final VirtualFile directory = file.getParent();
             if (directory != null && !directory.equals(myProject.getBaseDir())) {
+                for (Repository repository : vcsRepositoryManager.getRepositories()) {
+                    if (directory.equals(repository.getRoot())) {
+                        return false;
+                    }
+                }
                 return isFileIgnored(directory);
             }
         }
@@ -446,7 +462,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 return;
             }
 
-            final Collection<Repository> repositories = VcsRepositoryManager.getInstance(myProject).getRepositories();
+            final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
+            final Collection<Repository> repositories = vcsRepositoryManager.getRepositories();
             final HashMap<VirtualFile, Repository> result = new HashMap<VirtualFile, Repository>();
             for (Repository repository : repositories) {
                 if (!(repository instanceof GitRepository)) {
