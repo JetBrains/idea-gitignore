@@ -222,6 +222,8 @@
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Docker"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="ESLint"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Floobits"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Fossil"
