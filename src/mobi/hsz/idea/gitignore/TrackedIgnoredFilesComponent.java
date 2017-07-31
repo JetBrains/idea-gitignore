@@ -31,7 +31,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.HashMap;
+import com.intellij.util.containers.WeakHashMap;
 import com.intellij.util.messages.MessageBusConnection;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.ui.untrackFiles.UntrackFilesDialog;
@@ -107,7 +107,7 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
      * @param files tracked and ignored files list
      */
     @Override
-    public void handleFiles(@NotNull final HashMap<VirtualFile, Repository> files) {
+    public void handleFiles(@NotNull final WeakHashMap<VirtualFile, Repository> files) {
         if (!settings.isInformTrackedIgnored() || notificationShown || myProject.getBaseDir() == null) {
             return;
         }

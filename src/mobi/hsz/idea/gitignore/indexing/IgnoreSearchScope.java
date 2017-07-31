@@ -53,7 +53,7 @@ public class IgnoreSearchScope extends GlobalSearchScope {
      */
     @NotNull
     public static GlobalSearchScope get(@NotNull Project project) {
-        IgnoreSearchScope scope = new IgnoreSearchScope(project);
+        final IgnoreSearchScope scope = new IgnoreSearchScope(project);
         final HashSet<VirtualFile> files = ExternalIndexableSetContributor.getAdditionalFiles(project);
         return scope.uniteWith(GlobalSearchScope.filesScope(project, files));
     }

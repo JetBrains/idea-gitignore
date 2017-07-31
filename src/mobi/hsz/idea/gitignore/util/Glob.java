@@ -35,8 +35,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -49,7 +49,10 @@ import java.util.regex.PatternSyntaxException;
  */
 public class Glob {
     /** Cache map that holds processed regex statements to the glob rules. */
-    private static final HashMap<String, String> CACHE = ContainerUtil.newHashMap();
+    private static final WeakHashMap<String, String> GLOBS_CACHE = new WeakHashMap<String, String>();
+
+    /** Cache map that holds compiled regex. */
+    private static final WeakHashMap<String, Pattern> PATTERNS_CACHE = new WeakHashMap<String, Pattern>();
 
     /** Private constructor to prevent creating {@link Glob} instance. */
     private Glob() {
@@ -169,7 +172,10 @@ public class Glob {
                                         boolean acceptChildren) {
         final String regex = syntax.equals(IgnoreBundle.Syntax.GLOB) ? createRegex(rule, acceptChildren) : rule;
         try {
-            return Pattern.compile(regex);
+            if (!PATTERNS_CACHE.containsKey(regex)) {
+                PATTERNS_CACHE.put(regex, Pattern.compile(regex));
+            }
+            return PATTERNS_CACHE.get(regex);
         } catch (PatternSyntaxException e) {
             return null;
         }
@@ -208,7 +214,7 @@ public class Glob {
     @NotNull
     public static String createRegex(@NotNull String glob, boolean acceptChildren) {
         glob = glob.trim();
-        String cached = CACHE.get(glob);
+        String cached = GLOBS_CACHE.get(glob);
         if (cached != null) {
             return cached;
         }
@@ -352,13 +358,14 @@ public class Glob {
         }
 
         sb.append('$');
-        CACHE.put(glob, sb.toString());
+        GLOBS_CACHE.put(glob, sb.toString());
 
         return sb.toString();
     }
 
-    /** Clears {@link Glob#CACHE} cache. */
+    /** Clears {@link Glob#GLOBS_CACHE} cache. */
     public static void clearCache() {
-        CACHE.clear();
+        GLOBS_CACHE.clear();
+        PATTERNS_CACHE.clear();
     }
 }

@@ -41,14 +41,12 @@ import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import mobi.hsz.idea.gitignore.util.Glob;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -240,8 +238,8 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
      */
     @NotNull
     public static List<VirtualFile> getFiles(@NotNull Project project, @NotNull IgnoreFileType fileType) {
-        return ContainerUtil.map(getEntries(project, fileType), new Function<IgnoreEntryOccurrence, VirtualFile>() {
-            @NotNull
+        return ContainerUtil.mapNotNull(getEntries(project, fileType), new Function<IgnoreEntryOccurrence, VirtualFile>() {
+            @Nullable
             @Override
             public VirtualFile fun(@NotNull IgnoreEntryOccurrence entry) {
                 return entry.getFile();

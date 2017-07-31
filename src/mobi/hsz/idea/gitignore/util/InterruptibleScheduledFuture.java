@@ -82,7 +82,9 @@ public class InterruptibleScheduledFuture implements DumbAwareRunnable {
     /** Main run function. */
     @Override
     public void run() {
-        cancel();
+        if (future != null && !future.isCancelled() && !future.isDone()) {
+            return;
+        }
         if (leading) {
             task.run();
         }
@@ -90,9 +92,11 @@ public class InterruptibleScheduledFuture implements DumbAwareRunnable {
             @Override
             public void run() {
                 task.run();
-                if (++attempt == maxAttempts || trailingTask) {
+                if (++attempt >= maxAttempts || trailingTask) {
                     trailing = false;
-                    cancel();
+                    if (future != null) {
+                        future.cancel(false);
+                    }
                 }
             }
         }, delay, delay, TimeUnit.MILLISECONDS);
@@ -100,12 +104,11 @@ public class InterruptibleScheduledFuture implements DumbAwareRunnable {
 
     /** Function that cancels current {@link #future}. */
     public void cancel() {
-        if (future != null) {
+        if (future != null && !future.isCancelled()) {
             if (trailing) {
                 trailingTask = true;
             } else {
                 future.cancel(true);
-                future = null;
             }
         }
     }
