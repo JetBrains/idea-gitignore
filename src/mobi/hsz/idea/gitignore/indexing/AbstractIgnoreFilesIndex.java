@@ -36,8 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 2.0
  */
 public abstract class AbstractIgnoreFilesIndex<K, V> extends FileBasedIndexExtension<K, V>
-        implements KeyDescriptor<K>, DataIndexer<K, V, FileContent>, FileBasedIndex.InputFilter, DumbAware,
-        PsiDependentIndex {
+        implements KeyDescriptor<K>, DataIndexer<K, V, FileContent>, FileBasedIndex.InputFilter, DumbAware {
 
     /**
      * Returns {@link DataIndexer} implementation.
