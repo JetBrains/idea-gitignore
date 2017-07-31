@@ -104,7 +104,7 @@ public class InterruptibleScheduledFuture implements DumbAwareRunnable {
             if (trailing) {
                 trailingTask = true;
             } else {
-                future.cancel(false);
+                future.cancel(true);
                 future = null;
             }
         }

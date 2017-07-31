@@ -84,8 +84,7 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
             public boolean value(AbstractTreeNode node) {
                 if (node instanceof BasePsiNode) {
                     final VirtualFile file = ((BasePsiNode) node).getVirtualFile();
-                    if (file == null || (ignoreManager.isFileIgnored(file) &&
-                            !ignoreManager.isFileIgnoredAndTracked(file))) {
+                    if (file == null || (ignoreManager.isFileIgnored(file) && !ignoreManager.isFileTracked(file))) {
                         return false;
                     }
                 }

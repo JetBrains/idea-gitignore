@@ -68,7 +68,7 @@ public class IgnoreFileStatusProvider implements FileStatusProvider, DumbAware {
     @Override
     public FileStatus getFileStatus(@NotNull VirtualFile virtualFile) {
         return ignoreManager.isFileIgnored(virtualFile) &&
-                !ignoreManager.isFileIgnoredAndTracked(virtualFile) ? IGNORED : null;
+                !ignoreManager.isFileTracked(virtualFile) ? IGNORED : null;
     }
 
     /** Does nothing. */

@@ -39,6 +39,7 @@ import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.VcsListener;
 import com.intellij.openapi.vfs.*;
+import com.intellij.util.Time;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
@@ -51,6 +52,7 @@ import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Debounced;
+import mobi.hsz.idea.gitignore.util.ExpiringMap;
 import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture;
 import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
@@ -101,6 +103,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** List of the new files that were not covered by {@link #confirmedIgnoredFiles} yet. */
     @NotNull
     private final HashSet<VirtualFile> notConfirmedIgnoredFiles = new HashSet<VirtualFile>();
+
+    @NotNull
+    private final ExpiringMap<VirtualFile, Boolean> expiringStatusCache =
+            new ExpiringMap<VirtualFile, Boolean>(Time.SECOND);
 
     /** {@link FileStatusManager#fileStatusesChanged()} method wrapped with {@link Debounced}. */
     private final Debounced debouncedStatusesChanged = new Debounced(1000) {
@@ -245,6 +251,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      * @return file is ignored
      */
     public boolean isFileIgnored(@NotNull final VirtualFile file) {
+        final Boolean cached = expiringStatusCache.get(file);
+        if (cached != null) {
+            return cached;
+        }
         if (DumbService.isDumb(myProject) || !isEnabled() || !Utils.isUnder(file, myProject.getBaseDir())) {
             return false;
         }
@@ -321,6 +331,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             refreshTrackedIgnoredFeature.cancel();
         }
 
+        expiringStatusCache.set(file, ignored);
         return ignored;
     }
 
@@ -330,8 +341,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      * @param file current file
      * @return file is ignored and tracked
      */
-    public boolean isFileIgnoredAndTracked(@NotNull final VirtualFile file) {
-        return !notConfirmedIgnoredFiles.contains(file) && isFileIgnored(file) &&
+    public boolean isFileTracked(@NotNull final VirtualFile file) {
+        return settings.isInformTrackedIgnored() && !notConfirmedIgnoredFiles.contains(file) &&
                 !confirmedIgnoredFiles.isEmpty() && !confirmedIgnoredFiles.containsKey(file);
     }
 

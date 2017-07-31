@@ -86,7 +86,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
             return;
         }
 
-        if (ignoreSettings.isInformTrackedIgnored() && manager.isFileIgnoredAndTracked(file)) {
+        if (ignoreSettings.isInformTrackedIgnored() && manager.isFileTracked(file) && manager.isFileIgnored(file)) {
             Utils.addColoredText(
                     data,
                     IgnoreBundle.message("projectView.tracked"),
@@ -96,7 +96,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
             int count = ContainerUtil.filter(file.getChildren(), new Condition<VirtualFile>() {
                 @Override
                 public boolean value(VirtualFile file) {
-                    return manager.isFileIgnored(file) && !manager.isFileIgnoredAndTracked(file);
+                    return manager.isFileIgnored(file) && !manager.isFileTracked(file);
                 }
             }).size();
 
