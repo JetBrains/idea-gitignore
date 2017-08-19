@@ -1,5 +1,17 @@
 # Change Log
 
+## [v2.1.0](https://github.com/hsz/idea-gitignore/tree/v2.1.0) (2017-08-?)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0)
+
+**Implemented enhancements:**
+
+- **Migration to the native IDE indexing**
+
+**Fixed bugs:**
+
+- ConcurrentModificationException in THashIterator [\##413](https://github.com/hsz/idea-gitignore/issues/#413)
+
 ## [v2.0.4](https://github.com/hsz/idea-gitignore/tree/v2.0.4) (2017-07-31)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.4)

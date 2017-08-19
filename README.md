@@ -110,33 +110,17 @@ Usage
 Changelog
 ---------
 
-## [v2.0.4](https://github.com/hsz/idea-gitignore/tree/v2.0.4) (2017-07-31)
+## [v2.1.0](https://github.com/hsz/idea-gitignore/tree/v2.1.0) (2017-08-?)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.4)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0)
 
 **Implemented enhancements:**
 
 - **Migration to the native IDE indexing**
-- Git submodules `info/exclude` files support [\#287](https://github.com/hsz/idea-gitignore/issues/287)
-- Swagger Codegen (.swagger-codegen-ignore) support (thanks to @jimschubert)
-- Kubernetes Helm (.helmignore) support (thanks to @sergei-ivanov)
-- File type for .dockerignore should not be named 'Docker' [\#375](https://github.com/hsz/idea-gitignore/issues/375)
 
 **Fixed bugs:**
 
-- *Files are not marked at startup* [\#379](https://github.com/hsz/idea-gitignore/issues/379)
-- *Handle multiple submodules in project (reset parent rules)* [\#383](https://github.com/hsz/idea-gitignore/issues/383)
-- Tracking of ignored files showing false positives [\#310](https://github.com/hsz/idea-gitignore/issues/310)
-- Correct handle of leading slash on directory name [\#340](https://github.com/hsz/idea-gitignore/issues/340)
-- Fixed handling excluding (!) entries [\#350](https://github.com/hsz/idea-gitignore/issues/350) [\#344](https://github.com/hsz/idea-gitignore/issues/344) [\#361](https://github.com/hsz/idea-gitignore/issues/361) [\#364](https://github.com/hsz/idea-gitignore/issues/364)
-- Fixed nested ignoring [\#346](https://github.com/hsz/idea-gitignore/issues/346)
-- Fixed "You are editing..." message display conditions [\#351](https://github.com/hsz/idea-gitignore/issues/351) [\#352](https://github.com/hsz/idea-gitignore/issues/352) [\#356](https://github.com/hsz/idea-gitignore/issues/356)
-- It's prohibited to access index during event dispatching [\#358](https://github.com/hsz/idea-gitignore/issues/358) [\#355](https://github.com/hsz/idea-gitignore/issues/355) [\#369](https://github.com/hsz/idea-gitignore/issues/369)
-- Already disposed: com.intellij.util.messages.impl.MessageBusImpl [\#360](https://github.com/hsz/idea-gitignore/issues/360)
-- NotNull error when changing directory name [\##391](https://github.com/hsz/idea-gitignore/issues/#391)
-- Fixed missing ESLint parserDefinition [\##394](https://github.com/hsz/idea-gitignore/issues/#394)
-- Wrap `git rm` command with quotes [\##339](https://github.com/hsz/idea-gitignore/issues/#339)
-- Argument for @NotNull parameter 'fragment' must not be null [\##345](https://github.com/hsz/idea-gitignore/issues/#345)
+- ConcurrentModificationException in THashIterator [\##413](https://github.com/hsz/idea-gitignore/issues/#413)
 
 [Full Changelog History](./CHANGELOG.md)
 

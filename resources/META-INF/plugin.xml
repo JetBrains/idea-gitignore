@@ -75,34 +75,19 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.0.4"><b>v2.0.4</b></a> (2017-07-31) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v1.7.6...v2.0.4"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.1.0"><b>v2.1.0</b></a> (2017-08-?) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
 
         <ul>
             <li><b>Migration to the native IDE indexing</b></li>
-            <li>Git submodules `info/exclude` files support (<a href="https://github.com/hsz/idea-gitignore/issues/287">287</a>)</li>
-            <li>Swagger Codegen (.swagger-codegen-ignore) support (thanks to @jimschubert)</li>
-            <li>Kubernetes Helm (.helmignore) support (thanks to @sergei-ivanov)</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li><b>Files are not marked at startup</b> (<a href="https://github.com/hsz/idea-gitignore/issues/379">379</a>)</li>
-            <li><b>Handle multiple submodules in project (reset parent rules)</b> (<a href="https://github.com/hsz/idea-gitignore/issues/383">383</a>)</li>
-            <li>Tracking of ignored files showing false positives (<a href="https://github.com/hsz/idea-gitignore/issues/310">310</a>)</li>
-            <li>Correct handle of leading slash on directory name (<a href="https://github.com/hsz/idea-gitignore/issues/340">340</a>)</li>
-            <li>Fixed handling excluding (!) entries (<a href="https://github.com/hsz/idea-gitignore/issues/350">350</a>, <a href="https://github.com/hsz/idea-gitignore/issues/344">344</a>, <a href="https://github.com/hsz/idea-gitignore/issues/361">361</a>, <a href="https://github.com/hsz/idea-gitignore/issues/364">364</a>)</li>
-            <li>Fixed nested ignoring (<a href="https://github.com/hsz/idea-gitignore/issues/346">346</a>)</li>
-            <li>Fixed "You are editing..." message display conditions (<a href="https://github.com/hsz/idea-gitignore/issues/351">351</a>, <a href="https://github.com/hsz/idea-gitignore/issues/352">352</a>, <a href="https://github.com/hsz/idea-gitignore/issues/356">356</a>)</li>
-            <li>It's prohibited to access index during event dispatching (<a href="https://github.com/hsz/idea-gitignore/issues/358">358</a>, <a href="https://github.com/hsz/idea-gitignore/issues/355">355</a>, <a href="https://github.com/hsz/idea-gitignore/issues/369">369</a>)</li>
-            <li>Already disposed: com.intellij.util.messages.impl.MessageBusImpl (<a href="https://github.com/hsz/idea-gitignore/issues/360">360</a>)</li>
-            <li>NotNull error when changing directory name (<a href="https://github.com/hsz/idea-gitignore/issues/391">391</a>)</li>
-            <li>Fixed missing ESLint parserDefinition (<a href="https://github.com/hsz/idea-gitignore/issues/394">394</a>)</li>
-            <li>Wrap `git rm` command with quotes (<a href="https://github.com/hsz/idea-gitignore/issues/339">339</a>)</li>
-            <li>Argument for @NotNull parameter 'fragment' must not be null (<a href="https://github.com/hsz/idea-gitignore/issues/345">345</a>)</li>
+            <li>ConcurrentModificationException in THashIterator (<a href="https://github.com/hsz/idea-gitignore/issues/413">413</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
