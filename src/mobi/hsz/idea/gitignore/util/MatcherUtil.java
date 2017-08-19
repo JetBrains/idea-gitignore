@@ -57,7 +57,7 @@ public class MatcherUtil {
         }
 
         String[] parts = getParts(matcher);
-        if (!matchAllParts(parts, path)) {
+        if (parts.length > 0 && !matchAllParts(parts, path)) {
             return false;
         }
 

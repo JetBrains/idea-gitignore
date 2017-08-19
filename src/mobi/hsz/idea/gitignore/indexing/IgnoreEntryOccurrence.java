@@ -38,6 +38,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -54,7 +55,7 @@ public class IgnoreEntryOccurrence implements Serializable {
 
     /** Collection of ignore entries converted to {@link Pattern}. */
     @NotNull
-    private final List<Pair<Pattern, Boolean>> items = ContainerUtil.newArrayList();
+    private final List<Pair<Matcher, Boolean>> items = ContainerUtil.newArrayList();
 
     /**
      * Constructor.
@@ -112,18 +113,18 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @return entries
      */
     @NotNull
-    public List<Pair<Pattern, Boolean>> getItems() {
+    public List<Pair<Matcher, Boolean>> getItems() {
         return items;
     }
 
     /**
      * Adds new element to {@link #items}.
      *
-     * @param pattern   entry converted to {@link Pattern}
+     * @param matcher   entry converted to {@link Matcher}
      * @param isNegated entry is negated
      */
-    public void add(@NotNull Pattern pattern, boolean isNegated) {
-        items.add(Pair.create(pattern, isNegated));
+    public void add(@NotNull Matcher matcher, boolean isNegated) {
+        items.add(Pair.create(matcher, isNegated));
     }
 
     /**
@@ -137,8 +138,8 @@ public class IgnoreEntryOccurrence implements Serializable {
             throws IOException {
         out.writeUTF(entry.getFile().toString());
         out.writeInt(entry.items.size());
-        for (Pair<Pattern, Boolean> item : entry.items) {
-            out.writeUTF(item.first.pattern());
+        for (Pair<Matcher, Boolean> item : entry.items) {
+            out.writeUTF(item.first.pattern().pattern());
             out.writeBoolean(item.second);
         }
     }
@@ -162,9 +163,9 @@ public class IgnoreEntryOccurrence implements Serializable {
                 final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(file);
                 int size = in.readInt();
                 for (int i = 0; i < size; i++) {
-                    Pattern pattern = Pattern.compile(in.readUTF());
+                    final Pattern pattern = Pattern.compile(in.readUTF());
                     Boolean isNegated = in.readBoolean();
-                    entry.add(pattern, isNegated);
+                    entry.add(pattern.matcher(""), isNegated);
                 }
 
                 return entry;

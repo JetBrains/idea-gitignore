@@ -56,10 +56,7 @@ import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
-import mobi.hsz.idea.gitignore.util.Debounced;
-import mobi.hsz.idea.gitignore.util.ExpiringMap;
-import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture;
-import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.*;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -68,7 +65,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
 import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED;
@@ -340,8 +337,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     relativePath += "/";
                 }
 
-                for (Pair<Pattern, Boolean> item : value.getItems()) {
-                    if (item.first.matcher(relativePath).matches()) {
+                for (Pair<Matcher, Boolean> item : value.getItems()) {
+                    if (MatcherUtil.match(item.first, relativePath)) {
                         ignored = !item.second;
                         matched = true;
                     }

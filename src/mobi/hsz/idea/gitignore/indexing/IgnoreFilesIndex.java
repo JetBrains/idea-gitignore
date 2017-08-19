@@ -92,9 +92,9 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
         ignoreFile.acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
-                Pattern pattern = Glob.createPattern(entry);
+                final Pattern pattern = Glob.createPattern(entry);
                 if (pattern != null) {
-                    result.add(pattern, entry.isNegated());
+                    result.add(pattern.matcher(""), entry.isNegated());
                 }
             }
         });
