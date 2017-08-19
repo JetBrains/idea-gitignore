@@ -109,7 +109,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
          */
         @Override
         public void fileOpened(@NotNull final FileEditorManager source, @NotNull final VirtualFile file) {
-            FileType fileType = file.getFileType();
+            final FileType fileType = file.getFileType();
             if (!(fileType instanceof IgnoreFileType) || !IgnoreSettings.getInstance().isOuterIgnoreRules()) {
                 return;
             }

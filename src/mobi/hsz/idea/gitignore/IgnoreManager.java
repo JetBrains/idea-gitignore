@@ -40,7 +40,9 @@ import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.VcsListener;
 import com.intellij.openapi.vfs.*;
+import com.intellij.util.Function;
 import com.intellij.util.Time;
+import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.containers.WeakHashMap;
 import com.intellij.util.messages.MessageBusConnection;
@@ -51,6 +53,7 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor;
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Debounced;
@@ -78,6 +81,14 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @since 1.0
  */
 public class IgnoreManager extends AbstractProjectComponent implements DumbAware {
+    private static final List<IgnoreFileType> FILE_TYPES =
+            ContainerUtil.map(IgnoreBundle.LANGUAGES, new Function<IgnoreLanguage, IgnoreFileType>() {
+                @Override
+                public IgnoreFileType fun(@NotNull IgnoreLanguage language) {
+                    return language.getFileType();
+                }
+            });
+
     /** {@link VirtualFileManager} instance. */
     @NotNull
     private final VirtualFileManager virtualFileManager;
@@ -284,7 +295,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         final List<VirtualFile> outerFiles = GitLanguage.INSTANCE.getOuterFiles(myProject);
         final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
 
-        for (IgnoreFileType fileType : IgnoreFilesIndex.getKeys(myProject)) {
+        for (IgnoreFileType fileType : FILE_TYPES) {
             if (!fileType.getIgnoreLanguage().isEnabled()) {
                 continue;
             }
