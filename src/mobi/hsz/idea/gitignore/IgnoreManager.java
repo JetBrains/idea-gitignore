@@ -44,7 +44,6 @@ import com.intellij.util.Function;
 import com.intellij.util.Time;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
-import com.intellij.util.containers.WeakHashMap;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
 import git4idea.repo.GitRepository;
@@ -65,6 +64,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 
 import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
@@ -108,8 +108,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** List of the files that are ignored and also tracked by Git. */
     @NotNull
-    private final WeakHashMap<VirtualFile, Repository> confirmedIgnoredFiles =
-            new WeakHashMap<VirtualFile, Repository>();
+    private final ConcurrentMap<VirtualFile, Repository> confirmedIgnoredFiles =
+            ContainerUtil.createConcurrentWeakMap();
 
     /** List of the new files that were not covered by {@link #confirmedIgnoredFiles} yet. */
     @NotNull
@@ -476,7 +476,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      * @return tracked and ignored files map
      */
     @NotNull
-    public WeakHashMap<VirtualFile, Repository> getConfirmedIgnoredFiles() {
+    public ConcurrentMap<VirtualFile, Repository> getConfirmedIgnoredFiles() {
         return confirmedIgnoredFiles;
     }
 
@@ -506,7 +506,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
             final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
             final Collection<Repository> repositories = vcsRepositoryManager.getRepositories();
-            final WeakHashMap<VirtualFile, Repository> result = new WeakHashMap<VirtualFile, Repository>();
+            final ConcurrentMap<VirtualFile, Repository> result = ContainerUtil.createConcurrentWeakMap();
             for (Repository repository : repositories) {
                 if (!(repository instanceof GitRepository)) {
                     continue;
@@ -542,7 +542,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         Topic<TrackedIgnoredListener> TRACKED_IGNORED =
                 Topic.create("New tracked and indexed files detected", TrackedIgnoredListener.class);
 
-        void handleFiles(@NotNull WeakHashMap<VirtualFile, Repository> files);
+        void handleFiles(@NotNull ConcurrentMap<VirtualFile, Repository> files);
     }
 
     /**

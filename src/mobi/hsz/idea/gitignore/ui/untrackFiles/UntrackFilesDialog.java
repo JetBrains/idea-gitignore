@@ -44,7 +44,6 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.HashMap;
-import com.intellij.util.containers.WeakHashMap;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeModelAdapter;
 import com.intellij.util.ui.tree.TreeUtil;
@@ -60,6 +59,7 @@ import javax.swing.event.TreeModelListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
 
@@ -77,7 +77,7 @@ public class UntrackFilesDialog extends DialogWrapper {
 
     /** A list of the tracked but ignored files. */
     @NotNull
-    private final WeakHashMap<VirtualFile, Repository> files;
+    private final ConcurrentMap<VirtualFile, Repository> files;
 
     /** Templates tree root node. */
     @NotNull
@@ -126,7 +126,7 @@ public class UntrackFilesDialog extends DialogWrapper {
      * @param project current project
      * @param files   files map to present
      */
-    public UntrackFilesDialog(@NotNull Project project, @NotNull WeakHashMap<VirtualFile, Repository> files) {
+    public UntrackFilesDialog(@NotNull Project project, @NotNull ConcurrentMap<VirtualFile, Repository> files) {
         super(project, false);
         this.project = project;
         this.files = files;

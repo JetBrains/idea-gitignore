@@ -29,13 +29,15 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.WeakHashMap;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.ui.untrackFiles.UntrackFilesDialog;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Action that invokes {@link UntrackFilesDialog} dialog.
@@ -85,13 +87,13 @@ public class HandleTrackedIgnoredFilesAction extends AnAction {
      * @param event current event
      * @return map of files
      */
-    private WeakHashMap<VirtualFile, Repository> getTrackedIgnoredFiles(@NotNull AnActionEvent event) {
+    private ConcurrentMap<VirtualFile, Repository> getTrackedIgnoredFiles(@NotNull AnActionEvent event) {
         final Project project = event.getProject();
 
         if (project != null) {
             return IgnoreManager.getInstance(project).getConfirmedIgnoredFiles();
         }
 
-        return new WeakHashMap<VirtualFile, Repository>();
+        return ContainerUtil.createConcurrentWeakMap();
     }
 }
