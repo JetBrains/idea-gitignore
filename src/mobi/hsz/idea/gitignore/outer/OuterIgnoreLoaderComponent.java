@@ -157,6 +157,14 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 }
             });
         }
+
+        @Override
+        public void fileClosed(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
+        }
+
+        @Override
+        public void selectionChanged(@NotNull FileEditorManagerEvent event) {
+        }
     }
 
     /** Outer file fetcher event interface. */
