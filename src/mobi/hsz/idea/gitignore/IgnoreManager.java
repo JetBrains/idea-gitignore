@@ -133,6 +133,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         @Override
         protected void task(@Nullable Object argument) {
             expiringStatusCache.clear();
+            cachedIgnoreFilesIndex.clear();
             statusManager.fileStatusesChanged();
         }
     };
