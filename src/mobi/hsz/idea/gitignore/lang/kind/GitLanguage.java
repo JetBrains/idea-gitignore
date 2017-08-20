@@ -25,17 +25,22 @@
 package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
+import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Gitignore {@link IgnoreLanguage} definition.
@@ -82,5 +87,23 @@ public class GitLanguage extends IgnoreLanguage {
     @Override
     public boolean isOuterFileSupported() {
         return true;
+    }
+
+    /**
+     * Returns outer files for the current language.
+     *
+     * @param project current project
+     * @return outer files
+     */
+    @NotNull
+    @Override
+    public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
+        return ContainerUtil.filter(IgnoreFilesIndex.getFiles(project, getFileType()), new Condition<VirtualFile>() {
+            @Override
+            public boolean value(@NotNull VirtualFile virtualFile) {
+                boolean inProject = Utils.isInProject(virtualFile, project);
+                return (virtualFile.getFileType() instanceof GitExcludeFileType && inProject) || !inProject;
+            }
+        });
     }
 }

@@ -43,17 +43,16 @@ import com.intellij.openapi.vfs.*;
 import com.intellij.util.Function;
 import com.intellij.util.Time;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.HashMap;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
 import git4idea.repo.GitRepository;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor;
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.*;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
@@ -115,9 +114,15 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     @NotNull
     private final HashSet<VirtualFile> notConfirmedIgnoredFiles = new HashSet<VirtualFile>();
 
+    /** References to the indexed {@link IgnoreEntryOccurrence}. */
     @NotNull
-    private final HashMap<IgnoreFileType, Collection<IgnoreEntryOccurrence>> cachedIgnoreFilesIndex =
-            new HashMap<IgnoreFileType, Collection<IgnoreEntryOccurrence>>();
+    private final ConcurrentMap<IgnoreFileType, Collection<IgnoreEntryOccurrence>> cachedIgnoreFilesIndex =
+            ContainerUtil.createConcurrentWeakMap();
+
+    /** References to the indexed outer files. */
+    @NotNull
+    private final ConcurrentMap<IgnoreFileType, Collection<VirtualFile>> cachedOuterFiles =
+            ContainerUtil.createConcurrentWeakMap();
 
     @NotNull
     private final ExpiringMap<VirtualFile, Boolean> expiringStatusCache =
@@ -195,6 +200,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             final FileType fileType = event.getFile().getFileType();
             if (fileType instanceof IgnoreFileType) {
                 cachedIgnoreFilesIndex.remove(fileType);
+                cachedOuterFiles.remove(fileType);
+                if (fileType instanceof GitExcludeFileType) {
+                    cachedOuterFiles.remove(GitFileType.INSTANCE);
+                }
                 expiringStatusCache.clear();
                 debouncedStatusesChanged.run();
                 debouncedRefreshTrackedIgnores.run();
@@ -289,7 +298,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         boolean ignored = false;
         boolean matched = false;
         int valuesCount = 0;
-        final List<VirtualFile> outerFiles = GitLanguage.INSTANCE.getOuterFiles(myProject);
         final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
 
         for (IgnoreFileType fileType : FILE_TYPES) {
@@ -314,16 +322,19 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     relativePath = StringUtil.trimStart(file.getPath(), workingDirectory.getPath());
                 } else {
                     final Repository repository = vcsRepositoryManager.getRepositoryForFile(file);
-                    if (repository != null && !Utils.isUnder(entryFile, repository.getRoot())
-                            && !outerFiles.contains(entryFile)) {
-                        continue;
+                    if (repository != null && !Utils.isUnder(entryFile, repository.getRoot())) {
+                        if (!cachedOuterFiles.containsKey(fileType)) {
+                            cachedOuterFiles.put(fileType, fileType.getIgnoreLanguage().getOuterFiles(myProject));
+                        }
+                        if (!cachedOuterFiles.get(fileType).contains(entryFile)) {
+                            continue;
+                        }
                     }
 
                     String parentPath = entryFile.getParent().getPath();
-                    if (!StringUtil.startsWith(file.getPath(), parentPath)) {
-                        if (!ExternalIndexableSetContributor.getAdditionalFiles(myProject).contains(entryFile)) {
-                            continue;
-                        }
+                    if (!StringUtil.startsWith(file.getPath(), parentPath) &&
+                            !ExternalIndexableSetContributor.getAdditionalFiles(myProject).contains(entryFile)) {
+                        continue;
                     }
                     relativePath = StringUtil.trimStart(file.getPath(), parentPath);
                 }
