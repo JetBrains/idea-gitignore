@@ -25,9 +25,11 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.util.containers.ContainerUtil;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,6 +41,9 @@ import java.util.regex.Pattern;
  * @since 1.3.1
  */
 public class MatcherUtil {
+    /** Stores calculated matching results. */
+    private static final HashMap<Integer, Boolean> CACHE = ContainerUtil.newHashMap();
+
     /** Private constructor to prevent creating {@link Icons} instance. */
     private MatcherUtil() {
     }
@@ -56,16 +61,23 @@ public class MatcherUtil {
             return false;
         }
 
-        String[] parts = getParts(matcher);
-        if (parts.length > 0 && !matchAllParts(parts, path)) {
-            return false;
+        int hashCode = new HashCodeBuilder().append(matcher.pattern()).append(path).toHashCode();
+
+        if (!CACHE.containsKey(hashCode)) {
+            final String[] parts = getParts(matcher);
+            boolean result = false;
+
+            if (parts.length == 0 || matchAllParts(parts, path)) {
+                try {
+                    result = matcher.reset(path).find();
+                } catch (StringIndexOutOfBoundsException ignored) {
+                }
+            }
+
+            CACHE.put(hashCode, result);
         }
 
-        try {
-            return matcher.reset(path).find();
-        } catch (StringIndexOutOfBoundsException e) {
-            return false;
-        }
+        return CACHE.get(hashCode);
     }
 
     /**
