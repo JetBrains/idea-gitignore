@@ -238,6 +238,8 @@
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Perforce"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="StyleLint"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Stylint"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Swagger Codegen"
