@@ -219,7 +219,7 @@ public class IgnoreLanguage extends Language {
      * @return language is enabled
      */
     public final boolean isEnabled() {
-        TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data =
+        final TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data =
                 IgnoreSettings.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {

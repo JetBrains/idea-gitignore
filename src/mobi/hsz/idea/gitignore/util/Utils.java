@@ -227,8 +227,8 @@ public class Utils {
             return false;
         }
         for (IgnoreLanguage language : IgnoreBundle.VCS_LANGUAGES) {
-            String vcsName = language.getVcsDirectory();
-            if (language.isEnabled() && directory.getName().equals(vcsName)) {
+            final String vcsName = language.getVcsDirectory();
+            if (directory.getName().equals(vcsName) && IgnoreBundle.ENABLED_LANGUAGES.get(language.getFileType())) {
                 return true;
             }
         }

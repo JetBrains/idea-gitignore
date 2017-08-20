@@ -116,13 +116,27 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** References to the indexed {@link IgnoreEntryOccurrence}. */
     @NotNull
-    private final ConcurrentMap<IgnoreFileType, Collection<IgnoreEntryOccurrence>> cachedIgnoreFilesIndex =
-            ContainerUtil.createConcurrentWeakMap();
+    private final CachedConcurrentMap<IgnoreFileType, Collection<IgnoreEntryOccurrence>> cachedIgnoreFilesIndex =
+            CachedConcurrentMap.create(
+                    new CachedConcurrentMap.DataFetcher<IgnoreFileType, Collection<IgnoreEntryOccurrence>>() {
+                        @Override
+                        public Collection<IgnoreEntryOccurrence> fetch(@NotNull IgnoreFileType key) {
+                            return IgnoreFilesIndex.getEntries(myProject, key);
+                        }
+                    }
+            );
 
     /** References to the indexed outer files. */
     @NotNull
-    private final ConcurrentMap<IgnoreFileType, Collection<VirtualFile>> cachedOuterFiles =
-            ContainerUtil.createConcurrentWeakMap();
+    private final CachedConcurrentMap<IgnoreFileType, Collection<VirtualFile>> cachedOuterFiles =
+            CachedConcurrentMap.create(
+                    new CachedConcurrentMap.DataFetcher<IgnoreFileType, Collection<VirtualFile>>() {
+                        @Override
+                        public Collection<VirtualFile> fetch(@NotNull IgnoreFileType key) {
+                            return key.getIgnoreLanguage().getOuterFiles(myProject);
+                        }
+                    }
+            );
 
     @NotNull
     private final ExpiringMap<VirtualFile, Boolean> expiringStatusCache =
@@ -200,8 +214,9 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         private void handleEvent(@NotNull VirtualFileEvent event) {
             final FileType fileType = event.getFile().getFileType();
             if (fileType instanceof IgnoreFileType) {
-                cachedIgnoreFilesIndex.remove(fileType);
-                cachedOuterFiles.remove(fileType);
+                cachedIgnoreFilesIndex.remove((IgnoreFileType) fileType);
+                cachedOuterFiles.remove((IgnoreFileType) fileType);
+
                 if (fileType instanceof GitExcludeFileType) {
                     cachedOuterFiles.remove(GitFileType.INSTANCE);
                 }
@@ -225,6 +240,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
                 case OUTER_IGNORE_RULES:
                 case LANGUAGES:
+                    IgnoreBundle.ENABLED_LANGUAGES.clear();
                     if (isEnabled()) {
                         if (working) {
                             debouncedStatusesChanged.run();
@@ -302,13 +318,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
 
         for (IgnoreFileType fileType : FILE_TYPES) {
-            if (!fileType.getIgnoreLanguage().isEnabled()) {
+            if (!IgnoreBundle.ENABLED_LANGUAGES.get(fileType)) {
                 continue;
             }
 
-            if (!cachedIgnoreFilesIndex.containsKey(fileType)) {
-                cachedIgnoreFilesIndex.put(fileType, IgnoreFilesIndex.getEntries(myProject, fileType));
-            }
             final Collection<IgnoreEntryOccurrence> values = cachedIgnoreFilesIndex.get(fileType);
 
             valuesCount += values.size();
@@ -324,9 +337,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 } else {
                     final Repository repository = vcsRepositoryManager.getRepositoryForFile(file);
                     if (repository != null && !Utils.isUnder(entryFile, repository.getRoot())) {
-                        if (!cachedOuterFiles.containsKey(fileType)) {
-                            cachedOuterFiles.put(fileType, fileType.getIgnoreLanguage().getOuterFiles(myProject));
-                        }
                         if (!cachedOuterFiles.get(fileType).contains(entryFile)) {
                             continue;
                         }
@@ -390,9 +400,9 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     }
 
     /**
-     * Invoked when the project corresponding to this component instance is opened.<p>
-     * Note that components may be created for even unopened projects and this method can be never
-     * invoked for a particular component instance (for example for default project).
+     * Invoked when the project corresponding to this component instance is opened.<p> Note that components may be
+     * created for even unopened projects and this method can be never invoked for a particular component instance (for
+     * example for default project).
      */
     @Override
     public void projectOpened() {
@@ -402,9 +412,9 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     }
 
     /**
-     * Invoked when the project corresponding to this component instance is closed.<p>
-     * Note that components may be created for even unopened projects and this method can be never
-     * invoked for a particular component instance (for example for default project).
+     * Invoked when the project corresponding to this component instance is closed.<p> Note that components may be
+     * created for even unopened projects and this method can be never invoked for a particular component instance (for
+     * example for default project).
      */
     @Override
     public void projectClosed() {
@@ -558,8 +568,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     }
 
     /**
-     * Listener bounded with {@link RefreshTrackedIgnoredListener#TRACKED_IGNORED_REFRESH} topic to
-     * trigger tracked and ignored files list.
+     * Listener bounded with {@link RefreshTrackedIgnoredListener#TRACKED_IGNORED_REFRESH} topic to trigger tracked and
+     * ignored files list.
      */
     public interface RefreshTrackedIgnoredListener {
         /** Topic for refresh tracked and indexed files. */
@@ -578,8 +588,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     }
 
     /**
-     * Unique name of this component. If there is another component with the same name or
-     * name is null internal assertion will occur.
+     * Unique name of this component. If there is another component with the same name or name is null internal
+     * assertion will occur.
      *
      * @return the name of this component
      */

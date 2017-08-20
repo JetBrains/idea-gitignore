@@ -135,8 +135,7 @@ public class Glob {
      * @return search result
      */
     @NotNull
-    public static List<String> findAsPaths(@NotNull VirtualFile root,
-                                           @NotNull IgnoreEntry entry,
+    public static List<String> findAsPaths(@NotNull VirtualFile root, @NotNull IgnoreEntry entry,
                                            boolean includeNested) {
         final List<String> list = ContainerUtil.newArrayList();
         final List<VirtualFile> files = find(root, entry, includeNested);

@@ -29,8 +29,10 @@ import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.*;
+import mobi.hsz.idea.gitignore.util.CachedConcurrentMap;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -99,6 +101,16 @@ public class IgnoreBundle {
                     return language.isVCS();
                 }
             })
+    );
+
+    /** Contains information about enabled/disabled languages. */
+    public static final CachedConcurrentMap<IgnoreFileType, Boolean> ENABLED_LANGUAGES = CachedConcurrentMap.create(
+            new CachedConcurrentMap.DataFetcher<IgnoreFileType, Boolean>() {
+                @Override
+                public Boolean fetch(@NotNull IgnoreFileType key) {
+                    return key.getIgnoreLanguage().isEnabled();
+                }
+            }
     );
 
     /** Available syntax list. */

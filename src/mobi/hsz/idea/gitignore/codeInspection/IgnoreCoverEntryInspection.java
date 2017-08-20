@@ -120,8 +120,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
      *
      * @param file       current working file to check
      * @param manager    {@link InspectionManager} to ask for {@link ProblemDescriptor}'s from
-     * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action
-     *                   otherwise
+     * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
      * @return <code>null</code> if no problems found or not applicable at file level
      */
     @Nullable
