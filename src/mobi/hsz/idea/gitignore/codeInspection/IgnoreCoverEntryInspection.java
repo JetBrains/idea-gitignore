@@ -38,17 +38,13 @@ import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.Glob;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -142,54 +138,56 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
         final Set<String> unignored = ContainerUtil.newHashSet();
 
         final ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
-        final List<Pair<IgnoreEntry, IgnoreEntry>> entries = ContainerUtil.newArrayList();
+        final List<Pair<IgnoreEntry, IgnoreEntry>> result = ContainerUtil.newArrayList();
         final Map<IgnoreEntry, Set<String>> map = ContainerUtil.newHashMap();
 
-        file.acceptChildren(new IgnoreVisitor() {
-            @Override
-            public void visitEntry(@NotNull IgnoreEntry entry) {
-                Set<String> matched = getPathsSet(contextDirectory, entry);
-                Collection<String> intersection;
-                boolean modified;
+        final ArrayList<IgnoreEntry> entries = ContainerUtil.newArrayList(Arrays.asList(
+                ((IgnoreFile) file).findChildrenByClass(IgnoreEntry.class)
+        ));
+        final Map<IgnoreEntry, Set<String>> matchedMap = getPathsSet(contextDirectory, entries);
 
-                if (!entry.isNegated()) {
-                    ignored.addAll(matched);
-                    intersection = Utils.intersection(unignored, matched);
-                    modified = unignored.removeAll(intersection);
-                } else {
-                    unignored.addAll(matched);
-                    intersection = Utils.intersection(ignored, matched);
-                    modified = ignored.removeAll(intersection);
-                }
+        for (IgnoreEntry entry : entries) {
+            Set<String> matched = matchedMap.get(entry);
+            Collection<String> intersection;
+            boolean modified;
 
-                if (modified) {
-                    return;
-                }
-
-                for (IgnoreEntry recent : map.keySet()) {
-                    Set<String> recentValues = map.get(recent);
-                    if (recentValues.isEmpty() || matched.isEmpty()) {
-                        continue;
-                    }
-
-                    if (entry.isNegated() == recent.isNegated()) {
-                        if (recentValues.containsAll(matched)) {
-                            entries.add(Pair.create(recent, entry));
-                        } else if (matched.containsAll(recentValues)) {
-                            entries.add(Pair.create(entry, recent));
-                        }
-                    } else {
-                        if (intersection.containsAll(recentValues)) {
-                            entries.add(Pair.create(entry, recent));
-                        }
-                    }
-                }
-
-                map.put(entry, matched);
+            if (!entry.isNegated()) {
+                ignored.addAll(matched);
+                intersection = Utils.intersection(unignored, matched);
+                modified = unignored.removeAll(intersection);
+            } else {
+                unignored.addAll(matched);
+                intersection = Utils.intersection(ignored, matched);
+                modified = ignored.removeAll(intersection);
             }
-        });
 
-        for (Pair<IgnoreEntry, IgnoreEntry> pair : entries) {
+            if (modified) {
+                continue;
+            }
+
+            for (IgnoreEntry recent : map.keySet()) {
+                Set<String> recentValues = map.get(recent);
+                if (recentValues.isEmpty() || matched.isEmpty()) {
+                    continue;
+                }
+
+                if (entry.isNegated() == recent.isNegated()) {
+                    if (recentValues.containsAll(matched)) {
+                        result.add(Pair.create(recent, entry));
+                    } else if (matched.containsAll(recentValues)) {
+                        result.add(Pair.create(entry, recent));
+                    }
+                } else {
+                    if (intersection.containsAll(recentValues)) {
+                        result.add(Pair.create(entry, recent));
+                    }
+                }
+            }
+
+            map.put(entry, matched);
+        }
+
+        for (Pair<IgnoreEntry, IgnoreEntry> pair : result) {
             problemsHolder.registerProblem(pair.second, message(pair.first, virtualFile, isOnTheFly),
                     new IgnoreRemoveEntryFix(pair.second));
         }
@@ -198,20 +196,35 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
     }
 
     /**
-     * Returns the paths list for the given {@link IgnoreEntry} in {@link VirtualFile} context.
+     * Returns the paths list for the given {@link IgnoreEntry} array in {@link VirtualFile} context.
      * Stores fetched data in {@link #cacheMap} to limit the queries to the files tree.
      *
      * @param contextDirectory current context
-     * @param entry            to check
+     * @param entries          to check
      * @return paths list
      */
     @NotNull
-    private Set<String> getPathsSet(@NotNull VirtualFile contextDirectory, @NotNull IgnoreEntry entry) {
-        final String key = contextDirectory.getPath() + Constants.DOLLAR + entry.getText();
-        if (!cacheMap.containsKey(key)) {
-            cacheMap.put(key, ContainerUtil.newHashSet(Glob.findAsPaths(contextDirectory, entry, true)));
+    private Map<IgnoreEntry, Set<String>> getPathsSet(@NotNull VirtualFile contextDirectory,
+                                                      @NotNull ArrayList<IgnoreEntry> entries) {
+        final Map<IgnoreEntry, Set<String>> result = ContainerUtil.newHashMap();
+        final ArrayList<IgnoreEntry> notCached = ContainerUtil.newArrayList();
+
+        for (IgnoreEntry entry : entries) {
+            final String key = contextDirectory.getPath() + Constants.DOLLAR + entry.getText();
+            if (!cacheMap.containsKey(key)) {
+                notCached.add(entry);
+            }
+            result.put(entry, cacheMap.get(key));
         }
-        return cacheMap.get(key);
+
+        final Map<IgnoreEntry, Set<String>> found = Glob.findAsPaths(contextDirectory, notCached, true);
+        for (Map.Entry<IgnoreEntry, Set<String>> item : found.entrySet()) {
+            final String key = contextDirectory.getPath() + Constants.DOLLAR + item.getKey().getText();
+            cacheMap.put(key, item.getValue());
+            result.put(item.getKey(), item.getValue());
+        }
+
+        return result;
     }
 
     /**

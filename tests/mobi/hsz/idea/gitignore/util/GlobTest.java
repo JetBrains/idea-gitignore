@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class GlobTest extends Common<Glob> {
@@ -26,7 +28,6 @@ public class GlobTest extends Common<Glob> {
 
         final VirtualFile rootFile = getFixtureRootFile();
         final List<IgnoreEntry> children = getFixtureChildrenEntries();
-        List<VirtualFile> result;
 
         myFixture.addFileToProject("bar.txt", "bar content");
         myFixture.addFileToProject("buz.txt", "buz content");
@@ -38,56 +39,59 @@ public class GlobTest extends Common<Glob> {
         assertNotNull(dir);
 
         /** {@link Glob#find(VirtualFile, IgnoreEntry)} test */
+        Map<IgnoreEntry, List<VirtualFile>> result = Glob.find(rootFile, children, false);
+        List<VirtualFile> item;
+
         // foo.txt
-        result = Glob.find(rootFile, children.get(0));
+        item = result.get(children.get(0));
         assertNotNull(result);
-        assertEmpty(result);
+        assertEmpty(item);
 
         // bar.txt
-        result = Glob.find(rootFile, children.get(1));
+        item = result.get(children.get(1));
         assertNotNull(result);
-        assertNotEmpty(result);
-        assertEquals(result.size(), 1);
-        assertTrue(result.contains(rootFile.findChild("bar.txt")));
+        assertNotEmpty(item);
+        assertEquals(item.size(), 1);
+        assertTrue(item.contains(rootFile.findChild("bar.txt")));
 
         // buz.txt
-        result = Glob.find(rootFile, children.get(2));
+        item = result.get(children.get(2));
         assertNotNull(result);
-        assertNotEmpty(result);
-        assertEquals(result.size(), 2);
-        assertTrue(result.contains(rootFile.findChild("buz.txt")));
-        assertTrue(result.contains(dir.findChild("buz.txt")));
+        assertNotEmpty(item);
+        assertEquals(item.size(), 2);
+        assertTrue(item.contains(rootFile.findChild("buz.txt")));
+        assertTrue(item.contains(dir.findChild("buz.txt")));
 
         // ignore VCS directory
-        result = Glob.find(rootFile, children.get(3));
+        item = result.get(children.get(3));
         assertNotNull(result);
-        assertNotEmpty(result);
-        assertEquals(result.size(), 1);
-        assertTrue(result.contains(rootFile.findChild("vcsdir")));
+        assertNotEmpty(item);
+        assertEquals(item.size(), 1);
+        assertTrue(item.contains(rootFile.findChild("vcsdir")));
 
         // dir
-        result = Glob.find(rootFile, children.get(4));
+        item = result.get(children.get(4));
         assertNotNull(result);
-        assertNotEmpty(result);
-        assertEquals(result.size(), 1);
-        assertTrue(result.contains(rootFile.findChild("dir")));
+        assertNotEmpty(item);
+        assertEquals(item.size(), 1);
+        assertTrue(item.contains(rootFile.findChild("dir")));
 
         /** {@link Glob#find(VirtualFile, IgnoreEntry, boolean)} test */
         // dir not includeNested
-        result = Glob.find(rootFile, children.get(4), false);
         assertNotNull(result);
-        assertNotEmpty(result);
-        assertEquals(result.size(), 1);
-        assertTrue(result.contains(rootFile.findChild("dir")));
+        assertNotEmpty(item);
+        assertEquals(item.size(), 1);
+        assertTrue(item.contains(rootFile.findChild("dir")));
 
         // dir includeNested
-        result = Glob.find(rootFile, children.get(4), true);
+        result = Glob.find(rootFile, children, true);
+        item = result.get(children.get(4));
         assertNotNull(result);
-        assertNotEmpty(result);
-        assertEquals(result.size(), 3);
-        assertTrue(result.contains(rootFile.findChild("dir")));
-        assertTrue(result.contains(dir.findChild("buz.txt")));
-        assertTrue(result.contains(dir.findChild("biz.txt")));
+        assertNotEmpty(item);
+        assertEquals(item.size(), 3);
+        assertTrue(item.contains(rootFile.findChild("dir")));
+        assertTrue(item.contains(dir.findChild("buz.txt")));
+        assertTrue(item.contains(dir.findChild("biz.txt")));
     }
 
     @Test
@@ -97,7 +101,6 @@ public class GlobTest extends Common<Glob> {
 
         final VirtualFile rootFile = getFixtureRootFile();
         final List<IgnoreEntry> children = getFixtureChildrenEntries();
-        List<String> result;
 
 
         myFixture.addFileToProject("bar.txt", "bar content");
@@ -110,25 +113,28 @@ public class GlobTest extends Common<Glob> {
         assertNotNull(dir);
 
         /** {@link Glob#findAsPaths(VirtualFile, IgnoreEntry)} test */
+        Map<IgnoreEntry, Set<String>> result = Glob.findAsPaths(rootFile, children, false);
+        Set<String> item;
+
         // foo.txt
-        result = Glob.findAsPaths(rootFile, children.get(0));
+        item = result.get(children.get(0));
         assertNotNull(result);
-        assertEmpty(result);
+        assertEmpty(item);
 
         // bar.txt
-        result = Glob.findAsPaths(rootFile, children.get(1));
+        item = result.get(children.get(1));
         assertNotNull(result);
-        assertNotEmpty(result);
-        assertEquals(result.size(), 1);
-        assertTrue(result.contains("bar.txt"));
+        assertNotEmpty(item);
+        assertEquals(item.size(), 1);
+        assertTrue(item.contains("bar.txt"));
 
         // buz.txt
-        result = Glob.findAsPaths(rootFile, children.get(2));
+        item = result.get(children.get(2));
         assertNotNull(result);
-        assertNotEmpty(result);
-        assertEquals(result.size(), 2);
-        assertTrue(result.contains("buz.txt"));
-        assertTrue(result.contains("dir/buz.txt"));
+        assertNotEmpty(item);
+        assertEquals(item.size(), 2);
+        assertTrue(item.contains("buz.txt"));
+        assertTrue(item.contains("dir/buz.txt"));
     }
 
     @Test

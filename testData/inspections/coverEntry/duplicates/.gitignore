@@ -3,6 +3,6 @@ subdir1/foo.txt
 
 subdir2/
 <warning descr="'subdir2/' is covered by 'subdir2/'">subdir2/</warning>
-      
+
 subdir3/fo*
 <warning descr="'subdir3/fo*' is covered by 'subdir3/fo*'">subdir3/fo*</warning>

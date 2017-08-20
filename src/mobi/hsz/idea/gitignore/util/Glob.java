@@ -34,9 +34,8 @@ import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.WeakHashMap;
+import java.util.*;
+import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -66,8 +65,8 @@ public class Glob {
      * @return search result
      */
     @NotNull
-    public static List<VirtualFile> find(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry) {
-        return find(root, entry, false);
+    public static List<VirtualFile> findOne(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry) {
+        return find(root, ContainerUtil.newArrayList(entry), false).get(entry);
     }
 
     /**
@@ -79,70 +78,93 @@ public class Glob {
      * @return search result
      */
     @NotNull
-    public static List<VirtualFile> find(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry,
-                                         final boolean includeNested) {
-        final Pattern pattern = createPattern(entry);
-        if (pattern == null) {
-            return Collections.emptyList();
-        }
-
-        final List<VirtualFile> files = ContainerUtil.newArrayList();
-        final Matcher matcher = pattern.matcher("");
-
-        VirtualFileVisitor<Matcher> visitor = new VirtualFileVisitor<Matcher>(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
-            @Override
-            public boolean visitFile(@NotNull VirtualFile file) {
-                boolean matches = false;
-                String path = Utils.getRelativePath(root, file);
-
-                if (path == null || Utils.isVcsDirectory(file)) {
-                    return false;
-                }
-
-                if (getCurrentValue() == null || MatcherUtil.match(getCurrentValue(), path)) {
-                    matches = true;
-                    files.add(file);
-                }
-
-                setValueForChildren(includeNested && matches ? null : getCurrentValue());
-                return true;
-            }
-        };
-        visitor.setValueForChildren(matcher);
-        VfsUtil.visitChildrenRecursively(root, visitor);
-
-        return files;
+    public static List<VirtualFile> findOne(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry,
+                                            final boolean includeNested) {
+        return find(root, ContainerUtil.newArrayList(entry), includeNested).get(entry);
     }
 
     /**
-     * Finds for {@link VirtualFile} paths list using glob rule in given root directory.
+     * Finds for {@link VirtualFile} list using glob rule in given root directory.
      *
-     * @param root  root directory
-     * @param entry ignore entry
+     * @param root          root directory
+     * @param entries       ignore entries
+     * @param includeNested attach children to the search result
      * @return search result
      */
     @NotNull
-    public static List<String> findAsPaths(@NotNull VirtualFile root, @NotNull IgnoreEntry entry) {
-        return findAsPaths(root, entry, false);
+    public static Map<IgnoreEntry, List<VirtualFile>> find(@NotNull final VirtualFile root,
+                                                           @NotNull List<IgnoreEntry> entries,
+                                                           final boolean includeNested) {
+        final ConcurrentMap<IgnoreEntry, List<VirtualFile>> result = ContainerUtil.newConcurrentMap();
+        final HashMap<IgnoreEntry, Matcher> map = ContainerUtil.newHashMap();
+        for (IgnoreEntry entry : entries) {
+            result.put(entry, ContainerUtil.<VirtualFile>newArrayList());
+
+            final Pattern pattern = createPattern(entry);
+            if (pattern == null) {
+                continue;
+            }
+            map.put(entry, pattern.matcher(""));
+        }
+
+        VirtualFileVisitor<HashMap<IgnoreEntry, Matcher>> visitor =
+                new VirtualFileVisitor<HashMap<IgnoreEntry, Matcher>>(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
+                    @Override
+                    public boolean visitFile(@NotNull VirtualFile file) {
+                        final HashMap<IgnoreEntry, Matcher> current = ContainerUtil.newHashMap(getCurrentValue());
+                        if (current.isEmpty()) {
+                            return false;
+                        }
+
+                        final String path = Utils.getRelativePath(root, file);
+                        if (path == null || Utils.isVcsDirectory(file)) {
+                            return false;
+                        }
+
+                        for (Map.Entry<IgnoreEntry, Matcher> item : current.entrySet()) {
+                            boolean matches = false;
+                            if (item.getValue() == null || MatcherUtil.match(item.getValue(), path)) {
+                                matches = true;
+                                result.get(item.getKey()).add(file);
+                            }
+                            if (includeNested && matches) {
+                                current.put(item.getKey(), null);
+                            }
+                        }
+
+                        setValueForChildren(current);
+                        return true;
+                    }
+                };
+        visitor.setValueForChildren(map);
+        VfsUtil.visitChildrenRecursively(root, visitor);
+
+        return result;
     }
 
     /**
      * Finds for {@link VirtualFile} paths list using glob rule in given root directory.
      *
      * @param root          root directory
-     * @param entry         ignore entry
+     * @param entries       ignore entry
      * @param includeNested attach children to the search result
      * @return search result
      */
     @NotNull
-    public static List<String> findAsPaths(@NotNull VirtualFile root, @NotNull IgnoreEntry entry,
-                                           boolean includeNested) {
-        final List<String> list = ContainerUtil.newArrayList();
-        final List<VirtualFile> files = find(root, entry, includeNested);
-        for (VirtualFile file : files) {
-            list.add(Utils.getRelativePath(root, file));
+    public static Map<IgnoreEntry, Set<String>> findAsPaths(@NotNull VirtualFile root,
+                                                            @NotNull List<IgnoreEntry> entries, boolean includeNested) {
+        final Map<IgnoreEntry, Set<String>> result = ContainerUtil.newHashMap();
+
+        final Map<IgnoreEntry, List<VirtualFile>> files = find(root, entries, includeNested);
+        for (Map.Entry<IgnoreEntry, List<VirtualFile>> item : files.entrySet()) {
+            final Set<String> set = ContainerUtil.newHashSet();
+            for (VirtualFile file : item.getValue()) {
+                set.add(Utils.getRelativePath(root, file));
+            }
+            result.put(item.getKey(), set);
         }
-        return list;
+
+        return result;
     }
 
     /**

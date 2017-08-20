@@ -68,7 +68,7 @@ public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
             if (parent == null || projectDir == null || !Utils.isUnder(parent, projectDir)) {
                 return null;
             }
-            List<VirtualFile> files = Glob.find(parent, entry);
+            List<VirtualFile> files = Glob.findOne(parent, entry);
             for (VirtualFile file : files) {
                 if (!file.isDirectory()) {
                     return null;
