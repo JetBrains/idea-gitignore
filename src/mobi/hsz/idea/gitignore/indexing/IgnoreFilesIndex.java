@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.indexing;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -45,7 +46,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -221,11 +225,14 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     @NotNull
     public static List<IgnoreEntryOccurrence> getEntries(@NotNull Project project, @NotNull IgnoreFileType fileType) {
         try {
-            final GlobalSearchScope scope = IgnoreSearchScope.get(project);
-            return FileBasedIndex.getInstance().getValues(IgnoreFilesIndex.KEY, new IgnoreFileTypeKey(fileType), scope);
-        } catch (RuntimeException e) {
-            return ContainerUtil.emptyList();
+            if (ApplicationManager.getApplication().isReadAccessAllowed()) {
+                final GlobalSearchScope scope = IgnoreSearchScope.get(project);
+                return FileBasedIndex.getInstance()
+                        .getValues(IgnoreFilesIndex.KEY, new IgnoreFileTypeKey(fileType), scope);
+            }
+        } catch (RuntimeException ignored) {
         }
+        return ContainerUtil.emptyList();
     }
 
     /**
