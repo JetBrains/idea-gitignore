@@ -92,7 +92,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     }
 
     /** Listener for ignore editor manager. */
-    private class IgnoreEditorManagerListener extends FileEditorManagerAdapter {
+    private class IgnoreEditorManagerListener implements FileEditorManagerListener {
         /** Current project. */
         private final Project project;
 
@@ -122,7 +122,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
             DumbService.getInstance(project).runWhenSmart(new Runnable() {
                 @Override
                 public void run() {
-                    final List<VirtualFile> outerFiles = language.getOuterFiles(myProject);
+                    final List<VirtualFile> outerFiles = ContainerUtil.newArrayList(language.getOuterFiles(myProject));
                     if (language instanceof GitLanguage) {
                         ContainerUtil.addAllNotNull(outerFiles, GitExcludeLanguage.INSTANCE.getOuterFiles(myProject));
                     }
