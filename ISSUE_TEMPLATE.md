@@ -3,7 +3,7 @@
 <!-- Put an X between the brackets on this line if you have done all of the following: -->
 
 * [ ] Plugin is in the latest version
-* [ ] Issue was not reported yet in [Issues](https://github.com/hsz/idea-gitignore/issues?utf8=%E2%9C%93&q=is%3Aissue%20) section
+* [ ] Issue was not reported yet
 * [ ] Stack trace (if provided) contains `mobi.hsz.idea.gitignore` package name
 
 
