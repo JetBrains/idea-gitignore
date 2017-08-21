@@ -1,8 +1,8 @@
 # Change Log
 
-## [v2.1.0](https://github.com/hsz/idea-gitignore/tree/v2.1.0) (2017-08-?)
+## [v2.1.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.1) (2017-08-21)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0-RC.1)
 
 **Implemented enhancements:**
 
@@ -10,7 +10,11 @@
 
 **Fixed bugs:**
 
+- Performance improvements [\##415](https://github.com/hsz/idea-gitignore/issues/#415)
 - ConcurrentModificationException in THashIterator [\##413](https://github.com/hsz/idea-gitignore/issues/#413)
+- Read access is allowed from event dispatch thread or inside read-action only [\##419](https://github.com/hsz/idea-gitignore/issues/#419)
+- UnsupportedOperationException in IgnoreEditorManagerListener [\##399](https://github.com/hsz/idea-gitignore/issues/#399)
+- Missing StyleLint parserDefinition [\##394](https://github.com/hsz/idea-gitignore/issues/#394)
 
 ## [v2.0.4](https://github.com/hsz/idea-gitignore/tree/v2.0.4) (2017-07-31)
 
