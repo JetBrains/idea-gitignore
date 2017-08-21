@@ -189,7 +189,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     /**
      * Obtains if given {@link VirtualFile} is accepted by indexer.
      *
-     * @param file to chekc
+     * @param file to check
      * @return file is accepted
      */
     @Override
