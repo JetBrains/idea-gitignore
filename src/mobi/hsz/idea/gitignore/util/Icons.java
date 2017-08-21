@@ -104,6 +104,9 @@ public class Icons {
     /** TeamFoundation icon. */
     public static final Icon TF = IconLoader.getIcon("/icons/icon_tf.png");
 
+    /** Up icon. */
+    public static final Icon UP = IconLoader.getIcon("/icons/icon_up.png");
+
     /** Private constructor to prevent creating {@link Icons} instance. */
     private Icons() {
     }

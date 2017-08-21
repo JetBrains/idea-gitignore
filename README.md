@@ -35,6 +35,7 @@ Introduction
 - `.stylintignore` (Stylint)
 - `.swagger-codegen-ignore` (Swagger Codegen)
 - `.helmignore` (Kubernetes Helm)
+- `.upignore` (Up)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -123,6 +124,13 @@ Usage
 Changelog
 ---------
 
+## Unreleased
+
+**Implemented enhancements:**
+
+- Up (.upignore) support [\#445](https://github.com/hsz/idea-gitignore/issues/445)
+
+
 ## [v2.1.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.1) (2017-08-21)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0-RC.1)
@@ -131,6 +139,7 @@ Changelog
 
 - **Migration to the native IDE indexing**
 - EAP repository channel
+- Up (.upignore) support [\#445](https://github.com/hsz/idea-gitignore/issues/445)
 
 **Fixed bugs:**
 

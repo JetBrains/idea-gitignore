@@ -90,7 +90,8 @@ public class IgnoreBundle {
             StyleLintLanguage.INSTANCE,
             StylintLanguage.INSTANCE,
             SwaggerCodegenLanguage.INSTANCE,
-            TFLanguage.INSTANCE
+            TFLanguage.INSTANCE,
+            UpLanguage.INSTANCE
     ));
 
     /** Available IgnoreFileType instances filtered with {@link IgnoreLanguage#isVCS()} condition. */

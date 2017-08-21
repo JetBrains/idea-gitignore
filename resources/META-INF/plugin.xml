@@ -38,7 +38,8 @@
         .stylelintignore (StyleLint),
         .stylintignore (Stylint),
         .swagger-codegen-ignore (Swagger Codegen),
-        .helmignore (Kubernetes Helm)
+        .helmignore (Kubernetes Helm),
+        .upignore (Up)
       </i>files in your project.
       <br/>
       <br/>
@@ -251,6 +252,8 @@
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Team Foundation"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Up"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
 
 
         <!-- Common -->
@@ -388,7 +391,6 @@
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Mercurial -->
 
-
         <!-- Monotone -->
         <codeInsight.lineMarkerProvider language="Monotone"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
@@ -447,23 +449,33 @@
 
         <!-- Swagger Codegen -->
         <codeInsight.lineMarkerProvider language="Swagger Codegen"
-            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Swagger Codegen"
-            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Swagger Codegen" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory key="Swagger Codegen"
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Swagger Codegen -->
 
         <!-- Kubernetes Helm -->
         <codeInsight.lineMarkerProvider language="Kubernetes Helm"
-            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Kubernetes Helm"
-            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Kubernetes Helm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory key="Kubernetes Helm"
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Kubernetes Helm -->
+
+        <!-- Up -->
+        <codeInsight.lineMarkerProvider language="Up"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Up"
+                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Up" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory key="Up"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Up -->
     </extensions>
 
     <application-components>

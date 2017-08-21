@@ -1,5 +1,13 @@
 # Change Log
 
+
+## Unreleased
+
+**Implemented enhancements:**
+
+- Up (.upignore) support [\#445](https://github.com/hsz/idea-gitignore/issues/445)
+
+
 ## [v2.1.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.1) (2017-08-21)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0-RC.1)
@@ -16,6 +24,7 @@
 - Read access is allowed from event dispatch thread or inside read-action only [\##419](https://github.com/hsz/idea-gitignore/issues/#419)
 - UnsupportedOperationException in IgnoreEditorManagerListener [\##399](https://github.com/hsz/idea-gitignore/issues/#399)
 - Missing StyleLint parserDefinition [\##394](https://github.com/hsz/idea-gitignore/issues/#394)
+
 
 ## [v2.0.4](https://github.com/hsz/idea-gitignore/tree/v2.0.4) (2017-07-31)
 
@@ -45,6 +54,7 @@
 - Wrap `git rm` command with quotes [\##339](https://github.com/hsz/idea-gitignore/issues/#339)
 - Argument for @NotNull parameter 'fragment' must not be null [\##345](https://github.com/hsz/idea-gitignore/issues/#345)
 
+
 ## [v1.7.6](https://github.com/hsz/idea-gitignore/tree/v1.7.6) (2017-02-23)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.7.5...v1.7.6)
@@ -58,6 +68,7 @@
 
 - *NullPointerException on PhpStorm startup* [\#315](https://github.com/hsz/idea-gitignore/issues/315)
 - NoSuchMethodError: ContainerUtil.createConcurrentList() [\#320](https://github.com/hsz/idea-gitignore/issues/320)
+
 
 ## [v1.7.5](https://github.com/hsz/idea-gitignore/tree/v1.7.5) (2017-02-14)
 
@@ -87,6 +98,7 @@
 - Properly coloring of subdirectories [\#255](https://github.com/hsz/idea-gitignore/issues/255)
 - Setting "Enable ignoring" does not really work [\#298](https://github.com/hsz/idea-gitignore/issues/238)
 
+
 ## [v1.6](https://github.com/hsz/idea-gitignore/tree/v1.6) (2016-11-23)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.5...v1.6)
@@ -107,6 +119,7 @@
 - NoSuchMethodError: com.intellij.util.containers.ContainerUtil.getFirstItem [\#263](https://github.com/hsz/idea-gitignore/issues/263)
 - CacheMap.getParentStatus must not return null [\#242](https://github.com/hsz/idea-gitignore/issues/242)
 
+
 ## [v1.5](https://github.com/hsz/idea-gitignore/tree/v1.5) (2016-06-13)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.4.1...v1.5)
@@ -121,6 +134,7 @@
 
 - NoSuchMethodError on ContainerUtil.notNullize [\#232](https://github.com/hsz/idea-gitignore/issues/232)
 - Refactoring of the external executable process [\#233](https://github.com/hsz/idea-gitignore/issues/233)
+
 
 ## [v1.4.1](https://github.com/hsz/idea-gitignore/tree/v1.4.1) (2016-05-24)
 
@@ -145,6 +159,7 @@
 - "Entry never used" invalid [\#213](https://github.com/hsz/idea-gitignore/issues/213)
 - NoSuchMethodError exception [\#211](https://github.com/hsz/idea-gitignore/issues/211)
 - Double star pattern /\*\* doesn't gray out files in subdirectories [\#165](https://github.com/hsz/idea-gitignore/issues/165)
+
 
 ## [v1.3.3](https://github.com/hsz/idea-gitignore/tree/v1.3.3) (2016-04-04)
 
@@ -171,6 +186,7 @@
 - IgnoreSettings settings must produce stable state [\#162](https://github.com/hsz/idea-gitignore/issues/162)
 - Global ignore error [\#190](https://github.com/hsz/idea-gitignore/issues/190)
 - IgnoreParserUtil exception [\#211](https://github.com/hsz/idea-gitignore/issues/211)
+
 
 ## [v1.2](https://github.com/hsz/idea-gitignore/tree/v1.2) (2015-08-13)
 
@@ -200,6 +216,7 @@
 - Fix for including outer file rules
 - Performance fixes
 
+
 ## [v1.1.4](https://github.com/hsz/idea-gitignore/tree/v1.1.4) (2015-06-02)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1.2...v1.1.4)
@@ -213,6 +230,7 @@
 - Exclude ignored `.ignore` files from parsing [\#125](https://github.com/hsz/idea-gitignore/issues/125)
 - Error while opening project - messageBus not initialized [\#123](https://github.com/hsz/idea-gitignore/issues/123)
 - Access is allowed from event dispatch thread only [\#122](https://github.com/hsz/idea-gitignore/issues/122)
+
 
 ## [v1.1.2](https://github.com/hsz/idea-gitignore/tree/v1.1.2) (2015-05-11)
 
@@ -237,6 +255,7 @@
 - WS10 RC Memory Leak [\#99](https://github.com/hsz/idea-gitignore/issues/99)
 - Lags\(several seconds\) while editing .ignore [\#95](https://github.com/hsz/idea-gitignore/issues/95)
 
+
 ## [v1.1.1](https://github.com/hsz/idea-gitignore/tree/v1.1.1) (2015-04-13)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.1...v1.1.1)
@@ -246,6 +265,7 @@
 - Expensive and often read-lock blocks common IDE actions [\#94](https://github.com/hsz/idea-gitignore/issues/94)
 - Disable non-VCS languages ignoring by default
 - EmptyFileManager class cast exception fix
+
 
 ## [v1.1](https://github.com/hsz/idea-gitignore/tree/v1.1) (2015-04-12)
 
@@ -274,6 +294,7 @@
 
 - Update README.md [\#90](https://github.com/hsz/idea-gitignore/pull/90) ([mathben](https://github.com/mathben))
 
+
 ## [v1.0.2](https://github.com/hsz/idea-gitignore/tree/v1.0.2) (2015-03-04)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v1.0.1...v1.0.2)
@@ -281,6 +302,7 @@
 **Fixed bugs:**
 
 - CLion VerifyError hotfix ([\#89](https://github.com/hsz/idea-gitignore/issues/89))
+
 
 ## [v1.0.1](https://github.com/hsz/idea-gitignore/tree/v1.0.1) (2015-03-03)
 
@@ -303,6 +325,7 @@
 **Closed issues:**
 
 - Monotone version control support [\#83](https://github.com/hsz/idea-gitignore/issues/83)
+
 
 ## [v1.0](https://github.com/hsz/idea-gitignore/tree/v1.0) (2015-03-01)
 
@@ -327,6 +350,7 @@
 - Darcs support \(.boring file\) [\#76](https://github.com/hsz/idea-gitignore/issues/76)
 - Feature request: chefignore support [\#75](https://github.com/hsz/idea-gitignore/issues/75)
 
+
 ## [v0.9](https://github.com/hsz/idea-gitignore/tree/v0.9) (2015-02-19)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v0.8.1...v0.9)
@@ -339,6 +363,7 @@
 - Grouped actions for creating new file
 - Ant build file fix
 - Move "Ignore files support" settings to VCS section [\#70](https://github.com/hsz/idea-gitignore/issues/70)
+
 
 ## [v0.8.1](https://github.com/hsz/idea-gitignore/tree/v0.8.1) (2015-02-04)
 
@@ -360,6 +385,7 @@
 
 - .dockerignore support [\#58](https://github.com/hsz/idea-gitignore/issues/58)
 - .npmignore support [\#57](https://github.com/hsz/idea-gitignore/issues/57)
+
 
 ## [v0.8](https://github.com/hsz/idea-gitignore/tree/v0.8) (2014-12-22)
 
@@ -385,6 +411,7 @@
 
 - .hgignore .npmignore .docker support [\#69](https://github.com/hsz/idea-gitignore/pull/69) ([hsz](https://github.com/hsz))
 
+
 ## [v0.7](https://github.com/hsz/idea-gitignore/tree/v0.7) (2014-11-17)
 
 **Implemented enhancements:**
@@ -402,6 +429,7 @@
 
 - Set donationShown variable to an empty string to avoid JDOM error. [\#62](https://github.com/hsz/idea-gitignore/pull/62) ([danpfe](https://github.com/danpfe))
 
+
 ## [v0.6.1](https://github.com/hsz/idea-gitignore/tree/v0.6.1) (2014-11-13)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v0.6...v0.6.1)
@@ -414,6 +442,7 @@
 
 - Make suggestion to add .gitignore file optional [\#18](https://github.com/hsz/idea-gitignore/issues/18)
 - Fixed donation notification ([\#59](https://github.com/hsz/idea-gitignore/issues/59))
+
 
 ## [v0.6](https://github.com/hsz/idea-gitignore/tree/v0.6) (2014-11-12)
 
@@ -437,6 +466,7 @@
 
 - Add more than one template [\#54](https://github.com/hsz/idea-gitignore/issues/54)
 
+
 ## [v0.5.4](https://github.com/hsz/idea-gitignore/tree/v0.5.4) (2014-08-15)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v0.5.3...v0.5.4)
@@ -449,6 +479,7 @@
 - Select Destination dialog problem fixed in Android Studio ([\#36](https://github.com/hsz/idea-gitignore/issues/36))
 - Handling excluded directories in inspection ([\#47](https://github.com/hsz/idea-gitignore/issues/47))
 - Inspection warning messages clarification
+
 
 ## [v0.5.3](https://github.com/hsz/idea-gitignore/tree/v0.5.3) (2014-08-11)
 
@@ -469,6 +500,7 @@
 
 - Travis integration [\#44](https://github.com/hsz/idea-gitignore/pull/44) ([hsz](https://github.com/hsz))
 
+
 ## [v0.5.2](https://github.com/hsz/idea-gitignore/tree/v0.5.2) (2014-07-28)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v0.5.1...v0.5.2)
@@ -477,6 +509,7 @@
 
 - Fixed "Show ignored files" action ([\#38](https://github.com/hsz/idea-gitignore/issues/38))
 - Fixed few errors ([\#35](https://github.com/hsz/idea-gitignore/issues/35), [\#36](https://github.com/hsz/idea-gitignore/issues/36), [\#37](https://github.com/hsz/idea-gitignore/issues/37))
+
 
 ## [v0.5.1](https://github.com/hsz/idea-gitignore/tree/v0.5.1) (2014-07-27)
 
@@ -496,6 +529,7 @@
 - Support build.xml on Windows [\#31](https://github.com/hsz/idea-gitignore/pull/31) ([bedla](https://github.com/bedla))
 - Negation resolving fix [\#29](https://github.com/hsz/idea-gitignore/pull/29) ([zolotov](https://github.com/zolotov))
 - Resolving fix [\#28](https://github.com/hsz/idea-gitignore/pull/28) ([zolotov](https://github.com/zolotov))
+
 
 ## [v0.5](https://github.com/hsz/idea-gitignore/tree/v0.5) (2014-07-25)
 
@@ -531,6 +565,7 @@
 - Completion/resolving/rename refactoring [\#20](https://github.com/hsz/idea-gitignore/pull/20) ([zolotov](https://github.com/zolotov))
 - Glob parser, Cover entry inspection [\#19](https://github.com/hsz/idea-gitignore/pull/19) ([hsz](https://github.com/hsz))
 
+
 ## [v0.4](https://github.com/hsz/idea-gitignore/tree/v0.4) (2014-07-08)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v0.3.3...v0.4)
@@ -551,6 +586,7 @@
 - Add selected file/directory to Gitignore rules from popup menu
 - Rewritten BNF and JFlex rule
 
+
 ## [v0.3.3](https://github.com/hsz/idea-gitignore/tree/v0.3.3) (2014-07-03)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v0.3.1...v0.3.3)
@@ -570,6 +606,7 @@
 - Missing gitignore notification [\#11](https://github.com/hsz/idea-gitignore/pull/11) ([hsz](https://github.com/hsz))
 - Files/directories completion in editor [\#6](https://github.com/hsz/idea-gitignore/pull/6) ([hsz](https://github.com/hsz))
 
+
 ## [v0.3.1](https://github.com/hsz/idea-gitignore/tree/v0.3.1) (2014-06-26)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v0.3...v0.3.1)
@@ -579,24 +616,29 @@
 - Fixed problem with Java 1.6 ([\#2](https://github.com/hsz/idea-gitignore/issues/2), [\#4](https://github.com/hsz/idea-gitignore/issues/4))
 - NullPointerException after creating .gitignore file [\#5](https://github.com/hsz/idea-gitignore/issues/5)
 
+
 ## [v0.3](https://github.com/hsz/idea-gitignore/tree/v0.3) (2014-06-25)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v0.2.2...v0.3)
 
 - Content generator based on [GitHub's templates collection](https://github.com/github/gitignore)
 
+
 ## [v0.2.2](https://github.com/hsz/idea-gitignore/tree/v0.2.2) (2014-06-24)
 
 - Custom color schemes for *Default* and *Darcula* themes
+
 
 ## v0.2.1
 
 - Syntax highlight fix
 - Color Settings Page sample (<kbd>Settings</kbd> > <kbd>Editor</kbd> > <kbd>Color & Fonts</kbd> > <kbd>Gitignore</kbd>)
 
+
 ## v0.2
 
 - Syntax highlight (comment, section, header, file, directory, negation)
+
 
 ## v0.1
 
