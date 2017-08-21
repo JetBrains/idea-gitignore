@@ -228,11 +228,11 @@
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Git exclude"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Kubernetes Helm"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Jetpack"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="JSHint"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Kubernetes Helm"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Mercurial"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
@@ -259,7 +259,7 @@
         <!-- Common -->
         <psi.referenceContributor language="Ignore"
                                   implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"/>
-        <lang.syntaxHighlighterFactory key="Ignore"
+        <lang.syntaxHighlighterFactory language="Ignore"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Common -->
 
@@ -268,7 +268,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Bazaar" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Bazaar" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Bazaar"
+        <lang.syntaxHighlighterFactory language="Bazaar"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Bazaar -->
 
@@ -277,7 +277,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Chef" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Chef" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Chef"
+        <lang.syntaxHighlighterFactory language="Chef"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Chef -->
 
@@ -287,7 +287,7 @@
         <lang.braceMatcher language="CloudFoundry"
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="CloudFoundry" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="CloudFoundry"
+        <lang.syntaxHighlighterFactory language="CloudFoundry"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END CloudFoundry -->
 
@@ -296,7 +296,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Cvs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Cvs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Cvs"
+        <lang.syntaxHighlighterFactory language="Cvs"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Cvs -->
 
@@ -305,7 +305,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Darcs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Darcs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Darcs"
+        <lang.syntaxHighlighterFactory language="Darcs"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Darcs -->
 
@@ -314,7 +314,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Docker" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Docker" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Docker"
+        <lang.syntaxHighlighterFactory language="Docker"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Docker -->
 
@@ -323,7 +323,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="ESLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="ESLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="ESLint"
+        <lang.syntaxHighlighterFactory language="ESLint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END ESLint -->
 
@@ -332,7 +332,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Floobits" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Floobits" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Floobits"
+        <lang.syntaxHighlighterFactory language="Floobits"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Floobits -->
 
@@ -341,7 +341,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Fossil" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Fossil" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Fossil"
+        <lang.syntaxHighlighterFactory language="Fossil"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Fossil -->
 
@@ -350,7 +350,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Git"
+        <lang.syntaxHighlighterFactory language="Git"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git -->
 
@@ -360,7 +360,7 @@
         <lang.braceMatcher language="Git exclude"
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Git exclude" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Git exclude"
+        <lang.syntaxHighlighterFactory language="Git exclude"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git exclude -->
 
@@ -369,7 +369,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Jetpack" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Jetpack" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Jetpack"
+        <lang.syntaxHighlighterFactory language="Jetpack"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Jetpack -->
 
@@ -378,16 +378,26 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="JSHint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="JSHint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="JSHint"
+        <lang.syntaxHighlighterFactory language="JSHint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END JSHint -->
+
+        <!-- Kubernetes Helm -->
+        <codeInsight.lineMarkerProvider language="Kubernetes Helm"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Kubernetes Helm"
+                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Kubernetes Helm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="Kubernetes Helm"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Kubernetes Helm -->
 
         <!-- Mercurial -->
         <codeInsight.lineMarkerProvider language="Mercurial"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Mercurial"
+        <lang.syntaxHighlighterFactory language="Mercurial"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Mercurial -->
 
@@ -396,7 +406,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Monotone" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Monotone" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Monotone"
+        <lang.syntaxHighlighterFactory language="Monotone"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Monotone -->
 
@@ -405,7 +415,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Nodemon" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Nodemon" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Nodemon"
+        <lang.syntaxHighlighterFactory language="Nodemon"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Nodemon -->
 
@@ -414,7 +424,7 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Npm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Npm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Npm"
+        <lang.syntaxHighlighterFactory language="Npm"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Npm -->
 
@@ -423,19 +433,9 @@
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Perforce" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Perforce" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Perforce"
+        <lang.syntaxHighlighterFactory language="Perforce"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Perforce -->
-
-        <!-- Team Foundation -->
-        <codeInsight.lineMarkerProvider language="Team Foundation"
-                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher language="Team Foundation"
-                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter language="Team Foundation" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Team Foundation"
-                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
-        <!-- END Team Foundation -->
 
         <!-- Stylint -->
         <codeInsight.lineMarkerProvider language="Stylint"
@@ -443,7 +443,17 @@
         <lang.braceMatcher language="Stylint"
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Stylint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Stylint"
+        <lang.syntaxHighlighterFactory language="Stylint"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Stylint -->
+
+        <!-- StyleLint -->
+        <codeInsight.lineMarkerProvider language="StyleLint"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="StyleLint"
+                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="StyleLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="StyleLint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Stylint -->
 
@@ -453,19 +463,19 @@
         <lang.braceMatcher language="Swagger Codegen"
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Swagger Codegen" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Swagger Codegen"
+        <lang.syntaxHighlighterFactory language="Swagger Codegen"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Swagger Codegen -->
 
-        <!-- Kubernetes Helm -->
-        <codeInsight.lineMarkerProvider language="Kubernetes Helm"
+        <!-- Team Foundation -->
+        <codeInsight.lineMarkerProvider language="Team Foundation"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher language="Kubernetes Helm"
+        <lang.braceMatcher language="Team Foundation"
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter language="Kubernetes Helm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Kubernetes Helm"
+        <lang.commenter language="Team Foundation" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="Team Foundation"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
-        <!-- END Kubernetes Helm -->
+        <!-- END Team Foundation -->
 
         <!-- Up -->
         <codeInsight.lineMarkerProvider language="Up"
@@ -473,7 +483,7 @@
         <lang.braceMatcher language="Up"
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Up" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory key="Up"
+        <lang.syntaxHighlighterFactory language="Up"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Up -->
     </extensions>
