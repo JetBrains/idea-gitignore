@@ -70,6 +70,7 @@ Features
 - Close opened ignored files action
 - Custom user templates with import/export features
 
+
 Installation
 ------------
 
@@ -79,6 +80,18 @@ Installation
   - Download the [latest release][latest-release] and install it manually using <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Install plugin from disk...</kbd>
   
 Restart IDE.
+
+
+Early Access Preview repository channel
+------------
+
+If you are interested in updating your IDE with release candidate version of .ignore plugin, you can use EAP repository:
+
+1. In the left-hand pane of the <kbd>Settings</kbd> / <kbd>Preferences dialog</kbd> (<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>S</kbd>), click Plugins.
+2. Click <kbd>Browse repositories</kbd>.
+3. In the _Browse Repositories_ dialog, click <kbd>Manage repositories</kbd>.
+4. In the _Custom Plugin Repositories_ dialog, click <kbd>+</kbd> and specify the repository URL: `https://plugins.jetbrains.com/plugins/eap/7495`
+5. Click <kbd>Check Now</kbd> to make sure that the URL is correct. 
 
 
 Usage
@@ -117,6 +130,7 @@ Changelog
 **Implemented enhancements:**
 
 - **Migration to the native IDE indexing**
+- EAP repository channel
 
 **Fixed bugs:**
 

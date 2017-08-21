@@ -7,6 +7,7 @@
 **Implemented enhancements:**
 
 - **Migration to the native IDE indexing**
+- EAP repository channel
 
 **Fixed bugs:**
 

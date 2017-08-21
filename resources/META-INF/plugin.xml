@@ -82,6 +82,7 @@
 
         <ul>
             <li><b>Migration to the native IDE indexing</b></li>
+            <li>EAP repository channel</li>
         </ul>
 
         <i>Fixed bugs:</i>
