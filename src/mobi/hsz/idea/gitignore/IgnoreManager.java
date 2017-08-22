@@ -144,7 +144,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     @NotNull
     private final ExpiringMap<VirtualFile, Boolean> expiringStatusCache =
-            new ExpiringMap<VirtualFile, Boolean>(Time.SECOND * 30);
+            new ExpiringMap<VirtualFile, Boolean>(Time.SECOND);
 
     /** {@link FileStatusManager#fileStatusesChanged()} method wrapped with {@link Debounced}. */
     private final Debounced debouncedStatusesChanged = new Debounced(1000) {
@@ -326,7 +326,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         boolean ignored = false;
         boolean matched = false;
         int valuesCount = 0;
-//        final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
 
         for (IgnoreFileType fileType : FILE_TYPES) {
             if (!IgnoreBundle.ENABLED_LANGUAGES.get(fileType)) {
@@ -353,7 +352,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                         }
                     }
 
-                    String parentPath = entryFile.getParent().getPath();
+                    final String parentPath = entryFile.getParent().getPath();
                     if (!StringUtil.startsWith(file.getPath(), parentPath) &&
                             !ExternalIndexableSetContributor.getAdditionalFiles(myProject).contains(entryFile)) {
                         continue;

@@ -64,7 +64,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     public static final ID<IgnoreFileTypeKey, IgnoreEntryOccurrence> KEY = ID.create("IgnoreFilesIndex");
 
     /** Current indexer version. Has to be increased if significant changes have been done. */
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     /**
      * Returns indexer's name.

@@ -33,6 +33,7 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -98,12 +99,20 @@ public class GitLanguage extends IgnoreLanguage {
     @NotNull
     @Override
     public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
-        return ContainerUtil.filter(IgnoreFilesIndex.getFiles(project, getFileType()), new Condition<VirtualFile>() {
-            @Override
-            public boolean value(@NotNull VirtualFile virtualFile) {
-                boolean inProject = Utils.isInProject(virtualFile, project);
-                return (virtualFile.getFileType() instanceof GitExcludeFileType && inProject) || !inProject;
-            }
-        });
+        final List<VirtualFile> result = ContainerUtil.filter(
+                IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
+                new Condition<VirtualFile>() {
+                    @Override
+                    public boolean value(@NotNull VirtualFile virtualFile) {
+                        return Utils.isInProject(virtualFile, project);
+                    }
+                }
+        );
+
+        for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : getOuterFileFetchers()) {
+            ContainerUtil.addAllNotNull(result, fetcher.fetch(project));
+        }
+
+        return result;
     }
 }
