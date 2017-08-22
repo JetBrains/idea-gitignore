@@ -1,9 +1,9 @@
 # Change Log
 
 
-## [v2.1.0-RC.2](https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.2) (2017-08-22)
+## [v2.1.0](https://github.com/hsz/idea-gitignore/tree/v2.1.0) (2017-08-22)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0-RC.2)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0)
 
 **Implemented enhancements:**
 
@@ -20,6 +20,7 @@
 - Missing StyleLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/#394)
 - NoSuchMethodError VcsRepositoryManager.getInstance [\#403](https://github.com/hsz/idea-gitignore/issues/#403)
 - NoClassDefFoundError VcsRepositoryManager [\#406](https://github.com/hsz/idea-gitignore/issues/#406)
+- "Outer" ignore rules include extraneous files [\#401](https://github.com/hsz/idea-gitignore/issues/#401)
 
 
 ## [v2.0.4](https://github.com/hsz/idea-gitignore/tree/v2.0.4) (2017-07-31)
