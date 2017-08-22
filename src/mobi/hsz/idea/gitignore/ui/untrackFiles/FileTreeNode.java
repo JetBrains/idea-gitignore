@@ -24,8 +24,8 @@
 
 package mobi.hsz.idea.gitignore.ui.untrackFiles;
 
-import com.intellij.dvcs.repo.Repository;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.CheckedTreeNode;
 import org.jetbrains.annotations.NotNull;
@@ -46,20 +46,22 @@ public class FileTreeNode extends CheckedTreeNode {
     @NotNull
     private final Project project;
 
-    /** {@link Repository} of the given {@link #file}. */
+    /** {@link VcsRoot} of the given {@link #file}. */
     @Nullable
-    private final Repository repository;
+    private final VcsRoot vcsRoot;
 
     /**
      * Creates a new instance of {@link FileTreeNode}.
      *
-     * @param file current file to render
+     * @param project current project
+     * @param file    current file to render
+     * @param vcsRoot VCS root
      */
-    public FileTreeNode(@NotNull Project project, @NotNull VirtualFile file, @Nullable Repository repository) {
+    public FileTreeNode(@NotNull Project project, @NotNull VirtualFile file, @Nullable VcsRoot vcsRoot) {
         super(file);
         this.project = project;
         this.file = file;
-        this.repository = repository;
+        this.vcsRoot = vcsRoot;
     }
 
     /**
@@ -83,12 +85,12 @@ public class FileTreeNode extends CheckedTreeNode {
     }
 
     /**
-     * Returns {@link Repository} for given {@link #file}.
+     * Returns {@link VcsRoot} for given {@link #file}.
      *
      * @return repository
      */
     @Nullable
-    public Repository getRepository() {
-        return repository;
+    public VcsRoot getVcsRoot() {
+        return vcsRoot;
     }
 }

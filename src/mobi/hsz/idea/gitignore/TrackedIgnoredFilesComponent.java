@@ -24,12 +24,12 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.dvcs.repo.Repository;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.messages.MessageBusConnection;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
@@ -101,13 +101,12 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
     }
 
     /**
-     * {@link IgnoreManager.TrackedIgnoredListener} method implementation to handle incoming
-     * files.
+     * {@link IgnoreManager.TrackedIgnoredListener} method implementation to handle incoming files.
      *
      * @param files tracked and ignored files list
      */
     @Override
-    public void handleFiles(@NotNull final ConcurrentMap<VirtualFile, Repository> files) {
+    public void handleFiles(@NotNull final ConcurrentMap<VirtualFile, VcsRoot> files) {
         if (!settings.isInformTrackedIgnored() || notificationShown || myProject.getBaseDir() == null) {
             return;
         }

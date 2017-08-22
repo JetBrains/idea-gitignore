@@ -24,8 +24,6 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.dvcs.repo.Repository;
-import com.intellij.dvcs.repo.VcsRepositoryManager;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.projectView.impl.AbstractProjectViewPane;
 import com.intellij.openapi.components.AbstractProjectComponent;
@@ -39,9 +37,11 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.VcsListener;
+import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.*;
 import com.intellij.util.Function;
 import com.intellij.util.Time;
+import com.intellij.util.containers.ConcurrentWeakHashMap;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
@@ -97,6 +97,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     @NotNull
     private final FileStatusManager statusManager;
 
+    /** {@link ProjectLevelVcsManager} instance. */
+    @NotNull
+    private final ProjectLevelVcsManager projectLevelVcsManager;
+
     /** {@link RefreshTrackedIgnoredRunnable} instance. */
     @NotNull
     private final RefreshTrackedIgnoredRunnable refreshTrackedIgnoredRunnable;
@@ -107,8 +111,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** List of the files that are ignored and also tracked by Git. */
     @NotNull
-    private final ConcurrentMap<VirtualFile, Repository> confirmedIgnoredFiles =
-            ContainerUtil.createConcurrentWeakMap();
+    private final ConcurrentMap<VirtualFile, VcsRoot> confirmedIgnoredFiles =
+            new ConcurrentWeakHashMap<VirtualFile, VcsRoot>();
 
     /** List of the new files that were not covered by {@link #confirmedIgnoredFiles} yet. */
     @NotNull
@@ -174,6 +178,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** {@link IgnoreManager} working flag. */
     private boolean working;
+
+    /** List of available VCS roots for the current project. */
+    @NotNull
+    private Collection<VcsRoot> vcsRoots = ContainerUtil.newArrayList();
 
     /** {@link VirtualFileListener} instance to check if file's content was changed. */
     @NotNull
@@ -265,6 +273,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         @Override
         public void directoryMappingChanged() {
             ExternalIndexableSetContributor.invalidateCache(myProject);
+            vcsRoots.clear();
+            vcsRoots.addAll(ContainerUtil.newArrayList(projectLevelVcsManager.getAllVcsRoots()));
         }
     };
 
@@ -295,6 +305,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         this.statusesChangedScheduledFeature.setTrailing(true);
         this.refreshTrackedIgnoredFeature =
                 new InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5);
+        this.projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project);
     }
 
     /**
@@ -315,7 +326,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         boolean ignored = false;
         boolean matched = false;
         int valuesCount = 0;
-        final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
+//        final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
 
         for (IgnoreFileType fileType : FILE_TYPES) {
             if (!IgnoreBundle.ENABLED_LANGUAGES.get(fileType)) {
@@ -335,8 +346,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     }
                     relativePath = StringUtil.trimStart(file.getPath(), workingDirectory.getPath());
                 } else {
-                    final Repository repository = vcsRepositoryManager.getRepositoryForFile(file);
-                    if (repository != null && !Utils.isUnder(entryFile, repository.getRoot())) {
+                    final VirtualFile vcsRoot = projectLevelVcsManager.getVcsRootFor(file);
+                    if (vcsRoot != null && !Utils.isUnder(entryFile, vcsRoot)) {
                         if (!cachedOuterFiles.get(fileType).contains(entryFile)) {
                             continue;
                         }
@@ -371,8 +382,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         if (valuesCount > 0 && !ignored && !matched) {
             final VirtualFile directory = file.getParent();
             if (directory != null && !directory.equals(myProject.getBaseDir())) {
-                for (Repository repository : vcsRepositoryManager.getRepositories()) {
-                    if (directory.equals(repository.getRoot())) {
+                for (VcsRoot vcsRoot : vcsRoots) {
+                    if (directory.equals(vcsRoot.getPath())) {
                         return expiringStatusCache.set(file, false);
                     }
                 }
@@ -440,6 +451,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         refreshTrackedIgnoredFeature.run();
         virtualFileManager.addVirtualFileListener(virtualFileListener);
         settings.addListener(settingsListener);
+
         messageBus = myProject.getMessageBus().connect();
         messageBus.subscribe(RefreshStatusesListener.REFRESH_STATUSES, new RefreshStatusesListener() {
             @Override
@@ -498,7 +510,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      * @return tracked and ignored files map
      */
     @NotNull
-    public ConcurrentMap<VirtualFile, Repository> getConfirmedIgnoredFiles() {
+    public ConcurrentMap<VirtualFile, VcsRoot> getConfirmedIgnoredFiles() {
         return confirmedIgnoredFiles;
     }
 
@@ -526,18 +538,16 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 return;
             }
 
-            final VcsRepositoryManager vcsRepositoryManager = VcsRepositoryManager.getInstance(myProject);
-            final Collection<Repository> repositories = vcsRepositoryManager.getRepositories();
-            final ConcurrentMap<VirtualFile, Repository> result = ContainerUtil.createConcurrentWeakMap();
-            for (Repository repository : repositories) {
-                if (!(repository instanceof GitRepository)) {
+            final ConcurrentMap<VirtualFile, VcsRoot> result = new ConcurrentWeakHashMap<VirtualFile, VcsRoot>();
+            for (VcsRoot vcsRoot : vcsRoots) {
+                if (!(vcsRoot instanceof GitRepository)) {
                     continue;
                 }
-                final VirtualFile root = repository.getRoot();
-                for (String path : ExternalExec.getIgnoredFiles(repository)) {
+                final VirtualFile root = ((GitRepository) vcsRoot).getRoot();
+                for (String path : ExternalExec.getIgnoredFiles(vcsRoot)) {
                     final VirtualFile file = root.findFileByRelativePath(path);
                     if (file != null) {
-                        result.put(file, repository);
+                        result.put(file, vcsRoot);
                     }
                 }
             }
@@ -564,7 +574,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         Topic<TrackedIgnoredListener> TRACKED_IGNORED =
                 Topic.create("New tracked and indexed files detected", TrackedIgnoredListener.class);
 
-        void handleFiles(@NotNull ConcurrentMap<VirtualFile, Repository> files);
+        void handleFiles(@NotNull ConcurrentMap<VirtualFile, VcsRoot> files);
     }
 
     /**

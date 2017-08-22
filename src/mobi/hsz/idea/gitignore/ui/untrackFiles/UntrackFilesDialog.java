@@ -24,7 +24,6 @@
 
 package mobi.hsz.idea.gitignore.ui.untrackFiles;
 
-import com.intellij.dvcs.repo.Repository;
 import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.DefaultTreeExpander;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -37,6 +36,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.CheckboxTree;
 import com.intellij.ui.IdeBorderFactory;
@@ -77,7 +77,7 @@ public class UntrackFilesDialog extends DialogWrapper {
 
     /** A list of the tracked but ignored files. */
     @NotNull
-    private final ConcurrentMap<VirtualFile, Repository> files;
+    private final ConcurrentMap<VirtualFile, VcsRoot> files;
 
     /** Templates tree root node. */
     @NotNull
@@ -126,7 +126,7 @@ public class UntrackFilesDialog extends DialogWrapper {
      * @param project current project
      * @param files   files map to present
      */
-    public UntrackFilesDialog(@NotNull Project project, @NotNull ConcurrentMap<VirtualFile, Repository> files) {
+    public UntrackFilesDialog(@NotNull Project project, @NotNull ConcurrentMap<VirtualFile, VcsRoot> files) {
         super(project, false);
         this.project = project;
         this.files = files;
@@ -141,18 +141,18 @@ public class UntrackFilesDialog extends DialogWrapper {
     /**
      * Builds recursively nested {@link FileTreeNode} nodes structure.
      *
-     * @param file       current {@link VirtualFile} instance
-     * @param repository {@link Repository} of given file
+     * @param file    current {@link VirtualFile} instance
+     * @param vcsRoot {@link VcsRoot} of given file
      * @return leaf
      */
     @NotNull
-    private FileTreeNode createDirectoryNodes(@NotNull VirtualFile file, @Nullable Repository repository) {
+    private FileTreeNode createDirectoryNodes(@NotNull VirtualFile file, @Nullable VcsRoot vcsRoot) {
         final FileTreeNode node = nodes.get(file);
         if (node != null) {
             return node;
         }
 
-        final FileTreeNode newNode = new FileTreeNode(project, file, repository);
+        final FileTreeNode newNode = new FileTreeNode(project, file, vcsRoot);
         nodes.put(file, newNode);
 
         if (nodes.size() != 1) {
@@ -214,7 +214,7 @@ public class UntrackFilesDialog extends DialogWrapper {
      * @return scroll panel
      */
     private JScrollPane createTreeScrollPanel() {
-        for (Map.Entry<VirtualFile, Repository> entry : files.entrySet()) {
+        for (Map.Entry<VirtualFile, VcsRoot> entry : files.entrySet()) {
             createDirectoryNodes(entry.getKey(), entry.getValue());
         }
 
@@ -265,8 +265,8 @@ public class UntrackFilesDialog extends DialogWrapper {
     protected void doOKAction() {
         super.doOKAction();
 
-        HashMap<Repository, ArrayList<VirtualFile>> checked = getCheckedFiles();
-        for (Map.Entry<Repository, ArrayList<VirtualFile>> entry : checked.entrySet()) {
+        HashMap<VcsRoot, ArrayList<VirtualFile>> checked = getCheckedFiles();
+        for (Map.Entry<VcsRoot, ArrayList<VirtualFile>> entry : checked.entrySet()) {
             for (VirtualFile file : entry.getValue()) {
                 ExternalExec.removeFileFromTracking(file, entry.getKey());
             }
@@ -276,13 +276,13 @@ public class UntrackFilesDialog extends DialogWrapper {
     }
 
     /**
-     * Returns structured map of selected {@link VirtualFile} list sorted by {@link Repository}.
+     * Returns structured map of selected {@link VirtualFile} list sorted by {@link VcsRoot}.
      *
      * @return sorted files map
      */
     @NotNull
-    private HashMap<Repository, ArrayList<VirtualFile>> getCheckedFiles() {
-        final HashMap<Repository, ArrayList<VirtualFile>> result = new HashMap<Repository, ArrayList<VirtualFile>>();
+    private HashMap<VcsRoot, ArrayList<VirtualFile>> getCheckedFiles() {
+        final HashMap<VcsRoot, ArrayList<VirtualFile>> result = new HashMap<VcsRoot, ArrayList<VirtualFile>>();
 
         FileTreeNode leaf = (FileTreeNode) root.getFirstLeaf();
         if (leaf == null) {
@@ -294,16 +294,16 @@ public class UntrackFilesDialog extends DialogWrapper {
                 continue;
             }
 
-            final Repository repository = leaf.getRepository();
+            final VcsRoot vcsRoot = leaf.getVcsRoot();
             final VirtualFile file = leaf.getFile();
-            if (repository == null) {
+            if (vcsRoot == null) {
                 continue;
             }
 
-            ArrayList<VirtualFile> list = ContainerUtil.getOrCreate(result, repository, new ArrayList<VirtualFile>());
+            ArrayList<VirtualFile> list = ContainerUtil.getOrCreate(result, vcsRoot, new ArrayList<VirtualFile>());
             list.add(file);
 
-            result.put(repository, list);
+            result.put(vcsRoot, list);
         } while ((leaf = (FileTreeNode) leaf.getNextLeaf()) != null);
 
         return result;
@@ -318,18 +318,22 @@ public class UntrackFilesDialog extends DialogWrapper {
     private String getCommandsText() {
         final StringBuilder builder = new StringBuilder();
 
-        HashMap<Repository, ArrayList<VirtualFile>> checked = getCheckedFiles();
-        for (Map.Entry<Repository, ArrayList<VirtualFile>> entry : checked.entrySet()) {
-            VirtualFile repository = entry.getKey().getRoot();
+        HashMap<VcsRoot, ArrayList<VirtualFile>> checked = getCheckedFiles();
+        for (Map.Entry<VcsRoot, ArrayList<VirtualFile>> entry : checked.entrySet()) {
+            final VirtualFile root = entry.getKey().getPath();
+            if (root == null) {
+                continue;
+            }
+
             builder.append(IgnoreBundle.message(
                     "dialog.untrackFiles.commands.repository",
-                    repository.getCanonicalPath()
+                    root.getCanonicalPath()
             )).append("\n");
 
             for (VirtualFile file : entry.getValue()) {
                 builder.append(IgnoreBundle.message(
                         "dialog.untrackFiles.commands.command",
-                        Utils.getRelativePath(repository, file)
+                        Utils.getRelativePath(root, file)
                 )).append("\n");
             }
 

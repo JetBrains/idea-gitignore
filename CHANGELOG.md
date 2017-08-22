@@ -7,6 +7,11 @@
 
 - Up (.upignore) support [\#445](https://github.com/hsz/idea-gitignore/issues/445)
 
+**Fixed bugs:**
+
+- NoSuchMethodError VcsRepositoryManager.getInstance [\#403](https://github.com/hsz/idea-gitignore/issues/#403)
+- NoClassDefFoundError VcsRepositoryManager [\#406](https://github.com/hsz/idea-gitignore/issues/#406)
+
 
 ## [v2.1.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.1) (2017-08-21)
 
@@ -19,11 +24,11 @@
 
 **Fixed bugs:**
 
-- Performance improvements [\##415](https://github.com/hsz/idea-gitignore/issues/#415)
-- ConcurrentModificationException in THashIterator [\##413](https://github.com/hsz/idea-gitignore/issues/#413)
-- Read access is allowed from event dispatch thread or inside read-action only [\##419](https://github.com/hsz/idea-gitignore/issues/#419)
-- UnsupportedOperationException in IgnoreEditorManagerListener [\##399](https://github.com/hsz/idea-gitignore/issues/#399)
-- Missing StyleLint parserDefinition [\##394](https://github.com/hsz/idea-gitignore/issues/#394)
+- Performance improvements [\#415](https://github.com/hsz/idea-gitignore/issues/#415)
+- ConcurrentModificationException in THashIterator [\#413](https://github.com/hsz/idea-gitignore/issues/#413)
+- Read access is allowed from event dispatch thread or inside read-action only [\#419](https://github.com/hsz/idea-gitignore/issues/#419)
+- UnsupportedOperationException in IgnoreEditorManagerListener [\#399](https://github.com/hsz/idea-gitignore/issues/#399)
+- Missing StyleLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/#394)
 
 
 ## [v2.0.4](https://github.com/hsz/idea-gitignore/tree/v2.0.4) (2017-07-31)
@@ -49,10 +54,10 @@
 - Fixed "You are editing..." message display conditions [\#351](https://github.com/hsz/idea-gitignore/issues/351) [\#352](https://github.com/hsz/idea-gitignore/issues/352) [\#356](https://github.com/hsz/idea-gitignore/issues/356)
 - It's prohibited to access index during event dispatching [\#358](https://github.com/hsz/idea-gitignore/issues/358) [\#355](https://github.com/hsz/idea-gitignore/issues/355) [\#369](https://github.com/hsz/idea-gitignore/issues/369)
 - Already disposed: com.intellij.util.messages.impl.MessageBusImpl [\#360](https://github.com/hsz/idea-gitignore/issues/360)
-- NotNull error when changing directory name [\##391](https://github.com/hsz/idea-gitignore/issues/#391)
-- Fixed missing ESLint parserDefinition [\##394](https://github.com/hsz/idea-gitignore/issues/#394)
-- Wrap `git rm` command with quotes [\##339](https://github.com/hsz/idea-gitignore/issues/#339)
-- Argument for @NotNull parameter 'fragment' must not be null [\##345](https://github.com/hsz/idea-gitignore/issues/#345)
+- NotNull error when changing directory name [\#391](https://github.com/hsz/idea-gitignore/issues/#391)
+- Fixed missing ESLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/#394)
+- Wrap `git rm` command with quotes [\#339](https://github.com/hsz/idea-gitignore/issues/#339)
+- Argument for @NotNull parameter 'fragment' must not be null [\#345](https://github.com/hsz/idea-gitignore/issues/#345)
 
 
 ## [v1.7.6](https://github.com/hsz/idea-gitignore/tree/v1.7.6) (2017-02-23)

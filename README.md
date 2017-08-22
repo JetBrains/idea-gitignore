@@ -130,6 +130,11 @@ Changelog
 
 - Up (.upignore) support [\#445](https://github.com/hsz/idea-gitignore/issues/445)
 
+**Fixed bugs:**
+
+- NoSuchMethodError VcsRepositoryManager.getInstance [\#403](https://github.com/hsz/idea-gitignore/issues/#403)
+- NoClassDefFoundError VcsRepositoryManager [\#406](https://github.com/hsz/idea-gitignore/issues/#406)
+
 
 ## [v2.1.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.1) (2017-08-21)
 
@@ -143,11 +148,11 @@ Changelog
 
 **Fixed bugs:**
 
-- Performance improvements [\##415](https://github.com/hsz/idea-gitignore/issues/#415)
-- ConcurrentModificationException in THashIterator [\##413](https://github.com/hsz/idea-gitignore/issues/#413)
-- Read access is allowed from event dispatch thread or inside read-action only [\##419](https://github.com/hsz/idea-gitignore/issues/#419)
-- UnsupportedOperationException in IgnoreEditorManagerListener [\##399](https://github.com/hsz/idea-gitignore/issues/#399)
-- Missing StyleLint parserDefinition [\##394](https://github.com/hsz/idea-gitignore/issues/#394)
+- Performance improvements [\#415](https://github.com/hsz/idea-gitignore/issues/#415)
+- ConcurrentModificationException in THashIterator [\#413](https://github.com/hsz/idea-gitignore/issues/#413)
+- Read access is allowed from event dispatch thread or inside read-action only [\#419](https://github.com/hsz/idea-gitignore/issues/#419)
+- UnsupportedOperationException in IgnoreEditorManagerListener [\#399](https://github.com/hsz/idea-gitignore/issues/#399)
+- Missing StyleLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/#394)
 
 [Full Changelog History](./CHANGELOG.md)
 

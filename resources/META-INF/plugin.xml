@@ -260,6 +260,7 @@
         <psi.referenceContributor language="Ignore"
                                   implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"/>
         <lang.syntaxHighlighterFactory language="Ignore"
+                                       key="Ignore"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Common -->
 
@@ -269,6 +270,7 @@
         <lang.braceMatcher language="Bazaar" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Bazaar" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Bazaar"
+                                       key="Bazaar"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Bazaar -->
 
@@ -278,6 +280,7 @@
         <lang.braceMatcher language="Chef" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Chef" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Chef"
+                                       key="Chef"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Chef -->
 
@@ -288,6 +291,7 @@
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="CloudFoundry" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="CloudFoundry"
+                                       key="CloudFoundry"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END CloudFoundry -->
 
@@ -297,6 +301,7 @@
         <lang.braceMatcher language="Cvs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Cvs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Cvs"
+                                       key="Cvs"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Cvs -->
 
@@ -306,6 +311,7 @@
         <lang.braceMatcher language="Darcs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Darcs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Darcs"
+                                       key="Darcs"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Darcs -->
 
@@ -315,6 +321,7 @@
         <lang.braceMatcher language="Docker" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Docker" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Docker"
+                                       key="Docker"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Docker -->
 
@@ -324,6 +331,7 @@
         <lang.braceMatcher language="ESLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="ESLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="ESLint"
+                                       key="ESLint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END ESLint -->
 
@@ -333,6 +341,7 @@
         <lang.braceMatcher language="Floobits" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Floobits" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Floobits"
+                                       key="Floobits"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Floobits -->
 
@@ -342,6 +351,7 @@
         <lang.braceMatcher language="Fossil" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Fossil" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Fossil"
+                                       key="Fossil"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Fossil -->
 
@@ -351,6 +361,7 @@
         <lang.braceMatcher language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Git"
+                                       key="Git"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git -->
 
@@ -361,6 +372,7 @@
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Git exclude" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Git exclude"
+                                       key="Git exclude"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git exclude -->
 
@@ -370,6 +382,7 @@
         <lang.braceMatcher language="Jetpack" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Jetpack" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Jetpack"
+                                       key="Jetpack"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Jetpack -->
 
@@ -379,6 +392,7 @@
         <lang.braceMatcher language="JSHint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="JSHint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="JSHint"
+                                       key="JSHint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END JSHint -->
 
@@ -389,6 +403,7 @@
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Kubernetes Helm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Kubernetes Helm"
+                                       key="Kubernetes Helm"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Kubernetes Helm -->
 
@@ -398,6 +413,7 @@
         <lang.braceMatcher language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Mercurial"
+                                       key="Mercurial"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Mercurial -->
 
@@ -407,6 +423,7 @@
         <lang.braceMatcher language="Monotone" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Monotone" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Monotone"
+                                       key="Monotone"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Monotone -->
 
@@ -416,6 +433,7 @@
         <lang.braceMatcher language="Nodemon" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Nodemon" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Nodemon"
+                                       key="Nodemon"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Nodemon -->
 
@@ -425,6 +443,7 @@
         <lang.braceMatcher language="Npm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Npm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Npm"
+                                       key="Npm"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Npm -->
 
@@ -434,6 +453,7 @@
         <lang.braceMatcher language="Perforce" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Perforce" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Perforce"
+                                       key="Perforce"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Perforce -->
 
@@ -444,6 +464,7 @@
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Stylint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Stylint"
+                                       key="Stylint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Stylint -->
 
@@ -454,6 +475,7 @@
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="StyleLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="StyleLint"
+                                       key="StyleLint"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Stylint -->
 
@@ -464,6 +486,7 @@
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Swagger Codegen" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Swagger Codegen"
+                                       key="Swagger Codegen"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Swagger Codegen -->
 
@@ -474,6 +497,7 @@
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Team Foundation" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Team Foundation"
+                                       key="Team Foundation"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Team Foundation -->
 
@@ -484,6 +508,7 @@
                            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter language="Up" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory language="Up"
+                                       key="Up"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Up -->
     </extensions>

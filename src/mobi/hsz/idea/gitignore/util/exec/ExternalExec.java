@@ -24,12 +24,12 @@
 
 package mobi.hsz.idea.gitignore.util.exec;
 
-import com.intellij.dvcs.repo.Repository;
 import com.intellij.execution.process.BaseOSProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import git4idea.config.GitVcsApplicationSettings;
@@ -121,15 +121,15 @@ public class ExternalExec {
     /**
      * Returns list of ignored files for the given repository.
      *
-     * @param repository repository to check
+     * @param vcsRoot repository to check
      * @return unignored files list
      */
     @NotNull
-    public static List<String> getIgnoredFiles(@NotNull Repository repository) {
+    public static List<String> getIgnoredFiles(@NotNull VcsRoot vcsRoot) {
         ArrayList<String> result = run(
                 GitLanguage.INSTANCE,
                 GIT_IGNORED_FILES,
-                repository.getRoot(),
+                vcsRoot.getPath(),
                 new IgnoredFilesParser()
         );
         return Utils.notNullize(result);
@@ -138,13 +138,15 @@ public class ExternalExec {
     /**
      * Removes given files from the git tracking.
      *
-     * @param file       to untrack
-     * @param repository file's repository
+     * @param file    to untrack
+     * @param vcsRoot file's repository
      */
-    public static void removeFileFromTracking(@NotNull VirtualFile file, @NotNull Repository repository) {
-        final VirtualFile root = repository.getRoot();
-        final String command = GIT_REMOVE_FILE_FROM_TRACKING + " " + Utils.getRelativePath(root, file);
-        run(GitLanguage.INSTANCE, command, root);
+    public static void removeFileFromTracking(@NotNull VirtualFile file, @NotNull VcsRoot vcsRoot) {
+        final VirtualFile root = vcsRoot.getPath();
+        if (root != null) {
+            final String command = GIT_REMOVE_FILE_FROM_TRACKING + " " + Utils.getRelativePath(root, file);
+            run(GitLanguage.INSTANCE, command, root);
+        }
     }
 
     /**
