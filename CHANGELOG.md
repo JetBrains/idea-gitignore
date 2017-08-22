@@ -1,26 +1,15 @@
 # Change Log
 
 
-## Unreleased
+## [v2.1.0-RC.2](https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.2) (2017-08-22)
 
-**Implemented enhancements:**
-
-- Up (.upignore) support [\#445](https://github.com/hsz/idea-gitignore/issues/445)
-
-**Fixed bugs:**
-
-- NoSuchMethodError VcsRepositoryManager.getInstance [\#403](https://github.com/hsz/idea-gitignore/issues/#403)
-- NoClassDefFoundError VcsRepositoryManager [\#406](https://github.com/hsz/idea-gitignore/issues/#406)
-
-
-## [v2.1.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.1) (2017-08-21)
-
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0-RC.1)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0-RC.2)
 
 **Implemented enhancements:**
 
 - **Migration to the native IDE indexing**
 - EAP repository channel
+- Up (.upignore) support [\#445](https://github.com/hsz/idea-gitignore/issues/445)
 
 **Fixed bugs:**
 
@@ -29,6 +18,8 @@
 - Read access is allowed from event dispatch thread or inside read-action only [\#419](https://github.com/hsz/idea-gitignore/issues/#419)
 - UnsupportedOperationException in IgnoreEditorManagerListener [\#399](https://github.com/hsz/idea-gitignore/issues/#399)
 - Missing StyleLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/#394)
+- NoSuchMethodError VcsRepositoryManager.getInstance [\#403](https://github.com/hsz/idea-gitignore/issues/#403)
+- NoClassDefFoundError VcsRepositoryManager [\#406](https://github.com/hsz/idea-gitignore/issues/#406)
 
 
 ## [v2.0.4](https://github.com/hsz/idea-gitignore/tree/v2.0.4) (2017-07-31)

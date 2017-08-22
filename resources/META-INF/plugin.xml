@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>2.1.0-RC.1</version>
+    <version>2.1.0-RC.2</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -76,14 +76,15 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.1"><b>v2.1.0-RC.1</b></a> (2017-08-21) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0-RC.1"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.1.0-RC.2"><b>v2.1.0-RC.2</b></a> (2017-08-22) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0-RC.2"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
 
         <ul>
             <li><b>Migration to the native IDE indexing</b></li>
             <li>EAP repository channel</li>
+            <li>Up (.upignore) support (<a href="https://github.com/hsz/idea-gitignore/issues/445">445</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
@@ -94,6 +95,8 @@
             <li>Read access is allowed from event dispatch thread or inside read-action only (<a href="https://github.com/hsz/idea-gitignore/issues/419">419</a>)</li>
             <li>UnsupportedOperationException in IgnoreEditorManagerListener (<a href="https://github.com/hsz/idea-gitignore/issues/399">399</a>)</li>
             <li>Missing StyleLint parserDefinition (<a href="https://github.com/hsz/idea-gitignore/issues/394">394</a>)</li>
+            <li>NoSuchMethodError VcsRepositoryManager.getInstance (<a href="https://github.com/hsz/idea-gitignore/issues/403">403</a>)</li>
+            <li>NoClassDefFoundError VcsRepositoryManager (<a href="https://github.com/hsz/idea-gitignore/issues/406">406</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
