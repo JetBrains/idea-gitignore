@@ -291,7 +291,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         this.statusManager = FileStatusManager.getInstance(project);
         this.refreshTrackedIgnoredRunnable = new RefreshTrackedIgnoredRunnable();
         this.statusesChangedScheduledFeature =
-                new InterruptibleScheduledFuture(debouncedStatusesChanged, 5000, 15);
+                new InterruptibleScheduledFuture(debouncedStatusesChanged, 5000, 50);
         this.statusesChangedScheduledFeature.setTrailing(true);
         this.refreshTrackedIgnoredFeature =
                 new InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5);
