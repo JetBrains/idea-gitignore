@@ -1,4 +1,4 @@
-.ignore v2.1.0
+.ignore v2.1.1
 ===================
 
 [ignore.hsz.mobi][website]
@@ -124,9 +124,9 @@ Usage
 Changelog
 ---------
 
-## [v2.1.0](https://github.com/hsz/idea-gitignore/tree/v2.1.0) (2017-08-22)
+## [v2.1.1](https://github.com/hsz/idea-gitignore/tree/v2.1.1) (2017-08-23)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.0)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.1)
 
 **Implemented enhancements:**
 
