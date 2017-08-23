@@ -99,7 +99,7 @@ public class GitLanguage extends IgnoreLanguage {
     @NotNull
     @Override
     public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
-        final List<VirtualFile> result = ContainerUtil.filter(
+        final List<VirtualFile> result = ContainerUtil.newArrayList(ContainerUtil.filter(
                 IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
                 new Condition<VirtualFile>() {
                     @Override
@@ -107,7 +107,7 @@ public class GitLanguage extends IgnoreLanguage {
                         return Utils.isInProject(virtualFile, project);
                     }
                 }
-        );
+        ));
 
         for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : getOuterFileFetchers()) {
             ContainerUtil.addAllNotNull(result, fetcher.fetch(project));
