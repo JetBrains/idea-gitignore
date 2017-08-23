@@ -31,6 +31,7 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
@@ -76,6 +77,10 @@ public class IgnoreLanguage extends Language {
     /** Outer files for the specified {@link IgnoreLanguage}. */
     @NotNull
     private final OuterFileFetcher[] fetchers;
+
+    /** Outer files cache. */
+    @Nullable
+    protected List<VirtualFile> outerFiles;
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage() {
@@ -210,7 +215,13 @@ public class IgnoreLanguage extends Language {
      */
     @NotNull
     public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
-        return ContainerUtil.newArrayList();
+        if (outerFiles == null) {
+            outerFiles = ContainerUtil.newArrayList();
+            for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : getOuterFileFetchers()) {
+                ContainerUtil.addAllNotNull(outerFiles, fetcher.fetch(project));
+            }
+        }
+        return outerFiles;
     }
 
     /**

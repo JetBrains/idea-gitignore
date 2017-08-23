@@ -31,7 +31,6 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.IndexableSetContributor;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -69,11 +68,8 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
             files.addAll(valid);
         } else {
             for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-                if (!language.isOuterFileSupported()) {
-                    continue;
-                }
-                for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : language.getOuterFileFetchers()) {
-                    ContainerUtil.addAllNotNull(files, fetcher.fetch(project));
+                if (language.isOuterFileSupported()) {
+                    ContainerUtil.addAllNotNull(files, language.getOuterFiles(project));
                 }
             }
         }
