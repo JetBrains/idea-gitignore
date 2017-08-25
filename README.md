@@ -3,7 +3,7 @@
 
 [ignore.hsz.mobi][website]
 
-[![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal] [![Donate][badge-bitcoin-img]][badge-bitcoin]
+[![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal]
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)](https://plugins.jetbrains.com/plugin/7495)
 [![Downloads](http://phpstorm.espend.de/badge/7495/downloads)](https://plugins.jetbrains.com/plugin/7495)
@@ -215,5 +215,3 @@ Copyright (c) 2017 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [badge-coveralls]:        https://coveralls.io/github/hsz/idea-gitignore?branch=master
 [badge-paypal-img]:       https://img.shields.io/badge/donate-paypal-yellow.svg
 [badge-paypal]:           https://www.paypal.me/hsz
-[badge-bitcoin-img]:      https://img.shields.io/badge/donate-bitcoin-yellow.svg
-[badge-bitcoin]:          https://blockchain.info/address/1BUbqKrUBmGGSnMybzGCsJyAWJbh4CcwE1
