@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  */
 public class MatcherUtil {
     /** Stores calculated matching results. */
-    private static final HashMap<Integer, Boolean> CACHE = ContainerUtil.newHashMap();
+    private static HashMap<Integer, Boolean> cache;
 
     /** Private constructor to prevent creating {@link Icons} instance. */
     private MatcherUtil() {
@@ -61,9 +61,13 @@ public class MatcherUtil {
             return false;
         }
 
+        if (cache == null) {
+            cache = ContainerUtil.newHashMap();
+        }
+
         int hashCode = new HashCodeBuilder().append(matcher.pattern()).append(path).toHashCode();
 
-        if (!CACHE.containsKey(hashCode)) {
+        if (!cache.containsKey(hashCode)) {
             final String[] parts = getParts(matcher);
             boolean result = false;
 
@@ -74,10 +78,10 @@ public class MatcherUtil {
                 }
             }
 
-            CACHE.put(hashCode, result);
+            cache.put(hashCode, result);
         }
 
-        return CACHE.get(hashCode);
+        return cache.get(hashCode);
     }
 
     /**
