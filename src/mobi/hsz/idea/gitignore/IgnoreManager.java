@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore;
 
+import com.intellij.ProjectTopics;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.projectView.impl.AbstractProjectViewPane;
 import com.intellij.openapi.components.AbstractProjectComponent;
@@ -104,6 +105,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** {@link RefreshTrackedIgnoredRunnable} instance. */
     @NotNull
     private final RefreshTrackedIgnoredRunnable refreshTrackedIgnoredRunnable;
+
+    /** Common runnable listeners. */
+    @NotNull
+    private final CommonRunnableListeners commonRunnableListeners;
 
     /** {@link MessageBusConnection} instance. */
     @Nullable
@@ -263,25 +268,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
     };
 
-    /** {@link VcsListener} instance. */
-    @NotNull
-    private final VcsListener vcsListener = new VcsListener() {
-        @Override
-        public void directoryMappingChanged() {
-            ExternalIndexableSetContributor.invalidateCache(myProject);
-            vcsRoots.clear();
-            vcsRoots.addAll(ContainerUtil.newArrayList(projectLevelVcsManager.getAllVcsRoots()));
-        }
-    };
-
-    /** {@link DumbService.DumbModeListener} instance. */
-    private DumbService.DumbModeListener dumbModeListener = new DumbService.DumbModeListener() {
-        @Override
-        public void exitDumbMode() {
-            debouncedStatusesChanged.run();
-        }
-    };
-
     /**
      * Returns {@link IgnoreManager} service instance.
      *
@@ -307,6 +293,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         this.refreshTrackedIgnoredFeature =
                 new InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5);
         this.projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project);
+        this.commonRunnableListeners = new CommonRunnableListeners(debouncedStatusesChanged);
     }
 
     /**
@@ -451,19 +438,24 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         settings.addListener(settingsListener);
 
         messageBus = myProject.getMessageBus().connect();
-        messageBus.subscribe(RefreshStatusesListener.REFRESH_STATUSES, new RefreshStatusesListener() {
-            @Override
-            public void refresh() {
-                debouncedStatusesChanged.run();
-            }
-        });
         messageBus.subscribe(TRACKED_IGNORED_REFRESH, new RefreshTrackedIgnoredListener() {
             @Override
             public void refresh() {
             }
         });
-        messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, vcsListener);
-        messageBus.subscribe(DumbService.DUMB_MODE, dumbModeListener);
+        messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, new VcsListener() {
+            @Override
+            public void directoryMappingChanged() {
+                ExternalIndexableSetContributor.invalidateCache(myProject);
+                vcsRoots.clear();
+                vcsRoots.addAll(ContainerUtil.newArrayList(projectLevelVcsManager.getAllVcsRoots()));
+            }
+        });
+
+        messageBus.subscribe(RefreshStatusesListener.REFRESH_STATUSES, commonRunnableListeners);
+        messageBus.subscribe(DumbService.DUMB_MODE, commonRunnableListeners);
+        messageBus.subscribe(ProjectTopics.PROJECT_ROOTS, commonRunnableListeners);
+        messageBus.subscribe(ProjectTopics.MODULES, commonRunnableListeners);
 
         working = true;
     }
