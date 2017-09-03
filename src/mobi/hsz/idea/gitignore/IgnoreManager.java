@@ -168,10 +168,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
     };
 
-    /** Scheduled feature connected with {@link #debouncedStatusesChanged}. */
-    @NotNull
-    private final InterruptibleScheduledFuture statusesChangedScheduledFeature;
-
     /** Scheduled feature connected with {@link #debouncedRefreshTrackedIgnores}. */
     @NotNull
     private final InterruptibleScheduledFuture refreshTrackedIgnoredFeature;
@@ -278,6 +274,14 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
     };
 
+    /** {@link DumbService.DumbModeListener} instance. */
+    private DumbService.DumbModeListener dumbModeListener = new DumbService.DumbModeListener() {
+        @Override
+        public void exitDumbMode() {
+            debouncedStatusesChanged.run();
+        }
+    };
+
     /**
      * Returns {@link IgnoreManager} service instance.
      *
@@ -300,9 +304,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         this.settings = IgnoreSettings.getInstance();
         this.statusManager = FileStatusManager.getInstance(project);
         this.refreshTrackedIgnoredRunnable = new RefreshTrackedIgnoredRunnable();
-        this.statusesChangedScheduledFeature =
-                new InterruptibleScheduledFuture(debouncedStatusesChanged, 5000, 50);
-        this.statusesChangedScheduledFeature.setTrailing(true);
         this.refreshTrackedIgnoredFeature =
                 new InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5);
         this.projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project);
@@ -391,7 +392,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
 
         if (ignored) {
-            statusesChangedScheduledFeature.cancel();
             refreshTrackedIgnoredFeature.cancel();
         }
 
@@ -446,7 +446,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             return;
         }
 
-        statusesChangedScheduledFeature.run();
         refreshTrackedIgnoredFeature.run();
         virtualFileManager.addVirtualFileListener(virtualFileListener);
         settings.addListener(settingsListener);
@@ -455,23 +454,22 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         messageBus.subscribe(RefreshStatusesListener.REFRESH_STATUSES, new RefreshStatusesListener() {
             @Override
             public void refresh() {
-                statusesChangedScheduledFeature.run();
+                debouncedStatusesChanged.run();
             }
         });
         messageBus.subscribe(TRACKED_IGNORED_REFRESH, new RefreshTrackedIgnoredListener() {
             @Override
             public void refresh() {
-                debouncedRefreshTrackedIgnores.run(false);
             }
         });
         messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, vcsListener);
+        messageBus.subscribe(DumbService.DUMB_MODE, dumbModeListener);
 
         working = true;
     }
 
     /** Disable manager. */
     private void disable() {
-        statusesChangedScheduledFeature.cancel();
         virtualFileManager.removeVirtualFileListener(virtualFileListener);
         settings.removeListener(settingsListener);
 
