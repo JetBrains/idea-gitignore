@@ -76,20 +76,19 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
         final HashSet<VirtualFile> files = ContainerUtil.newHashSet();
 
         if (CACHE.containsKey(project)) {
-            final List<VirtualFile> valid = ContainerUtil.filter(CACHE.get(project), new Condition<VirtualFile>() {
+            files.addAll(ContainerUtil.filter(CACHE.get(project), new Condition<VirtualFile>() {
                 @Override
                 public boolean value(@NotNull VirtualFile file) {
                     return file.isValid();
                 }
-            });
-            files.addAll(valid);
+            }));
         } else {
             for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                 final IgnoreFileType fileType = language.getFileType();
                 if (language.isOuterFileSupported()) {
 
                     for (VirtualFile file : language.getOuterFiles(project)) {
-                        if (file == null) {
+                        if (file == null || !file.isValid()) {
                             continue;
                         }
                         if (!file.getFileType().equals(fileType)) {
