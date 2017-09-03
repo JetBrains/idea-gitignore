@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.openapi.util.Pair;
-import com.intellij.util.containers.WeakHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +32,7 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Wrapper for {@link WeakHashMap} that allows to expire values after given time.
+ * Wrapper for {@link ConcurrentHashMap} that allows to expire values after given time.
  *
  * @param <K> map key type
  * @param <V> map key value
