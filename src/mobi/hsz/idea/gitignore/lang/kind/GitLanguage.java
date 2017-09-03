@@ -102,7 +102,6 @@ public class GitLanguage extends IgnoreLanguage {
     public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
         final Pair<Project, IgnoreFileType> key = Pair.create(project, getFileType());
         if (!outerFiles.containsKey(key)) {
-            super.getOuterFiles(project);
             final ArrayList<VirtualFile> files = ContainerUtil.newArrayList(ContainerUtil.filter(
                     IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
                     new Condition<VirtualFile>() {
@@ -112,7 +111,7 @@ public class GitLanguage extends IgnoreLanguage {
                         }
                     }
             ));
-            ContainerUtil.addAllNotNull(outerFiles.get(key), files);
+            ContainerUtil.addAllNotNull(super.getOuterFiles(project), files);
         }
         return outerFiles.get(key);
     }
