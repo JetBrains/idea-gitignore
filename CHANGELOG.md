@@ -15,6 +15,7 @@
 - ~/.gitignore_global is not handled [\#453](https://github.com/hsz/idea-gitignore/issues/#453)
 - NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/#457)
 - 'Outer ignore rules' shows previous project's exclude files [\#460](https://github.com/hsz/idea-gitignore/issues/#460)
+- ExpiringMap causes ArrayIndexOutOfBoundsException [\#461](https://github.com/hsz/idea-gitignore/issues/#461)
 
 
 ## [v2.1.1](https://github.com/hsz/idea-gitignore/tree/v2.1.1) (2017-08-23)

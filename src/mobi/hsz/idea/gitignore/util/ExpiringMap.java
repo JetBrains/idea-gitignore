@@ -29,6 +29,9 @@ import com.intellij.util.containers.WeakHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.ref.WeakReference;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Wrapper for {@link WeakHashMap} that allows to expire values after given time.
  *
@@ -43,7 +46,8 @@ public class ExpiringMap<K, V> {
     private final int time;
 
     /** Cache map. */
-    private final WeakHashMap<K, Pair<V, Long>> map = new WeakHashMap<K, Pair<V, Long>>();
+    private final ConcurrentHashMap<WeakReference<K>, Pair<V, Long>> map =
+            new ConcurrentHashMap<WeakReference<K>, Pair<V, Long>>();
 
     /**
      * Constructor.
@@ -63,12 +67,13 @@ public class ExpiringMap<K, V> {
     @Nullable
     public V get(@NotNull K key) {
         long current = System.currentTimeMillis();
-        final Pair<V, Long> data = map.get(key);
+        final WeakReference<K> weakKey = new WeakReference<K>(key);
+        final Pair<V, Long> data = map.get(weakKey);
         if (data != null) {
             if ((data.getSecond() + time) > current) {
                 return data.getFirst();
             }
-            map.remove(key);
+            map.remove(weakKey);
         }
         return null;
     }
@@ -82,8 +87,9 @@ public class ExpiringMap<K, V> {
      */
     @NotNull
     public V set(@NotNull K key, @NotNull V value) {
+        final WeakReference<K> weakKey = new WeakReference<K>(key);
         long current = System.currentTimeMillis();
-        map.put(key, Pair.create(value, current));
+        map.put(weakKey, Pair.create(value, current));
         return value;
     }
 
