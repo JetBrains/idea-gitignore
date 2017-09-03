@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -39,6 +40,7 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -98,9 +100,10 @@ public class GitLanguage extends IgnoreLanguage {
     @NotNull
     @Override
     public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
-        if (outerFiles == null) {
+        final Pair<Project, IgnoreFileType> key = Pair.create(project, getFileType());
+        if (!outerFiles.containsKey(key)) {
             super.getOuterFiles(project);
-            ContainerUtil.addAllNotNull(outerFiles, ContainerUtil.newArrayList(ContainerUtil.filter(
+            final ArrayList<VirtualFile> files = ContainerUtil.newArrayList(ContainerUtil.filter(
                     IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
                     new Condition<VirtualFile>() {
                         @Override
@@ -108,8 +111,9 @@ public class GitLanguage extends IgnoreLanguage {
                             return Utils.isInProject(virtualFile, project);
                         }
                     }
-            )));
+            ));
+            ContainerUtil.addAllNotNull(outerFiles.get(key), files);
         }
-        return outerFiles;
+        return outerFiles.get(key);
     }
 }

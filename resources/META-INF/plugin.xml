@@ -90,6 +90,7 @@
         <ul>
             <li>~/.gitignore_global is not handled (<a href="https://github.com/hsz/idea-gitignore/issues/453">453</a>)</li>
             <li>NPE in MatcherUtil.match (<a href="https://github.com/hsz/idea-gitignore/issues/457">457</a>)</li>
+            <li>'Outer ignore rules' shows previous project's exclude files (<a href="https://github.com/hsz/idea-gitignore/issues/460">460</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

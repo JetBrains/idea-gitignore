@@ -1,4 +1,4 @@
-.ignore v2.2.0-RC1
+.ignore v2.2.0-RC2
 ===================
 
 [ignore.hsz.mobi][website]
@@ -136,7 +136,8 @@ Changelog
 **Fixed bugs:**
 
 - ~/.gitignore_global is not handled [\#453](https://github.com/hsz/idea-gitignore/issues/#453)
-- NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/#475)
+- NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/#457)
+- 'Outer ignore rules' shows previous project's exclude files [\#460](https://github.com/hsz/idea-gitignore/issues/#460)
 
 [Full Changelog History](./CHANGELOG.md)
 

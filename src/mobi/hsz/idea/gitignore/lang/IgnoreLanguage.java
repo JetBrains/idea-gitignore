@@ -26,9 +26,11 @@ package mobi.hsz.idea.gitignore.lang;
 
 import com.intellij.lang.Language;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.WeakHashMap;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
@@ -41,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -79,8 +82,9 @@ public class IgnoreLanguage extends Language {
     private final OuterFileFetcher[] fetchers;
 
     /** Outer files cache. */
-    @Nullable
-    protected List<VirtualFile> outerFiles;
+    @NotNull
+    protected WeakHashMap<Pair<Project, IgnoreFileType>, List<VirtualFile>> outerFiles =
+            new WeakHashMap<Pair<Project, IgnoreFileType>, List<VirtualFile>>(1);
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage() {
@@ -215,13 +219,15 @@ public class IgnoreLanguage extends Language {
      */
     @NotNull
     public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
-        if (outerFiles == null) {
-            outerFiles = ContainerUtil.newArrayList();
+        final Pair<Project, IgnoreFileType> key = Pair.create(project, getFileType());
+        if (!outerFiles.containsKey(key)) {
+            final ArrayList<VirtualFile> files = ContainerUtil.newArrayList();
             for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : getOuterFileFetchers()) {
-                ContainerUtil.addAllNotNull(outerFiles, fetcher.fetch(project));
+                ContainerUtil.addAllNotNull(files, fetcher.fetch(project));
             }
+            outerFiles.put(key, files);
         }
-        return outerFiles;
+        return outerFiles.get(key);
     }
 
     /**
