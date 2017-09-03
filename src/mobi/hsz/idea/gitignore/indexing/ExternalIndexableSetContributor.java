@@ -24,12 +24,17 @@
 
 package mobi.hsz.idea.gitignore.indexing;
 
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
+import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.IndexableSetContributor;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,6 +52,18 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
 
     /** Cached additional paths set. */
     private static final Map<Project, HashSet<VirtualFile>> CACHE = ContainerUtil.newConcurrentMap();
+
+    /** {@link FileTypeManager} instance. */
+    private static FileTypeManager fileTypeManager;
+
+    /** Current {@link Application}. */
+    private static Application application;
+
+    /** Constructor. */
+    public ExternalIndexableSetContributor() {
+        fileTypeManager = FileTypeManager.getInstance();
+        application = ApplicationManager.getApplication();
+    }
 
     /**
      * Returns additional files located outside of the current project that should be indexed.
@@ -68,14 +85,34 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
             files.addAll(valid);
         } else {
             for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                final IgnoreFileType fileType = language.getFileType();
                 if (language.isOuterFileSupported()) {
-                    ContainerUtil.addAllNotNull(files, language.getOuterFiles(project));
+
+                    for (VirtualFile file : language.getOuterFiles(project)) {
+                        if (file == null) {
+                            continue;
+                        }
+                        if (!file.getFileType().equals(fileType)) {
+                            associate(fileType, file);
+                        }
+
+                        files.add(file);
+                    }
                 }
             }
         }
 
         CACHE.put(project, files);
         return files;
+    }
+
+    private static void associate(@NotNull final IgnoreFileType fileType, @NotNull final VirtualFile file) {
+        application.runWriteAction(new Runnable() {
+            @Override
+            public void run() {
+                fileTypeManager.associate(fileType, new ExactFileNameMatcher(file.getName()));
+            }
+        });
     }
 
     /**
