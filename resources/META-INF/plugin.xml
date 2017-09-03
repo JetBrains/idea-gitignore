@@ -30,6 +30,7 @@
         .jshintignore (JSHint),
         .tfignore (Team Foundation),
         .p4ignore (Perforce),
+        .prettierignore (Prettier),
         .flooignore (Floobits),
         .eslintignore (ESLint),
         .cfignore (Cloud Foundry),
@@ -83,6 +84,7 @@
         <ul>
             <li><b>Migration to the native IDE indexing</b></li>
             <li>EAP repository channel</li>
+            <li>Prettier (.prettierignore) support (<a href="https://github.com/hsz/idea-gitignore/issues/466">466</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
@@ -241,6 +243,8 @@
         <lang.parserDefinition language="Npm"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="Perforce"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <lang.parserDefinition language="Prettier"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <lang.parserDefinition language="StyleLint"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
@@ -454,6 +458,16 @@
                                        key="Perforce"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Perforce -->
+
+        <!-- Prettier -->
+        <codeInsight.lineMarkerProvider language="Prettier"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Prettier" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Prettier" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="Prettier"
+                                       key="Prettier"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Prettier -->
 
         <!-- Stylint -->
         <codeInsight.lineMarkerProvider language="Stylint"

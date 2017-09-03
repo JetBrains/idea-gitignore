@@ -92,6 +92,9 @@ public class Icons {
     /** Perforce icon. */
     public static final Icon PERFORCE = IconLoader.getIcon("/icons/icon_perforce.png");
 
+    /** Prettier icon. */
+    public static final Icon PRETTIER = IconLoader.getIcon("/icons/icon_prettier.png");
+
     /** StyleLint icon. */
     public static final Icon STYLELINT = IconLoader.getIcon("/icons/icon_stylelint.png");
 

@@ -87,6 +87,7 @@ public class IgnoreBundle {
             NodemonLanguage.INSTANCE,
             NpmLanguage.INSTANCE,
             PerforceLanguage.INSTANCE,
+            PrettierLanguage.INSTANCE,
             StyleLintLanguage.INSTANCE,
             StylintLanguage.INSTANCE,
             SwaggerCodegenLanguage.INSTANCE,

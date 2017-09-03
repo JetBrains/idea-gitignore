@@ -9,6 +9,7 @@
 
 - **Migration to the native IDE indexing**
 - EAP repository channel
+- Prettier (.prettierignore) support [\#466](https://github.com/hsz/idea-gitignore/issues/466)
 
 **Fixed bugs:**
 
