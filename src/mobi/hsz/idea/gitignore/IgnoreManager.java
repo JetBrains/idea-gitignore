@@ -340,7 +340,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                         }
                     }
 
-                    final String parentPath = entryFile.getParent().getPath();
+                    final String parentPath = !Utils.isInProject(entryFile, myProject) &&
+                            myProject.getBasePath() != null ? myProject.getBasePath() : entryFile.getParent().getPath();
                     if (!StringUtil.startsWith(file.getPath(), parentPath) &&
                             !ExternalIndexableSetContributor.getAdditionalFiles(myProject).contains(entryFile)) {
                         continue;
