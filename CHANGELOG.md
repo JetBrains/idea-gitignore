@@ -1,6 +1,21 @@
 # Change Log
 
 
+## [v2.2.0](https://github.com/hsz/idea-gitignore/tree/v2.2.0) (2017-09-03)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.1.1...v2.2.0)
+
+**Implemented enhancements:**
+
+- **Migration to the native IDE indexing**
+- EAP repository channel
+
+**Fixed bugs:**
+
+- ~/.gitignore_global is not handled [\#453](https://github.com/hsz/idea-gitignore/issues/#453)
+- NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/#475)
+
+
 ## [v2.1.1](https://github.com/hsz/idea-gitignore/tree/v2.1.1) (2017-08-23)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.1)

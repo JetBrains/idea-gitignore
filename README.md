@@ -1,4 +1,4 @@
-.ignore v2.1.1
+.ignore v2.2.0-RC1
 ===================
 
 [ignore.hsz.mobi][website]
@@ -124,26 +124,19 @@ Usage
 Changelog
 ---------
 
-## [v2.1.1](https://github.com/hsz/idea-gitignore/tree/v2.1.1) (2017-08-23)
+## [v2.2.0](https://github.com/hsz/idea-gitignore/tree/v2.2.0) (2017-09-03)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.0.4...v2.1.1)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.1.1...v2.2.0)
 
 **Implemented enhancements:**
 
 - **Migration to the native IDE indexing**
 - EAP repository channel
-- Up (.upignore) support [\#445](https://github.com/hsz/idea-gitignore/issues/445)
 
 **Fixed bugs:**
 
-- Performance improvements [\#415](https://github.com/hsz/idea-gitignore/issues/#415)
-- ConcurrentModificationException in THashIterator [\#413](https://github.com/hsz/idea-gitignore/issues/#413)
-- Read access is allowed from event dispatch thread or inside read-action only [\#419](https://github.com/hsz/idea-gitignore/issues/#419)
-- UnsupportedOperationException in IgnoreEditorManagerListener [\#399](https://github.com/hsz/idea-gitignore/issues/#399)
-- Missing StyleLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/#394)
-- NoSuchMethodError VcsRepositoryManager.getInstance [\#403](https://github.com/hsz/idea-gitignore/issues/#403)
-- NoClassDefFoundError VcsRepositoryManager [\#406](https://github.com/hsz/idea-gitignore/issues/#406)
-- "Outer" ignore rules include extraneous files [\#401](https://github.com/hsz/idea-gitignore/issues/#401)
+- ~/.gitignore_global is not handled [\#453](https://github.com/hsz/idea-gitignore/issues/#453)
+- NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/#475)
 
 [Full Changelog History](./CHANGELOG.md)
 
