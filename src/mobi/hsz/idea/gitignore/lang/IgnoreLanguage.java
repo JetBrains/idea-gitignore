@@ -226,7 +226,7 @@ public class IgnoreLanguage extends Language {
             }
             outerFiles.put(key, files);
         }
-        return outerFiles.get(key);
+        return ContainerUtil.getOrElse(outerFiles, key, ContainerUtil.<VirtualFile>newHashSet());
     }
 
     /**

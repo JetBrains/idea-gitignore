@@ -113,8 +113,7 @@ public class GitLanguage extends IgnoreLanguage {
                     }
             ));
             ContainerUtil.addAllNotNull(parentFiles, files);
-            outerFiles.put(key, parentFiles);
         }
-        return outerFiles.get(key);
+        return ContainerUtil.getOrElse(outerFiles, key, ContainerUtil.<VirtualFile>newHashSet());
     }
 }
