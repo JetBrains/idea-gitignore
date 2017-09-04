@@ -1,4 +1,4 @@
-.ignore v2.2.0-RC4
+.ignore v2.2.0-RC5
 ===================
 
 [ignore.hsz.mobi][website]

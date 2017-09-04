@@ -113,6 +113,7 @@ public class GitLanguage extends IgnoreLanguage {
                     }
             ));
             ContainerUtil.addAllNotNull(parentFiles, files);
+            outerFiles.put(key, parentFiles);
         }
         return outerFiles.get(key);
     }
