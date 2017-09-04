@@ -38,7 +38,6 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -153,7 +152,7 @@ public class IgnoreFile extends PsiFileImpl {
      * @return is outer file
      */
     public boolean isOuter() {
-        final List<VirtualFile> outerFiles = fileType.getIgnoreLanguage().getOuterFiles(getProject());
+        final Set<VirtualFile> outerFiles = fileType.getIgnoreLanguage().getOuterFiles(getProject());
         return outerFiles.contains(getOriginalFile().getVirtualFile());
     }
 

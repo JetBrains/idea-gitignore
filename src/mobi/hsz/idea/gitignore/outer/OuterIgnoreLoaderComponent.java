@@ -35,8 +35,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
-import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -123,9 +121,6 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 @Override
                 public void run() {
                     final List<VirtualFile> outerFiles = ContainerUtil.newArrayList(language.getOuterFiles(myProject));
-                    if (language instanceof GitLanguage) {
-                        ContainerUtil.addAllNotNull(outerFiles, GitExcludeLanguage.INSTANCE.getOuterFiles(myProject));
-                    }
                     if (outerFiles.isEmpty() || outerFiles.contains(file)) {
                         return;
                     }

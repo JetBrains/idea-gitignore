@@ -42,7 +42,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Gitignore {@link IgnoreLanguage} definition.
@@ -99,9 +99,10 @@ public class GitLanguage extends IgnoreLanguage {
      */
     @NotNull
     @Override
-    public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
+    public Set<VirtualFile> getOuterFiles(@NotNull final Project project) {
         final Pair<Project, IgnoreFileType> key = Pair.create(project, getFileType());
         if (!outerFiles.containsKey(key)) {
+            final Set<VirtualFile> parentFiles = super.getOuterFiles(project);
             final ArrayList<VirtualFile> files = ContainerUtil.newArrayList(ContainerUtil.filter(
                     IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
                     new Condition<VirtualFile>() {
@@ -111,7 +112,7 @@ public class GitLanguage extends IgnoreLanguage {
                         }
                     }
             ));
-            ContainerUtil.addAllNotNull(super.getOuterFiles(project), files);
+            ContainerUtil.addAllNotNull(parentFiles, files);
         }
         return outerFiles.get(key);
     }

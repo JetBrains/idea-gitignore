@@ -27,9 +27,13 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.ProjectTopics;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.projectView.impl.AbstractProjectViewPane;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.extensions.Extensions;
+import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
@@ -64,10 +68,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 
-import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
 import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 
@@ -78,6 +82,7 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @since 1.0
  */
 public class IgnoreManager extends AbstractProjectComponent implements DumbAware {
+    /** List of all available {@link IgnoreFileType}. */
     private static final List<IgnoreFileType> FILE_TYPES =
             ContainerUtil.map(IgnoreBundle.LANGUAGES, new Function<IgnoreLanguage, IgnoreFileType>() {
                 @Override
@@ -85,6 +90,9 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     return language.getFileType();
                 }
             });
+
+    /** List of filenames that require to be associated with specific {@link IgnoreFileType}. */
+    public static final Map<String, IgnoreFileType> FILE_TYPES_ASSOCIATION_QUEUE = ContainerUtil.newConcurrentMap();
 
     /** {@link VirtualFileManager} instance. */
     @NotNull
@@ -386,6 +394,28 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     }
 
     /**
+     * Associates given file with proper {@link IgnoreFileType}.
+     *
+     * @param fileName to associate
+     * @param fileType file type to bind with pattern
+     */
+    public static void associateFileType(@NotNull final String fileName, @NotNull final IgnoreFileType fileType) {
+        final Application application = ApplicationManager.getApplication();
+        if (application.isDispatchThread()) {
+            final FileTypeManager fileTypeManager = FileTypeManager.getInstance();
+            application.runWriteAction(new Runnable() {
+                @Override
+                public void run() {
+                    fileTypeManager.associate(fileType, new ExactFileNameMatcher(fileName));
+                    FILE_TYPES_ASSOCIATION_QUEUE.remove(fileName);
+                }
+            });
+        } else if (!FILE_TYPES_ASSOCIATION_QUEUE.containsKey(fileName)) {
+            FILE_TYPES_ASSOCIATION_QUEUE.put(fileName, fileType);
+        }
+    }
+
+    /**
      * Checks if file is ignored and tracked.
      *
      * @param file current file
@@ -438,11 +468,12 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         settings.addListener(settingsListener);
 
         messageBus = myProject.getMessageBus().connect();
-        messageBus.subscribe(TRACKED_IGNORED_REFRESH, new RefreshTrackedIgnoredListener() {
-            @Override
-            public void refresh() {
-            }
-        });
+//        messageBus.subscribe(TRACKED_IGNORED_REFRESH, new RefreshTrackedIgnoredListener() {
+//            @Override
+//            public void refresh() {
+//            }
+//        });
+
         messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, new VcsListener() {
             @Override
             public void directoryMappingChanged() {
@@ -452,9 +483,22 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             }
         });
 
-        messageBus.subscribe(RefreshStatusesListener.REFRESH_STATUSES, commonRunnableListeners);
-        messageBus.subscribe(DumbService.DUMB_MODE, commonRunnableListeners);
+        messageBus.subscribe(DumbService.DUMB_MODE, new DumbService.DumbModeListener() {
+            @Override
+            public void enteredDumbMode() {
+            }
+
+            @Override
+            public void exitDumbMode() {
+                for (Map.Entry<String, IgnoreFileType> entry : FILE_TYPES_ASSOCIATION_QUEUE.entrySet()) {
+                    associateFileType(entry.getKey(), entry.getValue());
+                }
+                debouncedStatusesChanged.run();
+            }
+        });
+
         messageBus.subscribe(ProjectTopics.PROJECT_ROOTS, commonRunnableListeners);
+        messageBus.subscribe(RefreshStatusesListener.REFRESH_STATUSES, commonRunnableListeners);
         messageBus.subscribe(ProjectTopics.MODULES, commonRunnableListeners);
 
         working = true;

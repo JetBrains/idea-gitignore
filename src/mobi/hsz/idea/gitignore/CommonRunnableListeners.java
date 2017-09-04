@@ -42,7 +42,7 @@ import java.util.List;
  * @since 2.2.0
  */
 public class CommonRunnableListeners implements
-        IgnoreManager.RefreshStatusesListener, DumbService.DumbModeListener, ModuleRootListener, ModuleListener {
+        IgnoreManager.RefreshStatusesListener, ModuleRootListener, ModuleListener {
     /** Task to run. */
     @NotNull
     private final Runnable task;
@@ -61,21 +61,6 @@ public class CommonRunnableListeners implements
      */
     @Override
     public void refresh() {
-        task.run();
-    }
-
-    /**
-     * {@link DumbService.DumbModeListener} event (ignored).
-     */
-    @Override
-    public void enteredDumbMode() {
-    }
-
-    /**
-     * {@link DumbService.DumbModeListener} event.
-     */
-    @Override
-    public void exitDumbMode() {
         task.run();
     }
 

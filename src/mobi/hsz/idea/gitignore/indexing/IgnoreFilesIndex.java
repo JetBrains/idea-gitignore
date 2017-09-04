@@ -35,6 +35,7 @@ import com.intellij.util.indexing.FileContent;
 import com.intellij.util.indexing.ID;
 import com.intellij.util.io.DataExternalizer;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
@@ -64,7 +65,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     public static final ID<IgnoreFileTypeKey, IgnoreEntryOccurrence> KEY = ID.create("IgnoreFilesIndex");
 
     /** Current indexer version. Has to be increased if significant changes have been done. */
-    private static final int VERSION = 3;
+    private static final int VERSION = 4;
 
     /**
      * Returns indexer's name.
@@ -194,7 +195,8 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
      */
     @Override
     public boolean acceptInput(@NotNull VirtualFile file) {
-        return file.getFileType() instanceof IgnoreFileType;
+        return file.getFileType() instanceof IgnoreFileType ||
+                IgnoreManager.FILE_TYPES_ASSOCIATION_QUEUE.containsKey(file.getName());
     }
 
     /**

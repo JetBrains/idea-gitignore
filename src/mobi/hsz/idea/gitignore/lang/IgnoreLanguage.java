@@ -43,8 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -83,8 +82,8 @@ public class IgnoreLanguage extends Language {
 
     /** Outer files cache. */
     @NotNull
-    protected WeakHashMap<Pair<Project, IgnoreFileType>, List<VirtualFile>> outerFiles =
-            new WeakHashMap<Pair<Project, IgnoreFileType>, List<VirtualFile>>(1);
+    protected WeakHashMap<Pair<Project, IgnoreFileType>, Set<VirtualFile>> outerFiles =
+            new WeakHashMap<Pair<Project, IgnoreFileType>, Set<VirtualFile>>(1);
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage() {
@@ -218,10 +217,10 @@ public class IgnoreLanguage extends Language {
      * @return outer files
      */
     @NotNull
-    public List<VirtualFile> getOuterFiles(@NotNull final Project project) {
+    public Set<VirtualFile> getOuterFiles(@NotNull final Project project) {
         final Pair<Project, IgnoreFileType> key = Pair.create(project, getFileType());
         if (!outerFiles.containsKey(key)) {
-            final ArrayList<VirtualFile> files = ContainerUtil.newArrayList();
+            final Set<VirtualFile> files = ContainerUtil.newHashSet();
             for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : getOuterFileFetchers()) {
                 ContainerUtil.addAllNotNull(files, fetcher.fetch(project));
             }
