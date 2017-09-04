@@ -1,7 +1,7 @@
 # Change Log
 
 
-## [v2.2.0](https://github.com/hsz/idea-gitignore/tree/v2.2.0) (2017-09-03)
+## [v2.2.0](https://github.com/hsz/idea-gitignore/tree/v2.2.0) (2017-09-04)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.1.1...v2.2.0)
 

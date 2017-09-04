@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>2.2.0-RC5</version>
+    <version>2.2.0</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -77,7 +77,7 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.2.0"><b>v2.2.0</b></a> (2017-09-03) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.2.0"><b>v2.2.0</b></a> (2017-09-04) <br/><br/>
         <a href="https://github.com/hsz/idea-gitignore/compare/v2.1.1...v2.0.0"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
