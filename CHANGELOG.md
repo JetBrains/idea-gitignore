@@ -13,6 +13,7 @@
 
 **Fixed bugs:**
 
+- File colouring not working [\#462](https://github.com/hsz/idea-gitignore/issues/#462)
 - ~/.gitignore_global is not handled [\#453](https://github.com/hsz/idea-gitignore/issues/#453)
 - NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/#457)
 - 'Outer ignore rules' shows previous project's exclude files [\#460](https://github.com/hsz/idea-gitignore/issues/#460)

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>2.2.0-RC3</version>
+    <version>2.2.0-RC4</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -39,7 +39,8 @@
         .stylintignore (Stylint),
         .swagger-codegen-ignore (Swagger Codegen),
         .helmignore (Kubernetes Helm),
-        .upignore (Up)
+        .upignore (Up),
+        .prettierignore (Prettier)
       </i>files in your project.
       <br/>
       <br/>
@@ -90,6 +91,7 @@
         <i>Fixed bugs:</i>
 
         <ul>
+            <li>File colouring not working (<a href="https://github.com/hsz/idea-gitignore/issues/462">462</a>)</li>
             <li>~/.gitignore_global is not handled (<a href="https://github.com/hsz/idea-gitignore/issues/453">453</a>)</li>
             <li>NPE in MatcherUtil.match (<a href="https://github.com/hsz/idea-gitignore/issues/457">457</a>)</li>
             <li>'Outer ignore rules' shows previous project's exclude files (<a href="https://github.com/hsz/idea-gitignore/issues/460">460</a>)</li>
