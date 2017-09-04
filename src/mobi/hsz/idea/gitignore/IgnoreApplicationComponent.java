@@ -38,6 +38,9 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
     /** Plugin has been updated with the current run. */
     private boolean updated;
 
+    /** Plugin is a release candidate. */
+    private boolean rc;
+
     /** Plugin update notification has been shown. */
     private boolean updateNotificationShown;
 
@@ -55,8 +58,9 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
     @Override
     public void initComponent() {
         /* The settings storage object. */
-        IgnoreSettings settings = IgnoreSettings.getInstance();
+        final IgnoreSettings settings = IgnoreSettings.getInstance();
         updated = !Utils.getVersion().equals(settings.getVersion());
+        rc = Utils.getVersion().toUpperCase().contains("RC");
         if (updated) {
             settings.setVersion(Utils.getVersion());
         }
@@ -76,6 +80,15 @@ public class IgnoreApplicationComponent implements ApplicationComponent {
     @Override
     public String getComponentName() {
         return "IgnoreApplicationComponent";
+    }
+
+    /**
+     * Checks if plugin is a release candidate version.
+     *
+     * @return plugin is RC
+     */
+    public boolean isRC() {
+        return rc;
     }
 
     /**

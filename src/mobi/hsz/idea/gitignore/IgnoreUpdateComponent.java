@@ -74,7 +74,7 @@ public class IgnoreUpdateComponent extends AbstractProjectComponent {
     /** Method called when project is opened. */
     @Override
     public void projectOpened() {
-        if (application.isUpdated() && !application.isUpdateNotificationShown()) {
+        if (application.isUpdated() && !application.isRC() && !application.isUpdateNotificationShown()) {
             application.setUpdateNotificationShown(true);
             Notify.showUpdate(myProject);
         }
