@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.ModuleListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootEvent;
@@ -106,7 +105,8 @@ public class CommonRunnableListeners implements
      * {@link ModuleListener} event.
      */
     @Override
-    public void modulesRenamed(@NotNull Project project, @NotNull List<Module> modules, @NotNull Function<Module, String> oldNameProvider) {
+    public void modulesRenamed(@NotNull Project project, @NotNull List<Module> modules,
+                               @NotNull Function<Module, String> oldNameProvider) {
         task.run();
     }
 }
