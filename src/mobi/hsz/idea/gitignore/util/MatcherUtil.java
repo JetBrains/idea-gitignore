@@ -81,7 +81,7 @@ public class MatcherUtil {
             cache.put(hashCode, result);
         }
 
-        return cache.get(hashCode);
+        return ContainerUtil.getOrElse(cache, hashCode, false);
     }
 
     /**
