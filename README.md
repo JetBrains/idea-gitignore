@@ -1,5 +1,5 @@
-.ignore v2.2.0
-==============
+.ignore v2.2.1-RC1
+==================
 
 [ignore.hsz.mobi][website]
 
@@ -125,9 +125,9 @@ Usage
 Changelog
 ---------
 
-## [v2.2.0](https://github.com/hsz/idea-gitignore/tree/v2.2.0) (2017-09-04)
+## [v2.2.1](https://github.com/hsz/idea-gitignore/tree/v2.2.1) (2017-09-06)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.1.1...v2.2.0)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.1.1...v2.2.1)
 
 **Implemented enhancements:**
 
@@ -142,6 +142,7 @@ Changelog
 - NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/#457)
 - 'Outer ignore rules' shows previous project's exclude files [\#460](https://github.com/hsz/idea-gitignore/issues/#460)
 - ExpiringMap causes ArrayIndexOutOfBoundsException [\#461](https://github.com/hsz/idea-gitignore/issues/#461)
+- FileTypeManager.associate run in write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/#471)
 
 [Full Changelog History](./CHANGELOG.md)
 
