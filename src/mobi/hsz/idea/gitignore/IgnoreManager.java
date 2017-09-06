@@ -29,6 +29,7 @@ import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.projectView.impl.AbstractProjectViewPane;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
@@ -403,13 +404,18 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         final Application application = ApplicationManager.getApplication();
         if (application.isDispatchThread()) {
             final FileTypeManager fileTypeManager = FileTypeManager.getInstance();
-            application.runWriteAction(new Runnable() {
+            application.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    fileTypeManager.associate(fileType, new ExactFileNameMatcher(fileName));
-                    FILE_TYPES_ASSOCIATION_QUEUE.remove(fileName);
+                    application.runWriteAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            fileTypeManager.associate(fileType, new ExactFileNameMatcher(fileName));
+                            FILE_TYPES_ASSOCIATION_QUEUE.remove(fileName);
+                        }
+                    });
                 }
-            });
+            }, ModalityState.NON_MODAL);
         } else if (!FILE_TYPES_ASSOCIATION_QUEUE.containsKey(fileName)) {
             FILE_TYPES_ASSOCIATION_QUEUE.put(fileName, fileType);
         }
