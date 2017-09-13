@@ -218,6 +218,17 @@ public class IgnoreLanguage extends Language {
      */
     @NotNull
     public Set<VirtualFile> getOuterFiles(@NotNull final Project project) {
+        return getOuterFiles(project, false);
+    }
+
+    /**
+     * Returns outer files for the current language.
+     *
+     * @param project current project
+     * @return outer files
+     */
+    @NotNull
+    public Set<VirtualFile> getOuterFiles(@NotNull final Project project, boolean dumb) {
         final Pair<Project, IgnoreFileType> key = Pair.create(project, getFileType());
         if (!outerFiles.containsKey(key)) {
             final Set<VirtualFile> files = ContainerUtil.newHashSet();
