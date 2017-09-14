@@ -496,6 +496,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
             @Override
             public void exitDumbMode() {
+                cachedIgnoreFilesIndex.clear();
                 for (Map.Entry<String, IgnoreFileType> entry : FILE_TYPES_ASSOCIATION_QUEUE.entrySet()) {
                     associateFileType(entry.getKey(), entry.getValue());
                 }
