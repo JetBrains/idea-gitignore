@@ -1,4 +1,4 @@
-.ignore v2.2.1-RC1
+.ignore v2.2.1-RC2
 ==================
 
 [ignore.hsz.mobi][website]
@@ -125,24 +125,16 @@ Usage
 Changelog
 ---------
 
-## [v2.2.1](https://github.com/hsz/idea-gitignore/tree/v2.2.1) (2017-09-06)
+## [v2.2.1](https://github.com/hsz/idea-gitignore/tree/v2.2.1) (2017-09-??)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.1.1...v2.2.1)
-
-**Implemented enhancements:**
-
-- **Migration to the native IDE indexing**
-- EAP repository channel
-- Prettier (.prettierignore) support [\#466](https://github.com/hsz/idea-gitignore/issues/466)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.0...v2.2.1)
 
 **Fixed bugs:**
 
+- Accessing 'IgnoreFilesIndex' during processing [\#473](https://github.com/hsz/idea-gitignore/issues/#473)
+- Write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/#471)
+- Error on opening .gitignore file [\#470](https://github.com/hsz/idea-gitignore/issues/#470)
 - File colouring not working [\#462](https://github.com/hsz/idea-gitignore/issues/#462)
-- ~/.gitignore_global is not handled [\#453](https://github.com/hsz/idea-gitignore/issues/#453)
-- NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/#457)
-- 'Outer ignore rules' shows previous project's exclude files [\#460](https://github.com/hsz/idea-gitignore/issues/#460)
-- ExpiringMap causes ArrayIndexOutOfBoundsException [\#461](https://github.com/hsz/idea-gitignore/issues/#461)
-- FileTypeManager.associate run in write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/#471)
 
 [Full Changelog History](./CHANGELOG.md)
 

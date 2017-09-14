@@ -1,7 +1,18 @@
 # Change Log
 
 
-## [v2.2.1](https://github.com/hsz/idea-gitignore/tree/v2.2.1) (2017-09-06)
+## [v2.2.1](https://github.com/hsz/idea-gitignore/tree/v2.2.1) (2017-09-??)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.0...v2.2.1)
+
+**Fixed bugs:**
+
+- Accessing 'IgnoreFilesIndex' during processing [\#473](https://github.com/hsz/idea-gitignore/issues/#473)
+- Write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/#471)
+- Error on opening .gitignore file [\#470](https://github.com/hsz/idea-gitignore/issues/#470)
+- File colouring not working [\#462](https://github.com/hsz/idea-gitignore/issues/#462)
+
+## [v2.2.0](https://github.com/hsz/idea-gitignore/tree/v2.2.0) (2017-09-06)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.1.1...v2.2.1)
 
