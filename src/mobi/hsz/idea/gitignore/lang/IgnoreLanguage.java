@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.lang;
 
+import com.intellij.lang.InjectableLanguage;
 import com.intellij.lang.Language;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
@@ -52,7 +53,7 @@ import java.util.TreeMap;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.8
  */
-public class IgnoreLanguage extends Language {
+public class IgnoreLanguage extends Language implements InjectableLanguage {
     /** The {@link IgnoreLanguage} instance. */
     public static final IgnoreLanguage INSTANCE = new IgnoreLanguage();
 
