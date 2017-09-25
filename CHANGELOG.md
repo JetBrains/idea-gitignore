@@ -5,7 +5,7 @@
 
 **Implemented enhancements:**
 
-- Exclude .ignore langages from the "New Scratch" action [\#448](https://github.com/hsz/idea-gitignore/issues/#448)
+- Exclude .ignore langages from the "New Scratch" action [\#448](https://github.com/hsz/idea-gitignore/issues/448)
 
 
 ## [v2.2.1](https://github.com/hsz/idea-gitignore/tree/v2.2.1) (2017-09-14)
@@ -14,10 +14,10 @@
 
 **Fixed bugs:**
 
-- Accessing 'IgnoreFilesIndex' during processing [\#473](https://github.com/hsz/idea-gitignore/issues/#473)
-- Write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/#471)
-- Error on opening .gitignore file [\#470](https://github.com/hsz/idea-gitignore/issues/#470)
-- File colouring not working [\#462](https://github.com/hsz/idea-gitignore/issues/#462)
+- Accessing 'IgnoreFilesIndex' during processing [\#473](https://github.com/hsz/idea-gitignore/issues/473)
+- Write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/471)
+- Error on opening .gitignore file [\#470](https://github.com/hsz/idea-gitignore/issues/470)
+- File colouring not working [\#462](https://github.com/hsz/idea-gitignore/issues/462)
 
 
 ## [v2.2.0](https://github.com/hsz/idea-gitignore/tree/v2.2.0) (2017-09-06)
@@ -32,12 +32,12 @@
 
 **Fixed bugs:**
 
-- File colouring not working [\#462](https://github.com/hsz/idea-gitignore/issues/#462)
-- ~/.gitignore_global is not handled [\#453](https://github.com/hsz/idea-gitignore/issues/#453)
-- NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/#457)
-- 'Outer ignore rules' shows previous project's exclude files [\#460](https://github.com/hsz/idea-gitignore/issues/#460)
-- ExpiringMap causes ArrayIndexOutOfBoundsException [\#461](https://github.com/hsz/idea-gitignore/issues/#461)
-- FileTypeManager.associate run in write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/#471)
+- File colouring not working [\#462](https://github.com/hsz/idea-gitignore/issues/462)
+- ~/.gitignore_global is not handled [\#453](https://github.com/hsz/idea-gitignore/issues/453)
+- NPE in MatcherUtil.match [\#457](https://github.com/hsz/idea-gitignore/issues/457)
+- 'Outer ignore rules' shows previous project's exclude files [\#460](https://github.com/hsz/idea-gitignore/issues/460)
+- ExpiringMap causes ArrayIndexOutOfBoundsException [\#461](https://github.com/hsz/idea-gitignore/issues/461)
+- FileTypeManager.associate run in write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/471)
 
 
 ## [v2.1.1](https://github.com/hsz/idea-gitignore/tree/v2.1.1) (2017-08-23)
@@ -52,14 +52,14 @@
 
 **Fixed bugs:**
 
-- Performance improvements [\#415](https://github.com/hsz/idea-gitignore/issues/#415)
-- ConcurrentModificationException in THashIterator [\#413](https://github.com/hsz/idea-gitignore/issues/#413)
-- Read access is allowed from event dispatch thread or inside read-action only [\#419](https://github.com/hsz/idea-gitignore/issues/#419)
-- UnsupportedOperationException in IgnoreEditorManagerListener [\#399](https://github.com/hsz/idea-gitignore/issues/#399)
-- Missing StyleLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/#394)
-- NoSuchMethodError VcsRepositoryManager.getInstance [\#403](https://github.com/hsz/idea-gitignore/issues/#403)
-- NoClassDefFoundError VcsRepositoryManager [\#406](https://github.com/hsz/idea-gitignore/issues/#406)
-- "Outer" ignore rules include extraneous files [\#401](https://github.com/hsz/idea-gitignore/issues/#401)
+- Performance improvements [\#415](https://github.com/hsz/idea-gitignore/issues/415)
+- ConcurrentModificationException in THashIterator [\#413](https://github.com/hsz/idea-gitignore/issues/413)
+- Read access is allowed from event dispatch thread or inside read-action only [\#419](https://github.com/hsz/idea-gitignore/issues/419)
+- UnsupportedOperationException in IgnoreEditorManagerListener [\#399](https://github.com/hsz/idea-gitignore/issues/399)
+- Missing StyleLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/394)
+- NoSuchMethodError VcsRepositoryManager.getInstance [\#403](https://github.com/hsz/idea-gitignore/issues/403)
+- NoClassDefFoundError VcsRepositoryManager [\#406](https://github.com/hsz/idea-gitignore/issues/406)
+- "Outer" ignore rules include extraneous files [\#401](https://github.com/hsz/idea-gitignore/issues/401)
 
 
 ## [v2.0.4](https://github.com/hsz/idea-gitignore/tree/v2.0.4) (2017-07-31)
@@ -85,10 +85,10 @@
 - Fixed "You are editing..." message display conditions [\#351](https://github.com/hsz/idea-gitignore/issues/351) [\#352](https://github.com/hsz/idea-gitignore/issues/352) [\#356](https://github.com/hsz/idea-gitignore/issues/356)
 - It's prohibited to access index during event dispatching [\#358](https://github.com/hsz/idea-gitignore/issues/358) [\#355](https://github.com/hsz/idea-gitignore/issues/355) [\#369](https://github.com/hsz/idea-gitignore/issues/369)
 - Already disposed: com.intellij.util.messages.impl.MessageBusImpl [\#360](https://github.com/hsz/idea-gitignore/issues/360)
-- NotNull error when changing directory name [\#391](https://github.com/hsz/idea-gitignore/issues/#391)
-- Fixed missing ESLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/#394)
-- Wrap `git rm` command with quotes [\#339](https://github.com/hsz/idea-gitignore/issues/#339)
-- Argument for @NotNull parameter 'fragment' must not be null [\#345](https://github.com/hsz/idea-gitignore/issues/#345)
+- NotNull error when changing directory name [\#391](https://github.com/hsz/idea-gitignore/issues/391)
+- Fixed missing ESLint parserDefinition [\#394](https://github.com/hsz/idea-gitignore/issues/394)
+- Wrap `git rm` command with quotes [\#339](https://github.com/hsz/idea-gitignore/issues/339)
+- Argument for @NotNull parameter 'fragment' must not be null [\#345](https://github.com/hsz/idea-gitignore/issues/345)
 
 
 ## [v1.7.6](https://github.com/hsz/idea-gitignore/tree/v1.7.6) (2017-02-23)
