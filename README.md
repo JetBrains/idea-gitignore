@@ -5,9 +5,9 @@
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal]
 
-[![Version](http://phpstorm.espend.de/badge/7495/version)](https://plugins.jetbrains.com/plugin/7495)
-[![Downloads](http://phpstorm.espend.de/badge/7495/downloads)](https://plugins.jetbrains.com/plugin/7495)
-[![Downloads last month](http://phpstorm.espend.de/badge/7495/last-month)](https://plugins.jetbrains.com/plugin/7495)
+[![Version](http://phpstorm.espend.de/badge/7495/version)][plugin-website]
+[![Downloads](http://phpstorm.espend.de/badge/7495/downloads)][plugin-website]
+[![Downloads last month](http://phpstorm.espend.de/badge/7495/last-month)][plugin-website]
 
 Introduction
 ------------
@@ -202,6 +202,7 @@ Copyright (c) 2017 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [gradle-intellij-plugin]: https://github.com/JetBrains/gradle-intellij-plugin
 [hsz]:                    http://hsz.mobi
 [website]:                http://ignore.hsz.mobi
+[plugin-website]:         https://plugins.jetbrains.com/plugin/7495
 [latest-release]:         https://github.com/hsz/idea-gitignore/releases/latest
 
 
