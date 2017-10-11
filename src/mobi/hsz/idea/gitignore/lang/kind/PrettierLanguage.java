@@ -55,4 +55,14 @@ public class PrettierLanguage extends IgnoreLanguage {
     public IgnoreFileType getFileType() {
         return PrettierFileType.INSTANCE;
     }
+
+    /**
+     * Language is related to the VCS.
+     *
+     * @return is VCS
+     */
+    @Override
+    public boolean isVCS() {
+        return false;
+    }
 }

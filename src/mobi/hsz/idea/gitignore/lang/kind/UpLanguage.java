@@ -55,4 +55,9 @@ public class UpLanguage extends IgnoreLanguage {
     public IgnoreFileType getFileType() {
         return UpFileType.INSTANCE;
     }
+
+    @Override
+    public boolean isVCS() {
+        return false;
+    }
 }
