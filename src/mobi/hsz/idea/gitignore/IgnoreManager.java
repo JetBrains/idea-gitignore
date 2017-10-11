@@ -51,7 +51,7 @@ import com.intellij.util.containers.ConcurrentWeakHashMap;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
-import git4idea.repo.GitRepository;
+import git4idea.GitVcs;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
@@ -73,6 +73,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 
+import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
 import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 
@@ -170,7 +171,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     };
 
     /** {@link FileStatusManager#fileStatusesChanged()} method wrapped with {@link Debounced}. */
-    private final Debounced<Boolean> debouncedRefreshTrackedIgnores = new Debounced<Boolean>(5000) {
+    private final Debounced<Boolean> debouncedRefreshTrackedIgnores = new Debounced<Boolean>(1000) {
         @Override
         protected void task(@Nullable Boolean refresh) {
             if (Boolean.TRUE.equals(refresh)) {
@@ -204,28 +205,28 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         public void fileCreated(@NotNull VirtualFileEvent event) {
             handleEvent(event);
             notConfirmedIgnoredFiles.add(event.getFile());
-//            debouncedRefreshTrackedIgnores.run(true);
+            debouncedRefreshTrackedIgnores.run(true);
         }
 
         @Override
         public void fileDeleted(@NotNull VirtualFileEvent event) {
             handleEvent(event);
             notConfirmedIgnoredFiles.add(event.getFile());
-//            debouncedRefreshTrackedIgnores.run(true);
+            debouncedRefreshTrackedIgnores.run(true);
         }
 
         @Override
         public void fileMoved(@NotNull VirtualFileMoveEvent event) {
             handleEvent(event);
             notConfirmedIgnoredFiles.add(event.getFile());
-//            debouncedRefreshTrackedIgnores.run(true);
+            debouncedRefreshTrackedIgnores.run(true);
         }
 
         @Override
         public void fileCopied(@NotNull VirtualFileCopyEvent event) {
             handleEvent(event);
             notConfirmedIgnoredFiles.add(event.getFile());
-//            debouncedRefreshTrackedIgnores.run(true);
+            debouncedRefreshTrackedIgnores.run(true);
         }
 
         private void handleEvent(@NotNull VirtualFileEvent event) {
@@ -300,6 +301,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         this.refreshTrackedIgnoredRunnable = new RefreshTrackedIgnoredRunnable();
         this.refreshTrackedIgnoredFeature =
                 new InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5);
+        this.refreshTrackedIgnoredFeature.setTrailing(true);
         this.projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project);
         this.commonRunnableListeners = new CommonRunnableListeners(debouncedStatusesChanged);
     }
@@ -430,7 +432,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      */
     public boolean isFileTracked(@NotNull final VirtualFile file) {
         return settings.isInformTrackedIgnored() && !notConfirmedIgnoredFiles.contains(file) &&
-                !confirmedIgnoredFiles.isEmpty() && !confirmedIgnoredFiles.containsKey(file);
+                !confirmedIgnoredFiles.isEmpty() && confirmedIgnoredFiles.containsKey(file);
     }
 
     /**
@@ -475,11 +477,13 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         settings.addListener(settingsListener);
 
         messageBus = myProject.getMessageBus().connect();
-//        messageBus.subscribe(TRACKED_IGNORED_REFRESH, new RefreshTrackedIgnoredListener() {
-//            @Override
-//            public void refresh() {
-//            }
-//        });
+
+        messageBus.subscribe(TRACKED_IGNORED_REFRESH, new RefreshTrackedIgnoredListener() {
+            @Override
+            public void refresh() {
+                debouncedRefreshTrackedIgnores.run(true);
+            }
+        });
 
         messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, new VcsListener() {
             @Override
@@ -581,10 +585,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
             final ConcurrentMap<VirtualFile, VcsRoot> result = new ConcurrentWeakHashMap<VirtualFile, VcsRoot>();
             for (VcsRoot vcsRoot : vcsRoots) {
-                if (!(vcsRoot instanceof GitRepository)) {
+                if (!(vcsRoot.getVcs() instanceof GitVcs) || vcsRoot.getPath() == null) {
                     continue;
                 }
-                final VirtualFile root = ((GitRepository) vcsRoot).getRoot();
+                final VirtualFile root = vcsRoot.getPath();
                 for (String path : ExternalExec.getIgnoredFiles(vcsRoot)) {
                     final VirtualFile file = root.findFileByRelativePath(path);
                     if (file != null) {

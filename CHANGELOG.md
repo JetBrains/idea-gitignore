@@ -6,6 +6,7 @@
 **Implemented enhancements:**
 
 - Exclude .ignore langages from the "New Scratch" action [\#448](https://github.com/hsz/idea-gitignore/issues/448)
+- Better discovery of ignored & tracked files [\#455](https://github.com/hsz/idea-gitignore/issues/455)
 
 **Fixed bugs:**
 

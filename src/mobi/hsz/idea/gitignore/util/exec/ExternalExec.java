@@ -39,7 +39,7 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.parser.ExecutionOutputParser;
 import mobi.hsz.idea.gitignore.util.exec.parser.GitExcludesOutputParser;
 import mobi.hsz.idea.gitignore.util.exec.parser.GitUnignoredFilesOutputParser;
-import mobi.hsz.idea.gitignore.util.exec.parser.IgnoredFilesParser;
+import mobi.hsz.idea.gitignore.util.exec.parser.SimpleOutputParser;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -78,7 +78,7 @@ public class ExternalExec {
 
     /** Git command to list ignored but tracked files. */
     @NonNls
-    private static final String GIT_IGNORED_FILES = "status --ignored --porcelain";
+    private static final String GIT_IGNORED_FILES = "ls-files -i --exclude-standard";
 
     /** Git command to remove file from tracking. */
     @NonNls
@@ -130,7 +130,7 @@ public class ExternalExec {
                 GitLanguage.INSTANCE,
                 GIT_IGNORED_FILES,
                 vcsRoot.getPath(),
-                new IgnoredFilesParser()
+                new SimpleOutputParser()
         );
         return Utils.notNullize(result);
     }
