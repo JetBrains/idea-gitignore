@@ -312,10 +312,11 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      */
     public boolean isFileIgnored(@NotNull final VirtualFile file) {
         final Boolean cached = expiringStatusCache.get(file);
+        final VirtualFile baseDir = myProject.getBaseDir();
         if (cached != null) {
             return cached;
         }
-        if (DumbService.isDumb(myProject) || !isEnabled() || !Utils.isUnder(file, myProject.getBaseDir())) {
+        if (DumbService.isDumb(myProject) || !isEnabled() || baseDir == null || !Utils.isUnder(file, baseDir)) {
             return false;
         }
 
@@ -377,7 +378,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
         if (valuesCount > 0 && !ignored && !matched) {
             final VirtualFile directory = file.getParent();
-            if (directory != null && !directory.equals(myProject.getBaseDir())) {
+            if (directory != null && !directory.equals(baseDir)) {
                 for (VcsRoot vcsRoot : vcsRoots) {
                     if (directory.equals(vcsRoot.getPath())) {
                         return expiringStatusCache.set(file, false);
