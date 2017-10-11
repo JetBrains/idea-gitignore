@@ -131,6 +131,11 @@ Changelog
 
 - Exclude .ignore langages from the "New Scratch" action [\#448](https://github.com/hsz/idea-gitignore/issues/#448)
 
+**Fixed bugs:**
+
+- Mark UP and Prettier as not a VCS languages [\#483](https://github.com/hsz/idea-gitignore/issues/483)
+- 'directory' for Utils.isUnder must not be null in IgnoreManager [\#482](https://github.com/hsz/idea-gitignore/issues/482) [\#477](https://github.com/hsz/idea-gitignore/issues/477)
+
 
 ## [v2.2.1](https://github.com/hsz/idea-gitignore/tree/v2.2.1) (2017-09-14)
 
