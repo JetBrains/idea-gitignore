@@ -1,17 +1,20 @@
 # Change Log
 
 
-## Unreleased
+## [v2.2.2](https://github.com/hsz/idea-gitignore/tree/v2.2.2) (2017-10-11)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.1...v2.2.2)
 
 **Implemented enhancements:**
 
-- Exclude .ignore langages from the "New Scratch" action [\#448](https://github.com/hsz/idea-gitignore/issues/448)
+- Exclude .ignore langages from the "New Scratch" action [\#448](https://github.com/hsz/idea-gitignore/issues/#448)
 - Better discovery of ignored & tracked files [\#455](https://github.com/hsz/idea-gitignore/issues/455)
 
 **Fixed bugs:**
 
 - Mark UP and Prettier as not a VCS languages [\#483](https://github.com/hsz/idea-gitignore/issues/483)
 - 'directory' for Utils.isUnder must not be null in IgnoreManager [\#482](https://github.com/hsz/idea-gitignore/issues/482) [\#477](https://github.com/hsz/idea-gitignore/issues/477)
+
 
 ## [v2.2.1](https://github.com/hsz/idea-gitignore/tree/v2.2.1) (2017-09-14)
 
