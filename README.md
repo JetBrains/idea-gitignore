@@ -182,7 +182,7 @@ Developed By
 Tools
 -----
 
-I'm using Yourkit to locate and fix performance issues of BashSupport. YourKit, LLC kindly provided a
+I'm using Yourkit to locate and fix performance issues of .ignore. YourKit, LLC kindly provided a
 free open-source license of the [YourKit Java Profiler](https://www.yourkit.com/java/profiler/).
 
 ![YourKit Java Profiler Logo](https://www.yourkit.com/images/yklogo.png "YourKit Java Profiler Logo")
