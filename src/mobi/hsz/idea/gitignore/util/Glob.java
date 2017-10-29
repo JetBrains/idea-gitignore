@@ -122,8 +122,9 @@ public class Glob {
                         }
 
                         for (Map.Entry<IgnoreEntry, Matcher> item : current.entrySet()) {
+                            final Matcher value = item.getValue();
                             boolean matches = false;
-                            if (item.getValue() == null || MatcherUtil.match(item.getValue(), path)) {
+                            if (value == null || MatcherUtil.match(value, path)) {
                                 matches = true;
                                 result.get(item.getKey()).add(file);
                             }
