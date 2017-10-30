@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.reference;
 
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
@@ -134,6 +135,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
     /** Parses entry, searches for file references and stores them in {@link #myReferences}. */
     @Override
     protected void reparse() {
+        ProgressManager.checkCanceled();
         String str = StringUtil.trimEnd(getPathString(), getSeparatorString());
         final List<FileReference> referencesList = ContainerUtil.newArrayList();
 
@@ -163,6 +165,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         }
 
         while (true) {
+            ProgressManager.checkCanceled();
             final int nextSlash = str.indexOf(separatorString, currentSlash + sepLen);
             final String subReferenceText = nextSlash > 0 ? str.substring(0, nextSlash) : str;
             TextRange range = new TextRange(startInElement + currentSlash + sepLen, startInElement +
@@ -199,6 +202,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         @Override
         protected void innerResolveInContext(@NotNull String text, @NotNull PsiFileSystemItem context,
                                              @NotNull final Collection<ResolveResult> result, boolean caseSensitive) {
+            ProgressManager.checkCanceled();
             super.innerResolveInContext(text, context, result, caseSensitive);
 
             final PsiFile containingFile = getContainingFile();
@@ -218,7 +222,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
             }
 
             if (contextVirtualFile != null) {
-                IgnoreEntry entry = (IgnoreEntry) getFileReferenceSet().getElement();
+                final IgnoreEntry entry = (IgnoreEntry) getFileReferenceSet().getElement();
                 final Pattern pattern = Glob.createPattern(getCanonicalText(), entry.getSyntax());
                 if (pattern != null) {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
@@ -247,6 +251,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                             };
 
                             for (VirtualFile file : files) {
+                                ProgressManager.checkCanceled();
                                 if (!file.isDirectory()) {
                                     continue;
                                 }
@@ -260,6 +265,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                         files.addAll(cacheMap.get(key));
                     }
                     for (VirtualFile file : files) {
+                        ProgressManager.checkCanceled();
                         if (Utils.isVcsDirectory(file)) {
                             continue;
                         }

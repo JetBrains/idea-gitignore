@@ -35,6 +35,7 @@ import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
@@ -327,6 +328,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         int valuesCount = 0;
 
         for (IgnoreFileType fileType : FILE_TYPES) {
+            ProgressManager.checkCanceled();
             if (!IgnoreBundle.ENABLED_LANGUAGES.get(fileType)) {
                 continue;
             }
@@ -335,6 +337,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
             valuesCount += values.size();
             for (IgnoreEntryOccurrence value : values) {
+                ProgressManager.checkCanceled();
                 String relativePath;
                 final VirtualFile entryFile = value.getFile();
                 if (entryFile == null) {
@@ -384,6 +387,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             final VirtualFile directory = file.getParent();
             if (directory != null && !directory.equals(baseDir)) {
                 for (VcsRoot vcsRoot : vcsRoots) {
+                    ProgressManager.checkCanceled();
                     if (directory.equals(vcsRoot.getPath())) {
                         return expiringStatusCache.set(file, false);
                     }

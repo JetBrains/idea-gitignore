@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.codeInspection;
 
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElementVisitor;
@@ -74,6 +75,7 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                 boolean resolved = true;
                 int previous = Integer.MAX_VALUE;
                 for (PsiReference reference : references) {
+                    ProgressManager.checkCanceled();
                     if (reference instanceof FileReferenceOwner) {
                         PsiPolyVariantReference fileReference = (PsiPolyVariantReference) reference;
                         ResolveResult[] result = fileReference.multiResolve(false);
@@ -119,6 +121,7 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
 
                 for (final VirtualFile root : Utils.getExcludedRoots(project)) {
                     for (VirtualFile file : files) {
+                        ProgressManager.checkCanceled();
                         if (!Utils.isUnder(file, root)) {
                             continue;
                         }

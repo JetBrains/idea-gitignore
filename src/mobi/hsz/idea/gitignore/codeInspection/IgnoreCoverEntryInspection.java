@@ -30,6 +30,7 @@ import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.*;
@@ -97,7 +98,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
     public IgnoreCoverEntryInspection() {
         cacheMap = ContainerUtil.newConcurrentMap();
         virtualFileManager = VirtualFileManager.getInstance();
-//        virtualFileManager.addVirtualFileListener(virtualFileListener);
+        virtualFileManager.addVirtualFileListener(virtualFileListener);
     }
 
     /**
@@ -121,8 +122,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
      */
     @Nullable
     @Override
-    public ProblemDescriptor[] checkFile(@NotNull PsiFile file,
-                                         @NotNull InspectionManager manager,
+    public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager,
                                          boolean isOnTheFly) {
         final VirtualFile virtualFile = file.getVirtualFile();
         if (!(file instanceof IgnoreFile) || !Utils.isInProject(virtualFile, file.getProject())) {
@@ -147,6 +147,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
         final Map<IgnoreEntry, Set<String>> matchedMap = getPathsSet(contextDirectory, entries);
 
         for (IgnoreEntry entry : entries) {
+            ProgressManager.checkCanceled();
             Set<String> matched = matchedMap.get(entry);
             Collection<String> intersection;
             boolean modified;
@@ -166,6 +167,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
             }
 
             for (IgnoreEntry recent : map.keySet()) {
+                ProgressManager.checkCanceled();
                 Set<String> recentValues = map.get(recent);
                 if (recentValues.isEmpty() || matched.isEmpty()) {
                     continue;
@@ -210,6 +212,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
         final ArrayList<IgnoreEntry> notCached = ContainerUtil.newArrayList();
 
         for (IgnoreEntry entry : entries) {
+            ProgressManager.checkCanceled();
             final String key = contextDirectory.getPath() + Constants.DOLLAR + entry.getText();
             if (!cacheMap.containsKey(key)) {
                 notCached.add(entry);
@@ -219,6 +222,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
 
         final Map<IgnoreEntry, Set<String>> found = Glob.findAsPaths(contextDirectory, notCached, true);
         for (Map.Entry<IgnoreEntry, Set<String>> item : found.entrySet()) {
+            ProgressManager.checkCanceled();
             final String key = contextDirectory.getPath() + Constants.DOLLAR + item.getKey().getText();
             cacheMap.put(key, item.getValue());
             result.put(item.getKey(), item.getValue());
