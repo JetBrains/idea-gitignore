@@ -51,7 +51,7 @@ import java.util.regex.Pattern;
 public class IgnoreEntryOccurrence implements Serializable {
     /** Current ignore file path. */
     @NotNull
-    private final String path;
+    private final String url;
 
     /** Current ignore file. */
     @Nullable
@@ -64,10 +64,10 @@ public class IgnoreEntryOccurrence implements Serializable {
     /**
      * Constructor.
      *
-     * @param path current file
+     * @param url current file
      */
-    public IgnoreEntryOccurrence(@NotNull String path) {
-        this(path, null);
+    public IgnoreEntryOccurrence(@NotNull String url) {
+        this(url, null);
     }
 
     /**
@@ -76,17 +76,17 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @param file current file
      */
     public IgnoreEntryOccurrence(@NotNull VirtualFile file) {
-        this(file.getPath(), file);
+        this(file.getUrl(), file);
     }
 
     /**
      * Constructor.
      *
      * @param file current file
-     * @param path current file path
+     * @param url current file path
      */
-    public IgnoreEntryOccurrence(@NotNull String path, @Nullable VirtualFile file) {
-        this.path = path;
+    public IgnoreEntryOccurrence(@NotNull String url, @Nullable VirtualFile file) {
+        this.url = url;
         this.file = file;
     }
 
@@ -97,7 +97,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(path).append(items.toString()).toHashCode();
+        return new HashCodeBuilder().append(url).append(items.toString()).toHashCode();
     }
 
     /**
@@ -113,22 +113,12 @@ public class IgnoreEntryOccurrence implements Serializable {
         }
 
         final IgnoreEntryOccurrence entry = (IgnoreEntryOccurrence) obj;
-        boolean equals = path.equals(entry.path) && items.size() == entry.items.size();
+        boolean equals = url.equals(entry.url) && items.size() == entry.items.size();
         for (int i = 0; i < items.size(); i++) {
             equals = equals && items.get(i).toString().equals(entry.items.get(i).toString());
         }
 
         return equals;
-    }
-
-    /**
-     * Returns current file path.
-     *
-     * @return current file path
-     */
-    @NotNull
-    public String getPath() {
-        return path;
     }
 
     /**
@@ -139,7 +129,7 @@ public class IgnoreEntryOccurrence implements Serializable {
     @Nullable
     public VirtualFile getFile() {
         if (file == null) {
-            file = VirtualFileManager.getInstance().findFileByUrl(path);
+            file = VirtualFileManager.getInstance().findFileByUrl(url);
         }
         return file;
     }
@@ -173,7 +163,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     public static synchronized void serialize(@NotNull DataOutput out, @NotNull IgnoreEntryOccurrence entry)
             throws IOException {
-        out.writeUTF(entry.path);
+        out.writeUTF(entry.url);
         out.writeInt(entry.items.size());
         for (Pair<Matcher, Boolean> item : entry.items) {
             out.writeUTF(item.first.pattern().pattern());
@@ -190,12 +180,12 @@ public class IgnoreEntryOccurrence implements Serializable {
     @Nullable
     public static synchronized IgnoreEntryOccurrence deserialize(@NotNull DataInput in) {
         try {
-            final String path = in.readUTF();
-            if (StringUtils.isEmpty(path)) {
+            final String url = in.readUTF();
+            if (StringUtils.isEmpty(url)) {
                 return null;
             }
 
-            final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(path);
+            final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(url);
             int size = in.readInt();
             for (int i = 0; i < size; i++) {
                 final Pattern pattern = Pattern.compile(in.readUTF());
