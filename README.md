@@ -1,5 +1,5 @@
-.ignore v2.2.2
-==============
+.ignore 2.3.0-RC.1
+==================
 
 [ignore.hsz.mobi][website]
 
