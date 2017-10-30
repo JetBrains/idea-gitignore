@@ -2,7 +2,7 @@ plugins {
     id 'jacoco'
     id 'org.jetbrains.intellij' version '0.2.17'
     id 'de.undercouch.download' version '3.2.0'
-    id 'com.github.kt3k.coveralls' version '2.8.1'
+    id 'com.github.kt3k.coveralls' version '2.8.2'
 }
 
 apply plugin: 'org.jetbrains.intellij'
