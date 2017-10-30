@@ -337,7 +337,9 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             for (IgnoreEntryOccurrence value : values) {
                 String relativePath;
                 final VirtualFile entryFile = value.getFile();
-                if (fileType instanceof GitExcludeFileType) {
+                if (entryFile == null) {
+                    continue;
+                } else if (fileType instanceof GitExcludeFileType) {
                     VirtualFile workingDirectory = GitExcludeFileType.getWorkingDirectory(myProject, entryFile);
                     if (workingDirectory == null || !Utils.isUnder(file, workingDirectory)) {
                         continue;

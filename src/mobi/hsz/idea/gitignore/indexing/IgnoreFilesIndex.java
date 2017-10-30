@@ -248,7 +248,6 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     public static List<VirtualFile> getFiles(@NotNull Project project, @NotNull IgnoreFileType fileType) {
         return ContainerUtil.mapNotNull(getEntries(project, fileType),
                 new Function<IgnoreEntryOccurrence, VirtualFile>() {
-            @NotNull
             @Override
             public VirtualFile fun(@NotNull IgnoreEntryOccurrence entry) {
                 return entry.getFile();

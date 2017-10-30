@@ -49,9 +49,13 @@ import java.util.regex.Pattern;
  * @since 2.0
  */
 public class IgnoreEntryOccurrence implements Serializable {
-    /** Current ignore file. */
+    /** Current ignore file path. */
     @NotNull
-    private final VirtualFile file;
+    private final String path;
+
+    /** Current ignore file. */
+    @Nullable
+    private VirtualFile file;
 
     /** Collection of ignore entries converted to {@link Pattern}. */
     @NotNull
@@ -60,9 +64,29 @@ public class IgnoreEntryOccurrence implements Serializable {
     /**
      * Constructor.
      *
+     * @param path current file
+     */
+    public IgnoreEntryOccurrence(@NotNull String path) {
+        this(path, null);
+    }
+
+    /**
+     * Constructor.
+     *
      * @param file current file
      */
     public IgnoreEntryOccurrence(@NotNull VirtualFile file) {
+        this(file.getPath(), file);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param file current file
+     * @param path current file path
+     */
+    public IgnoreEntryOccurrence(@NotNull String path, @Nullable VirtualFile file) {
+        this.path = path;
         this.file = file;
     }
 
@@ -73,7 +97,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(file).append(items.toString()).toHashCode();
+        return new HashCodeBuilder().append(path).append(items.toString()).toHashCode();
     }
 
     /**
@@ -89,7 +113,7 @@ public class IgnoreEntryOccurrence implements Serializable {
         }
 
         final IgnoreEntryOccurrence entry = (IgnoreEntryOccurrence) obj;
-        boolean equals = file.equals(entry.file) && items.size() == entry.items.size();
+        boolean equals = path.equals(entry.path) && items.size() == entry.items.size();
         for (int i = 0; i < items.size(); i++) {
             equals = equals && items.get(i).toString().equals(entry.items.get(i).toString());
         }
@@ -98,12 +122,25 @@ public class IgnoreEntryOccurrence implements Serializable {
     }
 
     /**
+     * Returns current file path.
+     *
+     * @return current file path
+     */
+    @NotNull
+    public String getPath() {
+        return path;
+    }
+
+    /**
      * Returns current {@link VirtualFile}.
      *
      * @return current file
      */
-    @NotNull
+    @Nullable
     public VirtualFile getFile() {
+        if (file == null) {
+            file = VirtualFileManager.getInstance().findFileByUrl(path);
+        }
         return file;
     }
 
@@ -136,7 +173,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     public static synchronized void serialize(@NotNull DataOutput out, @NotNull IgnoreEntryOccurrence entry)
             throws IOException {
-        out.writeUTF(entry.getFile().toString());
+        out.writeUTF(entry.path);
         out.writeInt(entry.items.size());
         for (Pair<Matcher, Boolean> item : entry.items) {
             out.writeUTF(item.first.pattern().pattern());
@@ -158,18 +195,15 @@ public class IgnoreEntryOccurrence implements Serializable {
                 return null;
             }
 
-            final VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(path);
-            if (file != null) {
-                final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(file);
-                int size = in.readInt();
-                for (int i = 0; i < size; i++) {
-                    final Pattern pattern = Pattern.compile(in.readUTF());
-                    Boolean isNegated = in.readBoolean();
-                    entry.add(pattern.matcher(""), isNegated);
-                }
-
-                return entry;
+            final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(path);
+            int size = in.readInt();
+            for (int i = 0; i < size; i++) {
+                final Pattern pattern = Pattern.compile(in.readUTF());
+                Boolean isNegated = in.readBoolean();
+                entry.add(pattern.matcher(""), isNegated);
             }
+
+            return entry;
         } catch (IOException ignored) {
         }
 
