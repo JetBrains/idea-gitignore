@@ -1,6 +1,18 @@
 # Change Log
 
 
+## [v2.3.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.3.0-RC.1) (2017-10-30)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.2...v2.3.0-RC.1)
+
+**Fixed bugs:**
+
+- Hang related to IgnoreCoverEntryInspection [\#489](https://github.com/hsz/idea-gitignore/issues/489)
+- Expected only one value per-inputId for IgnoreFilesIndex [\#484](https://github.com/hsz/idea-gitignore/issues/484)
+- Plugin is incompatible with the new IDE build [\#491](https://github.com/hsz/idea-gitignore/issues/491)
+- NPE in MatcherUtil.match [\#485](https://github.com/hsz/idea-gitignore/issues/485)
+
+
 ## [v2.2.2](https://github.com/hsz/idea-gitignore/tree/v2.2.2) (2017-10-11)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.1...v2.2.2)

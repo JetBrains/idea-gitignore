@@ -77,21 +77,16 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.2.2"><b>v2.2.2</b></a> (2017-10-11) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v2.2.1...v2.2.1"><small>Full Changelog</small></a> <br/><br/>
-
-        <i>Implemented enhancements:</i>
-
-        <ul>
-            <li>Exclude .ignore langages from the "New Scratch" action (<a href="https://github.com/hsz/idea-gitignore/issues/448">448</a>)</li>
-            <li>Better discovery of ignored & tracked files (<a href="https://github.com/hsz/idea-gitignore/issues/455">455</a>)</li>
-        </ul>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.3.0-RC.1"><b>v2.3.0-RC.1</b></a> (2017-10-30) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v2.2.2...v2.3.0-RC.1"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>Mark UP and Prettier as not a VCS languages (<a href="https://github.com/hsz/idea-gitignore/issues/483">483</a>)</li>
-            <li>'directory' for Utils.isUnder must not be null in IgnoreManager (<a href="https://github.com/hsz/idea-gitignore/issues/482">482</a>, <a href="https://github.com/hsz/idea-gitignore/issues/477">477</a>)</li>
+            <li>Hang related to IgnoreCoverEntryInspection (<a href="https://github.com/hsz/idea-gitignore/issues/489">489</a>)</li>
+            <li>Expected only one value per-inputId for IgnoreFilesIndex (<a href="https://github.com/hsz/idea-gitignore/issues/484">484</a>)</li>
+            <li>Plugin is incompatible with the new IDE build (<a href="https://github.com/hsz/idea-gitignore/issues/491">491</a>)</li>
+            <li>NPE in MatcherUtil.match (<a href="https://github.com/hsz/idea-gitignore/issues/485">485</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
