@@ -183,6 +183,18 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
     };
 
+    /** {@link DumbService.DumbModeListener#exitDumbMode()} method body wrapped with {@link Debounced}. */
+    private final Debounced<Boolean> debouncedExitDumbMode = new Debounced<Boolean>(3000) {
+        @Override
+        protected void task(@Nullable Boolean refresh) {
+            cachedIgnoreFilesIndex.clear();
+            for (Map.Entry<String, IgnoreFileType> entry : FILE_TYPES_ASSOCIATION_QUEUE.entrySet()) {
+                associateFileType(entry.getKey(), entry.getValue());
+            }
+            debouncedStatusesChanged.run();
+        }
+    };
+
     /** Scheduled feature connected with {@link #debouncedRefreshTrackedIgnores}. */
     @NotNull
     private final InterruptibleScheduledFuture refreshTrackedIgnoredFeature;
@@ -507,11 +519,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
             @Override
             public void exitDumbMode() {
-                cachedIgnoreFilesIndex.clear();
-                for (Map.Entry<String, IgnoreFileType> entry : FILE_TYPES_ASSOCIATION_QUEUE.entrySet()) {
-                    associateFileType(entry.getKey(), entry.getValue());
-                }
-                debouncedStatusesChanged.run();
+                debouncedExitDumbMode.run();
             }
         });
 
