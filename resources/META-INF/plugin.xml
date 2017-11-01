@@ -83,6 +83,7 @@
         <i>Fixed bugs:</i>
 
         <ul>
+            <li>Ignored & tracked dialog shows empty files list (<a href="https://github.com/hsz/idea-gitignore/issues/486">486</a>)</li>
             <li>Hang related to IgnoreCoverEntryInspection (<a href="https://github.com/hsz/idea-gitignore/issues/489">489</a>)</li>
             <li>Expected only one value per-inputId for IgnoreFilesIndex (<a href="https://github.com/hsz/idea-gitignore/issues/484">484</a>)</li>
             <li>Plugin is incompatible with the new IDE build (<a href="https://github.com/hsz/idea-gitignore/issues/491">491</a>)</li>

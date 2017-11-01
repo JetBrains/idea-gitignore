@@ -125,6 +125,13 @@ Usage
 Changelog
 ---------
 
+## Unreleased
+
+**Fixed bugs:**
+
+- Ignored & tracked dialog shows empty files list [\#486](https://github.com/hsz/idea-gitignore/issues/486)
+
+
 ## [v2.3.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.3.0-RC.1) (2017-10-30)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.2...v2.3.0-RC.1)
