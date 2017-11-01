@@ -116,7 +116,7 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
                 myProject,
                 IgnoreBundle.message("notification.untrack.title", Utils.getVersion()),
                 IgnoreBundle.message("notification.untrack.content"),
-                NotificationType.WARNING,
+                NotificationType.INFORMATION,
                 new NotificationListener() {
                     @Override
                     public void hyperlinkUpdate(@NotNull Notification notification, @NotNull HyperlinkEvent event) {

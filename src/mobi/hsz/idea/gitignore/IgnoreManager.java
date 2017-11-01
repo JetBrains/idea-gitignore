@@ -597,7 +597,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 return;
             }
 
-            final ConcurrentMap<VirtualFile, VcsRoot> result = new ConcurrentWeakHashMap<VirtualFile, VcsRoot>();
+            final ConcurrentMap<VirtualFile, VcsRoot> result = ContainerUtil.newConcurrentMap();
             for (VcsRoot vcsRoot : vcsRoots) {
                 if (!(vcsRoot.getVcs() instanceof GitVcs) || vcsRoot.getPath() == null) {
                     continue;
