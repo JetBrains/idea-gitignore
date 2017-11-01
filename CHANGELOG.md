@@ -5,6 +5,7 @@ Change Log
 
 **Fixed bugs:**
 
+- Proper handling of outer files (global gitignore, .git/info/exclude) [\#476](https://github.com/hsz/idea-gitignore/issues/476) [\#453](https://github.com/hsz/idea-gitignore/issues/453)
 - Ignored & tracked dialog shows empty files list [\#486](https://github.com/hsz/idea-gitignore/issues/486)
 
 

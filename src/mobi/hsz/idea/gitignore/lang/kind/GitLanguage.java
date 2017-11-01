@@ -26,7 +26,6 @@ package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -38,6 +37,7 @@ import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,7 +53,7 @@ import java.util.Set;
  */
 public class GitLanguage extends IgnoreLanguage {
     @Nullable
-    private Boolean wasDumb = null;
+    private boolean fetched = false;
 
     /** The {@link GitLanguage} instance. */
     public static final GitLanguage INSTANCE = new GitLanguage();
@@ -104,31 +104,25 @@ public class GitLanguage extends IgnoreLanguage {
     @NotNull
     @Override
     public Set<VirtualFile> getOuterFiles(@NotNull final Project project, boolean dumb) {
-        final Pair<Project, IgnoreFileType> key = Pair.create(project, getFileType());
+        final int key = new HashCodeBuilder().append(project).append(getFileType()).toHashCode();
 
-        if (!Boolean.FALSE.equals(wasDumb)) {
-            if (dumb) {
-                super.getOuterFiles(project, true);
-            } else {
-                if (Boolean.TRUE.equals(wasDumb)) {
-                    outerFiles.remove(key);
-                }
-                if (!outerFiles.containsKey(key)) {
-                    final Set<VirtualFile> parentFiles = super.getOuterFiles(project, false);
-                    final ArrayList<VirtualFile> files = ContainerUtil.newArrayList(ContainerUtil.filter(
-                            IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
-                            new Condition<VirtualFile>() {
-                                @Override
-                                public boolean value(@NotNull VirtualFile virtualFile) {
-                                    return Utils.isInProject(virtualFile, project);
-                                }
-                            }
-                    ));
-                    ContainerUtil.addAllNotNull(parentFiles, files);
-                }
-            }
-            wasDumb = dumb;
+        if (dumb || (fetched && outerFiles.get(key) != null)) {
+            return super.getOuterFiles(project, true);
         }
-        return ContainerUtil.getOrElse(outerFiles, key, ContainerUtil.<VirtualFile>newHashSet());
+
+        final Set<VirtualFile> parentFiles = super.getOuterFiles(project, false);
+        final ArrayList<VirtualFile> files = ContainerUtil.newArrayList(ContainerUtil.filter(
+                IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
+                new Condition<VirtualFile>() {
+                    @Override
+                    public boolean value(@NotNull VirtualFile virtualFile) {
+                        return Utils.isInProject(virtualFile, project);
+                    }
+                }
+        ));
+
+        fetched = true;
+        ContainerUtil.addAllNotNull(parentFiles, files);
+        return outerFiles.getOrElse(key, ContainerUtil.<VirtualFile>newHashSet());
     }
 }

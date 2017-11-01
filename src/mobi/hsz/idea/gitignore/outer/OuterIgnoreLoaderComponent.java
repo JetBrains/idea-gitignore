@@ -121,7 +121,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 @Override
                 public void run() {
                     final List<VirtualFile> outerFiles =
-                            ContainerUtil.newArrayList(language.getOuterFiles(myProject, true));
+                            ContainerUtil.newArrayList(language.getOuterFiles(myProject, false));
                     if (outerFiles.isEmpty() || outerFiles.contains(file)) {
                         return;
                     }
@@ -129,14 +129,14 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                     for (final FileEditor fileEditor : source.getEditors(file)) {
                         if (fileEditor instanceof TextEditor) {
                             final OuterIgnoreWrapper wrapper = new OuterIgnoreWrapper(project, language, outerFiles);
-                            final JComponent c = wrapper.getComponent();
-                            source.addBottomComponent(fileEditor, c);
+                            final JComponent component = wrapper.getComponent();
+                            source.addBottomComponent(fileEditor, component);
 
                             IgnoreSettings.getInstance().addListener(new IgnoreSettings.Listener() {
                                 @Override
                                 public void onChange(@NotNull KEY key, Object value) {
                                     if (KEY.OUTER_IGNORE_RULES.equals(key)) {
-                                        c.setVisible((Boolean) value);
+                                        component.setVisible((Boolean) value);
                                     }
                                 }
                             });
@@ -145,7 +145,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                             Disposer.register(fileEditor, new Disposable() {
                                 @Override
                                 public void dispose() {
-                                    source.removeBottomComponent(fileEditor, c);
+                                    source.removeBottomComponent(fileEditor, component);
                                 }
                             });
                         }

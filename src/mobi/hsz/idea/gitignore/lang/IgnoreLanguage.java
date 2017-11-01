@@ -27,18 +27,18 @@ package mobi.hsz.idea.gitignore.lang;
 import com.intellij.lang.InjectableLanguage;
 import com.intellij.lang.Language;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.WeakHashMap;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.ExpiringMap;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -83,8 +83,7 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
 
     /** Outer files cache. */
     @NotNull
-    protected WeakHashMap<Pair<Project, IgnoreFileType>, Set<VirtualFile>> outerFiles =
-            new WeakHashMap<Pair<Project, IgnoreFileType>, Set<VirtualFile>>(1);
+    protected ExpiringMap<Integer, Set<VirtualFile>> outerFiles = new ExpiringMap<Integer, Set<VirtualFile>>(5000);
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage() {
@@ -230,15 +229,15 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
      */
     @NotNull
     public Set<VirtualFile> getOuterFiles(@NotNull final Project project, boolean dumb) {
-        final Pair<Project, IgnoreFileType> key = Pair.create(project, getFileType());
-        if (!outerFiles.containsKey(key)) {
+        final int key = new HashCodeBuilder().append(project).append(getFileType()).toHashCode();
+        if (outerFiles.get(key) == null) {
             final Set<VirtualFile> files = ContainerUtil.newHashSet();
             for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : getOuterFileFetchers()) {
                 ContainerUtil.addAllNotNull(files, fetcher.fetch(project));
             }
-            outerFiles.put(key, files);
+            outerFiles.set(key, files);
         }
-        return ContainerUtil.getOrElse(outerFiles, key, ContainerUtil.<VirtualFile>newHashSet());
+        return outerFiles.getOrElse(key, ContainerUtil.<VirtualFile>newHashSet());
     }
 
     /**

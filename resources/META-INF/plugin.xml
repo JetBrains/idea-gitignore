@@ -83,6 +83,7 @@
         <i>Fixed bugs:</i>
 
         <ul>
+            <li>Proper handling of outer files (global gitignore, .git/info/exclude) (<a href="https://github.com/hsz/idea-gitignore/issues/476">476</a>, <a href="https://github.com/hsz/idea-gitignore/issues/453">453</a>)</li>
             <li>Performance optimizations (<a href="https://github.com/hsz/idea-gitignore/issues/490">490</a>)</li>
             <li>Ignored & tracked dialog shows empty files list (<a href="https://github.com/hsz/idea-gitignore/issues/486">486</a>)</li>
             <li>Hang related to IgnoreCoverEntryInspection (<a href="https://github.com/hsz/idea-gitignore/issues/489">489</a>)</li>

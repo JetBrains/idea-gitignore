@@ -28,7 +28,6 @@ import com.intellij.openapi.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.ref.WeakReference;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -45,8 +44,7 @@ public class ExpiringMap<K, V> {
     private final int time;
 
     /** Cache map. */
-    private final ConcurrentHashMap<WeakReference<K>, Pair<V, Long>> map =
-            new ConcurrentHashMap<WeakReference<K>, Pair<V, Long>>();
+    private final ConcurrentHashMap<K, Pair<V, Long>> map = new ConcurrentHashMap<K, Pair<V, Long>>();
 
     /**
      * Constructor.
@@ -66,13 +64,12 @@ public class ExpiringMap<K, V> {
     @Nullable
     public V get(@NotNull K key) {
         long current = System.currentTimeMillis();
-        final WeakReference<K> weakKey = new WeakReference<K>(key);
-        final Pair<V, Long> data = map.get(weakKey);
+        final Pair<V, Long> data = map.get(key);
         if (data != null) {
             if ((data.getSecond() + time) > current) {
                 return data.getFirst();
             }
-            map.remove(weakKey);
+            map.remove(key);
         }
         return null;
     }
@@ -80,20 +77,32 @@ public class ExpiringMap<K, V> {
     /**
      * Stores value under given key and resets expiration counter.
      *
-     * @param key to set
+     * @param key   to set
      * @param value to set
      * @return added value
      */
     @NotNull
     public V set(@NotNull K key, @NotNull V value) {
-        final WeakReference<K> weakKey = new WeakReference<K>(key);
         long current = System.currentTimeMillis();
-        map.put(weakKey, Pair.create(value, current));
+        map.put(key , Pair.create(value, current));
         return value;
     }
 
     /** Clears {@link #map}. */
     public void clear() {
         map.clear();
+    }
+
+    /**
+     * Returns value under given key or default.
+     *
+     * @param key          to check
+     * @param defaultValue value if null
+     * @return value or default
+     */
+    @NotNull
+    public V getOrElse(@NotNull K key, @NotNull V defaultValue) {
+        final V value = get(key);
+        return value != null ? value : defaultValue;
     }
 }
