@@ -110,6 +110,7 @@ public class GitLanguage extends IgnoreLanguage {
             return super.getOuterFiles(project, true);
         }
 
+        fetched = true;
         final Set<VirtualFile> parentFiles = super.getOuterFiles(project, false);
         final ArrayList<VirtualFile> files = ContainerUtil.newArrayList(ContainerUtil.filter(
                 IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
@@ -121,7 +122,6 @@ public class GitLanguage extends IgnoreLanguage {
                 }
         ));
 
-        fetched = true;
         ContainerUtil.addAllNotNull(parentFiles, files);
         return outerFiles.getOrElse(key, ContainerUtil.<VirtualFile>newHashSet());
     }
