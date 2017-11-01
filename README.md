@@ -138,6 +138,7 @@ Changelog
 
 **Fixed bugs:**
 
+- Performance optimizations [\#490](https://github.com/hsz/idea-gitignore/issues/490)
 - Hang related to IgnoreCoverEntryInspection [\#489](https://github.com/hsz/idea-gitignore/issues/489)
 - Expected only one value per-inputId for IgnoreFilesIndex [\#484](https://github.com/hsz/idea-gitignore/issues/484)
 - Plugin is incompatible with the new IDE build [\#491](https://github.com/hsz/idea-gitignore/issues/491)
