@@ -125,14 +125,14 @@ Usage
 Changelog
 ---------
 
-## Unreleased
+### Unreleased
 
 **Fixed bugs:**
 
 - Ignored & tracked dialog shows empty files list [\#486](https://github.com/hsz/idea-gitignore/issues/486)
 
 
-## [v2.3.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.3.0-RC.1) (2017-10-30)
+### [v2.3.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.3.0-RC.1) (2017-10-30)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.2...v2.3.0-RC.1)
 
@@ -144,7 +144,7 @@ Changelog
 - NPE in MatcherUtil.match [\#485](https://github.com/hsz/idea-gitignore/issues/485)
 
 
-## [v2.2.2](https://github.com/hsz/idea-gitignore/tree/v2.2.2) (2017-10-11)
+### [v2.2.2](https://github.com/hsz/idea-gitignore/tree/v2.2.2) (2017-10-11)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.1...v2.2.2)
 
