@@ -1,5 +1,5 @@
-.ignore 2.3.0-RC.1
-==================
+.ignore 2.3.0
+=============
 
 [ignore.hsz.mobi][website]
 
@@ -125,22 +125,16 @@ Usage
 Changelog
 ---------
 
-### Unreleased
+### [v2.3.0](https://github.com/hsz/idea-gitignore/tree/v2.3.0) (2017-11-02)
 
-**Fixed bugs:**
-
-- Proper handling of outer files (global gitignore, .git/info/exclude) [\#476](https://github.com/hsz/idea-gitignore/issues/476) [\#453](https://github.com/hsz/idea-gitignore/issues/453)
-- Ignored & tracked dialog shows empty files list [\#486](https://github.com/hsz/idea-gitignore/issues/486)
-
-
-### [v2.3.0-RC.1](https://github.com/hsz/idea-gitignore/tree/v2.3.0-RC.1) (2017-10-30)
-
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.2...v2.3.0-RC.1)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.2...v2.3.0)
 
 **Fixed bugs:**
 
 - Performance optimizations [\#490](https://github.com/hsz/idea-gitignore/issues/490)
 - Hang related to IgnoreCoverEntryInspection [\#489](https://github.com/hsz/idea-gitignore/issues/489)
+- Proper handling of outer files (global gitignore, .git/info/exclude) [\#476](https://github.com/hsz/idea-gitignore/issues/476) [\#453](https://github.com/hsz/idea-gitignore/issues/453)
+- Ignored & tracked dialog shows empty files list [\#486](https://github.com/hsz/idea-gitignore/issues/486)
 - Expected only one value per-inputId for IgnoreFilesIndex [\#484](https://github.com/hsz/idea-gitignore/issues/484)
 - Plugin is incompatible with the new IDE build [\#491](https://github.com/hsz/idea-gitignore/issues/491)
 - NPE in MatcherUtil.match [\#485](https://github.com/hsz/idea-gitignore/issues/485)
