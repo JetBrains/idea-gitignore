@@ -71,6 +71,7 @@ public class IgnoreColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor(IgnoreBundle.message("highlighter.slash"), IgnoreHighlighterColors.SLASH),
             new AttributesDescriptor(IgnoreBundle.message("highlighter.syntax"), IgnoreHighlighterColors.SYNTAX),
             new AttributesDescriptor(IgnoreBundle.message("highlighter.value"), IgnoreHighlighterColors.VALUE),
+            new AttributesDescriptor(IgnoreBundle.message("highlighter.unused"), IgnoreHighlighterColors.UNUSED),
     };
 
     /**
