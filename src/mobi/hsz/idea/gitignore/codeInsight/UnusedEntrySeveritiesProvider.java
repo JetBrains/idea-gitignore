@@ -61,7 +61,10 @@ public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
 
         result.add(new HighlightInfoType.HighlightInfoTypeImpl(
                 UNUSED_ENTRY,
-                TextAttributesKey.createTextAttributesKey(IgnoreBundle.message("codeInspection.unusedEntry"), IgnoreHighlighterColors.UNUSED)
+                TextAttributesKey.createTextAttributesKey(
+                        IgnoreBundle.message("codeInspection.unusedEntry"),
+                        IgnoreHighlighterColors.UNUSED
+                )
         ));
         return result;
     }
