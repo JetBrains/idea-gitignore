@@ -74,7 +74,7 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
             for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                 final IgnoreFileType fileType = language.getFileType();
                 if (language.isOuterFileSupported()) {
-                    for (VirtualFile file : language.getOuterFiles(project)) {
+                    for (VirtualFile file : language.getOuterFiles(project, true)) {
                         if (file == null || !file.isValid()) {
                             continue;
                         }
