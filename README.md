@@ -1,4 +1,4 @@
-.ignore 2.3.0
+.ignore 2.3.1
 =============
 
 [ignore.hsz.mobi][website]
@@ -125,19 +125,15 @@ Usage
 Changelog
 ---------
 
-### [v2.3.0](https://github.com/hsz/idea-gitignore/tree/v2.3.0) (2017-11-02)
+### [v2.3.1](https://github.com/hsz/idea-gitignore/tree/v2.3.1) (2017-11-17)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.2...v2.3.0)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.3.0...v2.3.1)
 
 **Fixed bugs:**
 
-- Performance optimizations [\#490](https://github.com/hsz/idea-gitignore/issues/490)
-- Hang related to IgnoreCoverEntryInspection [\#489](https://github.com/hsz/idea-gitignore/issues/489)
-- Proper handling of outer files (global gitignore, .git/info/exclude) [\#476](https://github.com/hsz/idea-gitignore/issues/476) [\#453](https://github.com/hsz/idea-gitignore/issues/453)
-- Ignored & tracked dialog shows empty files list [\#486](https://github.com/hsz/idea-gitignore/issues/486)
-- Expected only one value per-inputId for IgnoreFilesIndex [\#484](https://github.com/hsz/idea-gitignore/issues/484)
-- Plugin is incompatible with the new IDE build [\#491](https://github.com/hsz/idea-gitignore/issues/491)
-- NPE in MatcherUtil.match [\#485](https://github.com/hsz/idea-gitignore/issues/485)
+- IDE Fatal Error: Accessing 'IgnoreFilesIndex' during processing 'FilenameIndex' [\#480](https://github.com/hsz/idea-gitignore/issues/480)
+- Missing/Wrong Key IGNORE.UNUSED_ENTRY in colour scheme [\#494](https://github.com/hsz/idea-gitignore/issues/494)
+- It's prohibited to access index during event dispatching [\#493](https://github.com/hsz/idea-gitignore/issues/493)
 
 [Full Changelog History](./CHANGELOG.md)
 

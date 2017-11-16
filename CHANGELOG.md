@@ -1,6 +1,17 @@
 Change Log
 ----------
 
+### [v2.3.1](https://github.com/hsz/idea-gitignore/tree/v2.3.1) (2017-11-17)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.3.0...v2.3.1)
+
+**Fixed bugs:**
+
+- IDE Fatal Error: Accessing 'IgnoreFilesIndex' during processing 'FilenameIndex' [\#480](https://github.com/hsz/idea-gitignore/issues/480)
+- Missing/Wrong Key IGNORE.UNUSED_ENTRY in colour scheme [\#494](https://github.com/hsz/idea-gitignore/issues/494)
+- It's prohibited to access index during event dispatching [\#493](https://github.com/hsz/idea-gitignore/issues/493)
+
+
 ## [v2.3.0](https://github.com/hsz/idea-gitignore/tree/v2.3.0) (2017-11-02)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.2.2...v2.3.0)
