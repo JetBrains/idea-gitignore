@@ -38,6 +38,7 @@ import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbService;
+import com.intellij.openapi.project.NoAccessDuringPsiEvents;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
@@ -331,7 +332,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         if (cached != null) {
             return cached;
         }
-        if (DumbService.isDumb(myProject) || !isEnabled() || baseDir == null || !Utils.isUnder(file, baseDir)) {
+        if (DumbService.isDumb(myProject) || !isEnabled() || baseDir == null || !Utils.isUnder(file, baseDir) ||
+                NoAccessDuringPsiEvents.isInsideEventProcessing()) {
             return false;
         }
 
