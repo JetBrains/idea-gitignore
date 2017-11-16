@@ -28,6 +28,8 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.ide.projectView.PresentationData;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -46,12 +48,15 @@ import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.util.PsiModificationTracker;
 import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.messages.MessageBus;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -535,5 +540,18 @@ public class Utils {
             data.addText(data.getPresentableText(), REGULAR_ATTRIBUTES);
         }
         data.addText(" " + text, attributes);
+    }
+
+    /**
+     * Checks if we're currently inside event processing.
+     *
+     * @return event is processed
+     */
+    public static boolean isInsideEventProcessing() {
+        Application application = ApplicationManager.getApplication();
+        if (!application.isWriteAccessAllowed()) return false;
+
+        MessageBus bus = application.getMessageBus();
+        return bus.hasUndeliveredEvents(VirtualFileManager.VFS_CHANGES) || bus.hasUndeliveredEvents(PsiModificationTracker.TOPIC);
     }
 }
