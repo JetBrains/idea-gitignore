@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>2.3.1</version>
+    <version>2.3.2</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -77,13 +77,14 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.3.1"><b>v2.3.1</b></a> (2017-11-17) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v2.3.0...v2.3.1"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.3.2"><b>v2.3.2</b></a> (2017-11-17) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v2.3.0...v2.3.2"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Fixed bugs:</i>
 
         <ul>
             <li>IDE Fatal Error: Accessing 'IgnoreFilesIndex' during processing 'FilenameIndex' (<a href="https://github.com/hsz/idea-gitignore/issues/480">480</a>)</li>
+            <li>ConcurrentModificationException in IgnoreSettings.notifyOnChange (<a href="https://github.com/hsz/idea-gitignore/issues/480">480</a>)</li>
             <li>Missing/Wrong Key IGNORE.UNUSED_ENTRY in colour scheme (<a href="https://github.com/hsz/idea-gitignore/issues/494">494</a>)</li>
             <li>It's prohibited to access index during event dispatching (<a href="https://github.com/hsz/idea-gitignore/issues/493">493</a>)</li>
         </ul>
