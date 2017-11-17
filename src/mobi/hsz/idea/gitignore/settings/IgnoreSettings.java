@@ -29,6 +29,7 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.containers.ConcurrentList;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -137,7 +138,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     private final List<UserTemplate> userTemplates = ContainerUtil.newArrayList(DEFAULT_TEMPLATE);
 
     /** Listeners list. */
-    private final List<Listener> listeners = ContainerUtil.newArrayList();
+    private final ConcurrentList<Listener> listeners = ContainerUtil.createConcurrentList();
 
     /**
      * Get the instance of this service.
