@@ -1,4 +1,4 @@
-.idea/
+.idea/*.xml
 *.iml
 out/
 gen/
