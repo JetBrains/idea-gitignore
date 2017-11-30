@@ -3,7 +3,11 @@
 
 [ignore.hsz.mobi][website]
 
-[![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis] [![Donate][badge-paypal-img]][badge-paypal]
+[![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
+
+[![Donate][badge-paypal-img]][badge-paypal]
+[![Backers on Open Collective](https://opencollective.com/ignore/backers/badge.svg)](#backers)
+[![Sponsors on Open Collective](https://opencollective.com/ignore/sponsors/badge.svg)](#sponsors)
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)][plugin-website]
 [![Downloads](http://phpstorm.espend.de/badge/7495/downloads)][plugin-website]
@@ -174,6 +178,22 @@ Developed By
 - [**@maximilianonajle** Maximiliano Najle](https://github.com/maximilianonajle)
 - [**@jimschubert** Jim Schubert](https://github.com/jimschubert)
 - [**@sergei-ivanov** Sergei Ivanov](https://github.com/sergei-ivanov)
+
+
+Backers
+-------
+
+Support us with a monthly donation and help us continue our activities.
+
+[![Backers](https://opencollective.com/ignore/backers.svg)](https://opencollective.com/ignore#support)
+
+
+Sponsors
+--------
+
+Become a sponsor to get your logo on our README on Github.
+
+[![Sponsors](https://opencollective.com/ignore/sponsors.svg)](https://opencollective.com/ignore#support)
 
 
 Tools
