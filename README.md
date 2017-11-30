@@ -1,8 +1,6 @@
 .ignore 2.3.2
 =============
 
-[ignore.hsz.mobi][website]
-
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
 
 [![Donate][badge-paypal-img]][badge-paypal]
