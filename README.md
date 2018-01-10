@@ -16,7 +16,7 @@ Introduction
 
 **.ignore** is a plugin for:
  
-- `.gitignore` (GIT)
+- `.gitignore` (Git)
 - `.hgignore` (Mercurial)
 - `.npmignore` (NPM)
 - `.dockerignore` (Docker)

@@ -168,7 +168,7 @@ task generateParser(type: JavaExec) {
 }
 
 task pullResources(type: Exec) {
-    description 'Pulls gitignore resources from GIT.'
+    description 'Pulls gitignore resources from Git.'
 
     workingDir 'resources/gitignore'
     commandLine 'git', 'pull', 'origin', 'master'

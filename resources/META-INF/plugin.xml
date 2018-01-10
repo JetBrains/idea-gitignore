@@ -17,7 +17,7 @@
 
       <b>.ignore</b> is a plugin for
       <i>
-        .gitignore (GIT),
+        .gitignore (Git),
         .hgignore (Mercurial),
         .npmignore (NPM),
         .dockerignore (Docker),
