@@ -231,7 +231,7 @@ Copyright (c) 2017 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 
 [badge-gitter-img]:       https://badges.gitter.im/hsz/idea-gitignore.svg
 [badge-gitter]:           https://gitter.im/hsz/idea-gitignore
-[badge-travis-img]:       https://travis-ci.org/hsz/idea-gitignore.svg
+[badge-travis-img]:       https://travis-ci.org/hsz/idea-gitignore.svg?branch=master
 [badge-travis]:           https://travis-ci.org/hsz/idea-gitignore
 [badge-coveralls-img]:    https://coveralls.io/repos/github/hsz/idea-gitignore/badge.svg?branch=master
 [badge-coveralls]:        https://coveralls.io/github/hsz/idea-gitignore?branch=master
