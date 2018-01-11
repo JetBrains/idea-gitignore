@@ -78,7 +78,6 @@ public class Notify {
         show(project, title, content, NOTIFICATION_GROUP, type, null);
     }
 
-
     /**
      * Shows {@link Notification} in ".ignore plugin" group.
      *
