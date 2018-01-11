@@ -1,7 +1,9 @@
 Change Log
 ----------
 
-### Unreleased
+### [v2.4.0](https://github.com/hsz/idea-gitignore/tree/v2.4.0) (2018-01-11)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.3.2...v2.4.0)
 
 **Implemented enhancements:**
 
