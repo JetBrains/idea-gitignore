@@ -34,8 +34,10 @@ import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,7 +54,7 @@ public class Glob {
     private static final ConcurrentMap<String, String> GLOBS_CACHE = ContainerUtil.newConcurrentMap();
 
     /** Cache map that holds compiled regex. */
-    private static final ConcurrentMap<String, WeakPattern> PATTERNS_CACHE = ContainerUtil.newConcurrentMap();
+    private static final ConcurrentMap<String, Pattern> PATTERNS_CACHE = ContainerUtil.newConcurrentMap();
 
     /** Private constructor to prevent creating {@link Glob} instance. */
     private Glob() {
@@ -196,9 +198,9 @@ public class Glob {
         final String regex = syntax.equals(IgnoreBundle.Syntax.GLOB) ? createRegex(rule, acceptChildren) : rule;
         try {
             if (!PATTERNS_CACHE.containsKey(regex)) {
-                PATTERNS_CACHE.put(regex, new WeakPattern(Pattern.compile(regex)));
+                PATTERNS_CACHE.put(regex, Pattern.compile(regex));
             }
-            return PATTERNS_CACHE.get(regex).get();
+            return PATTERNS_CACHE.get(regex);
         } catch (PatternSyntaxException e) {
             return null;
         }
@@ -390,25 +392,5 @@ public class Glob {
     public static void clearCache() {
         GLOBS_CACHE.clear();
         PATTERNS_CACHE.clear();
-    }
-
-    /** Weak reference to {@link Pattern}. */
-    private static final class WeakPattern extends WeakReference<Pattern> {
-        private int myHashCode;
-
-        WeakPattern(@NotNull Pattern referent) {
-            super(referent);
-            myHashCode = System.identityHashCode(referent);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return this == o || (o instanceof WeakPattern && ((WeakPattern) o).get() == get());
-        }
-
-        @Override
-        public int hashCode() {
-            return myHashCode;
-        }
     }
 }
