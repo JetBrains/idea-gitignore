@@ -129,6 +129,10 @@ Changelog
 
 ### Unreleased
 
+**Implemented enhancements:**
+
+- "Add to ignore file" action in "Version Control > Unversioned Files" view [\#509](https://github.com/hsz/idea-gitignore/issues/509)
+
 **Fixed bugs:**
 
 - Opening multiple projects in a new window makes IDEA plug-in unresponsive [\#510](https://github.com/hsz/idea-gitignore/issues/510)
