@@ -61,10 +61,6 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
     @NonNls
     private static final String DOT = ".";
 
-    /** Ignore languages group name. */
-    @NonNls
-    public static final String GROUP = "IGNORE_GROUP";
-
     /** The Ignore file extension suffix. */
     @NotNull
     private final String extension;

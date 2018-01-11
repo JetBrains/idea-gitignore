@@ -5,6 +5,7 @@ Change Log
 
 **Implemented enhancements:**
 
+- Better access to Notifications settings in "Appearance & Behaviour > Notifications" [\#506](https://github.com/hsz/idea-gitignore/issues/506)
 - "Add to ignore file" action in "Version Control > Unversioned Files" view [\#509](https://github.com/hsz/idea-gitignore/issues/509)
 
 **Fixed bugs:**

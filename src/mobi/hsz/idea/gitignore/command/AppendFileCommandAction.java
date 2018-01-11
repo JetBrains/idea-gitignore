@@ -24,9 +24,7 @@
 
 package mobi.hsz.idea.gitignore.command;
 
-import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
@@ -41,11 +39,11 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Constants;
+import mobi.hsz.idea.gitignore.util.Notify;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -137,13 +135,15 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 final VirtualFile baseDir = project.getBaseDir();
                 if (content.contains(entry.getText()) && baseDir != null) {
-                    Notifications.Bus.notify(new Notification(IgnoreLanguage.GROUP,
+                    Notify.show(
+                            project,
                             IgnoreBundle.message("action.appendFile.entryExists", entry.getText()),
                             IgnoreBundle.message(
                                     "action.appendFile.entryExists.in",
                                     Utils.getRelativePath(baseDir, file.getVirtualFile())
                             ),
-                            NotificationType.WARNING), project);
+                            NotificationType.WARNING
+                    );
                     content.remove(entry.getText());
                 }
             }

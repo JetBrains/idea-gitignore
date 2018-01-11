@@ -24,9 +24,7 @@
 
 package mobi.hsz.idea.gitignore.actions;
 
-import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
@@ -37,8 +35,8 @@ import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
+import mobi.hsz.idea.gitignore.util.Notify;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -143,12 +141,18 @@ public class IgnoreFileAction extends DumbAwareAction {
                 if (path.isEmpty()) {
                     final VirtualFile baseDir = project.getBaseDir();
                     if (baseDir != null) {
-                        Notifications.Bus.notify(new Notification(IgnoreLanguage.GROUP,
-                                IgnoreBundle.message("action.ignoreFile.addError",
-                                        Utils.getRelativePath(baseDir, file)),
-                                IgnoreBundle.message("action.ignoreFile.addError.to",
-                                        Utils.getRelativePath(baseDir, ignore.getVirtualFile())),
-                                NotificationType.ERROR), project);
+                        Notify.show(
+                                project,
+                                IgnoreBundle.message(
+                                        "action.ignoreFile.addError",
+                                        Utils.getRelativePath(baseDir, file)
+                                ),
+                                IgnoreBundle.message(
+                                        "action.ignoreFile.addError.to",
+                                        Utils.getRelativePath(baseDir, ignore.getVirtualFile())
+                                ),
+                                NotificationType.ERROR
+                        );
                     }
                 } else {
                     paths.add(path);

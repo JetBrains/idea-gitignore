@@ -27,7 +27,6 @@ package mobi.hsz.idea.gitignore.util;
 import com.intellij.notification.*;
 import com.intellij.openapi.project.Project;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,6 +37,18 @@ import org.jetbrains.annotations.Nullable;
  * @since 1.7
  */
 public class Notify {
+    private static final NotificationGroup NOTIFICATION_GROUP = new NotificationGroup(
+            IgnoreBundle.message("notification.group"),
+            NotificationDisplayType.STICKY_BALLOON,
+            true
+    );
+
+    private static final NotificationGroup NOTIFICATION_GROUP_UPDATE = new NotificationGroup(
+            IgnoreBundle.message("notification.group.update"),
+            NotificationDisplayType.STICKY_BALLOON,
+            true
+    );
+
     /**
      * Shows {@link Notification} in IGNORE_GROUP_UPDATE group.
      *
@@ -48,14 +59,28 @@ public class Notify {
                 project,
                 IgnoreBundle.message("notification.update.title", Utils.getVersion()),
                 IgnoreBundle.message("notification.update.content"),
-                IgnoreLanguage.GROUP + "_UPDATE",
+                NOTIFICATION_GROUP_UPDATE,
                 NotificationType.INFORMATION,
                 NotificationListener.URL_OPENING_LISTENER
         );
     }
 
     /**
-     * Shows {@link Notification} in {@link IgnoreLanguage#GROUP} group.
+     * Shows {@link Notification} in ".ignore plugin" group.
+     *
+     * @param project   current project
+     * @param title     notification title
+     * @param content   notification text
+     * @param type      notification type
+     */
+    public static void show(@NotNull Project project, @NotNull String title, @NotNull String content,
+                            @NotNull NotificationType type) {
+        show(project, title, content, NOTIFICATION_GROUP, type, null);
+    }
+
+
+    /**
+     * Shows {@link Notification} in ".ignore plugin" group.
      *
      * @param project   current project
      * @param title     notification title
@@ -65,27 +90,22 @@ public class Notify {
      */
     public static void show(@NotNull Project project, @NotNull String title, @NotNull String content,
                             @NotNull NotificationType type, @Nullable NotificationListener listener) {
-        show(project, title, content, IgnoreLanguage.GROUP, type, listener);
+        show(project, title, content, NOTIFICATION_GROUP, type, listener);
     }
 
     /**
      * Shows {@link Notification}.
      *
-     * @param project   current project
-     * @param title     notification title
-     * @param displayId notification group
-     * @param content   notification text
-     * @param type      notification type
-     * @param listener  optional listener
+     * @param project  current project
+     * @param title    notification title
+     * @param group    notification group
+     * @param content  notification text
+     * @param type     notification type
+     * @param listener optional listener
      */
     public static void show(@NotNull Project project, @NotNull String title, @NotNull String content,
-                            @NotNull String displayId, @NotNull NotificationType type,
+                            @NotNull NotificationGroup group, @NotNull NotificationType type,
                             @Nullable NotificationListener listener) {
-        NotificationGroup group = new NotificationGroup(
-                displayId,
-                NotificationDisplayType.STICKY_BALLOON,
-                true
-        );
         Notification notification = group.createNotification(title, content, type, listener);
         Notifications.Bus.notify(notification, project);
     }

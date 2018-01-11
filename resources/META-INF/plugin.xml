@@ -83,6 +83,7 @@
         <i>Implemented enhancements:</i>
 
         <ul>
+            <li>Better access to Notifications settings in "Appearance & Behaviour > Notifications" (<a href="https://github.com/hsz/idea-gitignore/issues/506">506</a>)</li>
             <li>"Add to ignore file" action in "Version Control > Unversioned Files" view (<a href="https://github.com/hsz/idea-gitignore/issues/509">509</a>)</li>
         </ul>
 
