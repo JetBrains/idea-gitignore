@@ -1,6 +1,13 @@
 Change Log
 ----------
 
+### Unreleased
+
+**Fixed bugs:**
+
+- Opening multiple projects in a new window makes IDEA plug-in unresponsive [\#510](https://github.com/hsz/idea-gitignore/issues/510)
+
+
 ### [v2.3.2](https://github.com/hsz/idea-gitignore/tree/v2.3.2) (2017-11-17)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.3.0...v2.3.2)

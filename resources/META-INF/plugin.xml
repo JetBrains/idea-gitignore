@@ -83,10 +83,7 @@
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>IDE Fatal Error: Accessing 'IgnoreFilesIndex' during processing 'FilenameIndex' (<a href="https://github.com/hsz/idea-gitignore/issues/480">480</a>)</li>
-            <li>ConcurrentModificationException in IgnoreSettings.notifyOnChange (<a href="https://github.com/hsz/idea-gitignore/issues/480">480</a>)</li>
-            <li>Missing/Wrong Key IGNORE.UNUSED_ENTRY in colour scheme (<a href="https://github.com/hsz/idea-gitignore/issues/494">494</a>)</li>
-            <li>It's prohibited to access index during event dispatching (<a href="https://github.com/hsz/idea-gitignore/issues/493">493</a>)</li>
+            <li>Opening multiple projects in a new window makes IDEA plug-in unresponsive (<a href="https://github.com/hsz/idea-gitignore/issues/510">510</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
