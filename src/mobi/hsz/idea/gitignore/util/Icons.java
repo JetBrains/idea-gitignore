@@ -59,6 +59,9 @@ public class Icons {
     /** ESLint icon. */
     public static final Icon ESLINT = IconLoader.getIcon("/icons/icon_eslint.png");
 
+    /** ElasticBeanstalk icon. */
+    public static final Icon ELASTIC_BEANSTALK = IconLoader.getIcon("/icons/icon_elasticbeanstalk.png");
+
     /** Git icon. */
     public static final Icon GIT = IconLoader.getIcon("/icons/icon_git.png");
 

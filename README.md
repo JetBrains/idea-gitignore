@@ -39,6 +39,7 @@ Introduction
 - `.helmignore` (Kubernetes Helm)
 - `.upignore` (Up)
 - `.prettierignore` (Prettier)
+- `.ebignore` (ElasticBeanstalk)
 
 files in your project. It supports following JetBrains IDEs:
 
@@ -126,6 +127,12 @@ Usage
 
 Changelog
 ---------
+
+### Unreleased
+
+**Implemented enhancements:**
+
+- `.ebignore` (ElasticBeanstalk) support [\#520](https://github.com/hsz/idea-gitignore/issues/520)
 
 ### [v2.4.0](https://github.com/hsz/idea-gitignore/tree/v2.4.0) (2018-01-11)
 

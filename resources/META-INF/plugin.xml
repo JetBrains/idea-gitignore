@@ -40,7 +40,8 @@
         .swagger-codegen-ignore (Swagger Codegen),
         .helmignore (Kubernetes Helm),
         .upignore (Up),
-        .prettierignore (Prettier)
+        .prettierignore (Prettier),
+        .ebignore (ElasticBeanstalk)
       </i>files in your project.
       <br/>
       <br/>
@@ -201,61 +202,10 @@
         <vcs.fileStatusProvider
                 implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
 
-        <lang.parserDefinition language="Ignore"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Bazaar"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Chef"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="CloudFoundry"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Cvs"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Darcs"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Docker"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="ESLint"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Floobits"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Fossil"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Git"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Git exclude"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Jetpack"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="JSHint"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Kubernetes Helm"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Mercurial"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Monotone"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Nodemon"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Npm"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Perforce"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Prettier"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="StyleLint"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Stylint"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Swagger Codegen"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Team Foundation"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <lang.parserDefinition language="Up"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-
 
         <!-- Common -->
+        <lang.parserDefinition language="Ignore"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <psi.referenceContributor language="Ignore"
                                   implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"/>
         <lang.syntaxHighlighterFactory language="Ignore"
@@ -264,6 +214,8 @@
         <!-- END Common -->
 
         <!-- Bazaar -->
+        <lang.parserDefinition language="Bazaar"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Bazaar"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Bazaar" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -274,6 +226,8 @@
         <!-- END Bazaar -->
 
         <!-- Chef -->
+        <lang.parserDefinition language="Chef"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Chef"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Chef" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -284,6 +238,8 @@
         <!-- END Chef -->
 
         <!-- CloudFoundry -->
+        <lang.parserDefinition language="CloudFoundry"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="CloudFoundry"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="CloudFoundry"
@@ -295,6 +251,8 @@
         <!-- END CloudFoundry -->
 
         <!-- Cvs -->
+        <lang.parserDefinition language="Cvs"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Cvs"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Cvs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -305,6 +263,8 @@
         <!-- END Cvs -->
 
         <!-- Darcs -->
+        <lang.parserDefinition language="Darcs"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Darcs"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Darcs" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -315,6 +275,8 @@
         <!-- END Darcs -->
 
         <!-- Docker -->
+        <lang.parserDefinition language="Docker"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Docker"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Docker" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -324,7 +286,21 @@
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Docker -->
 
+        <!-- ElasticBeanstalk -->
+        <lang.parserDefinition language="ElasticBeanstalk"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider language="ElasticBeanstalk"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="ElasticBeanstalk" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="ElasticBeanstalk" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="ElasticBeanstalk"
+                                       key="ElasticBeanstalk"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END ElasticBeanstalk -->
+
         <!-- ESLint -->
+        <lang.parserDefinition language="ESLint"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="ESLint"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="ESLint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -335,6 +311,8 @@
         <!-- END ESLint -->
 
         <!-- Floobits -->
+        <lang.parserDefinition language="Floobits"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Floobits"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Floobits" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -345,6 +323,8 @@
         <!-- END Floobits -->
 
         <!-- Fossil -->
+        <lang.parserDefinition language="Fossil"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Fossil"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Fossil" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -355,6 +335,8 @@
         <!-- END Fossil -->
 
         <!-- Git -->
+        <lang.parserDefinition language="Git"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Git"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -365,6 +347,8 @@
         <!-- END Git -->
 
         <!-- Git exclude -->
+        <lang.parserDefinition language="Git exclude"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Git exclude"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Git exclude"
@@ -376,6 +360,8 @@
         <!-- END Git exclude -->
 
         <!-- Jetpack -->
+        <lang.parserDefinition language="Jetpack"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Jetpack"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Jetpack" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -386,6 +372,8 @@
         <!-- END Jetpack -->
 
         <!-- JSHint -->
+        <lang.parserDefinition language="JSHint"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="JSHint"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="JSHint" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -396,6 +384,8 @@
         <!-- END JSHint -->
 
         <!-- Kubernetes Helm -->
+        <lang.parserDefinition language="Kubernetes Helm"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Kubernetes Helm"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Kubernetes Helm"
@@ -407,6 +397,8 @@
         <!-- END Kubernetes Helm -->
 
         <!-- Mercurial -->
+        <lang.parserDefinition language="Mercurial"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Mercurial"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -417,6 +409,8 @@
         <!-- END Mercurial -->
 
         <!-- Monotone -->
+        <lang.parserDefinition language="Monotone"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Monotone"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Monotone" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -427,6 +421,8 @@
         <!-- END Monotone -->
 
         <!-- Nodemon -->
+        <lang.parserDefinition language="Nodemon"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Nodemon"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Nodemon" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -437,6 +433,8 @@
         <!-- END Nodemon -->
 
         <!-- Npm -->
+        <lang.parserDefinition language="Npm"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Npm"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Npm" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -447,6 +445,8 @@
         <!-- END Npm -->
 
         <!-- Perforce -->
+        <lang.parserDefinition language="Perforce"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Perforce"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Perforce" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -457,6 +457,8 @@
         <!-- END Perforce -->
 
         <!-- Prettier -->
+        <lang.parserDefinition language="Prettier"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Prettier"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Prettier" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
@@ -467,6 +469,8 @@
         <!-- END Prettier -->
 
         <!-- Stylint -->
+        <lang.parserDefinition language="Stylint"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Stylint"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Stylint"
@@ -478,6 +482,8 @@
         <!-- END Stylint -->
 
         <!-- StyleLint -->
+        <lang.parserDefinition language="StyleLint"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="StyleLint"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="StyleLint"
@@ -489,6 +495,8 @@
         <!-- END Stylint -->
 
         <!-- Swagger Codegen -->
+        <lang.parserDefinition language="Swagger Codegen"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Swagger Codegen"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Swagger Codegen"
@@ -500,6 +508,8 @@
         <!-- END Swagger Codegen -->
 
         <!-- Team Foundation -->
+        <lang.parserDefinition language="Team Foundation"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Team Foundation"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Team Foundation"
@@ -511,6 +521,8 @@
         <!-- END Team Foundation -->
 
         <!-- Up -->
+        <lang.parserDefinition language="Up"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider language="Up"
                                         implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher language="Up"
