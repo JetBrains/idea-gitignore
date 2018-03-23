@@ -25,11 +25,11 @@
 package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.IntObjectCache;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,11 +42,7 @@ import java.util.regex.Pattern;
  */
 public class MatcherUtil {
     /** Stores calculated matching results. */
-    private static HashMap<Integer, Boolean> cache;
-
-    /** Private constructor to prevent creating {@link Icons} instance. */
-    private MatcherUtil() {
-    }
+    private final IntObjectCache<Boolean> cache = new IntObjectCache<Boolean>();
 
     /**
      * Extracts alphanumeric parts from the regex pattern and checks if any of them is contained in the tested path.
@@ -56,32 +52,31 @@ public class MatcherUtil {
      * @param path    to check
      * @return path matches the pattern
      */
-    public static boolean match(@Nullable Matcher matcher, @Nullable String path) {
+    public boolean match(@Nullable Matcher matcher, @Nullable String path) {
         if (matcher == null || path == null) {
             return false;
         }
 
-        if (cache == null) {
-            cache = ContainerUtil.newHashMap();
-        }
+        synchronized (cache) {
+            int hashCode = new HashCodeBuilder().append(matcher.pattern()).append(path).toHashCode();
 
-        int hashCode = new HashCodeBuilder().append(matcher.pattern()).append(path).toHashCode();
+            if (!cache.containsKey(hashCode)) {
+                final String[] parts = getParts(matcher);
+                boolean result = false;
 
-        if (!cache.containsKey(hashCode)) {
-            final String[] parts = getParts(matcher);
-            boolean result = false;
-
-            if (parts.length == 0 || matchAllParts(parts, path)) {
-                try {
-                    result = matcher.reset(path).find();
-                } catch (StringIndexOutOfBoundsException ignored) {
+                if (parts.length == 0 || matchAllParts(parts, path)) {
+                    try {
+                        result = matcher.reset(path).find();
+                    } catch (StringIndexOutOfBoundsException ignored) {
+                    }
                 }
+
+                cache.put(hashCode, result);
+                return result;
             }
 
-            cache.put(hashCode, result);
+            return cache.get(hashCode);
         }
-
-        return ContainerUtil.getOrElse(cache, hashCode, false);
     }
 
     /**
@@ -157,15 +152,15 @@ public class MatcherUtil {
         final List<String> parts = ContainerUtil.newArrayList();
         final String sPattern = pattern.toString();
 
-        String part = "";
+        StringBuilder part = new StringBuilder();
         boolean inSquare = false;
         for (int i = 0; i < sPattern.length(); i++) {
             char ch = sPattern.charAt(i);
             if (!inSquare && Character.isLetterOrDigit(ch)) {
-                part += sPattern.charAt(i);
-            } else if (!part.isEmpty()) {
-                parts.add(part);
-                part = "";
+                part.append(sPattern.charAt(i));
+            } else if (part.length() > 0) {
+                parts.add(part.toString());
+                part = new StringBuilder();
             }
 
             inSquare = ch != ']' && ((ch == '[') || inSquare);

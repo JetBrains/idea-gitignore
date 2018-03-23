@@ -32,9 +32,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.PlatformIcons;
+import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryDirectory;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryFile;
 import mobi.hsz.idea.gitignore.util.Glob;
+import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -68,7 +70,8 @@ public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
             if (parent == null || projectDir == null || !Utils.isUnder(parent, projectDir)) {
                 return null;
             }
-            List<VirtualFile> files = Glob.findOne(parent, entry);
+            final MatcherUtil matcher = IgnoreManager.getInstance(project).getMatcher();
+            final List<VirtualFile> files = Glob.findOne(parent, entry, matcher);
             for (VirtualFile file : files) {
                 if (!file.isDirectory()) {
                     return null;

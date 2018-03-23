@@ -68,22 +68,9 @@ public class Glob {
      * @return search result
      */
     @NotNull
-    public static List<VirtualFile> findOne(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry) {
-        return find(root, ContainerUtil.newArrayList(entry), false).get(entry);
-    }
-
-    /**
-     * Finds for {@link VirtualFile} list using glob rule in given root directory.
-     *
-     * @param root          root directory
-     * @param entry         ignore entry
-     * @param includeNested attach children to the search result
-     * @return search result
-     */
-    @NotNull
     public static List<VirtualFile> findOne(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry,
-                                            final boolean includeNested) {
-        return find(root, ContainerUtil.newArrayList(entry), includeNested).get(entry);
+                                            @NotNull MatcherUtil matcher) {
+        return find(root, ContainerUtil.newArrayList(entry), matcher, false).get(entry);
     }
 
     /**
@@ -97,9 +84,11 @@ public class Glob {
     @NotNull
     public static Map<IgnoreEntry, List<VirtualFile>> find(@NotNull final VirtualFile root,
                                                            @NotNull List<IgnoreEntry> entries,
+                                                           @NotNull final MatcherUtil matcher,
                                                            final boolean includeNested) {
         final ConcurrentMap<IgnoreEntry, List<VirtualFile>> result = ContainerUtil.newConcurrentMap();
         final HashMap<IgnoreEntry, Matcher> map = ContainerUtil.newHashMap();
+
         for (IgnoreEntry entry : entries) {
             result.put(entry, ContainerUtil.<VirtualFile>newArrayList());
 
@@ -127,7 +116,7 @@ public class Glob {
                         for (Map.Entry<IgnoreEntry, Matcher> item : current.entrySet()) {
                             final Matcher value = item.getValue();
                             boolean matches = false;
-                            if (value == null || MatcherUtil.match(value, path)) {
+                            if (value == null || matcher.match(value, path)) {
                                 matches = true;
                                 result.get(item.getKey()).add(file);
                             }
@@ -156,10 +145,12 @@ public class Glob {
      */
     @NotNull
     public static Map<IgnoreEntry, Set<String>> findAsPaths(@NotNull VirtualFile root,
-                                                            @NotNull List<IgnoreEntry> entries, boolean includeNested) {
+                                                            @NotNull List<IgnoreEntry> entries,
+                                                            @NotNull MatcherUtil matcher,
+                                                            boolean includeNested) {
         final Map<IgnoreEntry, Set<String>> result = ContainerUtil.newHashMap();
 
-        final Map<IgnoreEntry, List<VirtualFile>> files = find(root, entries, includeNested);
+        final Map<IgnoreEntry, List<VirtualFile>> files = find(root, entries, matcher, includeNested);
         for (Map.Entry<IgnoreEntry, List<VirtualFile>> item : files.entrySet()) {
             final Set<String> set = ContainerUtil.newHashSet();
             for (VirtualFile file : item.getValue()) {

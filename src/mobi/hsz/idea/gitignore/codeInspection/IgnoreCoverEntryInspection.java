@@ -37,10 +37,12 @@ import com.intellij.openapi.vfs.*;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.Glob;
+import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -144,7 +146,8 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
         final ArrayList<IgnoreEntry> entries = ContainerUtil.newArrayList(Arrays.asList(
                 ((IgnoreFile) file).findChildrenByClass(IgnoreEntry.class)
         ));
-        final Map<IgnoreEntry, Set<String>> matchedMap = getPathsSet(contextDirectory, entries);
+        final MatcherUtil matcher = IgnoreManager.getInstance(file.getProject()).getMatcher();
+        final Map<IgnoreEntry, Set<String>> matchedMap = getPathsSet(contextDirectory, entries, matcher);
 
         for (IgnoreEntry entry : entries) {
             ProgressManager.checkCanceled();
@@ -207,7 +210,8 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
      */
     @NotNull
     private Map<IgnoreEntry, Set<String>> getPathsSet(@NotNull VirtualFile contextDirectory,
-                                                      @NotNull ArrayList<IgnoreEntry> entries) {
+                                                      @NotNull ArrayList<IgnoreEntry> entries,
+                                                      @NotNull MatcherUtil matcher) {
         final Map<IgnoreEntry, Set<String>> result = ContainerUtil.newHashMap();
         final ArrayList<IgnoreEntry> notCached = ContainerUtil.newArrayList();
 
@@ -220,7 +224,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
             result.put(entry, cacheMap.get(key));
         }
 
-        final Map<IgnoreEntry, Set<String>> found = Glob.findAsPaths(contextDirectory, notCached, true);
+        final Map<IgnoreEntry, Set<String>> found = Glob.findAsPaths(contextDirectory, notCached, matcher, true);
         for (Map.Entry<IgnoreEntry, Set<String>> item : found.entrySet()) {
             ProgressManager.checkCanceled();
             final String key = contextDirectory.getPath() + Constants.DOLLAR + item.getKey().getText();

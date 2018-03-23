@@ -37,10 +37,10 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
+import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import mobi.hsz.idea.gitignore.util.Glob;
-import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -66,7 +66,9 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-        final FilesIndexCacheProjectComponent cache = FilesIndexCacheProjectComponent.getInstance(holder.getProject());
+        final Project project = holder.getProject();
+        final FilesIndexCacheProjectComponent cache = FilesIndexCacheProjectComponent.getInstance(project);
+        final IgnoreManager manager = IgnoreManager.getInstance(project);
 
         return new IgnoreVisitor() {
             @Override
@@ -126,7 +128,7 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                             continue;
                         }
                         String path = Utils.getRelativePath(projectRoot, root);
-                        if (MatcherUtil.match(matcher, path)) {
+                        if (manager.getMatcher().match(matcher, path)) {
                             matched.add(file);
                             return false;
                         }

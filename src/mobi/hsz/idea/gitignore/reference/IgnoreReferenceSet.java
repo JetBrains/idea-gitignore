@@ -35,11 +35,11 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
+import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.Glob;
-import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,10 +63,15 @@ public class IgnoreReferenceSet extends FileReferenceSet {
     @NotNull
     private final FilesIndexCacheProjectComponent filesIndexCache;
 
+    /** Instance of {@link IgnoreManager}. */
+    @NotNull
+    private final IgnoreManager manager;
+
     /** Constructor. */
     public IgnoreReferenceSet(@NotNull IgnoreEntry element) {
         super(element);
         filesIndexCache = FilesIndexCacheProjectComponent.getInstance(element.getProject());
+        manager = IgnoreManager.getInstance(element.getProject());
     }
 
     /**
@@ -228,7 +233,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
                     final VirtualFile root = isOuterFile ? contextVirtualFile : ((parent != null) ?
                             parent.getVirtualFile() : null);
-                    final PsiManager manager = getElement().getManager();
+                    final PsiManager psiManager = getElement().getManager();
                     final Matcher matcher = pattern.matcher("");
 
                     final List<VirtualFile> files = ContainerUtil.createLockFreeCopyOnWriteList();
@@ -271,8 +276,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                         }
 
                         final String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
-                        if (MatcherUtil.match(matcher, name)) {
-                            PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(manager, file);
+                        if (manager.getMatcher().match(matcher, name)) {
+                            PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(psiManager, file);
                             if (psiFileSystemItem == null) {
                                 continue;
                             }

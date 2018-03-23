@@ -97,6 +97,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** List of filenames that require to be associated with specific {@link IgnoreFileType}. */
     public static final Map<String, IgnoreFileType> FILE_TYPES_ASSOCIATION_QUEUE = ContainerUtil.newConcurrentMap();
 
+    /** {@link MatcherUtil} instance. */
+    @NotNull
+    private final MatcherUtil matcher;
+
     /** {@link VirtualFileManager} instance. */
     @NotNull
     private final VirtualFileManager virtualFileManager;
@@ -308,6 +312,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      */
     public IgnoreManager(@NotNull final Project project) {
         super(project);
+        this.matcher = new MatcherUtil();
         this.virtualFileManager = VirtualFileManager.getInstance();
         this.settings = IgnoreSettings.getInstance();
         this.statusManager = FileStatusManager.getInstance(project);
@@ -317,6 +322,16 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         this.refreshTrackedIgnoredFeature.setTrailing(true);
         this.projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project);
         this.commonRunnableListeners = new CommonRunnableListeners(debouncedStatusesChanged);
+    }
+
+    /**
+     * Returns {@link MatcherUtil} instance which is required for sharing matcher cache.
+     *
+     * @return {@link MatcherUtil} instance
+     */
+    @NotNull
+    public MatcherUtil getMatcher() {
+        return matcher;
     }
 
     /**
@@ -388,7 +403,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 }
 
                 for (Pair<Matcher, Boolean> item : value.getItems()) {
-                    if (MatcherUtil.match(item.first, relativePath)) {
+                    if (matcher.match(item.first, relativePath)) {
                         ignored = !item.second;
                         matched = true;
                     }

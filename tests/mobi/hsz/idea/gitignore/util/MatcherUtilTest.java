@@ -34,7 +34,8 @@ import java.util.regex.Pattern;
 public class MatcherUtilTest extends Common<MatcherUtil> {
 
     @Test
-    public void testPrivateConstructor() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void testPrivateConstructor() throws
+            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         privateConstructor(MatcherUtil.class);
     }
 
@@ -42,13 +43,14 @@ public class MatcherUtilTest extends Common<MatcherUtil> {
     public void testMatch() {
         final Pattern pattern = Pattern.compile("foo");
         final Matcher matcher = pattern.matcher("");
+        final MatcherUtil util = new MatcherUtil();
 
-        assertFalse(MatcherUtil.match(null, null));
-        assertFalse(MatcherUtil.match(null, "foo"));
-        assertFalse(MatcherUtil.match(matcher, null));
-        assertFalse(MatcherUtil.match(matcher, "fo"));
-        assertTrue(MatcherUtil.match(matcher, "foo"));
-        assertTrue(MatcherUtil.match(matcher, "xfooy"));
+        assertFalse(util.match(null, null));
+        assertFalse(util.match(null, "foo"));
+        assertFalse(util.match(matcher, null));
+        assertFalse(util.match(matcher, "fo"));
+        assertTrue(util.match(matcher, "foo"));
+        assertTrue(util.match(matcher, "xfooy"));
     }
 
     @Test
