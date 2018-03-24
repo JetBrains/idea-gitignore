@@ -39,6 +39,7 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
@@ -208,7 +209,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** List of available VCS roots for the current project. */
     @NotNull
-    private Collection<VcsRoot> vcsRoots = ContainerUtil.newArrayList();
+    private List<VcsRoot> vcsRoots = ContainerUtil.newArrayList();
 
     /** {@link VirtualFileListener} instance to check if file's content was changed. */
     @NotNull
@@ -378,8 +379,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     }
                     relativePath = StringUtil.trimStart(file.getPath(), workingDirectory.getPath());
                 } else {
-
-                    final VirtualFile vcsRoot = projectLevelVcsManager.getVcsRootFor(file);
+                    final VirtualFile vcsRoot = getVcsRootFor(file);
                     if (vcsRoot != null && !Utils.isUnder(entryFile, vcsRoot)) {
                         if (!cachedOuterFiles.get(fileType).contains(entryFile)) {
                             continue;
@@ -431,6 +431,23 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         }
 
         return expiringStatusCache.set(file, ignored);
+    }
+
+    /**
+     * Finds {@link VirtualFile} directory of {@link VcsRoot} that contains passed file.
+     *
+     * @param file to check
+     * @return VCS Root for given file
+     */
+    @Nullable
+    private VirtualFile getVcsRootFor(@NotNull final VirtualFile file) {
+        final VcsRoot vcsRoot = ContainerUtil.find(ContainerUtil.reverse(vcsRoots), new Condition<VcsRoot>() {
+            @Override
+            public boolean value(VcsRoot vcsRoot) {
+                return vcsRoot.getPath() != null && Utils.isUnder(file, vcsRoot.getPath());
+            }
+        });
+        return vcsRoot != null ? vcsRoot.getPath() : null;
     }
 
     /**
