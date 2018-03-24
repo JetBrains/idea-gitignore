@@ -346,7 +346,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         if (cached != null) {
             return cached;
         }
-        if (DumbService.isDumb(myProject) || !isEnabled() || baseDir == null || !Utils.isUnder(file, baseDir) ||
+        if (ApplicationManager.getApplication().isDisposed() || myProject.isDisposed() ||
+                DumbService.isDumb(myProject) || !isEnabled() || baseDir == null || !Utils.isUnder(file, baseDir) ||
                 Utils.isInsideEventProcessing()) {
             return false;
         }
@@ -377,6 +378,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     }
                     relativePath = StringUtil.trimStart(file.getPath(), workingDirectory.getPath());
                 } else {
+
                     final VirtualFile vcsRoot = projectLevelVcsManager.getVcsRootFor(file);
                     if (vcsRoot != null && !Utils.isUnder(entryFile, vcsRoot)) {
                         if (!cachedOuterFiles.get(fileType).contains(entryFile)) {
