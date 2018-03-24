@@ -10,6 +10,7 @@ Change Log
 **Fixed bugs:**
 
 - MatcherUtil.cache takes too much memory [\#521](https://github.com/hsz/idea-gitignore/issues/521)
+- Already disposed in VirtualFilePointerImpl (Utils.getExcludedRoots) [\#524](https://github.com/hsz/idea-gitignore/issues/524)
 - AssertionError in VirtualFilePointerContainerImpl [\#503](https://github.com/hsz/idea-gitignore/issues/503)
 
 

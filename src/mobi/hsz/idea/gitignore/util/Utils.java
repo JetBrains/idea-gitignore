@@ -247,6 +247,9 @@ public class Utils {
         ModuleManager manager = ModuleManager.getInstance(project);
         for (Module module : manager.getModules()) {
             ModifiableRootModel model = ModuleRootManager.getInstance(module).getModifiableModel();
+            if (model.isDisposed()) {
+                continue;
+            }
             Collections.addAll(roots, model.getExcludeRoots());
             model.dispose();
         }
