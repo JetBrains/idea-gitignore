@@ -39,7 +39,7 @@ public class GlobTest extends Common<Glob> {
         assertNotNull(dir);
 
         /** {@link Glob#find(VirtualFile, IgnoreEntry)} test */
-        Map<IgnoreEntry, List<VirtualFile>> result = Glob.find(rootFile, children, false);
+        Map<IgnoreEntry, List<VirtualFile>> result = Glob.find(rootFile, children, new MatcherUtil(), false);
         List<VirtualFile> item;
 
         // foo.txt
@@ -84,7 +84,7 @@ public class GlobTest extends Common<Glob> {
         assertTrue(item.contains(rootFile.findChild("dir")));
 
         // dir includeNested
-        result = Glob.find(rootFile, children, true);
+        result = Glob.find(rootFile, children, new MatcherUtil(), true);
         item = result.get(children.get(4));
         assertNotNull(result);
         assertNotEmpty(item);
@@ -113,7 +113,7 @@ public class GlobTest extends Common<Glob> {
         assertNotNull(dir);
 
         /** {@link Glob#findAsPaths(VirtualFile, IgnoreEntry)} test */
-        Map<IgnoreEntry, Set<String>> result = Glob.findAsPaths(rootFile, children, false);
+        Map<IgnoreEntry, Set<String>> result = Glob.findAsPaths(rootFile, children, new MatcherUtil(), false);
         Set<String> item;
 
         // foo.txt

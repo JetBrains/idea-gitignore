@@ -27,17 +27,10 @@ package mobi.hsz.idea.gitignore.util;
 import mobi.hsz.idea.gitignore.Common;
 import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MatcherUtilTest extends Common<MatcherUtil> {
-
-    @Test
-    public void testPrivateConstructor() throws
-            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        privateConstructor(MatcherUtil.class);
-    }
 
     @Test
     public void testMatch() {
