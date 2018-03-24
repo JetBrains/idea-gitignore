@@ -118,7 +118,7 @@ public class OuterIgnoreWrapper implements Disposable {
 
         for (final VirtualFile outerFile : outerFiles) {
             Document document = FileDocumentManager.getInstance().getDocument(outerFile);
-            Editor outerEditor = document != null ? Utils.createPreviewEditor(document, project, true) : null;
+            Editor outerEditor = document != null ? Utils.createPreviewEditor(document, null, true) : null;
 
             if (outerEditor != null) {
                 final JScrollPane scrollPanel = ScrollPaneFactory.createScrollPane(outerEditor.getComponent());
@@ -131,12 +131,7 @@ public class OuterIgnoreWrapper implements Disposable {
                 }
 
                 if (path != null) {
-                    tabbedPanel.addTab(
-                            path,
-                            language.getIcon(),
-                            scrollPanel,
-                            outerFile.getCanonicalPath()
-                    );
+                    tabbedPanel.addTab(path, language.getIcon(), scrollPanel, outerFile.getCanonicalPath());
                     outerEditors.add(outerEditor);
                 }
             }
