@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>2.4.0</version>
+    <version>2.5.0</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -78,20 +78,23 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.4.0"><b>v2.4.0</b></a> (2018-01-11) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v2.3.2...v2.4.0"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.5.0"><b>v2.5.0</b></a> (2018-03-24) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v2.4.0...v2.5.0"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
 
         <ul>
-            <li>Better access to Notifications settings in "Appearance & Behaviour > Notifications" (<a href="https://github.com/hsz/idea-gitignore/issues/506">506</a>)</li>
-            <li>"Add to ignore file" action in "Version Control > Unversioned Files" view (<a href="https://github.com/hsz/idea-gitignore/issues/509">509</a>)</li>
+            <li><i>.ebignore</i> (ElasticBeanstalk) support (<a href="https://github.com/hsz/idea-gitignore/issues/520">520</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>Opening multiple projects in a new window makes IDEA plug-in unresponsive (<a href="https://github.com/hsz/idea-gitignore/issues/510">510</a>)</li>
+            <li>The plugin slows down the IDE a lot (<a href="https://github.com/hsz/idea-gitignore/issues/525">525</a>)</li>
+            <li>MatcherUtil.cache takes too much memory (<a href="https://github.com/hsz/idea-gitignore/issues/521">521</a>)</li>
+            <li>KotlinNullPointerException in Rider IDE (<a href="https://github.com/hsz/idea-gitignore/issues/385">385</a> <a href="https://github.com/hsz/idea-gitignore/issues/522">522</a>)</li>
+            <li>Already disposed in VirtualFilePointerImpl (Utils.getExcludedRoots) (<a href="https://github.com/hsz/idea-gitignore/issues/524">524</a>)</li>
+            <li>AssertionError in VirtualFilePointerContainerImpl (<a href="https://github.com/hsz/idea-gitignore/issues/503">503</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

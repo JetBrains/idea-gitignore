@@ -1,4 +1,4 @@
-.ignore 2.4.0
+.ignore 2.5.0
 =============
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
@@ -128,7 +128,9 @@ Usage
 Changelog
 ---------
 
-### Unreleased
+### [v2.5.0](https://github.com/hsz/idea-gitignore/tree/v2.5.0) (2018-03-24)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.4.0...v2.5.0)
 
 **Implemented enhancements:**
 
@@ -136,22 +138,11 @@ Changelog
 
 **Fixed bugs:**
 
+- The plugin slows down the IDE a lot [\#525](https://github.com/hsz/idea-gitignore/issues/525)
 - MatcherUtil.cache takes too much memory [\#521](https://github.com/hsz/idea-gitignore/issues/521)
+- KotlinNullPointerException in Rider IDE [\#385](https://github.com/hsz/idea-gitignore/issues/385) [\#522](https://github.com/hsz/idea-gitignore/issues/522)
 - Already disposed in VirtualFilePointerImpl (Utils.getExcludedRoots) [\#524](https://github.com/hsz/idea-gitignore/issues/524)
 - AssertionError in VirtualFilePointerContainerImpl [\#503](https://github.com/hsz/idea-gitignore/issues/503)
-
-### [v2.4.0](https://github.com/hsz/idea-gitignore/tree/v2.4.0) (2018-01-11)
-
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.4.0)
-
-**Implemented enhancements:**
-
-- Better access to Notifications settings in "Appearance & Behaviour > Notifications" [\#506](https://github.com/hsz/idea-gitignore/issues/506)
-- "Add to ignore file" action in "Version Control > Unversioned Files" view [\#509](https://github.com/hsz/idea-gitignore/issues/509)
-
-**Fixed bugs:**
-
-- Opening multiple projects in a new window makes IDEA plug-in unresponsive [\#510](https://github.com/hsz/idea-gitignore/issues/510)
 
 [Full Changelog History](./CHANGELOG.md)
 
