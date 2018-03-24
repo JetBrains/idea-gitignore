@@ -1,7 +1,7 @@
 plugins {
     id 'jacoco'
-    id 'org.jetbrains.intellij' version '0.2.18'
-    id 'de.undercouch.download' version '3.4.1'
+    id 'org.jetbrains.intellij' version '0.3.1'
+    id 'de.undercouch.download' version '3.4.2'
     id 'com.github.kt3k.coveralls' version '2.8.2'
 }
 
@@ -95,8 +95,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
-
-import de.undercouch.gradle.tasks.download.Download
 import groovy.io.FileType
 // Tasks
 
