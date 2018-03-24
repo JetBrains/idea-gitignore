@@ -1,6 +1,18 @@
 Change Log
 ----------
 
+### Unreleased
+
+**Implemented enhancements:**
+
+- `.ebignore` (ElasticBeanstalk) support [\#520](https://github.com/hsz/idea-gitignore/issues/520)
+
+**Fixed bugs:**
+
+- MatcherUtil.cache takes too much memory [\#521](https://github.com/hsz/idea-gitignore/issues/521)
+- AssertionError in VirtualFilePointerContainerImpl [\#503](https://github.com/hsz/idea-gitignore/issues/503)
+
+
 ### [v2.4.0](https://github.com/hsz/idea-gitignore/tree/v2.4.0) (2018-01-11)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.3.2...v2.4.0)
