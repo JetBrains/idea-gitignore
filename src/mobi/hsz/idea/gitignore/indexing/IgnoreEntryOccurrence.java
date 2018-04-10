@@ -178,25 +178,20 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @return read {@link IgnoreEntryOccurrence}
      */
     @Nullable
-    public static synchronized IgnoreEntryOccurrence deserialize(@NotNull DataInput in) {
-        try {
-            final String url = in.readUTF();
-            if (StringUtils.isEmpty(url)) {
-                return null;
-            }
-
-            final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(url);
-            int size = in.readInt();
-            for (int i = 0; i < size; i++) {
-                final Pattern pattern = Pattern.compile(in.readUTF());
-                Boolean isNegated = in.readBoolean();
-                entry.add(pattern.matcher(""), isNegated);
-            }
-
-            return entry;
-        } catch (IOException ignored) {
+    public static synchronized IgnoreEntryOccurrence deserialize(@NotNull DataInput in) throws IOException {
+        final String url = in.readUTF();
+        if (StringUtils.isEmpty(url)) {
+            return null;
         }
 
-        return null;
+        final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(url);
+        int size = in.readInt();
+        for (int i = 0; i < size; i++) {
+            final Pattern pattern = Pattern.compile(in.readUTF());
+            Boolean isNegated = in.readBoolean();
+            entry.add(pattern.matcher(""), isNegated);
+        }
+
+        return entry;
     }
 }

@@ -172,7 +172,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
                  * @return read entry
                  */
                 @Override
-                public IgnoreEntryOccurrence read(@NotNull DataInput in) {
+                public IgnoreEntryOccurrence read(@NotNull DataInput in) throws IOException {
                     return IgnoreEntryOccurrence.deserialize(in);
                 }
             };
