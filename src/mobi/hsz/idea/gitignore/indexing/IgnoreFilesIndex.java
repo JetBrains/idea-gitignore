@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.indexing;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Function;
@@ -94,15 +95,21 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
         final IgnoreFileType type = (IgnoreFileType) inputData.getFileType();
 
         IgnoreFile ignoreFile = (IgnoreFile) inputData.getPsiFile();
+        final List<Pair<Pattern, Boolean>> items = ContainerUtil.newArrayList();
+
         ignoreFile.acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 final Pattern pattern = Glob.createPattern(entry);
                 if (pattern != null) {
-                    result.add(pattern.matcher(""), entry.isNegated());
+                    items.add(Pair.create(pattern, entry.isNegated()));
                 }
             }
         });
+
+        @SuppressWarnings("unchecked")
+        Pair<Pattern, Boolean>[] arr = (Pair<Pattern, Boolean>[]) new Pair[0];
+        result.setItems(items.toArray(arr));
 
         return Collections.singletonMap(new IgnoreFileTypeKey(type), result);
     }

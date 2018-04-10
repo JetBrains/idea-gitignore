@@ -48,7 +48,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -234,7 +233,6 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     final VirtualFile root = isOuterFile ? contextVirtualFile : ((parent != null) ?
                             parent.getVirtualFile() : null);
                     final PsiManager psiManager = getElement().getManager();
-                    final Matcher matcher = pattern.matcher("");
 
                     final List<VirtualFile> files = ContainerUtil.createLockFreeCopyOnWriteList();
                     files.addAll(filesIndexCache.getFilesForPattern(context.getProject(), pattern));
@@ -276,7 +274,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                         }
 
                         final String name = (root != null) ? Utils.getRelativePath(root, file) : file.getName();
-                        if (manager.getMatcher().match(matcher, name)) {
+                        if (manager.getMatcher().match(pattern, name)) {
                             PsiFileSystemItem psiFileSystemItem = getPsiFileSystemItem(psiManager, file);
                             if (psiFileSystemItem == null) {
                                 continue;

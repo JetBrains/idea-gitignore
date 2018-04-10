@@ -27,7 +27,6 @@ package mobi.hsz.idea.gitignore.indexing;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.util.containers.ContainerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -37,8 +36,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -58,8 +55,8 @@ public class IgnoreEntryOccurrence implements Serializable {
     private VirtualFile file;
 
     /** Collection of ignore entries converted to {@link Pattern}. */
-    @NotNull
-    private final List<Pair<Matcher, Boolean>> items = ContainerUtil.newArrayList();
+    @Nullable
+    private Pair<Pattern, Boolean>[] items;
 
     /**
      * Constructor.
@@ -97,7 +94,15 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(url).append(items.toString()).toHashCode();
+        HashCodeBuilder builder = new HashCodeBuilder().append(url);
+
+        if (items != null) {
+            for (Pair<Pattern, Boolean> item : items) {
+                builder = builder.append(item.first).append(item.second);
+            }
+        }
+
+        return builder.toHashCode();
     }
 
     /**
@@ -113,9 +118,16 @@ public class IgnoreEntryOccurrence implements Serializable {
         }
 
         final IgnoreEntryOccurrence entry = (IgnoreEntryOccurrence) obj;
-        boolean equals = url.equals(entry.url) && items.size() == entry.items.size();
-        for (int i = 0; i < items.size(); i++) {
-            equals = equals && items.get(i).toString().equals(entry.items.get(i).toString());
+        if (items == null && entry.items == null) {
+            return true;
+        }
+        if (items == null || entry.items == null) {
+            return false;
+        }
+
+        boolean equals = url.equals(entry.url) && items.length == entry.items.length;
+        for (int i = 0; i < items.length; i++) {
+            equals = equals && items[i].toString().equals(entry.items[i].toString());
         }
 
         return equals;
@@ -139,19 +151,14 @@ public class IgnoreEntryOccurrence implements Serializable {
      *
      * @return entries
      */
-    @NotNull
-    public List<Pair<Matcher, Boolean>> getItems() {
+    @Nullable
+    public Pair<Pattern, Boolean>[] getItems() {
         return items;
     }
 
-    /**
-     * Adds new element to {@link #items}.
-     *
-     * @param matcher   entry converted to {@link Matcher}
-     * @param isNegated entry is negated
-     */
-    public void add(@NotNull Matcher matcher, boolean isNegated) {
-        items.add(Pair.create(matcher, isNegated));
+    /** Set entries for current file. */
+    public void setItems(@Nullable Pair<Pattern, Boolean>[] items) {
+        this.items = items;
     }
 
     /**
@@ -164,9 +171,9 @@ public class IgnoreEntryOccurrence implements Serializable {
     public static synchronized void serialize(@NotNull DataOutput out, @NotNull IgnoreEntryOccurrence entry)
             throws IOException {
         out.writeUTF(entry.url);
-        out.writeInt(entry.items.size());
-        for (Pair<Matcher, Boolean> item : entry.items) {
-            out.writeUTF(item.first.pattern().pattern());
+        out.writeInt(entry.items == null ? 0 : entry.items.length);
+        for (Pair<Pattern, Boolean> item : entry.items) {
+            out.writeUTF(item.first.pattern());
             out.writeBoolean(item.second);
         }
     }
@@ -186,11 +193,15 @@ public class IgnoreEntryOccurrence implements Serializable {
 
         final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(url);
         int size = in.readInt();
+
+        @SuppressWarnings("unchecked")
+        Pair<Pattern, Boolean>[] items = (Pair<Pattern, Boolean>[]) new Pair[size];
         for (int i = 0; i < size; i++) {
             final Pattern pattern = Pattern.compile(in.readUTF());
             Boolean isNegated = in.readBoolean();
-            entry.add(pattern.matcher(""), isNegated);
+            items[i] = Pair.create(pattern, isNegated);
         }
+        entry.setItems(items);
 
         return entry;
     }

@@ -73,7 +73,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
-import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH;
 import static mobi.hsz.idea.gitignore.IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED;
@@ -404,10 +404,12 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     relativePath += "/";
                 }
 
-                for (Pair<Matcher, Boolean> item : value.getItems()) {
-                    if (matcher.match(item.first, relativePath)) {
-                        ignored = !item.second;
-                        matched = true;
+                if (value.getItems() != null) {
+                    for (Pair<Pattern, Boolean> item : value.getItems()) {
+                        if (matcher.match(item.first, relativePath)) {
+                            ignored = !item.second;
+                            matched = true;
+                        }
                     }
                 }
             }
