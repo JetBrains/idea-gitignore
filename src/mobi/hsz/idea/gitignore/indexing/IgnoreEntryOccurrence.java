@@ -27,6 +27,8 @@ package mobi.hsz.idea.gitignore.indexing;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.ImmutableList;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +38,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -55,40 +58,22 @@ public class IgnoreEntryOccurrence implements Serializable {
     private VirtualFile file;
 
     /** Collection of ignore entries converted to {@link Pattern}. */
-    @Nullable
-    private Pair<Pattern, Boolean>[] items;
+    @NotNull
+    private ImmutableList<Pair<Pattern, Boolean>> items;
 
     /**
      * Constructor.
      *
-     * @param url current file
+     * @param url   entry URL
+     * @param items parsed entry items
      */
-    public IgnoreEntryOccurrence(@NotNull String url) {
-        this(url, null);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param file current file
-     */
-    public IgnoreEntryOccurrence(@NotNull VirtualFile file) {
-        this(file.getUrl(), file);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param file current file
-     * @param url current file path
-     */
-    public IgnoreEntryOccurrence(@NotNull String url, @Nullable VirtualFile file) {
+    public IgnoreEntryOccurrence(@NotNull String url, @NotNull ImmutableList<Pair<Pattern, Boolean>> items) {
         this.url = url;
-        this.file = file;
+        this.items = items;
     }
 
     /**
-     * Calculates hashCode with {@link #file} and {@link #items} hashCodes.
+     * Calculates hashCode with {@link #url} and {@link #items} hashCodes.
      *
      * @return entry hashCode
      */
@@ -96,10 +81,8 @@ public class IgnoreEntryOccurrence implements Serializable {
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder().append(url);
 
-        if (items != null) {
-            for (Pair<Pattern, Boolean> item : items) {
-                builder = builder.append(item.first).append(item.second);
-            }
+        for (Pair<Pattern, Boolean> item : items) {
+            builder.append(item.first.toString()).append(item.second);
         }
 
         return builder.toHashCode();
@@ -118,19 +101,17 @@ public class IgnoreEntryOccurrence implements Serializable {
         }
 
         final IgnoreEntryOccurrence entry = (IgnoreEntryOccurrence) obj;
-        if (items == null && entry.items == null) {
-            return true;
-        }
-        if (items == null || entry.items == null) {
+        if (!url.equals(entry.url) || items.size() != entry.items.size()) {
             return false;
         }
 
-        boolean equals = url.equals(entry.url) && items.length == entry.items.length;
-        for (int i = 0; i < items.length; i++) {
-            equals = equals && items[i].toString().equals(entry.items[i].toString());
+        for (int i = 0; i < items.size(); i++) {
+            if (!items.get(i).toString().equals(entry.items.get(i).toString())) {
+                return false;
+            }
         }
 
-        return equals;
+        return true;
     }
 
     /**
@@ -152,13 +133,8 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @return entries
      */
     @Nullable
-    public Pair<Pattern, Boolean>[] getItems() {
+    public ImmutableList<Pair<Pattern, Boolean>> getItems() {
         return items;
-    }
-
-    /** Set entries for current file. */
-    public void setItems(@Nullable Pair<Pattern, Boolean>[] items) {
-        this.items = items;
     }
 
     /**
@@ -171,7 +147,7 @@ public class IgnoreEntryOccurrence implements Serializable {
     public static synchronized void serialize(@NotNull DataOutput out, @NotNull IgnoreEntryOccurrence entry)
             throws IOException {
         out.writeUTF(entry.url);
-        out.writeInt(entry.items == null ? 0 : entry.items.length);
+        out.writeInt(entry.items.size());
         for (Pair<Pattern, Boolean> item : entry.items) {
             out.writeUTF(item.first.pattern());
             out.writeBoolean(item.second);
@@ -191,18 +167,14 @@ public class IgnoreEntryOccurrence implements Serializable {
             return null;
         }
 
-        final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(url);
-        int size = in.readInt();
-
-        @SuppressWarnings("unchecked")
-        Pair<Pattern, Boolean>[] items = (Pair<Pattern, Boolean>[]) new Pair[size];
+        final int size = in.readInt();
+        final ArrayList<Pair<Pattern, Boolean>> items = ContainerUtil.newArrayList();
         for (int i = 0; i < size; i++) {
             final Pattern pattern = Pattern.compile(in.readUTF());
             Boolean isNegated = in.readBoolean();
-            items[i] = Pair.create(pattern, isNegated);
+            items.add(Pair.create(pattern, isNegated));
         }
-        entry.setItems(items);
 
-        return entry;
+        return new IgnoreEntryOccurrence(url, ContainerUtil.immutableList(items));
     }
 }

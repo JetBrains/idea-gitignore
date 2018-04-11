@@ -48,10 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -91,13 +88,9 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
         if (!(inputData.getPsiFile() instanceof IgnoreFile)) {
             return Collections.emptyMap();
         }
-        final IgnoreEntryOccurrence result = new IgnoreEntryOccurrence(inputData.getFile());
-        final IgnoreFileType type = (IgnoreFileType) inputData.getFileType();
 
-        IgnoreFile ignoreFile = (IgnoreFile) inputData.getPsiFile();
-        final List<Pair<Pattern, Boolean>> items = ContainerUtil.newArrayList();
-
-        ignoreFile.acceptChildren(new IgnoreVisitor() {
+        final ArrayList<Pair<Pattern, Boolean>> items = ContainerUtil.newArrayList();
+        inputData.getPsiFile().acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 final Pattern pattern = Glob.createPattern(entry);
@@ -107,11 +100,10 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
             }
         });
 
-        @SuppressWarnings("unchecked")
-        Pair<Pattern, Boolean>[] arr = (Pair<Pattern, Boolean>[]) new Pair[0];
-        result.setItems(items.toArray(arr));
-
-        return Collections.singletonMap(new IgnoreFileTypeKey(type), result);
+        return Collections.singletonMap(
+                new IgnoreFileTypeKey((IgnoreFileType) inputData.getFileType()),
+                new IgnoreEntryOccurrence(inputData.getFile().getUrl(), ContainerUtil.immutableList(items))
+        );
     }
 
     /**
