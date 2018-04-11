@@ -121,7 +121,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     @Nullable
     public VirtualFile getFile() {
-        if (file == null) {
+        if (file == null && !url.isEmpty()) {
             file = VirtualFileManager.getInstance().findFileByUrl(url);
         }
         return file;
@@ -132,7 +132,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      *
      * @return entries
      */
-    @Nullable
+    @NotNull
     public ImmutableList<Pair<Pattern, Boolean>> getItems() {
         return items;
     }
@@ -160,19 +160,18 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @param in input stream
      * @return read {@link IgnoreEntryOccurrence}
      */
-    @Nullable
+    @NotNull
     public static synchronized IgnoreEntryOccurrence deserialize(@NotNull DataInput in) throws IOException {
         final String url = in.readUTF();
-        if (StringUtils.isEmpty(url)) {
-            return null;
-        }
-
-        final int size = in.readInt();
         final ArrayList<Pair<Pattern, Boolean>> items = ContainerUtil.newArrayList();
-        for (int i = 0; i < size; i++) {
-            final Pattern pattern = Pattern.compile(in.readUTF());
-            Boolean isNegated = in.readBoolean();
-            items.add(Pair.create(pattern, isNegated));
+
+        if (!StringUtils.isEmpty(url)) {
+            final int size = in.readInt();
+            for (int i = 0; i < size; i++) {
+                final Pattern pattern = Pattern.compile(in.readUTF());
+                Boolean isNegated = in.readBoolean();
+                items.add(Pair.create(pattern, isNegated));
+            }
         }
 
         return new IgnoreEntryOccurrence(url, ContainerUtil.immutableList(items));

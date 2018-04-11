@@ -404,12 +404,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     relativePath += "/";
                 }
 
-                if (value.getItems() != null) {
-                    for (Pair<Pattern, Boolean> item : value.getItems()) {
-                        if (matcher.match(item.first, relativePath)) {
-                            ignored = !item.second;
-                            matched = true;
-                        }
+                for (Pair<Pattern, Boolean> item : value.getItems()) {
+                    if (matcher.match(item.first, relativePath)) {
+                        ignored = !item.second;
+                        matched = true;
                     }
                 }
             }
