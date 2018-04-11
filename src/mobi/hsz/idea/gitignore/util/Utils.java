@@ -28,6 +28,7 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.ide.projectView.PresentationData;
+import com.intellij.ide.ui.UISettings;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -552,14 +553,30 @@ public class Utils {
                     .forName("com.intellij.openapi.project.NoAccessDuringPsiEvents")
                     .getMethod("isInsideEventProcessing")
                     .invoke(null);
-        } catch (ClassNotFoundException e) {
-            return false;
-        } catch (NoSuchMethodException e) {
-            return false;
-        } catch (IllegalAccessException e) {
-            return false;
-        } catch (InvocationTargetException e) {
-            return false;
+        } catch (ClassNotFoundException ignored) {
+        } catch (NoSuchMethodException ignored) {
+        } catch (IllegalAccessException ignored) {
+        } catch (InvocationTargetException ignored) {
         }
+        return false;
+    }
+
+    /**
+     * Invokes UISettings#getScrollTabLayoutInEditor or returns true if method is not available (previous IDEs).
+     *
+     * @return scroll tab layout setting is in use
+     */
+    public static boolean getUISettingsScrollTabLayoutInEditor() {
+        try {
+            return (Boolean) Class
+                    .forName("com.intellij.ide.ui.UISettings")
+                    .getMethod("getScrollTabLayoutInEditor")
+                    .invoke(UISettings.getInstance());
+        } catch (ClassNotFoundException ignored) {
+        } catch (NoSuchMethodException ignored) {
+        } catch (IllegalAccessException ignored) {
+        } catch (InvocationTargetException ignored) {
+        }
+        return true;
     }
 }

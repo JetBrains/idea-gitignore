@@ -52,7 +52,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 /**
@@ -174,9 +175,9 @@ public class OuterIgnoreWrapper extends MouseAdapter implements ChangeListener, 
         panel.add(linkLabel, BorderLayout.SOUTH);
     }
 
-    /** Updates tabbedPanel policy depending on {@link UISettings#getScrollTabLayoutInEditor()} settings. */
+    /** Updates tabbedPanel policy depending on UISettings#getScrollTabLayoutInEditor() settings. */
     private void updateTabbedPanelPolicy() {
-        if (UISettings.getInstance().getScrollTabLayoutInEditor()) {
+        if (Utils.getUISettingsScrollTabLayoutInEditor()) {
             tabbedPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         } else {
             tabbedPanel.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
