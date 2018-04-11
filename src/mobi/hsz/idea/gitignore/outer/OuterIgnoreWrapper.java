@@ -24,6 +24,8 @@
 
 package mobi.hsz.idea.gitignore.outer;
 
+import com.intellij.ide.ui.UISettings;
+import com.intellij.ide.ui.UISettingsListener;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -38,6 +40,7 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.labels.LinkLabel;
 import com.intellij.ui.components.labels.LinkListener;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.ui.UIUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -49,9 +52,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import java.util.List;
 
 /**
@@ -60,7 +61,7 @@ import java.util.List;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.1
  */
-public class OuterIgnoreWrapper implements Disposable {
+public class OuterIgnoreWrapper extends MouseAdapter implements ChangeListener, Disposable {
     /** Pixels offset to handle drag event. */
     private static final int DRAG_OFFSET = 10;
 
@@ -78,6 +79,26 @@ public class OuterIgnoreWrapper implements Disposable {
     @NotNull
     private final IgnoreSettings settings;
 
+    /** North panel. */
+    @NotNull
+    private final JPanel northPanel;
+
+    /** Panel wrapper. */
+    @NotNull
+    private final TabbedPaneWrapper tabbedPanel;
+
+    /** Message bus instance. */
+    @NotNull
+    private final MessageBusConnection messageBus;
+
+    /** Link label instance. */
+    @NotNull
+    private final LinkLabel linkLabel;
+
+    /** List of all available outer files. */
+    @NotNull
+    private final List<VirtualFile> outerFiles;
+
     /** Current panel's height. */
     private int dragPanelHeight;
 
@@ -87,16 +108,17 @@ public class OuterIgnoreWrapper implements Disposable {
     /** Obtains if it's in drag mode. */
     private boolean drag;
 
-    @SuppressWarnings("unchecked")
     /** Constructor. */
+    @SuppressWarnings("unchecked")
     public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final IgnoreLanguage language,
                               @NotNull final List<VirtualFile> outerFiles) {
+        this.outerFiles = outerFiles;
         settings = IgnoreSettings.getInstance();
 
         panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
 
-        final JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
+        northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
 
         JBLabel label = new JBLabel(
                 IgnoreBundle.message("outer.label"),
@@ -106,9 +128,17 @@ public class OuterIgnoreWrapper implements Disposable {
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
         northPanel.add(label);
 
-        final TabbedPaneWrapper tabbedPanel = new TabbedPaneWrapper(project);
-        final JComponent tabbedPanelComponent = tabbedPanel.getComponent();
-        final LinkLabel linkLabel = new LinkLabel(outerFiles.get(0).getPath(), null, new LinkListener() {
+        tabbedPanel = new TabbedPaneWrapper(project);
+        messageBus = project.getMessageBus().connect();
+        messageBus.subscribe(UISettingsListener.TOPIC, new UISettingsListener() {
+            @Override
+            public void uiSettingsChanged(UISettings uiSettings) {
+                updateTabbedPanelPolicy();
+            }
+        });
+        updateTabbedPanelPolicy();
+
+        linkLabel = new LinkLabel(outerFiles.get(0).getPath(), null, new LinkListener() {
             @Override
             public void linkSelected(LinkLabel aSource, Object aLinkData) {
                 Utils.openFile(project, outerFiles.get(tabbedPanel.getSelectedIndex()));
@@ -130,60 +160,66 @@ public class OuterIgnoreWrapper implements Disposable {
                     path = path.replace(userHomeDir.getPath(), "~");
                 }
 
-                if (path != null) {
-                    tabbedPanel.addTab(path, language.getIcon(), scrollPanel, outerFile.getCanonicalPath());
-                    outerEditors.add(outerEditor);
-                }
+                tabbedPanel.addTab(path, language.getIcon(), scrollPanel, outerFile.getCanonicalPath());
+                outerEditors.add(outerEditor);
             }
         }
 
-        northPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getPoint().getY() <= DRAG_OFFSET) {
-                    dragPanelHeight = tabbedPanelComponent.getHeight();
-                    dragYOnScreen = e.getYOnScreen();
-                    drag = true;
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                drag = false;
-                settings.setOuterIgnoreWrapperHeight(tabbedPanelComponent.getHeight());
-            }
-        });
-        northPanel.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                Cursor cursor = (e.getPoint().getY() <= DRAG_OFFSET) ?
-                        Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR) : Cursor.getDefaultCursor();
-                panel.setCursor(cursor);
-            }
-
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (drag) {
-                    int height = dragPanelHeight - e.getYOnScreen() + dragYOnScreen;
-                    if (height > MAX_HEIGHT) {
-                        height = MAX_HEIGHT;
-                    }
-                    tabbedPanelComponent.setPreferredSize(new Dimension(0, height));
-                    panel.revalidate();
-                }
-            }
-        });
-
-        tabbedPanel.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                linkLabel.setText(outerFiles.get(tabbedPanel.getSelectedIndex()).getPath());
-            }
-        });
+        northPanel.addMouseListener(this);
+        northPanel.addMouseMotionListener(this);
+        tabbedPanel.addChangeListener(this);
 
         panel.add(northPanel, BorderLayout.NORTH);
-        panel.add(tabbedPanelComponent, BorderLayout.CENTER);
+        panel.add(tabbedPanel.getComponent(), BorderLayout.CENTER);
         panel.add(linkLabel, BorderLayout.SOUTH);
+    }
+
+    /** Updates tabbedPanel policy depending on {@link UISettings#getScrollTabLayoutInEditor()} settings. */
+    private void updateTabbedPanelPolicy() {
+        if (UISettings.getInstance().getScrollTabLayoutInEditor()) {
+            tabbedPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        } else {
+            tabbedPanel.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (e.getPoint().getY() <= DRAG_OFFSET) {
+            dragPanelHeight = tabbedPanel.getComponent().getHeight();
+            dragYOnScreen = e.getYOnScreen();
+            drag = true;
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        drag = false;
+        settings.setOuterIgnoreWrapperHeight(tabbedPanel.getComponent().getHeight());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        Cursor cursor = (e.getPoint().getY() <= DRAG_OFFSET) ?
+                Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR) : Cursor.getDefaultCursor();
+        panel.setCursor(cursor);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if (drag) {
+            int height = dragPanelHeight - e.getYOnScreen() + dragYOnScreen;
+            if (height > MAX_HEIGHT) {
+                height = MAX_HEIGHT;
+            }
+            tabbedPanel.getComponent().setPreferredSize(new Dimension(0, height));
+            panel.revalidate();
+        }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        linkLabel.setText(outerFiles.get(tabbedPanel.getSelectedIndex()).getPath());
     }
 
     /**
@@ -198,6 +234,11 @@ public class OuterIgnoreWrapper implements Disposable {
     /** Disposes all outer editors stored in {@link #outerEditors}. */
     @Override
     public void dispose() {
+        messageBus.disconnect();
+        northPanel.removeMouseListener(this);
+        northPanel.removeMouseMotionListener(this);
+        tabbedPanel.removeChangeListener(this);
+
         for (Editor outerEditor : outerEditors) {
             EditorFactory.getInstance().releaseEditor(outerEditor);
         }
