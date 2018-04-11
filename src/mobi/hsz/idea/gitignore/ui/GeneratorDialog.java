@@ -129,6 +129,16 @@ public class GeneratorDialog extends DialogWrapper {
     /** {@link Document} related to the {@link Editor} feature. */
     private Document previewDocument;
 
+    /** CheckboxTree selection listener. */
+    private TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
+        public void valueChanged(TreeSelectionEvent e) {
+            final TreePath path = getCurrentPath();
+            if (path != null) {
+                updateDescriptionPanel(path);
+            }
+        }
+    };
+
     /**
      * Builds a new instance of {@link GeneratorDialog}.
      *
@@ -180,6 +190,7 @@ public class GeneratorDialog extends DialogWrapper {
      */
     @Override
     protected void dispose() {
+        tree.removeTreeSelectionListener(treeSelectionListener);
         EditorFactory.getInstance().releaseEditor(preview);
         super.dispose();
     }
@@ -321,17 +332,9 @@ public class GeneratorDialog extends DialogWrapper {
         tree.setCellRenderer(renderer);
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
+        tree.addTreeSelectionListener(treeSelectionListener);
         UIUtil.setLineStyleAngled(tree);
         TreeUtil.installActions(tree);
-
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent e) {
-                final TreePath path = getCurrentPath();
-                if (path != null) {
-                    updateDescriptionPanel(path);
-                }
-            }
-        });
 
         final JScrollPane scrollPane = ScrollPaneFactory.createScrollPane(tree);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);

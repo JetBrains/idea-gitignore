@@ -33,6 +33,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.messages.MessageBusConnection;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
@@ -52,6 +53,9 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @since 1.1
  */
 public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
+    /** MessageBus instance. */
+    private MessageBusConnection messageBus;
+
     /**
      * Returns {@link OuterIgnoreLoaderComponent} service instance.
      *
@@ -83,10 +87,16 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Initializes component. */
     @Override
     public void initComponent() {
-        myProject.getMessageBus().connect().subscribe(
-                FileEditorManagerListener.FILE_EDITOR_MANAGER,
-                new IgnoreEditorManagerListener(myProject)
-        );
+        messageBus = myProject.getMessageBus().connect();
+        messageBus.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new IgnoreEditorManagerListener(myProject));
+    }
+
+    @Override
+    public void disposeComponent() {
+        if (messageBus != null) {
+            messageBus.disconnect();
+            messageBus = null;
+        }
     }
 
     /** Listener for ignore editor manager. */
@@ -130,21 +140,23 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                         if (fileEditor instanceof TextEditor) {
                             final OuterIgnoreWrapper wrapper = new OuterIgnoreWrapper(project, language, outerFiles);
                             final JComponent component = wrapper.getComponent();
-                            source.addBottomComponent(fileEditor, component);
-
-                            IgnoreSettings.getInstance().addListener(new IgnoreSettings.Listener() {
+                            final IgnoreSettings.Listener settingsListener = new IgnoreSettings.Listener() {
                                 @Override
                                 public void onChange(@NotNull KEY key, Object value) {
                                     if (KEY.OUTER_IGNORE_RULES.equals(key)) {
                                         component.setVisible((Boolean) value);
                                     }
                                 }
-                            });
+                            };
+
+                            IgnoreSettings.getInstance().addListener(settingsListener);
+                            source.addBottomComponent(fileEditor, component);
 
                             Disposer.register(fileEditor, wrapper);
                             Disposer.register(fileEditor, new Disposable() {
                                 @Override
                                 public void dispose() {
+                                    IgnoreSettings.getInstance().removeListener(settingsListener);
                                     source.removeBottomComponent(fileEditor, component);
                                 }
                             });

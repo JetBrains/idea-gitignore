@@ -346,6 +346,7 @@ public class UntrackFilesDialog extends DialogWrapper {
     @Override
     public void dispose() {
         super.dispose();
+        tree.getModel().removeTreeModelListener(treeModelListener);
         if (!commands.isDisposed()) {
             EditorFactory.getInstance().releaseEditor(commands);
         }

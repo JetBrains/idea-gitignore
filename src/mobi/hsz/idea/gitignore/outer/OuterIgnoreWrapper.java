@@ -47,6 +47,7 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -89,8 +90,8 @@ public class OuterIgnoreWrapper extends MouseAdapter implements ChangeListener, 
     private final TabbedPaneWrapper tabbedPanel;
 
     /** Message bus instance. */
-    @NotNull
-    private final MessageBusConnection messageBus;
+    @Nullable
+    private MessageBusConnection messageBus;
 
     /** Link label instance. */
     @NotNull
@@ -235,10 +236,14 @@ public class OuterIgnoreWrapper extends MouseAdapter implements ChangeListener, 
     /** Disposes all outer editors stored in {@link #outerEditors}. */
     @Override
     public void dispose() {
-        messageBus.disconnect();
         northPanel.removeMouseListener(this);
         northPanel.removeMouseMotionListener(this);
         tabbedPanel.removeChangeListener(this);
+
+        if (messageBus != null) {
+            messageBus.disconnect();
+            messageBus = null;
+        }
 
         for (Editor outerEditor : outerEditors) {
             EditorFactory.getInstance().releaseEditor(outerEditor);
