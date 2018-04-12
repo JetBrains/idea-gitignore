@@ -548,17 +548,12 @@ public class Utils {
      * @return event is processed
      */
     public static boolean isInsideEventProcessing() {
-        try {
-            return (Boolean) Class
-                    .forName("com.intellij.openapi.project.NoAccessDuringPsiEvents")
-                    .getMethod("isInsideEventProcessing")
-                    .invoke(null);
-        } catch (ClassNotFoundException ignored) {
-        } catch (NoSuchMethodException ignored) {
-        } catch (IllegalAccessException ignored) {
-        } catch (InvocationTargetException ignored) {
-        }
-        return false;
+        return safeInvocation(
+                null,
+                "com.intellij.openapi.project.NoAccessDuringPsiEvents",
+                "isInsideEventProcessing",
+                false
+        );
     }
 
     /**
@@ -567,16 +562,36 @@ public class Utils {
      * @return scroll tab layout setting is in use
      */
     public static boolean getUISettingsScrollTabLayoutInEditor() {
+        return safeInvocation(
+                UISettings.getInstance(),
+                "com.intellij.ide.ui.UISettings",
+                "getScrollTabLayoutInEditor",
+                true
+        );
+    }
+
+    /**
+     * Invokes safely any SDK method that may not be available in some IDE versions. If method is not resolved in
+     * runtime, default value is returned.
+     *
+     * @param that         the object the underlying method is invoked from
+     * @param className    class to invoke
+     * @param methodName   method that we want to invoke
+     * @param defaultValue default value to return
+     * @param args         the arguments used for the method call
+     * @param <T>          return type
+     * @return result of invoked function or default value if method doesn't exist
+     */
+    @SuppressWarnings("unchecked")
+    private static <T> T safeInvocation(@Nullable Object that, @NotNull String className, @NotNull String methodName,
+                                        @Nullable T defaultValue, @Nullable Object... args) {
         try {
-            return (Boolean) Class
-                    .forName("com.intellij.ide.ui.UISettings")
-                    .getMethod("getScrollTabLayoutInEditor")
-                    .invoke(UISettings.getInstance());
+            return (T) Class.forName(className).getMethod(methodName).invoke(that, args);
         } catch (ClassNotFoundException ignored) {
         } catch (NoSuchMethodException ignored) {
         } catch (IllegalAccessException ignored) {
         } catch (InvocationTargetException ignored) {
         }
-        return true;
+        return defaultValue;
     }
 }
