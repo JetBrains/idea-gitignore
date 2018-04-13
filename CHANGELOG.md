@@ -1,6 +1,24 @@
 Change Log
 ----------
 
+### [v2.6.0](https://github.com/hsz/idea-gitignore/tree/v2.6.0) (2018-04-13)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.5.0...v2.6.0)
+
+**Implemented enhancements:**
+
+- Multirow tabs for outer rules panel [\#501](https://github.com/hsz/idea-gitignore/issues/501)
+
+**Fixed bugs:**
+
+- The following plugins are incompatible with the current IDE build [\#530](https://github.com/hsz/idea-gitignore/issues/530)
+- NullPointerException on File indexing (IgnoreFilesIndex), infinite loop of failing re-indexes - thanks to @nicity ! [\#527](https://github.com/hsz/idea-gitignore/issues/527)
+
+**Closed issues:**
+
+- Have you considered Open Collective? [opencollective.com/ignore](https://opencollective.com/ignore) [\#497](https://github.com/hsz/idea-gitignore/issues/497)
+
+
 ### [v2.5.0](https://github.com/hsz/idea-gitignore/tree/v2.5.0) (2018-03-24)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.4.0...v2.5.0)

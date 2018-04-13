@@ -1,4 +1,4 @@
-.ignore 2.5.0
+.ignore 2.6.0
 =============
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
@@ -128,21 +128,23 @@ Usage
 Changelog
 ---------
 
-### [v2.5.0](https://github.com/hsz/idea-gitignore/tree/v2.5.0) (2018-03-24)
+### [v2.6.0](https://github.com/hsz/idea-gitignore/tree/v2.6.0) (2018-04-13)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.4.0...v2.5.0)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.5.0...v2.6.0)
 
 **Implemented enhancements:**
 
-- `.ebignore` (ElasticBeanstalk) support [\#520](https://github.com/hsz/idea-gitignore/issues/520)
+- Multirow tabs for outer rules panel [\#501](https://github.com/hsz/idea-gitignore/issues/501)
 
 **Fixed bugs:**
 
-- The plugin slows down the IDE a lot [\#525](https://github.com/hsz/idea-gitignore/issues/525)
-- MatcherUtil.cache takes too much memory [\#521](https://github.com/hsz/idea-gitignore/issues/521)
-- KotlinNullPointerException in Rider IDE [\#385](https://github.com/hsz/idea-gitignore/issues/385) [\#522](https://github.com/hsz/idea-gitignore/issues/522)
-- Already disposed in VirtualFilePointerImpl (Utils.getExcludedRoots) [\#524](https://github.com/hsz/idea-gitignore/issues/524)
-- AssertionError in VirtualFilePointerContainerImpl [\#503](https://github.com/hsz/idea-gitignore/issues/503)
+- The following plugins are incompatible with the current IDE build [\#530](https://github.com/hsz/idea-gitignore/issues/530)
+- NullPointerException on File indexing (IgnoreFilesIndex), infinite loop of failing re-indexes - thanks to @nicity ! [\#527](https://github.com/hsz/idea-gitignore/issues/527)
+
+**Closed issues:**
+
+- Have you considered Open Collective? [opencollective.com/ignore](https://opencollective.com/ignore) [\#497](https://github.com/hsz/idea-gitignore/issues/497)
+
 
 [Full Changelog History](./CHANGELOG.md)
 
@@ -176,6 +178,7 @@ Developed By
 **Contributors**
 
 - [**@zolotov** Alexander Zolotov](https://github.com/zolotov)
+- [**@nicity** Maksim Mosienko](https://github.com/nicity)
 - [**@76200** Bartłomiej Czyż](https://github.com/76200)
 - [**@bedla** Ivo Šmíd](https://github.com/bedla)
 - [**@danpfe**](https://github.com/danpfe)
