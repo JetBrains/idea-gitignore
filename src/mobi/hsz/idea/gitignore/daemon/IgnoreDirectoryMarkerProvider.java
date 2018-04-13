@@ -32,6 +32,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.PlatformIcons;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryDirectory;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryFile;
@@ -42,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -52,6 +54,9 @@ import java.util.List;
  * @since 0.5
  */
 public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
+    /** Cache map. */
+    private HashMap<String, Boolean> cache = ContainerUtil.newHashMap();
+
     /**
      * Returns {@link LineMarkerInfo} with set {@link PlatformIcons#FOLDER_ICON} if entry points to the directory.
      *
@@ -61,28 +66,33 @@ public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
     @Nullable
     @Override
     public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
+        if (!(element instanceof IgnoreEntryFile)) {
+            return null;
+        }
+
         boolean isDirectory = element instanceof IgnoreEntryDirectory;
-        if (!isDirectory && element instanceof IgnoreEntryFile) {
-            IgnoreEntryFile entry = (IgnoreEntryFile) element;
-            VirtualFile parent = element.getContainingFile().getVirtualFile().getParent();
-            Project project = element.getProject();
-            VirtualFile projectDir = project.getBaseDir();
-            if (parent == null || projectDir == null || !Utils.isUnder(parent, projectDir)) {
-                return null;
-            }
-            final MatcherUtil matcher = IgnoreManager.getInstance(project).getMatcher();
-            final List<VirtualFile> files = Glob.findOne(parent, entry, matcher);
-            for (VirtualFile file : files) {
-                if (!file.isDirectory()) {
+
+        if (!isDirectory) {
+            final String key = element.getText();
+            if (cache.containsKey(key)) {
+                isDirectory = cache.get(key);
+            } else {
+                final IgnoreEntryFile entry = (IgnoreEntryFile) element;
+                final VirtualFile parent = element.getContainingFile().getVirtualFile().getParent();
+                final Project project = element.getProject();
+                final VirtualFile projectDir = project.getBaseDir();
+                if (parent == null || projectDir == null || !Utils.isUnder(parent, projectDir)) {
                     return null;
                 }
+                final MatcherUtil matcher = IgnoreManager.getInstance(project).getMatcher();
+                final VirtualFile file = Glob.findOne(parent, entry, matcher);
+                cache.put(key, isDirectory = file != null && file.isDirectory());
             }
-            isDirectory = files.size() > 0;
         }
 
         if (isDirectory) {
-            return new LineMarkerInfo<PsiElement>(element, element.getTextRange(), PlatformIcons.FOLDER_ICON,
-                    Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.CENTER);
+            return new LineMarkerInfo<PsiElement>(element.getFirstChild(), element.getTextRange(),
+                    PlatformIcons.FOLDER_ICON, Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.CENTER);
         }
         return null;
     }

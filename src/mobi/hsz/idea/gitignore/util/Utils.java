@@ -340,6 +340,9 @@ public class Utils {
      * @return file is under directory
      */
     public static boolean isUnder(@NotNull VirtualFile file, @NotNull VirtualFile directory) {
+        if (directory.equals(file)) {
+            return true;
+        }
         VirtualFile parent = file.getParent();
         while (parent != null) {
             if (directory.equals(parent)) {

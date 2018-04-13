@@ -35,15 +35,14 @@ public class MatcherUtilTest extends Common<MatcherUtil> {
     @Test
     public void testMatch() {
         final Pattern pattern = Pattern.compile("foo");
-        final Matcher matcher = pattern.matcher("");
         final MatcherUtil util = new MatcherUtil();
 
         assertFalse(util.match(null, null));
         assertFalse(util.match(null, "foo"));
-        assertFalse(util.match(matcher, null));
-        assertFalse(util.match(matcher, "fo"));
-        assertTrue(util.match(matcher, "foo"));
-        assertTrue(util.match(matcher, "xfooy"));
+        assertFalse(util.match(pattern, null));
+        assertFalse(util.match(pattern, "fo"));
+        assertTrue(util.match(pattern, "foo"));
+        assertTrue(util.match(pattern, "xfooy"));
     }
 
     @Test

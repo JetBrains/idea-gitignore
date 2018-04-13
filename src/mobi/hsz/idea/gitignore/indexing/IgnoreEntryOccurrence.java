@@ -28,6 +28,7 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.ImmutableList;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -37,13 +38,11 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
 
 /**
  * Entry containing information about the {@link VirtualFile} instance of the ignore file mapped with the collection
- * of ignore entries converted to {@link Pattern} for better performance. Class is used for indexing.
+ * of ignore entries for better performance. Class is used for indexing.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 2.0
@@ -53,51 +52,39 @@ public class IgnoreEntryOccurrence implements Serializable {
     @NotNull
     private final String url;
 
+    /** Collection of ignore entries. */
+    @NotNull
+    private final ImmutableList<Pair<String, Boolean>> items;
+
     /** Current ignore file. */
     @Nullable
     private VirtualFile file;
 
-    /** Collection of ignore entries converted to {@link Pattern}. */
-    @NotNull
-    private final List<Pair<Matcher, Boolean>> items = ContainerUtil.newArrayList();
-
     /**
      * Constructor.
      *
-     * @param url current file
+     * @param url   entry URL
+     * @param items parsed entry items
      */
-    public IgnoreEntryOccurrence(@NotNull String url) {
-        this(url, null);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param file current file
-     */
-    public IgnoreEntryOccurrence(@NotNull VirtualFile file) {
-        this(file.getUrl(), file);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param file current file
-     * @param url current file path
-     */
-    public IgnoreEntryOccurrence(@NotNull String url, @Nullable VirtualFile file) {
+    public IgnoreEntryOccurrence(@NotNull String url, @NotNull ArrayList<Pair<String, Boolean>> items) {
         this.url = url;
-        this.file = file;
+        this.items = ContainerUtil.immutableList(items);
     }
 
     /**
-     * Calculates hashCode with {@link #file} and {@link #items} hashCodes.
+     * Calculates hashCode with {@link #url} and {@link #items} hashCodes.
      *
      * @return entry hashCode
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(url).append(items.toString()).toHashCode();
+        HashCodeBuilder builder = new HashCodeBuilder().append(url);
+
+        for (Pair<String, Boolean> item : items) {
+            builder.append(item.first).append(item.second);
+        }
+
+        return builder.toHashCode();
     }
 
     /**
@@ -113,12 +100,17 @@ public class IgnoreEntryOccurrence implements Serializable {
         }
 
         final IgnoreEntryOccurrence entry = (IgnoreEntryOccurrence) obj;
-        boolean equals = url.equals(entry.url) && items.size() == entry.items.size();
-        for (int i = 0; i < items.size(); i++) {
-            equals = equals && items.get(i).toString().equals(entry.items.get(i).toString());
+        if (!url.equals(entry.url) || items.size() != entry.items.size()) {
+            return false;
         }
 
-        return equals;
+        for (int i = 0; i < items.size(); i++) {
+            if (!items.get(i).toString().equals(entry.items.get(i).toString())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -128,7 +120,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      */
     @Nullable
     public VirtualFile getFile() {
-        if (file == null) {
+        if (file == null && !url.isEmpty()) {
             file = VirtualFileManager.getInstance().findFileByUrl(url);
         }
         return file;
@@ -140,18 +132,8 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @return entries
      */
     @NotNull
-    public List<Pair<Matcher, Boolean>> getItems() {
+    public ImmutableList<Pair<String, Boolean>> getItems() {
         return items;
-    }
-
-    /**
-     * Adds new element to {@link #items}.
-     *
-     * @param matcher   entry converted to {@link Matcher}
-     * @param isNegated entry is negated
-     */
-    public void add(@NotNull Matcher matcher, boolean isNegated) {
-        items.add(Pair.create(matcher, isNegated));
     }
 
     /**
@@ -165,8 +147,8 @@ public class IgnoreEntryOccurrence implements Serializable {
             throws IOException {
         out.writeUTF(entry.url);
         out.writeInt(entry.items.size());
-        for (Pair<Matcher, Boolean> item : entry.items) {
-            out.writeUTF(item.first.pattern().pattern());
+        for (Pair<String, Boolean> item : entry.items) {
+            out.writeUTF(item.first);
             out.writeBoolean(item.second);
         }
     }
@@ -177,21 +159,20 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @param in input stream
      * @return read {@link IgnoreEntryOccurrence}
      */
-    @Nullable
+    @NotNull
     public static synchronized IgnoreEntryOccurrence deserialize(@NotNull DataInput in) throws IOException {
         final String url = in.readUTF();
-        if (StringUtils.isEmpty(url)) {
-            return null;
+        final ArrayList<Pair<String, Boolean>> items = ContainerUtil.newArrayList();
+
+        if (!StringUtils.isEmpty(url)) {
+            final int size = in.readInt();
+            for (int i = 0; i < size; i++) {
+                String pattern = in.readUTF();
+                Boolean isNegated = in.readBoolean();
+                items.add(Pair.create(pattern, isNegated));
+            }
         }
 
-        final IgnoreEntryOccurrence entry = new IgnoreEntryOccurrence(url);
-        int size = in.readInt();
-        for (int i = 0; i < size; i++) {
-            final Pattern pattern = Pattern.compile(in.readUTF());
-            Boolean isNegated = in.readBoolean();
-            entry.add(pattern.matcher(""), isNegated);
-        }
-
-        return entry;
+        return new IgnoreEntryOccurrence(url, items);
     }
 }

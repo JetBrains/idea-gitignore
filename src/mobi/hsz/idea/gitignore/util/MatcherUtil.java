@@ -48,25 +48,25 @@ public class MatcherUtil {
      * Extracts alphanumeric parts from the regex pattern and checks if any of them is contained in the tested path.
      * Looking for the parts speed ups the matching and prevents from running whole regex on the string.
      *
-     * @param matcher to explode
+     * @param pattern to explode
      * @param path    to check
      * @return path matches the pattern
      */
-    public boolean match(@Nullable Matcher matcher, @Nullable String path) {
-        if (matcher == null || path == null) {
+    public boolean match(@Nullable Pattern pattern, @Nullable String path) {
+        if (pattern == null || path == null) {
             return false;
         }
 
         synchronized (cache) {
-            int hashCode = new HashCodeBuilder().append(matcher.pattern()).append(path).toHashCode();
+            int hashCode = new HashCodeBuilder().append(pattern).append(path).toHashCode();
 
             if (!cache.containsKey(hashCode)) {
-                final String[] parts = getParts(matcher);
+                final String[] parts = getParts(pattern);
                 boolean result = false;
 
                 if (parts.length == 0 || matchAllParts(parts, path)) {
                     try {
-                        result = matcher.reset(path).find();
+                        result = pattern.matcher(path).find();
                     } catch (StringIndexOutOfBoundsException ignored) {
                     }
                 }
@@ -166,6 +166,6 @@ public class MatcherUtil {
             inSquare = ch != ']' && ((ch == '[') || inSquare);
         }
 
-        return parts.toArray(new String[parts.size()]);
+        return parts.toArray(new String[0]);
     }
 }

@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.indexing;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Function;
@@ -47,11 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.*;
 
 /**
  * Implementation of {@link AbstractIgnoreFilesIndex} that allows to index all ignore files content using native
@@ -90,21 +87,20 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
         if (!(inputData.getPsiFile() instanceof IgnoreFile)) {
             return Collections.emptyMap();
         }
-        final IgnoreEntryOccurrence result = new IgnoreEntryOccurrence(inputData.getFile());
-        final IgnoreFileType type = (IgnoreFileType) inputData.getFileType();
 
-        IgnoreFile ignoreFile = (IgnoreFile) inputData.getPsiFile();
-        ignoreFile.acceptChildren(new IgnoreVisitor() {
+        final ArrayList<Pair<String, Boolean>> items = ContainerUtil.newArrayList();
+        inputData.getPsiFile().acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
-                final Pattern pattern = Glob.createPattern(entry);
-                if (pattern != null) {
-                    result.add(pattern.matcher(""), entry.isNegated());
-                }
+                final String regex = Glob.getRegex(entry.getValue(), entry.getSyntax(), false);
+                items.add(Pair.create(regex, entry.isNegated()));
             }
         });
 
-        return Collections.singletonMap(new IgnoreFileTypeKey(type), result);
+        return Collections.singletonMap(
+                new IgnoreFileTypeKey((IgnoreFileType) inputData.getFileType()),
+                new IgnoreEntryOccurrence(inputData.getFile().getUrl(), items)
+        );
     }
 
     /**

@@ -46,7 +46,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -112,7 +111,6 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                     return false;
                 }
 
-                final Matcher matcher = pattern.matcher("");
                 final VirtualFile projectRoot = project.getBaseDir();
                 final List<VirtualFile> matched = ContainerUtil.newArrayList();
                 final Collection<VirtualFile> files = cache.getFilesForPattern(project, pattern);
@@ -128,7 +126,7 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                             continue;
                         }
                         String path = Utils.getRelativePath(projectRoot, root);
-                        if (manager.getMatcher().match(matcher, path)) {
+                        if (manager.getMatcher().match(pattern, path)) {
                             matched.add(file);
                             return false;
                         }
