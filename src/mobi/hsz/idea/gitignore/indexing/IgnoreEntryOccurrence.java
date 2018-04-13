@@ -53,13 +53,13 @@ public class IgnoreEntryOccurrence implements Serializable {
     @NotNull
     private final String url;
 
+    /** Collection of ignore entries converted to {@link Pattern}. */
+    @NotNull
+    private final ImmutableList<Pair<Pattern, Boolean>> items;
+
     /** Current ignore file. */
     @Nullable
     private VirtualFile file;
-
-    /** Collection of ignore entries converted to {@link Pattern}. */
-    @NotNull
-    private ImmutableList<Pair<Pattern, Boolean>> items;
 
     /**
      * Constructor.
@@ -67,9 +67,9 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @param url   entry URL
      * @param items parsed entry items
      */
-    public IgnoreEntryOccurrence(@NotNull String url, @NotNull ImmutableList<Pair<Pattern, Boolean>> items) {
+    public IgnoreEntryOccurrence(@NotNull String url, @NotNull ArrayList<Pair<Pattern, Boolean>> items) {
         this.url = url;
-        this.items = items;
+        this.items = ContainerUtil.immutableList(items);
     }
 
     /**
@@ -174,6 +174,6 @@ public class IgnoreEntryOccurrence implements Serializable {
             }
         }
 
-        return new IgnoreEntryOccurrence(url, ContainerUtil.immutableList(items));
+        return new IgnoreEntryOccurrence(url, items);
     }
 }

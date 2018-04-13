@@ -102,7 +102,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
 
         return Collections.singletonMap(
                 new IgnoreFileTypeKey((IgnoreFileType) inputData.getFileType()),
-                new IgnoreEntryOccurrence(inputData.getFile().getUrl(), ContainerUtil.immutableList(items))
+                new IgnoreEntryOccurrence(inputData.getFile().getUrl(), items)
         );
     }
 
