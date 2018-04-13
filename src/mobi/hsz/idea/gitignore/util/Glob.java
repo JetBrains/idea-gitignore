@@ -69,7 +69,11 @@ public class Glob {
     @Nullable
     public static VirtualFile findOne(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry,
                                             @NotNull MatcherUtil matcher) {
-        return find(root, ContainerUtil.newArrayList(entry), matcher, false).get(entry).get(0);
+        List<VirtualFile> files = find(root, ContainerUtil.newArrayList(entry), matcher, false).get(entry);
+        if (files == null || files.isEmpty()) {
+            return null;
+        }
+        return files.get(0);
     }
 
     /**
