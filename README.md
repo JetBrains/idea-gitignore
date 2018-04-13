@@ -1,4 +1,4 @@
-.ignore 2.6.0
+.ignore 2.6.1
 =============
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
@@ -128,9 +128,9 @@ Usage
 Changelog
 ---------
 
-### [v2.6.0](https://github.com/hsz/idea-gitignore/tree/v2.6.0) (2018-04-13)
+### [v2.6.1](https://github.com/hsz/idea-gitignore/tree/v2.6.1) (2018-04-13)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.5.0...v2.6.0)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.5.0...v2.6.1)
 
 **Implemented enhancements:**
 
