@@ -173,29 +173,6 @@ public class Glob {
     }
 
     /**
-     * Creates regex {@link Pattern} using glob rule.
-     *
-     * @param rule           rule value
-     * @param syntax         rule syntax
-     * @param acceptChildren Matches directory children
-     * @return regex {@link Pattern}
-     */
-    @Nullable
-    public static Pattern createPattern(@NotNull String rule,
-                                        @NotNull IgnoreBundle.Syntax syntax,
-                                        boolean acceptChildren) {
-        final String regex = syntax.equals(IgnoreBundle.Syntax.GLOB) ? createRegex(rule, acceptChildren) : rule;
-        try {
-            if (!PATTERNS_CACHE.containsKey(regex)) {
-                PATTERNS_CACHE.put(regex, Pattern.compile(regex));
-            }
-            return PATTERNS_CACHE.get(regex);
-        } catch (PatternSyntaxException e) {
-            return null;
-        }
-    }
-
-    /**
      * Creates regex {@link Pattern} using {@link IgnoreEntry}.
      *
      * @param entry {@link IgnoreEntry}
@@ -216,6 +193,52 @@ public class Glob {
     @Nullable
     public static Pattern createPattern(@NotNull IgnoreEntry entry, boolean acceptChildren) {
         return createPattern(entry.getValue(), entry.getSyntax(), acceptChildren);
+    }
+
+    /**
+     * Creates regex {@link Pattern} using glob rule.
+     *
+     * @param rule           rule value
+     * @param syntax         rule syntax
+     * @param acceptChildren Matches directory children
+     * @return regex {@link Pattern}
+     */
+    @Nullable
+    public static Pattern createPattern(@NotNull String rule, @NotNull IgnoreBundle.Syntax syntax,
+                                        boolean acceptChildren) {
+        final String regex = getRegex(rule, syntax, acceptChildren);
+        return getPattern(regex);
+    }
+
+    /**
+     * Returns regex string basing on the rule and provided syntax.
+     *
+     * @param rule           rule value
+     * @param syntax         rule syntax
+     * @param acceptChildren Matches directory children
+     * @return regex string
+     */
+    @NotNull
+    public static String getRegex(@NotNull String rule, @NotNull IgnoreBundle.Syntax syntax, boolean acceptChildren) {
+        return syntax.equals(IgnoreBundle.Syntax.GLOB) ? createRegex(rule, acceptChildren) : rule;
+    }
+
+    /**
+     * Converts regex string to {@link Pattern} with caching.
+     *
+     * @param regex regex to convert
+     * @return {@link Pattern} instance or null if invalid
+     */
+    @Nullable
+    public static Pattern getPattern(@NotNull String regex) {
+        try {
+            if (!PATTERNS_CACHE.containsKey(regex)) {
+                PATTERNS_CACHE.put(regex, Pattern.compile(regex));
+            }
+            return PATTERNS_CACHE.get(regex);
+        } catch (PatternSyntaxException e) {
+            return null;
+        }
     }
 
     /**

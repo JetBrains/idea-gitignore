@@ -49,7 +49,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link AbstractIgnoreFilesIndex} that allows to index all ignore files content using native
@@ -89,14 +88,12 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
             return Collections.emptyMap();
         }
 
-        final ArrayList<Pair<Pattern, Boolean>> items = ContainerUtil.newArrayList();
+        final ArrayList<Pair<String, Boolean>> items = ContainerUtil.newArrayList();
         inputData.getPsiFile().acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
-                final Pattern pattern = Glob.createPattern(entry);
-                if (pattern != null) {
-                    items.add(Pair.create(pattern, entry.isNegated()));
-                }
+                final String regex = Glob.getRegex(entry.getValue(), entry.getSyntax(), false);
+                items.add(Pair.create(regex, entry.isNegated()));
             }
         });
 

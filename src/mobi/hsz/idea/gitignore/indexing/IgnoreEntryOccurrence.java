@@ -53,9 +53,9 @@ public class IgnoreEntryOccurrence implements Serializable {
     @NotNull
     private final String url;
 
-    /** Collection of ignore entries converted to {@link Pattern}. */
+    /** Collection of ignore entries. */
     @NotNull
-    private final ImmutableList<Pair<Pattern, Boolean>> items;
+    private final ImmutableList<Pair<String, Boolean>> items;
 
     /** Current ignore file. */
     @Nullable
@@ -67,7 +67,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @param url   entry URL
      * @param items parsed entry items
      */
-    public IgnoreEntryOccurrence(@NotNull String url, @NotNull ArrayList<Pair<Pattern, Boolean>> items) {
+    public IgnoreEntryOccurrence(@NotNull String url, @NotNull ArrayList<Pair<String, Boolean>> items) {
         this.url = url;
         this.items = ContainerUtil.immutableList(items);
     }
@@ -81,8 +81,8 @@ public class IgnoreEntryOccurrence implements Serializable {
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder().append(url);
 
-        for (Pair<Pattern, Boolean> item : items) {
-            builder.append(item.first.toString()).append(item.second);
+        for (Pair<String, Boolean> item : items) {
+            builder.append(item.first).append(item.second);
         }
 
         return builder.toHashCode();
@@ -133,7 +133,7 @@ public class IgnoreEntryOccurrence implements Serializable {
      * @return entries
      */
     @NotNull
-    public ImmutableList<Pair<Pattern, Boolean>> getItems() {
+    public ImmutableList<Pair<String, Boolean>> getItems() {
         return items;
     }
 
@@ -148,8 +148,8 @@ public class IgnoreEntryOccurrence implements Serializable {
             throws IOException {
         out.writeUTF(entry.url);
         out.writeInt(entry.items.size());
-        for (Pair<Pattern, Boolean> item : entry.items) {
-            out.writeUTF(item.first.pattern());
+        for (Pair<String, Boolean> item : entry.items) {
+            out.writeUTF(item.first);
             out.writeBoolean(item.second);
         }
     }
@@ -163,12 +163,12 @@ public class IgnoreEntryOccurrence implements Serializable {
     @NotNull
     public static synchronized IgnoreEntryOccurrence deserialize(@NotNull DataInput in) throws IOException {
         final String url = in.readUTF();
-        final ArrayList<Pair<Pattern, Boolean>> items = ContainerUtil.newArrayList();
+        final ArrayList<Pair<String, Boolean>> items = ContainerUtil.newArrayList();
 
         if (!StringUtils.isEmpty(url)) {
             final int size = in.readInt();
             for (int i = 0; i < size; i++) {
-                final Pattern pattern = Pattern.compile(in.readUTF());
+                String pattern = in.readUTF();
                 Boolean isNegated = in.readBoolean();
                 items.add(Pair.create(pattern, isNegated));
             }
