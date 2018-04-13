@@ -66,10 +66,10 @@ public class Glob {
      * @param entry ignore entry
      * @return search result
      */
-    @NotNull
-    public static List<VirtualFile> findOne(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry,
+    @Nullable
+    public static VirtualFile findOne(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry,
                                             @NotNull MatcherUtil matcher) {
-        return find(root, ContainerUtil.newArrayList(entry), matcher, false).get(entry);
+        return find(root, ContainerUtil.newArrayList(entry), matcher, false).get(entry).get(0);
     }
 
     /**
