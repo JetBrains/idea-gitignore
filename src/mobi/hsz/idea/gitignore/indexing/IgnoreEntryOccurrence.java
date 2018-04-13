@@ -39,11 +39,10 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 /**
  * Entry containing information about the {@link VirtualFile} instance of the ignore file mapped with the collection
- * of ignore entries converted to {@link Pattern} for better performance. Class is used for indexing.
+ * of ignore entries for better performance. Class is used for indexing.
  *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 2.0
