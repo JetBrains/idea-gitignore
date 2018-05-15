@@ -568,6 +568,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** Disable manager. */
     private void disable() {
+        ExternalIndexableSetContributor.invalidateCache(myProject);
         virtualFileManager.removeVirtualFileListener(virtualFileListener);
         settings.removeListener(settingsListener);
 
