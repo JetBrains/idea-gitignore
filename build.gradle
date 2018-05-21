@@ -1,7 +1,7 @@
 plugins {
     id 'jacoco'
     id 'org.jetbrains.intellij' version '0.3.1'
-    id 'de.undercouch.download' version '3.4.2'
+    id 'de.undercouch.download' version '3.4.3'
     id 'com.github.kt3k.coveralls' version '2.8.2'
 }
 
@@ -197,21 +197,8 @@ clean.doFirst {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-
-    if (!Boolean.valueOf(System.getenv('CI'))) {
-        def javaHome = System.getenv("JAVA_HOME")
-        if (null == javaHome || "".equals(javaHome)) {
-            javaHome = JDK6_HOME
-        }
-
-        options.bootClasspath = "$javaHome/jre/lib/rt.jar"
-    }
-}
-
-afterEvaluate {
-    tasks.getByName('runIde') {
-        jvmArgs(javaArguments)
-    }
+    options.incremental = true
+    options.fork = true
 }
 
 compileJava.dependsOn generateSources
