@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.reference;
 
 import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
@@ -58,15 +59,21 @@ import java.util.regex.Pattern;
  * @since 0.5
  */
 public class IgnoreReferenceSet extends FileReferenceSet {
-    /** Instance of the Cache ProjectComponent that retrieves matching files using given {@link Pattern}. */
+    /**
+     * Instance of the Cache ProjectComponent that retrieves matching files using given {@link Pattern}.
+     */
     @NotNull
     private final FilesIndexCacheProjectComponent filesIndexCache;
 
-    /** Instance of {@link IgnoreManager}. */
+    /**
+     * Instance of {@link IgnoreManager}.
+     */
     @NotNull
     private final IgnoreManager manager;
 
-    /** Constructor. */
+    /**
+     * Constructor.
+     */
     public IgnoreReferenceSet(@NotNull IgnoreEntry element) {
         super(element);
         filesIndexCache = FilesIndexCacheProjectComponent.getInstance(element.getProject());
@@ -136,7 +143,9 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         return false;
     }
 
-    /** Parses entry, searches for file references and stores them in {@link #myReferences}. */
+    /**
+     * Parses entry, searches for file references and stores them in {@link #myReferences}.
+     */
     @Override
     protected void reparse() {
         ProgressManager.checkCanceled();
@@ -184,12 +193,18 @@ public class IgnoreReferenceSet extends FileReferenceSet {
         myReferences = referencesList.toArray(new FileReference[referencesList.size()]);
     }
 
-    /** Custom definition of {@link FileReference}. */
+    /**
+     * Custom definition of {@link FileReference}.
+     */
     private class IgnoreReference extends FileReference {
-        /** Concurrent cache map. */
+        /**
+         * Concurrent cache map.
+         */
         private final ConcurrentMap<String, Collection<VirtualFile>> cacheMap;
 
-        /** Builds an instance of {@link IgnoreReferenceSet.IgnoreReference}. */
+        /**
+         * Builds an instance of {@link IgnoreReferenceSet.IgnoreReference}.
+         */
         public IgnoreReference(@NotNull FileReferenceSet fileReferenceSet, TextRange range, int index, String text) {
             super(fileReferenceSet, range, index, text);
             cacheMap = ContainerUtil.newConcurrentMap();
@@ -227,7 +242,8 @@ public class IgnoreReferenceSet extends FileReferenceSet {
 
             if (contextVirtualFile != null) {
                 final IgnoreEntry entry = (IgnoreEntry) getFileReferenceSet().getElement();
-                final Pattern pattern = Glob.createPattern(getCanonicalText(), entry.getSyntax());
+                final String current = getCanonicalText();
+                final Pattern pattern = Glob.createPattern(current, entry.getSyntax());
                 if (pattern != null) {
                     PsiDirectory parent = getElement().getContainingFile().getParent();
                     final VirtualFile root = isOuterFile ? contextVirtualFile : ((parent != null) ?
@@ -238,7 +254,17 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     files.addAll(filesIndexCache.getFilesForPattern(context.getProject(), pattern));
                     if (files.isEmpty()) {
                         files.addAll(ContainerUtil.newArrayList(context.getVirtualFile().getChildren()));
-                    } else if (getCanonicalText().endsWith(Constants.DOUBLESTAR)) {
+                    } else if (current.endsWith(Constants.STAR) && !current.equals(entry.getText())) {
+                        files.addAll(ContainerUtil.filter(
+                                context.getVirtualFile().getChildren(),
+                                new Condition<VirtualFile>() {
+                                    @Override
+                                    public boolean value(VirtualFile virtualFile) {
+                                        return virtualFile.isDirectory();
+                                    }
+                                }
+                        ));
+                    } else if (current.endsWith(Constants.DOUBLESTAR)) {
                         final String key = entry.getText();
                         if (!cacheMap.containsKey(key)) {
                             final Collection<VirtualFile> children = ContainerUtil.newArrayList();
