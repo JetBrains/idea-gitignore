@@ -1,4 +1,4 @@
-.ignore 2.6.1
+.ignore 2.6.2
 =============
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
@@ -128,22 +128,16 @@ Usage
 Changelog
 ---------
 
-### [v2.6.1](https://github.com/hsz/idea-gitignore/tree/v2.6.1) (2018-04-13)
+### [v2.6.2](https://github.com/hsz/idea-gitignore/tree/v2.6.2) (2018-05-22)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.5.0...v2.6.1)
-
-**Implemented enhancements:**
-
-- Multirow tabs for outer rules panel [\#501](https://github.com/hsz/idea-gitignore/issues/501)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.1...v2.6.2)
 
 **Fixed bugs:**
 
-- The following plugins are incompatible with the current IDE build [\#530](https://github.com/hsz/idea-gitignore/issues/530)
-- NullPointerException on File indexing (IgnoreFilesIndex), infinite loop of failing re-indexes - thanks to @nicity ! [\#527](https://github.com/hsz/idea-gitignore/issues/527)
-
-**Closed issues:**
-
-- Have you considered Open Collective? [opencollective.com/ignore](https://opencollective.com/ignore) [\#497](https://github.com/hsz/idea-gitignore/issues/497)
+- Entries using wildcard never considered as used [\#543](https://github.com/hsz/idea-gitignore/issues/543)
+- IndexId ClassNotFoundException [\#534](https://github.com/hsz/idea-gitignore/issues/534)
+- "Already disposed: Project" in UntrackFilesDialog [\#539](https://github.com/hsz/idea-gitignore/issues/539)
+- Drop project cache from ExternalIndexableSetContributor - thanks to @denofevil [\#545](https://github.com/hsz/idea-gitignore/pull/545)
 
 
 [Full Changelog History](./CHANGELOG.md)

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>2.6.1</version>
+    <version>2.6.2</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -78,26 +78,16 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.6.1"><b>v2.6.1</b></a> (2018-04-13) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v2.5.0...v2.6.1"><small>Full Changelog</small></a> <br/><br/>
-
-        <i>Implemented enhancements:</i>
-
-        <ul>
-            <li>Multirow tabs for outer rules panel (<a href="https://github.com/hsz/idea-gitignore/issues/501">501</a>)</li>
-        </ul>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.6.2"><b>v2.6.2</b></a> (2018-05-22) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v2.6.1...v2.6.2"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>The following plugins are incompatible with the current IDE build (<a href="https://github.com/hsz/idea-gitignore/issues/530">530</a>)</li>
-            <li>NullPointerException on File indexing (IgnoreFilesIndex), infinite loop of failing re-indexes - thanks to @nicity ! (<a href="https://github.com/hsz/idea-gitignore/issues/527">527</a>)</li>
-        </ul>
-
-        <i>Closed issues:</i>
-
-        <ul>
-            <li>Have you considered Open Collective? <a href="https://opencollective.com/ignore">opencollective.com/ignore</a> (<a href="https://github.com/hsz/idea-gitignore/issues/497">497</a>)</li>
+            <li>Entries using wildcard never considered as used (<a href="https://github.com/hsz/idea-gitignore/issues/543">543</a>)</li>
+            <li>IndexId ClassNotFoundException (<a href="https://github.com/hsz/idea-gitignore/issues/534">534</a>)</li>
+            <li>"Already disposed: Project" in UntrackFilesDialog (<a href="https://github.com/hsz/idea-gitignore/issues/539">539</a>)</li>
+            <li>Drop project cache from ExternalIndexableSetContributor - thanks to @denofevil (<a href="https://github.com/hsz/idea-gitignore/pull/545">545</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

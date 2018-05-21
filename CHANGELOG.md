@@ -1,6 +1,18 @@
 Change Log
 ----------
 
+### [v2.6.2](https://github.com/hsz/idea-gitignore/tree/v2.6.2) (2018-05-22)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.1...v2.6.2)
+
+**Fixed bugs:**
+
+- Entries using wildcard never considered as used [\#543](https://github.com/hsz/idea-gitignore/issues/543)
+- IndexId ClassNotFoundException [\#534](https://github.com/hsz/idea-gitignore/issues/534)
+- "Already disposed: Project" in UntrackFilesDialog [\#539](https://github.com/hsz/idea-gitignore/issues/539)
+- Drop project cache from ExternalIndexableSetContributor - thanks to @denofevil [\#545](https://github.com/hsz/idea-gitignore/pull/545)
+
+
 ### [v2.6.1](https://github.com/hsz/idea-gitignore/tree/v2.6.1) (2018-04-13)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.5.0...v2.6.1)
