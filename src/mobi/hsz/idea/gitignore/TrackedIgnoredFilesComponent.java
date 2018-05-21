@@ -122,7 +122,7 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
                     public void hyperlinkUpdate(@NotNull Notification notification, @NotNull HyperlinkEvent event) {
                         if (DISABLE_ACTION.equals(event.getDescription())) {
                             settings.setInformTrackedIgnored(false);
-                        } else {
+                        } else if (!myProject.isDisposed()) {
                             new UntrackFilesDialog(myProject, files).show();
                         }
                         notification.expire();
