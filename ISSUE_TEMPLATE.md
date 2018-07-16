@@ -9,11 +9,16 @@
 
 ### Description
 
-_Description of the issue_
+<!--
 
+Description of the issue and stack trace if available.
+
+Put it between:
 ```
-Stack trace if available.
+STACKTRACE
 ```
+
+-->
 
 
 ### Steps to Reproduce
@@ -23,34 +28,61 @@ Stack trace if available.
 3. _and so on..._
 
 
-**Expected behavior:** _What you expect to happen_
+**Expected behavior:**
 
-**Actual behavior:** _What actually happens_
+<!-- What you expect to happen -->
 
-**Reproduces how often:** _What percentage of the time does it reproduce?_
+**Actual behavior:** 
+
+<!-- What actually happens -->
+
+**Reproduces how often:** 
+
+<!-- What percentage of the time does it reproduce? -->
 
 
 ### Versions
 
 **Plugin:** 
 
-```
+<!-- 
+
 Can be found in Settings > Plugins > .ignore
+
+Put it between:
 ```
+VERSION INFORMATION
+```
+
+-->
 
 **IDE:** 
 
-```
+<!-- 
+
 Can be found in Help > About. Click on the copy icon on the left.
+
+Put it between:
 ```
+IDE INFORMATION
+```
+-->
 
 **OS:** 
 
-```
-Information about operation system - type, version.
-```
+<!-- 
 
+Information about operation system - type, version.
+
+Put it between:
+```
+OS INFORMATION
+```
+-->
 
 ### Additional Information
 
-_Any additional information, configuration or data that might be necessary to reproduce the issue._
+<!--
+Any additional information, configuration or data that might be necessary 
+to reproduce the issue.
+-->
