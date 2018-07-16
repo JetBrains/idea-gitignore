@@ -128,6 +128,15 @@ Usage
 Changelog
 ---------
 
+### [v2.6.3](https://github.com/hsz/idea-gitignore/tree/v2.6.3) (UNRELEASED)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.3)
+
+**Fixed bugs:**
+
+- Argument for @NotNull parameter 'settings' of HideIgnoredFilesTreeStructureProvider.modify must not be null [\#551](https://github.com/hsz/idea-gitignore/issues/551)
+
+
 ### [v2.6.2](https://github.com/hsz/idea-gitignore/tree/v2.6.2) (2018-05-22)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.1...v2.6.2)
