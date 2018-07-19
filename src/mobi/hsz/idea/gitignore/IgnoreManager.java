@@ -496,6 +496,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      */
     @Override
     public void projectOpened() {
+        ExternalIndexableSetContributor.invalidateDisposedProjects();
         if (isEnabled() && !working) {
             enable();
         }
@@ -508,6 +509,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      */
     @Override
     public void projectClosed() {
+        ExternalIndexableSetContributor.invalidateDisposedProjects();
         disable();
     }
 
@@ -525,8 +527,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         if (working) {
             return;
         }
-
-        ExternalIndexableSetContributor.invalidateDisposedProjects();
 
         refreshTrackedIgnoredFeature.run();
         virtualFileManager.addVirtualFileListener(virtualFileListener);
