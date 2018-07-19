@@ -1,4 +1,4 @@
-.ignore 2.6.2
+.ignore 2.6.3
 =============
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
@@ -128,25 +128,14 @@ Usage
 Changelog
 ---------
 
-### [v2.6.3](https://github.com/hsz/idea-gitignore/tree/v2.6.3) (UNRELEASED)
+### [v2.6.3](https://github.com/hsz/idea-gitignore/tree/v2.6.3) (2018-07-19)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.3)
 
 **Fixed bugs:**
 
 - Argument for @NotNull parameter 'settings' of HideIgnoredFilesTreeStructureProvider.modify must not be null [\#551](https://github.com/hsz/idea-gitignore/issues/551)
-
-
-### [v2.6.2](https://github.com/hsz/idea-gitignore/tree/v2.6.2) (2018-05-22)
-
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.1...v2.6.2)
-
-**Fixed bugs:**
-
-- Entries using wildcard never considered as used [\#543](https://github.com/hsz/idea-gitignore/issues/543)
-- IndexId ClassNotFoundException [\#534](https://github.com/hsz/idea-gitignore/issues/534)
-- "Already disposed: Project" in UntrackFilesDialog [\#539](https://github.com/hsz/idea-gitignore/issues/539)
-- Drop project cache from ExternalIndexableSetContributor - thanks to @denofevil [\#545](https://github.com/hsz/idea-gitignore/pull/545)
+- Projects leak in ExternalIndexableSetContributor.CACHE [\#553](https://github.com/hsz/idea-gitignore/issues/553)
 
 
 [Full Changelog History](./CHANGELOG.md)

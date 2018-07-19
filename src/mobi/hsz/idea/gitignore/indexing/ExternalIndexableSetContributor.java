@@ -93,6 +93,7 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
     }
 
     /**
+     * @param project Project to check
      * @return an additional project-dependent set of {@link VirtualFile} instances to index, the returned set should
      * not contain nulls or invalid files
      */
@@ -111,6 +112,15 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
     @Override
     public Set<VirtualFile> getAdditionalRootsToIndex() {
         return EMPTY_SET;
+    }
+
+    /** Removes invalidated projects from the {@link #CACHE} map. */
+    public static void invalidateDisposedProjects() {
+        for (Project project : CACHE.keySet()) {
+            if (project.isDisposed()) {
+                CACHE.remove(project);
+            }
+        }
     }
 
     /**

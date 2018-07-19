@@ -1,13 +1,14 @@
 Change Log
 ----------
 
-### [v2.6.3](https://github.com/hsz/idea-gitignore/tree/v2.6.3) (UNRELEASED)
+### [v2.6.3](https://github.com/hsz/idea-gitignore/tree/v2.6.3) (2018-07-19)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.3)
 
 **Fixed bugs:**
 
 - Argument for @NotNull parameter 'settings' of HideIgnoredFilesTreeStructureProvider.modify must not be null [\#551](https://github.com/hsz/idea-gitignore/issues/551)
+- Projects leak in ExternalIndexableSetContributor.CACHE [\#553](https://github.com/hsz/idea-gitignore/issues/553)
 
 
 ### [v2.6.2](https://github.com/hsz/idea-gitignore/tree/v2.6.2) (2018-05-22)

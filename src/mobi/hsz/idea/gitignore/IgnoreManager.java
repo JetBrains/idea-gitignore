@@ -526,6 +526,8 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             return;
         }
 
+        ExternalIndexableSetContributor.invalidateDisposedProjects();
+
         refreshTrackedIgnoredFeature.run();
         virtualFileManager.addVirtualFileListener(virtualFileListener);
         settings.addListener(settingsListener);
