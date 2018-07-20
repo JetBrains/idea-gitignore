@@ -50,7 +50,7 @@ import java.util.TreeMap;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.6.1
  */
-@State(name = "IgnoreSettings", storages = @Storage("ignore.xml"))
+@State(name = "IgnoreSettings", storages = { @Storage(id = "other", file = "$APP_CONFIG$/ignore.xml") })
 public class IgnoreSettings implements PersistentStateComponent<Element>, Listenable<IgnoreSettings.Listener> {
     /** Settings keys. */
     public enum KEY {
