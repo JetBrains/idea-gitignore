@@ -36,7 +36,10 @@ intellij {
     downloadSources Boolean.valueOf(sources)
     sameSinceUntilBuild Boolean.valueOf(isEAP)
     alternativeIdePath idePath
-    updateSinceUntilBuild false
+    patchPluginXml {
+        sinceBuild pluginSinceBuild
+        untilBuild pluginUntilBuild
+    }
 
     plugins 'git4idea'
 
