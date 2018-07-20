@@ -5,6 +5,10 @@ Change Log
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.4)
 
+**Implemented enhancements:**
+
+- Separated build for IDE 2018.1 (181+) for better integration
+
 **Fixed bugs:**
 
 - Argument for @NotNull parameter 'settings' of HideIgnoredFilesTreeStructureProvider.modify must not be null [\#551](https://github.com/hsz/idea-gitignore/issues/551)

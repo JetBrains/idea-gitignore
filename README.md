@@ -128,9 +128,13 @@ Usage
 Changelog
 ---------
 
-### [v2.6.4](https://github.com/hsz/idea-gitignore/tree/v2.6.4) (2018-07-19)
+### [v2.6.4](https://github.com/hsz/idea-gitignore/tree/v2.6.4) (2018-07-20)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.4)
+
+**Implemented enhancements:**
+
+- Separated build for IDE 2018.1 (181+) for better integration
 
 **Fixed bugs:**
 
