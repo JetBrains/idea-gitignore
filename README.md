@@ -1,4 +1,4 @@
-.ignore 2.6.3
+.ignore 2.6.4
 =============
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
@@ -128,14 +128,15 @@ Usage
 Changelog
 ---------
 
-### [v2.6.3](https://github.com/hsz/idea-gitignore/tree/v2.6.3) (2018-07-19)
+### [v2.6.4](https://github.com/hsz/idea-gitignore/tree/v2.6.4) (2018-07-19)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.3)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.4)
 
 **Fixed bugs:**
 
 - Argument for @NotNull parameter 'settings' of HideIgnoredFilesTreeStructureProvider.modify must not be null [\#551](https://github.com/hsz/idea-gitignore/issues/551)
 - Projects leak in ExternalIndexableSetContributor.CACHE [\#553](https://github.com/hsz/idea-gitignore/issues/553)
+- Unable to save settings [\#552](https://github.com/hsz/idea-gitignore/issues/552)
 
 
 [Full Changelog History](./CHANGELOG.md)

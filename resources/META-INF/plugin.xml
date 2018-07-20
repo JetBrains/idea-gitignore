@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>2.6.3</version>
+    <version>2.6.4</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -78,14 +78,15 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.6.3"><b>v2.6.3</b></a> (2018-07-19) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.3"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v2.6.4"><b>v2.6.4</b></a> (2018-07-19) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.4"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Fixed bugs:</i>
 
         <ul>
             <li>Argument for @NotNull parameter 'settings' of HideIgnoredFilesTreeStructureProvider.modify must not be null (<a href="https://github.com/hsz/idea-gitignore/issues/551">551</a>)</li>
             <li>Projects leak in ExternalIndexableSetContributor.CACHE (<a href="https://github.com/hsz/idea-gitignore/issues/553">553</a>)</li>
+            <li>Unable to save settings (<a href="https://github.com/hsz/idea-gitignore/issues/552">552</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
