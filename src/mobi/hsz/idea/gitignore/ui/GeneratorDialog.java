@@ -296,7 +296,7 @@ public class GeneratorDialog extends DialogWrapper {
                         GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0)
         );
         northPanel.add(profileFilter, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_TRAILING,
-                GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+                GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0));
         treePanel.add(northPanel, BorderLayout.NORTH);
 
         return centerPanel;
