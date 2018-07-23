@@ -39,11 +39,10 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.CheckboxTree;
-import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.HashMap;
+import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeModelAdapter;
 import com.intellij.util.ui.tree.TreeUtil;
@@ -58,6 +57,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
@@ -184,10 +184,10 @@ public class UntrackFilesDialog extends DialogWrapper {
         treePanel.add(treeScrollPanel, BorderLayout.CENTER);
 
         final JPanel northPanel = new JPanel(new GridBagLayout());
-        northPanel.setBorder(IdeBorderFactory.createEmptyBorder(2, 0, 2, 0));
+        northPanel.setBorder(JBUI.Borders.empty(2, 0));
         northPanel.add(createTreeActionsToolbarPanel(treeScrollPanel).getComponent(),
                 new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_LEADING,
-                        GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0)
+                        GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0)
         );
         treePanel.add(northPanel, BorderLayout.NORTH);
 
@@ -197,7 +197,7 @@ public class UntrackFilesDialog extends DialogWrapper {
 
         final JPanel commandsPanel = new JPanel(new BorderLayout());
         final JLabel commandsLabel = new JBLabel(IgnoreBundle.message("dialog.untrackFiles.commands.label"));
-        commandsLabel.setBorder(IdeBorderFactory.createEmptyBorder(10, 0, 10, 0));
+        commandsLabel.setBorder(JBUI.Borders.empty(10, 0));
         commandsPanel.add(commandsLabel, BorderLayout.NORTH);
 
         JComponent commandsComponent = commands.getComponent();

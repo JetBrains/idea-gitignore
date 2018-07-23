@@ -67,7 +67,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
 
     /** {@link VirtualFileListener} instance to watch for operations on the filesystem. */
     @NotNull
-    private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
+    private final VirtualFileListener virtualFileListener = new VirtualFileListener() {
         @Override
         public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
             if (event.getPropertyName().equals("name")) {

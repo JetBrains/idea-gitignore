@@ -32,8 +32,8 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.components.JBTextField;
+import com.intellij.util.ui.JBUI;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -106,14 +106,14 @@ public class UserTemplateDialog extends DialogWrapper {
         name = new JBTextField(IgnoreBundle.message("dialog.userTemplate.name.value"));
 
         JLabel nameLabel = new JLabel(IgnoreBundle.message("dialog.userTemplate.name"));
-        nameLabel.setBorder(IdeBorderFactory.createEmptyBorder(0, 0, 0, 10));
+        nameLabel.setBorder(JBUI.Borders.emptyRight(10));
 
         JPanel namePanel = new JPanel(new BorderLayout());
         namePanel.add(nameLabel, BorderLayout.WEST);
         namePanel.add(name, BorderLayout.CENTER);
 
         JComponent previewComponent = preview.getComponent();
-        previewComponent.setBorder(IdeBorderFactory.createEmptyBorder(10, 0, 0, 0));
+        previewComponent.setBorder(JBUI.Borders.emptyTop(10));
 
         centerPanel.add(namePanel, BorderLayout.NORTH);
         centerPanel.add(previewComponent, BorderLayout.CENTER);

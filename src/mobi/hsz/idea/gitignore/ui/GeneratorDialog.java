@@ -44,6 +44,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.*;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -230,19 +231,24 @@ public class GeneratorDialog extends DialogWrapper {
      * @param ignoreComments   ignores comments and empty lines
      */
     private void performAppendAction(boolean ignoreDuplicates, boolean ignoreComments) {
-        String content = "";
+        final StringBuilder content = new StringBuilder();
         for (Resources.Template template : checked) {
             if (template == null) {
                 continue;
             }
-            content += IgnoreBundle.message("file.templateSection", template.getName());
-            content += Constants.NEWLINE + template.getContent();
+            content.append(IgnoreBundle.message("file.templateSection", template.getName()));
+            content.append(Constants.NEWLINE).append(template.getContent());
         }
-        if (file == null && action != null) {
-            file = action.execute().getResultObject();
-        }
-        if (file != null && !content.isEmpty()) {
-            new AppendFileCommandAction(project, file, content, ignoreDuplicates, ignoreComments).execute();
+        try {
+            if (file == null && action != null) {
+                file = action.execute();
+            }
+            if (file != null && (content.length() > 0)) {
+                new AppendFileCommandAction(project, file, content.toString(), ignoreDuplicates, ignoreComments)
+                        .execute();
+            }
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
         super.doOKAction();
     }
@@ -284,10 +290,10 @@ public class GeneratorDialog extends DialogWrapper {
         treePanel.add(treeScrollPanel, BorderLayout.CENTER);
 
         final JPanel northPanel = new JPanel(new GridBagLayout());
-        northPanel.setBorder(IdeBorderFactory.createEmptyBorder(2, 0, 2, 0));
+        northPanel.setBorder(JBUI.Borders.empty(2, 0));
         northPanel.add(createTreeActionsToolbarPanel(treeScrollPanel).getComponent(),
                 new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_LEADING,
-                        GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0)
+                        GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0)
         );
         northPanel.add(profileFilter, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_TRAILING,
                 GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
@@ -455,7 +461,7 @@ public class GeneratorDialog extends DialogWrapper {
                     @Override
                     public void run() {
                         String content = template != null ?
-                                StringUtil.replaceChar(StringUtil.notNullize(template.getContent()), '\r', '\0') : "";
+                                StringUtil.notNullize(template.getContent()).replace('\r', '\0') : "";
                         previewDocument.replaceString(0, previewDocument.getTextLength(), content);
 
                         List<Pair<Integer, Integer>> pairs =

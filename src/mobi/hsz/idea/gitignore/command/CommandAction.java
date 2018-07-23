@@ -24,49 +24,37 @@
 
 package mobi.hsz.idea.gitignore.command;
 
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiFile;
-import mobi.hsz.idea.gitignore.file.IgnoreTemplatesFactory;
-import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import com.intellij.openapi.util.ThrowableComputable;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Command action that creates new file in given directory.
- *
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
- * @since 0.3.3
+ * @since 2.7
  */
-public class CreateFileCommandAction extends CommandAction<PsiFile> {
-    /** Working directory. */
-    private final PsiDirectory directory;
-
-    /** Working file type. */
-    private final IgnoreFileType fileType;
+public abstract class CommandAction<T> {
+    /** Current project. */
+    @NotNull
+    private final Project project;
 
     /**
-     * Builds a new instance of {@link CreateFileCommandAction}.
+     * Constructor.
      *
-     * @param project   current project
-     * @param directory working directory
-     * @param fileType  working file type
+     * @param project current project
      */
-    public CreateFileCommandAction(@NotNull Project project,
-                                   @NotNull PsiDirectory directory,
-                                   @NotNull IgnoreFileType fileType) {
-        super(project);
-        this.directory = directory;
-        this.fileType = fileType;
+    public CommandAction(@NotNull Project project) {
+        this.project = project;
     }
 
-    /**
-     * Creates a new file using {@link IgnoreTemplatesFactory#createFromTemplate(PsiDirectory)} to fill it with content.
-     *
-     * @return created file
-     */
-    @Override
-    protected PsiFile compute() {
-        IgnoreTemplatesFactory factory = new IgnoreTemplatesFactory(fileType);
-        return factory.createFromTemplate(directory);
+    protected abstract T compute() throws Throwable;
+
+    public final T execute() throws Throwable {
+        return WriteCommandAction.writeCommandAction(project).compute(new ThrowableComputable<T, Throwable>() {
+            @Override
+            public T compute() throws Throwable {
+                return CommandAction.this.compute();
+            }
+        });
     }
 }

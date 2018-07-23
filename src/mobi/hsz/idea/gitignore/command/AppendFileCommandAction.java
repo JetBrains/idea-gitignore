@@ -25,8 +25,6 @@
 package mobi.hsz.idea.gitignore.command;
 
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.application.Result;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -55,7 +53,7 @@ import java.util.*;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 0.4
  */
-public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
+public class AppendFileCommandAction extends CommandAction<PsiFile> {
     /** Current project. */
     private final Project project;
 
@@ -89,7 +87,7 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
      */
     public AppendFileCommandAction(@NotNull Project project, @NotNull PsiFile file, @NotNull Set<String> content,
                                    boolean ignoreDuplicates, boolean ignoreComments) {
-        super(project, file);
+        super(project);
         this.project = project;
         this.file = file;
         this.content = content;
@@ -117,103 +115,102 @@ public class AppendFileCommandAction extends WriteCommandAction<PsiFile> {
     /**
      * Adds {@link #content} to the given {@link #file}. Checks if file contains content and sends a notification.
      *
-     * @param result ignored parameter
-     * @throws Throwable
+     * @return previously provided file
      */
     @Override
-    protected void run(@NotNull Result<PsiFile> result) throws Throwable {
-        if (content.isEmpty()) {
-            return;
-        }
-        final Document document = manager.getDocument(file);
-        if (document == null) {
-            return;
-        }
+    protected PsiFile compute() {
+        if (!content.isEmpty()) {
+            final Document document = manager.getDocument(file);
+            if (document != null) {
+                file.acceptChildren(new IgnoreVisitor() {
+                    @Override
+                    public void visitEntry(@NotNull IgnoreEntry entry) {
+                        final VirtualFile baseDir = project.getBaseDir();
+                        if (content.contains(entry.getText()) && baseDir != null) {
+                            Notify.show(
+                                    project,
+                                    IgnoreBundle.message("action.appendFile.entryExists", entry.getText()),
+                                    IgnoreBundle.message(
+                                            "action.appendFile.entryExists.in",
+                                            Utils.getRelativePath(baseDir, file.getVirtualFile())
+                                    ),
+                                    NotificationType.WARNING
+                            );
+                            content.remove(entry.getText());
+                        }
+                    }
+                });
 
-        file.acceptChildren(new IgnoreVisitor() {
-            @Override
-            public void visitEntry(@NotNull IgnoreEntry entry) {
-                final VirtualFile baseDir = project.getBaseDir();
-                if (content.contains(entry.getText()) && baseDir != null) {
-                    Notify.show(
-                            project,
-                            IgnoreBundle.message("action.appendFile.entryExists", entry.getText()),
-                            IgnoreBundle.message(
-                                    "action.appendFile.entryExists.in",
-                                    Utils.getRelativePath(baseDir, file.getVirtualFile())
-                            ),
-                            NotificationType.WARNING
-                    );
-                    content.remove(entry.getText());
+                int offset = document.getTextLength();
+
+                if (insertAtCursor) {
+                    Editor[] editors = EditorFactory.getInstance().getEditors(document);
+                    if (editors.length > 0) {
+                        VisualPosition position = editors[0].getSelectionModel().getSelectionStartPosition();
+                        if (position != null) {
+                            offset = document.getLineStartOffset(position.line);
+                        }
+                    }
                 }
-            }
-        });
 
-        int offset = document.getTextLength();
+                for (String entry : content) {
+                    if (ignoreDuplicates) {
+                        List<String> currentLines = ContainerUtil.filter(
+                                document.getText().split(Constants.NEWLINE),
+                                new Condition<String>() {
+                                    @Override
+                                    public boolean value(String s) {
+                                        return !s.isEmpty() && !s.startsWith(Constants.HASH);
+                                    }
+                                });
 
-        if (insertAtCursor) {
-            Editor[] editors = EditorFactory.getInstance().getEditors(document);
-            if (editors.length > 0) {
-                VisualPosition position = editors[0].getSelectionModel().getSelectionStartPosition();
-                if (position != null) {
-                    offset = document.getLineStartOffset(position.line);
-                }
-            }
-        }
-
-        for (String entry : content) {
-            if (ignoreDuplicates) {
-                List<String> currentLines =
-                        ContainerUtil.filter(document.getText().split(Constants.NEWLINE), new Condition<String>() {
-                            @Override
-                            public boolean value(String s) {
-                                return !s.isEmpty() && !s.startsWith(Constants.HASH);
+                        List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
+                        Iterator<String> iterator = entryLines.iterator();
+                        while (iterator.hasNext()) {
+                            String line = iterator.next().trim();
+                            if (line.isEmpty() || line.startsWith(Constants.HASH)) {
+                                continue;
                             }
-                        });
 
-                List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
-                Iterator<String> iterator = entryLines.iterator();
-                while (iterator.hasNext()) {
-                    String line = iterator.next().trim();
-                    if (line.isEmpty() || line.startsWith(Constants.HASH)) {
-                        continue;
+                            if (currentLines.contains(line)) {
+                                iterator.remove();
+                            } else {
+                                currentLines.add(line);
+                            }
+                        }
+
+                        entry = StringUtil.join(entryLines, Constants.NEWLINE);
                     }
 
-                    if (currentLines.contains(line)) {
-                        iterator.remove();
-                    } else {
-                        currentLines.add(line);
+                    if (ignoreComments) {
+                        List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
+                        Iterator<String> iterator = entryLines.iterator();
+                        while (iterator.hasNext()) {
+                            String line = iterator.next().trim();
+                            if (line.isEmpty() || line.startsWith(Constants.HASH)) {
+                                iterator.remove();
+                            }
+                        }
+
+                        entry = StringUtil.join(entryLines, Constants.NEWLINE);
                     }
+
+                    entry = StringUtil.replace(entry, "\r", "");
+                    if (!StringUtil.isEmpty(entry)) {
+                        entry += Constants.NEWLINE;
+                    }
+                    if (!insertAtCursor && !document.getText().endsWith(Constants.NEWLINE)
+                            && !StringUtil.isEmpty(entry)) {
+                        entry = Constants.NEWLINE + entry;
+                    }
+
+                    document.insertString(offset, entry);
+                    offset += entry.length();
                 }
 
-                entry = StringUtil.join(entryLines, Constants.NEWLINE);
+                manager.commitDocument(document);
             }
-
-            if (ignoreComments) {
-                List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
-                Iterator<String> iterator = entryLines.iterator();
-                while (iterator.hasNext()) {
-                    String line = iterator.next().trim();
-                    if (line.isEmpty() || line.startsWith(Constants.HASH)) {
-                        iterator.remove();
-                    }
-                }
-
-                entry = StringUtil.join(entryLines, Constants.NEWLINE);
-            }
-
-            entry = StringUtil.replace(entry, "\r", "");
-            if (!StringUtil.isEmpty(entry)) {
-                entry += Constants.NEWLINE;
-            }
-            if (!insertAtCursor && !document.getText().endsWith(Constants.NEWLINE) && !StringUtil.isEmpty(entry)) {
-                entry = Constants.NEWLINE + entry;
-            }
-
-            document.insertString(offset, entry);
-            offset += entry.length();
         }
-
-        manager.commitDocument(document);
+        return file;
     }
 }

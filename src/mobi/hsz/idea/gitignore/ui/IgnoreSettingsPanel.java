@@ -59,6 +59,7 @@ import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.components.labels.ActionLink;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.ui.JBUI;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
@@ -70,7 +71,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -80,7 +80,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import static com.intellij.ui.IdeBorderFactory.createEmptyBorder;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE;
 import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE;
 
@@ -156,13 +155,13 @@ public class IgnoreSettingsPanel implements Disposable {
 
         languagesTable.setStriped(true);
         languagesTable.setShowGrid(false);
-        languagesTable.setBorder(createEmptyBorder());
+        languagesTable.setBorder(JBUI.Borders.empty());
         languagesTable.setDragEnabled(false);
 
         languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
 
         donatePanel = new JBPanel(new BorderLayout());
-        donatePanel.setBorder(new EmptyBorder(10, 0, 10, 0));
+        donatePanel.setBorder(JBUI.Borders.empty(10, 0));
         donatePanel.add(new JBLabel(IgnoreBundle.message("settings.general.donate")), BorderLayout.WEST);
         donatePanel.add(createLink(
                 "Donate with PayPal",
@@ -184,7 +183,7 @@ public class IgnoreSettingsPanel implements Disposable {
                 BrowserUtil.browse(url);
             }
         });
-        action.setBorder(new EmptyBorder(0, 5, 0, 5));
+        action.setBorder(JBUI.Borders.empty(0, 5));
         return action;
     }
 
@@ -458,7 +457,7 @@ public class IgnoreSettingsPanel implements Disposable {
             group.add(new AnAction(
                     IgnoreBundle.message("action.exportTemplates"),
                     IgnoreBundle.message("action.exportTemplates.description"),
-                    AllIcons.Actions.Export
+                    AllIcons.ToolbarDecorator.Export
             ) {
                 @Override
                 public void actionPerformed(AnActionEvent event) {
@@ -600,7 +599,7 @@ public class IgnoreSettingsPanel implements Disposable {
         public List<IgnoreSettings.UserTemplate> getList() {
             ArrayList<IgnoreSettings.UserTemplate> list = ContainerUtil.newArrayList();
             for (int i = 0; i < myListModel.size(); i++) {
-                list.add((IgnoreSettings.UserTemplate) myListModel.getElementAt(i));
+                list.add(myListModel.getElementAt(i));
             }
             return list;
         }
@@ -628,7 +627,7 @@ public class IgnoreSettingsPanel implements Disposable {
             if (index == -1) {
                 return null;
             }
-            return (IgnoreSettings.UserTemplate) myListModel.get(index);
+            return myListModel.get(index);
         }
 
         /**

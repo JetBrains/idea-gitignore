@@ -49,7 +49,6 @@ import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.*;
 import com.intellij.util.Function;
 import com.intellij.util.Time;
-import com.intellij.util.containers.ConcurrentWeakHashMap;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
@@ -132,8 +131,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** List of the files that are ignored and also tracked by Git. */
     @NotNull
-    private final ConcurrentMap<VirtualFile, VcsRoot> confirmedIgnoredFiles =
-            new ConcurrentWeakHashMap<VirtualFile, VcsRoot>();
+    private final ConcurrentMap<VirtualFile, VcsRoot> confirmedIgnoredFiles = ContainerUtil.createConcurrentWeakMap();
 
     /** List of the new files that were not covered by {@link #confirmedIgnoredFiles} yet. */
     @NotNull
@@ -213,7 +211,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** {@link VirtualFileListener} instance to check if file's content was changed. */
     @NotNull
-    private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
+    private final VirtualFileListener virtualFileListener = new VirtualFileListener() {
         @Override
         public void contentsChanged(@NotNull VirtualFileEvent event) {
             handleEvent(event);

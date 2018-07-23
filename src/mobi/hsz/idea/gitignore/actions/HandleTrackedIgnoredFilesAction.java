@@ -29,7 +29,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ConcurrentWeakHashMap;
+import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.ui.untrackFiles.UntrackFilesDialog;
@@ -94,6 +94,6 @@ public class HandleTrackedIgnoredFilesAction extends AnAction {
             return IgnoreManager.getInstance(project).getConfirmedIgnoredFiles();
         }
 
-        return new ConcurrentWeakHashMap<VirtualFile, VcsRoot>();
+        return ContainerUtil.createConcurrentWeakMap();
     }
 }

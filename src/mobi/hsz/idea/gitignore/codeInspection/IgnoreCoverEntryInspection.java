@@ -64,7 +64,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
     private final VirtualFileManager virtualFileManager;
 
     /** Watches for the changes in the files tree and triggers the cache clear. */
-    private final VirtualFileListener virtualFileListener = new VirtualFileAdapter() {
+    private final VirtualFileListener virtualFileListener = new VirtualFileListener() {
         @Override
         public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
             if (event.getPropertyName().equals("name")) {

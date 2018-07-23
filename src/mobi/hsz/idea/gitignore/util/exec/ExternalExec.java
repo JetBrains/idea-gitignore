@@ -32,7 +32,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
-import git4idea.config.GitVcsApplicationSettings;
+import git4idea.config.GitExecutableManager;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -159,7 +159,7 @@ public class ExternalExec {
     @Nullable
     private static String bin(@NotNull IgnoreLanguage language) {
         if (GitLanguage.INSTANCE.equals(language) && GIT_ENABLED) {
-            final String bin = GitVcsApplicationSettings.getInstance().getPathToGit();
+            final String bin = GitExecutableManager.getInstance().getPathToGit();
             return StringUtil.nullize(bin);
         }
         return null;
@@ -222,7 +222,7 @@ public class ExternalExec {
             ProcessHandler handler = new BaseOSProcessHandler(process, StringUtil.join(cmd, " "), null) {
                 @NotNull
                 @Override
-                protected Future<?> executeOnPooledThread(@NotNull Runnable task) {
+                public Future<?> executeTask(@NotNull Runnable task) {
                     return SharedThreadPool.getInstance().executeOnPooledThread(task);
                 }
 

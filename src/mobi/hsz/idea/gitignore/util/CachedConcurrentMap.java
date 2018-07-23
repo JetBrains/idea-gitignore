@@ -24,7 +24,7 @@
 
 package mobi.hsz.idea.gitignore.util;
 
-import com.intellij.util.containers.ConcurrentWeakHashMap;
+import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ConcurrentMap;
@@ -50,7 +50,7 @@ public class CachedConcurrentMap<K, V> {
      * @param fetcher data fetcher
      */
     private CachedConcurrentMap(@NotNull DataFetcher<K, V> fetcher) {
-        this.map = new ConcurrentWeakHashMap<K, V>();
+        this.map = ContainerUtil.createConcurrentWeakMap();
         this.fetcher = fetcher;
     }
 

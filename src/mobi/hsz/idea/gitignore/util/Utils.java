@@ -98,7 +98,7 @@ public class Utils {
      * @return Ignore file
      */
     @Nullable
-    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType) {
+    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType) throws Throwable {
         return getIgnoreFile(project, fileType, null, false);
     }
 
@@ -112,7 +112,7 @@ public class Utils {
      */
     @Nullable
     public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType,
-                                        @Nullable PsiDirectory directory) {
+                                        @Nullable PsiDirectory directory) throws Throwable {
         return getIgnoreFile(project, fileType, directory, false);
     }
 
@@ -139,7 +139,11 @@ public class Utils {
         VirtualFile virtualFile = file == null ? directory.getVirtualFile().findChild(filename) : file.getVirtualFile();
 
         if (file == null && virtualFile == null && createIfMissing) {
-            file = new CreateFileCommandAction(project, directory, fileType).execute().getResultObject();
+            try {
+                file = new CreateFileCommandAction(project, directory, fileType).execute();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
         }
 
         return file;
