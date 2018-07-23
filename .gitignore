@@ -3,6 +3,7 @@
 out/
 gen/
 idea-gitignore.jar
+verifier-all*.jar
 resources/templates.list
 resources/gitignore/*
 build/
