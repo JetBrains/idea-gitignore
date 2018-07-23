@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>2.6.4</version>
+    <version>3.0.0</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -78,13 +78,15 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v2.6.4"><b>v2.6.4</b></a> (2018-07-20) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.4"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v3.0.0"><b>v3.0.0</b></a> (2018-07-24) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v2.6.2...v3.0.0"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
 
         <ul>
-            <li>Separated build for IDE 2018.1 (181+) for better integration</li>
+            <li>Separated builds for different IDE versions (139-181+)</li>
+            <li>Abandoned support for <139</li>
+            <li>Integration with IntelliJ Plugin Verifier</li>
         </ul>
 
         <i>Fixed bugs:</i>
@@ -100,7 +102,7 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="123.72"/>
+    <idea-version since-build="139"/>
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true">Git4Idea</depends>
 

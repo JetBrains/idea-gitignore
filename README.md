@@ -1,4 +1,4 @@
-.ignore 2.6.4
+.ignore 3.0.0
 =============
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
@@ -128,13 +128,15 @@ Usage
 Changelog
 ---------
 
-### [v2.6.4](https://github.com/hsz/idea-gitignore/tree/v2.6.4) (2018-07-20)
+### [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v2.6.4)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v3.0.0)
 
 **Implemented enhancements:**
 
-- Separated build for IDE 2018.1 (181+) for better integration
+- Separated builds for different IDE versions (139-181+)
+- Abandoned support for <139
+- Integration with IntelliJ Plugin Verifier
 
 **Fixed bugs:**
 
