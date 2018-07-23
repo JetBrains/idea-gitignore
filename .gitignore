@@ -3,7 +3,6 @@
 out/
 gen/
 idea-gitignore.jar
-verifier-all*.jar
 resources/templates.list
 resources/gitignore/*
 build/
@@ -11,3 +10,5 @@ build.properties
 junit*.properties
 IgnoreLexer.java~
 .gradle
+
+/verification
