@@ -157,11 +157,11 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
 
             if (!entry.isNegated()) {
                 ignored.addAll(matched);
-                intersection = Utils.intersection(unignored, matched);
+                intersection = ContainerUtil.intersection(unignored, matched);
                 modified = unignored.removeAll(intersection);
             } else {
                 unignored.addAll(matched);
-                intersection = Utils.intersection(ignored, matched);
+                intersection = ContainerUtil.intersection(ignored, matched);
                 modified = ignored.removeAll(intersection);
             }
 

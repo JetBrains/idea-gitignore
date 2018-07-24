@@ -28,7 +28,6 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.ide.projectView.PresentationData;
-import com.intellij.ide.ui.UISettings;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -57,13 +56,12 @@ import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.intellij.ui.SimpleTextAttributes.REGULAR_ATTRIBUTES;
 
@@ -88,32 +86,6 @@ public class Utils {
     @Nullable
     public static String getRelativePath(@NotNull VirtualFile directory, @NotNull VirtualFile file) {
         return VfsUtilCore.getRelativePath(file, directory, '/') + (file.isDirectory() ? '/' : "");
-    }
-
-    /**
-     * Gets Ignore file for given {@link Project} root directory.
-     *
-     * @param project  current project
-     * @param fileType current ignore file type
-     * @return Ignore file
-     */
-    @Nullable
-    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType) throws Throwable {
-        return getIgnoreFile(project, fileType, null, false);
-    }
-
-    /**
-     * Gets Ignore file for given {@link Project} and root {@link PsiDirectory}.
-     *
-     * @param project   current project
-     * @param fileType  current ignore file type
-     * @param directory root directory
-     * @return Ignore file
-     */
-    @Nullable
-    public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType,
-                                        @Nullable PsiDirectory directory) throws Throwable {
-        return getIgnoreFile(project, fileType, directory, false);
     }
 
     /**
@@ -200,8 +172,6 @@ public class Utils {
      * @param project current project
      * @param file    current file
      * @return collection of suitable Ignore files
-     *
-     * @throws ExternalFileException
      */
     public static List<VirtualFile> getSuitableIgnoreFiles(@NotNull Project project, @NotNull IgnoreFileType fileType,
                                                            @NotNull VirtualFile file)
@@ -280,24 +250,6 @@ public class Utils {
      */
     public static IdeaPluginDescriptor getPlugin() {
         return PluginManager.getPlugin(PluginId.getId(IgnoreBundle.PLUGIN_ID));
-    }
-
-    /**
-     * Returns plugin major version.
-     *
-     * @return major version
-     */
-    public static String getMajorVersion() {
-        return getVersion().split("\\.")[0];
-    }
-
-    /**
-     * Returns plugin minor version.
-     *
-     * @return minor version
-     */
-    public static String getMinorVersion() {
-        return StringUtil.join(getVersion().split("\\."), 0, 2, ".");
     }
 
     /**
@@ -434,107 +386,6 @@ public class Utils {
     }
 
     /**
-     * Sorts {@link IgnoreFile} ascending using files path.
-     * Uses passed argument by reference and additionally returns the same object.
-     *
-     * @param files {@link IgnoreFile} list
-     * @return sorted list
-     */
-    public static List<IgnoreFile> ignoreFilesSort(final List<IgnoreFile> files) {
-        ContainerUtil.sort(files, new Comparator<IgnoreFile>() {
-            @Override
-            public int compare(IgnoreFile file1, IgnoreFile file2) {
-                return StringUtil.naturalCompare(file1.getVirtualFile().getPath(), file2.getVirtualFile().getPath());
-            }
-        });
-        return files;
-    }
-
-    /**
-     * Escapes character in the given {@link String}.
-     * Method is copied from the {@link StringUtil} class to keep the backward compatibility with IDEA 12.x
-     *
-     * @param string    to parse
-     * @param character to escape
-     * @return escaped string
-     */
-    @NotNull
-    @Contract(pure = true)
-    public static String escapeChar(@NotNull final String string, final char character) {
-        final StringBuilder buf = new StringBuilder(string);
-        int idx = 0;
-        while ((idx = StringUtil.indexOf(buf, character, idx)) >= 0) {
-            buf.insert(idx, "\\");
-            idx += 2;
-        }
-        return buf.toString();
-    }
-
-    /**
-     * Trims leading character in the given {@link String}.
-     * Method is copied from the {@link StringUtil} class to keep the backward compatibility with IDEA 12.x
-     *
-     * @param string    to parse
-     * @param character to trim
-     * @return trimmed string
-     */
-    @NotNull
-    @Contract(pure = true)
-    public static String trimLeading(@NotNull String string, final char character) {
-        int index = 0;
-        while (index < string.length() && string.charAt(index) == character) {
-            index++;
-        }
-        return string.substring(index);
-    }
-
-    /**
-     * Intersection method cloned from {@link ContainerUtil#intersection(Collection, Collection)} because of
-     * NoSuchMethodError exception errors related to the some API changes.
-     *
-     * @param collection1 left
-     * @param collection2 right
-     * @return read-only collection consisting of elements from both collections
-     */
-    @NotNull
-    @Contract(pure = true)
-    public static <T> List<T> intersection(@NotNull Collection<? extends T> collection1,
-                                           @NotNull Collection<? extends T> collection2) {
-        List<T> result = new ArrayList<T>();
-        for (T t : collection1) {
-            if (collection2.contains(t)) {
-                result.add(t);
-            }
-        }
-        return result.isEmpty() ? ContainerUtil.<T>emptyList() : result;
-    }
-
-    /**
-     * Method cloned from {@link ContainerUtil#notNullize(List)} because of NoSuchMethodError exception
-     * errors related to the some API changes.
-     *
-     * @param list method to check
-     * @param <T>  container type
-     * @return not null container
-     */
-    @NotNull
-    public static <T> List<T> notNullize(@Nullable List<T> list) {
-        return list == null ? ContainerUtil.<T>newArrayList() : list;
-    }
-
-    /**
-     * Method cloned from {@link ContainerUtil#getFirstItem(List)} because of NoSuchMethodError exception
-     * errors related to the some API changes.
-     *
-     * @param items method to check
-     * @param <T>   container type
-     * @return not null container
-     */
-    public static <T> T getFirstItem(@Nullable List<T> items) {
-        return items == null || items.isEmpty() ? null : items.get(0);
-    }
-
-    /**
      * Adds ColoredFragment to the node's presentation.
      *
      * @param data       node's presentation data
@@ -547,58 +398,5 @@ public class Utils {
             data.addText(data.getPresentableText(), REGULAR_ATTRIBUTES);
         }
         data.addText(" " + text, attributes);
-    }
-
-    /**
-     * Checks if we're currently inside event processing.
-     *
-     * @return event is processed
-     */
-    public static boolean isInsideEventProcessing() {
-        return safeInvocation(
-                null,
-                "com.intellij.openapi.project.NoAccessDuringPsiEvents",
-                "isInsideEventProcessing",
-                false
-        );
-    }
-
-    /**
-     * Invokes UISettings#getScrollTabLayoutInEditor or returns true if method is not available (previous IDEs).
-     *
-     * @return scroll tab layout setting is in use
-     */
-    public static boolean getUISettingsScrollTabLayoutInEditor() {
-        return safeInvocation(
-                UISettings.getInstance(),
-                "com.intellij.ide.ui.UISettings",
-                "getScrollTabLayoutInEditor",
-                true
-        );
-    }
-
-    /**
-     * Invokes safely any SDK method that may not be available in some IDE versions. If method is not resolved in
-     * runtime, default value is returned.
-     *
-     * @param that         the object the underlying method is invoked from
-     * @param className    class to invoke
-     * @param methodName   method that we want to invoke
-     * @param defaultValue default value to return
-     * @param args         the arguments used for the method call
-     * @param <T>          return type
-     * @return result of invoked function or default value if method doesn't exist
-     */
-    @SuppressWarnings("unchecked")
-    private static <T> T safeInvocation(@Nullable Object that, @NotNull String className, @NotNull String methodName,
-                                        @Nullable T defaultValue, @Nullable Object... args) {
-        try {
-            return (T) Class.forName(className).getMethod(methodName).invoke(that, args);
-        } catch (ClassNotFoundException ignored) {
-        } catch (NoSuchMethodException ignored) {
-        } catch (IllegalAccessException ignored) {
-        } catch (InvocationTargetException ignored) {
-        }
-        return defaultValue;
     }
 }

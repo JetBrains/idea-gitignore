@@ -192,9 +192,9 @@ public class IgnoreFileAction extends DumbAwareAction {
     @NotNull
     protected String getPath(@NotNull VirtualFile root, @NotNull VirtualFile file) {
         String path = StringUtil.notNullize(Utils.getRelativePath(root, file));
-        path = Utils.escapeChar(path, '[');
-        path = Utils.escapeChar(path, ']');
-        path = Utils.trimLeading(path, '/');
+        path = StringUtil.escapeChar(path, '[');
+        path = StringUtil.escapeChar(path, ']');
+        path = StringUtil.trimLeading(path, '/');
         return path.isEmpty() ? path : '/' + path;
     }
 }

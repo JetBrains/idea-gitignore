@@ -178,7 +178,7 @@ public class OuterIgnoreWrapper extends MouseAdapter implements ChangeListener, 
 
     /** Updates tabbedPanel policy depending on UISettings#getScrollTabLayoutInEditor() settings. */
     private void updateTabbedPanelPolicy() {
-        if (Utils.getUISettingsScrollTabLayoutInEditor()) {
+        if (UISettings.getInstance().getScrollTabLayoutInEditor()) {
             tabbedPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         } else {
             tabbedPanel.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
