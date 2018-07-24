@@ -190,7 +190,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
             }
         }
 
-        myReferences = referencesList.toArray(new FileReference[referencesList.size()]);
+        myReferences = referencesList.toArray(new FileReference[0]);
     }
 
     /**

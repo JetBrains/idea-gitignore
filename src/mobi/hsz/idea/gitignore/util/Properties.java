@@ -121,7 +121,7 @@ public class Properties {
         final HashSet<String> set = ContainerUtil.newHashSet(values != null ? values : new String[0]);
         set.add(file.getCanonicalPath());
 
-        props.setValues(DISMISSED_IGNORED_EDITING_NOTIFICATION, set.toArray(new String[set.size()]));
+        props.setValues(DISMISSED_IGNORED_EDITING_NOTIFICATION, set.toArray(new String[0]));
     }
 
     /**

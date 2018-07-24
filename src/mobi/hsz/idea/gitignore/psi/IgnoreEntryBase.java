@@ -47,8 +47,6 @@ public interface IgnoreEntryBase extends PsiElement {
      * Returns current element's syntax.
      *
      * @return current syntax
-     *
-     * @see {@link IgnoreBundle.Syntax}
      */
     @NotNull
     IgnoreBundle.Syntax getSyntax();

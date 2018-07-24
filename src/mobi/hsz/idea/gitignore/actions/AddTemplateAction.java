@@ -56,7 +56,7 @@ public class AddTemplateAction extends AnAction {
         final Project project = e.getData(CommonDataKeys.PROJECT);
         final PsiFile file = e.getData(CommonDataKeys.PSI_FILE);
 
-        if (project == null || file == null || !(file instanceof IgnoreFile)) {
+        if (project == null || !(file instanceof IgnoreFile)) {
             return;
         }
 
@@ -73,7 +73,7 @@ public class AddTemplateAction extends AnAction {
     public void update(AnActionEvent e) {
         final PsiFile file = e.getData(CommonDataKeys.PSI_FILE);
 
-        if (file == null || !(file instanceof IgnoreFile)) {
+        if (!(file instanceof IgnoreFile)) {
             e.getPresentation().setVisible(false);
             return;
         }

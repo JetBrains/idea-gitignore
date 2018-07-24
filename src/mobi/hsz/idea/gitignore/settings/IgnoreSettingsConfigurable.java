@@ -173,8 +173,6 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
      * Returns help topic as an ID.
      *
      * @return id
-     *
-     * @see {@link #getHelpTopic()}
      */
     @NotNull
     @Override

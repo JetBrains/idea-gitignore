@@ -227,7 +227,7 @@ public class ExternalExec {
                 }
 
                 @Override
-                public void notifyTextAvailable(String text, Key outputType) {
+                public void notifyTextAvailable(@NotNull String text, @NotNull Key outputType) {
                     if (parser != null) {
                         parser.onTextAvailable(text, outputType);
                     }

@@ -70,8 +70,6 @@ public abstract class IgnoreEntryExtImpl extends IgnoreElementImpl implements Ig
      * Checks if current entry is a file - i.e. `file.txt`.
      *
      * @return is file
-     *
-     * @see {@link #isDirectory()}
      */
     public boolean isFile() {
         return !isDirectory();

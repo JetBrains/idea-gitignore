@@ -48,7 +48,7 @@ public class IgnoreHighlighter extends SyntaxHighlighterBase {
     /** Attributes map. */
     private static final Map<IElementType, TextAttributesKey> ATTRIBUTES = ContainerUtil.newHashMap();
 
-    /** Binds parser definitions with highlighter colors. */
+    /* Binds parser definitions with highlighter colors. */
     static {
         SyntaxHighlighterBase.fillMap(ATTRIBUTES, IgnoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT);
         fillMap(ATTRIBUTES, IgnoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION);

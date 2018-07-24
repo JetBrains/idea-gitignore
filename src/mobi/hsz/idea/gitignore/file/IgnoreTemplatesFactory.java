@@ -78,8 +78,6 @@ public class IgnoreTemplatesFactory implements FileTemplateGroupDescriptorFactor
      *
      * @param directory working directory
      * @return file
-     *
-     * @throws IncorrectOperationException
      */
     @Nullable
     public PsiFile createFromTemplate(final PsiDirectory directory) throws IncorrectOperationException {

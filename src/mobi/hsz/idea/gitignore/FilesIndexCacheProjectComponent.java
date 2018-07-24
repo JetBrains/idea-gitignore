@@ -103,7 +103,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
         private void removeAffectedCaches(@NotNull VirtualFileEvent event) {
             for (String key : cacheMap.keySet()) {
                 List<String> parts = StringUtil.split(key, Constants.DOLLAR);
-                if (MatcherUtil.matchAnyPart(parts.toArray(new String[parts.size()]), event.getFile().getPath())) {
+                if (MatcherUtil.matchAnyPart(parts.toArray(new String[0]), event.getFile().getPath())) {
                     cacheMap.remove(key);
                 }
             }

@@ -39,7 +39,6 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,7 +51,6 @@ import java.util.Set;
  * @since 0.1
  */
 public class GitLanguage extends IgnoreLanguage {
-    @Nullable
     private boolean fetched = false;
 
     /** The {@link GitLanguage} instance. */

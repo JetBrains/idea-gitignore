@@ -50,6 +50,7 @@ public class IgnoreBraceMatcher implements PairedBraceMatcher {
      *
      * @return the array of brace pair definitions.
      */
+    @NotNull
     @Override
     public BracePair[] getPairs() {
         return PAIRS;
