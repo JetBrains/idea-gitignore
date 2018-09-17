@@ -438,9 +438,7 @@ public class IgnoreSettingsPanel implements Disposable {
                                     IgnoreBundle.message("action.importTemplates.success", templates.size()),
                                     IgnoreBundle.message("action.exportTemplates.success.title"));
                             return;
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JDOMException e) {
+                        } catch (IOException | JDOMException e) {
                             e.printStackTrace();
                         }
                     }
