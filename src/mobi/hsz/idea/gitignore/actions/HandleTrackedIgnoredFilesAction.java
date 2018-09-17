@@ -77,7 +77,7 @@ public class HandleTrackedIgnoredFilesAction extends AnAction {
      * @param e action event
      */
     @Override
-    public void update(AnActionEvent e) {
+    public void update(@NotNull AnActionEvent e) {
         e.getPresentation().setVisible(!getTrackedIgnoredFiles(e).isEmpty());
     }
 

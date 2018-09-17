@@ -60,7 +60,7 @@ public class IgnoreFileBasedIndexProjectHandler extends AbstractProjectComponent
     /** Project listener to remove {@link IndexableFileSet} from the indexable sets. */
     @NotNull
     private final ProjectManagerListener projectListener = new ProjectManagerListener() {
-        public void projectClosing(Project project) {
+        public void projectClosing(@NotNull Project project) {
             index.removeIndexableSet(IgnoreFileBasedIndexProjectHandler.this);
         }
     };

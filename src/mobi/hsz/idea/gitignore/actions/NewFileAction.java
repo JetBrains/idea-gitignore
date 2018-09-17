@@ -68,7 +68,7 @@ public class NewFileAction extends AnAction implements DumbAware {
      * @param e action event
      */
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
         final IdeView view = e.getRequiredData(LangDataKeys.IDE_VIEW);
 
@@ -122,7 +122,7 @@ public class NewFileAction extends AnAction implements DumbAware {
      * @param e action event
      */
     @Override
-    public void update(AnActionEvent e) {
+    public void update(@NotNull AnActionEvent e) {
         final Project project = e.getData(CommonDataKeys.PROJECT);
         final IdeView view = e.getData(LangDataKeys.IDE_VIEW);
 

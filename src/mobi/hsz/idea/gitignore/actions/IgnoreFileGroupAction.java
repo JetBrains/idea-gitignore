@@ -103,7 +103,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
      * @param e action event
      */
     @Override
-    public void update(AnActionEvent e) {
+    public void update(@NotNull AnActionEvent e) {
         final VirtualFile file = e.getData(CommonDataKeys.VIRTUAL_FILE);
         final Project project = e.getData(CommonDataKeys.PROJECT);
         final Presentation presentation = e.getPresentation();

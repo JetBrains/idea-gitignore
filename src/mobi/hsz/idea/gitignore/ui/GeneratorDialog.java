@@ -380,19 +380,19 @@ public class GeneratorDialog extends DialogWrapper {
                 null,
                 AllIcons.Actions.Unselectall) {
             @Override
-            public void update(AnActionEvent e) {
+            public void update(@NotNull AnActionEvent e) {
                 e.getPresentation().setEnabled(!checked.isEmpty());
             }
 
             @Override
-            public void actionPerformed(AnActionEvent e) {
+            public void actionPerformed(@NotNull AnActionEvent e) {
                 checked.clear();
                 filterTree(profileFilter.getTextEditor().getText());
             }
         });
         actions.add(new AnAction(IgnoreBundle.message("dialog.generator.star"), null, STAR) {
             @Override
-            public void update(AnActionEvent e) {
+            public void update(@NotNull AnActionEvent e) {
                 final TemplateTreeNode node = getCurrentNode();
                 boolean disabled = node == null || USER.equals(node.getContainer()) || !node.isLeaf();
                 boolean unstar = node != null && STARRED.equals(node.getContainer());
@@ -408,7 +408,7 @@ public class GeneratorDialog extends DialogWrapper {
             }
 
             @Override
-            public void actionPerformed(AnActionEvent e) {
+            public void actionPerformed(@NotNull AnActionEvent e) {
                 final TemplateTreeNode node = getCurrentNode();
                 if (node == null) {
                     return;

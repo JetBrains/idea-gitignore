@@ -59,7 +59,8 @@ public class SyntaxCompletionContributor extends CompletionContributor {
                 StandardPatterns.instanceOf(PsiElement.class),
                 new CompletionProvider<CompletionParameters>() {
                     @Override
-                    protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context,
+                    protected void addCompletions(@NotNull CompletionParameters parameters,
+                                                  @NotNull ProcessingContext context,
                                                   @NotNull CompletionResultSet result) {
                         PsiElement current = parameters.getPosition();
                         if (current.getParent() instanceof IgnoreSyntax && current.getPrevSibling() != null) {

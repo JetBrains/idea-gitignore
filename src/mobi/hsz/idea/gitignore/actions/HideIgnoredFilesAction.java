@@ -30,6 +30,7 @@ import com.intellij.openapi.actionSystem.Presentation;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Icons;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Action that hides or show ignored files in the project tree view.
@@ -62,7 +63,7 @@ public class HideIgnoredFilesAction extends AnAction {
      * @param e action event
      */
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull AnActionEvent e) {
         SETTINGS.setHideIgnoredFiles(!SETTINGS.isHideIgnoredFiles());
 
         final Presentation presentation = this.getTemplatePresentation();

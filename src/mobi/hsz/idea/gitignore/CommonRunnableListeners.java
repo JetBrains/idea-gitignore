@@ -67,14 +67,14 @@ public class CommonRunnableListeners implements
      * {@link ModuleRootListener} event (ignored).
      */
     @Override
-    public void beforeRootsChange(ModuleRootEvent event) {
+    public void beforeRootsChange(@NotNull ModuleRootEvent event) {
     }
 
     /**
      * {@link ModuleRootListener} event.
      */
     @Override
-    public void rootsChanged(ModuleRootEvent event) {
+    public void rootsChanged(@NotNull ModuleRootEvent event) {
         task.run();
     }
 

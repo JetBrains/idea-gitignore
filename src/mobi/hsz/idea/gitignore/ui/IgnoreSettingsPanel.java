@@ -177,7 +177,7 @@ public class IgnoreSettingsPanel implements Disposable {
     private ActionLink createLink(@NotNull String title, @NotNull final String url) {
         final ActionLink action = new ActionLink(title, new AnAction() {
             @Override
-            public void actionPerformed(AnActionEvent anActionEvent) {
+            public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
                 BrowserUtil.browse(url);
             }
         });
@@ -403,7 +403,7 @@ public class IgnoreSettingsPanel implements Disposable {
             ) {
                 @SuppressWarnings("unchecked")
                 @Override
-                public void actionPerformed(final AnActionEvent event) {
+                public void actionPerformed(@NotNull final AnActionEvent event) {
                     final FileChooserDescriptor descriptor =
                             new FileChooserDescriptor(true, false, true, false, true, false) {
                                 @Override
@@ -453,7 +453,7 @@ public class IgnoreSettingsPanel implements Disposable {
                     AllIcons.ToolbarDecorator.Export
             ) {
                 @Override
-                public void actionPerformed(AnActionEvent event) {
+                public void actionPerformed(@NotNull AnActionEvent event) {
                     final VirtualFileWrapper wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
                             new FileSaverDescriptor(
                                     IgnoreBundle.message("action.exportTemplates.wrapper"),
@@ -483,7 +483,7 @@ public class IgnoreSettingsPanel implements Disposable {
                 }
 
                 @Override
-                public void update(AnActionEvent e) {
+                public void update(@NotNull AnActionEvent e) {
                     e.getPresentation().setEnabled(getCurrentItems().size() > 0);
                 }
             });
@@ -657,11 +657,11 @@ public class IgnoreSettingsPanel implements Disposable {
             this.preview = Utils.createPreviewEditor(previewDocument, null, false);
             this.preview.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
-                public void beforeDocumentChange(DocumentEvent event) {
+                public void beforeDocumentChange(@NotNull DocumentEvent event) {
                 }
 
                 @Override
-                public void documentChanged(DocumentEvent event) {
+                public void documentChanged(@NotNull DocumentEvent event) {
                     templatesListPanel.updateContent(event.getDocument().getText());
                 }
             });
