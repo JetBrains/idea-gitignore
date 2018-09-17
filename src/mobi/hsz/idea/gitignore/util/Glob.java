@@ -90,7 +90,7 @@ public class Glob {
         final HashMap<IgnoreEntry, Pattern> map = ContainerUtil.newHashMap();
 
         for (IgnoreEntry entry : entries) {
-            result.put(entry, ContainerUtil.<VirtualFile>newArrayList());
+            result.put(entry, ContainerUtil.newArrayList());
 
             final Pattern pattern = createPattern(entry);
             if (pattern != null) {

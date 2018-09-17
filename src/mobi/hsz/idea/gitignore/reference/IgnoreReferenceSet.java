@@ -112,7 +112,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
     public Collection<PsiFileSystemItem> computeDefaultContexts() {
         PsiFile containingFile = getElement().getContainingFile();
         PsiDirectory containingDirectory = containingFile.getParent();
-        return containingDirectory != null ? Collections.<PsiFileSystemItem>singletonList(containingDirectory) :
+        return containingDirectory != null ? Collections.singletonList(containingDirectory) :
                 super.computeDefaultContexts();
     }
 

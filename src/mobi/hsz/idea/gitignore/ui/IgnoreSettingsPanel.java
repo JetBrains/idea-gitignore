@@ -372,7 +372,7 @@ public class IgnoreSettingsPanel implements Disposable {
 
         /** Constructs CRUD panel with list listener for editor updating. */
         public TemplatesListPanel() {
-            super(null, ContainerUtil.<IgnoreSettings.UserTemplate>newArrayList());
+            super(null, ContainerUtil.newArrayList());
             myList.addListSelectionListener(e -> {
                 boolean enabled = myListModel.size() > 0;
                 editorPanel.setEnabled(enabled);

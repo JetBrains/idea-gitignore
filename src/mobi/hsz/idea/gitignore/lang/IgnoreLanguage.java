@@ -233,7 +233,7 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
             }
             outerFiles.set(key, files);
         }
-        return outerFiles.getOrElse(key, ContainerUtil.<VirtualFile>newHashSet());
+        return outerFiles.getOrElse(key, ContainerUtil.newHashSet());
     }
 
     /**
