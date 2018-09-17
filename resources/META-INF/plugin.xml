@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -70,31 +70,17 @@
       <br/>
       <br/>
 
-      <i>Compiled with Java 1.6</i>
-      <br/>
-      <br/>
-
     ]]></description>
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v3.0.0"><b>v3.0.0</b></a> (2018-07-24) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v2.6.2...v3.0.0"><small>Full Changelog</small></a> <br/><br/>
-
-        <i>Implemented enhancements:</i>
-
-        <ul>
-            <li>Separated builds for different IDE versions (139-181+)</li>
-            <li>Abandoned support for <139</li>
-            <li>Integration with IntelliJ Plugin Verifier</li>
-        </ul>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.0"><b>v3.1.0</b></a> (unreleased) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Fixed bugs:</i>
 
         <ul>
-            <li>Argument for @NotNull parameter 'settings' of HideIgnoredFilesTreeStructureProvider.modify must not be null (<a href="https://github.com/hsz/idea-gitignore/issues/551">551</a>)</li>
-            <li>Projects leak in ExternalIndexableSetContributor.CACHE (<a href="https://github.com/hsz/idea-gitignore/issues/553">553</a>)</li>
-            <li>Unable to save settings (<a href="https://github.com/hsz/idea-gitignore/issues/552">552</a>)</li>
+            <li>Adding 2+ templates without new line in between (<a href="https://github.com/hsz/idea-gitignore/issues/561">561</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

@@ -1,6 +1,15 @@
 Change Log
 ----------
 
+### [v3.1.0](https://github.com/hsz/idea-gitignore/tree/v3.1.0) (unreleased)
+
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0)
+
+**Fixed bugs:**
+
+- Adding 2+ templates without new line in between [\#561](https://github.com/hsz/idea-gitignore/issues/561)
+
+
 ### [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v3.0.0)

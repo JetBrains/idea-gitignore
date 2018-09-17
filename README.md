@@ -53,8 +53,6 @@ files in your project. It supports following JetBrains IDEs:
 - WebStorm
 - DataGrip
 
-*Compiled with Java 1.6*
-
 
 Features
 --------
@@ -76,6 +74,14 @@ Features
 - Custom user templates with import/export features
 
 
+Supported IDEs
+--------------
+
+Since `v3.1.0`, .ignore plugin updates will be delivered to the IDE in version of `171+` - so all builds from 2017+.
+
+But hey, no worries! It means .ignore for all IDE version from before - `139-163` - will be freezed at `v3.0.0`.
+
+
 Installation
 ------------
 
@@ -85,18 +91,6 @@ Installation
   - Download the [latest release][latest-release] and install it manually using <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Install plugin from disk...</kbd>
   
 Restart IDE.
-
-
-Early Access Preview repository channel
-------------
-
-If you are interested in updating your IDE with release candidate version of .ignore plugin, you can use EAP repository:
-
-1. In the left-hand pane of the <kbd>Settings</kbd> / <kbd>Preferences dialog</kbd> (<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>S</kbd>), click Plugins.
-2. Click <kbd>Browse repositories</kbd>.
-3. In the _Browse Repositories_ dialog, click <kbd>Manage repositories</kbd>.
-4. In the _Custom Plugin Repositories_ dialog, click <kbd>+</kbd> and specify the repository URL: `https://plugins.jetbrains.com/plugins/eap/7495`
-5. Click <kbd>Check Now</kbd> to make sure that the URL is correct. 
 
 
 Usage
@@ -128,21 +122,13 @@ Usage
 Changelog
 ---------
 
-### [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)
+### [v3.1.0](https://github.com/hsz/idea-gitignore/tree/v3.1.0) (unreleased)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v3.0.0)
-
-**Implemented enhancements:**
-
-- Separated builds for different IDE versions (139-181+)
-- Abandoned support for <139
-- Integration with IntelliJ Plugin Verifier
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0)
 
 **Fixed bugs:**
 
-- Argument for @NotNull parameter 'settings' of HideIgnoredFilesTreeStructureProvider.modify must not be null [\#551](https://github.com/hsz/idea-gitignore/issues/551)
-- Projects leak in ExternalIndexableSetContributor.CACHE [\#553](https://github.com/hsz/idea-gitignore/issues/553)
-- Unable to save settings [\#552](https://github.com/hsz/idea-gitignore/issues/552)
+- Adding 2+ templates without new line in between [\#561](https://github.com/hsz/idea-gitignore/issues/561)
 
 
 [Full Changelog History](./CHANGELOG.md)

@@ -68,6 +68,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -232,12 +233,17 @@ public class GeneratorDialog extends DialogWrapper {
      */
     private void performAppendAction(boolean ignoreDuplicates, boolean ignoreComments) {
         final StringBuilder content = new StringBuilder();
-        for (Resources.Template template : checked) {
-            if (template == null) {
-                continue;
+        final Iterator<Resources.Template> iterator = checked.iterator();
+        while (iterator.hasNext()) {
+            final Resources.Template template = iterator.next();
+            if (template != null) {
+                content.append(IgnoreBundle.message("file.templateSection", template.getName()));
+                content.append(Constants.NEWLINE).append(template.getContent());
+
+                if (iterator.hasNext()) {
+                    content.append(Constants.NEWLINE);
+                }
             }
-            content.append(IgnoreBundle.message("file.templateSection", template.getName()));
-            content.append(Constants.NEWLINE).append(template.getContent());
         }
         try {
             if (file == null && action != null) {
