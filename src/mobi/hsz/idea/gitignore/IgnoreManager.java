@@ -57,6 +57,7 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor;
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
+import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.*;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
@@ -84,7 +85,7 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 public class IgnoreManager extends AbstractProjectComponent implements DumbAware {
     /** List of all available {@link IgnoreFileType}. */
     private static final List<IgnoreFileType> FILE_TYPES =
-            ContainerUtil.map(IgnoreBundle.LANGUAGES, language -> language.getFileType());
+            ContainerUtil.map(IgnoreBundle.LANGUAGES, IgnoreLanguage::getFileType);
 
     /** List of filenames that require to be associated with specific {@link IgnoreFileType}. */
     public static final Map<String, IgnoreFileType> FILE_TYPES_ASSOCIATION_QUEUE = ContainerUtil.newConcurrentMap();

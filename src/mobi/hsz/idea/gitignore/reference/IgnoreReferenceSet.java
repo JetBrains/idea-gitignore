@@ -256,7 +256,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     } else if (current.endsWith(Constants.STAR) && !current.equals(entry.getText())) {
                         files.addAll(ContainerUtil.filter(
                                 context.getVirtualFile().getChildren(),
-                                virtualFile -> virtualFile.isDirectory()
+                                VirtualFile::isDirectory
                         ));
                     } else if (current.endsWith(Constants.DOUBLESTAR)) {
                         final String key = entry.getText();

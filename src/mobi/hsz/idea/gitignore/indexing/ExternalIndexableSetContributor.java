@@ -63,7 +63,7 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
         final HashSet<VirtualFile> files = ContainerUtil.newHashSet();
 
         if (CACHE.containsKey(project)) {
-            files.addAll(ContainerUtil.filter(CACHE.get(project), file -> file.isValid()));
+            files.addAll(ContainerUtil.filter(CACHE.get(project), VirtualFile::isValid));
         } else {
             for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                 final IgnoreFileType fileType = language.getFileType();

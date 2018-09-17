@@ -49,6 +49,6 @@ public abstract class CommandAction<T> {
     protected abstract T compute() throws Throwable;
 
     public final T execute() throws Throwable {
-        return WriteCommandAction.writeCommandAction(project).compute(() -> CommandAction.this.compute());
+        return WriteCommandAction.writeCommandAction(project).compute(CommandAction.this::compute);
     }
 }

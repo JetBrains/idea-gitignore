@@ -203,7 +203,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     @NotNull
     public static Collection<IgnoreFileType> getKeys(@NotNull Project project) {
         Collection<IgnoreFileTypeKey> keys = FileBasedIndex.getInstance().getAllKeys(KEY, project);
-        return ContainerUtil.map(keys, entry -> entry.getType());
+        return ContainerUtil.map(keys, IgnoreFileTypeKey::getType);
     }
 
     /**
@@ -235,6 +235,6 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
      */
     @NotNull
     public static List<VirtualFile> getFiles(@NotNull Project project, @NotNull IgnoreFileType fileType) {
-        return ContainerUtil.mapNotNull(getEntries(project, fileType), entry -> entry.getFile());
+        return ContainerUtil.mapNotNull(getEntries(project, fileType), IgnoreEntryOccurrence::getFile);
     }
 }

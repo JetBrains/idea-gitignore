@@ -97,7 +97,7 @@ public class IgnoreBundle {
 
     /** Available IgnoreFileType instances filtered with {@link IgnoreLanguage#isVCS()} condition. */
     public static final IgnoreLanguages VCS_LANGUAGES = new IgnoreLanguages(
-            ContainerUtil.filter(LANGUAGES, language -> language.isVCS())
+            ContainerUtil.filter(LANGUAGES, IgnoreLanguage::isVCS)
     );
 
     /** Contains information about enabled/disabled languages. */
