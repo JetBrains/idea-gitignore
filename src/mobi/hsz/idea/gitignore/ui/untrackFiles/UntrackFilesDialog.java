@@ -111,12 +111,7 @@ public class UntrackFilesDialog extends DialogWrapper {
         public void treeNodesChanged(@NotNull TreeModelEvent event) {
             final String text = getCommandsText();
 
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                    commandsDocument.setText(text);
-                }
-            });
+            ApplicationManager.getApplication().runWriteAction(() -> commandsDocument.setText(text));
         }
     };
 

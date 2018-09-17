@@ -30,7 +30,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.VisualPosition;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
@@ -157,12 +156,8 @@ public class AppendFileCommandAction extends CommandAction<PsiFile> {
                     if (ignoreDuplicates) {
                         List<String> currentLines = ContainerUtil.filter(
                                 document.getText().split(Constants.NEWLINE),
-                                new Condition<String>() {
-                                    @Override
-                                    public boolean value(String s) {
-                                        return !s.isEmpty() && !s.startsWith(Constants.HASH);
-                                    }
-                                });
+                                s -> !s.isEmpty() && !s.startsWith(Constants.HASH)
+                        );
 
                         List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
                         Iterator<String> iterator = entryLines.iterator();

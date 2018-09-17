@@ -62,7 +62,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -132,12 +131,10 @@ public class GeneratorDialog extends DialogWrapper {
     private Document previewDocument;
 
     /** CheckboxTree selection listener. */
-    private TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
-        public void valueChanged(TreeSelectionEvent e) {
-            final TreePath path = getCurrentPath();
-            if (path != null) {
-                updateDescriptionPanel(path);
-            }
+    private TreeSelectionListener treeSelectionListener = e -> {
+        final TreePath path = getCurrentPath();
+        if (path != null) {
+            updateDescriptionPanel(path);
         }
     };
 
@@ -460,23 +457,17 @@ public class GeneratorDialog extends DialogWrapper {
         final TemplateTreeNode node = (TemplateTreeNode) path.getLastPathComponent();
         final Resources.Template template = node.getTemplate();
 
-        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-            @Override
-            public void run() {
-                CommandProcessor.getInstance().runUndoTransparentAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        String content = template != null ?
-                                StringUtil.notNullize(template.getContent()).replace('\r', '\0') : "";
-                        previewDocument.replaceString(0, previewDocument.getTextLength(), content);
+        ApplicationManager.getApplication().runWriteAction(
+                () -> CommandProcessor.getInstance().runUndoTransparentAction(() -> {
+                    String content = template != null ?
+                            StringUtil.notNullize(template.getContent()).replace('\r', '\0') : "";
+                    previewDocument.replaceString(0, previewDocument.getTextLength(), content);
 
-                        List<Pair<Integer, Integer>> pairs =
-                                getFilterRanges(profileFilter.getTextEditor().getText(), content);
-                        highlightWords(pairs);
-                    }
-                });
-            }
-        });
+                    List<Pair<Integer, Integer>> pairs =
+                            getFilterRanges(profileFilter.getTextEditor().getText(), content);
+                    highlightWords(pairs);
+                })
+        );
     }
 
     /**

@@ -28,7 +28,6 @@ import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectViewNode;
 import com.intellij.ide.projectView.ProjectViewNodeDecorator;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.packageDependencies.ui.PackageDependenciesNode;
 import com.intellij.ui.ColoredTreeCellRenderer;
@@ -93,12 +92,10 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
                     GRAYED_SMALL_ATTRIBUTES
             );
         } else if (ignoreSettings.isHideIgnoredFiles() && file.isDirectory()) {
-            int count = ContainerUtil.filter(file.getChildren(), new Condition<VirtualFile>() {
-                @Override
-                public boolean value(VirtualFile file) {
-                    return manager.isFileIgnored(file) && !manager.isFileTracked(file);
-                }
-            }).size();
+            int count = ContainerUtil.filter(
+                    file.getChildren(),
+                    child -> manager.isFileIgnored(child) && !manager.isFileTracked(child)
+            ).size();
 
             if (count > 0) {
                 Utils.addColoredText(

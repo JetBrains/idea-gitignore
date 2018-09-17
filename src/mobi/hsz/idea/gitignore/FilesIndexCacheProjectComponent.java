@@ -26,7 +26,6 @@ package mobi.hsz.idea.gitignore;
 
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ContentIterator;
 import com.intellij.openapi.roots.FileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.text.StringUtil;
@@ -162,19 +161,16 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
             if (cacheMap.get(key) == null) {
                 final THashSet<VirtualFile> files = new THashSet<VirtualFile>(1000);
 
-                projectFileIndex.iterateContent(new ContentIterator() {
-                    @Override
-                    public boolean processFile(VirtualFile fileOrDir) {
-                        final String name = fileOrDir.getName();
-                        if (MatcherUtil.matchAnyPart(parts, name)) {
-                            for (VirtualFile file : FilenameIndex.getVirtualFilesByName(project, name, scope)) {
-                                if (file.isValid() && MatcherUtil.matchAllParts(parts, file.getPath())) {
-                                    files.add(file);
-                                }
+                projectFileIndex.iterateContent(fileOrDir -> {
+                    final String name = fileOrDir.getName();
+                    if (MatcherUtil.matchAnyPart(parts, name)) {
+                        for (VirtualFile file : FilenameIndex.getVirtualFilesByName(project, name, scope)) {
+                            if (file.isValid() && MatcherUtil.matchAllParts(parts, file.getPath())) {
+                                files.add(file);
                             }
                         }
-                        return true;
                     }
+                    return true;
                 });
 
                 cacheMap.put(key, files);

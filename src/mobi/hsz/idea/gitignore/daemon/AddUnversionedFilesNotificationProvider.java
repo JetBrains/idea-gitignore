@@ -153,31 +153,25 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
         final EditorNotificationPanel panel = new EditorNotificationPanel();
         final IgnoreFileType fileType = GitFileType.INSTANCE;
         panel.setText(IgnoreBundle.message("daemon.addUnversionedFiles"));
-        panel.createActionLabel(IgnoreBundle.message("daemon.addUnversionedFiles.create"), new Runnable() {
-            @Override
-            public void run() {
-                final VirtualFile virtualFile = project.getBaseDir().findChild(GitLanguage.INSTANCE.getFilename());
-                final PsiFile file = virtualFile != null ? PsiManager.getInstance(project).findFile(virtualFile) : null;
-                if (file != null) {
-                    final String content = StringUtil.join(unignoredFiles, Constants.NEWLINE);
+        panel.createActionLabel(IgnoreBundle.message("daemon.addUnversionedFiles.create"), () -> {
+            final VirtualFile virtualFile = project.getBaseDir().findChild(GitLanguage.INSTANCE.getFilename());
+            final PsiFile file = virtualFile != null ? PsiManager.getInstance(project).findFile(virtualFile) : null;
+            if (file != null) {
+                final String content = StringUtil.join(unignoredFiles, Constants.NEWLINE);
 
-                    try {
-                        new AppendFileCommandAction(project, file, content, true, false)
-                                .execute();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                    handledMap.put(virtualFile, true);
-                    notifications.updateAllNotifications();
+                try {
+                    new AppendFileCommandAction(project, file, content, true, false)
+                            .execute();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
                 }
-            }
-        });
-        panel.createActionLabel(IgnoreBundle.message("daemon.cancel"), new Runnable() {
-            @Override
-            public void run() {
-                Properties.setAddUnversionedFiles(project);
+                handledMap.put(virtualFile, true);
                 notifications.updateAllNotifications();
             }
+        });
+        panel.createActionLabel(IgnoreBundle.message("daemon.cancel"), () -> {
+            Properties.setAddUnversionedFiles(project);
+            notifications.updateAllNotifications();
         });
 
         try { // ignore if older SDK does not support panel icon

@@ -71,8 +71,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.io.IOException;
@@ -375,16 +373,13 @@ public class IgnoreSettingsPanel implements Disposable {
         /** Constructs CRUD panel with list listener for editor updating. */
         public TemplatesListPanel() {
             super(null, ContainerUtil.<IgnoreSettings.UserTemplate>newArrayList());
-            myList.addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent e) {
-                    boolean enabled = myListModel.size() > 0;
-                    editorPanel.setEnabled(enabled);
+            myList.addListSelectionListener(e -> {
+                boolean enabled = myListModel.size() > 0;
+                editorPanel.setEnabled(enabled);
 
-                    if (enabled) {
-                        IgnoreSettings.UserTemplate template = getCurrentItem();
-                        editorPanel.setContent(template != null ? template.getContent() : "");
-                    }
+                if (enabled) {
+                    IgnoreSettings.UserTemplate template = getCurrentItem();
+                    editorPanel.setContent(template != null ? template.getContent() : "");
                 }
             });
         }
@@ -699,17 +694,11 @@ public class IgnoreSettingsPanel implements Disposable {
          * @param content new content
          */
         public void setContent(@NotNull final String content) {
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                    CommandProcessor.getInstance().runUndoTransparentAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            previewDocument.replaceString(0, previewDocument.getTextLength(), content);
-                        }
-                    });
-                }
-            });
+            ApplicationManager.getApplication().runWriteAction(
+                    () -> CommandProcessor.getInstance().runUndoTransparentAction(
+                            () -> previewDocument.replaceString(0, previewDocument.getTextLength(), content)
+                    )
+            );
         }
     }
 

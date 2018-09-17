@@ -24,7 +24,6 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -33,8 +32,6 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.util.Icons;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
 
 /**
  * Fossil {@link IgnoreLanguage} definition.
@@ -51,14 +48,10 @@ public class FossilLanguage extends IgnoreLanguage {
         super("Fossil", "ignore-glob", ".fossil-settings", Icons.FOSSIL, new OuterFileFetcher[]{
 
                 // Outer file fetched from the .fossil-settings/ignore-glob file.
-                new OuterFileFetcher() {
-                    @NotNull
-                    @Override
-                    public Collection<VirtualFile> fetch(@NotNull Project project) {
-                        final VirtualFile baseDir = project.getBaseDir();
-                        return ContainerUtil.createMaybeSingletonList(baseDir == null ? null : baseDir
-                                .findFileByRelativePath(INSTANCE.getVcsDirectory() + "/" + INSTANCE.getFilename()));
-                    }
+                project -> {
+                    final VirtualFile baseDir = project.getBaseDir();
+                    return ContainerUtil.createMaybeSingletonList(baseDir == null ? null : baseDir
+                            .findFileByRelativePath(INSTANCE.getVcsDirectory() + "/" + INSTANCE.getFilename()));
                 }
 
         });

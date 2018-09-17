@@ -38,7 +38,6 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.TabbedPaneWrapper;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.labels.LinkLabel;
-import com.intellij.ui.components.labels.LinkListener;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.ui.UIUtil;
@@ -132,20 +131,14 @@ public class OuterIgnoreWrapper extends MouseAdapter implements ChangeListener, 
 
         tabbedPanel = new TabbedPaneWrapper(project);
         messageBus = project.getMessageBus().connect();
-        messageBus.subscribe(UISettingsListener.TOPIC, new UISettingsListener() {
-            @Override
-            public void uiSettingsChanged(UISettings uiSettings) {
-                updateTabbedPanelPolicy();
-            }
-        });
+        messageBus.subscribe(UISettingsListener.TOPIC, uiSettings -> updateTabbedPanelPolicy());
         updateTabbedPanelPolicy();
 
-        linkLabel = new LinkLabel(outerFiles.get(0).getPath(), null, new LinkListener() {
-            @Override
-            public void linkSelected(LinkLabel aSource, Object aLinkData) {
-                Utils.openFile(project, outerFiles.get(tabbedPanel.getSelectedIndex()));
-            }
-        });
+        linkLabel = new LinkLabel(
+                outerFiles.get(0).getPath(),
+                null,
+                (aSource, aLinkData) -> Utils.openFile(project, outerFiles.get(tabbedPanel.getSelectedIndex()))
+        );
         final VirtualFile userHomeDir = VfsUtil.getUserHomeDir();
 
         for (final VirtualFile outerFile : outerFiles) {

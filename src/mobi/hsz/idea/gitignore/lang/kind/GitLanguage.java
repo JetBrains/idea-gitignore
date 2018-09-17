@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -41,7 +40,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -61,13 +59,7 @@ public class GitLanguage extends IgnoreLanguage {
         super("Git", "gitignore", ".git", Icons.GIT, new OuterFileFetcher[]{
 
                 // Outer file fetched from the `git config core.excludesfile`.
-                new OuterFileFetcher() {
-                    @NotNull
-                    @Override
-                    public Collection<VirtualFile> fetch(@NotNull Project project) {
-                        return ContainerUtil.newArrayList(ExternalExec.getGitExcludesFile());
-                    }
-                }
+                project -> ContainerUtil.newArrayList(ExternalExec.getGitExcludesFile())
 
         });
     }
@@ -112,12 +104,7 @@ public class GitLanguage extends IgnoreLanguage {
         final Set<VirtualFile> parentFiles = super.getOuterFiles(project, false);
         final ArrayList<VirtualFile> files = ContainerUtil.newArrayList(ContainerUtil.filter(
                 IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
-                new Condition<VirtualFile>() {
-                    @Override
-                    public boolean value(@NotNull VirtualFile virtualFile) {
-                        return Utils.isInProject(virtualFile, project);
-                    }
-                }
+                virtualFile -> Utils.isInProject(virtualFile, project)
         ));
 
         ContainerUtil.addAllNotNull(parentFiles, files);

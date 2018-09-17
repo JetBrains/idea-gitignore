@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.CommonBundle;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
@@ -98,22 +97,12 @@ public class IgnoreBundle {
 
     /** Available IgnoreFileType instances filtered with {@link IgnoreLanguage#isVCS()} condition. */
     public static final IgnoreLanguages VCS_LANGUAGES = new IgnoreLanguages(
-            ContainerUtil.filter(LANGUAGES, new Condition<IgnoreLanguage>() {
-                @Override
-                public boolean value(IgnoreLanguage language) {
-                    return language.isVCS();
-                }
-            })
+            ContainerUtil.filter(LANGUAGES, language -> language.isVCS())
     );
 
     /** Contains information about enabled/disabled languages. */
     public static final CachedConcurrentMap<IgnoreFileType, Boolean> ENABLED_LANGUAGES = CachedConcurrentMap.create(
-            new CachedConcurrentMap.DataFetcher<IgnoreFileType, Boolean>() {
-                @Override
-                public Boolean fetch(@NotNull IgnoreFileType key) {
-                    return key.getIgnoreLanguage().isEnabled();
-                }
-            }
+            key -> key.getIgnoreLanguage().isEnabled()
     );
 
     /** Available syntax list. */

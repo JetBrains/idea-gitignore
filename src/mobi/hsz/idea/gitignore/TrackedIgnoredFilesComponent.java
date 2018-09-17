@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
@@ -39,7 +38,6 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.event.HyperlinkEvent;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -117,16 +115,13 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
                 IgnoreBundle.message("notification.untrack.title", Utils.getVersion()),
                 IgnoreBundle.message("notification.untrack.content"),
                 NotificationType.INFORMATION,
-                new NotificationListener() {
-                    @Override
-                    public void hyperlinkUpdate(@NotNull Notification notification, @NotNull HyperlinkEvent event) {
-                        if (DISABLE_ACTION.equals(event.getDescription())) {
-                            settings.setInformTrackedIgnored(false);
-                        } else if (!myProject.isDisposed()) {
-                            new UntrackFilesDialog(myProject, files).show();
-                        }
-                        notification.expire();
+                (notification, event) -> {
+                    if (DISABLE_ACTION.equals(event.getDescription())) {
+                        settings.setInformTrackedIgnored(false);
+                    } else if (!myProject.isDisposed()) {
+                        new UntrackFilesDialog(myProject, files).show();
                     }
+                    notification.expire();
                 }
         );
     }

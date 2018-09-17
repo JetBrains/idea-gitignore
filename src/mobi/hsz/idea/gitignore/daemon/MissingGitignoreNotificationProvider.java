@@ -146,27 +146,21 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
         final EditorNotificationPanel panel = new EditorNotificationPanel();
         final IgnoreFileType fileType = GitFileType.INSTANCE;
         panel.setText(IgnoreBundle.message("daemon.missingGitignore"));
-        panel.createActionLabel(IgnoreBundle.message("daemon.missingGitignore.create"), new Runnable() {
-            @Override
-            public void run() {
-                PsiDirectory directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
-                if (directory != null) {
-                    try {
-                        PsiFile file = new CreateFileCommandAction(project, directory, fileType).execute();
-                        FileEditorManager.getInstance(project).openFile(file.getVirtualFile(), true);
-                        new GeneratorDialog(project, file).show();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
+        panel.createActionLabel(IgnoreBundle.message("daemon.missingGitignore.create"), () -> {
+            PsiDirectory directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
+            if (directory != null) {
+                try {
+                    PsiFile file = new CreateFileCommandAction(project, directory, fileType).execute();
+                    FileEditorManager.getInstance(project).openFile(file.getVirtualFile(), true);
+                    new GeneratorDialog(project, file).show();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
                 }
             }
         });
-        panel.createActionLabel(IgnoreBundle.message("daemon.cancel"), new Runnable() {
-            @Override
-            public void run() {
-                Properties.setIgnoreMissingGitignore(project);
-                notifications.updateAllNotifications();
-            }
+        panel.createActionLabel(IgnoreBundle.message("daemon.cancel"), () -> {
+            Properties.setIgnoreMissingGitignore(project);
+            notifications.updateAllNotifications();
         });
 
         try { // ignore if older SDK does not support panel icon

@@ -40,15 +40,12 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.NoAccessDuringPsiEvents;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsListener;
 import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.*;
-import com.intellij.util.Function;
 import com.intellij.util.Time;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
@@ -60,7 +57,6 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitFileType;
 import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor;
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence;
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex;
-import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.*;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
@@ -88,12 +84,7 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
 public class IgnoreManager extends AbstractProjectComponent implements DumbAware {
     /** List of all available {@link IgnoreFileType}. */
     private static final List<IgnoreFileType> FILE_TYPES =
-            ContainerUtil.map(IgnoreBundle.LANGUAGES, new Function<IgnoreLanguage, IgnoreFileType>() {
-                @Override
-                public IgnoreFileType fun(@NotNull IgnoreLanguage language) {
-                    return language.getFileType();
-                }
-            });
+            ContainerUtil.map(IgnoreBundle.LANGUAGES, language -> language.getFileType());
 
     /** List of filenames that require to be associated with specific {@link IgnoreFileType}. */
     public static final Map<String, IgnoreFileType> FILE_TYPES_ASSOCIATION_QUEUE = ContainerUtil.newConcurrentMap();
@@ -141,26 +132,12 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** References to the indexed {@link IgnoreEntryOccurrence}. */
     @NotNull
     private final CachedConcurrentMap<IgnoreFileType, Collection<IgnoreEntryOccurrence>> cachedIgnoreFilesIndex =
-            CachedConcurrentMap.create(
-                    new CachedConcurrentMap.DataFetcher<IgnoreFileType, Collection<IgnoreEntryOccurrence>>() {
-                        @Override
-                        public Collection<IgnoreEntryOccurrence> fetch(@NotNull IgnoreFileType key) {
-                            return IgnoreFilesIndex.getEntries(myProject, key);
-                        }
-                    }
-            );
+            CachedConcurrentMap.create(key -> IgnoreFilesIndex.getEntries(myProject, key));
 
     /** References to the indexed outer files. */
     @NotNull
     private final CachedConcurrentMap<IgnoreFileType, Collection<VirtualFile>> cachedOuterFiles =
-            CachedConcurrentMap.create(
-                    new CachedConcurrentMap.DataFetcher<IgnoreFileType, Collection<VirtualFile>>() {
-                        @Override
-                        public Collection<VirtualFile> fetch(@NotNull IgnoreFileType key) {
-                            return key.getIgnoreLanguage().getOuterFiles(myProject);
-                        }
-                    }
-            );
+            CachedConcurrentMap.create(key -> key.getIgnoreLanguage().getOuterFiles(myProject));
 
     @NotNull
     private final ExpiringMap<VirtualFile, Boolean> expiringStatusCache =
@@ -441,12 +418,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      */
     @Nullable
     private VirtualFile getVcsRootFor(@NotNull final VirtualFile file) {
-        final VcsRoot vcsRoot = ContainerUtil.find(ContainerUtil.reverse(vcsRoots), new Condition<VcsRoot>() {
-            @Override
-            public boolean value(VcsRoot vcsRoot) {
-                return vcsRoot.getPath() != null && Utils.isUnder(file, vcsRoot.getPath());
-            }
-        });
+        final VcsRoot vcsRoot = ContainerUtil.find(
+                ContainerUtil.reverse(vcsRoots),
+                root -> root.getPath() != null && Utils.isUnder(file, root.getPath())
+        );
         return vcsRoot != null ? vcsRoot.getPath() : null;
     }
 
@@ -460,18 +435,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         final Application application = ApplicationManager.getApplication();
         if (application.isDispatchThread()) {
             final FileTypeManager fileTypeManager = FileTypeManager.getInstance();
-            application.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    application.runWriteAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            fileTypeManager.associate(fileType, new ExactFileNameMatcher(fileName));
-                            FILE_TYPES_ASSOCIATION_QUEUE.remove(fileName);
-                        }
-                    });
-                }
-            }, ModalityState.NON_MODAL);
+            application.invokeLater(() -> application.runWriteAction(() -> {
+                fileTypeManager.associate(fileType, new ExactFileNameMatcher(fileName));
+                FILE_TYPES_ASSOCIATION_QUEUE.remove(fileName);
+            }), ModalityState.NON_MODAL);
         } else if (!FILE_TYPES_ASSOCIATION_QUEUE.containsKey(fileName)) {
             FILE_TYPES_ASSOCIATION_QUEUE.put(fileName, fileType);
         }
@@ -533,20 +500,12 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
         messageBus = myProject.getMessageBus().connect();
 
-        messageBus.subscribe(TRACKED_IGNORED_REFRESH, new RefreshTrackedIgnoredListener() {
-            @Override
-            public void refresh() {
-                debouncedRefreshTrackedIgnores.run(true);
-            }
-        });
+        messageBus.subscribe(TRACKED_IGNORED_REFRESH, () -> debouncedRefreshTrackedIgnores.run(true));
 
-        messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, new VcsListener() {
-            @Override
-            public void directoryMappingChanged() {
-                ExternalIndexableSetContributor.invalidateCache(myProject);
-                vcsRoots.clear();
-                vcsRoots.addAll(ContainerUtil.newArrayList(projectLevelVcsManager.getAllVcsRoots()));
-            }
+        messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, () -> {
+            ExternalIndexableSetContributor.invalidateCache(myProject);
+            vcsRoots.clear();
+            vcsRoots.addAll(ContainerUtil.newArrayList(projectLevelVcsManager.getAllVcsRoots()));
         });
 
         messageBus.subscribe(DumbService.DUMB_MODE, new DumbService.DumbModeListener() {

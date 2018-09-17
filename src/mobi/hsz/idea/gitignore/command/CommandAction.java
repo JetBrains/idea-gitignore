@@ -26,7 +26,6 @@ package mobi.hsz.idea.gitignore.command;
 
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.ThrowableComputable;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -50,11 +49,6 @@ public abstract class CommandAction<T> {
     protected abstract T compute() throws Throwable;
 
     public final T execute() throws Throwable {
-        return WriteCommandAction.writeCommandAction(project).compute(new ThrowableComputable<T, Throwable>() {
-            @Override
-            public T compute() throws Throwable {
-                return CommandAction.this.compute();
-            }
-        });
+        return WriteCommandAction.writeCommandAction(project).compute(() -> CommandAction.this.compute());
     }
 }

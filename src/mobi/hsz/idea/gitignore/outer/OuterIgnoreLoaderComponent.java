@@ -24,7 +24,6 @@
 
 package mobi.hsz.idea.gitignore.outer;
 
-import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.fileTypes.FileType;
@@ -127,40 +126,31 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
                 return;
             }
 
-            DumbService.getInstance(project).runWhenSmart(new Runnable() {
-                @Override
-                public void run() {
-                    final List<VirtualFile> outerFiles =
-                            ContainerUtil.newArrayList(language.getOuterFiles(myProject, false));
-                    if (outerFiles.isEmpty() || outerFiles.contains(file)) {
-                        return;
-                    }
+            DumbService.getInstance(project).runWhenSmart(() -> {
+                final List<VirtualFile> outerFiles =
+                        ContainerUtil.newArrayList(language.getOuterFiles(myProject, false));
+                if (outerFiles.isEmpty() || outerFiles.contains(file)) {
+                    return;
+                }
 
-                    for (final FileEditor fileEditor : source.getEditors(file)) {
-                        if (fileEditor instanceof TextEditor) {
-                            final OuterIgnoreWrapper wrapper = new OuterIgnoreWrapper(project, language, outerFiles);
-                            final JComponent component = wrapper.getComponent();
-                            final IgnoreSettings.Listener settingsListener = new IgnoreSettings.Listener() {
-                                @Override
-                                public void onChange(@NotNull KEY key, Object value) {
-                                    if (KEY.OUTER_IGNORE_RULES.equals(key)) {
-                                        component.setVisible((Boolean) value);
-                                    }
-                                }
-                            };
+                for (final FileEditor fileEditor : source.getEditors(file)) {
+                    if (fileEditor instanceof TextEditor) {
+                        final OuterIgnoreWrapper wrapper = new OuterIgnoreWrapper(project, language, outerFiles);
+                        final JComponent component = wrapper.getComponent();
+                        final IgnoreSettings.Listener settingsListener = (key, value) -> {
+                            if (KEY.OUTER_IGNORE_RULES.equals(key)) {
+                                component.setVisible((Boolean) value);
+                            }
+                        };
 
-                            IgnoreSettings.getInstance().addListener(settingsListener);
-                            source.addBottomComponent(fileEditor, component);
+                        IgnoreSettings.getInstance().addListener(settingsListener);
+                        source.addBottomComponent(fileEditor, component);
 
-                            Disposer.register(fileEditor, wrapper);
-                            Disposer.register(fileEditor, new Disposable() {
-                                @Override
-                                public void dispose() {
-                                    IgnoreSettings.getInstance().removeListener(settingsListener);
-                                    source.removeBottomComponent(fileEditor, component);
-                                }
-                            });
-                        }
+                        Disposer.register(fileEditor, wrapper);
+                        Disposer.register(fileEditor, () -> {
+                            IgnoreSettings.getInstance().removeListener(settingsListener);
+                            source.removeBottomComponent(fileEditor, component);
+                        });
                     }
                 }
             });

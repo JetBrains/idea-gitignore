@@ -88,15 +88,12 @@ public class InterruptibleScheduledFuture implements DumbAwareRunnable {
         if (leading) {
             task.run();
         }
-        future = JobScheduler.getScheduler().scheduleWithFixedDelay(new Runnable() {
-            @Override
-            public void run() {
-                task.run();
-                if (++attempt >= maxAttempts || trailingTask) {
-                    trailing = false;
-                    if (future != null) {
-                        future.cancel(false);
-                    }
+        future = JobScheduler.getScheduler().scheduleWithFixedDelay(() -> {
+            task.run();
+            if (++attempt >= maxAttempts || trailingTask) {
+                trailing = false;
+                if (future != null) {
+                    future.cancel(false);
                 }
             }
         }, delay, delay, TimeUnit.MILLISECONDS);

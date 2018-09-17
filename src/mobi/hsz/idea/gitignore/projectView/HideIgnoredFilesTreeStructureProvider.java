@@ -29,7 +29,6 @@ import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.projectView.impl.nodes.BasePsiNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreManager;
@@ -79,15 +78,12 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
             return children;
         }
 
-        return ContainerUtil.filter(children, new Condition<AbstractTreeNode>() {
-            @Override
-            public boolean value(AbstractTreeNode node) {
-                if (node instanceof BasePsiNode) {
-                    final VirtualFile file = ((BasePsiNode) node).getVirtualFile();
-                    return file != null && (!ignoreManager.isFileIgnored(file) || ignoreManager.isFileTracked(file));
-                }
-                return true;
+        return ContainerUtil.filter(children, node -> {
+            if (node instanceof BasePsiNode) {
+                final VirtualFile file = ((BasePsiNode) node).getVirtualFile();
+                return file != null && (!ignoreManager.isFileIgnored(file) || ignoreManager.isFileTracked(file));
             }
+            return true;
         });
     }
 

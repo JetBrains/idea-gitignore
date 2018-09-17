@@ -108,12 +108,9 @@ public class IgnoredEditingNotificationProvider extends EditorNotifications.Prov
         final EditorNotificationPanel panel = new EditorNotificationPanel();
 
         panel.setText(IgnoreBundle.message("daemon.ignoredEditing"));
-        panel.createActionLabel(IgnoreBundle.message("daemon.ok"), new Runnable() {
-            @Override
-            public void run() {
-                Properties.setDismissedIgnoredEditingNotification(project, file);
-                notifications.updateAllNotifications();
-            }
+        panel.createActionLabel(IgnoreBundle.message("daemon.ok"), () -> {
+            Properties.setDismissedIgnoredEditingNotification(project, file);
+            notifications.updateAllNotifications();
         });
 
         try { // ignore if older SDK does not support panel icon

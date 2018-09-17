@@ -66,12 +66,11 @@ public abstract class Debounced<T> implements DumbAwareRunnable {
             timer.cancel(false);
         }
 
-        timer = JobScheduler.getScheduler().schedule(new DumbAwareRunnable() {
-            @Override
-            public void run() {
-                task(argument);
-            }
-        }, delay, TimeUnit.MILLISECONDS);
+        timer = JobScheduler.getScheduler().schedule(
+                (DumbAwareRunnable) () -> task(argument),
+                delay,
+                TimeUnit.MILLISECONDS
+        );
     }
 
     /** Task to run in debounce way. */

@@ -29,7 +29,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.FileBasedIndex;
 import com.intellij.util.indexing.FileContent;
@@ -204,13 +203,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     @NotNull
     public static Collection<IgnoreFileType> getKeys(@NotNull Project project) {
         Collection<IgnoreFileTypeKey> keys = FileBasedIndex.getInstance().getAllKeys(KEY, project);
-        return ContainerUtil.map(keys, new Function<IgnoreFileTypeKey, IgnoreFileType>() {
-            @NotNull
-            @Override
-            public IgnoreFileType fun(@NotNull IgnoreFileTypeKey entry) {
-                return entry.getType();
-            }
-        });
+        return ContainerUtil.map(keys, entry -> entry.getType());
     }
 
     /**
@@ -242,12 +235,6 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
      */
     @NotNull
     public static List<VirtualFile> getFiles(@NotNull Project project, @NotNull IgnoreFileType fileType) {
-        return ContainerUtil.mapNotNull(getEntries(project, fileType),
-                new Function<IgnoreEntryOccurrence, VirtualFile>() {
-            @Override
-            public VirtualFile fun(@NotNull IgnoreEntryOccurrence entry) {
-                return entry.getFile();
-            }
-        });
+        return ContainerUtil.mapNotNull(getEntries(project, fileType), entry -> entry.getFile());
     }
 }

@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore.indexing;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.IndexableSetContributor;
@@ -64,12 +63,7 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
         final HashSet<VirtualFile> files = ContainerUtil.newHashSet();
 
         if (CACHE.containsKey(project)) {
-            files.addAll(ContainerUtil.filter(CACHE.get(project), new Condition<VirtualFile>() {
-                @Override
-                public boolean value(@NotNull VirtualFile file) {
-                    return file.isValid();
-                }
-            }));
+            files.addAll(ContainerUtil.filter(CACHE.get(project), file -> file.isValid()));
         } else {
             for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                 final IgnoreFileType fileType = language.getFileType();
