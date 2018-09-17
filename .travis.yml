@@ -6,7 +6,7 @@ jdk:
   - oraclejdk8
 
 env:
-  - IDEA_VERSION=182.3684.40
+  - IDEA_VERSION=183.2407.10
 
 # Workaround for https://github.com/travis-ci/travis-ci/issues/5227
 # Buffer overflow in Java_java_net_Inet4AddressImpl_getLocalHostName
