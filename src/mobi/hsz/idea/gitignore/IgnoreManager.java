@@ -185,7 +185,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** List of available VCS roots for the current project. */
     @NotNull
-    private List<VcsRoot> vcsRoots = ContainerUtil.newArrayList();
+    private final List<VcsRoot> vcsRoots = ContainerUtil.newArrayList();
 
     /** {@link VirtualFileListener} instance to check if file's content was changed. */
     @NotNull

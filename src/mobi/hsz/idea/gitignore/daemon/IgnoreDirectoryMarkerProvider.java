@@ -55,7 +55,7 @@ import java.util.List;
  */
 public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
     /** Cache map. */
-    private HashMap<String, Boolean> cache = ContainerUtil.newHashMap();
+    private final HashMap<String, Boolean> cache = ContainerUtil.newHashMap();
 
     /**
      * Returns {@link LineMarkerInfo} with set {@link PlatformIcons#FOLDER_ICON} if entry points to the directory.

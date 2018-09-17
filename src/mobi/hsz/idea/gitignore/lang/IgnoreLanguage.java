@@ -79,7 +79,7 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
 
     /** Outer files cache. */
     @NotNull
-    protected ExpiringMap<Integer, Set<VirtualFile>> outerFiles = new ExpiringMap<>(5000);
+    protected final ExpiringMap<Integer, Set<VirtualFile>> outerFiles = new ExpiringMap<>(5000);
 
     /** {@link IgnoreLanguage} is a non-instantiable static class. */
     protected IgnoreLanguage() {

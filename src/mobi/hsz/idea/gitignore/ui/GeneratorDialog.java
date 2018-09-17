@@ -131,7 +131,7 @@ public class GeneratorDialog extends DialogWrapper {
     private Document previewDocument;
 
     /** CheckboxTree selection listener. */
-    private TreeSelectionListener treeSelectionListener = e -> {
+    private final TreeSelectionListener treeSelectionListener = e -> {
         final TreePath path = getCurrentPath();
         if (path != null) {
             updateDescriptionPanel(path);

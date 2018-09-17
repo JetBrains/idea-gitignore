@@ -101,7 +101,7 @@ public class UntrackFilesDialog extends DialogWrapper {
 
     /** Listener that checks if files list has been changed and rewrites commands in {@link #commandsDocument}. */
     @NotNull
-    private TreeModelListener treeModelListener = new TreeModelAdapter() {
+    private final TreeModelListener treeModelListener = new TreeModelAdapter() {
         /**
          * Invoked after a tree has changed.
          *

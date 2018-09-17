@@ -122,7 +122,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     /** Settings related to the {@link IgnoreLanguage}. */
     @NotNull
     @SuppressWarnings("checkstyle:whitespacearound")
-    private IgnoreLanguagesSettings languagesSettings = new IgnoreLanguagesSettings() {{
+    private final IgnoreLanguagesSettings languagesSettings = new IgnoreLanguagesSettings() {{
         for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
             put(language, new TreeMap<KEY, Object>() {{
                 put(KEY.NEW_FILE, true);

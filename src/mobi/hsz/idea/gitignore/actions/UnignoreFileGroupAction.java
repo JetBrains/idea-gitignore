@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class UnignoreFileGroupAction extends IgnoreFileGroupAction {
     /** Ignore settings instance. */
-    private IgnoreSettings settings;
+    private final IgnoreSettings settings;
 
     /**
      * Builds a new instance of {@link UnignoreFileGroupAction}.
