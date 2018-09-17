@@ -277,7 +277,7 @@ public class UntrackFilesDialog extends DialogWrapper {
      */
     @NotNull
     private HashMap<VcsRoot, ArrayList<VirtualFile>> getCheckedFiles() {
-        final HashMap<VcsRoot, ArrayList<VirtualFile>> result = new HashMap<VcsRoot, ArrayList<VirtualFile>>();
+        final HashMap<VcsRoot, ArrayList<VirtualFile>> result = new HashMap<>();
 
         FileTreeNode leaf = (FileTreeNode) root.getFirstLeaf();
         if (leaf == null) {
@@ -295,7 +295,7 @@ public class UntrackFilesDialog extends DialogWrapper {
                 continue;
             }
 
-            ArrayList<VirtualFile> list = ContainerUtil.getOrCreate(result, vcsRoot, new ArrayList<VirtualFile>());
+            ArrayList<VirtualFile> list = ContainerUtil.getOrCreate(result, vcsRoot, new ArrayList<>());
             list.add(file);
 
             result.put(vcsRoot, list);

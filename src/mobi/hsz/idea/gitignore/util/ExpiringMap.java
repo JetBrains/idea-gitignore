@@ -44,7 +44,7 @@ public class ExpiringMap<K, V> {
     private final int time;
 
     /** Cache map. */
-    private final ConcurrentHashMap<K, Pair<V, Long>> map = new ConcurrentHashMap<K, Pair<V, Long>>();
+    private final ConcurrentHashMap<K, Pair<V, Long>> map = new ConcurrentHashMap<>();
 
     /**
      * Constructor.

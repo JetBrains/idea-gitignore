@@ -159,7 +159,7 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
         if (parts.length > 0) {
             final String key = StringUtil.join(parts, Constants.DOLLAR);
             if (cacheMap.get(key) == null) {
-                final THashSet<VirtualFile> files = new THashSet<VirtualFile>(1000);
+                final THashSet<VirtualFile> files = new THashSet<>(1000);
 
                 projectFileIndex.iterateContent(fileOrDir -> {
                     final String name = fileOrDir.getName();

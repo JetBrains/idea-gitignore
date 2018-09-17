@@ -91,7 +91,7 @@ public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
         }
 
         if (isDirectory) {
-            return new LineMarkerInfo<PsiElement>(element.getFirstChild(), element.getTextRange(),
+            return new LineMarkerInfo<>(element.getFirstChild(), element.getTextRange(),
                     PlatformIcons.FOLDER_ICON, Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.CENTER);
         }
         return null;

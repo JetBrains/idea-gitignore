@@ -62,7 +62,7 @@ public class CachedConcurrentMap<K, V> {
      */
     @NotNull
     public static <K, V> CachedConcurrentMap<K, V> create(@NotNull DataFetcher<K, V> fetcher) {
-        return new CachedConcurrentMap<K, V>(fetcher);
+        return new CachedConcurrentMap<>(fetcher);
     }
 
     /**

@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  */
 public class MatcherUtil {
     /** Stores calculated matching results. */
-    private final IntObjectCache<Boolean> cache = new IntObjectCache<Boolean>();
+    private final IntObjectCache<Boolean> cache = new IntObjectCache<>();
 
     /**
      * Extracts alphanumeric parts from the regex pattern and checks if any of them is contained in the tested path.

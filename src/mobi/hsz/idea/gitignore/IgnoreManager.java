@@ -127,7 +127,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** List of the new files that were not covered by {@link #confirmedIgnoredFiles} yet. */
     @NotNull
-    private final HashSet<VirtualFile> notConfirmedIgnoredFiles = new HashSet<VirtualFile>();
+    private final HashSet<VirtualFile> notConfirmedIgnoredFiles = new HashSet<>();
 
     /** References to the indexed {@link IgnoreEntryOccurrence}. */
     @NotNull
@@ -140,8 +140,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             CachedConcurrentMap.create(key -> key.getIgnoreLanguage().getOuterFiles(myProject));
 
     @NotNull
-    private final ExpiringMap<VirtualFile, Boolean> expiringStatusCache =
-            new ExpiringMap<VirtualFile, Boolean>(Time.SECOND);
+    private final ExpiringMap<VirtualFile, Boolean> expiringStatusCache = new ExpiringMap<>(Time.SECOND);
 
     /** {@link FileStatusManager#fileStatusesChanged()} method wrapped with {@link Debounced}. */
     private final Debounced debouncedStatusesChanged = new Debounced(1000) {
@@ -648,7 +647,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     public interface RefreshStatusesListener {
         /** Topic to refresh files statuses using {@link MessageBusConnection}. */
         Topic<RefreshStatusesListener> REFRESH_STATUSES =
-                new Topic<RefreshStatusesListener>("Refresh files statuses", RefreshStatusesListener.class);
+                new Topic<>("Refresh files statuses", RefreshStatusesListener.class);
 
         void refresh();
     }

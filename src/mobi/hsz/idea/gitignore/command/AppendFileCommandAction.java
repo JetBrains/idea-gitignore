@@ -159,7 +159,7 @@ public class AppendFileCommandAction extends CommandAction<PsiFile> {
                                 s -> !s.isEmpty() && !s.startsWith(Constants.HASH)
                         );
 
-                        List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
+                        List<String> entryLines = new ArrayList<>(Arrays.asList(entry.split(Constants.NEWLINE)));
                         Iterator<String> iterator = entryLines.iterator();
                         while (iterator.hasNext()) {
                             String line = iterator.next().trim();
@@ -178,7 +178,7 @@ public class AppendFileCommandAction extends CommandAction<PsiFile> {
                     }
 
                     if (ignoreComments) {
-                        List<String> entryLines = new ArrayList<String>(Arrays.asList(entry.split(Constants.NEWLINE)));
+                        List<String> entryLines = new ArrayList<>(Arrays.asList(entry.split(Constants.NEWLINE)));
                         Iterator<String> iterator = entryLines.iterator();
                         while (iterator.hasNext()) {
                             String line = iterator.next().trim();
