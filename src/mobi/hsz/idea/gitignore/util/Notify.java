@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.util;
 
 import com.intellij.notification.*;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindowId;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,8 +40,9 @@ import org.jetbrains.annotations.Nullable;
 public class Notify {
     private static final NotificationGroup NOTIFICATION_GROUP = new NotificationGroup(
             IgnoreBundle.message("notification.group"),
-            NotificationDisplayType.STICKY_BALLOON,
-            true
+            NotificationDisplayType.BALLOON,
+            true,
+            ToolWindowId.PROJECT_VIEW
     );
 
     private static final NotificationGroup NOTIFICATION_GROUP_UPDATE = new NotificationGroup(
