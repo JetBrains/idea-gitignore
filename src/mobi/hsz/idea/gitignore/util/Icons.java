@@ -95,6 +95,9 @@ public class Icons {
     /** Npmignore icon. */
     public static final Icon NPM = IconLoader.getIcon("/icons/icon_npm.png");
 
+    /** NuxtJS icon. */
+    public static final Icon NUXTJS = IconLoader.getIcon("/icons/icon_nuxtjs.png");
+
     /** Perforce icon. */
     public static final Icon PERFORCE = IconLoader.getIcon("/icons/icon_perforce.png");
 

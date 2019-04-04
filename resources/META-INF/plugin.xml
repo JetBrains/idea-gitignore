@@ -426,6 +426,17 @@
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Npm -->
 
+        <!-- NuxtJS -->
+        <lang.parserDefinition language="NuxtJS"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider language="NuxtJS"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="NuxtJS" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="NuxtJS" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="NuxtJS"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END NuxtJS -->
+
         <!-- Perforce -->
         <lang.parserDefinition language="Perforce"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>

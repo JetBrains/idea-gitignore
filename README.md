@@ -130,6 +130,7 @@ Changelog
 **Implemented enhancements:**
 
 - .gcloudignore (Google Cloud) support [\#577](https://github.com/hsz/idea-gitignore/issues/577)
+- .nuxtignore (Nuxt.js) support [\#576](https://github.com/hsz/idea-gitignore/issues/576)
 
 **Fixed bugs:**
 
