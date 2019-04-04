@@ -41,7 +41,8 @@
         .helmignore (Kubernetes Helm),
         .upignore (Up),
         .prettierignore (Prettier),
-        .ebignore (ElasticBeanstalk)
+        .ebignore (ElasticBeanstalk),
+        .gcloudignore (Google Cloud)
       </i>files in your project.
       <br/>
       <br/>
@@ -335,6 +336,17 @@
         <lang.syntaxHighlighterFactory language="Git exclude"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git exclude -->
+
+        <!-- Google Cloud -->
+        <lang.parserDefinition language="Google Cloud"
+                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider language="Google Cloud"
+                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher language="Google Cloud" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter language="Google Cloud" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory language="Google Cloud"
+                                       implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Google Cloud -->
 
         <!-- Jetpack -->
         <lang.parserDefinition language="Jetpack"

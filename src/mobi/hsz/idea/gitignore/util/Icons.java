@@ -65,6 +65,9 @@ public class Icons {
     /** Git icon. */
     public static final Icon GIT = IconLoader.getIcon("/icons/icon_git.png");
 
+    /** Google Cloud icon. */
+    public static final Icon GCLOUD = IconLoader.getIcon("/icons/icon_gcloud.png");
+
     /** Kubernetes Helm icon. */
     public static final Icon HELM = IconLoader.getIcon("/icons/icon_helm.png");
 

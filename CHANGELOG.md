@@ -5,6 +5,10 @@ Change Log
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0)
 
+**Implemented enhancements:**
+
+- .gcloudignore (Google Cloud) support [\#577](https://github.com/hsz/idea-gitignore/issues/577)
+
 **Fixed bugs:**
 
 - Adding 2+ templates without new line in between [\#561](https://github.com/hsz/idea-gitignore/issues/561)
