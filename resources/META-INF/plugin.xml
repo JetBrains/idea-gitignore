@@ -91,6 +91,7 @@
         <ul>
             <li>Adding 2+ templates without new line in between (<a href="https://github.com/hsz/idea-gitignore/issues/561">561</a>)</li>
             <li>Fixed incorrect relative path resolving for ignored files (<a href="https://github.com/hsz/idea-gitignore/issues/566">566</a>)</li>
+            <li>Fixed "is covered by" false-positive behaviour (<a href="https://github.com/hsz/idea-gitignore/issues/565">565</a>, <a href="https://github.com/hsz/idea-gitignore/issues/228">228</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

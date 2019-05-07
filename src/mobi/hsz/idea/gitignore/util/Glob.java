@@ -102,8 +102,12 @@ public class Glob {
                 new VirtualFileVisitor<HashMap<IgnoreEntry, Pattern>>(VirtualFileVisitor.NO_FOLLOW_SYMLINKS) {
                     @Override
                     public boolean visitFile(@NotNull VirtualFile file) {
-                        final HashMap<IgnoreEntry, Pattern> current = ContainerUtil.newHashMap(getCurrentValue());
-                        if (current.isEmpty()) {
+                        if (root.equals(file)) {
+                            return true;
+                        }
+
+                        final HashMap<IgnoreEntry, Pattern> current = ContainerUtil.newHashMap();
+                        if (getCurrentValue().isEmpty()) {
                             return false;
                         }
 
@@ -112,7 +116,7 @@ public class Glob {
                             return false;
                         }
 
-                        for (Map.Entry<IgnoreEntry, Pattern> item : current.entrySet()) {
+                        for (Map.Entry<IgnoreEntry, Pattern> item : getCurrentValue().entrySet()) {
                             final Pattern value = item.getValue();
                             boolean matches = false;
                             if (value == null || matcher.match(value, path)) {
@@ -121,6 +125,8 @@ public class Glob {
                             }
                             if (includeNested && matches) {
                                 current.put(item.getKey(), null);
+                            } else {
+                                current.put(item.getKey(), item.getValue());
                             }
                         }
 
