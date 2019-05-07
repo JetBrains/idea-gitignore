@@ -27,7 +27,6 @@ package mobi.hsz.idea.gitignore.util;
 import mobi.hsz.idea.gitignore.Common;
 import org.junit.Test;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MatcherUtilTest extends Common<MatcherUtil> {
@@ -79,14 +78,11 @@ public class MatcherUtilTest extends Common<MatcherUtil> {
     public void testGetParts() {
         Pattern pattern = Pattern.compile("foo[ba]rbuz.*hi");
 
-        assertEquals(MatcherUtil.getParts((Pattern) null).length, 0);
-        assertEquals(MatcherUtil.getParts((Matcher) null).length, 0);
+        assertEquals(MatcherUtil.getParts(null).length, 0);
 
         assertEquals(MatcherUtil.getParts(pattern).length, 2);
-        assertEquals(MatcherUtil.getParts(pattern.matcher("")).length, 2);
 
         pattern = Pattern.compile("$$_!@[fd]");
         assertEquals(MatcherUtil.getParts(pattern).length, 0);
-        assertEquals(MatcherUtil.getParts(pattern.matcher("")).length, 0);
     }
 }
