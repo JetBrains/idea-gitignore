@@ -111,11 +111,14 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                     return false;
                 }
 
-                final VirtualFile projectRoot = project.getBaseDir();
+                final VirtualFile moduleRoot = Utils.getModuleRootForFile(
+                        entry.getContainingFile().getVirtualFile(),
+                        project
+                );
                 final List<VirtualFile> matched = ContainerUtil.newArrayList();
                 final Collection<VirtualFile> files = cache.getFilesForPattern(project, pattern);
 
-                if (projectRoot == null) {
+                if (moduleRoot == null) {
                     return false;
                 }
 
@@ -125,7 +128,7 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                         if (!Utils.isUnder(file, root)) {
                             continue;
                         }
-                        String path = Utils.getRelativePath(projectRoot, root);
+                        String path = Utils.getRelativePath(moduleRoot, root);
                         if (manager.getMatcher().match(pattern, path)) {
                             matched.add(file);
                             return false;

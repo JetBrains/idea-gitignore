@@ -62,10 +62,10 @@ public abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCell
         }
         TemplateTreeNode node = (TemplateTreeNode) value;
 
-        final Color background = selected ? UIUtil.getTreeSelectionBackground() : UIUtil.getTreeTextBackground();
+        final Color background = selected ? UIUtil.getTreeSelectionBackground(true) : UIUtil.getTreeBackground();
         UIUtil.changeBackGround(this, background);
-        Color foreground = selected ? UIUtil.getTreeSelectionForeground() : node.getTemplate() == null ?
-                PlatformColors.BLUE : UIUtil.getTreeTextForeground();
+        Color foreground = selected ? UIUtil.getTreeSelectionForeground(true) : node.getTemplate() == null ?
+                PlatformColors.BLUE : UIUtil.getTreeForeground();
         int style = SimpleTextAttributes.STYLE_PLAIN;
 
         String text = "", hint = "";
@@ -77,8 +77,10 @@ public abstract class TemplateTreeRenderer extends CheckboxTree.CheckboxTreeCell
         }
 
         SearchUtil.appendFragments(getFilter(), text, style, foreground, background, getTextRenderer());
-        getTextRenderer().append(hint, selected ? new SimpleTextAttributes(Font.PLAIN, foreground) :
-                SimpleTextAttributes.GRAYED_ATTRIBUTES);
+        getTextRenderer().append(hint, selected
+                ? new SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, foreground)
+                : SimpleTextAttributes.GRAYED_ATTRIBUTES
+        );
         setForeground(foreground);
     }
 }

@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.lang.kind;
 
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -49,7 +50,7 @@ public class FossilLanguage extends IgnoreLanguage {
 
                 // Outer file fetched from the .fossil-settings/ignore-glob file.
                 project -> {
-                    final VirtualFile baseDir = project.getBaseDir();
+                    final VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
                     return ContainerUtil.createMaybeSingletonList(baseDir == null ? null : baseDir
                             .findFileByRelativePath(INSTANCE.getVcsDirectory() + "/" + INSTANCE.getFilename()));
                 }

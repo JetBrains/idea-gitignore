@@ -24,7 +24,7 @@
 
 package mobi.hsz.idea.gitignore.outer;
 
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.DumbService;
@@ -51,7 +51,10 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.1
  */
-public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
+public class OuterIgnoreLoaderComponent implements ProjectComponent {
+    /** Current project. */
+    private final Project project;
+
     /** MessageBus instance. */
     private MessageBusConnection messageBus;
 
@@ -68,7 +71,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
 
     /** Constructor. */
     public OuterIgnoreLoaderComponent(@NotNull final Project project) {
-        super(project);
+        this.project = project;
     }
 
     /**
@@ -86,8 +89,8 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
     /** Initializes component. */
     @Override
     public void initComponent() {
-        messageBus = myProject.getMessageBus().connect();
-        messageBus.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new IgnoreEditorManagerListener(myProject));
+        messageBus = project.getMessageBus().connect();
+        messageBus.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new IgnoreEditorManagerListener(project));
     }
 
     @Override
@@ -128,7 +131,7 @@ public class OuterIgnoreLoaderComponent extends AbstractProjectComponent {
 
             DumbService.getInstance(project).runWhenSmart(() -> {
                 final List<VirtualFile> outerFiles =
-                        ContainerUtil.newArrayList(language.getOuterFiles(myProject, false));
+                        ContainerUtil.newArrayList(language.getOuterFiles(project, false));
                 if (outerFiles.isEmpty() || outerFiles.contains(file)) {
                     return;
                 }

@@ -26,6 +26,7 @@ package mobi.hsz.idea.gitignore.daemon;
 
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -62,10 +63,6 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
     @NotNull
     private static final Key<EditorNotificationPanel> KEY = Key.create("AddUnversionedFilesNotificationProvider");
 
-    /** Current project. */
-    @NotNull
-    private final Project project;
-
     /** Notifications component. */
     @NotNull
     private final EditorNotifications notifications;
@@ -84,12 +81,9 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
     /**
      * Builds a new instance of {@link AddUnversionedFilesNotificationProvider}.
      *
-     * @param project       current project
      * @param notifications notifications component
      */
-    public AddUnversionedFilesNotificationProvider(@NotNull Project project,
-                                                   @NotNull EditorNotifications notifications) {
-        this.project = project;
+    public AddUnversionedFilesNotificationProvider(@NotNull EditorNotifications notifications) {
         this.notifications = notifications;
         this.settings = IgnoreSettings.getInstance();
     }
@@ -115,7 +109,8 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
      */
     @Nullable
     @Override
-    public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor) {
+    public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor,
+                                                           @NotNull Project project) {
         // Break if feature is disabled in the Settings
         if (!settings.isAddUnversionedFiles()) {
             return null;
@@ -154,7 +149,11 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
         final IgnoreFileType fileType = GitFileType.INSTANCE;
         panel.setText(IgnoreBundle.message("daemon.addUnversionedFiles"));
         panel.createActionLabel(IgnoreBundle.message("daemon.addUnversionedFiles.create"), () -> {
-            final VirtualFile virtualFile = project.getBaseDir().findChild(GitLanguage.INSTANCE.getFilename());
+            final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+            if (projectDir == null) {
+                return;
+            }
+            final VirtualFile virtualFile = projectDir.findChild(GitLanguage.INSTANCE.getFilename());
             final PsiFile file = virtualFile != null ? PsiManager.getInstance(project).findFile(virtualFile) : null;
             if (file != null) {
                 final String content = StringUtil.join(unignoredFiles, Constants.NEWLINE);

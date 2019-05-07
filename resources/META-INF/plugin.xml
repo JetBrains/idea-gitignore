@@ -78,6 +78,13 @@
         <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.0"><b>v3.1.0</b></a> (unreleased) <br/><br/>
         <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0"><small>Full Changelog</small></a> <br/><br/>
 
+        <i>Implemented enhancements:</i>
+        <ul>
+            <li>.gcloudignore (Google Cloud) support (<a href="https://github.com/hsz/idea-gitignore/issues/577">577</a>)</li>
+            <li>.nuxtignore (Nuxt.js) support (<a href="https://github.com/hsz/idea-gitignore/issues/576">576</a>)</li>
+            <li>Fixed deprecation warnings (<a href="https://github.com/hsz/idea-gitignore/issues/567">567</a>)</li>
+        </ul>
+
         <i>Fixed bugs:</i>
 
         <ul>
@@ -89,7 +96,6 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="139"/>
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true">Git4Idea</depends>
 

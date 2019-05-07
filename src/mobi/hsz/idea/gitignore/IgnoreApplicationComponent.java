@@ -25,7 +25,7 @@
 package mobi.hsz.idea.gitignore;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.BaseComponent;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3
  */
-public class IgnoreApplicationComponent implements ApplicationComponent {
+public class IgnoreApplicationComponent implements BaseComponent {
     /** Plugin has been updated with the current run. */
     private boolean updated;
 

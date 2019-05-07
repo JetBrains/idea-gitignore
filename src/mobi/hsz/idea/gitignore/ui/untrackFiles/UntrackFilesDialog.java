@@ -35,6 +35,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -125,7 +126,7 @@ public class UntrackFilesDialog extends DialogWrapper {
         super(project, false);
         this.project = project;
         this.files = files;
-        this.root = createDirectoryNodes(project.getBaseDir(), null);
+        this.root = createDirectoryNodes(ProjectUtil.guessProjectDir(project), null);
 
         setTitle(IgnoreBundle.message("dialog.untrackFiles.title"));
         setOKButtonText(IgnoreBundle.message("global.ok"));

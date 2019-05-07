@@ -42,6 +42,7 @@ import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog;
 import mobi.hsz.idea.gitignore.util.Properties;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,19 +56,27 @@ import javax.swing.*;
  * @since 0.3.3
  */
 public class MissingGitignoreNotificationProvider extends EditorNotifications.Provider<EditorNotificationPanel> {
-    /** Notification key. */
+    /**
+     * Notification key.
+     */
     @NotNull
     private static final Key<EditorNotificationPanel> KEY = Key.create("MissingGitignoreNotificationProvider");
 
-    /** Current project. */
+    /**
+     * Current project.
+     */
     @NotNull
     private final Project project;
 
-    /** Notifications component. */
+    /**
+     * Notifications component.
+     */
     @NotNull
     private final EditorNotifications notifications;
 
-    /** Plugin settings holder. */
+    /**
+     * Plugin settings holder.
+     */
     @NotNull
     private final IgnoreSettings settings;
 
@@ -103,7 +112,8 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
      */
     @Nullable
     @Override
-    public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor) {
+    public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor,
+                                                           @NotNull Project project) {
         // Break if feature is disabled in the Settings
         if (!settings.isMissingGitignore()) {
             return null;
@@ -118,36 +128,37 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
             return null;
         }
 
-        VirtualFile baseDir = project.getBaseDir();
-        if (baseDir == null) {
+        final VirtualFile moduleRoot = Utils.getModuleRootForFile(file, project);
+        if (moduleRoot == null) {
             return null;
         }
 
-        VirtualFile gitDirectory = baseDir.findChild(vcsDirectory);
+        final VirtualFile gitDirectory = moduleRoot.findChild(vcsDirectory);
         if (gitDirectory == null || !gitDirectory.isDirectory()) {
             return null;
         }
         // Break if there is Gitignore file already
-        VirtualFile gitignoreFile = baseDir.findChild(GitLanguage.INSTANCE.getFilename());
+        final VirtualFile gitignoreFile = moduleRoot.findChild(GitLanguage.INSTANCE.getFilename());
         if (gitignoreFile != null) {
             return null;
         }
 
-        return createPanel(project);
+        return createPanel(project, moduleRoot);
     }
 
     /**
      * Creates notification panel.
      *
-     * @param project current project
+     * @param project    current project
+     * @param moduleRoot module root
      * @return notification panel
      */
-    private EditorNotificationPanel createPanel(@NotNull final Project project) {
+    private EditorNotificationPanel createPanel(@NotNull final Project project, @NotNull VirtualFile moduleRoot) {
         final EditorNotificationPanel panel = new EditorNotificationPanel();
         final IgnoreFileType fileType = GitFileType.INSTANCE;
         panel.setText(IgnoreBundle.message("daemon.missingGitignore"));
         panel.createActionLabel(IgnoreBundle.message("daemon.missingGitignore.create"), () -> {
-            PsiDirectory directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
+            PsiDirectory directory = PsiManager.getInstance(project).findDirectory(moduleRoot);
             if (directory != null) {
                 try {
                     PsiFile file = new CreateFileCommandAction(project, directory, fileType).execute();

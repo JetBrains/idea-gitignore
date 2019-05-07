@@ -124,14 +124,14 @@ public class AppendFileCommandAction extends CommandAction<PsiFile> {
                 file.acceptChildren(new IgnoreVisitor() {
                     @Override
                     public void visitEntry(@NotNull IgnoreEntry entry) {
-                        final VirtualFile baseDir = project.getBaseDir();
-                        if (content.contains(entry.getText()) && baseDir != null) {
+                        final VirtualFile moduleDir = Utils.getModuleRootForFile(file.getVirtualFile(), project);
+                        if (content.contains(entry.getText()) && moduleDir != null) {
                             Notify.show(
                                     project,
                                     IgnoreBundle.message("action.appendFile.entryExists", entry.getText()),
                                     IgnoreBundle.message(
                                             "action.appendFile.entryExists.in",
-                                            Utils.getRelativePath(baseDir, file.getVirtualFile())
+                                            Utils.getRelativePath(moduleDir, file.getVirtualFile())
                                     ),
                                     NotificationType.WARNING
                             );

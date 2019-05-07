@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
@@ -64,7 +65,7 @@ public class GitExcludeLanguage extends IgnoreLanguage {
                     @Override
                     public Collection<VirtualFile> fetch(@NotNull Project project) {
                         final Collection<VirtualFile> files = ContainerUtil.newArrayList();
-                        final VirtualFile baseDir = project.getBaseDir();
+                        final VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
                         if (baseDir == null) {
                             return files;
                         }
@@ -149,6 +150,10 @@ public class GitExcludeLanguage extends IgnoreLanguage {
     @Nullable
     @Override
     public VirtualFile getFixedDirectory(@NotNull Project project) {
-        return project.getBaseDir().findFileByRelativePath(getVcsDirectory() + "/info");
+        final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+        if (projectDir == null) {
+            return null;
+        }
+        return projectDir.findFileByRelativePath(getVcsDirectory() + "/info");
     }
 }

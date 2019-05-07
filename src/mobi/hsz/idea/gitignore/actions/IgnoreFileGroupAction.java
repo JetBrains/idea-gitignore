@@ -112,7 +112,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
         if (project != null && file != null) {
             try {
                 presentation.setVisible(true);
-                baseDir = project.getBaseDir();
+                baseDir = Utils.getModuleRootForFile(file, project);
 
                 for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                     final IgnoreFileType fileType = language.getFileType();
@@ -144,6 +144,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
             actions = new AnAction[0];
         } else {
             actions = new AnAction[count];
+            final Project project = getEventProject(e);
 
             int i = 0;
             for (Map.Entry<IgnoreFileType, List<VirtualFile>> entry : files.entrySet()) {
@@ -151,7 +152,9 @@ public class IgnoreFileGroupAction extends ActionGroup {
                     IgnoreFileAction action = createAction(file);
                     actions[i++] = action;
 
-                    String name = Utils.getRelativePath(baseDir, file);
+                    VirtualFile directory = project == null ? null : Utils.getModuleRootForFile(file, project);
+                    String name = directory == null ? file.getName() : Utils.getRelativePath(directory, file);
+
                     if (StringUtil.isNotEmpty(name)) {
                         name = StringUtil.shortenPathWithEllipsis(name, FILENAME_MAX_LENGTH);
                     }

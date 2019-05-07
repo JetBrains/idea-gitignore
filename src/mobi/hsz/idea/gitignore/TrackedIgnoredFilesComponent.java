@@ -26,7 +26,7 @@ package mobi.hsz.idea.gitignore;
 
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -47,8 +47,10 @@ import java.util.concurrent.ConcurrentMap;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.7
  */
-public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
-        implements IgnoreManager.TrackedIgnoredListener {
+public class TrackedIgnoredFilesComponent implements IgnoreManager.TrackedIgnoredListener, ProjectComponent {
+    /** Current project. */
+    private final Project project;
+
     /** Disable action event. */
     @NonNls
     private static final String DISABLE_ACTION = "#disable";
@@ -68,14 +70,14 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
      * @param project current project
      */
     protected TrackedIgnoredFilesComponent(@NotNull Project project) {
-        super(project);
+        this.project = project;
     }
 
     /** Component initialization method. */
     @Override
     public void initComponent() {
         settings = IgnoreSettings.getInstance();
-        messageBus = myProject.getMessageBus().connect();
+        messageBus = project.getMessageBus().connect();
         messageBus.subscribe(IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED, this);
     }
 
@@ -105,21 +107,21 @@ public class TrackedIgnoredFilesComponent extends AbstractProjectComponent
      */
     @Override
     public void handleFiles(@NotNull final ConcurrentMap<VirtualFile, VcsRoot> files) {
-        if (!settings.isInformTrackedIgnored() || notificationShown || myProject.getBaseDir() == null) {
+        if (!settings.isInformTrackedIgnored() || notificationShown) {
             return;
         }
 
         notificationShown = true;
         Notify.show(
-                myProject,
+                project,
                 IgnoreBundle.message("notification.untrack.title", Utils.getVersion()),
                 IgnoreBundle.message("notification.untrack.content"),
                 NotificationType.INFORMATION,
                 (notification, event) -> {
                     if (DISABLE_ACTION.equals(event.getDescription())) {
                         settings.setInformTrackedIgnored(false);
-                    } else if (!myProject.isDisposed()) {
-                        new UntrackFilesDialog(myProject, files).show();
+                    } else if (!project.isDisposed()) {
+                        new UntrackFilesDialog(project, files).show();
                     }
                     notification.expire();
                 }

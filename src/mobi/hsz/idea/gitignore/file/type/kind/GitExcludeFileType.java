@@ -25,6 +25,7 @@
 package mobi.hsz.idea.gitignore.file.type.kind;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
@@ -49,7 +50,11 @@ public class GitExcludeFileType extends IgnoreFileType {
 
     @Nullable
     public static VirtualFile getWorkingDirectory(@NotNull Project project, @NotNull VirtualFile outerFile) {
-        final VirtualFile baseDir = project.getBaseDir();
+        final VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
+        if (baseDir == null) {
+            return null;
+        }
+
         final VirtualFile infoDir = baseDir.findFileByRelativePath(".git/info");
         if (infoDir != null && Utils.isUnder(outerFile, infoDir)) {
             return baseDir;

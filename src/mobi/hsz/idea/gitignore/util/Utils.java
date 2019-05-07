@@ -41,6 +41,7 @@ import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.text.StringUtil;
@@ -102,8 +103,12 @@ public class Utils {
     @Nullable
     public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType,
                                         @Nullable PsiDirectory directory, boolean createIfMissing) {
+        VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+        if (projectDir == null) {
+            return null;
+        }
         if (directory == null) {
-            directory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
+            directory = PsiManager.getInstance(project).findDirectory(projectDir);
         }
 
         assert directory != null;
@@ -177,18 +182,18 @@ public class Utils {
     public static List<VirtualFile> getSuitableIgnoreFiles(@NotNull Project project, @NotNull IgnoreFileType fileType,
                                                            @NotNull VirtualFile file)
             throws ExternalFileException {
+        VirtualFile baseDir = getModuleRootForFile(file, project);
         List<VirtualFile> files = ContainerUtil.newArrayList();
-        if (file.getCanonicalPath() == null || project.getBaseDir() == null ||
-                !VfsUtilCore.isAncestor(project.getBaseDir(), file, true)) {
+        if (file.getCanonicalPath() == null || baseDir == null ||
+                !VfsUtilCore.isAncestor(baseDir, file, true)) {
             throw new ExternalFileException();
         }
-        VirtualFile baseDir = project.getBaseDir();
-        if (baseDir != null && !baseDir.equals(file)) {
+        if (!baseDir.equals(file)) {
             do {
                 file = file.getParent();
                 VirtualFile ignoreFile = file.findChild(fileType.getIgnoreLanguage().getFilename());
                 ContainerUtil.addIfNotNull(files, ignoreFile);
-            } while (!file.equals(project.getBaseDir()));
+            } while (!file.equals(baseDir));
         }
         return files;
     }
@@ -311,6 +316,33 @@ public class Utils {
     }
 
     /**
+     * Searches for the module in the project that contains given file.
+     *
+     * @param file    file
+     * @param project project
+     * @return module containing passed file or null
+     */
+    @Nullable
+    public static Module getModuleForFile(@NotNull final VirtualFile file, @NotNull final Project project) {
+        return ContainerUtil.find(
+                ModuleManager.getInstance(project).getModules(),
+                module -> module.getModuleContentScope().contains(file)
+        );
+    }
+
+    @Nullable
+    public static VirtualFile getModuleRoot(@NotNull final Module module) {
+        VirtualFile root = ContainerUtil.getFirstItem(ContainerUtil.list(ModuleRootManager.getInstance(module).getContentRoots()));
+        return root != null && root.isDirectory() ? root : null;
+    }
+
+    @Nullable
+    public static VirtualFile getModuleRootForFile(@NotNull final VirtualFile file, @NotNull final Project project) {
+        Module module = getModuleForFile(file, project);
+        return module == null ? null : getModuleRoot(module);
+    }
+
+    /**
      * Checks if file is in project directory.
      *
      * @param file    file
@@ -318,8 +350,7 @@ public class Utils {
      * @return file is under directory
      */
     public static boolean isInProject(@NotNull final VirtualFile file, @NotNull final Project project) {
-        return project.getBaseDir() != null && (isUnder(file, project.getBaseDir()) ||
-                StringUtil.startsWith(file.getUrl(), "temp://"));
+        return getModuleForFile(file, project) != null || StringUtil.startsWith(file.getUrl(), "temp://");
     }
 
     /**

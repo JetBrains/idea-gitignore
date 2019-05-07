@@ -231,7 +231,10 @@ public class IgnoreReferenceSet extends FileReferenceSet {
             VirtualFile contextVirtualFile;
             boolean isOuterFile = isOuterFile((IgnoreFile) containingFile);
             if (isOuterFile) {
-                contextVirtualFile = getElement().getProject().getBaseDir();
+                contextVirtualFile = Utils.getModuleRootForFile(
+                        containingFile.getVirtualFile(),
+                        containingFile.getProject()
+                );
                 result.clear();
             } else if (Utils.isInProject(containingFile.getVirtualFile(), getElement().getProject())) {
                 contextVirtualFile = context.getVirtualFile();

@@ -24,7 +24,7 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import mobi.hsz.idea.gitignore.util.Notify;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +35,10 @@ import org.jetbrains.annotations.NotNull;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3
  */
-public class IgnoreUpdateComponent extends AbstractProjectComponent {
+public class IgnoreUpdateComponent implements ProjectComponent {
+    /** Current project. */
+    private final Project project;
+
     /** {@link IgnoreApplicationComponent} instance. */
     private IgnoreApplicationComponent application;
 
@@ -45,7 +48,7 @@ public class IgnoreUpdateComponent extends AbstractProjectComponent {
      * @param project current project
      */
     protected IgnoreUpdateComponent(@NotNull Project project) {
-        super(project);
+        this.project = project;
     }
 
     /** Component initialization method. */
@@ -76,7 +79,7 @@ public class IgnoreUpdateComponent extends AbstractProjectComponent {
     public void projectOpened() {
         if (application.isUpdated() && !application.isRC() && !application.isUpdateNotificationShown()) {
             application.setUpdateNotificationShown(true);
-            Notify.showUpdate(myProject);
+            Notify.showUpdate(project);
         }
     }
 }

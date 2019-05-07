@@ -24,7 +24,7 @@
 
 package mobi.hsz.idea.gitignore;
 
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.FileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
@@ -51,7 +51,10 @@ import java.util.regex.Pattern;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.3.1
  */
-public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
+public class FilesIndexCacheProjectComponent implements ProjectComponent {
+    /** Current project. */
+    private final Project project;
+
     /** Concurrent cache map. */
     @NotNull
     private final ConcurrentMap<String, Collection<VirtualFile>> cacheMap;
@@ -125,10 +128,10 @@ public class FilesIndexCacheProjectComponent extends AbstractProjectComponent {
      * @param project current project
      */
     protected FilesIndexCacheProjectComponent(@NotNull final Project project) {
-        super(project);
-        cacheMap = ContainerUtil.newConcurrentMap();
-        virtualFileManager = VirtualFileManager.getInstance();
-        projectFileIndex = ProjectRootManager.getInstance(project).getFileIndex();
+        this.project = project;
+        this.cacheMap = ContainerUtil.newConcurrentMap();
+        this.virtualFileManager = VirtualFileManager.getInstance();
+        this.projectFileIndex = ProjectRootManager.getInstance(project).getFileIndex();
     }
 
     /** Registers {@link #virtualFileListener} when project is opened. */

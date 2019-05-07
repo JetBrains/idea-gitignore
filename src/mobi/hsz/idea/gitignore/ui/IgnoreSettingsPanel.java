@@ -91,7 +91,7 @@ public class IgnoreSettingsPanel implements Disposable {
     /** The parent panel for the form. */
     public JPanel panel;
 
-    /** Form element for {@link IgnoreSettings#missingGitignore}. */
+    /** Form element for IgnoreSettings#missingGitignore. */
     private JCheckBox missingGitignore;
 
     /** Templates list panel. */
@@ -428,8 +428,7 @@ public class IgnoreSettingsPanel implements Disposable {
                     final VirtualFile file = FileChooser.chooseFile(descriptor, templatesListPanel, null, null);
                     if (file != null) {
                         try {
-                            final org.jdom.Document document = JDOMUtil.loadDocument(file.getInputStream());
-                            Element element = document.getRootElement();
+                            final Element element = JDOMUtil.load(file.getInputStream());
                             List<IgnoreSettings.UserTemplate> templates = IgnoreSettings.loadTemplates(element);
                             for (IgnoreSettings.UserTemplate template : templates) {
                                 myListModel.addElement(template);

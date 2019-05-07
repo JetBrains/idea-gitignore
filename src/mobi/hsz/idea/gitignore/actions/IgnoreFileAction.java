@@ -55,10 +55,14 @@ import static mobi.hsz.idea.gitignore.IgnoreBundle.BUNDLE_NAME;
  */
 @SuppressWarnings("ComponentNotRegistered")
 public class IgnoreFileAction extends DumbAwareAction {
-    /** Ignore {@link VirtualFile} that will be used for current action. */
+    /**
+     * Ignore {@link VirtualFile} that will be used for current action.
+     */
     private final VirtualFile ignoreFile;
 
-    /** Current ignore file type. */
+    /**
+     * Current ignore file type.
+     */
     private final IgnoreFileType fileType;
 
     /**
@@ -139,7 +143,7 @@ public class IgnoreFileAction extends DumbAwareAction {
             for (VirtualFile file : files) {
                 final String path = getPath(ignore.getVirtualFile().getParent(), file);
                 if (path.isEmpty()) {
-                    final VirtualFile baseDir = project.getBaseDir();
+                    final VirtualFile baseDir = Utils.getModuleRootForFile(file, project);
                     if (baseDir != null) {
                         Notify.show(
                                 project,
@@ -177,7 +181,7 @@ public class IgnoreFileAction extends DumbAwareAction {
         final VirtualFile[] files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
         final Project project = e.getProject();
 
-        if (project == null || files == null || (files.length == 1 && files[0].equals(project.getBaseDir()))) {
+        if (project == null || files == null) {
             e.getPresentation().setVisible(false);
         }
     }

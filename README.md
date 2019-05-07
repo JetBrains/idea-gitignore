@@ -131,6 +131,7 @@ Changelog
 
 - .gcloudignore (Google Cloud) support [\#577](https://github.com/hsz/idea-gitignore/issues/577)
 - .nuxtignore (Nuxt.js) support [\#576](https://github.com/hsz/idea-gitignore/issues/576)
+- Fixed deprecation warnings [\#567](https://github.com/hsz/idea-gitignore/issues/567)
 
 **Fixed bugs:**
 

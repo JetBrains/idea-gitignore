@@ -30,7 +30,7 @@ import com.intellij.ide.projectView.impl.AbstractProjectViewPane;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileType;
@@ -82,7 +82,10 @@ import static mobi.hsz.idea.gitignore.settings.IgnoreSettings.KEY;
  * @author Jakub Chrzanowski <jakub@hsz.mobi>
  * @since 1.0
  */
-public class IgnoreManager extends AbstractProjectComponent implements DumbAware {
+public class IgnoreManager implements DumbAware, ProjectComponent {
+    /** Current project. */
+    private final Project project;
+
     /** List of all available {@link IgnoreFileType}. */
     private static final List<IgnoreFileType> FILE_TYPES =
             ContainerUtil.map(IgnoreBundle.LANGUAGES, IgnoreLanguage::getFileType);
@@ -132,13 +135,11 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** References to the indexed {@link IgnoreEntryOccurrence}. */
     @NotNull
-    private final CachedConcurrentMap<IgnoreFileType, Collection<IgnoreEntryOccurrence>> cachedIgnoreFilesIndex =
-            CachedConcurrentMap.create(key -> IgnoreFilesIndex.getEntries(myProject, key));
+    private final CachedConcurrentMap<IgnoreFileType, Collection<IgnoreEntryOccurrence>> cachedIgnoreFilesIndex;
 
     /** References to the indexed outer files. */
     @NotNull
-    private final CachedConcurrentMap<IgnoreFileType, Collection<VirtualFile>> cachedOuterFiles =
-            CachedConcurrentMap.create(key -> key.getIgnoreLanguage().getOuterFiles(myProject));
+    private final CachedConcurrentMap<IgnoreFileType, Collection<VirtualFile>> cachedOuterFiles;
 
     @NotNull
     private final ExpiringMap<VirtualFile, Boolean> expiringStatusCache = new ExpiringMap<>(Time.SECOND);
@@ -264,7 +265,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                     break;
 
                 case HIDE_IGNORED_FILES:
-                    ProjectView.getInstance(myProject).refresh();
+                    ProjectView.getInstance(project).refresh();
                     break;
 
             }
@@ -288,7 +289,9 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      * @param project current project
      */
     public IgnoreManager(@NotNull final Project project) {
-        super(project);
+        this.project = project;
+        this.cachedIgnoreFilesIndex = CachedConcurrentMap.create(key -> IgnoreFilesIndex.getEntries(project, key));
+        this.cachedOuterFiles = CachedConcurrentMap.create(key -> key.getIgnoreLanguage().getOuterFiles(project));
         this.matcher = new MatcherUtil();
         this.virtualFileManager = VirtualFileManager.getInstance();
         this.settings = IgnoreSettings.getInstance();
@@ -319,12 +322,11 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
      */
     public boolean isFileIgnored(@NotNull final VirtualFile file) {
         final Boolean cached = expiringStatusCache.get(file);
-        final VirtualFile baseDir = myProject.getBaseDir();
         if (cached != null) {
             return cached;
         }
-        if (ApplicationManager.getApplication().isDisposed() || myProject.isDisposed() ||
-                DumbService.isDumb(myProject) || !isEnabled() || baseDir == null || !Utils.isUnder(file, baseDir) ||
+        if (ApplicationManager.getApplication().isDisposed() || project.isDisposed() ||
+                DumbService.isDumb(project) || !isEnabled() || !Utils.isInProject(file, project) ||
                 NoAccessDuringPsiEvents.isInsideEventProcessing()) {
             return false;
         }
@@ -349,7 +351,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                 if (entryFile == null) {
                     continue;
                 } else if (fileType instanceof GitExcludeFileType) {
-                    VirtualFile workingDirectory = GitExcludeFileType.getWorkingDirectory(myProject, entryFile);
+                    VirtualFile workingDirectory = GitExcludeFileType.getWorkingDirectory(project, entryFile);
                     if (workingDirectory == null || !Utils.isUnder(file, workingDirectory)) {
                         continue;
                     }
@@ -362,10 +364,10 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
                         }
                     }
 
-                    final String parentPath = !Utils.isInProject(entryFile, myProject) &&
-                            myProject.getBasePath() != null ? myProject.getBasePath() : entryFile.getParent().getPath();
+                    final String parentPath = !Utils.isInProject(entryFile, project) &&
+                            project.getBasePath() != null ? project.getBasePath() : entryFile.getParent().getPath();
                     if (!StringUtil.startsWith(file.getPath(), parentPath) &&
-                            !ExternalIndexableSetContributor.getAdditionalFiles(myProject).contains(entryFile)) {
+                            !ExternalIndexableSetContributor.getAdditionalFiles(project).contains(entryFile)) {
                         continue;
                     }
                     relativePath = StringUtil.trimStart(file.getPath(), parentPath);
@@ -392,7 +394,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
         if (valuesCount > 0 && !ignored && !matched) {
             final VirtualFile directory = file.getParent();
-            if (directory != null && !directory.equals(baseDir)) {
+            if (directory != null) {
                 for (VcsRoot vcsRoot : vcsRoots) {
                     ProgressManager.checkCanceled();
                     if (directory.equals(vcsRoot.getPath())) {
@@ -498,12 +500,12 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
         virtualFileManager.addVirtualFileListener(virtualFileListener);
         settings.addListener(settingsListener);
 
-        messageBus = myProject.getMessageBus().connect();
+        messageBus = project.getMessageBus().connect();
 
         messageBus.subscribe(TRACKED_IGNORED_REFRESH, () -> debouncedRefreshTrackedIgnores.run(true));
 
         messageBus.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, () -> {
-            ExternalIndexableSetContributor.invalidateCache(myProject);
+            ExternalIndexableSetContributor.invalidateCache(project);
             vcsRoots.clear();
             vcsRoots.addAll(ContainerUtil.newArrayList(projectLevelVcsManager.getAllVcsRoots()));
         });
@@ -528,7 +530,7 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
 
     /** Disable manager. */
     private void disable() {
-        ExternalIndexableSetContributor.invalidateCache(myProject);
+        ExternalIndexableSetContributor.invalidateCache(project);
         virtualFileManager.removeVirtualFileListener(virtualFileListener);
         settings.removeListener(settingsListener);
 
@@ -543,7 +545,6 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
     /** Dispose and disable component. */
     @Override
     public void disposeComponent() {
-        super.disposeComponent();
         disable();
     }
 
@@ -609,14 +610,14 @@ public class IgnoreManager extends AbstractProjectComponent implements DumbAware
             }
 
             if (!silent && !result.isEmpty()) {
-                myProject.getMessageBus().syncPublisher(TRACKED_IGNORED).handleFiles(result);
+                project.getMessageBus().syncPublisher(TRACKED_IGNORED).handleFiles(result);
             }
             confirmedIgnoredFiles.clear();
             confirmedIgnoredFiles.putAll(result);
             notConfirmedIgnoredFiles.clear();
             debouncedStatusesChanged.run();
 
-            for (AbstractProjectViewPane pane : Extensions.getExtensions(AbstractProjectViewPane.EP_NAME, myProject)) {
+            for (AbstractProjectViewPane pane : AbstractProjectViewPane.EP_NAME.getExtensions()) {
                 if (pane.getTreeBuilder() != null) {
                     pane.getTreeBuilder().queueUpdate();
                 }
