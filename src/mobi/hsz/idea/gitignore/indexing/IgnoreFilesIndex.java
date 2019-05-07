@@ -195,18 +195,6 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     }
 
     /**
-     * Returns collection of indexed {@link IgnoreFileTypeKey} for given {@link Project}.
-     *
-     * @param project current project
-     * @return {@link IgnoreFileTypeKey} collection
-     */
-    @NotNull
-    public static Collection<IgnoreFileType> getKeys(@NotNull Project project) {
-        Collection<IgnoreFileTypeKey> keys = FileBasedIndex.getInstance().getAllKeys(KEY, project);
-        return ContainerUtil.map(keys, IgnoreFileTypeKey::getType);
-    }
-
-    /**
      * Returns collection of indexed {@link IgnoreEntryOccurrence} for given {@link Project} and {@link IgnoreFileType}.
      *
      * @param project  current project

@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -121,20 +120,6 @@ public class MatcherUtil {
         }
 
         return false;
-    }
-
-    /**
-     * Extracts alphanumeric parts from {@link Matcher} pattern.
-     *
-     * @param matcher to handle
-     * @return extracted parts
-     */
-    @NotNull
-    public static String[] getParts(@Nullable Matcher matcher) {
-        if (matcher == null) {
-            return new String[0];
-        }
-        return getParts(matcher.pattern());
     }
 
     /**

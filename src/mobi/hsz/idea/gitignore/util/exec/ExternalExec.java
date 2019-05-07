@@ -80,10 +80,6 @@ public class ExternalExec {
     @NonNls
     private static final String GIT_IGNORED_FILES = "ls-files -i --exclude-standard";
 
-    /** Git command to remove file from tracking. */
-    @NonNls
-    private static final String GIT_REMOVE_FILE_FROM_TRACKING = "rm --cached --force";
-
     /**
      * Returns {@link VirtualFile} instance of the Git excludes file if available.
      *
@@ -136,20 +132,6 @@ public class ExternalExec {
     }
 
     /**
-     * Removes given files from the git tracking.
-     *
-     * @param file    to untrack
-     * @param vcsRoot file's repository
-     */
-    public static void removeFileFromTracking(@NotNull VirtualFile file, @NotNull VcsRoot vcsRoot) {
-        final VirtualFile root = vcsRoot.getPath();
-        if (root != null) {
-            final String command = GIT_REMOVE_FILE_FROM_TRACKING + " " + Utils.getRelativePath(root, file);
-            run(GitLanguage.INSTANCE, command, root);
-        }
-    }
-
-    /**
      * Returns path to the {@link IgnoreLanguage} binary or null if not available.
      * Currently only  {@link GitLanguage} is supported.
      *
@@ -179,19 +161,6 @@ public class ExternalExec {
     private static <T> T runForSingle(@NotNull IgnoreLanguage language, @NotNull String command,
                                       @Nullable VirtualFile directory, @NotNull final ExecutionOutputParser<T> parser) {
         return ContainerUtil.getFirstItem(run(language, command, directory, parser));
-    }
-
-    /**
-     * Runs {@link IgnoreLanguage} executable with the given command and current working directory.
-     *
-     * @param language  current language
-     * @param command   to call
-     * @param directory current working directory
-     */
-    private static void run(@NotNull IgnoreLanguage language,
-                            @NotNull String command,
-                            @Nullable VirtualFile directory) {
-        run(language, command, directory, null);
     }
 
     /**

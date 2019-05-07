@@ -132,6 +132,7 @@ Changelog
 - .gcloudignore (Google Cloud) support [\#577](https://github.com/hsz/idea-gitignore/issues/577)
 - .nuxtignore (Nuxt.js) support [\#576](https://github.com/hsz/idea-gitignore/issues/576)
 - Fixed deprecation warnings [\#567](https://github.com/hsz/idea-gitignore/issues/567)
+- Removed "tracked & ignored" feature [\#547](https://github.com/hsz/idea-gitignore/issues/547) [\#523](https://github.com/hsz/idea-gitignore/issues/523) [\#528](https://github.com/hsz/idea-gitignore/issues/528) [\#486](https://github.com/hsz/idea-gitignore/issues/486)
 
 **Fixed bugs:**
 

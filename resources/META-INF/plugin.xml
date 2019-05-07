@@ -83,6 +83,7 @@
             <li>.gcloudignore (Google Cloud) support (<a href="https://github.com/hsz/idea-gitignore/issues/577">577</a>)</li>
             <li>.nuxtignore (Nuxt.js) support (<a href="https://github.com/hsz/idea-gitignore/issues/576">576</a>)</li>
             <li>Fixed deprecation warnings (<a href="https://github.com/hsz/idea-gitignore/issues/567">567</a>)</li>
+            <li>Removed "tracked & ignored" feature (<a href="https://github.com/hsz/idea-gitignore/issues/547">547</a>, <a href="https://github.com/hsz/idea-gitignore/issues/523">523</a>, <a href="https://github.com/hsz/idea-gitignore/issues/528">528</a>, <a href="https://github.com/hsz/idea-gitignore/issues/486">486</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
@@ -548,10 +549,6 @@
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreUpdateComponent</implementation-class>
         </component>
         <component>
-            <implementation-class>mobi.hsz.idea.gitignore.TrackedIgnoredFilesComponent</implementation-class>
-            <loadForDefaultProject/>
-        </component>
-        <component>
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreFileBasedIndexProjectHandler</implementation-class>
         </component>
     </project-components>
@@ -588,10 +585,6 @@
         </action>
 
         <action id="HideIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HideIgnoredFilesAction">
-            <add-to-group group-id="ProjectViewPopupMenu"/>
-        </action>
-
-        <action id="HandleTrackedIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HandleTrackedIgnoredFilesAction">
             <add-to-group group-id="ProjectViewPopupMenu"/>
         </action>
     </actions>

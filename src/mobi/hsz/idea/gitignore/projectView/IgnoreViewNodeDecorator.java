@@ -85,7 +85,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
             return;
         }
 
-        if (ignoreSettings.isInformTrackedIgnored() && manager.isFileTracked(file) && manager.isFileIgnored(file)) {
+        if (manager.isFileTracked(file) && manager.isFileIgnored(file)) {
             Utils.addColoredText(
                     data,
                     IgnoreBundle.message("projectView.tracked"),

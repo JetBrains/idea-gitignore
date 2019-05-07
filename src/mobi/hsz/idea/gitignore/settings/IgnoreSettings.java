@@ -60,8 +60,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight"),
         INSERT_AT_CURSOR("insertAtCursor"), ADD_UNVERSIONED_FILES("addUnversionedFiles"), VERSION("version"),
         STARRED_TEMPLATES("starredTemplates"), UNIGNORE_ACTIONS("unignoreActions"),
-        HIDE_IGNORED_FILES("hideIgnoredFiles"), INFORM_TRACKED_IGNORED("informTrackedIgnored"),
-        NOTIFY_IGNORED_EDITING("notifyIgnoredEditing");
+        HIDE_IGNORED_FILES("hideIgnoredFiles"), NOTIFY_IGNORED_EDITING("notifyIgnoredEditing");
 
         private final String key;
 
@@ -108,9 +107,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
     /** Hide ignored files or folder in the project tree view. */
     private boolean hideIgnoredFiles = false;
-
-    /** Inform user about the tracked and ignored files in the project. */
-    private boolean informTrackedIgnored = true;
 
     /** Shows notification about editing ignored file. */
     private boolean notifyIgnoredEditing = true;
@@ -163,7 +159,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         element.setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, Constants.DOLLAR));
         element.setAttribute(KEY.UNIGNORE_ACTIONS.toString(), Boolean.toString(unignoreActions));
         element.setAttribute(KEY.HIDE_IGNORED_FILES.toString(), Boolean.toString(hideIgnoredFiles));
-        element.setAttribute(KEY.INFORM_TRACKED_IGNORED.toString(), Boolean.toString(informTrackedIgnored));
         element.setAttribute(KEY.NOTIFY_IGNORED_EDITING.toString(), Boolean.toString(notifyIgnoredEditing));
 
         Element languagesElement = new Element(KEY.LANGUAGES.toString());
@@ -242,11 +237,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         value = element.getAttributeValue(KEY.HIDE_IGNORED_FILES.toString());
         if (value != null) {
             hideIgnoredFiles = Boolean.parseBoolean(value);
-        }
-
-        value = element.getAttributeValue(KEY.INFORM_TRACKED_IGNORED.toString());
-        if (value != null) {
-            informTrackedIgnored = Boolean.parseBoolean(value);
         }
 
         value = element.getAttributeValue(KEY.NOTIFY_IGNORED_EDITING.toString());
@@ -416,25 +406,6 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     public void setHideIgnoredFiles(boolean hideIgnoredFiles) {
         this.notifyOnChange(KEY.HIDE_IGNORED_FILES, this.hideIgnoredFiles, hideIgnoredFiles);
         this.hideIgnoredFiles = hideIgnoredFiles;
-    }
-
-    /**
-     * Inform user about the tracked and ignored files in the project.
-     *
-     * @return true if the files should be ignored and false if they should be showed
-     */
-    public boolean isInformTrackedIgnored() {
-        return informTrackedIgnored;
-    }
-
-    /**
-     * Sets notification about editing ignored file status to enabled or disabled.
-     *
-     * @param informTrackedIgnored show or hide notification
-     */
-    public void setInformTrackedIgnored(boolean informTrackedIgnored) {
-        this.notifyOnChange(KEY.INFORM_TRACKED_IGNORED, this.informTrackedIgnored, informTrackedIgnored);
-        this.informTrackedIgnored = informTrackedIgnored;
     }
 
     /**

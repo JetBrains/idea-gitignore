@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore.settings;
 
 import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Comparing;
@@ -107,14 +106,13 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
                 || !Comparing.equal(settings.isInsertAtCursor(), settingsPanel.isInsertAtCursor())
                 || !Comparing.equal(settings.isAddUnversionedFiles(), settingsPanel.isAddUnversionedFiles())
                 || !Comparing.equal(settings.isUnignoreActions(), settingsPanel.isUnignoreActions())
-                || !Comparing.equal(settings.isInformTrackedIgnored(), settingsPanel.isInformTrackedIgnored())
                 || !Comparing.equal(settings.isNotifyIgnoredEditing(), settingsPanel.isNotifyIgnoredEditing())
                 || !settingsPanel.getLanguagesSettings().equalSettings(settings.getLanguagesSettings());
     }
 
     /** Store the settings from configurable to other components. */
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         if (settingsPanel == null) {
             return;
         }
@@ -126,7 +124,6 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         settings.setAddUnversionedFiles(settingsPanel.isAddUnversionedFiles());
         settings.setLanguagesSettings(settingsPanel.getLanguagesSettings().getSettings());
         settings.setUnignoreActions(settingsPanel.isUnignoreActions());
-        settings.setInformTrackedIgnored(settingsPanel.isInformTrackedIgnored());
         settings.setNotifyIgnoredEditing(settingsPanel.isNotifyIgnoredEditing());
     }
 
@@ -143,7 +140,6 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         settingsPanel.setInsertAtCursor(settings.isInsertAtCursor());
         settingsPanel.setAddUnversionedFiles(settings.isAddUnversionedFiles());
         settingsPanel.setUnignoreActions(settings.isUnignoreActions());
-        settingsPanel.setInformTrackedIgnored(settings.isInformTrackedIgnored());
         settingsPanel.setNotifyIgnoredEditing(settings.isNotifyIgnoredEditing());
 
         IgnoreSettingsPanel.LanguagesTableModel model = settingsPanel.getLanguagesSettings();

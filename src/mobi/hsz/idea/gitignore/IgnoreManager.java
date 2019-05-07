@@ -452,8 +452,8 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
      * @return file is ignored and tracked
      */
     public boolean isFileTracked(@NotNull final VirtualFile file) {
-        return settings.isInformTrackedIgnored() && !notConfirmedIgnoredFiles.contains(file) &&
-                !confirmedIgnoredFiles.isEmpty() && confirmedIgnoredFiles.containsKey(file);
+        return !notConfirmedIgnoredFiles.contains(file) && !confirmedIgnoredFiles.isEmpty() &&
+                confirmedIgnoredFiles.containsKey(file);
     }
 
     /**
@@ -560,16 +560,6 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
         }
     }
 
-    /**
-     * Returns tracked and ignored files stored in {@link #confirmedIgnoredFiles}.
-     *
-     * @return tracked and ignored files map
-     */
-    @NotNull
-    public ConcurrentMap<VirtualFile, VcsRoot> getConfirmedIgnoredFiles() {
-        return confirmedIgnoredFiles;
-    }
-
     /** {@link Runnable} implementation to rebuild {@link #confirmedIgnoredFiles}. */
     class RefreshTrackedIgnoredRunnable implements Runnable, IgnoreManager.RefreshTrackedIgnoredListener {
         /** Default {@link Runnable} run method that invokes rebuilding with bus event propagating. */
@@ -590,10 +580,6 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
          * @param silent propagate {@link IgnoreManager.TrackedIgnoredListener#TRACKED_IGNORED} event
          */
         public void run(boolean silent) {
-            if (!settings.isInformTrackedIgnored()) {
-                return;
-            }
-
             final ConcurrentMap<VirtualFile, VcsRoot> result = ContainerUtil.newConcurrentMap();
             for (VcsRoot vcsRoot : vcsRoots) {
                 if (!(vcsRoot.getVcs() instanceof GitVcs) || vcsRoot.getPath() == null) {
