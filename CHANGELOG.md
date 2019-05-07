@@ -1,7 +1,7 @@
 Change Log
 ----------
 
-### [v3.1.0](https://github.com/hsz/idea-gitignore/tree/v3.1.0) (unreleased)
+### [v3.1.0](https://github.com/hsz/idea-gitignore/tree/v3.1.0) (2019-05-08)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0)
 

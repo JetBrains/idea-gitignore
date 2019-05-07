@@ -1,4 +1,4 @@
-.ignore 3.0.0
+.ignore 3.1.0
 =============
 
 [![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
@@ -123,7 +123,7 @@ Usage
 Changelog
 ---------
 
-### [v3.1.0](https://github.com/hsz/idea-gitignore/tree/v3.1.0) (unreleased)
+### [v3.1.0](https://github.com/hsz/idea-gitignore/tree/v3.1.0) (2019-05-08)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0)
 
