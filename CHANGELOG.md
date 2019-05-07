@@ -15,6 +15,7 @@ Change Log
 **Fixed bugs:**
 
 - Adding 2+ templates without new line in between [\#561](https://github.com/hsz/idea-gitignore/issues/561)
+- Fixed incorrect relative path resolving for ignored files [\#566](https://github.com/hsz/idea-gitignore/issues/566)
 
 
 ### [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)
