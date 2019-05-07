@@ -332,7 +332,8 @@ public class Utils {
 
     @Nullable
     public static VirtualFile getModuleRoot(@NotNull final Module module) {
-        VirtualFile root = ContainerUtil.getFirstItem(ContainerUtil.list(ModuleRootManager.getInstance(module).getContentRoots()));
+        final VirtualFile[] roots = ModuleRootManager.getInstance(module).getContentRoots();
+        final VirtualFile root = ContainerUtil.getFirstItem(ContainerUtil.list(roots));
         return root != null && root.isDirectory() ? root : null;
     }
 
