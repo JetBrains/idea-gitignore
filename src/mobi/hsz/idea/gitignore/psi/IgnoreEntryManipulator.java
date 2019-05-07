@@ -63,8 +63,7 @@ public class IgnoreEntryManipulator extends AbstractElementManipulator<IgnoreEnt
         PsiFile file = PsiFileFactory.getInstance(entry.getProject())
                 .createFileFromText(language.getFilename(), fileType, range.replace(entry.getText(), newContent));
         IgnoreEntry newEntry = PsiTreeUtil.findChildOfType(file, IgnoreEntry.class);
-        assert newEntry != null;
-        return (IgnoreEntry) entry.replace(newEntry);
+        return newEntry != null ? (IgnoreEntry) entry.replace(newEntry) : entry;
     }
 
     /**
