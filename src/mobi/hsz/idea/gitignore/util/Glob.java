@@ -387,7 +387,7 @@ public class Glob {
 
         if (star || doubleStar) {
             if (StringUtil.endsWithChar(sb, '/')) {
-                sb.append(acceptChildren ? ".+" : "[^/]+/?");
+                sb.append(".+");
             } else {
                 sb.append("[^/]*/?");
             }
