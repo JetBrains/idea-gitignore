@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore.lang.kind;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
@@ -35,6 +34,7 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.util.Icons;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +65,7 @@ public class GitExcludeLanguage extends IgnoreLanguage {
                     @Override
                     public Collection<VirtualFile> fetch(@NotNull Project project) {
                         final Collection<VirtualFile> files = ContainerUtil.newArrayList();
-                        final VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
+                        final VirtualFile baseDir = Utils.guessProjectDir(project);
                         if (baseDir == null) {
                             return files;
                         }
@@ -150,7 +150,7 @@ public class GitExcludeLanguage extends IgnoreLanguage {
     @Nullable
     @Override
     public VirtualFile getFixedDirectory(@NotNull Project project) {
-        final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+        final VirtualFile projectDir = Utils.guessProjectDir(project);
         if (projectDir == null) {
             return null;
         }

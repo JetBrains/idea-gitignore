@@ -103,7 +103,7 @@ public class Utils {
     @Nullable
     public static PsiFile getIgnoreFile(@NotNull Project project, @NotNull IgnoreFileType fileType,
                                         @Nullable PsiDirectory directory, boolean createIfMissing) {
-        VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+        VirtualFile projectDir = Utils.guessProjectDir(project);
         if (projectDir == null) {
             return null;
         }
@@ -431,5 +431,22 @@ public class Utils {
             data.addText(data.getPresentableText(), REGULAR_ATTRIBUTES);
         }
         data.addText(" " + text, attributes);
+    }
+
+    /**
+     * Wraps {@link ProjectUtil#guessProjectDir} and returns null for the default project.
+     *
+     * @param project to check
+     * @return project's dir or null if project is default
+     */
+    public static VirtualFile guessProjectDir(@Nullable Project project) {
+        if (project == null) {
+            return null;
+        }
+        try {
+            return ProjectUtil.guessProjectDir(project);
+        } catch (IllegalStateException e) {
+            return null;
+        }
     }
 }

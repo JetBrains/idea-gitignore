@@ -360,7 +360,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
                         }
                     }
 
-                    final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+                    final VirtualFile projectDir = Utils.guessProjectDir(project);
                     final VirtualFile parent = !Utils.isInProject(entryFile, project) && projectDir != null
                             ? projectDir : entryFile.getParent();
                     if (!StringUtil.startsWith(file.getPath(), parent.getPath()) &&

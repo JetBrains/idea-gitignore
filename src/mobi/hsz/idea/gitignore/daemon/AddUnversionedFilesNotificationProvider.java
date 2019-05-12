@@ -26,7 +26,6 @@ package mobi.hsz.idea.gitignore.daemon;
 
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -44,6 +43,7 @@ import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.Properties;
+import mobi.hsz.idea.gitignore.util.Utils;
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -149,7 +149,7 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
         final IgnoreFileType fileType = GitFileType.INSTANCE;
         panel.setText(IgnoreBundle.message("daemon.addUnversionedFiles"));
         panel.createActionLabel(IgnoreBundle.message("daemon.addUnversionedFiles.create"), () -> {
-            final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+            final VirtualFile projectDir = Utils.guessProjectDir(project);
             if (projectDir == null) {
                 return;
             }
