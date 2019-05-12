@@ -94,6 +94,8 @@
             <li>Fixed "is covered by" false-positive behaviour (<a href="https://github.com/hsz/idea-gitignore/issues/565">565</a>, <a href="https://github.com/hsz/idea-gitignore/issues/228">228</a>)</li>
             <li>Fixed incorrect double star pattern behaviour (<a href="https://github.com/hsz/idea-gitignore/issues/579">579</a>)</li>
             <li>Fix for IllegalStateException when ProjectUtil.guessProjectDir called on default project</li>
+            <li>Update downgrades on 2018.2+ (<a href="https://github.com/hsz/idea-gitignore/issues/572">572</a>)</li>
+            <li>Group with id "GenerateGroup" isn't registered (<a href="https://github.com/hsz/idea-gitignore/issues/573">573</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

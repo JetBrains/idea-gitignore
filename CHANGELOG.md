@@ -19,6 +19,8 @@ Change Log
 - Fixed "is covered by" false-positive behaviour [\#565](https://github.com/hsz/idea-gitignore/issues/565) [\#228](https://github.com/hsz/idea-gitignore/issues/228)
 - Fix for IllegalStateException when ProjectUtil.guessProjectDir called on default project
 - Fixed incorrect double star pattern behaviour [\#579](https://github.com/hsz/idea-gitignore/issues/579)
+- Update downgrades on 2018.2+ [\#572](https://github.com/hsz/idea-gitignore/issues/572)
+- Group with id "GenerateGroup" isn't registered [\#573](https://github.com/hsz/idea-gitignore/issues/573)
 
 ### [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)
 
