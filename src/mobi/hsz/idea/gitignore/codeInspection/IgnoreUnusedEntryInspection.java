@@ -29,16 +29,14 @@ import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiPolyVariantReference;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.ResolveResult;
+import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
+import mobi.hsz.idea.gitignore.psi.IgnoreFile;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import mobi.hsz.idea.gitignore.util.Glob;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -90,8 +88,18 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
 
                 if (!resolved) {
                     if (!isEntryExcluded(entry, holder.getProject())) {
-                        holder.registerProblem(entry, IgnoreBundle.message("codeInspection.unusedEntry.message"),
-                                new IgnoreRemoveEntryFix(entry));
+                        final PsiDirectory directory = ((IgnoreFile) entry.getParent()).getContainingDirectory();
+                        final VirtualFile file = directory != null
+                                ? directory.getVirtualFile().findFileByRelativePath(entry.getText())
+                                : null;
+
+                        if (file == null) {
+                            holder.registerProblem(
+                                    entry,
+                                    IgnoreBundle.message("codeInspection.unusedEntry.message"),
+                                    new IgnoreRemoveEntryFix(entry)
+                            );
+                        }
                     }
                 }
 

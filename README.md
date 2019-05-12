@@ -143,6 +143,7 @@ Changelog
 - Fixed incorrect double star pattern behaviour [\#579](https://github.com/hsz/idea-gitignore/issues/579)
 - Update downgrades on 2018.2+ [\#572](https://github.com/hsz/idea-gitignore/issues/572)
 - Group with id "GenerateGroup" isn't registered [\#573](https://github.com/hsz/idea-gitignore/issues/573)
+- Directories marked as excluded are reported as never used [\#571](https://github.com/hsz/idea-gitignore/issues/571)
 
 
 [Full Changelog History](./CHANGELOG.md)
