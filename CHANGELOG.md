@@ -1,9 +1,9 @@
 Change Log
 ----------
 
-### [v3.1.0](https://github.com/hsz/idea-gitignore/tree/v3.1.0) (2019-05-08)
+### [v3.1.1](https://github.com/hsz/idea-gitignore/tree/v3.1.1) (2019-05-12)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.1)
 
 **Implemented enhancements:**
 
@@ -17,7 +17,8 @@ Change Log
 - Adding 2+ templates without new line in between [\#561](https://github.com/hsz/idea-gitignore/issues/561)
 - Fixed incorrect relative path resolving for ignored files [\#566](https://github.com/hsz/idea-gitignore/issues/566)
 - Fixed "is covered by" false-positive behaviour [\#565](https://github.com/hsz/idea-gitignore/issues/565) [\#228](https://github.com/hsz/idea-gitignore/issues/228)
-
+- Fix for IllegalStateException when ProjectUtil.guessProjectDir called on default project
+- Fixed incorrect double star pattern behaviour [\#579](https://github.com/hsz/idea-gitignore/issues/579)
 
 ### [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)
 

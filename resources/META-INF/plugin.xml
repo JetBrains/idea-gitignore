@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>3.1.0</version>
+    <version>3.1.1</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -75,8 +75,8 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.0"><b>v3.1.0</b></a> (2019-05-08) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.0"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.1"><b>v3.1.1</b></a> (2019-05-12) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.1"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         <ul>
@@ -92,6 +92,8 @@
             <li>Adding 2+ templates without new line in between (<a href="https://github.com/hsz/idea-gitignore/issues/561">561</a>)</li>
             <li>Fixed incorrect relative path resolving for ignored files (<a href="https://github.com/hsz/idea-gitignore/issues/566">566</a>)</li>
             <li>Fixed "is covered by" false-positive behaviour (<a href="https://github.com/hsz/idea-gitignore/issues/565">565</a>, <a href="https://github.com/hsz/idea-gitignore/issues/228">228</a>)</li>
+            <li>Fixed incorrect double star pattern behaviour (<a href="https://github.com/hsz/idea-gitignore/issues/579">579</a>)</li>
+            <li>Fix for IllegalStateException when ProjectUtil.guessProjectDir called on default project</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
