@@ -134,6 +134,7 @@ Changelog
 - Fixed deprecation warnings [\#567](https://github.com/hsz/idea-gitignore/issues/567)
 - Removed "tracked & ignored" feature [\#547](https://github.com/hsz/idea-gitignore/issues/547) [\#523](https://github.com/hsz/idea-gitignore/issues/523) [\#528](https://github.com/hsz/idea-gitignore/issues/528) [\#486](https://github.com/hsz/idea-gitignore/issues/486)
 - Display external .git/info/exclude files in "Outer ignore rules" side editor
+- Handle ~/.config/git/ignore ignore file [\#574](https://github.com/hsz/idea-gitignore/issues/574)
 
 **Fixed bugs:**
 

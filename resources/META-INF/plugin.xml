@@ -85,6 +85,7 @@
             <li>Fixed deprecation warnings (<a href="https://github.com/hsz/idea-gitignore/issues/567">567</a>)</li>
             <li>Removed "tracked & ignored" feature (<a href="https://github.com/hsz/idea-gitignore/issues/547">547</a>, <a href="https://github.com/hsz/idea-gitignore/issues/523">523</a>, <a href="https://github.com/hsz/idea-gitignore/issues/528">528</a>, <a href="https://github.com/hsz/idea-gitignore/issues/486">486</a>)</li>
             <li>Display external .git/info/exclude files in "Outer ignore rules" side editor</li>
+            <li>Handle ~/.config/git/ignore ignore file (<a href="https://github.com/hsz/idea-gitignore/issues/574">574</a>)</li>
         </ul>
 
         <i>Fixed bugs:</i>
