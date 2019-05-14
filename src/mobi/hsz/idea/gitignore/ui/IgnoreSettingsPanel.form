@@ -16,6 +16,9 @@
         <properties>
           <enabled value="true"/>
         </properties>
+        <clientProperties>
+          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
+        </clientProperties>
         <border type="none" title-resource-bundle="messages/IgnoreBundle" title-key="settings.general"/>
         <children>
           <component id="7e9b" class="javax.swing.JCheckBox" binding="missingGitignore">
@@ -82,6 +85,9 @@
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
+        <clientProperties>
+          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
+        </clientProperties>
         <border type="none" title-resource-bundle="messages/IgnoreBundle" title-key="settings.userTemplates"/>
         <children>
           <component id="85fc4" class="com.intellij.openapi.ui.Splitter" binding="templatesSplitter" custom-create="true">
@@ -98,6 +104,9 @@
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
+        <clientProperties>
+          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
+        </clientProperties>
         <border type="none" title-resource-bundle="messages/IgnoreBundle" title-key="settings.languagesSettings"/>
         <children>
           <scrollpane id="9895d" class="com.intellij.ui.components.JBScrollPane" binding="languagesPanel" custom-create="true">
