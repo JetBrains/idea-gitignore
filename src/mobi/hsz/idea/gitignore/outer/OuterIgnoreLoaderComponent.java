@@ -35,6 +35,8 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -132,6 +134,10 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
             DumbService.getInstance(project).runWhenSmart(() -> {
                 final List<VirtualFile> outerFiles =
                         ContainerUtil.newArrayList(language.getOuterFiles(project, false));
+                if (language instanceof GitLanguage) {
+                    outerFiles.addAll(GitExcludeLanguage.INSTANCE.getOuterFiles(project));
+                    ContainerUtil.removeDuplicates(outerFiles);
+                }
                 if (outerFiles.isEmpty() || outerFiles.contains(file)) {
                     return;
                 }
