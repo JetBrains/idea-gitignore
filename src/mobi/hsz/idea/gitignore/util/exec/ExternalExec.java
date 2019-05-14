@@ -32,6 +32,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.VcsRoot;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.vcsUtil.VcsUtil;
 import git4idea.config.GitExecutableManager;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
@@ -71,6 +72,11 @@ public class ExternalExec {
     /** Git command to get user's excludesfile path. */
     @NonNls
     private static final String GIT_CONFIG_EXCLUDES_FILE = "config --global core.excludesfile";
+
+    /** Global gitignore file located in user dir. */
+    @Nullable
+    public static final VirtualFile GIT_USER_IGNORE =
+            VcsUtil.getVirtualFile(Utils.resolveUserDir("~/.config/git/ignore"));
 
     /** Git command to list unversioned files. */
     @NonNls

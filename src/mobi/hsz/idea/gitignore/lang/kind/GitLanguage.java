@@ -59,7 +59,8 @@ public class GitLanguage extends IgnoreLanguage {
         super("Git", "gitignore", ".git", Icons.GIT, new OuterFileFetcher[]{
 
                 // Outer file fetched from the `git config core.excludesfile`.
-                project -> ContainerUtil.newArrayList(ExternalExec.getGitExcludesFile())
+                project -> ContainerUtil.newArrayList(ExternalExec.getGitExcludesFile()),
+                project -> ContainerUtil.newArrayList(ExternalExec.GIT_USER_IGNORE)
 
         });
     }

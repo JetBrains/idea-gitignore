@@ -29,6 +29,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
 import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,6 +53,10 @@ public class GitExcludeFileType extends IgnoreFileType {
         final VirtualFile baseDir = Utils.guessProjectDir(project);
         if (baseDir == null) {
             return null;
+        }
+
+        if (outerFile.equals(ExternalExec.GIT_USER_IGNORE)) {
+            return baseDir;
         }
 
         final VirtualFile infoDir = baseDir.findFileByRelativePath(".git/info");

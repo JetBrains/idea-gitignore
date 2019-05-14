@@ -35,6 +35,7 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher;
 import mobi.hsz.idea.gitignore.util.Icons;
 import mobi.hsz.idea.gitignore.util.Utils;
+import mobi.hsz.idea.gitignore.util.exec.ExternalExec;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -104,7 +105,8 @@ public class GitExcludeLanguage extends IgnoreLanguage {
 
                         return files;
                     }
-                }
+                },
+                project -> ContainerUtil.newArrayList(ExternalExec.GIT_USER_IGNORE)
 
         });
     }
