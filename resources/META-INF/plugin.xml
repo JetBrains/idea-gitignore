@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>3.1.1</version>
+    <version>3.1.2</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -75,8 +75,8 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.1"><b>v3.1.1</b></a> (2019-05-12) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.1"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.2"><b>v3.1.2</b></a> (2019-05-14) <br/><br/>
+        <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.2"><small>Full Changelog</small></a> <br/><br/>
 
         <i>Implemented enhancements:</i>
         <ul>
@@ -84,6 +84,7 @@
             <li>.nuxtignore (Nuxt.js) support (<a href="https://github.com/hsz/idea-gitignore/issues/576">576</a>)</li>
             <li>Fixed deprecation warnings (<a href="https://github.com/hsz/idea-gitignore/issues/567">567</a>)</li>
             <li>Removed "tracked & ignored" feature (<a href="https://github.com/hsz/idea-gitignore/issues/547">547</a>, <a href="https://github.com/hsz/idea-gitignore/issues/523">523</a>, <a href="https://github.com/hsz/idea-gitignore/issues/528">528</a>, <a href="https://github.com/hsz/idea-gitignore/issues/486">486</a>)</li>
+            <li>Display external .git/info/exclude files in "Outer ignore rules" side editor</li>
         </ul>
 
         <i>Fixed bugs:</i>
@@ -97,6 +98,7 @@
             <li>Update downgrades on 2018.2+ (<a href="https://github.com/hsz/idea-gitignore/issues/572">572</a>)</li>
             <li>Group with id "GenerateGroup" isn't registered (<a href="https://github.com/hsz/idea-gitignore/issues/573">573</a>)</li>
             <li>Directories marked as excluded are reported as never used (<a href="https://github.com/hsz/idea-gitignore/issues/571">571</a>)</li>
+            <li>All files are marked as ignored (<a href="https://github.com/hsz/idea-gitignore/issues/581">581</a>)</li>
         </ul>
 
         <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

@@ -1,9 +1,9 @@
 Change Log
 ----------
 
-### [v3.1.1](https://github.com/hsz/idea-gitignore/tree/v3.1.1) (2019-05-12)
+### [v3.1.2](https://github.com/hsz/idea-gitignore/tree/v3.1.2) (2019-05-14)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.1)
+[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.2)
 
 **Implemented enhancements:**
 
@@ -11,6 +11,7 @@ Change Log
 - .nuxtignore (Nuxt.js) support [\#576](https://github.com/hsz/idea-gitignore/issues/576)
 - Fixed deprecation warnings [\#567](https://github.com/hsz/idea-gitignore/issues/567)
 - Removed "tracked & ignored" feature [\#547](https://github.com/hsz/idea-gitignore/issues/547) [\#523](https://github.com/hsz/idea-gitignore/issues/523) [\#528](https://github.com/hsz/idea-gitignore/issues/528) [\#486](https://github.com/hsz/idea-gitignore/issues/486)
+- Display external .git/info/exclude files in "Outer ignore rules" side editor
 
 **Fixed bugs:**
 
@@ -22,6 +23,7 @@ Change Log
 - Update downgrades on 2018.2+ [\#572](https://github.com/hsz/idea-gitignore/issues/572)
 - Group with id "GenerateGroup" isn't registered [\#573](https://github.com/hsz/idea-gitignore/issues/573)
 - Directories marked as excluded are reported as never used [\#571](https://github.com/hsz/idea-gitignore/issues/571)
+- All files are marked as ignored [\#581](https://github.com/hsz/idea-gitignore/issues/581)
 
 ### [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)
 
