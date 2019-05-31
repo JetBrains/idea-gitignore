@@ -127,9 +127,6 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
             }
 
             final IgnoreLanguage language = ((IgnoreFileType) fileType).getIgnoreLanguage();
-            if (!language.isEnabled()) {
-                return;
-            }
 
             DumbService.getInstance(project).runWhenSmart(() -> {
                 final List<VirtualFile> outerFiles =
