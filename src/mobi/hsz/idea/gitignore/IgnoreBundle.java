@@ -27,6 +27,7 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.CommonBundle;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -96,6 +97,10 @@ public class IgnoreBundle {
             TFLanguage.INSTANCE,
             UpLanguage.INSTANCE
     ));
+
+    /**Highlighting for the mentioned languages already provided by IDEA core**/
+    public static final IgnoreLanguage[] IGNORE_LANGUAGES_HIGHLIGHTING_EXCLUDED =
+            {GitLanguage.INSTANCE, GitExcludeLanguage.INSTANCE, MercurialLanguage.INSTANCE, PerforceLanguage.INSTANCE};
 
     /** Available IgnoreFileType instances filtered with {@link IgnoreLanguage#isVCS()} condition. */
     public static final IgnoreLanguages VCS_LANGUAGES = new IgnoreLanguages(
@@ -180,6 +185,10 @@ public class IgnoreBundle {
             }
         }
         return null;
+    }
+
+    public static boolean isExcludedFromHighlighting(@NotNull IgnoreLanguage language) {
+        return ArrayUtil.contains(language, IGNORE_LANGUAGES_HIGHLIGHTING_EXCLUDED);
     }
 
     /**

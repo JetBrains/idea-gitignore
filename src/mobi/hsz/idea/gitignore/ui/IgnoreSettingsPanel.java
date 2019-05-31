@@ -71,7 +71,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -145,6 +147,12 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         languagesTable.setColumnSelectionAllowed(false);
         languagesTable.setRowHeight(22);
+        languagesTable.getColumnModel().getColumn(2).setCellRenderer(new ConditionalBooleanRenderer() {
+            @Override
+            boolean isVisible(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                return table.isCellEditable(row, column);
+            }
+        });
         languagesTable.setPreferredScrollableViewportSize(new Dimension(-1,
                 languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size() / 2));
 
@@ -162,6 +170,48 @@ public class IgnoreSettingsPanel implements Disposable {
                 "Donate with PayPal",
                 "https://www.paypal.me/hsz"
         ), BorderLayout.CENTER);
+    }
+
+    /**
+     * Boolean {@link JTable} cell renderer with ability to control visibility of {@link JCheckBox} component.
+     */
+    static abstract class ConditionalBooleanRenderer extends JPanel implements TableCellRenderer {
+        private static final Border noFocusBorder = JBUI.Borders.empty(1);
+
+        private JCheckBox checkBox;
+
+        ConditionalBooleanRenderer() {
+            super(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            setOpaque(false);
+            checkBox = new JCheckBox();
+            checkBox.setOpaque(false);
+            checkBox.setHorizontalAlignment(JCheckBox.CENTER);
+            add(checkBox);
+        }
+
+        abstract boolean isVisible(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column);
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (isSelected) {
+                setForeground(table.getSelectionForeground());
+                super.setBackground(table.getSelectionBackground());
+            }
+            else {
+                setForeground(table.getForeground());
+                setBackground(table.getBackground());
+            }
+
+            if (hasFocus) {
+                setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
+            } else {
+                setBorder(noFocusBorder);
+            }
+
+            checkBox.setVisible(isVisible(table, value, isSelected, hasFocus, row, column));
+            checkBox.setSelected(value instanceof Boolean && (Boolean) value);
+            return this;
+        }
     }
 
     /**
@@ -750,6 +800,13 @@ public class IgnoreSettingsPanel implements Disposable {
          */
         @Override
         public boolean isCellEditable(int row, int column) {
+            final IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
+            if (language == null) {
+                return column != 0;
+            }
+
+            if (column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) return false;
+
             return column != 0;
         }
 
@@ -775,12 +832,20 @@ public class IgnoreSettingsPanel implements Disposable {
                 case 0:
                     return language.getID();
                 case 1:
-                    return Boolean.valueOf(data.get(NEW_FILE).toString());
+                    return getBoolean(NEW_FILE, data);
                 case 2:
-                    return Boolean.valueOf(data.get(ENABLE).toString());
+                    return getBoolean(ENABLE, data);
             }
 
             throw new IllegalArgumentException();
+        }
+
+        @NotNull
+        private Boolean getBoolean(IgnoreSettings.IgnoreLanguagesSettings.KEY key, TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data) {
+            Object objectByKey = data.get(key);
+            if (objectByKey == null) return false;
+
+            return Boolean.valueOf(objectByKey.toString());
         }
 
         /**
