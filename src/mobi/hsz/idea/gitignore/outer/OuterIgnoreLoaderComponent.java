@@ -27,19 +27,24 @@ package mobi.hsz.idea.gitignore.outer;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeRegistry;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
+import git4idea.ignore.lang.GitIgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.MercurialLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.zmlx.hg4idea.ignore.lang.HgIgnoreFileType;
 
 import javax.swing.*;
 import java.util.Collection;
@@ -122,11 +127,12 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
         @Override
         public void fileOpened(@NotNull final FileEditorManager source, @NotNull final VirtualFile file) {
             final FileType fileType = file.getFileType();
-            if (!(fileType instanceof IgnoreFileType) || !IgnoreSettings.getInstance().isOuterIgnoreRules()) {
+            if (!IgnoreSettings.getInstance().isOuterIgnoreRules()) {
                 return;
             }
 
-            final IgnoreLanguage language = ((IgnoreFileType) fileType).getIgnoreLanguage();
+            IgnoreLanguage language = determineIgnoreLanguage(file, fileType);
+            if (language == null) return;
 
             DumbService.getInstance(project).runWhenSmart(() -> {
                 final List<VirtualFile> outerFiles =
@@ -160,6 +166,20 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
                     }
                 }
             });
+        }
+
+        @Nullable
+        private IgnoreLanguage determineIgnoreLanguage(@NotNull VirtualFile file, FileType fileType) {
+            //if language provided by platform (e.g. GitLanguage) then map to language provided by plugin with extended functionality
+            FileTypeRegistry typeRegistry = FileTypeRegistry.getInstance();
+            if (typeRegistry.isFileOfType(file, GitIgnoreFileType.INSTANCE)) {
+                return GitLanguage.INSTANCE;
+            } else if (typeRegistry.isFileOfType(file, HgIgnoreFileType.INSTANCE)) {
+                return MercurialLanguage.INSTANCE;
+            } else if (fileType instanceof IgnoreFileType) {
+                return ((IgnoreFileType) fileType).getIgnoreLanguage();
+            }
+            return null;
         }
 
         @Override

@@ -109,6 +109,7 @@
 
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true">Git4Idea</depends>
+    <depends optional="true">hg4idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
@@ -332,13 +333,7 @@
         <!-- END Fossil -->
 
         <!-- Git -->
-        <lang.parserDefinition language="Git"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <codeInsight.lineMarkerProvider language="Git"
-                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter language="Git" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory language="Git"
+        <lang.syntaxHighlighterFactory language="GitIgnore"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git -->
 
@@ -400,13 +395,7 @@
         <!-- END Kubernetes Helm -->
 
         <!-- Mercurial -->
-        <lang.parserDefinition language="Mercurial"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <codeInsight.lineMarkerProvider language="Mercurial"
-                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter language="Mercurial" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory language="Mercurial"
+        <lang.syntaxHighlighterFactory language="HgIgnore"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Mercurial -->
 

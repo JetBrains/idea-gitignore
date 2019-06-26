@@ -35,6 +35,8 @@ import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.MercurialLanguage;
 import mobi.hsz.idea.gitignore.util.CommonDataKeys;
 import mobi.hsz.idea.gitignore.util.ExternalFileException;
 import mobi.hsz.idea.gitignore.util.Utils;
@@ -115,6 +117,9 @@ public class IgnoreFileGroupAction extends ActionGroup {
                 baseDir = Utils.getModuleRootForFile(file, project);
 
                 for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
+                    //skip already bundled languages for ignore action
+                    if (!(this instanceof UnignoreFileGroupAction) && (language instanceof GitLanguage || language instanceof MercurialLanguage)) continue;
+
                     final IgnoreFileType fileType = language.getFileType();
                     List<VirtualFile> list = Utils.getSuitableIgnoreFiles(project, fileType, file);
                     Collections.reverse(list);

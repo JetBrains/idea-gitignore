@@ -41,7 +41,7 @@ intellij {
         untilBuild pluginUntilBuild
     }
 
-    plugins 'git4idea'
+    plugins 'git4idea', 'hg4idea'
 
     publishPlugin {
         username publishUsername
