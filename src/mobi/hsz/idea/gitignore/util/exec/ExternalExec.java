@@ -191,8 +191,9 @@ public class ExternalExec {
 
         try {
             final String cmd = bin + " " + command;
+            final String[] env = { "LANG=C" };
             final File workingDirectory = directory != null ? new File(directory.getPath()) : null;
-            final Process process = Runtime.getRuntime().exec(cmd, null, workingDirectory);
+            final Process process = Runtime.getRuntime().exec(cmd, env, workingDirectory);
 
             ProcessHandler handler = new BaseOSProcessHandler(process, StringUtil.join(cmd, " "), null) {
                 @NotNull
