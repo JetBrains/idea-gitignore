@@ -109,7 +109,7 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
     }
 
     /** Listener for ignore editor manager. */
-    private class IgnoreEditorManagerListener implements FileEditorManagerListener {
+    private static class IgnoreEditorManagerListener implements FileEditorManagerListener {
         /** Current project. */
         private final Project project;
 
@@ -132,7 +132,9 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
             }
 
             IgnoreLanguage language = determineIgnoreLanguage(file, fileType);
-            if (language == null) return;
+            if (language == null) {
+                return;
+            }
 
             DumbService.getInstance(project).runWhenSmart(() -> {
                 final List<VirtualFile> outerFiles =
@@ -168,9 +170,16 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
             });
         }
 
+        /**
+         * If language provided by platform (e.g. GitLanguage) then map to language provided by plugin
+         * with extended functionality.
+         *
+         * @param file     file to check
+         * @param fileType file's FileType
+         * @return mapped language
+         */
         @Nullable
         private IgnoreLanguage determineIgnoreLanguage(@NotNull VirtualFile file, FileType fileType) {
-            //if language provided by platform (e.g. GitLanguage) then map to language provided by plugin with extended functionality
             FileTypeRegistry typeRegistry = FileTypeRegistry.getInstance();
             if (typeRegistry.isFileOfType(file, GitIgnoreFileType.INSTANCE)) {
                 return GitLanguage.INSTANCE;

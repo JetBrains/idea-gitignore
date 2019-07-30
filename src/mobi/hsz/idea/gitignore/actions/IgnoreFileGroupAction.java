@@ -118,7 +118,10 @@ public class IgnoreFileGroupAction extends ActionGroup {
 
                 for (IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
                     //skip already bundled languages for ignore action
-                    if (!(this instanceof UnignoreFileGroupAction) && (language instanceof GitLanguage || language instanceof MercurialLanguage)) continue;
+                    if (!(this instanceof UnignoreFileGroupAction)
+                            && (language instanceof GitLanguage || language instanceof MercurialLanguage)) {
+                        continue;
+                    }
 
                     final IgnoreFileType fileType = language.getFileType();
                     List<VirtualFile> list = Utils.getSuitableIgnoreFiles(project, fileType, file);

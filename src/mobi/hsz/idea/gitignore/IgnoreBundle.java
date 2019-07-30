@@ -99,8 +99,12 @@ public class IgnoreBundle {
     ));
 
     /**Highlighting for the mentioned languages already provided by IDEA core**/
-    public static final IgnoreLanguage[] IGNORE_LANGUAGES_HIGHLIGHTING_EXCLUDED =
-            {GitLanguage.INSTANCE, GitExcludeLanguage.INSTANCE, MercurialLanguage.INSTANCE, PerforceLanguage.INSTANCE};
+    public static final IgnoreLanguage[] IGNORE_LANGUAGES_HIGHLIGHTING_EXCLUDED = {
+            GitLanguage.INSTANCE,
+            GitExcludeLanguage.INSTANCE,
+            MercurialLanguage.INSTANCE,
+            PerforceLanguage.INSTANCE
+    };
 
     /** Available IgnoreFileType instances filtered with {@link IgnoreLanguage#isVCS()} condition. */
     public static final IgnoreLanguages VCS_LANGUAGES = new IgnoreLanguages(

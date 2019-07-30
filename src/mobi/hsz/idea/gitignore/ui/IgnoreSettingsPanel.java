@@ -163,8 +163,8 @@ public class IgnoreSettingsPanel implements Disposable {
     /**
      * Boolean {@link JTable} cell renderer with ability to control visibility of {@link JCheckBox} component.
      */
-    static abstract class ConditionalBooleanRenderer extends JPanel implements TableCellRenderer {
-        private static final Border noFocusBorder = JBUI.Borders.empty(1);
+    abstract static class ConditionalBooleanRenderer extends JPanel implements TableCellRenderer {
+        private static final Border NO_FOCUS_BORDER = JBUI.Borders.empty(1);
 
         private JCheckBox checkBox;
 
@@ -177,15 +177,16 @@ public class IgnoreSettingsPanel implements Disposable {
             add(checkBox);
         }
 
-        abstract boolean isVisible(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column);
+        abstract boolean isVisible(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+                                   int column);
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int column) {
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
                 super.setBackground(table.getSelectionBackground());
-            }
-            else {
+            } else {
                 setForeground(table.getForeground());
                 setBackground(table.getBackground());
             }
@@ -193,7 +194,7 @@ public class IgnoreSettingsPanel implements Disposable {
             if (hasFocus) {
                 setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
             } else {
-                setBorder(noFocusBorder);
+                setBorder(NO_FOCUS_BORDER);
             }
 
             checkBox.setVisible(isVisible(table, value, isSelected, hasFocus, row, column));
@@ -581,7 +582,6 @@ public class IgnoreSettingsPanel implements Disposable {
          *
          * @param userTemplates templates list
          */
-        @SuppressWarnings("unchecked")
         public void resetForm(@NotNull List<IgnoreSettings.UserTemplate> userTemplates) {
             myListModel.clear();
             for (IgnoreSettings.UserTemplate template : userTemplates) {
@@ -789,11 +789,9 @@ public class IgnoreSettingsPanel implements Disposable {
         @Override
         public boolean isCellEditable(int row, int column) {
             final IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
-            if (language == null) {
-                return column != 0;
+            if (language != null && column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) {
+                return false;
             }
-
-            if (column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) return false;
 
             return column != 0;
         }
@@ -829,9 +827,12 @@ public class IgnoreSettingsPanel implements Disposable {
         }
 
         @NotNull
-        private Boolean getBoolean(IgnoreSettings.IgnoreLanguagesSettings.KEY key, TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data) {
+        private Boolean getBoolean(IgnoreSettings.IgnoreLanguagesSettings.KEY key,
+                                   TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data) {
             Object objectByKey = data.get(key);
-            if (objectByKey == null) return false;
+            if (objectByKey == null) {
+                return false;
+            }
 
             return Boolean.valueOf(objectByKey.toString());
         }

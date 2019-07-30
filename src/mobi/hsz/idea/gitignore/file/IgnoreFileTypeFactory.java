@@ -51,7 +51,9 @@ public class IgnoreFileTypeFactory extends FileTypeFactory {
         consume(consumer, IgnoreFileType.INSTANCE);
         for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
             //skip already bundled languages
-            if (language instanceof GitLanguage || language instanceof MercurialLanguage) continue;
+            if (language instanceof GitLanguage || language instanceof MercurialLanguage) {
+                continue;
+            }
 
             consume(consumer, language.getFileType());
         }
