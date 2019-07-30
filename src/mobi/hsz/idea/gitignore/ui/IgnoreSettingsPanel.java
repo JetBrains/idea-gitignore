@@ -25,7 +25,6 @@
 package mobi.hsz.idea.gitignore.ui;
 
 import com.intellij.icons.AllIcons;
-import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -56,7 +55,6 @@ import com.intellij.ui.BooleanTableCellRenderer;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.labels.ActionLink;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.JBUI;
@@ -161,24 +159,6 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.setDragEnabled(false);
 
         languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
-    }
-
-    /**
-     * Creates {@link ActionLink} component with URL open action.
-     *
-     * @param title title of link
-     * @param url   url to open
-     * @return {@link ActionLink} component
-     */
-    private ActionLink createLink(@NotNull String title, @NotNull final String url) {
-        final ActionLink action = new ActionLink(title, new AnAction() {
-            @Override
-            public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
-                BrowserUtil.browse(url);
-            }
-        });
-        action.setBorder(JBUI.Borders.empty(0, 5));
-        return action;
     }
 
     /** Disposes current preview {@link #editorPanel}. */
