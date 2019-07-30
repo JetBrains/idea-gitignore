@@ -52,6 +52,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.AddEditDeleteListPanel;
+import com.intellij.ui.BooleanTableCellRenderer;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBLabel;
@@ -70,9 +71,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -143,14 +142,18 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         languagesTable.setColumnSelectionAllowed(false);
         languagesTable.setRowHeight(22);
-        languagesTable.getColumnModel().getColumn(2).setCellRenderer(new ConditionalBooleanRenderer() {
+        languagesTable.getColumnModel().getColumn(2).setCellRenderer(new BooleanTableCellRenderer() {
             @Override
-            boolean isVisible(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                return table.isCellEditable(row, column);
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSel, boolean hasFocus,
+                                                           int row, int column) {
+                boolean editable = table.isCellEditable(row, column);
+                Object newValue = editable ? value : null;
+                return super.getTableCellRendererComponent(table, newValue, isSel, hasFocus, row, column);
             }
         });
-        languagesTable.setPreferredScrollableViewportSize(new Dimension(-1,
-                languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size() / 2));
+        languagesTable.setPreferredScrollableViewportSize(
+                new Dimension(-1, languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size() / 2)
+        );
 
         languagesTable.setStriped(true);
         languagesTable.setShowGrid(false);
@@ -158,49 +161,6 @@ public class IgnoreSettingsPanel implements Disposable {
         languagesTable.setDragEnabled(false);
 
         languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable);
-    }
-
-    /**
-     * Boolean {@link JTable} cell renderer with ability to control visibility of {@link JCheckBox} component.
-     */
-    abstract static class ConditionalBooleanRenderer extends JPanel implements TableCellRenderer {
-        private static final Border NO_FOCUS_BORDER = JBUI.Borders.empty(1);
-
-        private JCheckBox checkBox;
-
-        ConditionalBooleanRenderer() {
-            super(new FlowLayout(FlowLayout.CENTER, 0, 0));
-            setOpaque(false);
-            checkBox = new JCheckBox();
-            checkBox.setOpaque(false);
-            checkBox.setHorizontalAlignment(JCheckBox.CENTER);
-            add(checkBox);
-        }
-
-        abstract boolean isVisible(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
-                                   int column);
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                       boolean hasFocus, int row, int column) {
-            if (isSelected) {
-                setForeground(table.getSelectionForeground());
-                super.setBackground(table.getSelectionBackground());
-            } else {
-                setForeground(table.getForeground());
-                setBackground(table.getBackground());
-            }
-
-            if (hasFocus) {
-                setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-            } else {
-                setBorder(NO_FOCUS_BORDER);
-            }
-
-            checkBox.setVisible(isVisible(table, value, isSelected, hasFocus, row, column));
-            checkBox.setSelected(value instanceof Boolean && (Boolean) value);
-            return this;
-        }
     }
 
     /**
@@ -582,6 +542,7 @@ public class IgnoreSettingsPanel implements Disposable {
          *
          * @param userTemplates templates list
          */
+        @SuppressWarnings("unchecked")
         public void resetForm(@NotNull List<IgnoreSettings.UserTemplate> userTemplates) {
             myListModel.clear();
             for (IgnoreSettings.UserTemplate template : userTemplates) {
