@@ -45,28 +45,6 @@ public class Notify {
             ToolWindowId.PROJECT_VIEW
     );
 
-    private static final NotificationGroup NOTIFICATION_GROUP_UPDATE = new NotificationGroup(
-            IgnoreBundle.message("notification.group.update"),
-            NotificationDisplayType.STICKY_BALLOON,
-            true
-    );
-
-    /**
-     * Shows {@link Notification} in IGNORE_GROUP_UPDATE group.
-     *
-     * @param project  current project
-     */
-    public static void showUpdate(@NotNull Project project) {
-        show(
-                project,
-                IgnoreBundle.message("notification.update.title", Utils.getVersion()),
-                IgnoreBundle.message("notification.update.content"),
-                NOTIFICATION_GROUP_UPDATE,
-                NotificationType.INFORMATION,
-                NotificationListener.URL_OPENING_LISTENER
-        );
-    }
-
     /**
      * Shows {@link Notification} in ".ignore plugin" group.
      *
@@ -78,20 +56,6 @@ public class Notify {
     public static void show(@NotNull Project project, @NotNull String title, @NotNull String content,
                             @NotNull NotificationType type) {
         show(project, title, content, NOTIFICATION_GROUP, type, null);
-    }
-
-    /**
-     * Shows {@link Notification} in ".ignore plugin" group.
-     *
-     * @param project   current project
-     * @param title     notification title
-     * @param content   notification text
-     * @param type      notification type
-     * @param listener  optional listener
-     */
-    public static void show(@NotNull Project project, @NotNull String title, @NotNull String content,
-                            @NotNull NotificationType type, @Nullable NotificationListener listener) {
-        show(project, title, content, NOTIFICATION_GROUP, type, listener);
     }
 
     /**

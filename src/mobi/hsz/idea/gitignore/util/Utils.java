@@ -250,24 +250,6 @@ public class Utils {
     }
 
     /**
-     * Returns Gitignore plugin information.
-     *
-     * @return {@link IdeaPluginDescriptor}
-     */
-    public static IdeaPluginDescriptor getPlugin() {
-        return PluginManager.getPlugin(PluginId.getId(IgnoreBundle.PLUGIN_ID));
-    }
-
-    /**
-     * Returns plugin version.
-     *
-     * @return version
-     */
-    public static String getVersion() {
-        return getPlugin().getVersion();
-    }
-
-    /**
      * Checks if lists are equal.
      *
      * @param l1 first list

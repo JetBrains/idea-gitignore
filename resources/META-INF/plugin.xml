@@ -8,10 +8,8 @@
       <h1>.ignore</h1>
       <br/>
 
-      <a href="http://ignore.hsz.mobi">Website</a> |
       <a href="https://github.com/hsz/idea-gitignore">GitHub</a> |
       <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a> |
-      <a href="https://www.paypal.me/hsz">Donate with PayPal</a>
       <br/>
       <br/>
 
@@ -526,12 +524,6 @@
         <!-- END Up -->
     </extensions>
 
-    <application-components>
-        <component>
-            <implementation-class>mobi.hsz.idea.gitignore.IgnoreApplicationComponent</implementation-class>
-        </component>
-    </application-components>
-
     <project-components>
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreManager</implementation-class>
@@ -543,9 +535,6 @@
         </component>
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent</implementation-class>
-        </component>
-        <component>
-            <implementation-class>mobi.hsz.idea.gitignore.IgnoreUpdateComponent</implementation-class>
         </component>
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreFileBasedIndexProjectHandler</implementation-class>

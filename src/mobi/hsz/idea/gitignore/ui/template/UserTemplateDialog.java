@@ -24,9 +24,7 @@
 
 package mobi.hsz.idea.gitignore.ui.template;
 
-import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -36,6 +34,7 @@ import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.JBUI;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.Notify;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -165,12 +164,12 @@ public class UserTemplateDialog extends DialogWrapper {
                 new IgnoreSettings.UserTemplate(name.getText(), previewDocument.getText());
         settings.getUserTemplates().add(template);
 
-        Notifications.Bus.notify(new Notification(
-                IgnoreBundle.PLUGIN_ID,
+        Notify.show(
+                project,
                 IgnoreBundle.message("dialog.userTemplate.added"),
                 IgnoreBundle.message("dialog.userTemplate.added.description", template.getName()),
                 NotificationType.INFORMATION
-        ), project);
+        );
 
         super.doOKAction();
     }
