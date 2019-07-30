@@ -1,11 +1,7 @@
 .ignore 3.1.2
 =============
 
-[![Gitter][badge-gitter-img]][badge-gitter] [![Build Status][badge-travis-img]][badge-travis]
-
-[![Donate][badge-paypal-img]][badge-paypal]
-[![Backers on Open Collective](https://opencollective.com/ignore/backers/badge.svg)](#backers)
-[![Sponsors on Open Collective](https://opencollective.com/ignore/sponsors/badge.svg)](#sponsors)
+[![Build Status][badge-travis-img]][badge-travis]
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)][plugin-website]
 [![Downloads](http://phpstorm.espend.de/badge/7495/downloads)][plugin-website]
@@ -190,22 +186,6 @@ Developed By
 - [**@sergei-ivanov** Sergei Ivanov](https://github.com/sergei-ivanov)
 
 
-Backers
--------
-
-Support us with a monthly donation and help us continue our activities.
-
-[![Backers](https://opencollective.com/ignore/backers.svg)](https://opencollective.com/ignore#support)
-
-
-Sponsors
---------
-
-Become a sponsor to get your logo on our README on Github.
-
-[![Sponsors](https://opencollective.com/ignore/sponsors.svg)](https://opencollective.com/ignore#support)
-
-
 Tools
 -----
 
@@ -224,16 +204,7 @@ Copyright (c) 2018 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for 
 [github-gitignore]:       https://github.com/github/gitignore
 [gradle-intellij-plugin]: https://github.com/JetBrains/gradle-intellij-plugin
 [hsz]:                    http://hsz.mobi
-[website]:                http://ignore.hsz.mobi
 [plugin-website]:         https://plugins.jetbrains.com/plugin/7495
-[latest-release]:         https://github.com/hsz/idea-gitignore/releases/latest
-
-
-[badge-gitter-img]:       https://badges.gitter.im/hsz/idea-gitignore.svg
-[badge-gitter]:           https://gitter.im/hsz/idea-gitignore
-[badge-travis-img]:       https://travis-ci.org/hsz/idea-gitignore.svg?branch=master
-[badge-travis]:           https://travis-ci.org/hsz/idea-gitignore
-[badge-coveralls-img]:    https://coveralls.io/repos/github/hsz/idea-gitignore/badge.svg?branch=master
-[badge-coveralls]:        https://coveralls.io/github/hsz/idea-gitignore?branch=master
-[badge-paypal-img]:       https://img.shields.io/badge/donate-paypal-yellow.svg
-[badge-paypal]:           https://www.paypal.me/hsz
+[latest-release]:         https://github.com/JetBrains/idea-gitignore/releases/latest
+[badge-travis-img]:       https://travis-ci.org/JetBrains/idea-gitignore.svg?branch=master
+[badge-travis]:           https://travis-ci.org/JetBrains/idea-gitignore
