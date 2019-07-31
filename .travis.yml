@@ -1,4 +1,4 @@
-# Configuration for CI build at https://travis-ci.org/hsz/idea-gitignore
+# Configuration for CI build at https://travis-ci.org/JetBrains/idea-gitignore
 
 language: java
 
