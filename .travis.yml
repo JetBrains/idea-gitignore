@@ -23,5 +23,7 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
+script: ./gradlew assemble
+
 after_success:
   - ./gradlew jacocoTestReport coveralls
