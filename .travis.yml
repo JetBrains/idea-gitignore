@@ -5,6 +5,8 @@ language: java
 jdk:
   - oraclejdk8
 
+dist: trusty
+
 env:
   - IDEA_VERSION=192.5728.98
 
