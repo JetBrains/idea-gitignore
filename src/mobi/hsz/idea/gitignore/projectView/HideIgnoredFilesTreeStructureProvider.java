@@ -29,6 +29,7 @@ import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.projectView.impl.nodes.BasePsiNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.changes.ChangeListManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreManager;
@@ -54,10 +55,14 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
     @NotNull
     private final IgnoreManager ignoreManager;
 
+    @NotNull
+    private final ChangeListManager changeListManager;
+
     /** Builds a new instance of {@link HideIgnoredFilesTreeStructureProvider}. */
     public HideIgnoredFilesTreeStructureProvider(@NotNull Project project) {
         this.ignoreSettings = IgnoreSettings.getInstance();
         this.ignoreManager = IgnoreManager.getInstance(project);
+        this.changeListManager = ChangeListManager.getInstance(project);
     }
 
     /**
@@ -81,7 +86,8 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
         return ContainerUtil.filter(children, node -> {
             if (node instanceof BasePsiNode) {
                 final VirtualFile file = ((BasePsiNode) node).getVirtualFile();
-                return file != null && (!ignoreManager.isFileIgnored(file) || ignoreManager.isFileTracked(file));
+                return file != null && (!changeListManager.isIgnoredFile(file) &&
+                                        !ignoreManager.isFileIgnored(file) || ignoreManager.isFileTracked(file));
             }
             return true;
         });
