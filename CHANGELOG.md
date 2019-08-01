@@ -1,6 +1,20 @@
 Change Log
 ----------
 
+### [v3.2.0](https://github.com/JetBrains/idea-gitignore/tree/v3.2.0) (2019-08-01)
+
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.0)
+
+**Compatibility with 2019.2**
+
+IntelliJ release 2019.2 brings out of the box support for .gitignore and .hgignore files, so some functionality has moved from the plugin to the platform. 
+The following features are now provided by the platform:
+- Ignored status highlighting for .gitignore and .hgingore
+- Completion in .gitignore and .hgignore
+- Add to ignore actions
+
+The plugin still provides other features for .gitignore and .hgignore, and the full set of features for other supported ignore files.
+
 ### [v3.1.2](https://github.com/hsz/idea-gitignore/tree/v3.1.2) (2019-05-14)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.2)

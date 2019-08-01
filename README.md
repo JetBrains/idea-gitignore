@@ -119,30 +119,19 @@ Usage
 Changelog
 ---------
 
-### [v3.1.2](https://github.com/hsz/idea-gitignore/tree/v3.1.2) (2019-05-14)
+### [v3.2.0](https://github.com/JetBrains/idea-gitignore/tree/v3.2.0) (2019-08-01)
 
-[Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.2)
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.0)
 
-**Implemented enhancements:**
+**Compatibility with 2019.2**
 
-- .gcloudignore (Google Cloud) support [\#577](https://github.com/hsz/idea-gitignore/issues/577)
-- .nuxtignore (Nuxt.js) support [\#576](https://github.com/hsz/idea-gitignore/issues/576)
-- Fixed deprecation warnings [\#567](https://github.com/hsz/idea-gitignore/issues/567)
-- Removed "tracked & ignored" feature [\#547](https://github.com/hsz/idea-gitignore/issues/547) [\#523](https://github.com/hsz/idea-gitignore/issues/523) [\#528](https://github.com/hsz/idea-gitignore/issues/528) [\#486](https://github.com/hsz/idea-gitignore/issues/486)
-- Display external .git/info/exclude files in "Outer ignore rules" side editor
-- Handle ~/.config/git/ignore ignore file [\#574](https://github.com/hsz/idea-gitignore/issues/574)
+IntelliJ release 2019.2 brings out of the box support for .gitignore and .hgignore files, so some functionality has moved from the plugin to the platform. 
+The following features are now provided by the platform:
+- Ignored status highlighting for .gitignore and .hgingore
+- Completion in .gitignore and .hgignore
+- Add to ignore actions
 
-**Fixed bugs:**
-
-- Adding 2+ templates without new line in between [\#561](https://github.com/hsz/idea-gitignore/issues/561)
-- Fixed incorrect relative path resolving for ignored files [\#566](https://github.com/hsz/idea-gitignore/issues/566)
-- Fixed "is covered by" false-positive behaviour [\#565](https://github.com/hsz/idea-gitignore/issues/565) [\#228](https://github.com/hsz/idea-gitignore/issues/228)
-- Fix for IllegalStateException when ProjectUtil.guessProjectDir called on default project
-- Fixed incorrect double star pattern behaviour [\#579](https://github.com/hsz/idea-gitignore/issues/579)
-- Update downgrades on 2018.2+ [\#572](https://github.com/hsz/idea-gitignore/issues/572)
-- Group with id "GenerateGroup" isn't registered [\#573](https://github.com/hsz/idea-gitignore/issues/573)
-- Directories marked as excluded are reported as never used [\#571](https://github.com/hsz/idea-gitignore/issues/571)
-- All files are marked as ignored [\#581](https://github.com/hsz/idea-gitignore/issues/581)
+The plugin still provides other features for .gitignore and .hgignore, and the full set of features for other supported ignore files.
 
 
 [Full Changelog History](./CHANGELOG.md)
