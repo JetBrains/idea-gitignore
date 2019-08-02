@@ -35,7 +35,10 @@ import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.*;
+import com.intellij.openapi.project.DumbAware;
+import com.intellij.openapi.project.DumbService;
+import com.intellij.openapi.project.NoAccessDuringPsiEvents;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatusManager;
@@ -581,7 +584,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
         public void run(boolean silent) {
             final ConcurrentMap<VirtualFile, VcsRoot> result = ContainerUtil.newConcurrentMap();
             for (VcsRoot vcsRoot : vcsRoots) {
-                if (!(vcsRoot.getVcs() instanceof GitVcs) || vcsRoot.getPath() == null) {
+                if (!Utils.isGitPluginEnabled() || !(vcsRoot.getVcs() instanceof GitVcs) || vcsRoot.getPath() == null) {
                     continue;
                 }
                 final VirtualFile root = vcsRoot.getPath();
