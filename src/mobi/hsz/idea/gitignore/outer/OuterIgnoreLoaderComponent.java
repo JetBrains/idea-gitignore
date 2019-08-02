@@ -41,6 +41,7 @@ import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.MercurialLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
+import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -181,9 +182,9 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
         @Nullable
         private IgnoreLanguage determineIgnoreLanguage(@NotNull VirtualFile file, FileType fileType) {
             FileTypeRegistry typeRegistry = FileTypeRegistry.getInstance();
-            if (typeRegistry.isFileOfType(file, GitIgnoreFileType.INSTANCE)) {
+            if (Utils.isGitPluginEnabled() && typeRegistry.isFileOfType(file, GitIgnoreFileType.INSTANCE)) {
                 return GitLanguage.INSTANCE;
-            } else if (typeRegistry.isFileOfType(file, HgIgnoreFileType.INSTANCE)) {
+            } else if (Utils.isMercurialPluginEnabled() && typeRegistry.isFileOfType(file, HgIgnoreFileType.INSTANCE)) {
                 return MercurialLanguage.INSTANCE;
             } else if (fileType instanceof IgnoreFileType) {
                 return ((IgnoreFileType) fileType).getIgnoreLanguage();

@@ -387,6 +387,15 @@ public class Utils {
     }
 
     /**
+     * Checks if Mercurial plugin is enabled.
+     *
+     * @return Mercurial plugin is enabled
+     */
+    public static boolean isMercurialPluginEnabled() {
+        return isPluginEnabled("hg4idea");
+    }
+
+    /**
      * Resolves user directory with the <code>user.home</code> property.
      *
      * @param path path with leading ~
