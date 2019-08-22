@@ -27,6 +27,7 @@ package mobi.hsz.idea.gitignore.daemon;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.vcs.changes.ChangeListManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.EditorNotifications;
@@ -65,17 +66,20 @@ public class IgnoredEditingNotificationProvider extends EditorNotifications.Prov
     @NotNull
     private final IgnoreManager manager;
 
+    @NotNull
+    private final ChangeListManager changeListManager;
+
     /**
      * Builds a new instance of {@link IgnoredEditingNotificationProvider}.
      *
      * @param project       current project
-     * @param notifications notifications component
      */
-    public IgnoredEditingNotificationProvider(@NotNull Project project, @NotNull EditorNotifications notifications) {
+    public IgnoredEditingNotificationProvider(@NotNull Project project) {
         this.project = project;
-        this.notifications = notifications;
+        this.notifications = EditorNotifications.getInstance(project);
         this.settings = IgnoreSettings.getInstance();
         this.manager = IgnoreManager.getInstance(project);
+        this.changeListManager = ChangeListManager.getInstance(project);
     }
 
     /**
@@ -100,8 +104,8 @@ public class IgnoredEditingNotificationProvider extends EditorNotifications.Prov
     @Override
     public EditorNotificationPanel createNotificationPanel(@NotNull final VirtualFile file,
                                                            @NotNull FileEditor fileEditor, @NotNull Project project) {
-        if (!settings.isNotifyIgnoredEditing() || !manager.isFileIgnored(file) ||
-                Properties.isDismissedIgnoredEditingNotification(project, file)) {
+        if (!settings.isNotifyIgnoredEditing() || Properties.isDismissedIgnoredEditingNotification(project, file)
+                || !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file)) {
             return null;
         }
 
