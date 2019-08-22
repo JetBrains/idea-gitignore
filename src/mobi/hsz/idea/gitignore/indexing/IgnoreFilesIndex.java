@@ -28,6 +28,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.FileBasedIndex;
@@ -47,7 +48,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of {@link AbstractIgnoreFilesIndex} that allows to index all ignore files content using native
@@ -83,12 +87,21 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
     @NotNull
     @Override
     public Map<IgnoreFileTypeKey, IgnoreEntryOccurrence> map(@NotNull final FileContent inputData) {
-        if (!(inputData.getPsiFile() instanceof IgnoreFile)) {
+        PsiFile inputDataPsi;
+        try {
+            inputDataPsi = inputData.getPsiFile();
+        } catch (Exception e) {
+            // if there is some stale indices (e.g. for mobi.hsz.idea.gitignore.lang.kind.GitLanguage)
+            // inputData.getPsiFile() could throw exception that should be avoided
+            return Collections.emptyMap();
+        }
+
+        if (!(inputDataPsi instanceof IgnoreFile)) {
             return Collections.emptyMap();
         }
 
         final ArrayList<Pair<String, Boolean>> items = ContainerUtil.newArrayList();
-        inputData.getPsiFile().acceptChildren(new IgnoreVisitor() {
+        inputDataPsi.acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {
                 final String regex = Glob.getRegex(entry.getValue(), entry.getSyntax(), false);
