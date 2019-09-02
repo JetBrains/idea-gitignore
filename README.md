@@ -119,9 +119,9 @@ Usage
 Changelog
 ---------
 
-### [v3.2.0](https://github.com/JetBrains/idea-gitignore/tree/v3.2.0) (2019-08-01)
+### [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-09-02)
 
-[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.0)
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.2)
 
 **Compatibility with 2019.2**
 
@@ -133,6 +133,8 @@ The following features are now provided by the platform:
 
 The plugin still provides other features for .gitignore and .hgignore, and the full set of features for other supported ignore files.
 
+- Fix dependency on Mercurial Integration [\#592](https://github.com/hsz/idea-gitignore/issues/592) 
+- Fix index compatibility issue [\#593](https://github.com/hsz/idea-gitignore/issues/593) 
 
 [Full Changelog History](./CHANGELOG.md)
 

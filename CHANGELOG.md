@@ -1,7 +1,7 @@
 Change Log
 ----------
 
-### [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-08-01)
+### [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-09-02)
 
 [Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.0...v3.2.2)
 
