@@ -1,15 +1,15 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>3.1.2</version>
+    <version>3.2.2</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
       <h1>.ignore</h1>
       <br/>
 
-      <a href="https://github.com/hsz/idea-gitignore">GitHub</a> |
-      <a href="https://github.com/hsz/idea-gitignore/issues">Issues</a> |
+      <a href="https://github.com/JetBrains/idea-gitignore">GitHub</a> |
+      <a href="https://github.com/JetBrains/idea-gitignore/issues">Issues</a> |
       <br/>
       <br/>
 
@@ -73,34 +73,32 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/hsz/idea-gitignore/tree/v3.1.2"><b>v3.1.2</b></a> (2019-05-14) <br/><br/>
-        <a href="https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.2"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/JetBrains/idea-gitignore/tree/v3.2.2"><b>v3.2.2</b></a> (2019-09-02) <br/><br/>
+        <a href="https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.2"><small>Full Changelog</small></a> <br/><br/>
 
-        <i>Implemented enhancements:</i>
-        <ul>
-            <li>.gcloudignore (Google Cloud) support (<a href="https://github.com/hsz/idea-gitignore/issues/577">577</a>)</li>
-            <li>.nuxtignore (Nuxt.js) support (<a href="https://github.com/hsz/idea-gitignore/issues/576">576</a>)</li>
-            <li>Fixed deprecation warnings (<a href="https://github.com/hsz/idea-gitignore/issues/567">567</a>)</li>
-            <li>Removed "tracked & ignored" feature (<a href="https://github.com/hsz/idea-gitignore/issues/547">547</a>, <a href="https://github.com/hsz/idea-gitignore/issues/523">523</a>, <a href="https://github.com/hsz/idea-gitignore/issues/528">528</a>, <a href="https://github.com/hsz/idea-gitignore/issues/486">486</a>)</li>
-            <li>Display external .git/info/exclude files in "Outer ignore rules" side editor</li>
-            <li>Handle ~/.config/git/ignore ignore file (<a href="https://github.com/hsz/idea-gitignore/issues/574">574</a>)</li>
-        </ul>
-
-        <i>Fixed bugs:</i>
+        <i>Compatibility with 2019.2</i>
 
         <ul>
-            <li>Adding 2+ templates without new line in between (<a href="https://github.com/hsz/idea-gitignore/issues/561">561</a>)</li>
-            <li>Fixed incorrect relative path resolving for ignored files (<a href="https://github.com/hsz/idea-gitignore/issues/566">566</a>)</li>
-            <li>Fixed "is covered by" false-positive behaviour (<a href="https://github.com/hsz/idea-gitignore/issues/565">565</a>, <a href="https://github.com/hsz/idea-gitignore/issues/228">228</a>)</li>
-            <li>Fixed incorrect double star pattern behaviour (<a href="https://github.com/hsz/idea-gitignore/issues/579">579</a>)</li>
-            <li>Fix for IllegalStateException when ProjectUtil.guessProjectDir called on default project</li>
-            <li>Update downgrades on 2018.2+ (<a href="https://github.com/hsz/idea-gitignore/issues/572">572</a>)</li>
-            <li>Group with id "GenerateGroup" isn't registered (<a href="https://github.com/hsz/idea-gitignore/issues/573">573</a>)</li>
-            <li>Directories marked as excluded are reported as never used (<a href="https://github.com/hsz/idea-gitignore/issues/571">571</a>)</li>
-            <li>All files are marked as ignored (<a href="https://github.com/hsz/idea-gitignore/issues/581">581</a>)</li>
+
+            IntelliJ release 2019.2 brings out of the box support for .gitignore and .hgignore files, so some functionality has moved from the plugin to the platform.
+            The following features are now provided by the platform:
+            <li>Ignored status highlighting for .gitignore and .hgingore</li>
+            <li>Completion in .gitignore and .hgignore</li>
+            <li>Add to ignore actions</li>
+
+            The plugin still provides other features for .gitignore and .hgignore, and the full set of features for other supported ignore files.
+
         </ul>
 
-        <a href="https://github.com/hsz/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
+
+        <i>Fixed bugs since 3.2.1</i>
+
+        <ul>
+            <li> Fix dependency on Mercurial Integration <a href="https://github.com/JetBrains/idea-gitignore/issues/592">592</a>)</li>
+            <li>Fix index compatibility issue <a href="https://github.com/JetBrains/idea-gitignore/issues/593">593</a>)</li>
+        </ul>
+
+        <a href="https://github.com/JetBrains/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
 
     ]]>
     </change-notes>
@@ -122,7 +120,6 @@
                 implementation="mobi.hsz.idea.gitignore.settings.IgnoreSettingsConfigurable"/>
 
         <applicationService
-                serviceInterface="mobi.hsz.idea.gitignore.settings.IgnoreSettings"
                 serviceImplementation="mobi.hsz.idea.gitignore.settings.IgnoreSettings"/>
 
         <colorSettingsPage

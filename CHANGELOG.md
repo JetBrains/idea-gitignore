@@ -1,6 +1,13 @@
 Change Log
 ----------
 
+### [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-08-01)
+
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.0...v3.2.2)
+
+- Fix dependency on Mercurial Integration [\#592](https://github.com/hsz/idea-gitignore/issues/592) 
+- Fix index compatibility issue [\#593](https://github.com/hsz/idea-gitignore/issues/593) 
+
 ### [v3.2.0](https://github.com/JetBrains/idea-gitignore/tree/v3.2.0) (2019-08-01)
 
 [Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.0)

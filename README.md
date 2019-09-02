@@ -1,4 +1,4 @@
-.ignore 3.1.2
+.ignore 3.2.2
 =============
 
 [![Build Status][badge-travis-img]][badge-travis]
