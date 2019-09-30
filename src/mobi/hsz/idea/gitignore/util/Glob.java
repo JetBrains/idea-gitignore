@@ -34,10 +34,7 @@ import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -90,7 +87,7 @@ public class Glob {
         final HashMap<IgnoreEntry, Pattern> map = new HashMap<>();
 
         for (IgnoreEntry entry : entries) {
-            result.put(entry, ContainerUtil.newArrayList());
+            result.put(entry, new ArrayList<>());
 
             final Pattern pattern = createPattern(entry);
             if (pattern != null) {
