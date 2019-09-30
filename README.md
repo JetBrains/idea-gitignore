@@ -74,9 +74,9 @@ Features
 Supported IDEs
 --------------
 
-Since `v3.0.0`, .ignore plugin updates will be delivered to the IDE in version of `171+` - so all builds from 2017+.
+Since `v3.0.0`, .ignore plugin updates will be delivered to the IDE in version of `181+` - so latest build from 2018 and further.
 
-But hey, no worries! It means .ignore for all IDE version from before - `139-163` - will be freezed at `v3.0.0`.
+But hey, no worries! It means .ignore for all IDE version from before - `139-173` - will be freezed at `v3.0.0`.
 
 
 Installation
