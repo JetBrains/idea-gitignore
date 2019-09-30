@@ -154,7 +154,7 @@ public class Glob {
 
         final Map<IgnoreEntry, List<VirtualFile>> files = find(root, entries, matcher, includeNested);
         for (Map.Entry<IgnoreEntry, List<VirtualFile>> item : files.entrySet()) {
-            final Set<String> set = ContainerUtil.newHashSet();
+            final Set<String> set = new HashSet<>();
             for (VirtualFile file : item.getValue()) {
                 set.add(Utils.getRelativePath(root, file));
             }

@@ -40,6 +40,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -109,6 +110,6 @@ public class GitLanguage extends IgnoreLanguage {
         ));
 
         ContainerUtil.addAllNotNull(parentFiles, files);
-        return outerFiles.getOrElse(key, ContainerUtil.newHashSet());
+        return outerFiles.getOrElse(key, new HashSet<>());
     }
 }

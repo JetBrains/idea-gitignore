@@ -67,10 +67,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.STARRED;
 import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.USER;
@@ -91,10 +89,10 @@ public class GeneratorDialog extends DialogWrapper {
     private static final Icon STAR = AllIcons.Ide.Rating;
 
     /** Cache set to store checked templates for the current action. */
-    private final Set<Resources.Template> checked = ContainerUtil.newHashSet();
+    private final Set<Resources.Template> checked = new HashSet<>();
 
     /** Set of the starred templates. */
-    private final Set<String> starred = ContainerUtil.newHashSet();
+    private final Set<String> starred = new HashSet<>();
 
     /** Current working project. */
     @NotNull

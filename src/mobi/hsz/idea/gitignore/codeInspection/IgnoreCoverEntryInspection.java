@@ -136,8 +136,8 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
             return null;
         }
 
-        final Set<String> ignored = ContainerUtil.newHashSet();
-        final Set<String> unignored = ContainerUtil.newHashSet();
+        final Set<String> ignored = new HashSet<>();
+        final Set<String> unignored = new HashSet<>();
 
         final ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
         final List<Pair<IgnoreEntry, IgnoreEntry>> result = new ArrayList<>();
