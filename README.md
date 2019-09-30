@@ -119,6 +119,13 @@ Usage
 Changelog
 ---------
 
+### [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (unreleased)
+
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.2...v3.2.3)
+
+- Incorrect parsing of {} symbols [\#585](https://github.com/hsz/idea-gitignore/issues/585)
+- Fixed deprecated warnings
+
 ### [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-09-02)
 
 [Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.2)

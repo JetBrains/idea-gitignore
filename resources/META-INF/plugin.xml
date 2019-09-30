@@ -94,7 +94,7 @@
         <i>Fixed bugs since 3.2.1</i>
 
         <ul>
-            <li> Fix dependency on Mercurial Integration <a href="https://github.com/JetBrains/idea-gitignore/issues/592">592</a>)</li>
+            <li>Fix dependency on Mercurial Integration <a href="https://github.com/JetBrains/idea-gitignore/issues/592">592</a>)</li>
             <li>Fix index compatibility issue <a href="https://github.com/JetBrains/idea-gitignore/issues/593">593</a>)</li>
         </ul>
 

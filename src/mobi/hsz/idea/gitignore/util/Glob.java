@@ -65,7 +65,7 @@ public class Glob {
      */
     @Nullable
     public static VirtualFile findOne(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry,
-                                            @NotNull MatcherUtil matcher) {
+                                      @NotNull MatcherUtil matcher) {
         final List<VirtualFile> files = find(root, ContainerUtil.newArrayList(entry), matcher, false).get(entry);
         return ContainerUtil.getFirstItem(files);
     }
@@ -303,8 +303,7 @@ public class Glob {
             if (ch == '*') {
                 if (escape) {
                     sb.append("\\*");
-                    escape = false;
-                    star = false;
+                    escape = star = false;
                 } else if (star) {
                     char prev = sb.length() > 0 ? sb.charAt(sb.length() - 1) : '\0';
                     if (prev == '\0' || prev == '^' || prev == '/') {
@@ -327,10 +326,8 @@ public class Glob {
                 case '\\':
                     if (escape) {
                         sb.append("\\\\");
-                        escape = false;
-                    } else {
-                        escape = true;
                     }
+                    escape = !escape;
                     break;
 
                 case '?':
@@ -364,6 +361,8 @@ public class Glob {
                 case '.':
                 case '(':
                 case ')':
+                case '{':
+                case '}':
                 case '+':
                 case '|':
                 case '^':
