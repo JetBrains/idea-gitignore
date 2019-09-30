@@ -87,7 +87,7 @@ public class Glob {
                                                            @NotNull final MatcherUtil matcher,
                                                            final boolean includeNested) {
         final ConcurrentMap<IgnoreEntry, List<VirtualFile>> result = ContainerUtil.newConcurrentMap();
-        final HashMap<IgnoreEntry, Pattern> map = ContainerUtil.newHashMap();
+        final HashMap<IgnoreEntry, Pattern> map = new HashMap<>();
 
         for (IgnoreEntry entry : entries) {
             result.put(entry, ContainerUtil.newArrayList());
@@ -106,7 +106,7 @@ public class Glob {
                             return true;
                         }
 
-                        final HashMap<IgnoreEntry, Pattern> current = ContainerUtil.newHashMap();
+                        final HashMap<IgnoreEntry, Pattern> current = new HashMap<>();
                         if (getCurrentValue().isEmpty()) {
                             return false;
                         }
@@ -153,7 +153,7 @@ public class Glob {
                                                             @NotNull List<IgnoreEntry> entries,
                                                             @NotNull MatcherUtil matcher,
                                                             boolean includeNested) {
-        final Map<IgnoreEntry, Set<String>> result = ContainerUtil.newHashMap();
+        final Map<IgnoreEntry, Set<String>> result = new HashMap<>();
 
         final Map<IgnoreEntry, List<VirtualFile>> files = find(root, entries, matcher, includeNested);
         for (Map.Entry<IgnoreEntry, List<VirtualFile>> item : files.entrySet()) {

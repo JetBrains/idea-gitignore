@@ -32,7 +32,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.PlatformIcons;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryDirectory;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryFile;
@@ -55,7 +54,7 @@ import java.util.List;
  */
 public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
     /** Cache map. */
-    private final HashMap<String, Boolean> cache = ContainerUtil.newHashMap();
+    private final HashMap<String, Boolean> cache = new HashMap<>();
 
     /**
      * Returns {@link LineMarkerInfo} with set {@link PlatformIcons#FOLDER_ICON} if entry points to the directory.

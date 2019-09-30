@@ -31,7 +31,6 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -45,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.PropertyKey;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +64,7 @@ public class IgnoreFileGroupAction extends ActionGroup {
 
     /** List of suitable Gitignore {@link VirtualFile}s that can be presented in an IgnoreFile action. */
     @NotNull
-    private final Map<IgnoreFileType, List<VirtualFile>> files = ContainerUtil.newHashMap();
+    private final Map<IgnoreFileType, List<VirtualFile>> files = new HashMap<>();
 
     /** Action presentation's text for single element. */
     @PropertyKey(resourceBundle = BUNDLE_NAME)

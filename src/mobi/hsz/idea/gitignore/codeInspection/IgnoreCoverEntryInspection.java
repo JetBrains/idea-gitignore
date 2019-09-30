@@ -141,7 +141,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
 
         final ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
         final List<Pair<IgnoreEntry, IgnoreEntry>> result = new ArrayList<>();
-        final Map<IgnoreEntry, Set<String>> map = ContainerUtil.newHashMap();
+        final Map<IgnoreEntry, Set<String>> map = new HashMap<>();
 
         final ArrayList<IgnoreEntry> entries = ContainerUtil.newArrayList(Arrays.asList(
                 ((IgnoreFile) file).findChildrenByClass(IgnoreEntry.class)
@@ -212,7 +212,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
     private Map<IgnoreEntry, Set<String>> getPathsSet(@NotNull VirtualFile contextDirectory,
                                                       @NotNull ArrayList<IgnoreEntry> entries,
                                                       @NotNull MatcherUtil matcher) {
-        final Map<IgnoreEntry, Set<String>> result = ContainerUtil.newHashMap();
+        final Map<IgnoreEntry, Set<String>> result = new HashMap<>();
         final ArrayList<IgnoreEntry> notCached = new ArrayList<>();
 
         for (IgnoreEntry entry : entries) {
