@@ -341,7 +341,6 @@ public class GeneratorDialog extends DialogWrapper {
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
         tree.addTreeSelectionListener(treeSelectionListener);
-        UIUtil.setLineStyleAngled(tree);
         TreeUtil.installActions(tree);
 
         final JScrollPane scrollPane = ScrollPaneFactory.createScrollPane(tree);
