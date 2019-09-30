@@ -100,7 +100,7 @@ public class IgnoreFilesIndex extends AbstractIgnoreFilesIndex<IgnoreFileTypeKey
             return Collections.emptyMap();
         }
 
-        final ArrayList<Pair<String, Boolean>> items = ContainerUtil.newArrayList();
+        final ArrayList<Pair<String, Boolean>> items = new ArrayList<>();
         inputDataPsi.acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {

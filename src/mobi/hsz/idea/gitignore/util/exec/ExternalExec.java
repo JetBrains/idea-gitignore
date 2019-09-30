@@ -108,7 +108,7 @@ public class ExternalExec {
     public static List<String> getUnignoredFiles(@NotNull IgnoreLanguage language, @NotNull Project project,
                                                  @NotNull VirtualFile file) {
         if (!Utils.isInProject(file, project)) {
-            return ContainerUtil.newArrayList();
+            return new ArrayList<>();
         }
 
         ArrayList<String> result = run(

@@ -38,7 +38,6 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.TabbedPaneWrapper;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.labels.LinkLabel;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.ui.UIUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
@@ -54,6 +53,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,7 +74,7 @@ public class OuterIgnoreWrapper extends MouseAdapter implements ChangeListener, 
 
     /** List of outer editors in the wrapper. */
     @NotNull
-    private final List<Editor> outerEditors = ContainerUtil.newArrayList();
+    private final List<Editor> outerEditors = new ArrayList<>();
 
     /** The settings storage object. */
     @NotNull

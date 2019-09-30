@@ -30,12 +30,12 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.ui.JBColor;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterColors;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +57,7 @@ public class UnusedEntrySeveritiesProvider extends SeveritiesProvider {
     @NotNull
     @Override
     public List<HighlightInfoType> getSeveritiesHighlightInfoTypes() {
-        final List<HighlightInfoType> result = ContainerUtil.newArrayList();
+        final List<HighlightInfoType> result = new ArrayList<>();
 
         result.add(new HighlightInfoType.HighlightInfoTypeImpl(
                 UNUSED_ENTRY,

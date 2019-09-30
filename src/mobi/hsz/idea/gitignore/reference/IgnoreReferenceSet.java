@@ -44,6 +44,7 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -149,7 +150,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
     protected void reparse() {
         ProgressManager.checkCanceled();
         String str = StringUtil.trimEnd(getPathString(), getSeparatorString());
-        final List<FileReference> referencesList = ContainerUtil.newArrayList();
+        final List<FileReference> referencesList = new ArrayList<>();
 
         String separatorString = getSeparatorString(); // separator's length can be more then 1 char
         int sepLen = separatorString.length();
@@ -264,7 +265,7 @@ public class IgnoreReferenceSet extends FileReferenceSet {
                     } else if (current.endsWith(Constants.DOUBLESTAR)) {
                         final String key = entry.getText();
                         if (!cacheMap.containsKey(key)) {
-                            final Collection<VirtualFile> children = ContainerUtil.newArrayList();
+                            final Collection<VirtualFile> children = new ArrayList<>();
                             final VirtualFileVisitor<?> visitor = new VirtualFileVisitor<Object>() {
                                 @Override
                                 public boolean visitFile(@NotNull VirtualFile file) {

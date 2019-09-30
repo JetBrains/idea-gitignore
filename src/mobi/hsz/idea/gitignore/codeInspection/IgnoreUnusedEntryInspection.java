@@ -31,7 +31,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
@@ -42,6 +41,7 @@ import mobi.hsz.idea.gitignore.util.Glob;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -123,7 +123,7 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                         entry.getContainingFile().getVirtualFile(),
                         project
                 );
-                final List<VirtualFile> matched = ContainerUtil.newArrayList();
+                final List<VirtualFile> matched = new ArrayList<>();
                 final Collection<VirtualFile> files = cache.getFilesForPattern(project, pattern);
 
                 if (moduleRoot == null) {

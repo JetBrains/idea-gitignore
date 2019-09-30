@@ -67,6 +67,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -535,7 +536,7 @@ public class GeneratorDialog extends DialogWrapper {
      * @return text ranges
      */
     private List<Pair<Integer, Integer>> getFilterRanges(@NotNull String filter, @NotNull String content) {
-        List<Pair<Integer, Integer>> pairs = ContainerUtil.newArrayList();
+        List<Pair<Integer, Integer>> pairs = new ArrayList<>();
         content = content.toLowerCase();
 
         for (String word : Utils.getWords(filter)) {

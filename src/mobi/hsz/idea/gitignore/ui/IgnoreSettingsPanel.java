@@ -330,7 +330,7 @@ public class IgnoreSettingsPanel implements Disposable {
 
         /** Constructs CRUD panel with list listener for editor updating. */
         public TemplatesListPanel() {
-            super(null, ContainerUtil.newArrayList());
+            super(null, new ArrayList<>());
             myList.addListSelectionListener(e -> {
                 boolean enabled = myListModel.size() > 0;
                 editorPanel.setEnabled(enabled);
@@ -547,7 +547,7 @@ public class IgnoreSettingsPanel implements Disposable {
          * @return templates list
          */
         public List<IgnoreSettings.UserTemplate> getList() {
-            ArrayList<IgnoreSettings.UserTemplate> list = ContainerUtil.newArrayList();
+            ArrayList<IgnoreSettings.UserTemplate> list = new ArrayList<>();
             for (int i = 0; i < myListModel.size(); i++) {
                 list.add(myListModel.getElementAt(i));
             }
@@ -586,7 +586,7 @@ public class IgnoreSettingsPanel implements Disposable {
          * @return {@link IgnoreSettings.UserTemplate} list
          */
         public List<IgnoreSettings.UserTemplate> getCurrentItems() {
-            List<IgnoreSettings.UserTemplate> list = ContainerUtil.newArrayList();
+            List<IgnoreSettings.UserTemplate> list = new ArrayList<>();
             int[] ids = myList.getSelectedIndices();
             for (int i = 0; i < ids.length; i++) {
                 list.add(getList().get(i));

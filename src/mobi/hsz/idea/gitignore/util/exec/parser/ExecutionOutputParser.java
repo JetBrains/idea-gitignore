@@ -42,7 +42,7 @@ import java.util.ArrayList;
 public abstract class ExecutionOutputParser<T> {
     /** Outputs list. */
     @NotNull
-    private final ArrayList<T> outputs = ContainerUtil.newArrayList();
+    private final ArrayList<T> outputs = new ArrayList<>();
 
     /** Exit code value. */
     private int exitCode;

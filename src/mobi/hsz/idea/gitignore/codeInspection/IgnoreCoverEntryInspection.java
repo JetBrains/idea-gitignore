@@ -140,7 +140,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
         final Set<String> unignored = ContainerUtil.newHashSet();
 
         final ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
-        final List<Pair<IgnoreEntry, IgnoreEntry>> result = ContainerUtil.newArrayList();
+        final List<Pair<IgnoreEntry, IgnoreEntry>> result = new ArrayList<>();
         final Map<IgnoreEntry, Set<String>> map = ContainerUtil.newHashMap();
 
         final ArrayList<IgnoreEntry> entries = ContainerUtil.newArrayList(Arrays.asList(
@@ -213,7 +213,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
                                                       @NotNull ArrayList<IgnoreEntry> entries,
                                                       @NotNull MatcherUtil matcher) {
         final Map<IgnoreEntry, Set<String>> result = ContainerUtil.newHashMap();
-        final ArrayList<IgnoreEntry> notCached = ContainerUtil.newArrayList();
+        final ArrayList<IgnoreEntry> notCached = new ArrayList<>();
 
         for (IgnoreEntry entry : entries) {
             ProgressManager.checkCanceled();

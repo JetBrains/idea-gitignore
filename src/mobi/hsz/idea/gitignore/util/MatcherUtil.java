@@ -24,12 +24,12 @@
 
 package mobi.hsz.idea.gitignore.util;
 
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.IntObjectCache;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -134,7 +134,7 @@ public class MatcherUtil {
             return new String[0];
         }
 
-        final List<String> parts = ContainerUtil.newArrayList();
+        final List<String> parts = new ArrayList<>();
         final String sPattern = pattern.toString();
 
         StringBuilder part = new StringBuilder();

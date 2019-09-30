@@ -64,10 +64,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 
@@ -185,7 +182,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
 
     /** List of available VCS roots for the current project. */
     @NotNull
-    private final List<VcsRoot> vcsRoots = ContainerUtil.newArrayList();
+    private final List<VcsRoot> vcsRoots = new ArrayList<>();
 
     /** {@link VirtualFileListener} instance to check if file's content was changed. */
     @NotNull
