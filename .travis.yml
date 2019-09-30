@@ -8,7 +8,7 @@ jdk:
 dist: trusty
 
 env:
-  - IDEA_VERSION=2019.2.3
+  - IDEA_VERSION=193-EAP-SNAPSHOT
 
 # Workaround for https://github.com/travis-ci/travis-ci/issues/5227
 # Buffer overflow in Java_java_net_Inet4AddressImpl_getLocalHostName
