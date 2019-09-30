@@ -316,7 +316,7 @@ public class Utils {
     @Nullable
     public static VirtualFile getModuleRoot(@NotNull final Module module) {
         final VirtualFile[] roots = ModuleRootManager.getInstance(module).getContentRoots();
-        final VirtualFile root = ContainerUtil.getFirstItem(ContainerUtil.list(roots));
+        final VirtualFile root = ContainerUtil.getFirstItem(Arrays.asList(roots));
         return root != null && root.isDirectory() ? root : null;
     }
 
