@@ -31,6 +31,7 @@ import com.intellij.util.indexing.IndexableSetContributor;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
+import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 
@@ -72,7 +73,9 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
                         if (file == null || !file.isValid()) {
                             continue;
                         }
-                        if (!(file.getFileType() instanceof IgnoreFileType) && !file.getFileType().equals(fileType)) {
+                        if (!(fileType instanceof GitExcludeFileType)
+                            && !(file.getFileType() instanceof IgnoreFileType)
+                            && !file.getFileType().equals(fileType)) {
                             IgnoreManager.associateFileType(file.getName(), fileType);
                         }
 

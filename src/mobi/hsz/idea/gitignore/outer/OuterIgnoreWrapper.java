@@ -24,6 +24,7 @@
 
 package mobi.hsz.idea.gitignore.outer;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.ide.ui.UISettings;
 import com.intellij.ide.ui.UISettingsListener;
 import com.intellij.openapi.Disposable;
@@ -42,6 +43,8 @@ import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.ui.UIUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -155,7 +158,10 @@ public class OuterIgnoreWrapper extends MouseAdapter implements ChangeListener, 
                     path = path.replace(userHomeDir.getPath(), "~");
                 }
 
-                tabbedPanel.addTab(path, language.getIcon(), scrollPanel, outerFile.getCanonicalPath());
+                Icon icon = ((language instanceof GitLanguage) || (language instanceof GitExcludeLanguage))
+                        ? AllIcons.Vcs.Ignore_file : language.getIcon();
+
+                tabbedPanel.addTab(path, icon, scrollPanel, outerFile.getCanonicalPath());
                 outerEditors.add(outerEditor);
             }
         }

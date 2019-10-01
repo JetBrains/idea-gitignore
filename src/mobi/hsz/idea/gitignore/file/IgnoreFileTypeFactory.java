@@ -30,6 +30,7 @@ import com.intellij.openapi.fileTypes.FileTypeFactory;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
+import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.lang.kind.MercurialLanguage;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +52,9 @@ public class IgnoreFileTypeFactory extends FileTypeFactory {
         consume(consumer, IgnoreFileType.INSTANCE);
         for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
             // skip already bundled languages
-            if (language instanceof GitLanguage || language instanceof MercurialLanguage) {
+            if (language instanceof GitLanguage
+                    || language instanceof GitExcludeLanguage
+                    || language instanceof MercurialLanguage) {
                 continue;
             }
 

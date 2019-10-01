@@ -334,14 +334,7 @@
         <!-- END Git -->
 
         <!-- Git exclude -->
-        <lang.parserDefinition language="Git exclude"
-                               implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <codeInsight.lineMarkerProvider language="Git exclude"
-                                        implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
-        <lang.braceMatcher language="Git exclude"
-                           implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
-        <lang.commenter language="Git exclude" implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
-        <lang.syntaxHighlighterFactory language="Git exclude"
+       <lang.syntaxHighlighterFactory language="GitExclude"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git exclude -->
 

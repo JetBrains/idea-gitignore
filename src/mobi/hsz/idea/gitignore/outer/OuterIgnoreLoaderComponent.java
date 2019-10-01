@@ -34,6 +34,7 @@ import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBusConnection;
+import git4idea.ignore.lang.GitExcludeFileType;
 import git4idea.ignore.lang.GitIgnoreFileType;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -182,8 +183,13 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
         @Nullable
         private IgnoreLanguage determineIgnoreLanguage(@NotNull VirtualFile file, FileType fileType) {
             FileTypeRegistry typeRegistry = FileTypeRegistry.getInstance();
-            if (Utils.isGitPluginEnabled() && typeRegistry.isFileOfType(file, GitIgnoreFileType.INSTANCE)) {
-                return GitLanguage.INSTANCE;
+            if (Utils.isGitPluginEnabled()) {
+                if (typeRegistry.isFileOfType(file, GitIgnoreFileType.INSTANCE)) {
+                    return GitLanguage.INSTANCE;
+                }
+                if (typeRegistry.isFileOfType(file, GitExcludeFileType.INSTANCE)) {
+                    return GitExcludeLanguage.INSTANCE;
+                }
             } else if (Utils.isMercurialPluginEnabled() && typeRegistry.isFileOfType(file, HgIgnoreFileType.INSTANCE)) {
                 return MercurialLanguage.INSTANCE;
             } else if (fileType instanceof IgnoreFileType) {
