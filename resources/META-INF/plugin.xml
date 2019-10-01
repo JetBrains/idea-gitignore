@@ -545,7 +545,6 @@
             <add-to-group group-id="ProjectViewPopupMenu"/>
             <add-to-group group-id="EditorTabPopupMenu"/>
             <add-to-group group-id="ConsoleEditorPopupMenu"/>
-            <add-to-group group-id="ChangesViewPopupMenu" anchor="before" relative-to-action="ChangesView.Ignore"/>
         </group>
         <group id="Ignore.UnignoreGroup" class="mobi.hsz.idea.gitignore.actions.UnignoreFileGroupAction">
             <add-to-group group-id="EditorPopupMenu"/>
