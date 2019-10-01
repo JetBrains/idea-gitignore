@@ -143,7 +143,7 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
         final List<Pair<IgnoreEntry, IgnoreEntry>> result = new ArrayList<>();
         final Map<IgnoreEntry, Set<String>> map = new HashMap<>();
 
-        final ArrayList<IgnoreEntry> entries = ContainerUtil.newArrayList(Arrays.asList(
+        final ArrayList<IgnoreEntry> entries = new ArrayList<>(Arrays.asList(
                 ((IgnoreFile) file).findChildrenByClass(IgnoreEntry.class)
         ));
         final MatcherUtil matcher = IgnoreManager.getInstance(file.getProject()).getMatcher();

@@ -56,7 +56,6 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.table.JBTable;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.JBUI;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
@@ -359,7 +358,6 @@ public class IgnoreSettingsPanel implements Disposable {
                     IgnoreBundle.message("action.importTemplates.description"),
                     AllIcons.Actions.Install
             ) {
-                @SuppressWarnings("unchecked")
                 @Override
                 public void actionPerformed(@NotNull final AnActionEvent event) {
                     final FileChooserDescriptor descriptor =
@@ -522,7 +520,6 @@ public class IgnoreSettingsPanel implements Disposable {
          *
          * @param userTemplates templates list
          */
-        @SuppressWarnings("unchecked")
         public void resetForm(@NotNull List<IgnoreSettings.UserTemplate> userTemplates) {
             myListModel.clear();
             for (IgnoreSettings.UserTemplate template : userTemplates) {
@@ -729,7 +726,7 @@ public class IgnoreSettingsPanel implements Disposable {
          */
         @Override
         public boolean isCellEditable(int row, int column) {
-            final IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
+            final IgnoreLanguage language = new ArrayList<>(settings.keySet()).get(row);
             if (language != null && column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) {
                 return false;
             }
@@ -749,7 +746,7 @@ public class IgnoreSettingsPanel implements Disposable {
          */
         @Override
         public Object getValueAt(int row, int column) {
-            final IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
+            final IgnoreLanguage language = new ArrayList<>(settings.keySet()).get(row);
             if (language == null) {
                 return null;
             }
@@ -788,7 +785,7 @@ public class IgnoreSettingsPanel implements Disposable {
          */
         @Override
         public void setValueAt(Object value, int row, int column) {
-            IgnoreLanguage language = ContainerUtil.newArrayList(settings.keySet()).get(row);
+            IgnoreLanguage language = new ArrayList<>(settings.keySet()).get(row);
             TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data = settings.get(language);
 
             switch (column) {

@@ -43,7 +43,6 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.*;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
@@ -67,8 +66,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.STARRED;
 import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.USER;
@@ -424,7 +423,7 @@ public class GeneratorDialog extends DialogWrapper {
                         starred.remove(template.getName());
                     }
 
-                    settings.setStarredTemplates(ContainerUtil.newArrayList(starred));
+                    settings.setStarredTemplates(new ArrayList<>(starred));
                 }
             }
 

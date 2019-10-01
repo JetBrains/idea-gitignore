@@ -48,6 +48,7 @@ import org.jetbrains.annotations.Nullable;
 import org.zmlx.hg4idea.ignore.lang.HgIgnoreFileType;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -138,8 +139,7 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
             }
 
             DumbService.getInstance(project).runWhenSmart(() -> {
-                final List<VirtualFile> outerFiles =
-                        ContainerUtil.newArrayList(language.getOuterFiles(project, false));
+                final List<VirtualFile> outerFiles = new ArrayList<>(language.getOuterFiles(project, false));
                 if (language instanceof GitLanguage) {
                     outerFiles.addAll(GitExcludeLanguage.INSTANCE.getOuterFiles(project));
                     ContainerUtil.removeDuplicates(outerFiles);

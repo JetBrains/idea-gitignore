@@ -104,7 +104,7 @@ public class GitLanguage extends IgnoreLanguage {
 
         fetched = true;
         final Set<VirtualFile> parentFiles = super.getOuterFiles(project, false);
-        final ArrayList<VirtualFile> files = ContainerUtil.newArrayList(ContainerUtil.filter(
+        final ArrayList<VirtualFile> files = new ArrayList<>(ContainerUtil.filter(
                 IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
                 virtualFile -> Utils.isInProject(virtualFile, project)
         ));
