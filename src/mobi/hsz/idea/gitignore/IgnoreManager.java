@@ -101,10 +101,6 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
     @NotNull
     private final IgnoreSettings settings;
 
-    /** {@link FileStatusManager} instance. */
-    @NotNull
-    private final FileStatusManager statusManager;
-
     /** {@link ProjectLevelVcsManager} instance. */
     @NotNull
     private final ProjectLevelVcsManager projectLevelVcsManager;
@@ -145,7 +141,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
         @Override
         protected void task(@Nullable Object argument) {
             expiringStatusCache.clear();
-            statusManager.fileStatusesChanged();
+            FileStatusManager.getInstance(project).fileStatusesChanged();
         }
     };
 
@@ -291,7 +287,6 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
         this.matcher = new MatcherUtil();
         this.virtualFileManager = VirtualFileManager.getInstance();
         this.settings = IgnoreSettings.getInstance();
-        this.statusManager = FileStatusManager.getInstance(project);
         this.refreshTrackedIgnoredRunnable = new RefreshTrackedIgnoredRunnable();
         this.refreshTrackedIgnoredFeature =
                 new InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5);
