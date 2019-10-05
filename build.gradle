@@ -16,11 +16,6 @@ targetCompatibility = javaTargetVersion
 group pluginGroup
 version = pluginVersion
 
-wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '5.6.2'
-}
-
 tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
 sourceSets {
