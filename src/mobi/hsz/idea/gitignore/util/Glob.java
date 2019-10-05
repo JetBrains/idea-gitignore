@@ -34,10 +34,7 @@ import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -68,7 +65,7 @@ public class Glob {
      */
     @Nullable
     public static VirtualFile findOne(@NotNull final VirtualFile root, @NotNull IgnoreEntry entry,
-                                            @NotNull MatcherUtil matcher) {
+                                      @NotNull MatcherUtil matcher) {
         final List<VirtualFile> files = find(root, ContainerUtil.newArrayList(entry), matcher, false).get(entry);
         return ContainerUtil.getFirstItem(files);
     }
@@ -87,10 +84,10 @@ public class Glob {
                                                            @NotNull final MatcherUtil matcher,
                                                            final boolean includeNested) {
         final ConcurrentMap<IgnoreEntry, List<VirtualFile>> result = ContainerUtil.newConcurrentMap();
-        final HashMap<IgnoreEntry, Pattern> map = ContainerUtil.newHashMap();
+        final HashMap<IgnoreEntry, Pattern> map = new HashMap<>();
 
         for (IgnoreEntry entry : entries) {
-            result.put(entry, ContainerUtil.newArrayList());
+            result.put(entry, new ArrayList<>());
 
             final Pattern pattern = createPattern(entry);
             if (pattern != null) {
@@ -106,7 +103,7 @@ public class Glob {
                             return true;
                         }
 
-                        final HashMap<IgnoreEntry, Pattern> current = ContainerUtil.newHashMap();
+                        final HashMap<IgnoreEntry, Pattern> current = new HashMap<>();
                         if (getCurrentValue().isEmpty()) {
                             return false;
                         }
@@ -153,11 +150,11 @@ public class Glob {
                                                             @NotNull List<IgnoreEntry> entries,
                                                             @NotNull MatcherUtil matcher,
                                                             boolean includeNested) {
-        final Map<IgnoreEntry, Set<String>> result = ContainerUtil.newHashMap();
+        final Map<IgnoreEntry, Set<String>> result = new HashMap<>();
 
         final Map<IgnoreEntry, List<VirtualFile>> files = find(root, entries, matcher, includeNested);
         for (Map.Entry<IgnoreEntry, List<VirtualFile>> item : files.entrySet()) {
-            final Set<String> set = ContainerUtil.newHashSet();
+            final Set<String> set = new HashSet<>();
             for (VirtualFile file : item.getValue()) {
                 set.add(Utils.getRelativePath(root, file));
             }
@@ -306,8 +303,7 @@ public class Glob {
             if (ch == '*') {
                 if (escape) {
                     sb.append("\\*");
-                    escape = false;
-                    star = false;
+                    escape = star = false;
                 } else if (star) {
                     char prev = sb.length() > 0 ? sb.charAt(sb.length() - 1) : '\0';
                     if (prev == '\0' || prev == '^' || prev == '/') {
@@ -330,10 +326,8 @@ public class Glob {
                 case '\\':
                     if (escape) {
                         sb.append("\\\\");
-                        escape = false;
-                    } else {
-                        escape = true;
                     }
+                    escape = !escape;
                     break;
 
                 case '?':
@@ -367,6 +361,8 @@ public class Glob {
                 case '.':
                 case '(':
                 case ')':
+                case '{':
+                case '}':
                 case '+':
                 case '|':
                 case '^':

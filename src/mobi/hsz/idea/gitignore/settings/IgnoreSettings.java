@@ -39,10 +39,7 @@ import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Persistent global settings object for the Ignore plugin.
@@ -110,7 +107,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
 
     /** Starred templates. */
     @NotNull
-    private final List<String> starredTemplates = ContainerUtil.newArrayList();
+    private final List<String> starredTemplates = new ArrayList<>();
 
     /** Settings related to the {@link IgnoreLanguage}. */
     @NotNull
@@ -238,7 +235,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
         Element languagesElement = element.getChild(KEY.LANGUAGES.toString());
         if (languagesElement != null) {
             for (Element languageElement : languagesElement.getChildren()) {
-                TreeMap<IgnoreLanguagesSettings.KEY, Object> data = ContainerUtil.newTreeMap();
+                TreeMap<IgnoreLanguagesSettings.KEY, Object> data = new TreeMap<>();
                 for (IgnoreLanguagesSettings.KEY key : IgnoreLanguagesSettings.KEY.values()) {
                     data.put(key, languageElement.getAttributeValue(key.name()));
                 }
@@ -272,7 +269,7 @@ public class IgnoreSettings implements PersistentStateComponent<Element>, Listen
     @NotNull
     public static List<UserTemplate> loadTemplates(@NotNull Element element) {
         final String key = KEY.USER_TEMPLATES.toString();
-        final List<UserTemplate> list = ContainerUtil.newArrayList();
+        final List<UserTemplate> list = new ArrayList<>();
         if (!key.equals(element.getName())) {
             element = element.getChild(key);
         }

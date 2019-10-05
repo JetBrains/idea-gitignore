@@ -94,7 +94,7 @@
         <i>Fixed bugs since 3.2.1</i>
 
         <ul>
-            <li> Fix dependency on Mercurial Integration <a href="https://github.com/JetBrains/idea-gitignore/issues/592">592</a>)</li>
+            <li>Fix dependency on Mercurial Integration <a href="https://github.com/JetBrains/idea-gitignore/issues/592">592</a>)</li>
             <li>Fix index compatibility issue <a href="https://github.com/JetBrains/idea-gitignore/issues/593">593</a>)</li>
         </ul>
 
@@ -525,11 +525,9 @@
     <project-components>
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.IgnoreManager</implementation-class>
-            <loadForDefaultProject/>
         </component>
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent</implementation-class>
-            <loadForDefaultProject/>
         </component>
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent</implementation-class>
@@ -548,7 +546,6 @@
             <add-to-group group-id="ProjectViewPopupMenu"/>
             <add-to-group group-id="EditorTabPopupMenu"/>
             <add-to-group group-id="ConsoleEditorPopupMenu"/>
-            <add-to-group group-id="ChangesViewPopupMenu" anchor="before" relative-to-action="ChangesView.Ignore"/>
         </group>
         <group id="Ignore.UnignoreGroup" class="mobi.hsz.idea.gitignore.actions.UnignoreFileGroupAction">
             <add-to-group group-id="EditorPopupMenu"/>

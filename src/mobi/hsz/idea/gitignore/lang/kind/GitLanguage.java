@@ -40,6 +40,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -103,12 +104,12 @@ public class GitLanguage extends IgnoreLanguage {
 
         fetched = true;
         final Set<VirtualFile> parentFiles = super.getOuterFiles(project, false);
-        final ArrayList<VirtualFile> files = ContainerUtil.newArrayList(ContainerUtil.filter(
+        final ArrayList<VirtualFile> files = new ArrayList<>(ContainerUtil.filter(
                 IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE),
                 virtualFile -> Utils.isInProject(virtualFile, project)
         ));
 
         ContainerUtil.addAllNotNull(parentFiles, files);
-        return outerFiles.getOrElse(key, ContainerUtil.newHashSet());
+        return outerFiles.getOrElse(key, new HashSet<>());
     }
 }

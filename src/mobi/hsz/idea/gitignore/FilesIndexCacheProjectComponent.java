@@ -38,6 +38,7 @@ import mobi.hsz.idea.gitignore.util.Constants;
 import mobi.hsz.idea.gitignore.util.MatcherUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
@@ -182,7 +183,7 @@ public class FilesIndexCacheProjectComponent implements ProjectComponent {
             return cacheMap.get(key);
         }
 
-        return ContainerUtil.newArrayList();
+        return new ArrayList<>();
     }
 
     /**

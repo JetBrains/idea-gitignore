@@ -136,14 +136,14 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
             return null;
         }
 
-        final Set<String> ignored = ContainerUtil.newHashSet();
-        final Set<String> unignored = ContainerUtil.newHashSet();
+        final Set<String> ignored = new HashSet<>();
+        final Set<String> unignored = new HashSet<>();
 
         final ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
-        final List<Pair<IgnoreEntry, IgnoreEntry>> result = ContainerUtil.newArrayList();
-        final Map<IgnoreEntry, Set<String>> map = ContainerUtil.newHashMap();
+        final List<Pair<IgnoreEntry, IgnoreEntry>> result = new ArrayList<>();
+        final Map<IgnoreEntry, Set<String>> map = new HashMap<>();
 
-        final ArrayList<IgnoreEntry> entries = ContainerUtil.newArrayList(Arrays.asList(
+        final ArrayList<IgnoreEntry> entries = new ArrayList<>(Arrays.asList(
                 ((IgnoreFile) file).findChildrenByClass(IgnoreEntry.class)
         ));
         final MatcherUtil matcher = IgnoreManager.getInstance(file.getProject()).getMatcher();
@@ -212,8 +212,8 @@ public class IgnoreCoverEntryInspection extends LocalInspectionTool {
     private Map<IgnoreEntry, Set<String>> getPathsSet(@NotNull VirtualFile contextDirectory,
                                                       @NotNull ArrayList<IgnoreEntry> entries,
                                                       @NotNull MatcherUtil matcher) {
-        final Map<IgnoreEntry, Set<String>> result = ContainerUtil.newHashMap();
-        final ArrayList<IgnoreEntry> notCached = ContainerUtil.newArrayList();
+        final Map<IgnoreEntry, Set<String>> result = new HashMap<>();
+        final ArrayList<IgnoreEntry> notCached = new ArrayList<>();
 
         for (IgnoreEntry entry : entries) {
             ProgressManager.checkCanceled();

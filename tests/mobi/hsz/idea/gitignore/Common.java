@@ -27,7 +27,6 @@ package mobi.hsz.idea.gitignore;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
 import mobi.hsz.idea.gitignore.util.Constants;
@@ -36,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,7 +63,7 @@ public abstract class Common<T> extends LightPlatformCodeInsightFixtureTestCase 
 
     @NotNull
     protected List<IgnoreEntry> getFixtureChildrenEntries() {
-        final List<IgnoreEntry> children = ContainerUtil.newArrayList();
+        final List<IgnoreEntry> children = new ArrayList<>();
         myFixture.getFile().acceptChildren(new IgnoreVisitor() {
             @Override
             public void visitEntry(@NotNull IgnoreEntry entry) {

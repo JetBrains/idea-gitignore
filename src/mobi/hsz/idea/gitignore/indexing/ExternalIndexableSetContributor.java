@@ -60,7 +60,7 @@ public class ExternalIndexableSetContributor extends IndexableSetContributor {
      */
     @NotNull
     public static HashSet<VirtualFile> getAdditionalFiles(@NotNull Project project) {
-        final HashSet<VirtualFile> files = ContainerUtil.newHashSet();
+        final HashSet<VirtualFile> files = new HashSet<>();
 
         if (CACHE.containsKey(project)) {
             files.addAll(ContainerUtil.filter(CACHE.get(project), VirtualFile::isValid));

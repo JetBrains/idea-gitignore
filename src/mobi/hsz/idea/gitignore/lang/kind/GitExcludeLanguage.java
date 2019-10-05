@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -65,7 +66,7 @@ public class GitExcludeLanguage extends IgnoreLanguage {
                     @NotNull
                     @Override
                     public Collection<VirtualFile> fetch(@NotNull Project project) {
-                        final Collection<VirtualFile> files = ContainerUtil.newArrayList();
+                        final Collection<VirtualFile> files = new ArrayList<>();
                         final VirtualFile baseDir = Utils.guessProjectDir(project);
                         if (baseDir == null) {
                             return files;

@@ -44,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -227,13 +228,13 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
     public Set<VirtualFile> getOuterFiles(@NotNull final Project project, boolean dumb) {
         final int key = new HashCodeBuilder().append(project).append(getFileType()).toHashCode();
         if (outerFiles.get(key) == null) {
-            final Set<VirtualFile> files = ContainerUtil.newHashSet();
+            final Set<VirtualFile> files = new HashSet<>();
             for (OuterIgnoreLoaderComponent.OuterFileFetcher fetcher : getOuterFileFetchers()) {
                 ContainerUtil.addAllNotNull(files, fetcher.fetch(project));
             }
             outerFiles.set(key, files);
         }
-        return outerFiles.getOrElse(key, ContainerUtil.newHashSet());
+        return outerFiles.getOrElse(key, new HashSet<>());
     }
 
     /**

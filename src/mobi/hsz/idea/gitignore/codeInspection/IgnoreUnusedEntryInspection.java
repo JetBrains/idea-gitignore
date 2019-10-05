@@ -31,7 +31,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.IgnoreManager;
@@ -43,7 +42,6 @@ import mobi.hsz.idea.gitignore.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -123,7 +121,6 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                         entry.getContainingFile().getVirtualFile(),
                         project
                 );
-                final List<VirtualFile> matched = ContainerUtil.newArrayList();
                 final Collection<VirtualFile> files = cache.getFilesForPattern(project, pattern);
 
                 if (moduleRoot == null) {
@@ -138,13 +135,8 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
                         }
                         String path = Utils.getRelativePath(moduleRoot, root);
                         if (manager.getMatcher().match(pattern, path)) {
-                            matched.add(file);
                             return false;
                         }
-                    }
-
-                    if (matched.size() > 0) {
-                        return true;
                     }
                 }
 

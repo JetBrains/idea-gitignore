@@ -74,9 +74,9 @@ Features
 Supported IDEs
 --------------
 
-Since `v3.0.0`, .ignore plugin updates will be delivered to the IDE in version of `171+` - so all builds from 2017+.
+Since `v3.0.0`, .ignore plugin updates will be delivered to the IDE in version of `181+` - so latest build from 2018 and further.
 
-But hey, no worries! It means .ignore for all IDE version from before - `139-163` - will be freezed at `v3.0.0`.
+But hey, no worries! It means .ignore for all IDE version from before - `139-173` - will be freezed at `v3.0.0`.
 
 
 Installation
@@ -118,6 +118,13 @@ Usage
 
 Changelog
 ---------
+
+### [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (unreleased)
+
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.2...v3.2.3)
+
+- Incorrect parsing of {} symbols [\#585](https://github.com/hsz/idea-gitignore/issues/585)
+- Fixed deprecated warnings
 
 ### [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-09-02)
 

@@ -108,7 +108,7 @@ public class ExternalExec {
     public static List<String> getUnignoredFiles(@NotNull IgnoreLanguage language, @NotNull Project project,
                                                  @NotNull VirtualFile file) {
         if (!Utils.isInProject(file, project)) {
-            return ContainerUtil.newArrayList();
+            return new ArrayList<>();
         }
 
         ArrayList<String> result = run(
@@ -198,7 +198,7 @@ public class ExternalExec {
                 @NotNull
                 @Override
                 public Future<?> executeTask(@NotNull Runnable task) {
-                    return SharedThreadPool.getInstance().executeOnPooledThread(task);
+                    return SharedThreadPool.getInstance().submit(task);
                 }
 
                 @Override

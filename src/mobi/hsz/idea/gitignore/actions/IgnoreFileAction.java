@@ -31,7 +31,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction;
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType;
@@ -42,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.PropertyKey;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static mobi.hsz.idea.gitignore.IgnoreBundle.BUNDLE_NAME;
@@ -139,7 +139,7 @@ public class IgnoreFileAction extends DumbAwareAction {
         }
 
         if (ignore != null) {
-            Set<String> paths = ContainerUtil.newHashSet();
+            Set<String> paths = new HashSet<>();
             for (VirtualFile file : files) {
                 final String path = getPath(ignore.getVirtualFile().getParent(), file);
                 if (path.isEmpty()) {

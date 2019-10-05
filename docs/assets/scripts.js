@@ -1,1 +1,0 @@
-"use strict";$(".menu .item[data-title]").popup({position:"bottom center"});var ides=["IntelliJ IDEA","PhpStorm","WebStorm","PyCharm","RubyMine","AppCode","CLion","Gogland","DataGrip","Rider","Android Studio"],fade=function e(){var t=$(".ide"),i=(ides.indexOf(t.text())+1)%ides.length;t.delay(1e3).fadeOut("slow",function(){return t.text(ides[i])}).fadeIn("slow",e)};fade();

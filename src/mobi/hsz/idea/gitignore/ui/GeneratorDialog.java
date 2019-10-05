@@ -43,7 +43,6 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.*;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
@@ -67,9 +66,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.STARRED;
 import static mobi.hsz.idea.gitignore.util.Resources.Template.Container.USER;
@@ -90,10 +88,10 @@ public class GeneratorDialog extends DialogWrapper {
     private static final Icon STAR = AllIcons.Ide.Rating;
 
     /** Cache set to store checked templates for the current action. */
-    private final Set<Resources.Template> checked = ContainerUtil.newHashSet();
+    private final Set<Resources.Template> checked = new HashSet<>();
 
     /** Set of the starred templates. */
-    private final Set<String> starred = ContainerUtil.newHashSet();
+    private final Set<String> starred = new HashSet<>();
 
     /** Current working project. */
     @NotNull
@@ -342,7 +340,6 @@ public class GeneratorDialog extends DialogWrapper {
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
         tree.addTreeSelectionListener(treeSelectionListener);
-        UIUtil.setLineStyleAngled(tree);
         TreeUtil.installActions(tree);
 
         final JScrollPane scrollPane = ScrollPaneFactory.createScrollPane(tree);
@@ -426,7 +423,7 @@ public class GeneratorDialog extends DialogWrapper {
                         starred.remove(template.getName());
                     }
 
-                    settings.setStarredTemplates(ContainerUtil.newArrayList(starred));
+                    settings.setStarredTemplates(new ArrayList<>(starred));
                 }
             }
 
@@ -535,7 +532,7 @@ public class GeneratorDialog extends DialogWrapper {
      * @return text ranges
      */
     private List<Pair<Integer, Integer>> getFilterRanges(@NotNull String filter, @NotNull String content) {
-        List<Pair<Integer, Integer>> pairs = ContainerUtil.newArrayList();
+        List<Pair<Integer, Integer>> pairs = new ArrayList<>();
         content = content.toLowerCase();
 
         for (String word : Utils.getWords(filter)) {

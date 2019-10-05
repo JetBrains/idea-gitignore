@@ -30,12 +30,12 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition;
 import mobi.hsz.idea.gitignore.lexer.IgnoreLexerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -46,7 +46,7 @@ import java.util.Map;
  */
 public class IgnoreHighlighter extends SyntaxHighlighterBase {
     /** Attributes map. */
-    private static final Map<IElementType, TextAttributesKey> ATTRIBUTES = ContainerUtil.newHashMap();
+    private static final Map<IElementType, TextAttributesKey> ATTRIBUTES = new HashMap<>();
 
     /* Binds parser definitions with highlighter colors. */
     static {

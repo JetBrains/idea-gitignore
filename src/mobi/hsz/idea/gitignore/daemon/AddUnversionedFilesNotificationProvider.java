@@ -49,6 +49,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +74,7 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
 
     /** List of unignored files. */
     @NotNull
-    private final List<String> unignoredFiles = ContainerUtil.newArrayList();
+    private final List<String> unignoredFiles = new ArrayList<>();
 
     /** Map to obtain if file was handled. */
     private final Map<VirtualFile, Boolean> handledMap = ContainerUtil.createWeakKeyWeakValueMap();

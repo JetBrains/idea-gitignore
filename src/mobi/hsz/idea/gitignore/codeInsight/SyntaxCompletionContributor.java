@@ -29,11 +29,11 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.psi.IgnoreSyntax;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +45,7 @@ import java.util.List;
 public class SyntaxCompletionContributor extends CompletionContributor {
     /** Allowed values for the completion. */
     @NotNull
-    private static final List<LookupElementBuilder> SYNTAX_ELEMENTS = ContainerUtil.newArrayList();
+    private static final List<LookupElementBuilder> SYNTAX_ELEMENTS = new ArrayList<>();
 
     static {
         for (IgnoreBundle.Syntax syntax : IgnoreBundle.Syntax.values()) {

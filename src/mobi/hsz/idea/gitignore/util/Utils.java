@@ -60,6 +60,7 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -183,7 +184,7 @@ public class Utils {
                                                            @NotNull VirtualFile file)
             throws ExternalFileException {
         VirtualFile baseDir = getModuleRootForFile(file, project);
-        List<VirtualFile> files = ContainerUtil.newArrayList();
+        List<VirtualFile> files = new ArrayList<>();
         if (file.getCanonicalPath() == null || baseDir == null ||
                 !VfsUtilCore.isAncestor(baseDir, file, true)) {
             throw new ExternalFileException();
@@ -224,7 +225,7 @@ public class Utils {
      * @return list of excluded roots
      */
     public static List<VirtualFile> getExcludedRoots(@NotNull Project project) {
-        List<VirtualFile> roots = ContainerUtil.newArrayList();
+        List<VirtualFile> roots = new ArrayList<>();
         ModuleManager manager = ModuleManager.getInstance(project);
         for (Module module : manager.getModules()) {
             ModifiableRootModel model = ModuleRootManager.getInstance(module).getModifiableModel();
@@ -315,7 +316,7 @@ public class Utils {
     @Nullable
     public static VirtualFile getModuleRoot(@NotNull final Module module) {
         final VirtualFile[] roots = ModuleRootManager.getInstance(module).getContentRoots();
-        final VirtualFile root = ContainerUtil.getFirstItem(ContainerUtil.list(roots));
+        final VirtualFile root = ContainerUtil.getFirstItem(Arrays.asList(roots));
         return root != null && root.isDirectory() ? root : null;
     }
 

@@ -24,7 +24,6 @@
 
 package mobi.hsz.idea.gitignore.util;
 
-import com.intellij.util.containers.ContainerUtil;
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage;
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings;
 import org.jetbrains.annotations.NonNls;
@@ -33,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -65,9 +65,9 @@ public class Resources {
         final IgnoreSettings settings = IgnoreSettings.getInstance();
         final List<String> starredTemplates = settings.getStarredTemplates();
 
-        final List<Template> templates = ContainerUtil.newArrayList();
+        final List<Template> templates = new ArrayList<>();
         if (resourceTemplates == null) {
-            resourceTemplates = ContainerUtil.newArrayList();
+            resourceTemplates = new ArrayList<>();
 
             // fetch templates from resources
             try {

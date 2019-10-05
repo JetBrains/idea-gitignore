@@ -162,7 +162,7 @@ public class IgnoreEntryOccurrence implements Serializable {
     @NotNull
     public static synchronized IgnoreEntryOccurrence deserialize(@NotNull DataInput in) throws IOException {
         final String url = in.readUTF();
-        final ArrayList<Pair<String, Boolean>> items = ContainerUtil.newArrayList();
+        final ArrayList<Pair<String, Boolean>> items = new ArrayList<>();
 
         if (!StringUtils.isEmpty(url)) {
             final int size = in.readInt();
