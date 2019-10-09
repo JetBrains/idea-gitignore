@@ -197,7 +197,6 @@ public class GeneratorDialog extends DialogWrapper {
      *
      * @throws IllegalStateException if the method is invoked not on the event dispatch thread
      * @see #showAndGet()
-     * @see #showAndGetOk()
      */
     @Override
     public void show() {

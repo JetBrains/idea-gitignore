@@ -50,7 +50,7 @@ public class IgnoreFileTypeFactory extends FileTypeFactory {
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {
         consume(consumer, IgnoreFileType.INSTANCE);
         for (final IgnoreLanguage language : IgnoreBundle.LANGUAGES) {
-            //skip already bundled languages
+            // skip already bundled languages
             if (language instanceof GitLanguage || language instanceof MercurialLanguage) {
                 continue;
             }

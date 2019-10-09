@@ -416,7 +416,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
     private VirtualFile getVcsRootFor(@NotNull final VirtualFile file) {
         final VcsRoot vcsRoot = ContainerUtil.find(
                 ContainerUtil.reverse(vcsRoots),
-                root -> root.getPath() != null && Utils.isUnder(file, root.getPath())
+                root -> Utils.isUnder(file, root.getPath())
         );
         return vcsRoot != null ? vcsRoot.getPath() : null;
     }
@@ -577,7 +577,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
         public void run(boolean silent) {
             final ConcurrentMap<VirtualFile, VcsRoot> result = ContainerUtil.newConcurrentMap();
             for (VcsRoot vcsRoot : vcsRoots) {
-                if (!Utils.isGitPluginEnabled() || !(vcsRoot.getVcs() instanceof GitVcs) || vcsRoot.getPath() == null) {
+                if (!Utils.isGitPluginEnabled() || !(vcsRoot.getVcs() instanceof GitVcs)) {
                     continue;
                 }
                 final VirtualFile root = vcsRoot.getPath();
