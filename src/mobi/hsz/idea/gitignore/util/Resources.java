@@ -65,7 +65,6 @@ public class Resources {
         final IgnoreSettings settings = IgnoreSettings.getInstance();
         final List<String> starredTemplates = settings.getStarredTemplates();
 
-        final List<Template> templates = new ArrayList<>();
         if (resourceTemplates == null) {
             resourceTemplates = new ArrayList<>();
 
@@ -91,7 +90,7 @@ public class Resources {
             }
         }
 
-        templates.addAll(resourceTemplates);
+        final List<Template> templates = new ArrayList<>(resourceTemplates);
 
         // fetch user templates
         for (IgnoreSettings.UserTemplate userTemplate : settings.getUserTemplates()) {
