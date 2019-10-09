@@ -95,7 +95,7 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
 
     @Nullable
     @Override
-    public Object getData(@NotNull Collection<AbstractTreeNode> collection, String s) {
+    public Object getData(@NotNull Collection<AbstractTreeNode> collection, @NotNull String s) {
         return null;
     }
 }
