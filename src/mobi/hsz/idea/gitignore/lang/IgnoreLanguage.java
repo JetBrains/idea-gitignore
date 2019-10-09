@@ -247,7 +247,7 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
                 IgnoreSettings.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {
-            value = Boolean.valueOf(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE).toString());
+            value = Boolean.parseBoolean(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE).toString());
         }
         return value;
     }
@@ -262,7 +262,7 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
                 IgnoreSettings.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {
-            value = Boolean.valueOf(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE).toString());
+            value = Boolean.parseBoolean(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE).toString());
         }
         return value;
     }
