@@ -84,7 +84,9 @@ public class IgnoreSyntaxEntryFix extends LocalQuickFixAndIntentionActionOnPsiEl
                         value.getTextOffset() + value.getTextLength()
                 );
             }
-            new CodeCompletionHandlerBase(CompletionType.BASIC).invokeCompletion(project, editor);
+            if (editor != null) {
+                new CodeCompletionHandlerBase(CompletionType.BASIC).invokeCompletion(project, editor);
+            }
         }
     }
 
