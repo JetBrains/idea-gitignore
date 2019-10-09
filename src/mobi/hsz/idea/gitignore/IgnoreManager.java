@@ -127,7 +127,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
 
     /** References to the indexed {@link IgnoreEntryOccurrence}. */
     @NotNull
-    private final CachedConcurrentMap<IgnoreFileType, Collection<IgnoreEntryOccurrence>> cachedIgnoreFilesIndex;
+    private final CachedConcurrentMap<IgnoreFileType, List<IgnoreEntryOccurrence>> cachedIgnoreFilesIndex;
 
     /** References to the indexed outer files. */
     @NotNull
@@ -332,7 +332,8 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
                 continue;
             }
 
-            final Collection<IgnoreEntryOccurrence> values = cachedIgnoreFilesIndex.get(fileType);
+            final Collection<IgnoreEntryOccurrence> values =
+                    ContainerUtil.notNullize(cachedIgnoreFilesIndex.get(fileType));
 
             valuesCount += values.size();
             for (IgnoreEntryOccurrence value : values) {
