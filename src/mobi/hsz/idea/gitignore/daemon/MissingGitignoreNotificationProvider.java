@@ -63,12 +63,6 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
     private static final Key<EditorNotificationPanel> KEY = Key.create("MissingGitignoreNotificationProvider");
 
     /**
-     * Current project.
-     */
-    @NotNull
-    private final Project project;
-
-    /**
      * Notifications component.
      */
     @NotNull
@@ -87,7 +81,6 @@ public class MissingGitignoreNotificationProvider extends EditorNotifications.Pr
      * @param notifications notifications component
      */
     public MissingGitignoreNotificationProvider(@NotNull Project project, @NotNull EditorNotifications notifications) {
-        this.project = project;
         this.notifications = notifications;
         this.settings = IgnoreSettings.getInstance();
     }

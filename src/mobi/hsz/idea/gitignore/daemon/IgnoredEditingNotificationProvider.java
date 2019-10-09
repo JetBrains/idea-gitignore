@@ -50,10 +50,6 @@ public class IgnoredEditingNotificationProvider extends EditorNotifications.Prov
     @NotNull
     private static final Key<EditorNotificationPanel> KEY = Key.create("IgnoredEditingNotificationProvider");
 
-    /** Current project. */
-    @NotNull
-    private final Project project;
-
     /** Notifications component. */
     @NotNull
     private final EditorNotifications notifications;
@@ -75,7 +71,6 @@ public class IgnoredEditingNotificationProvider extends EditorNotifications.Prov
      * @param project       current project
      */
     public IgnoredEditingNotificationProvider(@NotNull Project project) {
-        this.project = project;
         this.notifications = EditorNotifications.getInstance(project);
         this.settings = IgnoreSettings.getInstance();
         this.manager = IgnoreManager.getInstance(project);
