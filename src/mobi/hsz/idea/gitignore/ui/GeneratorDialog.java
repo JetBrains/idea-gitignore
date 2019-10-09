@@ -561,6 +561,7 @@ public class GeneratorDialog extends DialogWrapper {
         for (String word : Utils.getWords(filter)) {
             if (!StringUtil.containsIgnoreCase(template.getName(), word)) {
                 nameAccepted = false;
+                break;
             }
         }
 
