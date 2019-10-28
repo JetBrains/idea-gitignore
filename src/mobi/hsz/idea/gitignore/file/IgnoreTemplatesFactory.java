@@ -47,19 +47,11 @@ public class IgnoreTemplatesFactory implements FileTemplateGroupDescriptorFactor
     /** File's content header. */
     private static final String TEMPLATE_NOTE = IgnoreBundle.message("file.templateNote");
 
-    /** Group descriptor. */
-    private final FileTemplateGroupDescriptor templateGroup;
-
     /** Current file type. */
     private final IgnoreFileType fileType;
 
     /** Builds a new instance of {@link IgnoreTemplatesFactory}. */
     public IgnoreTemplatesFactory(IgnoreFileType fileType) {
-        templateGroup = new FileTemplateGroupDescriptor(
-                fileType.getIgnoreLanguage().getID(),
-                fileType.getIcon()
-        );
-        templateGroup.addTemplate(fileType.getIgnoreLanguage().getFilename());
         this.fileType = fileType;
     }
 
@@ -70,6 +62,11 @@ public class IgnoreTemplatesFactory implements FileTemplateGroupDescriptorFactor
      */
     @Override
     public FileTemplateGroupDescriptor getFileTemplatesDescriptor() {
+        final FileTemplateGroupDescriptor templateGroup = new FileTemplateGroupDescriptor(
+            fileType.getIgnoreLanguage().getID(),
+            fileType.getIcon()
+        );
+        templateGroup.addTemplate(fileType.getIgnoreLanguage().getFilename());
         return templateGroup;
     }
 
