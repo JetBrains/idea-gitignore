@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>3.2.2</version>
+    <version>3.2.3</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
 
     <description><![CDATA[
@@ -73,29 +73,15 @@
 
     <change-notes><![CDATA[
 
-        <a href="https://github.com/JetBrains/idea-gitignore/tree/v3.2.2"><b>v3.2.2</b></a> (2019-09-02) <br/><br/>
-        <a href="https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.2"><small>Full Changelog</small></a> <br/><br/>
+        <a href="https://github.com/JetBrains/idea-gitignore/tree/v3.2.3"><b>v3.2.3</b></a> (2019-11-26) <br/><br/>
+        <a href="https://github.com/JetBrains/idea-gitignore/compare/v3.2.2...v3.2.3"><small>Full Changelog</small></a> <br/><br/>
 
-        <i>Compatibility with 2019.2</i>
-
-        <ul>
-
-            IntelliJ release 2019.2 brings out of the box support for .gitignore and .hgignore files, so some functionality has moved from the plugin to the platform.
-            The following features are now provided by the platform:
-            <li>Ignored status highlighting for .gitignore and .hgingore</li>
-            <li>Completion in .gitignore and .hgignore</li>
-            <li>Add to ignore actions</li>
-
-            The plugin still provides other features for .gitignore and .hgignore, and the full set of features for other supported ignore files.
-
-        </ul>
-
-
-        <i>Fixed bugs since 3.2.1</i>
+        <i>Notable changes since 3.2.2</i>
 
         <ul>
-            <li>Fix dependency on Mercurial Integration <a href="https://github.com/JetBrains/idea-gitignore/issues/592">592</a>)</li>
-            <li>Fix index compatibility issue <a href="https://github.com/JetBrains/idea-gitignore/issues/593">593</a>)</li>
+            <li>Compatibility with 2019.3</li>
+            <li>Incorrect parsing of {} symbols <a href="https://github.com/hsz/idea-gitignore/issues/585">585</a>)</li>
+            <li>Fix deprecated warnings</li>
         </ul>
 
         <a href="https://github.com/JetBrains/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

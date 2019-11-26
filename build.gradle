@@ -63,7 +63,7 @@ idea {
 
 checkstyle {
     configFile = new File(rootDir, "gradle/checkstyle.xml")
-    toolVersion '8.23'
+    toolVersion '8.24'
 }
 
 // Configurations
