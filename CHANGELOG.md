@@ -1,10 +1,11 @@
 Change Log
 ----------
 
-### [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (unreleased)
+### [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (2019-11-28)
 
 [Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.2...v3.2.3)
 
+- Compatibility with 2019.3
 - Incorrect parsing of {} symbols [\#585](https://github.com/hsz/idea-gitignore/issues/585) 
 - Fixed deprecated warnings
 

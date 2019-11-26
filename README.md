@@ -1,4 +1,4 @@
-.ignore 3.2.2
+.ignore 3.2.3
 =============
 
 [![Build Status][badge-travis-img]][badge-travis]
@@ -55,7 +55,6 @@ Features
 --------
 
 - Files syntax highlight
-- Coloring ignored files in the Project View
 - Gitignore templates filtering and selecting in rules generator by name and content
 - User custom templates
 - Show ignored files by specified Gitignore file (right click on `.gitignore` file)
@@ -119,10 +118,11 @@ Usage
 Changelog
 ---------
 
-### [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (unreleased)
+### [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (2019-11-28)
 
 [Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.2...v3.2.3)
 
+- Compatibility with 2019.3
 - Incorrect parsing of {} symbols [\#585](https://github.com/hsz/idea-gitignore/issues/585)
 - Fixed deprecated warnings
 
