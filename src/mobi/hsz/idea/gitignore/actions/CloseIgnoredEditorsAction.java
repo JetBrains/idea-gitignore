@@ -31,6 +31,8 @@ import com.intellij.openapi.fileEditor.impl.EditorWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import com.intellij.openapi.vcs.changes.ChangeListManager;
+import com.intellij.openapi.vfs.VirtualFile;
 import mobi.hsz.idea.gitignore.IgnoreBundle;
 import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider;
 
@@ -48,9 +50,13 @@ public class CloseIgnoredEditorsAction extends CloseEditorsActionBase {
      */
     @Override
     protected boolean isFileToClose(final EditorComposite editor, final EditorWindow window) {
-        final FileStatusManager fileStatusManager = FileStatusManager.getInstance(window.getManager().getProject());
+        final Project project = window.getManager().getProject();
+        final FileStatusManager fileStatusManager = FileStatusManager.getInstance(project);
+        final ChangeListManager changeListManager = ChangeListManager.getInstance(project);
+        final VirtualFile fileInEditor = editor.getFile();
         return fileStatusManager != null &&
-                fileStatusManager.getStatus(editor.getFile()).equals(IgnoreFileStatusProvider.IGNORED);
+            fileStatusManager.getStatus(fileInEditor).equals(IgnoreFileStatusProvider.IGNORED) ||
+            changeListManager.isIgnoredFile(fileInEditor);
     }
 
     /**
