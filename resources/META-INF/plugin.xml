@@ -76,12 +76,10 @@
         <a href="https://github.com/JetBrains/idea-gitignore/tree/v3.2.3"><b>v3.2.3</b></a> (2019-11-26) <br/><br/>
         <a href="https://github.com/JetBrains/idea-gitignore/compare/v3.2.2...v3.2.3"><small>Full Changelog</small></a> <br/><br/>
 
-        <i>Notable changes since 3.2.2</i>
+        <i>Notable changes since 3.2.3</i>
 
         <ul>
-            <li>Compatibility with 2019.3</li>
-            <li>Incorrect parsing of {} symbols <a href="https://github.com/hsz/idea-gitignore/issues/585">585</a>)</li>
-            <li>Fix deprecated warnings</li>
+            <li>Compatibility with 2020.1</li>
         </ul>
 
         <a href="https://github.com/JetBrains/idea-gitignore/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>

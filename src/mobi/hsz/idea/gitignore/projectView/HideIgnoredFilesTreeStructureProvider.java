@@ -76,9 +76,9 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
      */
     @NotNull
     @Override
-    public Collection<AbstractTreeNode> modify(@NotNull AbstractTreeNode parent,
-                                               @NotNull Collection<AbstractTreeNode> children,
-                                               @Nullable ViewSettings settings) {
+    public Collection<AbstractTreeNode<?>> modify(@NotNull AbstractTreeNode<?> parent,
+                                                  @NotNull Collection<AbstractTreeNode<?>> children,
+                                                  @Nullable ViewSettings settings) {
         if (!ignoreSettings.isHideIgnoredFiles() || children.isEmpty()) {
             return children;
         }
@@ -95,7 +95,7 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
 
     @Nullable
     @Override
-    public Object getData(@NotNull Collection<AbstractTreeNode> collection, @NotNull String s) {
+    public Object getData(@NotNull Collection<AbstractTreeNode<?>> collection, @NotNull String s) {
         return null;
     }
 }
