@@ -100,14 +100,4 @@ public class IgnoreDirectoryMarkerProvider implements LineMarkerProvider {
         }
         return null;
     }
-
-    /**
-     * Mocked method.
-     *
-     * @param elements unused parameter
-     * @param result   unused parameter
-     */
-    @Override
-    public void collectSlowLineMarkers(@NotNull List<PsiElement> elements, @NotNull Collection<LineMarkerInfo> result) {
-    }
 }
