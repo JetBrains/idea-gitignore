@@ -128,6 +128,12 @@ public class GeneratorDialog extends DialogWrapper {
     /** {@link Document} related to the {@link Editor} feature. */
     private Document previewDocument;
 
+    /** Checkbox to generate without duplicates **/
+    private JCheckBox withoutDuplicates;
+
+    /** Checkbox to generate without comments **/
+    private JCheckBox withoutComments;
+
     /** CheckboxTree selection listener. */
     private final TreeSelectionListener treeSelectionListener = e -> {
         final TreePath path = getCurrentPath();
@@ -215,7 +221,7 @@ public class GeneratorDialog extends DialogWrapper {
     @Override
     protected void doOKAction() {
         if (isOKActionEnabled()) {
-            performAppendAction(false, false);
+            performAppendAction();
         }
     }
 
@@ -225,7 +231,7 @@ public class GeneratorDialog extends DialogWrapper {
      * @param ignoreDuplicates ignores duplicated rules
      * @param ignoreComments   ignores comments and empty lines
      */
-    private void performAppendAction(boolean ignoreDuplicates, boolean ignoreComments) {
+    private void performAppendAction() {
         final StringBuilder content = new StringBuilder();
         final Iterator<Resources.Template> iterator = checked.iterator();
         while (iterator.hasNext()) {
@@ -244,20 +250,17 @@ public class GeneratorDialog extends DialogWrapper {
                 file = action.execute();
             }
             if (file != null && (content.length() > 0)) {
-                new AppendFileCommandAction(project, file, content.toString(), ignoreDuplicates, ignoreComments)
-                        .execute();
+                new AppendFileCommandAction(project,
+                    file,
+                    content.toString(),
+                    withoutDuplicates.isSelected(),
+                    withoutComments.isSelected())
+                    .execute();
             }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
         super.doOKAction();
-    }
-
-    /** Creates default actions with appended {@link OptionOkAction} instance. */
-    @Override
-    protected void createDefaultActions() {
-        super.createDefaultActions();
-        myOKAction = new OptionOkAction();
     }
 
     /**
@@ -300,6 +303,25 @@ public class GeneratorDialog extends DialogWrapper {
         treePanel.add(northPanel, BorderLayout.NORTH);
 
         return centerPanel;
+    }
+
+    @Override
+    protected JComponent createSouthPanel() {
+        final JComponent southPanel = super.createSouthPanel();
+
+        withoutDuplicates = new JCheckBox(IgnoreBundle.message("global.generate.without.duplicates"));
+        withoutComments = new JCheckBox(IgnoreBundle.message("global.generate.without.comments"));
+
+        final JComponent checkboxPanel = new JPanel();
+        checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.X_AXIS));
+
+        checkboxPanel.add(withoutDuplicates);
+        checkboxPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        checkboxPanel.add(withoutComments);
+
+        southPanel.add(checkboxPanel, BorderLayout.WEST);
+
+        return southPanel;
     }
 
     /**
@@ -632,28 +654,6 @@ public class GeneratorDialog extends DialogWrapper {
         @Override
         public void filter() {
             filterTree(getFilter());
-        }
-    }
-
-    /** {@link OkAction} instance with additional `Generate without duplicates` action. */
-    private class OptionOkAction extends OkAction implements OptionAction {
-        @NotNull
-        @Override
-        public Action[] getOptions() {
-            return new Action[]{
-                    new DialogWrapperAction(IgnoreBundle.message("global.generate.without.duplicates")) {
-                        @Override
-                        protected void doAction(ActionEvent e) {
-                            performAppendAction(true, false);
-                        }
-                    },
-                    new DialogWrapperAction(IgnoreBundle.message("global.generate.without.comments")) {
-                        @Override
-                        protected void doAction(ActionEvent e) {
-                            performAppendAction(false, true);
-                        }
-                    }
-            };
         }
     }
 }
