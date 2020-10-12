@@ -10,6 +10,8 @@
 Introduction
 ------------
 
+<!-- Plugin description -->
+
 **.ignore** is a plugin for:
  
 - `.gitignore` (Git)
@@ -69,6 +71,7 @@ Features
 - Close opened ignored files action
 - Custom user templates with import/export features
 
+<!-- Plugin description end -->
 
 Supported IDEs
 --------------

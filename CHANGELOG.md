@@ -1,7 +1,7 @@
 Change Log
 ----------
 
-### [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (2019-11-28)
+## [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (2019-11-28)
 
 [Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.2...v3.2.3)
 
@@ -9,14 +9,14 @@ Change Log
 - Incorrect parsing of {} symbols [\#585](https://github.com/hsz/idea-gitignore/issues/585) 
 - Fixed deprecated warnings
 
-### [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-09-02)
+## [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-09-02)
 
 [Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.0...v3.2.2)
 
 - Fix dependency on Mercurial Integration [\#592](https://github.com/hsz/idea-gitignore/issues/592) 
 - Fix index compatibility issue [\#593](https://github.com/hsz/idea-gitignore/issues/593) 
 
-### [v3.2.0](https://github.com/JetBrains/idea-gitignore/tree/v3.2.0) (2019-08-01)
+## [v3.2.0](https://github.com/JetBrains/idea-gitignore/tree/v3.2.0) (2019-08-01)
 
 [Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.0)
 
@@ -30,7 +30,7 @@ The following features are now provided by the platform:
 
 The plugin still provides other features for .gitignore and .hgignore, and the full set of features for other supported ignore files.
 
-### [v3.1.2](https://github.com/hsz/idea-gitignore/tree/v3.1.2) (2019-05-14)
+## [v3.1.2](https://github.com/hsz/idea-gitignore/tree/v3.1.2) (2019-05-14)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v3.0.0...v3.1.2)
 
@@ -55,7 +55,7 @@ The plugin still provides other features for .gitignore and .hgignore, and the f
 - Directories marked as excluded are reported as never used [\#571](https://github.com/hsz/idea-gitignore/issues/571)
 - All files are marked as ignored [\#581](https://github.com/hsz/idea-gitignore/issues/581)
 
-### [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)
+## [v3.0.0](https://github.com/hsz/idea-gitignore/tree/v3.0.0) (2018-07-24)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.2...v3.0.0)
 
@@ -72,7 +72,7 @@ The plugin still provides other features for .gitignore and .hgignore, and the f
 - Unable to save settings [\#552](https://github.com/hsz/idea-gitignore/issues/552)
 
 
-### [v2.6.2](https://github.com/hsz/idea-gitignore/tree/v2.6.2) (2018-05-22)
+## [v2.6.2](https://github.com/hsz/idea-gitignore/tree/v2.6.2) (2018-05-22)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.6.1...v2.6.2)
 
@@ -84,7 +84,7 @@ The plugin still provides other features for .gitignore and .hgignore, and the f
 - Drop project cache from ExternalIndexableSetContributor - thanks to @denofevil [\#545](https://github.com/hsz/idea-gitignore/pull/545)
 
 
-### [v2.6.1](https://github.com/hsz/idea-gitignore/tree/v2.6.1) (2018-04-13)
+## [v2.6.1](https://github.com/hsz/idea-gitignore/tree/v2.6.1) (2018-04-13)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.5.0...v2.6.1)
 
@@ -102,7 +102,7 @@ The plugin still provides other features for .gitignore and .hgignore, and the f
 - Have you considered Open Collective? [opencollective.com/ignore](https://opencollective.com/ignore) [\#497](https://github.com/hsz/idea-gitignore/issues/497)
 
 
-### [v2.5.0](https://github.com/hsz/idea-gitignore/tree/v2.5.0) (2018-03-24)
+## [v2.5.0](https://github.com/hsz/idea-gitignore/tree/v2.5.0) (2018-03-24)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.4.0...v2.5.0)
 
@@ -119,7 +119,7 @@ The plugin still provides other features for .gitignore and .hgignore, and the f
 - AssertionError in VirtualFilePointerContainerImpl [\#503](https://github.com/hsz/idea-gitignore/issues/503)
 
 
-### [v2.4.0](https://github.com/hsz/idea-gitignore/tree/v2.4.0) (2018-01-11)
+## [v2.4.0](https://github.com/hsz/idea-gitignore/tree/v2.4.0) (2018-01-11)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.3.2...v2.4.0)
 
@@ -133,7 +133,7 @@ The plugin still provides other features for .gitignore and .hgignore, and the f
 - Opening multiple projects in a new window makes IDEA plug-in unresponsive [\#510](https://github.com/hsz/idea-gitignore/issues/510)
 
 
-### [v2.3.2](https://github.com/hsz/idea-gitignore/tree/v2.3.2) (2017-11-17)
+## [v2.3.2](https://github.com/hsz/idea-gitignore/tree/v2.3.2) (2017-11-17)
 
 [Full Changelog](https://github.com/hsz/idea-gitignore/compare/v2.3.0...v2.3.2)
 
