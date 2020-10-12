@@ -6,7 +6,7 @@ This fork will show up on your own github profile, and can be checked out to you
 After doing any changes in the project and commiting in to your fork repository - make sure, you are up-to-date
 with *upstream*. After that, create a pull request.
 
-Do not commit [`GitignoreLexer.java`](./src/mobi/hsz/idea/gitignore/lexer/GitignoreLexer.java) file if only timestamps has changed.
+Do not commit [`GitignoreLexer.java`](src/main/java/mobi/hsz/idea/gitignore/lexer/GitignoreLexer.java) file if only timestamps has changed.
 
 Author
 ------

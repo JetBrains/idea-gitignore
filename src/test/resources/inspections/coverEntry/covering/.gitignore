@@ -1,4 +1,4 @@
-subdir1/f*
+subdir1/foo.txt
 <warning descr="'subdir1/*' is covered by 'subdir1/f*'">subdir1/*</warning>
 
 <warning descr="'subdir2/foo.txt' is covered by 'subdir2'">subdir2/foo.txt</warning>
