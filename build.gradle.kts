@@ -84,7 +84,8 @@ intellij {
 }
 
 changelog {
-    headerParserRegex = """\[?v\d(\.\d+)+\]?.*""".toRegex()
+    headerParserRegex =
+         """\[?v\d(\.\d+)+\]?.*""".toRegex()
 }
 
 // Configure detekt plugin.
