@@ -1,7 +1,8 @@
 .ignore 3.2.3
 =============
 
-[![Build Status][badge-travis-img]][badge-travis]
+[![official JetBrains project](https://jb.gg/badges/official.svg)][jb:confluence-on-gh]
+[![Build](https://github.com/JetBrains/idea-gitignore/workflows/Build/badge.svg)][gh:build]
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)][plugin-website]
 [![Downloads](http://phpstorm.espend.de/badge/7495/downloads)][plugin-website]
@@ -118,94 +119,9 @@ Usage
    ![Code inspections](http://gitignore.hsz.mobi/usage-3.gif)
 
 
-Changelog
----------
+[github-gitignore]:    https://github.com/github/gitignore
+[plugin-website]:      https://plugins.jetbrains.com/plugin/7495
+[latest-release]:      https://github.com/JetBrains/idea-gitignore/releases/latest
 
-### [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (2019-11-28)
-
-[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.2...v3.2.3)
-
-- Compatibility with 2019.3
-- Incorrect parsing of {} symbols [\#585](https://github.com/hsz/idea-gitignore/issues/585)
-- Fixed deprecated warnings
-
-### [v3.2.2](https://github.com/JetBrains/idea-gitignore/tree/v3.2.2) (2019-09-02)
-
-[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.1.2...v3.2.2)
-
-**Compatibility with 2019.2**
-
-IntelliJ release 2019.2 brings out of the box support for .gitignore and .hgignore files, so some functionality has moved from the plugin to the platform. 
-The following features are now provided by the platform:
-- Ignored status highlighting for .gitignore and .hgingore
-- Completion in .gitignore and .hgignore
-- Add to ignore actions
-
-The plugin still provides other features for .gitignore and .hgignore, and the full set of features for other supported ignore files.
-
-- Fix dependency on Mercurial Integration [\#592](https://github.com/hsz/idea-gitignore/issues/592) 
-- Fix index compatibility issue [\#593](https://github.com/hsz/idea-gitignore/issues/593) 
-
-[Full Changelog History](./CHANGELOG.md)
-
-
-Contribution
-------------
-
-Check [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
-
-### Compiling the source code
-
-Since the project has been migrated to the Gradle and [Gradle IntelliJ plugin][gradle-intellij-plugin],
-the build process is much simpler. The only thing to build the plugin is to run:
-
-    gradle build
-    
-All required dependencies like Grammar-Kit, JFlex are downloaded in the background and triggered properly
-during the build process. You can also test the plugin easily with running:
-
-    gradle runIdea
-    
-All of the gradle tasks can be connected to the IntelliJ debugger, so the development process is very easy.
-
-
-Developed By
-------------
-
-[**@hsz** Jakub Chrzanowski][hsz]
-
-
-**Contributors**
-
-- [**@zolotov** Alexander Zolotov](https://github.com/zolotov)
-- [**@nicity** Maksim Mosienko](https://github.com/nicity)
-- [**@76200** Bartłomiej Czyż](https://github.com/76200)
-- [**@bedla** Ivo Šmíd](https://github.com/bedla)
-- [**@danpfe**](https://github.com/danpfe)
-- [**@maximilianonajle** Maximiliano Najle](https://github.com/maximilianonajle)
-- [**@jimschubert** Jim Schubert](https://github.com/jimschubert)
-- [**@sergei-ivanov** Sergei Ivanov](https://github.com/sergei-ivanov)
-
-
-Tools
------
-
-I'm using Yourkit to locate and fix performance issues of .ignore. YourKit, LLC kindly provided a
-free open-source license of the [YourKit Java Profiler](https://www.yourkit.com/java/profiler/).
-
-![YourKit Java Profiler Logo](https://www.yourkit.com/images/yklogo.png "YourKit Java Profiler Logo")
-
-
-License
--------
-
-Copyright (c) 2018 hsz Jakub Chrzanowski. See the [LICENSE](./LICENSE) file for license rights and limitations (MIT).
-
-    
-[github-gitignore]:       https://github.com/github/gitignore
-[gradle-intellij-plugin]: https://github.com/JetBrains/gradle-intellij-plugin
-[hsz]:                    http://hsz.mobi
-[plugin-website]:         https://plugins.jetbrains.com/plugin/7495
-[latest-release]:         https://github.com/JetBrains/idea-gitignore/releases/latest
-[badge-travis-img]:       https://travis-ci.org/JetBrains/idea-gitignore.svg?branch=master
-[badge-travis]:           https://travis-ci.org/JetBrains/idea-gitignore
+[jb:confluence-on-gh]: https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub
+[gh:build]:            https://github.com/JetBrains/idea-gitignore/actions?query=workflow%3ABuild
