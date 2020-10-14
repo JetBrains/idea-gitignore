@@ -1,7 +1,10 @@
 package mobi.hsz.idea.gitignore.inspections
 
 import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.psi.PsiManager
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import java.io.File
 
@@ -13,7 +16,7 @@ abstract class InspectionTestCase : BasePlatformTestCase() {
 
     override fun getTestDataPath(): String {
         val url = Thread.currentThread().contextClassLoader.getResource("inspections") ?: return ""
-        return File("${url.path}/${name()}").absolutePath
+        return File(url.path + "/" + name()).absolutePath
     }
 
     private fun name() = StringUtil.decapitalize(
@@ -34,14 +37,20 @@ abstract class InspectionTestCase : BasePlatformTestCase() {
 
     protected fun doHighlightingFileTest() {
         myFixture.apply {
-            configureByFile(getTestName(true) + FILENAME)
+            val file = VirtualFileManager.getInstance().findFileByUrl(getTestName(true) + FILENAME) ?: return
+            val text = PsiManager.getInstance(project).findFile(file)?.text ?: return
+
+            configureByText(IgnoreFileType.INSTANCE, text)
             testHighlighting(true, false, true)
         }
     }
 
     protected fun doHighlightingFileTestWithQuickFix(quickFixName: String) {
         myFixture.apply {
-            configureByFile(getTestName(true) + FILENAME)
+            val file = VirtualFileManager.getInstance().findFileByUrl(getTestName(true) + FILENAME) ?: return
+            val text = PsiManager.getInstance(project).findFile(file)?.text ?: return
+
+            configureByText(IgnoreFileType.INSTANCE, text)
             testHighlighting(true, false, true)
             launchAction(findSingleIntention(quickFixName))
             checkResultByFile("${getTestName(true)}-after$FILENAME")
