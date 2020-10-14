@@ -9,7 +9,7 @@ class IgnoreFileActionTest : Common<IgnoreFileAction?>() {
 
     fun testAddTemplateActionInvocation() {
         val action = IgnoreFileAction()
-        
+
         myFixture.testAction(action).apply {
             assertEquals(IgnoreBundle.message("action.addToIgnore", "null"), text)
             assertEquals(IgnoreBundle.message("action.addToIgnore.description", "null"), description)

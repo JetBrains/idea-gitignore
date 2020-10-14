@@ -40,7 +40,7 @@ class GlobTest : Common<Glob>() {
         }
         val dir = fixtureRootFile.findChild("dir")
         TestCase.assertNotNull(dir)
-        
+
         var result = Glob.find(fixtureRootFile, fixtureChildrenEntries, MatcherUtil(), false)
 
         // foo.txt
@@ -87,7 +87,7 @@ class GlobTest : Common<Glob>() {
             TestCase.assertEquals(it.size, 1)
             TestCase.assertTrue(it.contains(fixtureRootFile.findChild("dir")))
         }
-        
+
         // dir includeNested
         result = Glob.find(fixtureRootFile, fixtureChildrenEntries, MatcherUtil(), true)
         result[fixtureChildrenEntries[4]]!!.let {
