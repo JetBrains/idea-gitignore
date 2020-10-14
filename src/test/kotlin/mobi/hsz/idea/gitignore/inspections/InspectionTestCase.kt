@@ -4,14 +4,16 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.psi.PsiManager
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.util.ResourceUtil
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
+import org.apache.log4j.lf5.util.ResourceUtils
 import java.io.File
 
 abstract class InspectionTestCase : BasePlatformTestCase() {
 
     companion object {
-        private val FILENAME = IgnoreLanguage.INSTANCE.filename
+        public val FILENAME = IgnoreLanguage.INSTANCE.filename
     }
 
     override fun getTestDataPath(): String {
@@ -37,23 +39,24 @@ abstract class InspectionTestCase : BasePlatformTestCase() {
 
     protected fun doHighlightingFileTest() {
         myFixture.apply {
-            val file = VirtualFileManager.getInstance().findFileByUrl(getTestName(true) + FILENAME) ?: return
-            val text = PsiManager.getInstance(project).findFile(file)?.text ?: return
-
-            configureByText(IgnoreFileType.INSTANCE, text)
+            configureByIgnoreFile(getTestName(true) + FILENAME)
             testHighlighting(true, false, true)
         }
     }
 
     protected fun doHighlightingFileTestWithQuickFix(quickFixName: String) {
         myFixture.apply {
-            val file = VirtualFileManager.getInstance().findFileByUrl(getTestName(true) + FILENAME) ?: return
-            val text = PsiManager.getInstance(project).findFile(file)?.text ?: return
-
-            configureByText(IgnoreFileType.INSTANCE, text)
+            configureByIgnoreFile(getTestName(true) + FILENAME)
             testHighlighting(true, false, true)
             launchAction(findSingleIntention(quickFixName))
             checkResultByFile("${getTestName(true)}-after$FILENAME")
         }
+    }
+
+    protected fun configureByIgnoreFile(fileName: String) {
+        val resource = javaClass.classLoader.getResourceAsStream("inspections/${name()}/$fileName") ?: return
+        val text = ResourceUtil.loadText(resource)
+
+        myFixture.configureByText(IgnoreFileType.INSTANCE, text)
     }
 }
