@@ -13,6 +13,7 @@ class MatcherUtilTest : Common<MatcherUtil?>() {
     fun testMatch() {
         val pattern = Pattern.compile("foo")
         val util = MatcherUtil()
+
         TestCase.assertFalse(util.match(null, null))
         TestCase.assertFalse(util.match(null, "foo"))
         TestCase.assertFalse(util.match(pattern, null))
