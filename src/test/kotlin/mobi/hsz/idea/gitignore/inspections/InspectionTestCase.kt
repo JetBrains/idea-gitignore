@@ -1,19 +1,16 @@
 package mobi.hsz.idea.gitignore.inspections
 
 import com.intellij.openapi.util.text.StringUtil
-import com.intellij.openapi.vfs.VirtualFileManager
-import com.intellij.psi.PsiManager
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.ResourceUtil
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
-import org.apache.log4j.lf5.util.ResourceUtils
 import java.io.File
 
 abstract class InspectionTestCase : BasePlatformTestCase() {
 
     companion object {
-        public val FILENAME = IgnoreLanguage.INSTANCE.filename
+        val FILENAME = IgnoreLanguage.INSTANCE.filename
     }
 
     override fun getTestDataPath(): String {

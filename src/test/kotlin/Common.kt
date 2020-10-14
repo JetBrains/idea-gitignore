@@ -34,11 +34,13 @@ abstract class Common<T> : BasePlatformTestCase() {
     protected val fixtureChildrenEntries: List<IgnoreEntry>
         get() {
             val children: MutableList<IgnoreEntry> = mutableListOf()
-            myFixture.file.acceptChildren(object : IgnoreVisitor() {
-                override fun visitEntry(entry: IgnoreEntry) {
-                    children.add(entry)
+            myFixture.file.acceptChildren(
+                object : IgnoreVisitor() {
+                    override fun visitEntry(entry: IgnoreEntry) {
+                        children.add(entry)
+                    }
                 }
-            })
+            )
             return children
         }
 }

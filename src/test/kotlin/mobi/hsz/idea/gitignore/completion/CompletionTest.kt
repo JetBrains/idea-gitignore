@@ -6,7 +6,6 @@ import com.intellij.openapi.command.WriteCommandAction.writeCommandAction
 import com.intellij.testFramework.UsefulTestCase
 import mobi.hsz.idea.gitignore.Common
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
-import mobi.hsz.idea.gitignore.file.type.kind.GitFileType
 import java.io.IOException
 
 class CompletionTest : Common<Any?>() {
