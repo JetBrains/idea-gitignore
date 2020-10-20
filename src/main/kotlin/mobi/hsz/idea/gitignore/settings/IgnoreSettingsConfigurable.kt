@@ -56,15 +56,15 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
      * @return true if the settings were modified, false otherwise.
      */
     override fun isModified() = settingsPanel!!.run {
-        !Comparing.equal(settings.missingGitignore, isMissingGitignore)
-            || !Utils.equalLists(settings.userTemplates, userTemplates)
-            || !Comparing.equal(settings.ignoredFileStatus, isIgnoredFileStatus)
-            || !Comparing.equal(settings.outerIgnoreRules, isOuterIgnoreRules)
-            || !Comparing.equal(settings.insertAtCursor, isInsertAtCursor)
-            || !Comparing.equal(settings.addUnversionedFiles, isAddUnversionedFiles)
-            || !Comparing.equal(settings.unignoreActions, isUnignoreActions)
-            || !Comparing.equal(settings.notifyIgnoredEditing, isNotifyIgnoredEditing)
-            || !languagesSettings.equalSettings(settings.languagesSettings)
+        !Comparing.equal(settings.missingGitignore, isMissingGitignore) ||
+            !Utils.equalLists(settings.userTemplates, userTemplates) ||
+            !Comparing.equal(settings.ignoredFileStatus, isIgnoredFileStatus) ||
+            !Comparing.equal(settings.outerIgnoreRules, isOuterIgnoreRules) ||
+            !Comparing.equal(settings.insertAtCursor, isInsertAtCursor) ||
+            !Comparing.equal(settings.addUnversionedFiles, isAddUnversionedFiles) ||
+            !Comparing.equal(settings.unignoreActions, isUnignoreActions) ||
+            !Comparing.equal(settings.notifyIgnoredEditing, isNotifyIgnoredEditing) ||
+            !languagesSettings.equalSettings(settings.languagesSettings)
     }
 
     /** Store the settings from configurable to other components. */

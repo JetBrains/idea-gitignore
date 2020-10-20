@@ -105,12 +105,15 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     var languagesSettings = object : IgnoreLanguagesSettings() {
         init {
             for (language in IgnoreBundle.LANGUAGES) {
-                put(language, object : TreeMap<KEY, Any>() {
-                    init {
-                        put(KEY.NEW_FILE, true)
-                        put(KEY.ENABLE, language.isVCS && !IgnoreBundle.isExcludedFromHighlighting(language))
+                put(
+                    language,
+                    object : TreeMap<KEY, Any>() {
+                        init {
+                            put(KEY.NEW_FILE, true)
+                            put(KEY.ENABLE, language.isVCS && !IgnoreBundle.isExcludedFromHighlighting(language))
+                        }
                     }
-                })
+                )
             }
         }
     }
@@ -156,10 +159,12 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         fun createTemplatesElement(userTemplates: List<UserTemplate>) =
             Element(KEY.USER_TEMPLATES.toString()).apply {
                 userTemplates.forEach {
-                    addContent(Element(KEY.USER_TEMPLATES_TEMPLATE.toString()).apply {
-                        setAttribute(KEY.USER_TEMPLATES_NAME.toString(), it.name)
-                        addContent(it.content)
-                    })
+                    addContent(
+                        Element(KEY.USER_TEMPLATES_TEMPLATE.toString()).apply {
+                            setAttribute(KEY.USER_TEMPLATES_NAME.toString(), it.name)
+                            addContent(it.content)
+                        }
+                    )
                 }
             }
 
@@ -195,19 +200,23 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         setAttribute(KEY.HIDE_IGNORED_FILES.toString(), hideIgnoredFiles.toString())
         setAttribute(KEY.NOTIFY_IGNORED_EDITING.toString(), notifyIgnoredEditing.toString())
 
-        addContent(Element(KEY.LANGUAGES.toString()).apply {
-            languagesSettings.forEach { (key, value) ->
-                if (key == null) {
-                    return@forEach
-                }
-                addContent(Element(KEY.LANGUAGES_LANGUAGE.toString()).apply {
-                    setAttribute(KEY.LANGUAGES_ID.toString(), key.id)
-                    value.forEach {
-                        setAttribute(it.key.name, it.value.toString())
+        addContent(
+            Element(KEY.LANGUAGES.toString()).apply {
+                languagesSettings.forEach { (key, value) ->
+                    if (key == null) {
+                        return@forEach
                     }
-                })
+                    addContent(
+                        Element(KEY.LANGUAGES_LANGUAGE.toString()).apply {
+                            setAttribute(KEY.LANGUAGES_ID.toString(), key.id)
+                            value.forEach {
+                                setAttribute(it.key.name, it.value.toString())
+                            }
+                        }
+                    )
+                }
             }
-        })
+        )
         addContent(createTemplatesElement(userTemplates))
     }
 
