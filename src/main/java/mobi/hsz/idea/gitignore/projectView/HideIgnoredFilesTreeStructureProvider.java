@@ -79,7 +79,7 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
     public Collection<AbstractTreeNode<?>> modify(@NotNull AbstractTreeNode<?> parent,
                                                   @NotNull Collection<AbstractTreeNode<?>> children,
                                                   @Nullable ViewSettings settings) {
-        if (!ignoreSettings.isHideIgnoredFiles() || children.isEmpty()) {
+        if (!ignoreSettings.getHideIgnoredFiles() || children.isEmpty()) {
             return children;
         }
 

@@ -93,7 +93,7 @@ public class AppendFileCommandAction extends CommandAction<PsiFile> {
         this.manager = PsiDocumentManager.getInstance(project);
         this.ignoreDuplicates = ignoreDuplicates;
         this.ignoreComments = ignoreComments;
-        this.insertAtCursor = IgnoreSettings.getInstance().isInsertAtCursor();
+        this.insertAtCursor = IgnoreSettings.getInstance().getInsertAtCursor();
     }
 
     /**

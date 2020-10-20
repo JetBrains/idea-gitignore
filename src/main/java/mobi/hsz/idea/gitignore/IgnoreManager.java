@@ -481,7 +481,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
      * @return enabled
      */
     private boolean isEnabled() {
-        return settings.isIgnoredFileStatus();
+        return settings.getIgnoredFileStatus();
     }
 
     /** Enable manager. */

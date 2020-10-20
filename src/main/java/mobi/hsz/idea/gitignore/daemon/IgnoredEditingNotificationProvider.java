@@ -99,7 +99,7 @@ public class IgnoredEditingNotificationProvider extends EditorNotifications.Prov
     @Override
     public EditorNotificationPanel createNotificationPanel(@NotNull final VirtualFile file,
                                                            @NotNull FileEditor fileEditor, @NotNull Project project) {
-        if (!settings.isNotifyIgnoredEditing() || Properties.isDismissedIgnoredEditingNotification(project, file)
+        if (!settings.getNotifyIgnoredEditing() || Properties.isDismissedIgnoredEditingNotification(project, file)
                 || !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file)) {
             return null;
         }
