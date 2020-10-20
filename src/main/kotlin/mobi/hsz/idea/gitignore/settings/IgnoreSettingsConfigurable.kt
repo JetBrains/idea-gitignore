@@ -16,6 +16,7 @@ import javax.swing.JComponent
  * Configuration interface for [IgnoreSettings].
  */
 class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvider {
+
     /** The settings storage object.  */
     private val settings = IgnoreSettings.instance
 
