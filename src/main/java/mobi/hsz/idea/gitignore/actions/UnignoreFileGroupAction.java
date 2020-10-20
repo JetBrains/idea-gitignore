@@ -68,13 +68,13 @@ public class UnignoreFileGroupAction extends IgnoreFileGroupAction {
     /**
      * Presents a list of suitable Gitignore files that can cover currently selected {@link VirtualFile}.
      * Shows a subgroup with available files or one option if only one Gitignore file is available.
-     * Group will be hidden if {@link IgnoreSettings#isUnignoreActions()} is set to <code>false</code>.
+     * Group will be hidden if {@link IgnoreSettings#getUnignoreActions()} is set to <code>false</code>.
      *
      * @param e action event
      */
     @Override
     public void update(@NotNull AnActionEvent e) {
-        boolean status = settings.isUnignoreActions();
+        boolean status = settings.getUnignoreActions();
         e.getPresentation().setVisible(status);
         if (status) {
             super.update(e);

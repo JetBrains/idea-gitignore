@@ -113,7 +113,7 @@ public class AddUnversionedFilesNotificationProvider extends EditorNotifications
     public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor,
                                                            @NotNull Project project) {
         // Break if feature is disabled in the Settings
-        if (!settings.isAddUnversionedFiles()) {
+        if (!settings.getAddUnversionedFiles()) {
             return null;
         }
         // Break if user canceled previously this notification

@@ -48,23 +48,23 @@ public class HideIgnoredFilesAction extends AnAction {
     }
 
     /**
-     * Returns proper action's presentation text depending on the {@link IgnoreSettings#hideIgnoredFiles} value.
+     * Returns proper action's presentation text depending on the {@link IgnoreSettings#getHideIgnoredFiles} value.
      *
      * @return presentation text
      */
     private static String getText() {
-        final boolean hideIgnoredFiles = SETTINGS.isHideIgnoredFiles();
+        final boolean hideIgnoredFiles = SETTINGS.getHideIgnoredFiles();
         return IgnoreBundle.message(hideIgnoredFiles ? "action.showIgnoredVisibility" : "action.hideIgnoredVisibility");
     }
 
     /**
-     * Toggles {@link IgnoreSettings#hideIgnoredFiles} value.
+     * Toggles {@link IgnoreSettings#getHideIgnoredFiles} value.
      *
      * @param e action event
      */
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        SETTINGS.setHideIgnoredFiles(!SETTINGS.isHideIgnoredFiles());
+        SETTINGS.setHideIgnoredFiles(!SETTINGS.getHideIgnoredFiles());
 
         final Presentation presentation = this.getTemplatePresentation();
         presentation.setText(getText());

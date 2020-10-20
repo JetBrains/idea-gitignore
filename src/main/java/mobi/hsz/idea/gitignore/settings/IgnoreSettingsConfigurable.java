@@ -99,14 +99,14 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
     @Override
     public boolean isModified() {
         return settingsPanel == null
-                || !Comparing.equal(settings.isMissingGitignore(), settingsPanel.isMissingGitignore())
+                || !Comparing.equal(settings.getMissingGitignore(), settingsPanel.isMissingGitignore())
                 || !Utils.equalLists(settings.getUserTemplates(), settingsPanel.getUserTemplates())
-                || !Comparing.equal(settings.isIgnoredFileStatus(), settingsPanel.isIgnoredFileStatus())
-                || !Comparing.equal(settings.isOuterIgnoreRules(), settingsPanel.isOuterIgnoreRules())
-                || !Comparing.equal(settings.isInsertAtCursor(), settingsPanel.isInsertAtCursor())
-                || !Comparing.equal(settings.isAddUnversionedFiles(), settingsPanel.isAddUnversionedFiles())
-                || !Comparing.equal(settings.isUnignoreActions(), settingsPanel.isUnignoreActions())
-                || !Comparing.equal(settings.isNotifyIgnoredEditing(), settingsPanel.isNotifyIgnoredEditing())
+                || !Comparing.equal(settings.getIgnoredFileStatus(), settingsPanel.isIgnoredFileStatus())
+                || !Comparing.equal(settings.getOuterIgnoreRules(), settingsPanel.isOuterIgnoreRules())
+                || !Comparing.equal(settings.getInsertAtCursor(), settingsPanel.isInsertAtCursor())
+                || !Comparing.equal(settings.getAddUnversionedFiles(), settingsPanel.isAddUnversionedFiles())
+                || !Comparing.equal(settings.getUnignoreActions(), settingsPanel.isUnignoreActions())
+                || !Comparing.equal(settings.getNotifyIgnoredEditing(), settingsPanel.isNotifyIgnoredEditing())
                 || !settingsPanel.getLanguagesSettings().equalSettings(settings.getLanguagesSettings());
     }
 
@@ -133,14 +133,14 @@ public class IgnoreSettingsConfigurable implements SearchableConfigurable, VcsCo
         if (settingsPanel == null) {
             return;
         }
-        settingsPanel.setMissingGitignore(settings.isMissingGitignore());
+        settingsPanel.setMissingGitignore(settings.getMissingGitignore());
         settingsPanel.setUserTemplates(settings.getUserTemplates());
-        settingsPanel.setIgnoredFileStatus(settings.isIgnoredFileStatus());
-        settingsPanel.setOuterIgnoreRules(settings.isOuterIgnoreRules());
-        settingsPanel.setInsertAtCursor(settings.isInsertAtCursor());
-        settingsPanel.setAddUnversionedFiles(settings.isAddUnversionedFiles());
-        settingsPanel.setUnignoreActions(settings.isUnignoreActions());
-        settingsPanel.setNotifyIgnoredEditing(settings.isNotifyIgnoredEditing());
+        settingsPanel.setIgnoredFileStatus(settings.getIgnoredFileStatus());
+        settingsPanel.setOuterIgnoreRules(settings.getOuterIgnoreRules());
+        settingsPanel.setInsertAtCursor(settings.getInsertAtCursor());
+        settingsPanel.setAddUnversionedFiles(settings.getAddUnversionedFiles());
+        settingsPanel.setUnignoreActions(settings.getUnignoreActions());
+        settingsPanel.setNotifyIgnoredEditing(settings.getNotifyIgnoredEditing());
 
         IgnoreSettingsPanel.LanguagesTableModel model = settingsPanel.getLanguagesSettings();
         model.update(settings.getLanguagesSettings().clone());

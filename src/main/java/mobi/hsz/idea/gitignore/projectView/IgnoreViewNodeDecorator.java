@@ -91,7 +91,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
                     IgnoreBundle.message("projectView.tracked"),
                     GRAYED_SMALL_ATTRIBUTES
             );
-        } else if (ignoreSettings.isHideIgnoredFiles() && file.isDirectory()) {
+        } else if (ignoreSettings.getHideIgnoredFiles() && file.isDirectory()) {
             int count = ContainerUtil.filter(
                     file.getChildren(),
                     child -> manager.isFileIgnored(child) && !manager.isFileTracked(child)
