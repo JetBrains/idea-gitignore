@@ -79,7 +79,7 @@ public class UserTemplateDialog extends DialogWrapper {
         super(project, false);
         this.project = project;
         this.content = content;
-        this.settings = IgnoreSettings.getInstance();
+        this.settings = IgnoreSettings.Companion.getInstance();
 
         setTitle(IgnoreBundle.message("dialog.userTemplate.title"));
         setOKButtonText(IgnoreBundle.message("global.create"));

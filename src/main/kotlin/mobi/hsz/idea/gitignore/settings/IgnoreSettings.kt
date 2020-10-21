@@ -146,9 +146,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
          *
          * @return the unique [IgnoreSettings] instance.
          */
-        @JvmStatic
-        val instance: IgnoreSettings
-            get() = ServiceManager.getService(IgnoreSettings::class.java)
+        fun getInstance() = ServiceManager.getService(IgnoreSettings::class.java)
 
         /**
          * Creates [Element] with a list of the [UserTemplate] items.

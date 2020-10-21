@@ -244,7 +244,7 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
      */
     public final boolean isEnabled() {
         final TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data =
-                IgnoreSettings.getInstance().getLanguagesSettings().get(this);
+                IgnoreSettings.Companion.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {
             value = Boolean.parseBoolean(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.ENABLE).toString());
@@ -259,7 +259,7 @@ public class IgnoreLanguage extends Language implements InjectableLanguage {
      */
     public final boolean isNewAllowed() {
         final TreeMap<IgnoreSettings.IgnoreLanguagesSettings.KEY, Object> data =
-                IgnoreSettings.getInstance().getLanguagesSettings().get(this);
+                IgnoreSettings.Companion.getInstance().getLanguagesSettings().get(this);
         boolean value = false;
         if (data != null) {
             value = Boolean.parseBoolean(data.get(IgnoreSettings.IgnoreLanguagesSettings.KEY.NEW_FILE).toString());

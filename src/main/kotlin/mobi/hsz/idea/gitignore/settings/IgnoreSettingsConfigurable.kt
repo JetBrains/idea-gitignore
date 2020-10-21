@@ -17,7 +17,7 @@ import javax.swing.JComponent
 class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvider {
 
     /** The settings storage object.  */
-    private val settings = IgnoreSettings.instance
+    private val settings = IgnoreSettings.getInstance()
 
     /** The settings UI form.  */
     private var settingsPanel: IgnoreSettingsPanel? = null

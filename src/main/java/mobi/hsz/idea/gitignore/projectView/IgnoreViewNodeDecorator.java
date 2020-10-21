@@ -68,7 +68,7 @@ public class IgnoreViewNodeDecorator implements ProjectViewNodeDecorator {
      */
     public IgnoreViewNodeDecorator(@NotNull Project project) {
         this.manager = IgnoreManager.getInstance(project);
-        this.ignoreSettings = IgnoreSettings.getInstance();
+        this.ignoreSettings = IgnoreSettings.Companion.getInstance();
     }
 
     /**

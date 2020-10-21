@@ -62,7 +62,7 @@ public class Resources {
      */
     @NotNull
     public static List<Template> getGitignoreTemplates() {
-        final IgnoreSettings settings = IgnoreSettings.getInstance();
+        final IgnoreSettings settings = IgnoreSettings.Companion.getInstance();
         final List<String> starredTemplates = settings.getStarredTemplates();
 
         if (resourceTemplates == null) {
