@@ -1,5 +1,4 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-
 package mobi.hsz.idea.gitignore.highlighter
 
 import com.intellij.openapi.editor.colors.TextAttributesKey
@@ -9,19 +8,16 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.tree.IElementType
 import mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition
 import mobi.hsz.idea.gitignore.lexer.IgnoreLexerAdapter
-import java.util.HashMap
 
 /**
  * Syntax highlighter definition.
  */
-class IgnoreHighlighter(
-    private val project: Project?,
-    private val virtualFile: VirtualFile?
-) : SyntaxHighlighterBase() {
+class IgnoreHighlighter(private val project: Project?, private val virtualFile: VirtualFile?) :
+    SyntaxHighlighterBase() {
 
     companion object {
-        /** Attributes map.  */
-        private val ATTRIBUTES: Map<IElementType, TextAttributesKey> = HashMap()
+        /** Attributes map. */
+        private val ATTRIBUTES = mutableMapOf<IElementType, TextAttributesKey>()
 
         /* Binds parser definitions with highlighter colors. */
         init {

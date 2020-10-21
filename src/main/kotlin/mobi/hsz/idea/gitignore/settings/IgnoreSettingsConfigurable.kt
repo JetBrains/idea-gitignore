@@ -1,5 +1,4 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-
 package mobi.hsz.idea.gitignore.settings
 
 import com.intellij.openapi.options.Configurable
@@ -116,7 +115,7 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
      *
      * @return id
      */
-    override fun getId(): String = helpTopic
+    override fun getId() = helpTopic
 
     /**
      * An action to perform when this configurable is opened.

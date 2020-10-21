@@ -1,5 +1,4 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-
 package mobi.hsz.idea.gitignore.settings
 
 import com.intellij.openapi.components.PersistentStateComponent
@@ -49,6 +48,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         }
 
     /** Height of the outer ignore file wrapper panel. */
+    @Suppress("MagicNumber")
     private var outerIgnoreWrapperHeight = 100
 
     /** Enable outer ignore rules. */
@@ -316,9 +316,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
      */
     private fun notifyOnChange(key: KEY, oldValue: Any, newValue: Any) {
         if (newValue != oldValue) {
-            for (listener in listeners) {
-                listener.onChange(key, newValue)
-            }
+            listeners.forEach { it.onChange(key, newValue) }
         }
     }
 
@@ -328,13 +326,9 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     }
 
     /** User defined template model. */
-    data class UserTemplate(
-        var name: String = "",
-        var content: String = "",
-    ) {
-        override fun toString() = name
+    data class UserTemplate(var name: String = "", var content: String = "") {
 
-        val isEmpty: Boolean
+        val isEmpty
             get() = name.isEmpty() && content.isEmpty()
 
         override fun equals(other: Any?) = when {
@@ -342,6 +336,8 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
             other === this -> true
             else -> ((name == other.name) && (content == other.content))
         }
+
+        override fun toString() = name
 
         override fun hashCode(): Int {
             var result = name.hashCode()
@@ -352,6 +348,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
 
     /** Helper class for the [IgnoreLanguage] settings. */
     open class IgnoreLanguagesSettings : LinkedHashMap<IgnoreLanguage?, TreeMap<IgnoreLanguagesSettings.KEY, Any>>() {
+
         /** Settings keys. */
         enum class KEY {
             NEW_FILE, ENABLE

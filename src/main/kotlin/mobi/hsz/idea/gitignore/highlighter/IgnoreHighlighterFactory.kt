@@ -1,5 +1,4 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-
 package mobi.hsz.idea.gitignore.highlighter
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory
@@ -21,6 +20,5 @@ class IgnoreHighlighterFactory : SyntaxHighlighterFactory() {
      * @param virtualFile might be necessary to collect file specific settings
      * @return `SyntaxHighlighter` interface implementation for this particular language.
      */
-    override fun getSyntaxHighlighter(project: Project?, virtualFile: VirtualFile?) =
-        IgnoreHighlighter(project, virtualFile)
+    override fun getSyntaxHighlighter(project: Project?, virtualFile: VirtualFile?) = IgnoreHighlighter(project, virtualFile)
 }
