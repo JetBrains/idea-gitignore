@@ -26,7 +26,8 @@
         <colorSettingsPage
                 implementation="mobi.hsz.idea.gitignore.highlighter.IgnoreColorSettingsPage"/>
 
-        <highlightRangeExtension implementation="mobi.hsz.idea.gitignore.codeInsight.IgnoreHighlightRangeExtension"/>
+        <highlightRangeExtension
+            implementation="mobi.hsz.idea.gitignore.codeInsight.IgnoreHighlightRangeExtension"/>
 
         <completion.contributor
                 language="Ignore"

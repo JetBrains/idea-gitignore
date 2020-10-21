@@ -20,6 +20,7 @@ import java.util.TreeMap
  */
 @State(name = "IgnoreSettings", storages = [Storage("ignore.xml")])
 class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSettings.Listener> {
+
     /** Settings keys. */
     enum class KEY(private val key: String) {
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
