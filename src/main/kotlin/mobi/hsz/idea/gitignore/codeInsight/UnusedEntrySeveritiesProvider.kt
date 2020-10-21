@@ -27,7 +27,10 @@ class UnusedEntrySeveritiesProvider : SeveritiesProvider() {
      * @return style definition
      */
     override fun getSeveritiesHighlightInfoTypes() = listOf(
-        HighlightInfoTypeImpl(UNUSED_ENTRY, TextAttributesKey.createTextAttributesKey(IgnoreBundle.message("codeInspection.unusedEntry"), IgnoreHighlighterColors.UNUSED))
+        HighlightInfoTypeImpl(
+            UNUSED_ENTRY,
+            TextAttributesKey.createTextAttributesKey(IgnoreBundle.message("codeInspection.unusedEntry"), IgnoreHighlighterColors.UNUSED)
+        )
     )
 
     /**
