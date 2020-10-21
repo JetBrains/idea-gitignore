@@ -1,5 +1,4 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-
 package mobi.hsz.idea.gitignore.codeInsight
 
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType.HighlightInfoTypeImpl
@@ -28,13 +27,7 @@ class UnusedEntrySeveritiesProvider : SeveritiesProvider() {
      * @return style definition
      */
     override fun getSeveritiesHighlightInfoTypes() = listOf(
-        HighlightInfoTypeImpl(
-            UNUSED_ENTRY,
-            TextAttributesKey.createTextAttributesKey(
-                IgnoreBundle.message("codeInspection.unusedEntry"),
-                IgnoreHighlighterColors.UNUSED
-            )
-        )
+        HighlightInfoTypeImpl(UNUSED_ENTRY, TextAttributesKey.createTextAttributesKey(IgnoreBundle.message("codeInspection.unusedEntry"), IgnoreHighlighterColors.UNUSED))
     )
 
     /**
