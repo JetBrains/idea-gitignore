@@ -60,7 +60,7 @@ public class HideIgnoredFilesTreeStructureProvider implements TreeStructureProvi
 
     /** Builds a new instance of {@link HideIgnoredFilesTreeStructureProvider}. */
     public HideIgnoredFilesTreeStructureProvider(@NotNull Project project) {
-        this.ignoreSettings = IgnoreSettings.getInstance();
+        this.ignoreSettings = IgnoreSettings.Companion.getInstance();
         this.ignoreManager = IgnoreManager.getInstance(project);
         this.changeListManager = ChangeListManager.getInstance(project);
     }

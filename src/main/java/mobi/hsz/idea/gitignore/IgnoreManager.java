@@ -286,7 +286,7 @@ public class IgnoreManager implements DumbAware, ProjectComponent {
         this.cachedOuterFiles = CachedConcurrentMap.create(key -> key.getIgnoreLanguage().getOuterFiles(project));
         this.matcher = new MatcherUtil();
         this.virtualFileManager = VirtualFileManager.getInstance();
-        this.settings = IgnoreSettings.getInstance();
+        this.settings = IgnoreSettings.Companion.getInstance();
         this.refreshTrackedIgnoredRunnable = new RefreshTrackedIgnoredRunnable();
         this.refreshTrackedIgnoredFeature =
                 new InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5);

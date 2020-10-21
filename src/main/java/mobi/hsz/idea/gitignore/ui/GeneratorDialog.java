@@ -148,7 +148,7 @@ public class GeneratorDialog extends DialogWrapper {
         this.file = file;
         this.root = new TemplateTreeNode();
         this.action = null;
-        this.settings = IgnoreSettings.getInstance();
+        this.settings = IgnoreSettings.Companion.getInstance();
 
         setTitle(IgnoreBundle.message("dialog.generator.title"));
         setOKButtonText(IgnoreBundle.message("global.generate"));

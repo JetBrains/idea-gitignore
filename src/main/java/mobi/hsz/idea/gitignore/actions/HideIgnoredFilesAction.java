@@ -40,7 +40,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class HideIgnoredFilesAction extends AnAction {
     /** {@link IgnoreSettings} instance. */
-    public static final IgnoreSettings SETTINGS = IgnoreSettings.getInstance();
+    public static final IgnoreSettings SETTINGS = IgnoreSettings.Companion.getInstance();
 
     /** Builds a new instance of {@link HideIgnoredFilesAction}. */
     public HideIgnoredFilesAction() {

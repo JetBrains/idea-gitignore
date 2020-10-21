@@ -117,7 +117,7 @@ public class OuterIgnoreWrapper extends MouseAdapter implements ChangeListener, 
     public OuterIgnoreWrapper(@NotNull final Project project, @NotNull final IgnoreLanguage language,
                               @NotNull final List<VirtualFile> outerFiles) {
         this.outerFiles = outerFiles;
-        settings = IgnoreSettings.getInstance();
+        settings = IgnoreSettings.Companion.getInstance();
 
         panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));

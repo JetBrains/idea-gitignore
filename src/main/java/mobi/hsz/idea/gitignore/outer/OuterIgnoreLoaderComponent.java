@@ -130,7 +130,7 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
         @Override
         public void fileOpened(@NotNull final FileEditorManager source, @NotNull final VirtualFile file) {
             final FileType fileType = file.getFileType();
-            if (!IgnoreSettings.getInstance().getOuterIgnoreRules()) {
+            if (!IgnoreSettings.Companion.getInstance().getOuterIgnoreRules()) {
                 return;
             }
 
@@ -159,12 +159,12 @@ public class OuterIgnoreLoaderComponent implements ProjectComponent {
                             }
                         };
 
-                        IgnoreSettings.getInstance().addListener(settingsListener);
+                        IgnoreSettings.Companion.getInstance().addListener(settingsListener);
                         source.addBottomComponent(fileEditor, component);
 
                         Disposer.register(fileEditor, wrapper);
                         Disposer.register(fileEditor, () -> {
-                            IgnoreSettings.getInstance().removeListener(settingsListener);
+                            IgnoreSettings.Companion.getInstance().removeListener(settingsListener);
                             source.removeBottomComponent(fileEditor, component);
                         });
                     }

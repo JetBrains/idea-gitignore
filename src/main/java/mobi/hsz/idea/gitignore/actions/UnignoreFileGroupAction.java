@@ -51,7 +51,7 @@ public class UnignoreFileGroupAction extends IgnoreFileGroupAction {
                 "action.addToUnignore.group.description",
                 "action.addToUnignore.group.noPopup"
         );
-        settings = IgnoreSettings.getInstance();
+        settings = IgnoreSettings.Companion.getInstance();
     }
 
     /**
