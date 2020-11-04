@@ -267,6 +267,7 @@ public class Utils {
      * @param virtualFile current file
      * @return file type
      */
+    @Nullable
     public static IgnoreFileType getFileType(@Nullable VirtualFile virtualFile) {
         if (virtualFile != null) {
             FileType fileType = virtualFile.getFileType();
