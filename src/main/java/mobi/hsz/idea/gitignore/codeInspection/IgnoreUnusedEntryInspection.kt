@@ -21,36 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package mobi.hsz.idea.gitignore.codeInspection
 
-package mobi.hsz.idea.gitignore.codeInspection;
-
-import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
-import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent;
-import mobi.hsz.idea.gitignore.IgnoreBundle;
-import mobi.hsz.idea.gitignore.IgnoreManager;
-import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import mobi.hsz.idea.gitignore.psi.IgnoreVisitor;
-import mobi.hsz.idea.gitignore.util.Glob;
-import mobi.hsz.idea.gitignore.util.Utils;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-import java.util.regex.Pattern;
+import com.intellij.codeInspection.LocalInspectionTool
+import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.psi.PsiElementVisitor
+import mobi.hsz.idea.gitignore.IgnoreBundle
+import mobi.hsz.idea.gitignore.codeInspection.IgnoreSyntaxEntryFix
+import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent
+import mobi.hsz.idea.gitignore.IgnoreManager
+import com.intellij.psi.PsiReference
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.project.Project
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner
+import com.intellij.psi.PsiPolyVariantReference
+import com.intellij.psi.PsiDirectory
+import com.intellij.openapi.vfs.VirtualFile
+import mobi.hsz.idea.gitignore.codeInspection.IgnoreRemoveEntryFix
+import mobi.hsz.idea.gitignore.psi.IgnoreEntry
+import mobi.hsz.idea.gitignore.psi.IgnoreFile
+import mobi.hsz.idea.gitignore.psi.IgnoreVisitor
+import mobi.hsz.idea.gitignore.util.Glob
+import mobi.hsz.idea.gitignore.util.Utils
 
 /**
  * Inspection tool that checks if entries are unused - does not cover any file or directory.
  *
- * @author Jakub Chrzanowski <jakub@hsz.mobi>
+ * @author Jakub Chrzanowski <jakub></jakub>@hsz.mobi>
  * @since 0.5
  */
-public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
+class IgnoreUnusedEntryInspection : LocalInspectionTool() {
     /**
      * Checks if entries are related to any file.
      *
@@ -58,90 +58,74 @@ public class IgnoreUnusedEntryInspection extends LocalInspectionTool {
      * @param isOnTheFly true if inspection was run in non-batch mode
      * @return not-null visitor for this inspection
      */
-    @NotNull
-    @Override
-    public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-        final Project project = holder.getProject();
-        final FilesIndexCacheProjectComponent cache = FilesIndexCacheProjectComponent.getInstance(project);
-        final IgnoreManager manager = IgnoreManager.getInstance(project);
-
-        return new IgnoreVisitor() {
-            @Override
-            public void visitEntry(@NotNull IgnoreEntry entry) {
-                PsiReference[] references = entry.getReferences();
-                boolean resolved = true;
-                int previous = Integer.MAX_VALUE;
-                for (PsiReference reference : references) {
-                    ProgressManager.checkCanceled();
-                    if (reference instanceof FileReferenceOwner) {
-                        PsiPolyVariantReference fileReference = (PsiPolyVariantReference) reference;
-                        ResolveResult[] result = fileReference.multiResolve(false);
-                        resolved = result.length > 0 || (previous > 0 && reference.getCanonicalText().endsWith("/*"));
-                        previous = result.length;
+    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
+        val project = holder.project
+        val cache = FilesIndexCacheProjectComponent.getInstance(project)
+        val manager = IgnoreManager.getInstance(project)
+        return object : IgnoreVisitor() {
+            override fun visitEntry(entry: IgnoreEntry) {
+                val references = entry.references
+                var resolved = true
+                var previous = Int.MAX_VALUE
+                for (reference in references) {
+                    ProgressManager.checkCanceled()
+                    if (reference is FileReferenceOwner) {
+                        val fileReference = reference as PsiPolyVariantReference
+                        val result = fileReference.multiResolve(false)
+                        resolved = result.size > 0 || previous > 0 && reference.getCanonicalText().endsWith("/*")
+                        previous = result.size
                     }
                     if (!resolved) {
-                        break;
+                        break
                     }
                 }
-
                 if (!resolved) {
-                    if (!isEntryExcluded(entry, holder.getProject())) {
-                        final PsiDirectory directory = ((IgnoreFile) entry.getParent()).getContainingDirectory();
-                        final VirtualFile file = directory != null
-                                ? directory.getVirtualFile().findFileByRelativePath(entry.getText())
-                                : null;
-
+                    if (!isEntryExcluded(entry, holder.project)) {
+                        val directory = (entry.parent as IgnoreFile).containingDirectory
+                        val file = directory?.virtualFile?.findFileByRelativePath(entry.text)
                         if (file == null) {
                             holder.registerProblem(
-                                    entry,
-                                    IgnoreBundle.message("codeInspection.unusedEntry.message"),
-                                    new IgnoreRemoveEntryFix(entry)
-                            );
+                                entry,
+                                IgnoreBundle.message("codeInspection.unusedEntry.message"),
+                                IgnoreRemoveEntryFix(entry)
+                            )
                         }
                     }
                 }
-
-                super.visitEntry(entry);
+                super.visitEntry(entry)
             }
 
             /**
-             * Checks if given {@link IgnoreEntry} is excluded in the current {@link Project}.
+             * Checks if given [IgnoreEntry] is excluded in the current [Project].
              *
              * @param entry   Gitignore entry
              * @param project current project
              * @return entry is excluded in current project
              */
-            private boolean isEntryExcluded(@NotNull IgnoreEntry entry, @NotNull Project project) {
-                final Pattern pattern = Glob.createPattern(entry);
-                if (pattern == null) {
-                    return false;
-                }
-
-                final VirtualFile moduleRoot = Utils.getModuleRootForFile(
-                        entry.getContainingFile().getVirtualFile(),
-                        project
-                );
-                final Collection<VirtualFile> files = cache.getFilesForPattern(project, pattern);
-
+            private fun isEntryExcluded(entry: IgnoreEntry, project: Project): Boolean {
+                val pattern = Glob.createPattern(entry) ?: return false
+                val moduleRoot = Utils.getModuleRootForFile(
+                    entry.containingFile.virtualFile,
+                    project
+                )
+                val files = cache.getFilesForPattern(project, pattern)
                 if (moduleRoot == null) {
-                    return false;
+                    return false
                 }
-
-                for (final VirtualFile root : Utils.getExcludedRoots(project)) {
-                    for (VirtualFile file : files) {
-                        ProgressManager.checkCanceled();
+                for (root in Utils.getExcludedRoots(project)) {
+                    for (file in files) {
+                        ProgressManager.checkCanceled()
                         if (!Utils.isUnder(file, root)) {
-                            continue;
+                            continue
                         }
-                        String path = Utils.getRelativePath(moduleRoot, root);
-                        if (manager.getMatcher().match(pattern, path)) {
-                            return false;
+                        val path = Utils.getRelativePath(moduleRoot, root)
+                        if (manager.matcher.match(pattern, path)) {
+                            return false
                         }
                     }
                 }
-
-                return false;
+                return false
             }
-        };
+        }
     }
 }
