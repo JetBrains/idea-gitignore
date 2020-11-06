@@ -69,7 +69,7 @@ open class IgnoreFileAction(
             Utils.openFile(project, ignore)
 
             try {
-                AppendFileCommandAction(project, ignore, paths, false, false).execute()
+                AppendFileCommandAction(project, ignore, paths).execute()
             } catch (e: Throwable) {
                 e.printStackTrace()
             }

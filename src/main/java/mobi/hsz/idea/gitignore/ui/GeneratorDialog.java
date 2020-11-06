@@ -43,6 +43,7 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.*;
+import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
@@ -244,8 +245,7 @@ public class GeneratorDialog extends DialogWrapper {
                 file = action.execute();
             }
             if (file != null && (content.length() > 0)) {
-                new AppendFileCommandAction(project, file, content.toString(), ignoreDuplicates, ignoreComments)
-                        .execute();
+                new AppendFileCommandAction(project, file, ContainerUtil.newHashSet(content.toString()), ignoreDuplicates, ignoreComments).execute();
             }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
@@ -292,11 +292,11 @@ public class GeneratorDialog extends DialogWrapper {
         final JPanel northPanel = new JPanel(new GridBagLayout());
         northPanel.setBorder(JBUI.Borders.empty(2, 0));
         northPanel.add(createTreeActionsToolbarPanel(treeScrollPanel).getComponent(),
-                new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_LEADING,
-                        GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0)
+            new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_LEADING,
+                GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0)
         );
         northPanel.add(profileFilter, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.BASELINE_TRAILING,
-                GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0));
+            GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0));
         treePanel.add(northPanel, BorderLayout.NORTH);
 
         return centerPanel;
@@ -372,9 +372,9 @@ public class GeneratorDialog extends DialogWrapper {
         actions.add(actionManager.createExpandAllAction(treeExpander, tree));
         actions.add(actionManager.createCollapseAllAction(treeExpander, tree));
         actions.add(new AnAction(
-                IgnoreBundle.message("dialog.generator.unselectAll"),
-                null,
-                AllIcons.Actions.Unselectall) {
+            IgnoreBundle.message("dialog.generator.unselectAll"),
+            null,
+            AllIcons.Actions.Unselectall) {
             @Override
             public void update(@NotNull AnActionEvent e) {
                 e.getPresentation().setEnabled(!checked.isEmpty());
@@ -394,7 +394,7 @@ public class GeneratorDialog extends DialogWrapper {
                 boolean unstar = node != null && STARRED.equals(node.getContainer());
 
                 final Icon icon = disabled ? IconLoader.getDisabledIcon(STAR) :
-                        (unstar ? IconLoader.getTransparentIcon(STAR) : STAR);
+                    (unstar ? IconLoader.getTransparentIcon(STAR) : STAR);
                 final String text = IgnoreBundle.message(unstar ? "dialog.generator.unstar" : "dialog.generator.star");
 
                 final Presentation presentation = e.getPresentation();
@@ -439,7 +439,7 @@ public class GeneratorDialog extends DialogWrapper {
         });
 
         final ActionToolbar actionToolbar = ActionManager.getInstance()
-                .createActionToolbar(ActionPlaces.UNKNOWN, actions, true);
+            .createActionToolbar(ActionPlaces.UNKNOWN, actions, true);
         actionToolbar.setTargetComponent(target);
         return actionToolbar;
     }
@@ -454,15 +454,15 @@ public class GeneratorDialog extends DialogWrapper {
         final Resources.Template template = node.getTemplate();
 
         ApplicationManager.getApplication().runWriteAction(
-                () -> CommandProcessor.getInstance().runUndoTransparentAction(() -> {
-                    String content = template != null ?
-                            StringUtil.notNullize(template.getContent()).replace('\r', '\0') : "";
-                    previewDocument.replaceString(0, previewDocument.getTextLength(), content);
+            () -> CommandProcessor.getInstance().runUndoTransparentAction(() -> {
+                String content = template != null ?
+                    StringUtil.notNullize(template.getContent()).replace('\r', '\0') : "";
+                previewDocument.replaceString(0, previewDocument.getTextLength(), content);
 
-                    List<Pair<Integer, Integer>> pairs =
-                            getFilterRanges(profileFilter.getTextEditor().getText(), content);
-                    highlightWords(pairs);
-                })
+                List<Pair<Integer, Integer>> pairs =
+                    getFilterRanges(profileFilter.getTextEditor().getText(), content);
+                highlightWords(pairs);
+            })
         );
     }
 
@@ -602,7 +602,7 @@ public class GeneratorDialog extends DialogWrapper {
 
         for (Pair<Integer, Integer> pair : pairs) {
             preview.getMarkupModel().addRangeHighlighter(pair.first, pair.second, 0, attr,
-                    HighlighterTargetArea.EXACT_RANGE);
+                HighlighterTargetArea.EXACT_RANGE);
         }
     }
 
@@ -641,18 +641,18 @@ public class GeneratorDialog extends DialogWrapper {
         @Override
         public Action[] getOptions() {
             return new Action[]{
-                    new DialogWrapperAction(IgnoreBundle.message("global.generate.without.duplicates")) {
-                        @Override
-                        protected void doAction(ActionEvent e) {
-                            performAppendAction(true, false);
-                        }
-                    },
-                    new DialogWrapperAction(IgnoreBundle.message("global.generate.without.comments")) {
-                        @Override
-                        protected void doAction(ActionEvent e) {
-                            performAppendAction(false, true);
-                        }
+                new DialogWrapperAction(IgnoreBundle.message("global.generate.without.duplicates")) {
+                    @Override
+                    protected void doAction(ActionEvent e) {
+                        performAppendAction(true, false);
                     }
+                },
+                new DialogWrapperAction(IgnoreBundle.message("global.generate.without.comments")) {
+                    @Override
+                    protected void doAction(ActionEvent e) {
+                        performAppendAction(false, true);
+                    }
+                }
             };
         }
     }
