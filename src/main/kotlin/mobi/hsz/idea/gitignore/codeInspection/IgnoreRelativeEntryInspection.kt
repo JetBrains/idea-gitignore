@@ -30,18 +30,21 @@ class IgnoreRelativeEntryInspection : LocalInspectionTool() {
         }
 
         val problemsHolder = ProblemsHolder(manager, file, isOnTheFly)
-        file.acceptChildren(object : IgnoreVisitor() {
-            override fun visitEntry(entry: IgnoreEntry) {
-                val path = entry.text.replace("\\\\(.)".toRegex(), "$1")
-                if (path.contains("./")) {
-                    problemsHolder.registerProblem(
-                        entry, IgnoreBundle.message("codeInspection.relativeEntry.message"),
-                        IgnoreRelativeEntryFix(entry)
-                    )
+        file.acceptChildren(
+            object : IgnoreVisitor() {
+                override fun visitEntry(entry: IgnoreEntry) {
+                    val path = entry.text.replace("\\\\(.)".toRegex(), "$1")
+                    if (path.contains("./")) {
+                        problemsHolder.registerProblem(
+                            entry,
+                            IgnoreBundle.message("codeInspection.relativeEntry.message"),
+                            IgnoreRelativeEntryFix(entry)
+                        )
+                    }
+                    super.visitEntry(entry)
                 }
-                super.visitEntry(entry)
             }
-        })
+        )
         return problemsHolder.resultsArray
     }
 

@@ -94,10 +94,8 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
         while (currentSlash + sepLen < str.length && Character.isWhitespace(str[currentSlash + sepLen])) {
             currentSlash++
         }
-        if (currentSlash + sepLen + sepLen < str.length && str.substring(
-                currentSlash + sepLen,
-                currentSlash + sepLen + sepLen
-            ) == separatorString
+        if (currentSlash + sepLen + sepLen < str.length &&
+            str.substring(currentSlash + sepLen, currentSlash + sepLen + sepLen) == separatorString
         ) {
             currentSlash += sepLen
         }
@@ -111,7 +109,8 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
             val nextSlash = str.indexOf(separatorString, currentSlash + sepLen)
             val subReferenceText = if (nextSlash > 0) str.substring(0, nextSlash) else str
             val range = TextRange(
-                startInElement + currentSlash + sepLen, startInElement +
+                startInElement + currentSlash + sepLen,
+                startInElement +
                     if (nextSlash > 0) nextSlash else str.length
             )
             val ref = createFileReference(range, index++, subReferenceText)
@@ -142,8 +141,10 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
          * @param caseSensitive is ignored
          */
         override fun innerResolveInContext(
-            text: String, context: PsiFileSystemItem,
-            result: MutableCollection<ResolveResult>, caseSensitive: Boolean
+            text: String,
+            context: PsiFileSystemItem,
+            result: MutableCollection<ResolveResult>,
+            caseSensitive: Boolean
         ) {
             ProgressManager.checkCanceled()
             super.innerResolveInContext(text, context, result, caseSensitive)
@@ -179,9 +180,11 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
                     if (files.isEmpty()) {
                         files.addAll(ContainerUtil.newArrayList(*context.virtualFile.children))
                     } else if (current.endsWith(Constants.STAR) && current != entry.text) {
-                        files.addAll(ContainerUtil.filter(
-                            context.virtualFile.children
-                        ) { obj: VirtualFile -> obj.isDirectory })
+                        files.addAll(
+                            ContainerUtil.filter(
+                                context.virtualFile.children
+                            ) { obj: VirtualFile -> obj.isDirectory }
+                        )
                     } else if (current.endsWith(Constants.DOUBLESTAR)) {
                         val key = entry.text
                         if (!cacheMap.containsKey(key)) {

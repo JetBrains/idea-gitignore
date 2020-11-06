@@ -41,13 +41,14 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
             ContainerUtil.filter(children) { node: AbstractTreeNode<*>? ->
                 if (node is BasePsiNode<*>) {
                     val file = node.virtualFile
-                    return@filter file != null && (!changeListManager.isIgnoredFile(file) &&
-                        !ignoreManager.isFileIgnored(file) || ignoreManager.isFileTracked(file))
+                    return@filter file != null && (
+                        !changeListManager.isIgnoredFile(file) &&
+                            !ignoreManager.isFileIgnored(file) || ignoreManager.isFileTracked(file)
+                        )
                 }
                 true
             }
         }
 
     override fun getData(collection: Collection<AbstractTreeNode<*>?>, s: String): Any? = null
-
 }

@@ -45,10 +45,12 @@ class IgnoreRemoveEntryFix(entry: IgnoreEntry) : LocalQuickFixAndIntentionAction
      * @param startElement working PSI element
      */
     private fun removeCrlf(startElement: PsiElement) {
-        (TreeUtil.findSibling(startElement.node, IgnoreTypes.CRLF) ?: TreeUtil.findSiblingBackward(
-            startElement.node,
-            IgnoreTypes.CRLF
-        ))?.psi?.delete()
+        (
+            TreeUtil.findSibling(startElement.node, IgnoreTypes.CRLF) ?: TreeUtil.findSiblingBackward(
+                startElement.node,
+                IgnoreTypes.CRLF
+            )
+            )?.psi?.delete()
     }
 
     /**

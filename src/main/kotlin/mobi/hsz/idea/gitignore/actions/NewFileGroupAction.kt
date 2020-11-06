@@ -20,15 +20,17 @@ class NewFileGroupAction : DefaultActionGroup(), DumbAware {
         }
 
         IgnoreBundle.LANGUAGES.forEach {
-            add(object : NewFileAction(it.fileType) {
-                init {
-                    templatePresentation.apply {
-                        text = IgnoreBundle.message("action.newFile", it.filename, it.id)
-                        description = IgnoreBundle.message("action.newFile.description", it.id)
-                        icon = it.fileType.icon
+            add(
+                object : NewFileAction(it.fileType) {
+                    init {
+                        templatePresentation.apply {
+                            text = IgnoreBundle.message("action.newFile", it.filename, it.id)
+                            description = IgnoreBundle.message("action.newFile.description", it.id)
+                            icon = it.fileType.icon
+                        }
                     }
                 }
-            })
+            )
         }
     }
 }

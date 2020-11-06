@@ -64,16 +64,19 @@ class IgnoreFileBasedIndexProjectHandler(
      * @param iterator iterator
      */
     override fun iterateIndexableFilesIn(file: VirtualFile, iterator: ContentIterator) {
-        VfsUtilCore.visitChildrenRecursively(file, object : VirtualFileVisitor<Any?>() {
-            override fun visitFile(file: VirtualFile): Boolean {
-                if (!isInSet(file)) {
-                    return false
+        VfsUtilCore.visitChildrenRecursively(
+            file,
+            object : VirtualFileVisitor<Any?>() {
+                override fun visitFile(file: VirtualFile): Boolean {
+                    if (!isInSet(file)) {
+                        return false
+                    }
+                    if (!file.isDirectory) {
+                        iterator.processFile(file)
+                    }
+                    return true
                 }
-                if (!file.isDirectory) {
-                    iterator.processFile(file)
-                }
-                return true
             }
-        })
+        )
     }
 }

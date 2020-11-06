@@ -16,7 +16,8 @@ import mobi.hsz.idea.gitignore.util.Icons
  */
 class CreateUserTemplateAction : AnAction(
     IgnoreBundle.message("action.createUserTemplate"),
-    IgnoreBundle.message("action.createUserTemplate.description"), Icons.IGNORE
+    IgnoreBundle.message("action.createUserTemplate.description"),
+    Icons.IGNORE
 ) {
 
     /**

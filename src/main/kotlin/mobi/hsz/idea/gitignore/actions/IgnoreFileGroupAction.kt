@@ -89,22 +89,25 @@ open class IgnoreFileGroupAction @JvmOverloads constructor(
             val project = getEventProject(e)
             files.forEach { (key, value) ->
                 value.forEachIndexed { index, file ->
-                    add(index, createAction(file).apply {
-                        val directory = project?.let { Utils.getModuleRootForFile(file, project) }
-                        var name = directory?.let { Utils.getRelativePath(directory, file) } ?: file.name
+                    add(
+                        index,
+                        createAction(file).apply {
+                            val directory = project?.let { Utils.getModuleRootForFile(file, project) }
+                            var name = directory?.let { Utils.getRelativePath(directory, file) } ?: file.name
 
-                        if (StringUtil.isNotEmpty(name)) {
-                            name = StringUtil.shortenPathWithEllipsis(name, FILENAME_MAX_LENGTH)
-                        }
-                        if (countFiles() == 1) {
-                            name = IgnoreBundle.message(presentationTextSingleKey, name)
-                        }
+                            if (StringUtil.isNotEmpty(name)) {
+                                name = StringUtil.shortenPathWithEllipsis(name, FILENAME_MAX_LENGTH)
+                            }
+                            if (countFiles() == 1) {
+                                name = IgnoreBundle.message(presentationTextSingleKey, name)
+                            }
 
-                        templatePresentation.apply {
-                            icon = key.icon
-                            text = name
+                            templatePresentation.apply {
+                                icon = key.icon
+                                text = name
+                            }
                         }
-                    })
+                    )
                 }
             }
         }.toTypedArray()
