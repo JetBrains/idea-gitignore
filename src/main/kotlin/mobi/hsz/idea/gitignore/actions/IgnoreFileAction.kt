@@ -20,7 +20,7 @@ import org.jetbrains.annotations.PropertyKey
  * Action is added to the IDE context menus not directly but with [IgnoreFileGroupAction] action.
  */
 open class IgnoreFileAction(
-    private val ignoreFile: VirtualFile?,
+    private val ignoreFile: VirtualFile? = null,
     private val fileType: IgnoreFileType? = Utils.getFileType(ignoreFile),
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) textKey: String = "action.addToIgnore",
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) descriptionKey: String = "action.addToIgnore.description"
