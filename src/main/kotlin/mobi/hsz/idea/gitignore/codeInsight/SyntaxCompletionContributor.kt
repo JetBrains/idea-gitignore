@@ -28,7 +28,8 @@ class SyntaxCompletionContributor : CompletionContributor() {
     }
 
     init {
-        extend(CompletionType.BASIC,
+        extend(
+            CompletionType.BASIC,
             StandardPatterns.instanceOf(PsiElement::class.java),
             object : CompletionProvider<CompletionParameters>() {
                 override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext, result: CompletionResultSet) {

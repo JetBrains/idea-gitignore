@@ -107,7 +107,6 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
                     }
                 } else if (intersection.containsAll(recentValues)) {
                     result.add(Pair.create(entry, recent))
-
                 }
             }
             map[entry] = matched
@@ -115,7 +114,8 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
 
         result.forEach { pair ->
             problemsHolder.registerProblem(
-                pair.second, message(pair.first, virtualFile, isOnTheFly),
+                pair.second,
+                message(pair.first, virtualFile, isOnTheFly),
                 IgnoreRemoveEntryFix(pair.second)
             )
         }
@@ -184,7 +184,6 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
                 "<a href=\"" + virtualFile.url + Constants.HASH + coveringEntry.textRange.startOffset + "\">" + coveringEntry.text + "</a>"
             )
         }
-
     }
 
     override fun dispose() {

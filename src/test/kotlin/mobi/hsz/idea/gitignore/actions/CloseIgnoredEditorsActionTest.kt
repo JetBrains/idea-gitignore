@@ -2,7 +2,7 @@
 
 package mobi.hsz.idea.gitignore.actions
 
-import mobi.hsz.idea.gitignore.Common
+import mobi.hsz.idea.gitignore.mobi.hsz.idea.gitignore.Common
 
 class CloseIgnoredEditorsActionTest : Common<Any?>() {
 

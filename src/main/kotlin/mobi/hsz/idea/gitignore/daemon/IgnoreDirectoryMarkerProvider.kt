@@ -49,8 +49,12 @@ class IgnoreDirectoryMarkerProvider : LineMarkerProvider {
 
         return if (isDirectory) {
             LineMarkerInfo(
-                element.getFirstChild(), element.getTextRange(),
-                PlatformIcons.FOLDER_ICON, null, null, GutterIconRenderer.Alignment.CENTER
+                element.getFirstChild(),
+                element.getTextRange(),
+                PlatformIcons.FOLDER_ICON,
+                null,
+                null,
+                GutterIconRenderer.Alignment.CENTER
             )
         } else null
     }

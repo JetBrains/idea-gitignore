@@ -39,23 +39,25 @@ class AppendFileCommandAction(
                 val insertAtCursor = IgnoreSettings.getInstance().insertAtCursor
                 var offset = document.textLength
 
-                file.acceptChildren(object : IgnoreVisitor() {
-                    override fun visitEntry(entry: IgnoreEntry) {
-                        val moduleDir = Utils.getModuleRootForFile(file.virtualFile, project)
-                        if (content.contains(entry.text) && moduleDir != null) {
-                            Notify.show(
-                                project,
-                                IgnoreBundle.message("action.appendFile.entryExists", entry.text),
-                                IgnoreBundle.message(
-                                    "action.appendFile.entryExists.in",
-                                    Utils.getRelativePath(moduleDir, file.virtualFile)
-                                ),
-                                NotificationType.WARNING
-                            )
-                            content.remove(entry.text)
+                file.acceptChildren(
+                    object : IgnoreVisitor() {
+                        override fun visitEntry(entry: IgnoreEntry) {
+                            val moduleDir = Utils.getModuleRootForFile(file.virtualFile, project)
+                            if (content.contains(entry.text) && moduleDir != null) {
+                                Notify.show(
+                                    project,
+                                    IgnoreBundle.message("action.appendFile.entryExists", entry.text),
+                                    IgnoreBundle.message(
+                                        "action.appendFile.entryExists.in",
+                                        Utils.getRelativePath(moduleDir, file.virtualFile)
+                                    ),
+                                    NotificationType.WARNING
+                                )
+                                content.remove(entry.text)
+                            }
                         }
                     }
-                })
+                )
 
                 if (insertAtCursor) {
                     val editors = EditorFactory.getInstance().getEditors(document)
@@ -100,7 +102,6 @@ class AppendFileCommandAction(
                         }
                         entry = StringUtil.join(entryLines, Constants.NEWLINE)
                     }
-
 
                     entry = StringUtil.replace(entry, "\r", "")
                     if (!StringUtil.isEmpty(entry)) {

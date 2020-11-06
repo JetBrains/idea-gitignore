@@ -32,12 +32,14 @@ class IgnoreDuplicateEntryInspection : LocalInspectionTool() {
 
         val problemsHolder = ProblemsHolder(manager, file, isOnTheFly)
         val entries = MultiMap.create<String, IgnoreEntry>()
-        file.acceptChildren(object : IgnoreVisitor() {
-            override fun visitEntry(entry: IgnoreEntry) {
-                entries.putValue(entry.text, entry)
-                super.visitEntry(entry)
+        file.acceptChildren(
+            object : IgnoreVisitor() {
+                override fun visitEntry(entry: IgnoreEntry) {
+                    entries.putValue(entry.text, entry)
+                    super.visitEntry(entry)
+                }
             }
-        })
+        )
 
         entries.entrySet().forEach { (_, value) ->
             val iterator = value.iterator()
@@ -46,7 +48,8 @@ class IgnoreDuplicateEntryInspection : LocalInspectionTool() {
             while (iterator.hasNext()) {
                 val entry = iterator.next()
                 problemsHolder.registerProblem(
-                    entry, IgnoreBundle.message("codeInspection.duplicateEntry.message"),
+                    entry,
+                    IgnoreBundle.message("codeInspection.duplicateEntry.message"),
                     IgnoreRemoveEntryFix(entry)
                 )
             }

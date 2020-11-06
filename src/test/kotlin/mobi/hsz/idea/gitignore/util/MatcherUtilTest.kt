@@ -3,7 +3,7 @@
 package mobi.hsz.idea.gitignore.util
 
 import junit.framework.TestCase
-import mobi.hsz.idea.gitignore.Common
+import mobi.hsz.idea.gitignore.mobi.hsz.idea.gitignore.Common
 import org.junit.Test
 import java.util.regex.Pattern
 

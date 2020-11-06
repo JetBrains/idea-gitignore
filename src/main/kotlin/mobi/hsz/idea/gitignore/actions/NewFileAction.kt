@@ -37,7 +37,6 @@ open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), Dum
             view.orChooseDirectory
         } ?: return
 
-
         val filename = fileType.ignoreLanguage.filename
         var file = directory.findFile(filename)
         val virtualFile = file?.virtualFile ?: directory.virtualFile.findChild(filename)
@@ -53,7 +52,8 @@ open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), Dum
                         @Suppress("DialogTitleCapitalization")
                         IgnoreBundle.message("action.newFile.exists.in", virtualFile!!.path),
                         NotificationType.INFORMATION
-                    ), project
+                    ),
+                    project
                 )
                 if (file == null) {
                     file = Utils.getPsiFile(project, virtualFile)
