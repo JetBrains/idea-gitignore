@@ -5,7 +5,7 @@ package mobi.hsz.idea.gitignore.actions
 import mobi.hsz.idea.gitignore.Common
 import mobi.hsz.idea.gitignore.IgnoreBundle
 
-class HideIgnoredFilesActionTest : Common<AddTemplateAction>() {
+class HideIgnoredFilesActionTest : Common<HideIgnoredFilesAction>() {
 
     fun testHideIgnoredFilesActionInvocation() {
         val action = HideIgnoredFilesAction()

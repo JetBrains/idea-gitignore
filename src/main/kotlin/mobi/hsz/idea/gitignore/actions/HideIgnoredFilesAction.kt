@@ -10,7 +10,7 @@ import mobi.hsz.idea.gitignore.util.Icons
 /**
  * Action that hides or show ignored files in the project tree view.
  */
-class HideIgnoredFilesAction : AnAction(IgnoreBundle.message("action.showIgnoredVisibility"), "", Icons.IGNORE) {
+class HideIgnoredFilesAction : AnAction(IgnoreBundle.message("action.hideIgnoredVisibility"), "", Icons.IGNORE) {
 
     val settings: IgnoreSettings = IgnoreSettings.getInstance()
 

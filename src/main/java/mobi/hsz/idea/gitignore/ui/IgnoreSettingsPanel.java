@@ -416,7 +416,7 @@ public class IgnoreSettingsPanel implements Disposable {
                                     FILE_EXTENSION
                             ),
                             templatesListPanel
-                    ).save(null, null);
+                    ).save((VirtualFile) null, null);
 
                     if (wrapper != null) {
                         final List<IgnoreSettings.UserTemplate> items = getCurrentItems();
