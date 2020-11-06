@@ -68,15 +68,15 @@ class AddUnversionedFilesNotificationProvider : EditorNotifications.Provider<Edi
     private fun createPanel(project: Project) = EditorNotificationPanel().apply {
         val notifications = EditorNotifications.getInstance(project)
 
-        setText(IgnoreBundle.message("daemon.addUnversionedFiles"))
+        text = IgnoreBundle.message("daemon.addUnversionedFiles")
         createActionLabel(IgnoreBundle.message("daemon.addUnversionedFiles.create")) {
             val projectDir = Utils.guessProjectDir(project) ?: return@createActionLabel
             val virtualFile = projectDir.findChild(GitLanguage.INSTANCE.filename)
 
             virtualFile?.run { PsiManager.getInstance(project).findFile(this) }?.let {
-                val content = StringUtil.join(unignoredFiles, Constants.NEWLINE)
+                val content = mutableSetOf(StringUtil.join(unignoredFiles, Constants.NEWLINE))
                 try {
-                    AppendFileCommandAction(project, it, content, true, false).execute()
+                    AppendFileCommandAction(project, it, content, ignoreDuplicates = true).execute()
                 } catch (throwable: Throwable) {
                     throwable.printStackTrace()
                 }
