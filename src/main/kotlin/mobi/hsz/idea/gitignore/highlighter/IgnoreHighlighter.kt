@@ -37,7 +37,7 @@ class IgnoreHighlighter(private val project: Project?, private val virtualFile: 
      *
      * @return lexer adapter
      */
-    override fun getHighlightingLexer() = IgnoreLexerAdapter(project, virtualFile)
+    override fun getHighlightingLexer() = IgnoreLexerAdapter(virtualFile)
 
     /**
      * Gets highlighter text [TextAttributesKey] list using [IElementType] token.

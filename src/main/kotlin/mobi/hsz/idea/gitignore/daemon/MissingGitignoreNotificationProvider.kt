@@ -67,12 +67,12 @@ class MissingGitignoreNotificationProvider(project: Project) : EditorNotificatio
     private fun createPanel(project: Project, moduleRoot: VirtualFile): EditorNotificationPanel {
         val fileType = GitFileType.INSTANCE
         return EditorNotificationPanel().apply {
-            setText(IgnoreBundle.message("daemon.missingGitignore"))
+            text = IgnoreBundle.message("daemon.missingGitignore")
             createActionLabel(IgnoreBundle.message("daemon.missingGitignore.create")) {
                 val directory = PsiManager.getInstance(project).findDirectory(moduleRoot)
                 if (directory != null) {
                     try {
-                        val file = CreateFileCommandAction(project, directory, fileType).execute()
+                        val file = CreateFileCommandAction(project, directory, fileType).execute()!!
                         FileEditorManager.getInstance(project).openFile(file.virtualFile, true)
                         GeneratorDialog(project, file).show()
                     } catch (throwable: Throwable) {
