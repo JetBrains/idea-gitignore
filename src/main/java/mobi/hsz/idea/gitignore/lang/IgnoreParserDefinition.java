@@ -90,7 +90,7 @@ public class IgnoreParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return new IgnoreLexerAdapter(project);
+        return new IgnoreLexerAdapter(null);
     }
 
     /**
