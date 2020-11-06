@@ -21,53 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package mobi.hsz.idea.gitignore.reference
 
-package mobi.hsz.idea.gitignore.reference;
-
-import com.intellij.psi.*;
-import com.intellij.util.ProcessingContext;
-import mobi.hsz.idea.gitignore.psi.IgnoreEntry;
-import mobi.hsz.idea.gitignore.psi.IgnoreFile;
-import org.jetbrains.annotations.NotNull;
-
-import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.PlatformPatterns.psiFile;
+import com.intellij.patterns.PlatformPatterns
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiReference
+import com.intellij.psi.PsiReferenceContributor
+import com.intellij.psi.PsiReferenceProvider
+import com.intellij.psi.PsiReferenceRegistrar
+import com.intellij.util.ProcessingContext
+import mobi.hsz.idea.gitignore.psi.IgnoreEntry
+import mobi.hsz.idea.gitignore.psi.IgnoreFile
 
 /**
  * PSI elements references contributor.
- *
- * @author Alexander Zolotov <alexander.zolotov@jetbrains.com>
- * @since 0.5
  */
-public class IgnoreReferenceContributor extends PsiReferenceContributor {
+class IgnoreReferenceContributor : PsiReferenceContributor() {
+
     /**
      * Registers new references provider for PSI element.
      *
      * @param psiReferenceRegistrar reference provider
      */
-    @Override
-    public void registerReferenceProviders(@NotNull PsiReferenceRegistrar psiReferenceRegistrar) {
-        psiReferenceRegistrar.registerReferenceProvider(psiElement().inFile(psiFile(IgnoreFile.class)),
-                new IgnoreReferenceProvider());
+    override fun registerReferenceProviders(psiReferenceRegistrar: PsiReferenceRegistrar) {
+        psiReferenceRegistrar.registerReferenceProvider(
+            PlatformPatterns.psiElement().inFile(PlatformPatterns.psiFile(IgnoreFile::class.java)),
+            IgnoreReferenceProvider()
+        )
     }
 
-    /** Reference provider definition. */
-    private static class IgnoreReferenceProvider extends PsiReferenceProvider {
+    private class IgnoreReferenceProvider : PsiReferenceProvider() {
         /**
          * Returns references for given @{link PsiElement}.
          *
          * @param psiElement        current element
          * @param processingContext context
-         * @return {@link PsiReference} list
+         * @return [PsiReference] list
          */
-        @NotNull
-        @Override
-        public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement,
-                                                     @NotNull ProcessingContext processingContext) {
-            if (psiElement instanceof IgnoreEntry) {
-                return new IgnoreReferenceSet((IgnoreEntry) psiElement).getAllReferences();
+        override fun getReferencesByElement(
+            psiElement: PsiElement,
+            processingContext: ProcessingContext
+        ): Array<out PsiReference> =
+            if (psiElement is IgnoreEntry) {
+                IgnoreReferenceSet(psiElement).allReferences
+            } else {
+                PsiReference.EMPTY_ARRAY
             }
-            return PsiReference.EMPTY_ARRAY;
-        }
     }
 }
