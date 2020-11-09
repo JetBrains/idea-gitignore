@@ -149,7 +149,7 @@ public class IgnoreSettingsPanel implements Disposable {
             }
         });
         languagesTable.setPreferredScrollableViewportSize(
-                new Dimension(-1, languagesTable.getRowHeight() * IgnoreBundle.LANGUAGES.size() / 2)
+                new Dimension(-1, languagesTable.getRowHeight() * /* IgnoreBundle.LANGUAGES.size() */ 28 / 2)
         );
 
         languagesTable.setStriped(true);
@@ -385,7 +385,7 @@ public class IgnoreSettingsPanel implements Disposable {
                     if (file != null) {
                         try {
                             final Element element = JDOMUtil.load(file.getInputStream());
-                            List<IgnoreSettings.UserTemplate> templates = IgnoreSettings.loadTemplates(element);
+                            List<IgnoreSettings.UserTemplate> templates = IgnoreSettings.Companion.loadTemplates(element);
                             for (IgnoreSettings.UserTemplate template : templates) {
                                 myListModel.addElement(template);
                             }
@@ -416,12 +416,12 @@ public class IgnoreSettingsPanel implements Disposable {
                                     FILE_EXTENSION
                             ),
                             templatesListPanel
-                    ).save((VirtualFile) null, null);
+                    ).save(null, null);
 
                     if (wrapper != null) {
                         final List<IgnoreSettings.UserTemplate> items = getCurrentItems();
                         final org.jdom.Document document = new org.jdom.Document(
-                                IgnoreSettings.createTemplatesElement(items)
+                                IgnoreSettings.Companion.createTemplatesElement(items)
                         );
                         try {
                             JDOMUtil.writeDocument(document, wrapper.getFile(), Constants.NEWLINE);
@@ -727,7 +727,8 @@ public class IgnoreSettingsPanel implements Disposable {
         @Override
         public boolean isCellEditable(int row, int column) {
             final IgnoreLanguage language = new ArrayList<>(settings.keySet()).get(row);
-            if (language != null && column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) {
+            if (language != null && column == 2) {
+//   TODO:         if (language != null && column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) {
                 return false;
             }
 

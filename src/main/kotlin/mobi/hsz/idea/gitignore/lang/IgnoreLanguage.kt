@@ -14,37 +14,28 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.util.ExpiringMap
 import mobi.hsz.idea.gitignore.util.Icons
 import org.apache.commons.lang.builder.HashCodeBuilder
-import org.jetbrains.annotations.NonNls
 import java.util.HashSet
 import javax.swing.Icon
 
 /**
  * Gitignore [Language] definition.
- *
- * @author Jakub Chrzanowski <jakub></jakub>@hsz.mobi>
- * @since 0.8
  */
 open class IgnoreLanguage protected constructor(
     name: String = "Ignore",
     val extension: String = "ignore",
     val vcsDirectory: String? = null,
     val icon: Icon? = Icons.IGNORE,
-    private val outerFileFetchers: Array<OuterFileFetcher?> = arrayOfNulls(0)
+    private val outerFileFetchers: Array<OuterFileFetcher> = emptyArray()
 ) : Language(name), InjectableLanguage {
 
     private val languagesSettings = IgnoreSettings.getInstance().languagesSettings
 
-    @JvmField
     protected val outerFiles = ExpiringMap<Int, Set<VirtualFile>>(5000)
 
     companion object {
-        /** The [IgnoreLanguage] instance.  */
-        @JvmField
         val INSTANCE = IgnoreLanguage()
 
-        /** The dot.  */
-        @NonNls
-        private val DOT = "."
+        private const val DOT = "."
     }
 
     open val filename
@@ -89,8 +80,8 @@ open class IgnoreLanguage protected constructor(
         val key = HashCodeBuilder().append(project).append(fileType).toHashCode()
         if (outerFiles[key] == null) {
             outerFiles[key] = outerFileFetchers.map {
-                it!!.fetch(project)
-            }.flatten().toSet()
+                it.fetch(project)
+            }.flatten().filterNotNull().toSet()
         }
         return outerFiles.getOrElse(key, HashSet())
     }

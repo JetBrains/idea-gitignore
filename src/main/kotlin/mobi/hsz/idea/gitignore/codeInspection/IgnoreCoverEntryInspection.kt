@@ -18,6 +18,7 @@ import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.vfs.newvfs.events.VFilePropertyChangeEvent
 import com.intellij.psi.PsiFile
 import com.intellij.util.containers.ContainerUtil
+import com.jetbrains.rd.util.concurrentMapOf
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
@@ -26,14 +27,13 @@ import mobi.hsz.idea.gitignore.util.Constants
 import mobi.hsz.idea.gitignore.util.Glob
 import mobi.hsz.idea.gitignore.util.MatcherUtil
 import mobi.hsz.idea.gitignore.util.Utils
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Inspection tool that checks if entries are covered by others.
  */
 class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disposable {
 
-    private val cacheMap = ConcurrentHashMap<String, Set<String>>()
+    private val cacheMap = concurrentMapOf<String, Set<String>>()
     private val messageBus = ApplicationManager.getApplication().messageBus.connect(this)
 
     init {

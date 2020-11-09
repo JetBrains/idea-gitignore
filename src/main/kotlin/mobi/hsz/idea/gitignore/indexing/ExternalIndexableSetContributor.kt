@@ -4,6 +4,7 @@ package mobi.hsz.idea.gitignore.indexing
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.indexing.IndexableSetContributor
+import com.jetbrains.rd.util.concurrentMapOf
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
@@ -21,7 +22,7 @@ class ExternalIndexableSetContributor : IndexableSetContributor() {
         private val EMPTY_SET: Set<VirtualFile> = emptySet()
 
         /** Cached additional paths set.  */
-        private val CACHE = ConcurrentHashMap<Project, HashSet<VirtualFile>>()
+        private val CACHE = concurrentMapOf<Project, HashSet<VirtualFile>>()
 
         /**
          * Returns additional files located outside of the current project that should be indexed.
