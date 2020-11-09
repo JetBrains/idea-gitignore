@@ -334,11 +334,7 @@ object Utils {
      * @param text       text to add
      * @param attributes custom [SimpleTextAttributes]
      */
-    fun addColoredText(
-        data: PresentationData,
-        text: String,
-        attributes: SimpleTextAttributes
-    ) {
+    fun addColoredText(data: PresentationData, text: String, attributes: SimpleTextAttributes) {
         if (data.coloredText.isEmpty()) {
             data.addText(data.presentableText, SimpleTextAttributes.REGULAR_ATTRIBUTES)
         }

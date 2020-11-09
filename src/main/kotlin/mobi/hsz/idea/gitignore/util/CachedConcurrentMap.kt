@@ -7,9 +7,7 @@ import java.util.concurrent.ConcurrentMap
 /**
  * [ConcurrentMap] wrapper with additional ability to cache values.
  */
-class CachedConcurrentMap<K, V> private constructor(
-    private val fetcher: DataFetcher<K, V>
-) {
+class CachedConcurrentMap<K, V> private constructor(private val fetcher: DataFetcher<K, V>) {
 
     private val map: ConcurrentMap<K, V> = ContainerUtil.createConcurrentWeakMap()
 

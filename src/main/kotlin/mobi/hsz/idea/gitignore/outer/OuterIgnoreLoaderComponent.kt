@@ -55,12 +55,8 @@ class OuterIgnoreLoaderComponent(private val project: Project) : ProjectComponen
         }
     }
 
-    /** Listener for ignore editor manager.  */
-    private class IgnoreEditorManagerListener
-    /** Constructor.  */(
-        /** Current project.  */
-        private val project: Project
-    ) : FileEditorManagerListener {
+    /** Listener for ignore editor manager. */
+    private class IgnoreEditorManagerListener(private val project: Project) : FileEditorManagerListener {
 
         /**
          * Handles file opening event and attaches outer ignore component.

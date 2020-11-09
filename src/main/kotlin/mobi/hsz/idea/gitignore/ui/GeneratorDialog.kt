@@ -100,6 +100,35 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         tree?.selectionPath?.let { updateDescriptionPanel(it) }
     }
 
+    companion object {
+        /** [FilterComponent] search history key.  */
+        @NonNls
+        private val TEMPLATES_FILTER_HISTORY = "TEMPLATES_FILTER_HISTORY"
+
+        /** Star icon for the favorites action.  */
+        private val STAR = AllIcons.Ide.Rating
+
+        /**
+         * Creates or gets existing group node for specified element.
+         *
+         * @param root      tree root node
+         * @param container container type to search
+         * @return group node
+         */
+        private fun getGroupNode(root: TemplateTreeNode, container: Resources.Template.Container): TemplateTreeNode {
+            val childCount = root.childCount
+            (0 until childCount).forEach {
+                val child = root.getChildAt(it) as TemplateTreeNode
+                if (container == child.container) {
+                    return child
+                }
+            }
+            return TemplateTreeNode(container).apply {
+                root.add(this)
+            }
+        }
+    }
+
     init {
         title = message("dialog.generator.title")
         setOKButtonText(message("global.generate"))
@@ -520,38 +549,6 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
                     }
                 }
             )
-        }
-    }
-
-    companion object {
-        /** [FilterComponent] search history key.  */
-        @NonNls
-        private val TEMPLATES_FILTER_HISTORY = "TEMPLATES_FILTER_HISTORY"
-
-        /** Star icon for the favorites action.  */
-        private val STAR = AllIcons.Ide.Rating
-
-        /**
-         * Creates or gets existing group node for specified element.
-         *
-         * @param root      tree root node
-         * @param container container type to search
-         * @return group node
-         */
-        private fun getGroupNode(
-            root: TemplateTreeNode,
-            container: Resources.Template.Container
-        ): TemplateTreeNode {
-            val childCount = root.childCount
-            for (i in 0 until childCount) {
-                val child = root.getChildAt(i) as TemplateTreeNode
-                if (container == child.container) {
-                    return child
-                }
-            }
-            val child = TemplateTreeNode(container)
-            root.add(child)
-            return child
         }
     }
 }

@@ -121,11 +121,8 @@ object IgnoreBundle {
      * @param params       the optional parameters for the specific resource
      * @return the [String] value or `null` if no resource found for the key
      */
-    fun messageOrDefault(
-        @PropertyKey(resourceBundle = BUNDLE_NAME) key: String?,
-        defaultValue: String?,
-        vararg params: Any?
-    ): String = CommonBundle.messageOrDefault(BUNDLE, key!!, defaultValue, *params)
+    fun messageOrDefault(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String?, defaultValue: String?, vararg params: Any?): String =
+        CommonBundle.messageOrDefault(BUNDLE, key!!, defaultValue, *params)
 
     /**
      * Returns [IgnoreLanguage] matching to the given [VirtualFile].

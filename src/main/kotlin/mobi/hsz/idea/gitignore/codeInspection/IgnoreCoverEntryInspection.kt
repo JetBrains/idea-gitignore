@@ -131,31 +131,25 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
      * @param entries          to check
      * @return paths list
      */
-    private fun getPathsSet(
-        contextDirectory: VirtualFile,
-        entries: Array<IgnoreEntry>,
-        matcher: MatcherUtil
-    ): Map<IgnoreEntry, Set<String>> {
-        val result = mutableMapOf<IgnoreEntry, Set<String>>()
-        val notCached = mutableListOf<IgnoreEntry>()
+    private fun getPathsSet(contextDirectory: VirtualFile, entries: Array<IgnoreEntry>, matcher: MatcherUtil) =
+        mutableMapOf<IgnoreEntry, Set<String>>().apply {
+            val notCached = mutableListOf<IgnoreEntry>()
 
-        entries.forEach { entry ->
-            ProgressManager.checkCanceled()
-            val key = contextDirectory.path + Constants.DOLLAR + entry.text
-            cacheMap[key]?.let {
-                result[entry] = it
-            } ?: notCached.add(entry)
+            entries.forEach { entry ->
+                ProgressManager.checkCanceled()
+                val key = contextDirectory.path + Constants.DOLLAR + entry.text
+                cacheMap[key]?.let {
+                    this[entry] = it
+                } ?: notCached.add(entry)
+            }
+
+            val found = Glob.findAsPaths(contextDirectory, notCached, matcher, true)
+            found.forEach { (key, value) ->
+                ProgressManager.checkCanceled()
+                cacheMap[contextDirectory.path + Constants.DOLLAR + key.text] = value
+                this[key] = value
+            }
         }
-
-        val found = Glob.findAsPaths(contextDirectory, notCached, matcher, true)
-        found.forEach { (key, value) ->
-            ProgressManager.checkCanceled()
-            cacheMap[contextDirectory.path + Constants.DOLLAR + key.text] = value
-            result[key] = value
-        }
-
-        return result
-    }
 
     /**
      * Forces checking every entry in checked file.
