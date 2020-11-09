@@ -176,7 +176,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
                     ContainerUtil.createLockFreeCopyOnWriteList<VirtualFile>().run {
                         addAll(filesIndexCache.getFilesForPattern(context.project, pattern))
                         if (isEmpty()) {
-                            addAll(ContainerUtil.newArrayList(*context.virtualFile.children))
+                            addAll(context.virtualFile.children)
                         } else if (current.endsWith(Constants.STAR) && current != entry.text) {
                             addAll(ContainerUtil.filter(context.virtualFile.children) { obj: VirtualFile -> obj.isDirectory })
                         } else if (current.endsWith(Constants.DOUBLESTAR)) {

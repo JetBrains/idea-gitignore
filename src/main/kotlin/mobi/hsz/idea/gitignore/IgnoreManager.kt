@@ -373,7 +373,7 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
             VcsListener {
                 invalidateCache(project)
                 vcsRoots.clear()
-                vcsRoots.addAll(ContainerUtil.newArrayList(*projectLevelVcsManager.allVcsRoots))
+                vcsRoots.addAll(projectLevelVcsManager.allVcsRoots)
             }
         )
         messageBus!!.subscribe(
