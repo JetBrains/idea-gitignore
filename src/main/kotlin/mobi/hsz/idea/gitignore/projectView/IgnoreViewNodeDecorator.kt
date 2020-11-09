@@ -56,5 +56,5 @@ class IgnoreViewNodeDecorator(project: Project) : ProjectViewNodeDecorator {
      * @param node         the node to modify.
      * @param cellRenderer the current renderer for the node, which you can modify as necessary.
      */
-    override fun decorate(node: PackageDependenciesNode, cellRenderer: ColoredTreeCellRenderer) {}
+    override fun decorate(node: PackageDependenciesNode, cellRenderer: ColoredTreeCellRenderer) = Unit
 }

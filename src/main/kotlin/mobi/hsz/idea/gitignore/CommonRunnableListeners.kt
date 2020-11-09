@@ -18,7 +18,7 @@ class CommonRunnableListeners(private val task: Runnable) : RefreshStatusesListe
         task.run()
     }
 
-    override fun beforeRootsChange(event: ModuleRootEvent) {}
+    override fun beforeRootsChange(event: ModuleRootEvent) = Unit
 
     override fun rootsChanged(event: ModuleRootEvent) {
         task.run()
@@ -28,7 +28,7 @@ class CommonRunnableListeners(private val task: Runnable) : RefreshStatusesListe
         task.run()
     }
 
-    override fun beforeModuleRemoved(project: Project, module: Module) {}
+    override fun beforeModuleRemoved(project: Project, module: Module) = Unit
 
     override fun moduleRemoved(project: Project, module: Module) {
         task.run()

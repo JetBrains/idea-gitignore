@@ -40,7 +40,7 @@ class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware
             !ignoreManager.isFileTracked(virtualFile)
         ) IGNORED else null
 
-    override fun refreshFileStatusFromDocument(virtualFile: VirtualFile, doc: Document) {}
+    override fun refreshFileStatusFromDocument(virtualFile: VirtualFile, doc: Document) = Unit
 
     /**
      * Does nothing.

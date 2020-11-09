@@ -131,8 +131,10 @@ class OuterIgnoreLoaderComponent(private val project: Project) : ProjectComponen
             }
             return null
         }
-        override fun fileClosed(source: FileEditorManager, file: VirtualFile) {}
-        override fun selectionChanged(event: FileEditorManagerEvent) {}
+
+        override fun fileClosed(source: FileEditorManager, file: VirtualFile) = Unit
+
+        override fun selectionChanged(event: FileEditorManagerEvent) = Unit
     }
 
     /** Outer file fetcher event interface. */
