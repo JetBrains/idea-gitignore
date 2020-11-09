@@ -18,11 +18,8 @@ import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor
 /**
  * Project component that registers [IndexableFileSet] that counts into indexing files located outside of the project.
  */
-class IgnoreFileBasedIndexProjectHandler(
-    private val project: Project,
-    private val projectManager: ProjectManager,
-    private val index: FileBasedIndex
-) : IndexableFileSet, ProjectComponent {
+class IgnoreFileBasedIndexProjectHandler(val project: Project, private val projectManager: ProjectManager, val index: FileBasedIndex) :
+    IndexableFileSet, ProjectComponent {
 
     init {
         StartupManager.getInstance(project).registerPreStartupActivity {

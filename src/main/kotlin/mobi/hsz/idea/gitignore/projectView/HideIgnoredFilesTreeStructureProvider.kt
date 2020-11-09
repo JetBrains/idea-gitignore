@@ -30,15 +30,10 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
      * @param settings the current project view settings
      * @return the modified collection of child nodes
      */
-    override fun modify(
-        parent: AbstractTreeNode<*>,
-        children: Collection<AbstractTreeNode<*>?>,
-        settings: ViewSettings?
-    ): Collection<AbstractTreeNode<*>?> =
-        if (!ignoreSettings.hideIgnoredFiles || children.isEmpty()) {
-            children
-        } else {
-            ContainerUtil.filter(children) { node: AbstractTreeNode<*>? ->
+    override fun modify(parent: AbstractTreeNode<*>, children: Collection<AbstractTreeNode<*>?>, settings: ViewSettings?) =
+        when {
+            !ignoreSettings.hideIgnoredFiles || children.isEmpty() -> children
+            else -> ContainerUtil.filter(children) { node: AbstractTreeNode<*>? ->
                 if (node is BasePsiNode<*>) {
                     val file = node.virtualFile
                     return@filter file != null && (

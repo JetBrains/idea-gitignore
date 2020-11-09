@@ -8,7 +8,8 @@ import mobi.hsz.idea.gitignore.util.Icons
 /**
  * Swagger Codegen [SwaggerCodegenLanguage] definition
  */
-class SwaggerCodegenLanguage private constructor() : IgnoreLanguage("Swagger Codegen", "swagger-codegen-ignore", null, Icons.SWAGGER_CODEGEN) {
+class SwaggerCodegenLanguage private constructor() :
+    IgnoreLanguage("Swagger Codegen", "swagger-codegen-ignore", null, Icons.SWAGGER_CODEGEN) {
 
     companion object {
         val INSTANCE = SwaggerCodegenLanguage()

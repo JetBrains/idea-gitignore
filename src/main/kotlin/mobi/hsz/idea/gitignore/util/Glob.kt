@@ -43,55 +43,48 @@ object Glob {
      * @param includeNested attach children to the search result
      * @return search result
      */
-    fun find(
-        root: VirtualFile,
-        entries: List<IgnoreEntry>,
-        matcher: MatcherUtil,
-        includeNested: Boolean
-    ): Map<IgnoreEntry, MutableList<VirtualFile>> {
-        val result = concurrentMapOf<IgnoreEntry, MutableList<VirtualFile>>()
-        val map = concurrentMapOf<IgnoreEntry, Pattern>()
+    fun find(root: VirtualFile, entries: List<IgnoreEntry>, matcher: MatcherUtil, includeNested: Boolean) =
+        concurrentMapOf<IgnoreEntry, MutableList<VirtualFile>>().apply {
+            val map = concurrentMapOf<IgnoreEntry, Pattern>()
 
-        entries.forEach {
-            result[it] = mutableListOf()
-            createPattern(it)?.let { pattern ->
-                map[it] = pattern
+            entries.forEach {
+                this[it] = mutableListOf()
+                createPattern(it)?.let { pattern ->
+                    map[it] = pattern
+                }
             }
-        }
 
-        val visitor = object : VirtualFileVisitor<Map<IgnoreEntry, Pattern?>>(NO_FOLLOW_SYMLINKS) {
-            override fun visitFile(file: VirtualFile): Boolean {
-                if (root == file) {
+            val visitor = object : VirtualFileVisitor<Map<IgnoreEntry, Pattern?>>(NO_FOLLOW_SYMLINKS) {
+                override fun visitFile(file: VirtualFile): Boolean {
+                    if (root == file) {
+                        return true
+                    }
+                    val current = mutableMapOf<IgnoreEntry, Pattern?>()
+                    if (currentValue.isEmpty()) {
+                        return false
+                    }
+                    val path = getRelativePath(root, file)
+                    if (path == null || isVcsDirectory(file)) {
+                        return false
+                    }
+
+                    currentValue.forEach { (key, value) ->
+                        var matches = false
+                        if (value == null || matcher.match(value, path)) {
+                            matches = true
+                            get(key)!!.add(file)
+                        }
+                        current[key] = value.takeIf { !includeNested || !matches }
+                    }
+
+                    setValueForChildren(current)
                     return true
                 }
-                val current = mutableMapOf<IgnoreEntry, Pattern?>()
-                if (currentValue.isEmpty()) {
-                    return false
-                }
-                val path = getRelativePath(root, file)
-                if (path == null || isVcsDirectory(file)) {
-                    return false
-                }
-
-                currentValue.forEach { (key, value) ->
-                    var matches = false
-                    if (value == null || matcher.match(value, path)) {
-                        matches = true
-                        result[key]!!.add(file)
-                    }
-                    current[key] = value.takeIf { !includeNested || !matches }
-                }
-
-                setValueForChildren(current)
-                return true
             }
+
+            visitor.setValueForChildren(map)
+            VfsUtil.visitChildrenRecursively(root, visitor)
         }
-
-        visitor.setValueForChildren(map)
-        VfsUtil.visitChildrenRecursively(root, visitor)
-
-        return result
-    }
 
     /**
      * Finds for [VirtualFile] paths list using glob rule in given root directory.
@@ -101,18 +94,14 @@ object Glob {
      * @param includeNested attach children to the search result
      * @return search result
      */
-    fun findAsPaths(
-        root: VirtualFile,
-        entries: List<IgnoreEntry>,
-        matcher: MatcherUtil,
-        includeNested: Boolean
-    ) = find(root, entries, matcher, includeNested).mapValues { (_, value) ->
-        value
-            .asSequence()
-            .map { getRelativePath(root, it) }
-            .filterNotNull()
-            .toSet()
-    }
+    fun findAsPaths(root: VirtualFile, entries: List<IgnoreEntry>, matcher: MatcherUtil, includeNested: Boolean) =
+        find(root, entries, matcher, includeNested).mapValues { (_, value) ->
+            value
+                .asSequence()
+                .map { getRelativePath(root, it) }
+                .filterNotNull()
+                .toSet()
+        }
 
     /**
      * Creates regex [Pattern] using [IgnoreEntry].
