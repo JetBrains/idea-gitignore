@@ -109,6 +109,7 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
      * @param params the optional parameters for the specific resource
      * @return the [String] value or `null` if no resource found for the key
      */
+    @JvmStatic
     fun message(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String?, vararg params: Any?) = message(BUNDLE, key!!, *params)
 
     /**

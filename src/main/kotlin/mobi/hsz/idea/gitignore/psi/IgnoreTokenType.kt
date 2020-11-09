@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NonNls
 /**
  * Token type definition.
  */
-class IgnoreTokenType(@NonNls private val debugName: String) : IElementType(debugName, IgnoreLanguage.INSTANCE) {
+class IgnoreTokenType(@NonNls val myDebugName: String) : IElementType(myDebugName, IgnoreLanguage.INSTANCE) {
 
     /**
      * String interpretation of the token type.
      *
      * @return string representation
      */
-    override fun toString(): String = IgnoreBundle.messageOrDefault("tokenType.$debugName", "IgnoreTokenType." + super.toString())
+    override fun toString(): String = IgnoreBundle.messageOrDefault("tokenType.$myDebugName", "IgnoreTokenType." + super.toString())
 }
