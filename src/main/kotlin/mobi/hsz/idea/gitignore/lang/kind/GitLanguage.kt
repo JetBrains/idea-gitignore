@@ -17,14 +17,16 @@ import java.util.HashSet
 /**
  * Gitignore [IgnoreLanguage] definition.
  */
-class GitLanguage private constructor() : IgnoreLanguage("Git",
+class GitLanguage private constructor() : IgnoreLanguage(
+    "Git",
     "gitignore",
     ".git",
     Icons.GIT,
     arrayOf( // Outer file fetched from the `git config core.excludesfile`.
         OuterFileFetcher { listOf(ExternalExec.gitExcludesFile) },
         OuterFileFetcher { listOf(ExternalExec.GIT_USER_IGNORE) }
-    )) {
+    )
+) {
 
     private var fetched = false
 

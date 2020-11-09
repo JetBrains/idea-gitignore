@@ -50,7 +50,6 @@ class CachedConcurrentMap<K, V> private constructor(
         map.clear()
     }
 
-
     /** Fetcher interface. */
     fun interface DataFetcher<K, V> {
         /**

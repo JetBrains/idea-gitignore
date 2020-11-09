@@ -119,12 +119,14 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
             return emptyMap()
         }
         val items = ArrayList<Pair<String, Boolean>>()
-        inputDataPsi.acceptChildren(object : IgnoreVisitor() {
-            override fun visitEntry(entry: IgnoreEntry) {
-                val regex = Glob.getRegex(entry.value, entry.syntax, false)
-                items.add(Pair.create(regex, entry.isNegated))
+        inputDataPsi.acceptChildren(
+            object : IgnoreVisitor() {
+                override fun visitEntry(entry: IgnoreEntry) {
+                    val regex = Glob.getRegex(entry.value, entry.syntax, false)
+                    items.add(Pair.create(regex, entry.isNegated))
+                }
             }
-        })
+        )
         return Collections.singletonMap(
             IgnoreFileTypeKey((inputData.fileType as IgnoreFileType)),
             IgnoreEntryOccurrence(inputData.file.url, items)

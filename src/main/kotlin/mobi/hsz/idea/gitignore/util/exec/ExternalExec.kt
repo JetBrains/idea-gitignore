@@ -114,7 +114,7 @@ object ExternalExec {
      * @param parser    [ExecutionOutputParser] implementation
      * @param <T>       return type
      * @return result of the call
-    </T> */
+     </T> */
     private fun <T> runForSingle(language: IgnoreLanguage, command: String, directory: VirtualFile?, parser: ExecutionOutputParser<T>) =
         ContainerUtil.getFirstItem(run(language, command, directory, parser))
 
@@ -127,7 +127,7 @@ object ExternalExec {
      * @param parser    [ExecutionOutputParser] implementation
      * @param <T>       return type
      * @return result of the call
-    </T> */
+     </T> */
     private fun <T> run(
         language: IgnoreLanguage,
         command: String,

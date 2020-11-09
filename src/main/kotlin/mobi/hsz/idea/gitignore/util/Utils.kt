@@ -265,8 +265,10 @@ object Utils {
     @JvmStatic
     fun createPreviewEditor(document: Document, project: Project?, isViewer: Boolean): Editor {
         val editor = EditorFactory.getInstance().createEditor(
-            document, project,
-            IgnoreFileType.INSTANCE, isViewer
+            document,
+            project,
+            IgnoreFileType.INSTANCE,
+            isViewer
         ) as EditorEx
         editor.setCaretEnabled(!isViewer)
         val settings = editor.settings
@@ -333,7 +335,8 @@ object Utils {
      * @param attributes custom [SimpleTextAttributes]
      */
     fun addColoredText(
-        data: PresentationData, text: String,
+        data: PresentationData,
+        text: String,
         attributes: SimpleTextAttributes
     ) {
         if (data.coloredText.isEmpty()) {

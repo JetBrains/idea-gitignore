@@ -18,7 +18,11 @@ import org.jetbrains.annotations.NonNls
  * Gitignore Exclude [IgnoreLanguage] definition.
  */
 class GitExcludeLanguage private constructor() :
-    IgnoreLanguage("Git exclude", "exclude", ".git", Icons.GIT,
+    IgnoreLanguage(
+        "Git exclude",
+        "exclude",
+        ".git",
+        Icons.GIT,
         arrayOf( // `exclude` files located in .git directory
             object : OuterFileFetcher {
                 @NonNls
@@ -43,19 +47,23 @@ class GitExcludeLanguage private constructor() :
                 ): Collection<VirtualFile> = root.run {
                     findFileByRelativePath(EXCLUDE)?.let(files::add)
                     findChild("modules")?.let { modules ->
-                        VfsUtil.visitChildrenRecursively(modules, object : VirtualFileVisitor<VirtualFile>() {
-                            override fun visitFile(dir: VirtualFile) =
-                                dir.findChild("index")?.let {
-                                    processExcludes(it, files)
-                                    false
-                                } ?: dir.isDirectory
-                        })
+                        VfsUtil.visitChildrenRecursively(
+                            modules,
+                            object : VirtualFileVisitor<VirtualFile>() {
+                                override fun visitFile(dir: VirtualFile) =
+                                    dir.findChild("index")?.let {
+                                        processExcludes(it, files)
+                                        false
+                                    } ?: dir.isDirectory
+                            }
+                        )
                     }
                     files
                 }
             },
             OuterFileFetcher { ContainerUtil.newArrayList(ExternalExec.GIT_USER_IGNORE) }
-        )) {
+        )
+    ) {
 
     companion object {
         val INSTANCE = GitExcludeLanguage()

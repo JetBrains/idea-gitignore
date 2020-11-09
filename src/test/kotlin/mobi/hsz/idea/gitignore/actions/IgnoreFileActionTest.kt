@@ -2,8 +2,8 @@
 
 package mobi.hsz.idea.gitignore.actions
 
-import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.Common
+import mobi.hsz.idea.gitignore.IgnoreBundle
 
 class IgnoreFileActionTest : Common<IgnoreFileAction?>() {
 

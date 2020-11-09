@@ -23,7 +23,9 @@ class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware
     companion object {
         /** Ignored status.  */
         val IGNORED: FileStatus = FileStatusFactory.getInstance().createFileStatus(
-            "IGNORE.PROJECT_VIEW.IGNORED", IgnoreBundle.message("projectView.ignored"), JBColor.GRAY
+            "IGNORE.PROJECT_VIEW.IGNORED",
+            IgnoreBundle.message("projectView.ignored"),
+            JBColor.GRAY
         )
     }
 

@@ -230,7 +230,8 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             )
         )
         northPanel.add(
-            profileFilter, GridBagConstraints(
+            profileFilter,
+            GridBagConstraints(
                 1, 0, 1, 1, 1.0, 1.0, GridBagConstraints.BASELINE_TRAILING,
                 GridBagConstraints.HORIZONTAL, JBUI.emptyInsets(), 0, 0
             )
@@ -295,57 +296,61 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         val actions = DefaultActionGroup()
         actions.add(actionManager.createExpandAllAction(treeExpander, tree))
         actions.add(actionManager.createCollapseAllAction(treeExpander, tree))
-        actions.add(object : AnAction(
-            message("dialog.generator.unselectAll"),
-            null,
-            AllIcons.Actions.Unselectall
-        ) {
-            override fun update(e: AnActionEvent) {
-                e.presentation.isEnabled = !checked.isEmpty()
-            }
+        actions.add(
+            object : AnAction(
+                message("dialog.generator.unselectAll"),
+                null,
+                AllIcons.Actions.Unselectall
+            ) {
+                override fun update(e: AnActionEvent) {
+                    e.presentation.isEnabled = !checked.isEmpty()
+                }
 
-            override fun actionPerformed(e: AnActionEvent) {
-                checked.clear()
-                filterTree(profileFilter!!.textEditor.text)
-            }
-        })
-        actions.add(object : AnAction(message("dialog.generator.star"), null, STAR) {
-            override fun update(e: AnActionEvent) {
-                val node = currentNode
-                val disabled = node == null || Resources.Template.Container.USER == node.container || !node.isLeaf
-                val unstar = node != null && Resources.Template.Container.STARRED == node.container
-                val icon = if (disabled) IconLoader.getDisabledIcon(STAR) else if (unstar) IconLoader.getTransparentIcon(STAR) else STAR
-                val text = message(if (unstar) "dialog.generator.unstar" else "dialog.generator.star")
-                val presentation = e.presentation
-                presentation.isEnabled = !disabled
-                presentation.icon = icon
-                presentation.text = text
-            }
-
-            override fun actionPerformed(e: AnActionEvent) {
-                val node = currentNode ?: return
-                val template = node.template
-                if (template != null) {
-                    val isStarred = !template.isStarred
-                    template.isStarred = isStarred
-                    refreshTree()
-                    if (isStarred) {
-                        starred.add(template.name)
-                    } else {
-                        starred.remove(template.name)
-                    }
-                    settings.starredTemplates = ArrayList(starred)
+                override fun actionPerformed(e: AnActionEvent) {
+                    checked.clear()
+                    filterTree(profileFilter!!.textEditor.text)
                 }
             }
+        )
+        actions.add(
+            object : AnAction(message("dialog.generator.star"), null, STAR) {
+                override fun update(e: AnActionEvent) {
+                    val node = currentNode
+                    val disabled = node == null || Resources.Template.Container.USER == node.container || !node.isLeaf
+                    val unstar = node != null && Resources.Template.Container.STARRED == node.container
+                    val icon = if (disabled) IconLoader.getDisabledIcon(STAR) else if (unstar) IconLoader.getTransparentIcon(STAR) else STAR
+                    val text = message(if (unstar) "dialog.generator.unstar" else "dialog.generator.star")
+                    val presentation = e.presentation
+                    presentation.isEnabled = !disabled
+                    presentation.icon = icon
+                    presentation.text = text
+                }
 
-            /**
-             * Returns current [TemplateTreeNode] node if available.
-             *
-             * @return current node
-             */
-            private val currentNode
-                get() = tree?.selectionPath?.lastPathComponent as TemplateTreeNode?
-        })
+                override fun actionPerformed(e: AnActionEvent) {
+                    val node = currentNode ?: return
+                    val template = node.template
+                    if (template != null) {
+                        val isStarred = !template.isStarred
+                        template.isStarred = isStarred
+                        refreshTree()
+                        if (isStarred) {
+                            starred.add(template.name)
+                        } else {
+                            starred.remove(template.name)
+                        }
+                        settings.starredTemplates = ArrayList(starred)
+                    }
+                }
+
+                /**
+                 * Returns current [TemplateTreeNode] node if available.
+                 *
+                 * @return current node
+                 */
+                private val currentNode
+                    get() = tree?.selectionPath?.lastPathComponent as TemplateTreeNode?
+            }
+        )
 
         return ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions, true).apply {
             setTargetComponent(target)
@@ -476,7 +481,10 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         attr.foregroundColor = UIUtil.getTreeSelectionForeground(true)
         for (pair in pairs) {
             preview!!.markupModel.addRangeHighlighter(
-                pair.first, pair.second, 0, attr,
+                pair.first,
+                pair.second,
+                0,
+                attr,
                 HighlighterTargetArea.EXACT_RANGE
             )
         }

@@ -106,12 +106,15 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     var languagesSettings = object : IgnoreLanguagesSettings() {
         init {
             IgnoreBundle.LANGUAGES.forEach {
-                put(it, object : TreeMap<KEY, Any>() {
-                    init {
-                        put(KEY.NEW_FILE, true)
-                        put(KEY.ENABLE, it.isVCS && !IgnoreBundle.isExcludedFromHighlighting((it)))
+                put(
+                    it,
+                    object : TreeMap<KEY, Any>() {
+                        init {
+                            put(KEY.NEW_FILE, true)
+                            put(KEY.ENABLE, it.isVCS && !IgnoreBundle.isExcludedFromHighlighting((it)))
+                        }
                     }
-                })
+                )
             }
         }
     }

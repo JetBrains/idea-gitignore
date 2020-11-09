@@ -247,7 +247,8 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
                     continue
                 } else if (fileType is GitExcludeFileType) {
                     val workingDirectory = getWorkingDirectory(
-                        project, entryFile
+                        project,
+                        entryFile
                     )
                     if (workingDirectory == null || !Utils.isUnder(file, workingDirectory)) {
                         continue
@@ -365,18 +366,25 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         messageBus = project.messageBus.connect()
         messageBus!!.subscribe(
             RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH,
-            RefreshTrackedIgnoredListener { debouncedRefreshTrackedIgnores.run(true) })
-        messageBus!!.subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, VcsListener {
-            invalidateCache(project)
-            vcsRoots.clear()
-            vcsRoots.addAll(ContainerUtil.newArrayList(*projectLevelVcsManager.allVcsRoots))
-        })
-        messageBus!!.subscribe(DumbService.DUMB_MODE, object : DumbModeListener {
-            override fun enteredDumbMode() {}
-            override fun exitDumbMode() {
-                debouncedExitDumbMode.run()
+            RefreshTrackedIgnoredListener { debouncedRefreshTrackedIgnores.run(true) }
+        )
+        messageBus!!.subscribe(
+            ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED,
+            VcsListener {
+                invalidateCache(project)
+                vcsRoots.clear()
+                vcsRoots.addAll(ContainerUtil.newArrayList(*projectLevelVcsManager.allVcsRoots))
             }
-        })
+        )
+        messageBus!!.subscribe(
+            DumbService.DUMB_MODE,
+            object : DumbModeListener {
+                override fun enteredDumbMode() {}
+                override fun exitDumbMode() {
+                    debouncedExitDumbMode.run()
+                }
+            }
+        )
         messageBus!!.subscribe(ProjectTopics.PROJECT_ROOTS, commonRunnableListeners)
         messageBus!!.subscribe(RefreshStatusesListener.REFRESH_STATUSES, commonRunnableListeners)
         messageBus!!.subscribe(ProjectTopics.MODULES, commonRunnableListeners)
@@ -528,12 +536,15 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
             val application = ApplicationManager.getApplication()
             if (application.isDispatchThread) {
                 val fileTypeManager = FileTypeManager.getInstance()
-                application.invokeLater({
-                    application.runWriteAction {
-                        fileTypeManager.associate(fileType, ExactFileNameMatcher(fileName))
-                        FILE_TYPES_ASSOCIATION_QUEUE.remove(fileName)
-                    }
-                }, ModalityState.NON_MODAL)
+                application.invokeLater(
+                    {
+                        application.runWriteAction {
+                            fileTypeManager.associate(fileType, ExactFileNameMatcher(fileName))
+                            FILE_TYPES_ASSOCIATION_QUEUE.remove(fileName)
+                        }
+                    },
+                    ModalityState.NON_MODAL
+                )
             } else if (!FILE_TYPES_ASSOCIATION_QUEUE.containsKey(fileName)) {
                 FILE_TYPES_ASSOCIATION_QUEUE[fileName] = fileType
             }
