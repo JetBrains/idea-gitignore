@@ -28,7 +28,8 @@ open class IgnoreLanguage protected constructor(
     private val outerFileFetchers: Array<OuterFileFetcher> = emptyArray()
 ) : Language(name), InjectableLanguage {
 
-    private val languagesSettings = IgnoreSettings.getInstance().languagesSettings
+    private val languagesSettings
+        get() = IgnoreSettings.getInstance().languagesSettings
 
     protected val outerFiles = ExpiringMap<Int, Set<VirtualFile>>(5000)
 

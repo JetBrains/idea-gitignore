@@ -23,7 +23,6 @@ import mobi.hsz.idea.gitignore.util.Constants
 import mobi.hsz.idea.gitignore.util.Glob
 import mobi.hsz.idea.gitignore.util.Utils
 import java.util.ArrayList
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * [FileReferenceSet] definition class.
@@ -41,8 +40,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
      * @param text  string text
      * @return file reference
      */
-    override fun createFileReference(range: TextRange, index: Int, text: String) =
-        IgnoreReference(this, range, index, text)
+    override fun createFileReference(range: TextRange, index: Int, text: String) = IgnoreReference(this, range, index, text)
 
     /**
      * Sets ending slash as allowed.
@@ -56,19 +54,18 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
      *
      * @return contexts collection
      */
-    override fun computeDefaultContexts() =
-        element.containingFile.parent?.let(::listOf) ?: super.computeDefaultContexts()
+    override fun computeDefaultContexts() = element.containingFile.parent?.let(::listOf) ?: super.computeDefaultContexts()
 
     /**
      * Returns last reference of the current element's references.
      *
      * @return last [FileReference]
      */
-    override fun getLastReference(): FileReference? {
-        val lastReference = super.getLastReference()
-        return if (lastReference != null && lastReference.canonicalText.endsWith(separatorString)) {
-            if (myReferences != null && myReferences.size > 1) myReferences[myReferences.size - 2] else null
-        } else lastReference
+    override fun getLastReference() = super.getLastReference()?.let {
+        when {
+            it.canonicalText.endsWith(separatorString) && myReferences != null && myReferences.size > 1 -> myReferences[myReferences.size - 2]
+            else -> null
+        }
     }
 
     /**
@@ -233,7 +230,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
          * @param file current file
          * @return is outer file
          */
-        private fun isOuterFile(file: IgnoreFile?) = file != null && file.isOuter
+        private fun isOuterFile(file: IgnoreFile?) = file?.isOuter ?: false
 
         /**
          * Searches for directory or file using [PsiManager].
@@ -246,7 +243,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
             if (!file.isValid) {
                 return null
             }
-            return if (file.isDirectory) manager.findDirectory(file) else manager.findFile(file)
+            return manager.findDirectory(file).takeIf { file.isDirectory } ?: manager.findFile(file)
         }
     }
 }
