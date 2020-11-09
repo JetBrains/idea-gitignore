@@ -58,10 +58,7 @@ class IgnoreReferenceContributor : PsiReferenceContributor() {
          * @param processingContext context
          * @return [PsiReference] list
          */
-        override fun getReferencesByElement(
-            psiElement: PsiElement,
-            processingContext: ProcessingContext
-        ): Array<out PsiReference> =
+        override fun getReferencesByElement(psiElement: PsiElement, processingContext: ProcessingContext): Array<out PsiReference> =
             if (psiElement is IgnoreEntry) {
                 IgnoreReferenceSet(psiElement).allReferences
             } else {
