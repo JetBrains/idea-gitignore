@@ -10,7 +10,6 @@ import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType
 import java.util.HashSet
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * IndexedRootsProvider implementation that provides additional paths to index - like external/global ignore files.

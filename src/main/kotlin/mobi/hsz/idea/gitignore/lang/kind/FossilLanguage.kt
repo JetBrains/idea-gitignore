@@ -12,7 +12,8 @@ import mobi.hsz.idea.gitignore.util.Utils
  * Fossil [IgnoreLanguage] definition.
  */
 class FossilLanguage
-private constructor() : IgnoreLanguage("Fossil",
+private constructor() : IgnoreLanguage(
+    "Fossil",
     "ignore-glob",
     ".fossil-settings",
     Icons.FOSSIL,
@@ -22,7 +23,8 @@ private constructor() : IgnoreLanguage("Fossil",
                 Utils.guessProjectDir(project)?.findFileByRelativePath(INSTANCE.vcsDirectory + "/" + INSTANCE.filename)
             )
         }
-    )) {
+    )
+) {
 
     companion object {
         val INSTANCE = FossilLanguage()

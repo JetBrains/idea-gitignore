@@ -122,7 +122,8 @@ object IgnoreBundle {
      * @return the [String] value or `null` if no resource found for the key
      */
     fun messageOrDefault(
-        @PropertyKey(resourceBundle = BUNDLE_NAME) key: String?, defaultValue: String?,
+        @PropertyKey(resourceBundle = BUNDLE_NAME) key: String?,
+        defaultValue: String?,
         vararg params: Any?
     ): String = CommonBundle.messageOrDefault(BUNDLE, key!!, defaultValue, *params)
 
@@ -156,11 +157,12 @@ object IgnoreBundle {
 
             fun find(name: String?) = when (name) {
                 null -> null
-                else -> try {
-                    valueOf(name.toUpperCase())
-                } catch (iae: IllegalArgumentException) {
-                    null
-                }
+                else ->
+                    try {
+                        valueOf(name.toUpperCase())
+                    } catch (iae: IllegalArgumentException) {
+                        null
+                    }
             }
         }
     }

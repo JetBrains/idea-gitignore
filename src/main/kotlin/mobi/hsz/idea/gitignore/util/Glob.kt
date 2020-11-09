@@ -244,12 +244,13 @@ object Glob {
                     }
                     escape = !escape
                 }
-                '?' -> if (escape) {
-                    sb.append("\\?")
-                    escape = false
-                } else {
-                    sb.append('.')
-                }
+                '?' ->
+                    if (escape) {
+                        sb.append("\\?")
+                        escape = false
+                    } else {
+                        sb.append('.')
+                    }
                 '[' -> {
                     if (escape) {
                         sb.append('\\')

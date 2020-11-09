@@ -95,10 +95,13 @@ class OuterIgnoreLoaderComponent(private val project: Project) : ProjectComponen
                         getInstance().addListener(settingsListener)
                         source.addBottomComponent(fileEditor, component)
                         Disposer.register(fileEditor, wrapper)
-                        Disposer.register(fileEditor, {
-                            getInstance().removeListener(settingsListener)
-                            source.removeBottomComponent(fileEditor, component)
-                        })
+                        Disposer.register(
+                            fileEditor,
+                            {
+                                getInstance().removeListener(settingsListener)
+                                source.removeBottomComponent(fileEditor, component)
+                            }
+                        )
                     }
                 }
             }
