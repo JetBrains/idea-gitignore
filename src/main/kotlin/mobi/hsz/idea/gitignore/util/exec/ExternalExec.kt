@@ -55,8 +55,9 @@ object ExternalExec {
      *
      * @return Git excludes file
      */
-    val gitExcludesFile: VirtualFile
-        get() = runForSingle(GitLanguage.INSTANCE, GIT_CONFIG_EXCLUDES_FILE, null, GitExcludesOutputParser())
+    val gitExcludesFile: VirtualFile by lazy {
+        runForSingle(GitLanguage.INSTANCE, GIT_CONFIG_EXCLUDES_FILE, null, GitExcludesOutputParser())
+    }
 
     /**
      * Returns list of unignored files for the given directory.

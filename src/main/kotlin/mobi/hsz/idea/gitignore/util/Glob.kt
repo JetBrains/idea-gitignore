@@ -64,7 +64,7 @@ object Glob {
                 if (root == file) {
                     return true
                 }
-                val current = concurrentMapOf<IgnoreEntry, Pattern?>()
+                val current = mutableMapOf<IgnoreEntry, Pattern?>()
                 if (currentValue.isEmpty()) {
                     return false
                 }
