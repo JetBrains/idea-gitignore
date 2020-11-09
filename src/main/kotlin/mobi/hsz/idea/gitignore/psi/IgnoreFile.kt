@@ -8,7 +8,6 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.impl.source.PsiFileImpl
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
-import java.util.ArrayList
 
 /**
  * Base plugin file.
@@ -25,12 +24,10 @@ class IgnoreFile(viewProvider: FileViewProvider, private val fileType: IgnoreFil
          * @param viewProvider current [FileViewProvider]
          * @return matched [Language]
          */
-        private fun findLanguage(baseLanguage: Language, viewProvider: FileViewProvider): Language {
-            viewProvider.languages.run {
-                find { it.isKindOf(baseLanguage) }?.let { return it }
-                find { it is IgnoreLanguage }?.let { return it }
-            }
-            throw AssertionError("Language $baseLanguage doesn't participate in view provider $viewProvider: " + ArrayList(languages))
+        private fun findLanguage(baseLanguage: Language, viewProvider: FileViewProvider): Language = viewProvider.languages.run {
+            find { it.isKindOf(baseLanguage) }?.let { return it }
+            find { it is IgnoreLanguage }?.let { return it }
+            throw AssertionError("Language $baseLanguage doesn't participate in view provider $viewProvider: $this")
         }
     }
 
