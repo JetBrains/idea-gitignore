@@ -39,7 +39,7 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
         private const val VERSION = 5
 
         /** [DataExternalizer] instance.  */
-        private val DATA_EXTERNALIZER: DataExternalizer<IgnoreEntryOccurrence> = object : DataExternalizer<IgnoreEntryOccurrence> {
+        private val DATA_EXTERNALIZER = object : DataExternalizer<IgnoreEntryOccurrence> {
 
             /**
              * Saves data in the output stream.
