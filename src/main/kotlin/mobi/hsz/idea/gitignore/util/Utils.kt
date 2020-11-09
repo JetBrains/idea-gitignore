@@ -29,7 +29,6 @@ import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreBundle.obtainLanguage
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
-import java.util.Arrays
 
 /**
  * [Utils] class that contains various methods.
@@ -233,11 +232,7 @@ object Utils {
         ) { module: Module -> module.moduleContentScope.contains(file) }
     }
 
-    fun getModuleRoot(module: Module): VirtualFile? {
-        val roots = ModuleRootManager.getInstance(module).contentRoots
-        val root = ContainerUtil.getFirstItem(Arrays.asList(*roots))
-        return if (root != null && root.isDirectory) root else null
-    }
+    private fun getModuleRoot(module: Module) = ModuleRootManager.getInstance(module).contentRoots.first()?.takeIf { it.isDirectory }
 
     fun getModuleRootForFile(file: VirtualFile, project: Project): VirtualFile? {
         val module = getModuleForFile(file, project)

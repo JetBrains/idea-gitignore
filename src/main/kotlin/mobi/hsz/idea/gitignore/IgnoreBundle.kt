@@ -1,7 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore
 
-import com.intellij.CommonBundle
+import com.intellij.AbstractBundle
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
@@ -43,7 +43,7 @@ import java.util.ResourceBundle
 /**
  * [ResourceBundle]/localization utils for the .ignore support plugin.
  */
-object IgnoreBundle {
+object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
 
     @NonNls
     val PLUGIN_ID = "mobi.hsz.idea.gitignore"
@@ -109,20 +109,7 @@ object IgnoreBundle {
      * @param params the optional parameters for the specific resource
      * @return the [String] value or `null` if no resource found for the key
      */
-    @JvmStatic
-    fun message(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String?, vararg params: Any?) =
-        CommonBundle.message(BUNDLE, key!!, *params)
-
-    /**
-     * Loads a [String] from the [.BUNDLE] [ResourceBundle].
-     *
-     * @param key          the key of the resource
-     * @param defaultValue the default value that will be returned if there is nothing set
-     * @param params       the optional parameters for the specific resource
-     * @return the [String] value or `null` if no resource found for the key
-     */
-    fun messageOrDefault(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String?, defaultValue: String?, vararg params: Any?): String =
-        CommonBundle.messageOrDefault(BUNDLE, key!!, defaultValue, *params)
+    fun message(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String?, vararg params: Any?) = message(BUNDLE, key!!, *params)
 
     /**
      * Returns [IgnoreLanguage] matching to the given [VirtualFile].
