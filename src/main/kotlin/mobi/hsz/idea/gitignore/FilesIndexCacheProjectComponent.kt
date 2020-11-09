@@ -15,11 +15,11 @@ import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.vfs.newvfs.events.VFilePropertyChangeEvent
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
+import com.jetbrains.rd.util.concurrentMapOf
 import gnu.trove.THashSet
 import mobi.hsz.idea.gitignore.util.Constants
 import mobi.hsz.idea.gitignore.util.MatcherUtil
 import java.util.ArrayList
-import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
 
 /**
@@ -28,7 +28,7 @@ import java.util.regex.Pattern
  */
 class FilesIndexCacheProjectComponent(project: Project) : ProjectComponent, BulkFileListener, Disposable {
 
-    private val cacheMap = ConcurrentHashMap<String, Collection<VirtualFile>>()
+    private val cacheMap = concurrentMapOf<String, Collection<VirtualFile>>()
     private val projectFileIndex = ProjectRootManager.getInstance(project).fileIndex
     private val messageBus = ApplicationManager.getApplication().messageBus.connect(this)
 

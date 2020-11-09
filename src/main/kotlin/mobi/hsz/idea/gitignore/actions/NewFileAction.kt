@@ -42,8 +42,7 @@ open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), Dum
         val virtualFile = file?.virtualFile ?: directory.virtualFile.findChild(filename)
         val dialog =
             if (file == null && virtualFile == null) {
-                val action = CreateFileCommandAction(project, directory, fileType)
-                GeneratorDialog(project, action)
+                GeneratorDialog(project, action = CreateFileCommandAction(project, directory, fileType))
             } else {
                 Notifications.Bus.notify(
                     Notification(

@@ -14,6 +14,7 @@ import com.intellij.psi.ResolveResult
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import com.intellij.util.containers.ContainerUtil
+import com.jetbrains.rd.util.concurrentMapOf
 import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
@@ -130,7 +131,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
         /**
          * Concurrent cache map.
          */
-        private val cacheMap = ConcurrentHashMap<String, Collection<VirtualFile>>()
+        private val cacheMap = concurrentMapOf<String, Collection<VirtualFile>>()
 
         /**
          * Resolves reference to the filesystem.

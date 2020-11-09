@@ -105,16 +105,13 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     /** Settings related to the [IgnoreLanguage]. */
     var languagesSettings = object : IgnoreLanguagesSettings() {
         init {
-            for (language in IgnoreBundle.LANGUAGES) {
-                put(
-                    language,
-                    object : TreeMap<KEY, Any>() {
-                        init {
-                            put(KEY.NEW_FILE, true)
-                            put(KEY.ENABLE, language.isVCS && !IgnoreBundle.isExcludedFromHighlighting(language))
-                        }
+            IgnoreBundle.LANGUAGES.forEach {
+                put(it, object : TreeMap<KEY, Any>() {
+                    init {
+                        put(KEY.NEW_FILE, true)
+                        put(KEY.ENABLE, it.isVCS && !IgnoreBundle.isExcludedFromHighlighting((it)))
                     }
-                )
+                })
             }
         }
     }
@@ -137,7 +134,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
             userTemplates.addAll(value)
         }
 
-    /** Listeners list.  */
+    /** Listeners list. */
     private val listeners = ContainerUtil.createConcurrentList<Listener>()
 
     companion object {
@@ -154,7 +151,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
          * @param userTemplates templates
          * @return [Element] instance with user templates
          */
-        @JvmStatic
         fun createTemplatesElement(userTemplates: List<UserTemplate>) =
             Element(KEY.USER_TEMPLATES.toString()).apply {
                 userTemplates.forEach {
@@ -173,7 +169,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
          * @param element source
          * @return [UserTemplate] list
          */
-        @JvmStatic
         fun loadTemplates(element: Element) = KEY.USER_TEMPLATES.toString().let { key ->
             (element.takeIf { key == element.name } ?: element.getChild(key)).children.map {
                 UserTemplate(
@@ -320,7 +315,8 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     }
 
     /** Listener interface for onChange event. */
-    interface Listener {
+    fun interface Listener {
+
         fun onChange(key: KEY, value: Any?)
     }
 

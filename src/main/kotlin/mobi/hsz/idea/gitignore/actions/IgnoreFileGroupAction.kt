@@ -68,7 +68,7 @@ open class IgnoreFileGroupAction @JvmOverloads constructor(
                     // skip already bundled languages for ignore action
                     .filterNot { this !is UnignoreFileGroupAction && (it is GitLanguage || it is MercurialLanguage) }
                     .map { it.fileType }
-                    .forEach { files[it] = Utils.getSuitableIgnoreFiles(project, it, file).apply { reverse() } }
+                    .forEach { files[it] = Utils.getSuitableIgnoreFiles(project, it, file).reversed() }
             } catch (e: ExternalFileException) {
                 presentation.isVisible = false
             }

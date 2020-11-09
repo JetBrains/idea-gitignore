@@ -2,6 +2,7 @@
 package mobi.hsz.idea.gitignore.util
 
 import com.intellij.openapi.util.Pair
+import com.jetbrains.rd.util.concurrentMapOf
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -13,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
 class ExpiringMap<K, V>(private val time: Int) {
 
     /** Cache map.  */
-    private val map = ConcurrentHashMap<K, Pair<V, Long>>()
+    private val map = concurrentMapOf<K, Pair<V, Long>>()
 
     /**
      * Gets value using passed key. Returns null if expired.

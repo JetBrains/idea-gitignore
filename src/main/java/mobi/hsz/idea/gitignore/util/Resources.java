@@ -178,7 +178,7 @@ public class Resources {
          */
         public Template(@NotNull File file, @Nullable String content) {
             this.file = file;
-            this.name = file.getName().replace(GitLanguage.INSTANCE.getFilename(), "");
+            this.name = file.getName().replace(GitLanguage.Companion.getINSTANCE().getFilename(), "");
             this.content = content;
             this.container = file.getParent().endsWith("Global") ? Container.GLOBAL : Container.ROOT;
         }
