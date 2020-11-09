@@ -91,7 +91,7 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
          */
         @JvmStatic
         fun getFiles(project: Project, fileType: IgnoreFileType): List<VirtualFile> =
-            ContainerUtil.mapNotNull(getEntries(project, fileType), IgnoreEntryOccurrence::file)
+            getEntries(project, fileType).mapNotNull(IgnoreEntryOccurrence::file)
     }
 
     /**
