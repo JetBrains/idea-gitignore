@@ -379,7 +379,7 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         messageBus!!.subscribe(
             DumbService.DUMB_MODE,
             object : DumbModeListener {
-                override fun enteredDumbMode() {}
+                override fun enteredDumbMode() = Unit
                 override fun exitDumbMode() {
                     debouncedExitDumbMode.run()
                 }

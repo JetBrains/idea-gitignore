@@ -22,7 +22,6 @@ import mobi.hsz.idea.gitignore.util.Glob
 import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
-import java.util.ArrayList
 import java.util.Collections
 
 /**
@@ -118,7 +117,8 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
         if (inputDataPsi !is IgnoreFile) {
             return emptyMap()
         }
-        val items = ArrayList<Pair<String, Boolean>>()
+
+        val items = mutableListOf<Pair<String, Boolean>>()
         inputDataPsi.acceptChildren(
             object : IgnoreVisitor() {
                 override fun visitEntry(entry: IgnoreEntry) {
@@ -127,6 +127,7 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
                 }
             }
         )
+
         return Collections.singletonMap(
             IgnoreFileTypeKey((inputData.fileType as IgnoreFileType)),
             IgnoreEntryOccurrence(inputData.file.url, items)
