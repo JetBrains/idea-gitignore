@@ -14,12 +14,6 @@ import mobi.hsz.idea.gitignore.util.CommonDataKeys
 class AddTemplateAction :
     AnAction(IgnoreBundle.message("action.addTemplate"), IgnoreBundle.message("action.addTemplate.description"), null) {
 
-    /**
-     * Handles an action of adding new template.
-     * Ignores action if selected file is not a [IgnoreFile] instance, otherwise shows [GeneratorDialog].
-     *
-     * @param e action event
-     */
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getData(CommonDataKeys.PROJECT) ?: return
         val file = e.getData(CommonDataKeys.PSI_FILE) as IgnoreFile
@@ -27,18 +21,12 @@ class AddTemplateAction :
         GeneratorDialog(project, file).show()
     }
 
-    /**
-     * Updates visibility of the action presentation in various actions list.
-     * Visible only for [IgnoreFile] context.
-     *
-     * @param e action event
-     */
     override fun update(e: AnActionEvent) {
         val file = e.getData(CommonDataKeys.PSI_FILE)
         if (file !is IgnoreFile) {
             e.presentation.isVisible = false
             return
         }
-        templatePresentation.icon = file.getFileType().icon
+        templatePresentation.icon = file.fileType.icon
     }
 }

@@ -37,41 +37,16 @@ class IgnoreFile(viewProvider: FileViewProvider, private val fileType: IgnoreFil
         } ?: throw RuntimeException("PsiFileBase: language.getParserDefinition() returned null for: $language")
     }
 
-    /**
-     * Passes the element to the specified visitor.
-     *
-     * @param visitor the visitor to pass the element to.
-     */
     override fun accept(visitor: PsiElementVisitor) {
         visitor.visitFile(this)
     }
 
-    /**
-     * Returns current language.
-     *
-     * @return current [Language]
-     */
     override fun getLanguage() = language
 
-    /**
-     * Returns the file type for the file.
-     *
-     * @return the file type instance.
-     */
     override fun getFileType() = fileType
 
-    /**
-     * Checks if current file is the language outer file.
-     *
-     * @return is outer file
-     */
     val isOuter
         get() = fileType.ignoreLanguage.getOuterFiles(project).contains(originalFile.virtualFile)
 
-    /**
-     * Returns @{link IgnoreFileType} string interpretation.
-     *
-     * @return string interpretation
-     */
     override fun toString() = fileType.name
 }

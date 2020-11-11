@@ -25,16 +25,9 @@ import javax.swing.JPanel
  */
 class UserTemplateDialog(private val project: Project, private val content: String) : DialogWrapper(project, false) {
 
-    /** Settings instance. */
     private val settings = IgnoreSettings.getInstance()
-
-    /** Preview editor with syntax highlight. */
     private var preview: Editor? = null
-
-    /** [Document] related to the [Editor] feature. */
     private var previewDocument: Document? = null
-
-    /** Name field. element  */
     private var name: JBTextField? = null
 
     init {
@@ -44,13 +37,6 @@ class UserTemplateDialog(private val project: Project, private val content: Stri
         init()
     }
 
-    /**
-     * Factory method. It creates panel with dialog options. Options panel is located at the
-     * center of the dialog's content pane. The implementation can return `null`
-     * value. In this case there will be no options panel.
-     *
-     * @return center panel
-     */
     override fun createCenterPanel(): JComponent? {
         val centerPanel = JPanel(BorderLayout())
         centerPanel.preferredSize = Dimension(600, 300)
@@ -69,30 +55,13 @@ class UserTemplateDialog(private val project: Project, private val content: Stri
         return centerPanel
     }
 
-    /**
-     * Returns component which should be focused when the dialog appears on the screen.
-     *
-     * @return component to focus
-     */
     override fun getPreferredFocusedComponent() = name
 
-    /**
-     * Dispose the wrapped and releases all resources allocated be the wrapper to help
-     * more efficient garbage collection. You should never invoke this method twice or
-     * invoke any method of the wrapper after invocation of `dispose`.
-     *
-     * @throws IllegalStateException if the dialog is disposed not on the event dispatch thread
-     */
     override fun dispose() {
         EditorFactory.getInstance().releaseEditor(preview!!)
         super.dispose()
     }
 
-    /**
-     * This method is invoked by default implementation of "OK" action. It just closes dialog
-     * with `OK_EXIT_CODE`. This is convenient place to override functionality of "OK" action.
-     * Note that the method does nothing if "OK" action isn't enabled.
-     */
     override fun doOKAction() {
         if (isOKActionEnabled) {
             performCreateAction()

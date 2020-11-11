@@ -9,7 +9,6 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
-import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.event.DocumentEvent
@@ -53,7 +52,6 @@ import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
-import javax.swing.event.ListSelectionEvent
 import javax.swing.table.AbstractTableModel
 
 /**
@@ -100,7 +98,6 @@ class IgnoreSettingsPanel : Disposable {
     /** Editor panel element. */
     private var editorPanel: EditorPanel? = null
 
-    /** Create UI components. */
     private fun createUIComponents() {
         templatesListPanel = TemplatesListPanel()
         editorPanel = EditorPanel()
@@ -132,70 +129,60 @@ class IgnoreSettingsPanel : Disposable {
         languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable)
     }
 
-    /** Disposes current preview [.editorPanel]. */
     override fun dispose() {
         if (!editorPanel!!.preview.isDisposed) {
             EditorFactory.getInstance().releaseEditor(editorPanel!!.preview)
         }
     }
 
-    /** Returns value of @{link [.missingGitignore]} field. */
     var missingGitignore
         get() = missingGitignoreCheckBox!!.isSelected
         set(selected) {
             missingGitignoreCheckBox!!.isSelected = selected
         }
 
-    /** Returns value of @{link [.ignoredFileStatus]} field. */
     var ignoredFileStatus
         get() = ignoredFileStatusCheckBox!!.isSelected
         set(selected) {
             ignoredFileStatusCheckBox!!.isSelected = selected
         }
 
-    /** Returns [IgnoreSettings.UserTemplate] list of [.templatesListPanel]. */
     var userTemplates: List<UserTemplate>
         get() = templatesListPanel!!.list
         set(userTemplates) {
             templatesListPanel!!.resetForm(userTemplates)
         }
 
-    /** Returns value of @{link [.outerIgnoreRules]} field. */
     var outerIgnoreRules
         get() = outerIgnoreRulesCheckBox!!.isSelected
         set(selected) {
             outerIgnoreRulesCheckBox!!.isSelected = selected
         }
 
-    /** Returns value of @{link [.insertAtCursor]} field. */
     var insertAtCursor
         get() = insertAtCursorCheckBox!!.isSelected
         set(selected) {
             insertAtCursorCheckBox!!.isSelected = selected
         }
 
-    /** Returns value of @{link [.addUnversionedFiles]} field. */
     var addUnversionedFiles
         get() = addUnversionedFilesCheckBox!!.isSelected
         set(selected) {
             addUnversionedFilesCheckBox!!.isSelected = selected
         }
 
-    /** Returns value of @{link [.unignoreFiles]} field. */
     var unignoreActions
         get() = unignoreFiles!!.isSelected
         set(selected) {
             unignoreFiles!!.isSelected = selected
         }
 
-    /** Returns value of @{link [.notifyIgnoredEditing]} field. */
     var notifyIgnoredEditing
         get() = notifyIgnoredEditingCheckBox!!.isSelected
         set(selected) {
             notifyIgnoredEditingCheckBox!!.isSelected = selected
         }
 
-    /** Returns model of [.languagesTable]. */
     val languagesSettings: LanguagesTableModel
         get() = languagesTable!!.model as LanguagesTableModel
 
@@ -205,11 +192,6 @@ class IgnoreSettingsPanel : Disposable {
         /** Import/export file's extension. */
         private val FILE_EXTENSION = "xml"
 
-        /**
-         * Customizes Import dialog.
-         *
-         * @param decorator toolbar
-         */
         override fun customizeDecorator(decorator: ToolbarDecorator) {
             super.customizeDecorator(decorator)
             val group = DefaultActionGroup()
@@ -301,97 +283,41 @@ class IgnoreSettingsPanel : Disposable {
             decorator.setActionGroup(group)
         }
 
-        /**
-         * Opens edit dialog for new template.
-         *
-         * @return template
-         */
         override fun findItemToAdd() = showEditDialog(UserTemplate())
 
-        /**
-         * Shows edit dialog and validates user's input name.
-         *
-         * @param initialValue template
-         * @return modified template
-         */
         private fun showEditDialog(initialValue: UserTemplate): UserTemplate? {
-            val name = Messages.showInputDialog(this,
+            Messages.showInputDialog(
+                this,
                 message("settings.userTemplates.dialogDescription"),
                 message("settings.userTemplates.dialogTitle"),
-                Messages.getQuestionIcon(), initialValue.name, object : InputValidatorEx {
-                    /**
-                     * Checks whether the `inputString` is valid. It is invoked each time
-                     * input changes.
-                     *
-                     * @param inputString the input to check
-                     * @return true if input string is valid
-                     */
-                    override fun checkInput(inputString: String): Boolean {
-                        return !StringUtil.isEmpty(inputString)
-                    }
+                Messages.getQuestionIcon(),
+                initialValue.name,
+                object : InputValidatorEx {
+                    override fun checkInput(inputString: String) = !StringUtil.isEmpty(inputString)
 
-                    /**
-                     * This method is invoked just before message dialog is closed with OK code.
-                     * If `false` is returned then then the message dialog will not be closed.
-                     *
-                     * @param inputString the input to check
-                     * @return true if the dialog could be closed, false otherwise.
-                     */
-                    override fun canClose(inputString: String): Boolean {
-                        return !StringUtil.isEmpty(inputString)
-                    }
+                    override fun canClose(inputString: String) = !StringUtil.isEmpty(inputString)
 
-                    /**
-                     * Returns error message depending on the input string.
-                     *
-                     * @param inputString the input to check
-                     * @return error text
-                     */
-                    override fun getErrorText(inputString: String): String? {
-                        return if (!checkInput(inputString)) {
-                            message("settings.userTemplates.dialogError")
-                        } else null
-                    }
-                })
-            if (name != null) {
+                    override fun getErrorText(inputString: String) =
+                        message("settings.userTemplates.dialogError").takeUnless { checkInput(inputString) }
+                }
+            )?.let {
                 initialValue.name = name
             }
-            return if (initialValue.isEmpty) null else initialValue
+
+            return initialValue.takeUnless { initialValue.isEmpty }
         }
 
-        /**
-         * Fills list element with given templates list.
-         *
-         * @param userTemplates templates list
-         */
         fun resetForm(userTemplates: List<UserTemplate>) {
             myListModel.clear()
-            for ((name, content) in userTemplates) {
+            userTemplates.forEach { (name, content) ->
                 myListModel.addElement(UserTemplate(name, content))
             }
         }
 
-        /**
-         * Edits given template.
-         *
-         * @param item template
-         * @return modified template
-         */
-        protected override fun editSelectedItem(item: UserTemplate) = showEditDialog(item)
+        override fun editSelectedItem(item: UserTemplate) = showEditDialog(item)
 
-        /**
-         * Returns current templates list.
-         *
-         * @return templates list
-         */
-        val list: List<UserTemplate>
-            get() {
-                val list = ArrayList<UserTemplate>()
-                for (i in 0 until myListModel.size()) {
-                    list.add(myListModel.getElementAt(i)!!)
-                }
-                return list
-            }
+        val list
+            get() = (0 until myListModel.size()).map { myListModel.getElementAt(it)!! }
 
         /**
          * Updates editor component with given content.
@@ -399,18 +325,12 @@ class IgnoreSettingsPanel : Disposable {
          * @param content new content
          */
         fun updateContent(content: String?) {
-            val template = currentItem
-            if (template != null) {
-                template.content = content!!
+            currentItem?.let {
+                it.content = content!!
             }
         }
 
-        /**
-         * Returns currently selected template.
-         *
-         * @return template or null if none selected
-         */
-        val currentItem: UserTemplate?
+        private val currentItem: UserTemplate?
             get() {
                 val index = myList.selectedIndex
                 return if (index == -1) {
@@ -423,24 +343,16 @@ class IgnoreSettingsPanel : Disposable {
          *
          * @return [IgnoreSettings.UserTemplate] list
          */
-        val currentItems: List<UserTemplate>
-            get() {
-                val list: MutableList<UserTemplate> = ArrayList()
-                val ids = myList.selectedIndices
-                for (i in ids.indices) {
-                    list.add(list[i])
-                }
-                return list
-            }
+        val currentItems
+            get() = myList.selectedIndices.indices.map { list[it] }
 
         /** Constructs CRUD panel with list listener for editor updating. */
         init {
-            myList.addListSelectionListener { e: ListSelectionEvent? ->
+            myList.addListSelectionListener {
                 val enabled = myListModel.size() > 0
                 editorPanel!!.isEnabled = enabled
                 if (enabled) {
-                    val template = currentItem
-                    editorPanel!!.setContent(template?.content ?: "")
+                    editorPanel!!.setContent(currentItem?.content ?: "")
                 }
             }
         }
@@ -452,10 +364,10 @@ class IgnoreSettingsPanel : Disposable {
         val preview: Editor
 
         /** `No templates is selected` label. */
-        private val label: JBLabel
+        private val label = JBLabel(message("settings.userTemplates.noTemplateSelected"), JBLabel.CENTER)
 
         /** Preview document. */
-        private val previewDocument: Document
+        private val previewDocument = EditorFactory.getInstance().createDocument("")
 
         /**
          * Shows or hides label and editor.
@@ -488,8 +400,6 @@ class IgnoreSettingsPanel : Disposable {
 
         /** Constructor that creates document editor, empty content label. */
         init {
-            previewDocument = EditorFactory.getInstance().createDocument("")
-            label = JBLabel(message("settings.userTemplates.noTemplateSelected"), JBLabel.CENTER)
             preview = createPreviewEditor(previewDocument, null, false)
             preview.document.addDocumentListener(object : DocumentListener {
                 override fun beforeDocumentChange(event: DocumentEvent) {}
@@ -503,75 +413,26 @@ class IgnoreSettingsPanel : Disposable {
 
     /** Languages table helper class. */
     class LanguagesTableModel : AbstractTableModel() {
-        /**
-         * Returns current settings.
-         *
-         * @return settings
-         */
-        /** Languages settings instance. */
         val settings = IgnoreLanguagesSettings()
 
-        /** Table's columns names. */
         private val columnNames = arrayOf(
             message("settings.languagesSettings.table.name"),
             message("settings.languagesSettings.table.newFile"),
             message("settings.languagesSettings.table.enable")
         )
 
-        /** Table's columns classes. */
         private val columnClasses = arrayOf<Class<*>>(
             String::class.java, Boolean::class.java, Boolean::class.java
         )
 
-        /**
-         * Returns the number of rows in this data table.
-         *
-         * @return the number of rows in the model
-         */
-        override fun getRowCount(): Int {
-            return settings.size
-        }
+        override fun getRowCount() = settings.size
 
-        /**
-         * Returns the number of columns in this data table.
-         *
-         * @return the number of columns in the model
-         */
-        override fun getColumnCount(): Int {
-            return columnNames.size
-        }
+        override fun getColumnCount() = columnNames.size
 
-        /**
-         * Returns a default name for the column using spreadsheet conventions:
-         * A, B, C, ... Z, AA, AB, etc.  If `column` cannot be found,
-         * returns an empty string.
-         *
-         * @param column the column being queried
-         * @return a string containing the default name of `column`
-         */
-        override fun getColumnName(column: Int): String {
-            return columnNames[column]
-        }
+        override fun getColumnName(column: Int) = columnNames[column]
 
-        /**
-         * Returns `Object.class` regardless of `columnIndex`.
-         *
-         * @param columnIndex the column being queried
-         * @return the Object.class
-         */
-        override fun getColumnClass(columnIndex: Int): Class<*> {
-            return columnClasses[columnIndex]
-        }
+        override fun getColumnClass(columnIndex: Int) = columnClasses[columnIndex]
 
-        /**
-         * Returns true regardless of parameter values.
-         *
-         * @param row    the row whose value is to be queried
-         * @param column the column whose value is to be queried
-         * @return true
-         *
-         * @see .setValueAt
-         */
         override fun isCellEditable(row: Int, column: Int): Boolean {
             val language = ArrayList(settings.keys)[row]
             return if (language != null && column == 2) {
@@ -580,16 +441,6 @@ class IgnoreSettingsPanel : Disposable {
             } else column != 0
         }
 
-        /**
-         * Returns an attribute value for the cell at `row`
-         * and `column`.
-         *
-         * @param row    the row whose value is to be queried
-         * @param column the column whose value is to be queried
-         * @return the value Object at the specified cell
-         *
-         * @throws ArrayIndexOutOfBoundsException if an invalid row or column was given
-         */
         override fun getValueAt(row: Int, column: Int): Any {
             val language = ArrayList(settings.keys)[row] ?: return false
             val data = settings[language]
@@ -609,14 +460,6 @@ class IgnoreSettingsPanel : Disposable {
             return java.lang.Boolean.valueOf(objectByKey.toString())
         }
 
-        /**
-         * This empty implementation is provided so users don't have to implement
-         * this method if their data model is not editable.
-         *
-         * @param value  value to assign to cell
-         * @param row    row of cell
-         * @param column column of cell
-         */
         override fun setValueAt(value: Any, row: Int, column: Int) {
             val language = ArrayList(settings.keys)[row]!!
             val data = settings[language]
@@ -633,24 +476,13 @@ class IgnoreSettingsPanel : Disposable {
             throw IllegalArgumentException()
         }
 
-        /**
-         * Update settings model.
-         *
-         * @param settings to update
-         */
         fun update(settings: IgnoreLanguagesSettings) {
-            this.settings.clear()
-            this.settings.putAll(settings)
+            this.settings.apply {
+                clear()
+                putAll(settings)
+            }
         }
 
-        /**
-         * Checks if current settings are equal to the given one.
-         *
-         * @param settings to check
-         * @return equals
-         */
-        fun equalSettings(settings: IgnoreLanguagesSettings): Boolean {
-            return this.settings == settings
-        }
+        fun equalSettings(settings: IgnoreLanguagesSettings) = this.settings == settings
     }
 }

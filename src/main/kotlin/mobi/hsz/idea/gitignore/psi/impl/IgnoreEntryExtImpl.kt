@@ -34,14 +34,6 @@ abstract class IgnoreEntryExtImpl(node: ASTNode) : IgnoreElementImpl(node), Igno
         get() = this is IgnoreEntryFile
 
     /**
-     * Checks if current entry is a file - i.e. `file.txt`.
-     *
-     * @return is file
-     */
-    val isFile
-        get() = !isDirectory
-
-    /**
      * Returns element syntax.
      *
      * @return syntax

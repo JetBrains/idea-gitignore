@@ -17,11 +17,6 @@ import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider
  */
 class CloseIgnoredEditorsAction : CloseEditorsActionBase() {
 
-    /**
-     * Obtains if editor is allowed to be closed.
-     *
-     * @return editor is allowed to be closed
-     */
     override fun isFileToClose(editor: EditorComposite, window: EditorWindow): Boolean {
         val project = window.manager.project
         val fileStatusManager = FileStatusManager.getInstance(project) ?: return false
@@ -31,21 +26,10 @@ class CloseIgnoredEditorsAction : CloseEditorsActionBase() {
         }
     }
 
-    /**
-     * Checks if action is available in UI.
-     *
-     * @return action is enabled
-     */
     override fun isActionEnabled(project: Project, event: AnActionEvent) =
         super.isActionEnabled(project, event) && ProjectLevelVcsManager.getInstance(project).allActiveVcss.isNotEmpty()
 
-    /**
-     * Returns presentation text.
-     *
-     * @param inSplitter is in splitter
-     * @return label text
-     */
-    override fun getPresentationText(inSplitter: Boolean): String =
+    override fun getPresentationText(inSplitter: Boolean) =
         when {
             inSplitter -> IgnoreBundle.message("action.closeIgnored.editors.in.tab.group")
             else -> IgnoreBundle.message("action.closeIgnored.editors")

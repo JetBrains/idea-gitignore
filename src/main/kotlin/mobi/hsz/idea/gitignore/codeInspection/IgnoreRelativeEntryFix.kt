@@ -16,21 +16,6 @@ import java.net.URISyntaxException
  */
 class IgnoreRelativeEntryFix(entry: IgnoreEntry) : LocalQuickFixOnPsiElement(entry) {
 
-    /**
-     * Gets QuickFix name.
-     *
-     * @return QuickFix action name
-     */
-    override fun getText(): String = IgnoreBundle.message("quick.fix.relative.entry")
-
-    /**
-     * Handles QuickFix action invoked on [IgnoreEntry].
-     *
-     * @param project      the [Project] containing the working file
-     * @param psiFile      the [PsiFile] containing handled entry
-     * @param startElement the [IgnoreEntry] that will be removed
-     * @param endElement   the [PsiElement] which is ignored in invoked action
-     */
     override fun invoke(project: Project, psiFile: PsiFile, startElement: PsiElement, endElement: PsiElement) {
         if (startElement is IgnoreEntry) {
             val document = PsiDocumentManager.getInstance(project).getDocument(psiFile)
@@ -43,12 +28,6 @@ class IgnoreRelativeEntryFix(entry: IgnoreEntry) : LocalQuickFixOnPsiElement(ent
         }
     }
 
-    /**
-     * Removes relative parts from the given path.
-     *
-     * @param path element
-     * @return fixed path
-     */
     private fun getFixedPath(path: String) = path
         .run { replace("/".toRegex(), "/").replace("\\\\\\.".toRegex(), ".") }
         .run {
@@ -61,10 +40,7 @@ class IgnoreRelativeEntryFix(entry: IgnoreEntry) : LocalQuickFixOnPsiElement(ent
         }
         .run { replace("/\\.{1,2}/".toRegex(), "/").replace("^\\.{0,2}/".toRegex(), "") }
 
-    /**
-     * Gets QuickFix family name.
-     *
-     * @return QuickFix family name
-     */
+    override fun getText(): String = IgnoreBundle.message("quick.fix.relative.entry")
+
     override fun getFamilyName(): String = IgnoreBundle.message("codeInspection.group")
 }

@@ -6,17 +6,7 @@ package mobi.hsz.idea.gitignore.util
  */
 interface Listenable<T> {
 
-    /**
-     * Add the given listener. The listener will be executed in the containing instance's thread.
-     *
-     * @param listener listener to add
-     */
     fun addListener(listener: T)
 
-    /**
-     * Remove the given listener.
-     *
-     * @param listener listener to remove
-     */
     fun removeListener(listener: T)
 }

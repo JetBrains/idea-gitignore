@@ -20,12 +20,6 @@ class CreateUserTemplateAction : AnAction(
     Icons.IGNORE
 ) {
 
-    /**
-     * Handles an action of adding new template.
-     * Ignores action if selected file is not a [IgnoreFile] instance, otherwise shows GeneratorDialog.
-     *
-     * @param e action event
-     */
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getData(CommonDataKeys.PROJECT) ?: return
         val file = e.getData(CommonDataKeys.PSI_FILE)
@@ -41,21 +35,15 @@ class CreateUserTemplateAction : AnAction(
                 }
             }
         }
-        UserTemplateDialog(project, content!!).show()
+        UserTemplateDialog(project, content).show()
     }
 
-    /**
-     * Updates visibility of the action presentation in various actions list.
-     * Visible only for [IgnoreFile] context.
-     *
-     * @param e action event
-     */
     override fun update(e: AnActionEvent) {
         val file = e.getData(CommonDataKeys.PSI_FILE)
         if (file !is IgnoreFile) {
             e.presentation.isVisible = false
             return
         }
-        templatePresentation.icon = file.getFileType().icon
+        templatePresentation.icon = file.fileType.icon
     }
 }

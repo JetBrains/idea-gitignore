@@ -21,7 +21,6 @@ import java.util.TreeMap
 @State(name = "IgnoreSettings", storages = [Storage("ignore.xml")])
 class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSettings.Listener> {
 
-    /** Settings keys. */
     enum class KEY(private val key: String) {
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
@@ -137,15 +136,9 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
             userTemplates.addAll(value)
         }
 
-    /** Listeners list. */
     private val listeners = ContainerUtil.createConcurrentList<Listener>()
 
     companion object {
-        /**
-         * Get the instance of this service.
-         *
-         * @return the unique [IgnoreSettings] instance.
-         */
         fun getInstance(): IgnoreSettings = ServiceManager.getService(IgnoreSettings::class.java)
 
         /**
@@ -182,11 +175,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         }
     }
 
-    /**
-     * Get the settings state as a DOM element.
-     *
-     * @return an ready to serialize DOM [Element].
-     */
     override fun getState() = Element(KEY.ROOT.toString()).apply {
         setAttribute(KEY.MISSING_GITIGNORE.toString(), missingGitignore.toString())
         setAttribute(KEY.IGNORED_FILE_STATUS.toString(), ignoredFileStatus.toString())
@@ -217,11 +205,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         addContent(createTemplatesElement(userTemplates))
     }
 
-    /**
-     * Load the settings state from the DOM [Element].
-     *
-     * @param element the [Element] to load values from.
-     */
     override fun loadState(element: Element) {
         element.apply {
             getAttributeValue(KEY.MISSING_GITIGNORE.toString())?.let {
@@ -269,55 +252,27 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         }
     }
 
-    /**
-     * Returns the height of the outer ignore file wrapper panel.
-     *
-     * @return wrapper panel height
-     */
     fun getOuterIgnoreWrapperHeight() = outerIgnoreWrapperHeight
 
-    /**
-     * Sets outer ignore rules.
-     *
-     * @param outerIgnoreWrapperHeight wrapper panel height
-     */
     fun setOuterIgnoreWrapperHeight(outerIgnoreWrapperHeight: Int) {
         notifyOnChange(KEY.OUTER_IGNORE_WRAPPER_HEIGHT, this.outerIgnoreWrapperHeight, outerIgnoreWrapperHeight)
         this.outerIgnoreWrapperHeight = outerIgnoreWrapperHeight
     }
 
-    /**
-     * Add the given listener. The listener will be executed in the containing instance's thread.
-     *
-     * @param listener listener to add
-     */
     override fun addListener(listener: Listener) {
         listeners.add(listener)
     }
 
-    /**
-     * Remove the given listener.
-     *
-     * @param listener listener to remove
-     */
     override fun removeListener(listener: Listener) {
         listeners.remove(listener)
     }
 
-    /**
-     * Notifies listeners about the changes.
-     *
-     * @param key      changed property key
-     * @param oldValue new value
-     * @param newValue new value
-     */
     private fun notifyOnChange(key: KEY, oldValue: Any, newValue: Any) {
         if (newValue != oldValue) {
             listeners.forEach { it.onChange(key, newValue) }
         }
     }
 
-    /** Listener interface for onChange event. */
     fun interface Listener {
 
         fun onChange(key: KEY, value: Any?)
@@ -347,16 +302,10 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     /** Helper class for the [IgnoreLanguage] settings. */
     open class IgnoreLanguagesSettings : LinkedHashMap<IgnoreLanguage?, TreeMap<IgnoreLanguagesSettings.KEY, Any>>() {
 
-        /** Settings keys. */
         enum class KEY {
             NEW_FILE, ENABLE
         }
 
-        /**
-         * Returns a shallow copy of this <tt>HashMap</tt> instance: the keys and values themselves are not cloned.
-         *
-         * @return a shallow copy of this map
-         */
         override fun clone(): IgnoreLanguagesSettings {
             val copy = super.clone() as IgnoreLanguagesSettings
             for ((key, value) in copy) {

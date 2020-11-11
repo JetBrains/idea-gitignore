@@ -36,9 +36,7 @@ class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware
      * @return [.IGNORED] status or `null`
      */
     override fun getFileStatus(virtualFile: VirtualFile) =
-        if (ignoreManager.isFileIgnored(virtualFile) &&
-            !ignoreManager.isFileTracked(virtualFile)
-        ) IGNORED else null
+        if (ignoreManager.isFileIgnored(virtualFile) && !ignoreManager.isFileTracked(virtualFile)   ) IGNORED else null
 
     override fun refreshFileStatusFromDocument(virtualFile: VirtualFile, doc: Document) = Unit
 

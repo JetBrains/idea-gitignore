@@ -85,7 +85,6 @@ object ExternalExec {
      * @param vcsRoot repository to check
      * @return unignored files list
      */
-    @JvmStatic
     fun getIgnoredFiles(vcsRoot: VcsRoot) = run(
         GitLanguage.INSTANCE,
         GIT_IGNORED_FILES,

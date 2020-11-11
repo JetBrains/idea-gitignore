@@ -68,44 +68,41 @@ import javax.swing.tree.TreePath
 class GeneratorDialog(private val project: Project, var file: PsiFile? = null, var action: CreateFileCommandAction? = null) :
     DialogWrapper(project, false) {
 
-    /** Cache set to store checked templates for the current action.  */
+    /** Cache set to store checked templates for the current action. */
     private val checked: MutableSet<Resources.Template?> = HashSet()
 
-    /** Set of the starred templates.  */
+    /** Set of the starred templates. */
     private val starred: MutableSet<String> = HashSet()
 
-    /** Settings instance.  */
+    /** Settings instance. */
     private val settings = IgnoreSettings.getInstance()
 
-    /** Templates tree root node.  */
+    /** Templates tree root node. */
     private val root = TemplateTreeNode()
 
-    /** Templates tree with checkbox feature.  */
+    /** Templates tree with checkbox feature. */
     private var tree: CheckboxTree? = null
 
-    /** Tree expander responsible for expanding and collapsing tree structure.  */
+    /** Tree expander responsible for expanding and collapsing tree structure. */
     private var treeExpander: DefaultTreeExpander? = null
 
-    /** Dynamic templates filter.  */
+    /** Dynamic templates filter. */
     private var profileFilter: FilterComponent? = null
 
-    /** Preview editor with syntax highlight.  */
+    /** Preview editor with syntax highlight. */
     private var preview: Editor? = null
 
-    /** [Document] related to the [Editor] feature.  */
+    /** [Document] related to the [Editor] feature. */
     private var previewDocument: Document? = null
 
-    /** CheckboxTree selection listener.  */
+    /** CheckboxTree selection listener. */
     private val treeSelectionListener = TreeSelectionListener { e: TreeSelectionEvent? ->
         tree?.selectionPath?.let { updateDescriptionPanel(it) }
     }
 
     companion object {
-        /** [FilterComponent] search history key.  */
         @NonNls
         private val TEMPLATES_FILTER_HISTORY = "TEMPLATES_FILTER_HISTORY"
-
-        /** Star icon for the favorites action.  */
         private val STAR = AllIcons.Ide.Rating
 
         /**
@@ -136,32 +133,14 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         init()
     }
 
-    /**
-     * Returns component which should be focused when the dialog appears on the screen.
-     *
-     * @return component to focus
-     */
     override fun getPreferredFocusedComponent() = profileFilter
 
-    /**
-     * Dispose the wrapped and releases all resources allocated be the wrapper to help
-     * more efficient garbage collection. You should never invoke this method twice or
-     * invoke any method of the wrapper after invocation of `dispose`.
-     *
-     * @throws IllegalStateException if the dialog is disposed not on the event dispatch thread
-     */
     override fun dispose() {
         tree!!.removeTreeSelectionListener(treeSelectionListener)
         EditorFactory.getInstance().releaseEditor(preview!!)
         super.dispose()
     }
 
-    /**
-     * Show the dialog.
-     *
-     * @throws IllegalStateException if the method is invoked not on the event dispatch thread
-     * @see .showAndGet
-     */
     override fun show() {
         if (ApplicationManager.getApplication().isUnitTestMode) {
             dispose()
@@ -170,14 +149,9 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         super.show()
     }
 
-    /**
-     * This method is invoked by default implementation of "OK" action. It just closes dialog
-     * with `OK_EXIT_CODE`. This is convenient place to override functionality of "OK" action.
-     * Note that the method does nothing if "OK" action isn't enabled.
-     */
     override fun doOKAction() {
         if (isOKActionEnabled) {
-            performAppendAction(false, false)
+            performAppendAction(ignoreDuplicates = false, ignoreComments = false)
         }
     }
 
@@ -189,12 +163,16 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
      */
     private fun performAppendAction(ignoreDuplicates: Boolean, ignoreComments: Boolean) {
         val content = StringBuilder()
+
         val iterator: Iterator<Resources.Template?> = checked.iterator()
         while (iterator.hasNext()) {
             val template = iterator.next()
             if (template != null) {
-                content.append(message("file.templateSection", template.name))
-                content.append(Constants.NEWLINE).append(template.content)
+                content
+                    .append(message("file.templateSection", template.name))
+                    .append(Constants.NEWLINE)
+                    .append(template.content)
+
                 if (iterator.hasNext()) {
                     content.append(Constants.NEWLINE)
                 }
@@ -219,20 +197,12 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         super.doOKAction()
     }
 
-    /** Creates default actions with appended [OptionOkAction] instance.  */
     override fun createDefaultActions() {
         super.createDefaultActions()
         myOKAction = OptionOkAction()
     }
 
-    /**
-     * Factory method. It creates panel with dialog options. Options panel is located at the
-     * center of the dialog's content pane. The implementation can return `null`
-     * value. In this case there will be no options panel.
-     *
-     * @return center panel
-     */
-    override fun createCenterPanel(): JComponent? {
+    override fun createCenterPanel(): JComponent {
         // general panel
         val centerPanel = JPanel(BorderLayout())
         centerPanel.preferredSize = Dimension(800, 500)
@@ -243,8 +213,8 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         val treePanel = JPanel(BorderLayout())
         previewDocument = EditorFactory.getInstance().createDocument("")
         preview = createPreviewEditor(previewDocument!!, project, true)
-        splitter.setFirstComponent(treePanel)
-        splitter.setSecondComponent(preview!!.component)
+        splitter.firstComponent = treePanel
+        splitter.secondComponent = preview!!.component
 
         /* Scroll panel for the templates tree. */
         val treeScrollPanel = createTreeScrollPanel()
@@ -495,7 +465,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         }
     }
 
-    /** Refreshes current tree.  */
+    /** Refreshes current tree. */
     private fun refreshTree() {
         filterTree(profileFilter!!.textEditor.text)
     }
@@ -520,22 +490,19 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         }
     }
 
-    /** Reloads tree model.  */
+    /** Reloads tree model. */
     private fun reloadModel() {
         (tree!!.model as DefaultTreeModel).reload()
     }
 
-    /** Custom templates [FilterComponent].  */
     private inner class TemplatesFilterComponent
-    /** Builds a new instance of [TemplatesFilterComponent].  */
         : FilterComponent(TEMPLATES_FILTER_HISTORY, 10) {
-        /** Filters tree using current filter's value.  */
         override fun filter() {
             filterTree(filter)
         }
     }
 
-    /** [OkAction] instance with additional `Generate without duplicates` action.  */
+    /** [OkAction] instance with additional `Generate without duplicates` action. */
     private inner class OptionOkAction : OkAction(), OptionAction {
         override fun getOptions(): Array<Action> {
             return arrayOf(

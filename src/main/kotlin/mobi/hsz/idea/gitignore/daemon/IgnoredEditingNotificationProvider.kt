@@ -41,7 +41,7 @@ class IgnoredEditingNotificationProvider(project: Project) : EditorNotifications
         !settings.notifyIgnoredEditing || Properties.isDismissedIgnoredEditingNotification(project, file)
             || !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file) -> null
         else -> EditorNotificationPanel().apply {
-            setText(IgnoreBundle.message("daemon.ignoredEditing"))
+            text = IgnoreBundle.message("daemon.ignoredEditing")
             createActionLabel(IgnoreBundle.message("daemon.ok")) {
                 Properties.setDismissedIgnoredEditingNotification(project, file)
                 notifications.updateAllNotifications()

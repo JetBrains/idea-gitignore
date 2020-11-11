@@ -9,33 +9,19 @@ import mobi.hsz.idea.gitignore.util.Resources
  */
 class TemplateTreeNode : CheckedTreeNode {
 
-    /** Current [Resources.Template] element.  */
     val template: Resources.Template?
-
-    /** Current [Resources.Template.Container].  */
     val container: Resources.Template.Container?
 
-    /** Creates a new instance of [TemplateTreeNode].  */
     constructor() : super(null) {
         template = null
         container = null
     }
 
-    /**
-     * Creates a new instance of [TemplateTreeNode].
-     *
-     * @param container current templates container
-     */
     constructor(container: Resources.Template.Container?) : super(container) {
         template = null
         this.container = container
     }
 
-    /**
-     * Creates a new instance of [TemplateTreeNode].
-     *
-     * @param template current template
-     */
     constructor(template: Resources.Template) : super(template) {
         this.template = template
         container = template.container

@@ -17,7 +17,6 @@ import mobi.hsz.idea.gitignore.util.Utils
  */
 class IgnoreDirectoryMarkerProvider : LineMarkerProvider {
 
-    /** Cache map. */
     private val cache = mutableMapOf<String, Boolean>()
 
     /**

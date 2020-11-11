@@ -14,16 +14,6 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
  */
 class IgnoreEntryManipulator : AbstractElementManipulator<IgnoreEntry>() {
 
-    /**
-     * Changes the element's text to a new value
-     *
-     * @param entry      element to be changed
-     * @param range      range within the element
-     * @param newContent new element text
-     * @return changed element
-     *
-     * @throws IncorrectOperationException if something goes wrong
-     */
     @Throws(IncorrectOperationException::class)
     override fun handleContentChange(entry: IgnoreEntry, range: TextRange, newContent: String): IgnoreEntry {
         if (entry.language !is IgnoreLanguage) {
@@ -40,12 +30,6 @@ class IgnoreEntryManipulator : AbstractElementManipulator<IgnoreEntry>() {
         }
     }
 
-    /**
-     * Returns range of the entry. Skips negation element.
-     *
-     * @param element element to be changed
-     * @return range
-     */
     override fun getRangeInElement(element: IgnoreEntry) = element.negation?.run {
         TextRange.create(startOffsetInParent + textLength, element.textLength)
     } ?: super.getRangeInElement(element)

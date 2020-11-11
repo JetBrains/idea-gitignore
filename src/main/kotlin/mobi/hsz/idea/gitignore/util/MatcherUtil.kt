@@ -11,7 +11,6 @@ import java.util.regex.Pattern
  */
 class MatcherUtil {
 
-    /** Stores calculated matching results.  */
     private val cache = IntObjectCache<Boolean>()
 
     /**

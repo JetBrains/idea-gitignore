@@ -11,10 +11,5 @@ import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
  */
 open class IgnoreElementImpl(node: ASTNode?) : ASTWrapperPsiElement(node!!) {
 
-    /**
-     * Gets [PsiReference] list for given element.
-     *
-     * @return [PsiReference] list
-     */
     override fun getReferences(): Array<PsiReference> = ReferenceProvidersRegistry.getReferencesFromProviders(this)
 }

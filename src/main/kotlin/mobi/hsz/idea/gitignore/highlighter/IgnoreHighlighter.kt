@@ -3,7 +3,6 @@ package mobi.hsz.idea.gitignore.highlighter
 
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.tree.IElementType
 import mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition
@@ -12,14 +11,11 @@ import mobi.hsz.idea.gitignore.lexer.IgnoreLexerAdapter
 /**
  * Syntax highlighter definition.
  */
-class IgnoreHighlighter(private val project: Project?, private val virtualFile: VirtualFile?) :
-    SyntaxHighlighterBase() {
+class IgnoreHighlighter(private val virtualFile: VirtualFile?) : SyntaxHighlighterBase() {
 
     companion object {
-        /** Attributes map. */
         private val ATTRIBUTES = mutableMapOf<IElementType, TextAttributesKey>()
 
-        /* Binds parser definitions with highlighter colors. */
         init {
             fillMap(ATTRIBUTES, IgnoreParserDefinition.COMMENTS, IgnoreHighlighterColors.COMMENT)
             fillMap(ATTRIBUTES, IgnoreParserDefinition.SECTIONS, IgnoreHighlighterColors.SECTION)
@@ -32,18 +28,7 @@ class IgnoreHighlighter(private val project: Project?, private val virtualFile: 
         }
     }
 
-    /**
-     * Creates lexer adapter.
-     *
-     * @return lexer adapter
-     */
     override fun getHighlightingLexer() = IgnoreLexerAdapter(virtualFile)
 
-    /**
-     * Gets highlighter text [TextAttributesKey] list using [IElementType] token.
-     *
-     * @param tokenType element type
-     * @return attributes list
-     */
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> = pack(ATTRIBUTES[tokenType])
 }

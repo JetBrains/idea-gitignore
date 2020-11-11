@@ -32,7 +32,6 @@ import java.util.ArrayList
  * Component loader for outer ignore files editor.
  */
 class OuterIgnoreLoaderComponent(private val project: Project) : ProjectComponent {
-    /** MessageBus instance.  */
     private var messageBus: MessageBusConnection? = null
 
     companion object {
@@ -42,7 +41,6 @@ class OuterIgnoreLoaderComponent(private val project: Project) : ProjectComponen
     @NonNls
     override fun getComponentName() = "IgnoreOuterComponent"
 
-    /** Initializes component.  */
     override fun initComponent() {
         messageBus = project.messageBus.connect()
         messageBus!!.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, IgnoreEditorManagerListener(project))

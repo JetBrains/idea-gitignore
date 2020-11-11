@@ -32,35 +32,12 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
     private val filesIndexCache = FilesIndexCacheProjectComponent.getInstance(element.project)
     private val manager = IgnoreManager.getInstance(element.project)
 
-    /**
-     * Creates [IgnoreReference] instance basing on passed text value.
-     *
-     * @param range text range
-     * @param index start index
-     * @param text  string text
-     * @return file reference
-     */
     override fun createFileReference(range: TextRange, index: Int, text: String) = IgnoreReference(this, range, index, text)
 
-    /**
-     * Sets ending slash as allowed.
-     *
-     * @return `false`
-     */
     override fun isEndingSlashNotAllowed() = false
 
-    /**
-     * Computes current element's parent context.
-     *
-     * @return contexts collection
-     */
     override fun computeDefaultContexts() = element.containingFile.parent?.let(::listOf) ?: super.computeDefaultContexts()
 
-    /**
-     * Returns last reference of the current element's references.
-     *
-     * @return last [FileReference]
-     */
     override fun getLastReference() = super.getLastReference()?.let {
         when {
             it.canonicalText.endsWith(separatorString) && myReferences != null && myReferences.size > 1 ->
@@ -69,17 +46,8 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
         }
     }
 
-    /**
-     * Disallows conversion to relative reference.
-     *
-     * @param relative is ignored
-     * @return `false`
-     */
     override fun couldBeConvertedTo(relative: Boolean) = false
 
-    /**
-     * Parses entry, searches for file references and stores them in [.myReferences].
-     */
     override fun reparse() {
         ProgressManager.checkCanceled()
         val str = StringUtil.trimEnd(pathString, separatorString)
@@ -121,24 +89,10 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
         myReferences = referencesList.toTypedArray()
     }
 
-    /**
-     * Custom definition of [FileReference].
-     */
     inner class IgnoreReference(fileReferenceSet: FileReferenceSet, range: TextRange?, index: Int, text: String?) :
         FileReference(fileReferenceSet, range, index, text) {
-        /**
-         * Concurrent cache map.
-         */
         private val cacheMap = concurrentMapOf<String, Collection<VirtualFile>>()
 
-        /**
-         * Resolves reference to the filesystem.
-         *
-         * @param text          entry
-         * @param context       filesystem context
-         * @param result        result references collection
-         * @param caseSensitive is ignored
-         */
         override fun innerResolveInContext(
             text: String,
             context: PsiFileSystemItem,
@@ -222,21 +176,8 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
             }
         }
 
-        /**
-         * Checks if [IgnoreFile] is defined as an outer rules file.
-         *
-         * @param file current file
-         * @return is outer file
-         */
         private fun isOuterFile(file: IgnoreFile?) = file?.isOuter ?: false
 
-        /**
-         * Searches for directory or file using [PsiManager].
-         *
-         * @param manager [PsiManager] instance
-         * @param file    working file
-         * @return Psi item
-         */
         private fun getPsiFileSystemItem(manager: PsiManager, file: VirtualFile): PsiFileSystemItem? {
             if (!file.isValid) {
                 return null

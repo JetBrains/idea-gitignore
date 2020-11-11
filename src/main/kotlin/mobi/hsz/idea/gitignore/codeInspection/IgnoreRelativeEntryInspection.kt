@@ -16,14 +16,6 @@ import mobi.hsz.idea.gitignore.psi.IgnoreVisitor
  */
 class IgnoreRelativeEntryInspection : LocalInspectionTool() {
 
-    /**
-     * Checks if entries are relative.
-     *
-     * @param file       current working file yo check
-     * @param manager    [InspectionManager] to ask for [ProblemDescriptor]'s from
-     * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
-     * @return `null` if no problems found or not applicable at file level
-     */
     override fun checkFile(file: PsiFile, manager: InspectionManager, isOnTheFly: Boolean): Array<ProblemDescriptor>? {
         if (file !is IgnoreFile) {
             return null
@@ -48,10 +40,5 @@ class IgnoreRelativeEntryInspection : LocalInspectionTool() {
         return problemsHolder.resultsArray
     }
 
-    /**
-     * Forces checking every entry in checked file.
-     *
-     * @return `true`
-     */
     override fun runForWholeFile() = true
 }

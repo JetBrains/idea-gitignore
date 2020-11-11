@@ -10,16 +10,9 @@ import org.jetbrains.annotations.NonNls
 class GitUnignoredFilesOutputParser : ExecutionOutputParser<String>() {
 
     companion object {
-        /** Prefix to remove from the command's result. */
         @NonNls
         private val GIT_UNIGNORED_FILES_PREFIX = "Would remove"
     }
 
-    /**
-     * Parses single entries and removes git output prefixes.
-     *
-     * @param text input data
-     * @return single unignored entry
-     */
     override fun parseOutput(text: String): String? = StringUtil.trim(StringUtil.trimStart(text, GIT_UNIGNORED_FILES_PREFIX))
 }

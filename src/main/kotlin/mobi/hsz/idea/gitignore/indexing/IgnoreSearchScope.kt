@@ -35,7 +35,6 @@ class IgnoreSearchScope private constructor(project: Project) : GlobalSearchScop
          * @param project current project
          * @return extended instance of [GlobalSearchScope]
          */
-        @JvmStatic
         operator fun get(project: Project): GlobalSearchScope {
             val scope = IgnoreSearchScope(project)
             val files = getAdditionalFiles(project)

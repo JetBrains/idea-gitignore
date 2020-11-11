@@ -15,13 +15,6 @@ import java.util.regex.PatternSyntaxException
  */
 class IgnoreIncorrectEntryInspection : LocalInspectionTool() {
 
-    /**
-     * Checks if entry has correct form in specific according to the specific [IgnoreBundle.Syntax].
-     *
-     * @param holder     where visitor will register problems found.
-     * @param isOnTheFly true if inspection was run in non-batch mode
-     * @return not-null visitor for this inspection
-     */
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean) = object : IgnoreVisitor() {
         override fun visitEntry(entry: IgnoreEntry) {
             var regex = entry.text

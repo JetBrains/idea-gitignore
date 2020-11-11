@@ -14,17 +14,13 @@ class HideIgnoredFilesAction : AnAction(IgnoreBundle.message("action.hideIgnored
 
     val settings: IgnoreSettings = IgnoreSettings.getInstance()
 
-    /**
-     * Toggles [IgnoreSettings.hideIgnoredFiles] value.
-     *
-     * @param e action event
-     */
     override fun actionPerformed(e: AnActionEvent) {
         settings.hideIgnoredFiles = !settings.hideIgnoredFiles
-        val presentation = this.templatePresentation
-        presentation.text = when {
-            settings.hideIgnoredFiles -> IgnoreBundle.message("action.showIgnoredVisibility")
-            else -> IgnoreBundle.message("action.hideIgnoredVisibility")
+        this.templatePresentation.apply {
+            text = when {
+                settings.hideIgnoredFiles -> IgnoreBundle.message("action.showIgnoredVisibility")
+                else -> IgnoreBundle.message("action.hideIgnoredVisibility")
+            }
         }
     }
 }
