@@ -16,12 +16,9 @@
         <properties>
           <enabled value="true"/>
         </properties>
-        <clientProperties>
-          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
-        </clientProperties>
         <border type="none" title-resource-bundle="messages/IgnoreBundle" title-key="settings.general"/>
         <children>
-          <component id="7e9b" class="javax.swing.JCheckBox" binding="missingGitignore">
+          <component id="7e9b" class="javax.swing.JCheckBox" binding="missingGitignoreCheckBox">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -29,7 +26,7 @@
               <text resource-bundle="messages/IgnoreBundle" key="settings.general.missingGitignore"/>
             </properties>
           </component>
-          <component id="a83e7" class="javax.swing.JCheckBox" binding="outerIgnoreRules">
+          <component id="a83e7" class="javax.swing.JCheckBox" binding="outerIgnoreRulesCheckBox">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -37,7 +34,7 @@
               <text resource-bundle="messages/IgnoreBundle" key="settings.general.outerIgnoreRules"/>
             </properties>
           </component>
-          <component id="cb1d8" class="javax.swing.JCheckBox" binding="ignoredFileStatus">
+          <component id="cb1d8" class="javax.swing.JCheckBox" binding="ignoredFileStatusCheckBox">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -45,7 +42,7 @@
               <text resource-bundle="messages/IgnoreBundle" key="settings.general.ignoredFileStatus"/>
             </properties>
           </component>
-          <component id="5d5ed" class="javax.swing.JCheckBox" binding="insertAtCursor">
+          <component id="5d5ed" class="javax.swing.JCheckBox" binding="insertAtCursorCheckBox">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -53,7 +50,7 @@
               <text resource-bundle="messages/IgnoreBundle" key="settings.general.insertAtCursor"/>
             </properties>
           </component>
-          <component id="57e81" class="javax.swing.JCheckBox" binding="addUnversionedFiles">
+          <component id="57e81" class="javax.swing.JCheckBox" binding="addUnversionedFilesCheckBox">
             <constraints>
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -69,7 +66,7 @@
               <text resource-bundle="messages/IgnoreBundle" key="settings.general.unignoreFiles"/>
             </properties>
           </component>
-          <component id="ebecf" class="javax.swing.JCheckBox" binding="notifyIgnoredEditing">
+          <component id="ebecf" class="javax.swing.JCheckBox" binding="notifyIgnoredEditingCheckBox">
             <constraints>
               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -85,9 +82,6 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
-        <clientProperties>
-          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
-        </clientProperties>
         <border type="none" title-resource-bundle="messages/IgnoreBundle" title-key="settings.userTemplates"/>
         <children>
           <component id="85fc4" class="com.intellij.openapi.ui.Splitter" binding="templatesSplitter" custom-create="true">
@@ -104,9 +98,6 @@
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
-        <clientProperties>
-          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
-        </clientProperties>
         <border type="none" title-resource-bundle="messages/IgnoreBundle" title-key="settings.languagesSettings"/>
         <children>
           <scrollpane id="9895d" class="com.intellij.ui.components.JBScrollPane" binding="languagesPanel" custom-create="true">
