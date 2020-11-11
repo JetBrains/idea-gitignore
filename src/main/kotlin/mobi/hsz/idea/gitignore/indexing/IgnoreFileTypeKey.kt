@@ -8,18 +8,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
  */
 class IgnoreFileTypeKey(val type: IgnoreFileType) {
 
-    /**
-     * Checks if file types are equal - if language names matches.
-     *
-     * @param other object to check
-     * @return file types are equal
-     */
     override fun equals(other: Any?) = other is IgnoreFileTypeKey && other.type.languageName == type.languageName
 
-    /**
-     * Returns hashcode using hashcode of the language's name.
-     *
-     * @return hashcode of language's name
-     */
     override fun hashCode() = type.languageName.hashCode()
 }

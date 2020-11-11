@@ -19,15 +19,9 @@ import mobi.hsz.idea.gitignore.util.Constants
 class IgnoreTemplatesFactory(private val fileType: IgnoreFileType) : FileTemplateGroupDescriptorFactory {
 
     companion object {
-        /** File's content header.  */
         private val TEMPLATE_NOTE = message("file.templateNote")
     }
 
-    /**
-     * Returns group descriptor.
-     *
-     * @return descriptor
-     */
     override fun getFileTemplatesDescriptor() = FileTemplateGroupDescriptor(
         fileType.ignoreLanguage.id,
         fileType.icon
@@ -42,7 +36,7 @@ class IgnoreTemplatesFactory(private val fileType: IgnoreFileType) : FileTemplat
      * @return file
      */
     @Throws(IncorrectOperationException::class)
-    fun createFromTemplate(directory: PsiDirectory): PsiFile? {
+    fun createFromTemplate(directory: PsiDirectory): PsiFile {
         val filename = fileType.ignoreLanguage.filename
         directory.findFile(filename)?.let {
             return it

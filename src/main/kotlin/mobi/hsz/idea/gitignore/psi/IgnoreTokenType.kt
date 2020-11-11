@@ -11,10 +11,5 @@ import org.jetbrains.annotations.NonNls
  */
 class IgnoreTokenType(@NonNls val myDebugName: String) : IElementType(myDebugName, IgnoreLanguage.INSTANCE) {
 
-    /**
-     * String interpretation of the token type.
-     *
-     * @return string representation
-     */
     override fun toString(): String = IgnoreBundle.messageOrDefault("tokenType.$myDebugName", "IgnoreTokenType." + super.toString())
 }

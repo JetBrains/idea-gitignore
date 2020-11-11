@@ -54,91 +54,24 @@ class IgnoreParserDefinition : ParserDefinition {
         val FILE = IFileElementType(Language.findInstance(IgnoreLanguage::class.java))
     }
 
-    /**
-     * Returns the lexer for lexing files in the specified project. This lexer does not need to support incremental
-     * relexing - it is always called for the entire file.
-     *
-     * @param project the project to which the lexer is connected.
-     * @return the lexer instance.
-     */
     override fun createLexer(project: Project) = IgnoreLexerAdapter(null)
 
-    /**
-     * Returns the parser for parsing files in the specified project.
-     *
-     * @param project the project to which the parser is connected.
-     * @return the parser instance.
-     */
     override fun createParser(project: Project) = IgnoreParser()
 
-    /**
-     * Returns the element type of the node describing a file in the specified language.
-     *
-     * @return the file node element type.
-     */
     override fun getFileNodeType() = FILE
 
-    /**
-     * Returns the set of token types which are treated as whitespace by the PSI builder. Tokens of those types are
-     * automatically skipped by PsiBuilder. Whitespace elements on the bounds of nodes built by PsiBuilder are
-     * automatically excluded from the text range of the nodes.
-     *
-     ***It is strongly advised you return TokenSet
-     * that only contains [com.intellij.psi.TokenType.WHITE_SPACE], which is suitable for all the languages unless
-     * you really need to use special whitespace token**
-     *
-     * @return the set of whitespace token types.
-     */
     override fun getWhitespaceTokens() = WHITE_SPACES
 
-    /**
-     * Returns the set of token types which are treated as comments by the PSI builder.
-     * Tokens of those types are automatically skipped by PsiBuilder. Also, To Do patterns
-     * are searched in the text of tokens of those types.
-     *
-     * @return the set of comment token types.
-     */
     override fun getCommentTokens() = COMMENTS
 
-    /**
-     * Returns the set of element types which are treated as string literals. "Search in strings"
-     * option in refactorings is applied to the contents of such tokens.
-     *
-     * @return the set of string literal element types.
-     */
     override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
 
-    /**
-     * Creates a PSI element for the specified AST node. The AST tree is a simple, semantic-free
-     * tree of AST nodes which is built during the PsiBuilder parsing pass. The PSI tree is built
-     * over the AST tree and includes elements of different types for different language constructs.
-     *
-     * @param node the node for which the PSI element should be returned.
-     * @return the PSI element matching the element type of the AST node.
-     */
     override fun createElement(node: ASTNode): PsiElement = IgnoreTypes.Factory.createElement(node)
 
-    /**
-     * Creates a PSI element for the specified virtual file.
-     *
-     * @param viewProvider virtual file.
-     * @return the PSI file element.
-     */
     override fun createFile(viewProvider: FileViewProvider) = when (viewProvider.baseLanguage) {
         is IgnoreLanguage -> (viewProvider.baseLanguage as IgnoreLanguage).createFile(viewProvider)
         else -> IgnoreFile(viewProvider, IgnoreFileType.INSTANCE)
     }
 
-    /**
-     * Checks if the specified two token types need to be separated by a space according to the language grammar. For
-     * example, in Java two keywords are always separated by a space; a keyword and an opening parenthesis may be
-     * separated or not separated. This is used for automatic whitespace insertion during AST modification operations.
-     *
-     * @param left  the first token to check.
-     * @param right the second token to check.
-     * @return the spacing requirements.
-     *
-     * @since 6.0
-     */
     override fun spaceExistenceTypeBetweenTokens(left: ASTNode, right: ASTNode) = SpaceRequirements.MAY
 }

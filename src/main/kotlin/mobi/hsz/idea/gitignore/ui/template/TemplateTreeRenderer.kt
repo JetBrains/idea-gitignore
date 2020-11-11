@@ -14,20 +14,8 @@ import javax.swing.JTree
  */
 abstract class TemplateTreeRenderer : CheckboxTree.CheckboxTreeCellRenderer() {
 
-    /** Returns current filter.  */
     protected abstract val filter: String?
 
-    /**
-     * Renders checkbox tree cell filled with @{link TemplateTreeNode} data.
-     *
-     * @param tree     current working tree
-     * @param value    template data
-     * @param selected node is selected
-     * @param expanded node is expanded
-     * @param leaf     node is a leaf
-     * @param row      node is a row
-     * @param hasFocus node has focus
-     */
     override fun customizeRenderer(
         tree: JTree,
         value: Any,

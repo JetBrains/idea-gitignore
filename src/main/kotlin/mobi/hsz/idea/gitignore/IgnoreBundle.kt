@@ -46,9 +46,6 @@ import java.util.ResourceBundle
 object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
 
     @NonNls
-    val PLUGIN_ID = "mobi.hsz.idea.gitignore"
-
-    @NonNls
     const val BUNDLE_NAME = "messages.IgnoreBundle"
 
     private val BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME)
@@ -109,7 +106,6 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
      * @param params the optional parameters for the specific resource
      * @return the [String] value or `null` if no resource found for the key
      */
-    @JvmStatic
     fun message(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String?, vararg params: Any?) = message(BUNDLE, key!!, *params)
 
     /**

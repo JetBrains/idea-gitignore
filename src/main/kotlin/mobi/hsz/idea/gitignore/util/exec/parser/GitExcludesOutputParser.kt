@@ -11,12 +11,6 @@ import java.io.File
  */
 class GitExcludesOutputParser : ExecutionOutputParser<VirtualFile>() {
 
-    /**
-     * Parses output and returns [VirtualFile] instance of the GitFileType.
-     *
-     * @param text input data
-     * @return excludes ignore file instance
-     */
     override fun parseOutput(text: String) = resolveUserDir(text)?.let {
         VfsUtil.findFileByIoFile(File(it), true)
     }

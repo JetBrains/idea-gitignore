@@ -53,7 +53,6 @@ object Utils {
      *
      * @param project         current project
      * @param fileType        current ignore file type
-     * @param directory       root directory
      * @param createIfMissing create new file if missing
      * @return Ignore file
      */
@@ -108,7 +107,6 @@ object Utils {
      * @param project current project
      * @param file    file to open
      */
-    @JvmStatic
     fun openFile(project: Project, file: VirtualFile) {
         FileEditorManager.getInstance(project).openFile(file, true)
     }
@@ -257,7 +255,6 @@ object Utils {
      * @param project  current project
      * @return editor
      */
-    @JvmStatic
     fun createPreviewEditor(document: Document, project: Project?, isViewer: Boolean): Editor {
         val editor = EditorFactory.getInstance().createEditor(
             document,

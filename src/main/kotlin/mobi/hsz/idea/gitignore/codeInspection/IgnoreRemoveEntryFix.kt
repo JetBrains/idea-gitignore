@@ -17,21 +17,6 @@ import mobi.hsz.idea.gitignore.psi.IgnoreTypes
  */
 class IgnoreRemoveEntryFix(entry: IgnoreEntry) : LocalQuickFixAndIntentionActionOnPsiElement(entry) {
 
-    /**
-     * Gets QuickFix name.
-     *
-     * @return QuickFix action name
-     */
-    override fun getText(): String = IgnoreBundle.message("quick.fix.remove.entry")
-
-    /**
-     * Handles QuickFix action invoked on [IgnoreEntry].
-     *
-     * @param project      the [Project] containing the working file
-     * @param file         the [PsiFile] containing handled entry
-     * @param startElement the [IgnoreEntry] that will be removed
-     * @param endElement   the [PsiElement] which is ignored in invoked action
-     */
     override fun invoke(project: Project, file: PsiFile, editor: Editor?, startElement: PsiElement, endElement: PsiElement) {
         if (startElement is IgnoreEntry) {
             removeCrlf(startElement)
@@ -39,11 +24,6 @@ class IgnoreRemoveEntryFix(entry: IgnoreEntry) : LocalQuickFixAndIntentionAction
         }
     }
 
-    /**
-     * Shorthand method for removing CRLF element.
-     *
-     * @param startElement working PSI element
-     */
     private fun removeCrlf(startElement: PsiElement) {
         (
             TreeUtil.findSibling(startElement.node, IgnoreTypes.CRLF) ?: TreeUtil.findSiblingBackward(
@@ -53,10 +33,7 @@ class IgnoreRemoveEntryFix(entry: IgnoreEntry) : LocalQuickFixAndIntentionAction
             )?.psi?.delete()
     }
 
-    /**
-     * Gets QuickFix family name.
-     *
-     * @return QuickFix family name
-     */
+    override fun getText(): String = IgnoreBundle.message("quick.fix.remove.entry")
+
     override fun getFamilyName(): String = IgnoreBundle.message("codeInspection.group")
 }

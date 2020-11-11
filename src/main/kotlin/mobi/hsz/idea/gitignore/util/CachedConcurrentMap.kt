@@ -12,21 +12,9 @@ class CachedConcurrentMap<K, V> private constructor(private val fetcher: DataFet
     private val map: ConcurrentMap<K, V> = ContainerUtil.createConcurrentWeakMap()
 
     companion object {
-        /**
-         * Instance creator.
-         *
-         * @param fetcher fetcher
-         * @return instance of [CachedConcurrentMap]
-         */
         fun <K, V> create(fetcher: DataFetcher<K, V>) = CachedConcurrentMap(fetcher)
     }
 
-    /**
-     * Returns value set under the given key or invokes [DataFetcher.fetch] if not.
-     *
-     * @param key data key
-     * @return value
-     */
     operator fun get(key: K): V? {
         if (!map.containsKey(key)) {
             map[key] = fetcher.fetch(key)
@@ -34,16 +22,10 @@ class CachedConcurrentMap<K, V> private constructor(private val fetcher: DataFet
         return map[key]
     }
 
-    /**
-     * Removes value using given key.
-     *
-     * @param key current key
-     */
     fun remove(key: K) {
         map.remove(key)
     }
 
-    /** Clears cache map. */
     fun clear() {
         map.clear()
     }

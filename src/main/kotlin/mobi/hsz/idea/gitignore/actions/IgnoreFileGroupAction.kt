@@ -28,15 +28,11 @@ open class IgnoreFileGroupAction @JvmOverloads constructor(
     /** List of suitable Gitignore [VirtualFile]s that can be presented in an IgnoreFile action. */
     private val files = mutableMapOf<IgnoreFileType, List<VirtualFile>>()
 
-    /** Action presentation's text for single element. */
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME)
     private val presentationTextSingleKey: String
-
-    /** [Project]'s base directory. */
     private var baseDir: VirtualFile? = null
 
     companion object {
-        /** Maximum filename length for the action name.*/
         private const val FILENAME_MAX_LENGTH = 30
     }
 

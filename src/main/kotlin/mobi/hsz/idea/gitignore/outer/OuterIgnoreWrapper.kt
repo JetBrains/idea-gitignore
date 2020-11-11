@@ -116,15 +116,9 @@ class OuterIgnoreWrapper(project: Project, language: IgnoreLanguage, private val
         linkLabel.text = outerFiles[tabbedPanel.selectedIndex].path
     }
 
-    /**
-     * Returns outer panel.
-     *
-     * @return outer panel
-     */
     val component: JComponent
         get() = panel
 
-    /** Disposes all outer editors stored in [.outerEditors]. */
     override fun dispose() {
         northPanel.removeMouseListener(this)
         northPanel.removeMouseMotionListener(this)
@@ -139,14 +133,10 @@ class OuterIgnoreWrapper(project: Project, language: IgnoreLanguage, private val
     }
 
     companion object {
-        /** Pixels offset to handle drag event. */
         private const val DRAG_OFFSET = 10
-
-        /** Maximum height of the component to avoid losing it from view. */
         private const val MAX_HEIGHT = 300
     }
 
-    /** Constructor. */
     init {
         panel.border = BorderFactory.createEmptyBorder(0, 10, 5, 10)
         northPanel = JPanel(FlowLayout(FlowLayout.LEFT, 0, 5))

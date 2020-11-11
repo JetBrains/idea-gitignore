@@ -151,11 +151,6 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
             }
         }
 
-    /**
-     * Forces checking every entry in checked file.
-     *
-     * @return `true`
-     */
     override fun runForWholeFile() = true
 
     /**

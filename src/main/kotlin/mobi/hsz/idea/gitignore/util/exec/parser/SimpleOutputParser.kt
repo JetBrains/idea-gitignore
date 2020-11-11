@@ -6,11 +6,5 @@ package mobi.hsz.idea.gitignore.util.exec.parser
  */
 class SimpleOutputParser : ExecutionOutputParser<String>() {
 
-    /**
-     * Parses single entries and removes git output prefixes.
-     *
-     * @param text input data
-     * @return single unignored entry
-     */
     override fun parseOutput(text: String) = text.trim { it <= ' ' }
 }

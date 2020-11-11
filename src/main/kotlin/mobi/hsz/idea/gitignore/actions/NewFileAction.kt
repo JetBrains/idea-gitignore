@@ -21,11 +21,6 @@ import mobi.hsz.idea.gitignore.util.Utils
  */
 open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), DumbAware {
 
-    /**
-     * Creates new Gitignore file if it does not exist or uses an existing one and opens [GeneratorDialog].
-     *
-     * @param e action event
-     */
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getRequiredData(CommonDataKeys.PROJECT)
         val view = e.getRequiredData(LangDataKeys.IDE_VIEW)
@@ -68,11 +63,6 @@ open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), Dum
         }
     }
 
-    /**
-     * Updates visibility of the action presentation in various actions list.
-     *
-     * @param e action event
-     */
     override fun update(e: AnActionEvent) {
         val project = e.getData(CommonDataKeys.PROJECT)
         val view = e.getData(LangDataKeys.IDE_VIEW)

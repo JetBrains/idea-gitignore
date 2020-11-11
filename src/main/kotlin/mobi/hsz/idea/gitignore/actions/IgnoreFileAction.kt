@@ -34,8 +34,7 @@ open class IgnoreFileAction(
      * Adds currently selected [VirtualFile] to the [.ignoreFile].
      * If [.ignoreFile] is null, default project's Gitignore file will be used.
      * Files that cannot be covered with Gitignore file produces error notification.
-     * When action is performed, Gitignore file is opened with additional content added
-     * using [AppendFileCommandAction].
+     * When action is performed, Gitignore file is opened with additional content added using [AppendFileCommandAction].
      *
      * @param e action event
      */
@@ -76,11 +75,6 @@ open class IgnoreFileAction(
         }
     }
 
-    /**
-     * Shows action in the context menu if current file is covered by the specified [.ignoreFile].
-     *
-     * @param e action event
-     */
     override fun update(e: AnActionEvent) {
         val files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
         if (e.project == null || files == null) {

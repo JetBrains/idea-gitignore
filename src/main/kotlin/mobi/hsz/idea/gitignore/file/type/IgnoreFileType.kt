@@ -14,47 +14,17 @@ open class IgnoreFileType protected constructor(val ignoreLanguage: IgnoreLangua
         val INSTANCE = IgnoreFileType()
     }
 
-    /**
-     * Returns the name of the file type. The name must be unique among all file types registered in the system.
-     *
-     * @return The file type name.
-     */
     override fun getName() = ignoreLanguage.id + " file"
 
-    /**
-     * Returns the name of the language.
-     *
-     * @return The language name.
-     */
     val languageName
         get() = ignoreLanguage.id
 
-    /**
-     * Returns the user-readable description of the file type.
-     *
-     * @return The file type description.
-     */
     override fun getDescription() = ignoreLanguage.displayName
 
-    /**
-     * Returns the default extension for files of the type.
-     *
-     * @return The extension, not including the leading '.'.
-     */
     override fun getDefaultExtension() = ignoreLanguage.extension
 
-    /**
-     * Returns the icon used for showing files of the type.
-     *
-     * @return The icon instance, or null if no icon should be shown.
-     */
     override fun getIcon() = ignoreLanguage.icon
 
-    /**
-     * Returns hashCode of the current [IgnoreLanguage].
-     *
-     * @return hashCode
-     */
     override fun hashCode() = ignoreLanguage.hashCode()
 
     override fun equals(other: Any?): Boolean {

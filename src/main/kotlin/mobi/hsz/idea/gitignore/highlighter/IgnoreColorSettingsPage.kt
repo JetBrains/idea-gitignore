@@ -16,22 +16,9 @@ import javax.swing.Icon
 class IgnoreColorSettingsPage : ColorSettingsPage {
 
     companion object {
-        /** The path to the sample .gitignore file.  */
-        @NonNls
-        private val SAMPLE_GITIGNORE_PATH = "/sample.gitignore"
-
-        /** Display name for Color Settings Page.  */
-        @NonNls
-        private val DISPLAY_NAME = IgnoreBundle.message("ignore.colorSettings.displayName")
-
-        /**
-         * The sample .gitignore document shown in the colors settings dialog.
-         *
-         * @see .loadSampleGitignore
-         */
+        @NonNls private val SAMPLE_GITIGNORE_PATH = "/sample.gitignore"
+        @NonNls private val DISPLAY_NAME = IgnoreBundle.message("ignore.colorSettings.displayName")
         private val SAMPLE_GITIGNORE = loadSampleGitignore()
-
-        /** Attributes descriptor list.  */
         private val DESCRIPTORS = arrayOf(
             AttributesDescriptor(IgnoreBundle.message("highlighter.header"), IgnoreHighlighterColors.HEADER),
             AttributesDescriptor(IgnoreBundle.message("highlighter.section"), IgnoreHighlighterColors.SECTION),
@@ -56,59 +43,17 @@ class IgnoreColorSettingsPage : ColorSettingsPage {
         private fun loadSampleGitignore() = Resources.getResourceContent(SAMPLE_GITIGNORE_PATH)!!
     }
 
-    /**
-     * Returns the icon for the page, shown in the dialog tab.
-     *
-     * @return the icon for the page, or null if the page does not have a custom icon.
-     */
     override fun getIcon(): Icon? = null
 
-    /**
-     * Returns the syntax highlighter which is used to highlight the text shown in the preview
-     * pane of the page.
-     *
-     * @return the syntax highlighter instance.
-     */
-    override fun getHighlighter() = IgnoreHighlighter(null, null)
+    override fun getHighlighter() = IgnoreHighlighter(null)
 
-    /**
-     * Returns the text shown in the preview pane.
-     *
-     * @return demo text
-     */
     override fun getDemoText() = SAMPLE_GITIGNORE
 
-    /**
-     * Returns the mapping from special tag names surrounding the regions to be highlighted
-     * in the preview text.
-     *
-     * @return `null`
-     */
     override fun getAdditionalHighlightingTagToDescriptorMap(): Map<String, TextAttributesKey>? = null
 
-    /**
-     * Returns the list of descriptors specifying the [TextAttributesKey] instances
-     * for which colors are specified in the page. For such attribute keys, the user can choose
-     * all highlighting attributes (font type, background color, foreground color, error stripe color and
-     * effects).
-     *
-     * @return the list of attribute descriptors.
-     */
     override fun getAttributeDescriptors() = DESCRIPTORS
 
-    /**
-     * Returns the list of descriptors specifying the [com.intellij.openapi.editor.colors.ColorKey]
-     * instances for which colors are specified in the page. For such color keys, the user can
-     * choose only the background or foreground color.
-     *
-     * @return the list of color descriptors.
-     */
     override fun getColorDescriptors(): Array<ColorDescriptor> = ColorDescriptor.EMPTY_ARRAY
 
-    /**
-     * Returns the title of the page, shown as text in the dialog tab.
-     *
-     * @return the title of the custom page.
-     */
     override fun getDisplayName(): String = DISPLAY_NAME
 }

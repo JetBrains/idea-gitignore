@@ -16,11 +16,6 @@ import mobi.hsz.idea.gitignore.psi.IgnoreFile
  */
 class IgnoreReferenceContributor : PsiReferenceContributor() {
 
-    /**
-     * Registers new references provider for PSI element.
-     *
-     * @param psiReferenceRegistrar reference provider
-     */
     override fun registerReferenceProviders(psiReferenceRegistrar: PsiReferenceRegistrar) {
         psiReferenceRegistrar.registerReferenceProvider(
             PlatformPatterns.psiElement().inFile(PlatformPatterns.psiFile(IgnoreFile::class.java)),
@@ -29,13 +24,6 @@ class IgnoreReferenceContributor : PsiReferenceContributor() {
     }
 
     private class IgnoreReferenceProvider : PsiReferenceProvider() {
-        /**
-         * Returns references for given @{link PsiElement}.
-         *
-         * @param psiElement        current element
-         * @param processingContext context
-         * @return [PsiReference] list
-         */
         override fun getReferencesByElement(psiElement: PsiElement, processingContext: ProcessingContext): Array<out PsiReference> =
             when (psiElement) {
                 is IgnoreEntry -> IgnoreReferenceSet(psiElement).allReferences

@@ -51,7 +51,6 @@ import mobi.hsz.idea.gitignore.util.MatcherUtil
 import mobi.hsz.idea.gitignore.util.Utils
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec.getIgnoredFiles
 import org.jetbrains.annotations.NonNls
-import java.util.ArrayList
 import java.util.HashSet
 import java.util.concurrent.ConcurrentMap
 
@@ -60,22 +59,12 @@ import java.util.concurrent.ConcurrentMap
  */
 class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent {
 
-    /** Returns [MatcherUtil] instance which is required for sharing matcher cache. */
     val matcher = MatcherUtil()
-
-    /** [VirtualFileManager] instance. */
     private val virtualFileManager = VirtualFileManager.getInstance()
-
-    /** [IgnoreSettings] instance. */
     private val settings = IgnoreSettings.getInstance()
-
-    /** [ProjectLevelVcsManager] instance. */
     private val projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project)
-
-    /** [RefreshTrackedIgnoredRunnable] instance. */
     private val refreshTrackedIgnoredRunnable = RefreshTrackedIgnoredRunnable()
 
-    /** [FileStatusManager.fileStatusesChanged] method wrapped with [Debounced]. */
     private val debouncedStatusesChanged = object : Debounced<Any?>(1000) {
         override fun task(argument: Any?) {
             expiringStatusCache.clear()
@@ -83,29 +72,18 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         }
     }
 
-    /** Common runnable listeners. */
     private val commonRunnableListeners = CommonRunnableListeners(debouncedStatusesChanged)
-
-    /** [MessageBusConnection] instance. */
     private var messageBus: MessageBusConnection? = null
-
-    /** List of the files that are ignored and also tracked by Git. */
     private val confirmedIgnoredFiles = ContainerUtil.createConcurrentWeakMap<VirtualFile, VcsRoot>()
-
-    /** List of the new files that were not covered by [.confirmedIgnoredFiles] yet. */
     private val notConfirmedIgnoredFiles = HashSet<VirtualFile>()
-
-    /** References to the indexed [IgnoreEntryOccurrence]. */
     private val cachedIgnoreFilesIndex =
         CachedConcurrentMap.create<IgnoreFileType, List<IgnoreEntryOccurrence>> { key -> getEntries(project, key) }
 
-    /** References to the indexed outer files. */
     private val cachedOuterFiles =
         CachedConcurrentMap.create<IgnoreFileType, Collection<VirtualFile>> { key -> key.ignoreLanguage.getOuterFiles(project) }
 
     private val expiringStatusCache = ExpiringMap<VirtualFile, Boolean>(Time.SECOND)
 
-    /** [FileStatusManager.fileStatusesChanged] method wrapped with [Debounced]. */
     private val debouncedRefreshTrackedIgnores = object : Debounced<Boolean>(1000) {
         override fun task(argument: Boolean?) {
             if (argument == true) {
@@ -116,7 +94,6 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         }
     }
 
-    /** [DumbService.DumbModeListener.exitDumbMode] method body wrapped with [Debounced]. */
     private val debouncedExitDumbMode = object : Debounced<Boolean?>(3000) {
         override fun task(argument: Boolean?) {
             cachedIgnoreFilesIndex.clear()
@@ -127,16 +104,13 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         }
     }
 
-    /** Scheduled feature connected with [.debouncedRefreshTrackedIgnores]. */
     private val refreshTrackedIgnoredFeature = InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5).apply {
         setTrailing(true)
     }
 
-    /** [IgnoreManager] working flag. */
     private var working = false
 
-    /** List of available VCS roots for the current project. */
-    private val vcsRoots: MutableList<VcsRoot> = ArrayList()
+    private val vcsRoots = mutableListOf<VcsRoot>()
 
     /**
      * Checks if ignored files watching is enabled.
@@ -329,13 +303,6 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
             confirmedIgnoredFiles.containsKey(file)
     }
 
-    /**
-     * Invoked when the project corresponding to this component instance is opened.
-     *
-     * Note that components may be
-     * created for even unopened projects and this method can be never invoked for a particular component instance (for
-     * example for default project).
-     */
     override fun projectOpened() {
         invalidateDisposedProjects()
         if (isEnabled && !working) {
@@ -343,13 +310,6 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         }
     }
 
-    /**
-     * Invoked when the project corresponding to this component instance is closed.
-     *
-     * Note that components may be
-     * created for even unopened projects and this method can be never invoked for a particular component instance (for
-     * example for default project).
-     */
     override fun projectClosed() {
         invalidateDisposedProjects()
         disable()
@@ -403,7 +363,6 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         working = false
     }
 
-    /** Dispose and disable component. */
     override fun disposeComponent() {
         disable()
     }
@@ -423,6 +382,7 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
 
     /** [Runnable] implementation to rebuild [.confirmedIgnoredFiles]. */
     internal inner class RefreshTrackedIgnoredRunnable : Runnable, RefreshTrackedIgnoredListener {
+
         /** Default [Runnable] run method that invokes rebuilding with bus event propagating. */
         override fun run() {
             run(false)
@@ -470,6 +430,7 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
 
     /** Listener bounded with [TrackedIgnoredListener.TRACKED_IGNORED] topic to inform about new entries. */
     interface TrackedIgnoredListener {
+
         fun handleFiles(files: ConcurrentMap<VirtualFile, VcsRoot>)
 
         companion object {
@@ -483,6 +444,7 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
      * ignored files list.
      */
     fun interface RefreshTrackedIgnoredListener {
+
         fun refresh()
 
         companion object {
@@ -492,6 +454,7 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
     }
 
     fun interface RefreshStatusesListener {
+
         fun refresh()
 
         companion object {
@@ -500,12 +463,6 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         }
     }
 
-    /**
-     * Unique name of this component. If there is another component with the same name or name is null internal
-     * assertion will occur.
-     *
-     * @return the name of this component
-     */
     @NonNls
     override fun getComponentName() = "IgnoreManager"
 
@@ -516,15 +473,7 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         /** List of filenames that require to be associated with specific [IgnoreFileType]. */
         val FILE_TYPES_ASSOCIATION_QUEUE: MutableMap<String, IgnoreFileType> = ContainerUtil.newConcurrentMap()
 
-        /**
-         * Returns [IgnoreManager] service instance.
-         *
-         * @param project current project
-         * @return [instance][IgnoreManager]
-         */
-        fun getInstance(project: Project): IgnoreManager {
-            return project.getComponent(IgnoreManager::class.java)
-        }
+        fun getInstance(project: Project): IgnoreManager = project.getComponent(IgnoreManager::class.java)
 
         /**
          * Associates given file with proper [IgnoreFileType].

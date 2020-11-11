@@ -29,37 +29,23 @@ class IgnoreFileBasedIndexProjectHandler(val project: Project, private val proje
     }
 
     /** Project listener to remove [IndexableFileSet] from the indexable sets.  */
-    private val projectListener: ProjectManagerListener = object : ProjectManagerListener {
+    private val projectListener = object : ProjectManagerListener {
         override fun projectClosing(project: Project) {
             index.removeIndexableSet(this@IgnoreFileBasedIndexProjectHandler)
         }
     }
 
-    /** Initialize component and add [.projectListener].  */
     override fun initComponent() {
         projectManager.addProjectManagerListener(project, projectListener)
     }
 
-    /** Dispose component and remove [.projectListener].  */
     override fun disposeComponent() {
         projectManager.removeProjectManagerListener(project, projectListener)
     }
 
-    /**
-     * Checks if given file is in [ExternalIndexableSetContributor] set.
-     *
-     * @param file to check
-     * @return is in set
-     */
     override fun isInSet(file: VirtualFile) = file.fileType is IgnoreFileType &&
         ExternalIndexableSetContributor.getAdditionalFiles(project).contains(file)
 
-    /**
-     * Iterates over given file's children.
-     *
-     * @param file     to iterate
-     * @param iterator iterator
-     */
     override fun iterateIndexableFilesIn(file: VirtualFile, iterator: ContentIterator) {
         VfsUtilCore.visitChildrenRecursively(
             file,

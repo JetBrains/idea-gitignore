@@ -17,10 +17,7 @@ import java.util.HashSet
 class ExternalIndexableSetContributor : IndexableSetContributor() {
 
     companion object {
-        /** Empty set.  */
         private val EMPTY_SET: Set<VirtualFile> = emptySet()
-
-        /** Cached additional paths set.  */
         private val CACHE = concurrentMapOf<Project, HashSet<VirtualFile>>()
 
         /**
@@ -29,7 +26,6 @@ class ExternalIndexableSetContributor : IndexableSetContributor() {
          * @param project current project
          * @return additional files
          */
-        @JvmStatic
         fun getAdditionalFiles(project: Project): HashSet<VirtualFile> {
             val files = HashSet<VirtualFile>()
 
@@ -40,7 +36,7 @@ class ExternalIndexableSetContributor : IndexableSetContributor() {
                     val fileType = language.fileType
                     if (language.isOuterFileSupported) {
                         language.getOuterFiles(project, true).forEach outerFiles@{ file ->
-                            if (file == null || !file.isValid) {
+                            if (!file.isValid) {
                                 return@outerFiles
                             }
                             if (fileType !is GitExcludeFileType && file.fileType !is IgnoreFileType && file.fileType != fileType) {
@@ -56,7 +52,6 @@ class ExternalIndexableSetContributor : IndexableSetContributor() {
         }
 
         /** Removes invalidated projects from the [.CACHE] map.  */
-        @JvmStatic
         fun invalidateDisposedProjects() {
             CACHE.keys
                 .asSequence()
@@ -69,23 +64,12 @@ class ExternalIndexableSetContributor : IndexableSetContributor() {
          *
          * @param project current project
          */
-        @JvmStatic
         fun invalidateCache(project: Project) {
             CACHE.remove(project)
         }
     }
 
-    /**
-     * @param project Project to check
-     * @return an additional project-dependent set of [VirtualFile] instances to index, the returned set should not contain nulls
-     * or invalid files
-     */
     override fun getAdditionalProjectRootsToIndex(project: Project) = getAdditionalFiles(project)
 
-    /**
-     * Not implemented. Returns [.EMPTY_SET].
-     *
-     * @return [.EMPTY_SET]
-     */
     override fun getAdditionalRootsToIndex() = EMPTY_SET
 }

@@ -25,16 +25,9 @@ class IgnoreViewNodeDecorator(project: Project) : ProjectViewNodeDecorator {
     private val ignoreSettings = IgnoreSettings.getInstance()
 
     companion object {
-        /** Label text attribute for ignored content. */
         private val GRAYED_SMALL_ATTRIBUTES = SimpleTextAttributes(SimpleTextAttributes.STYLE_SMALLER, UIUtil.getInactiveTextColor())
     }
 
-    /**
-     * Modifies the presentation of a project view node.
-     *
-     * @param node the node to modify (use [ProjectViewNode.getValue] to get the object represented by the node).
-     * @param data the current presentation of the node, which you can modify as necessary.
-     */
     override fun decorate(node: ProjectViewNode<*>, data: PresentationData) {
         val file = node.virtualFile ?: return
         if (manager.isFileTracked(file) && manager.isFileIgnored(file)) {
@@ -50,11 +43,5 @@ class IgnoreViewNodeDecorator(project: Project) : ProjectViewNodeDecorator {
         }
     }
 
-    /**
-     * Modifies the presentation of a package dependencies view node.
-     *
-     * @param node         the node to modify.
-     * @param cellRenderer the current renderer for the node, which you can modify as necessary.
-     */
     override fun decorate(node: PackageDependenciesNode, cellRenderer: ColoredTreeCellRenderer) = Unit
 }

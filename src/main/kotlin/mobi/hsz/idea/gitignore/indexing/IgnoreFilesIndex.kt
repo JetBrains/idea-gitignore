@@ -31,33 +31,15 @@ import java.util.Collections
 class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntryOccurrence>() {
 
     companion object {
-        /** Indexer ID.  */
         val KEY = ID.create<IgnoreFileTypeKey, IgnoreEntryOccurrence>("IgnoreFilesIndex")
-
-        /** Current indexer version. Has to be increased if significant changes have been done.  */
         private const val VERSION = 5
-
-        /** [DataExternalizer] instance.  */
         private val DATA_EXTERNALIZER = object : DataExternalizer<IgnoreEntryOccurrence> {
 
-            /**
-             * Saves data in the output stream.
-             *
-             * @param out output stream
-             * @param entry entry to write
-             * @throws IOException if an I/O error occurs
-             */
             @Throws(IOException::class)
             override fun save(out: DataOutput, entry: IgnoreEntryOccurrence) {
                 serialize(out, entry)
             }
 
-            /**
-             * Reads [IgnoreEntryOccurrence] from the input stream.
-             *
-             * @param `in` input stream
-             * @return read entry
-             */
             @Throws(IOException::class)
             override fun read(input: DataInput) = deserialize(input)
         }
@@ -69,7 +51,6 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
          * @param fileType filetype
          * @return [IgnoreEntryOccurrence] collection
          */
-        @JvmStatic
         fun getEntries(project: Project, fileType: IgnoreFileType): List<IgnoreEntryOccurrence> {
             try {
                 if (ApplicationManager.getApplication().isReadAccessAllowed) {
@@ -88,24 +69,12 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
          * @param fileType filetype
          * @return [VirtualFile] collection
          */
-        @JvmStatic
         fun getFiles(project: Project, fileType: IgnoreFileType): List<VirtualFile> =
             getEntries(project, fileType).mapNotNull(IgnoreEntryOccurrence::file)
     }
 
-    /**
-     * Returns indexer's name.
-     *
-     * @return [.KEY]
-     */
     override fun getName(): ID<IgnoreFileTypeKey, IgnoreEntryOccurrence> = KEY
 
-    /**
-     * Maps indexed files content to the [IgnoreEntryOccurrence].
-     *
-     * @param inputData indexed file data
-     * @return [IgnoreEntryOccurrence] data mapped with [IgnoreFileTypeKey]
-     */
     override fun map(inputData: FileContent): Map<IgnoreFileTypeKey, IgnoreEntryOccurrence> {
         val inputDataPsi = try {
             inputData.psiFile
@@ -134,26 +103,12 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
         )
     }
 
-    /**
-     * Saves data to the indexing output stream.
-     *
-     * @param out   output stream
-     * @param value filetype to write
-     * @throws IOException if an I/O error occurs
-     */
     @Synchronized
     @Throws(IOException::class)
     override fun save(out: DataOutput, value: IgnoreFileTypeKey) {
         out.writeUTF(value.type.languageName)
     }
 
-    /**
-     * Reads data from the input stream.
-     *
-     * @param `in` input stream
-     * @return [IgnoreFileTypeKey] instance read from the stream
-     * @throws IOException if an I/O error occurs
-     */
     @Synchronized
     @Throws(IOException::class)
     override fun read(input: DataInput) = IgnoreBundle.LANGUAGES
@@ -162,26 +117,10 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
         .firstOrNull { it.languageName == input.readUTF() }
         ?.let { IgnoreFileTypeKey(it) }
 
-    /**
-     * Returns [DataExternalizer] instance.
-     *
-     * @return [.DATA_EXTERNALIZER]
-     */
     override fun getValueExternalizer() = DATA_EXTERNALIZER
 
-    /**
-     * Returns current indexer [.VERSION].
-     *
-     * @return current version
-     */
     override fun getVersion() = VERSION
 
-    /**
-     * Obtains if given [VirtualFile] is accepted by indexer.
-     *
-     * @param file to check
-     * @return file is accepted
-     */
     override fun acceptInput(file: VirtualFile) =
         file.fileType is IgnoreFileType || IgnoreManager.FILE_TYPES_ASSOCIATION_QUEUE.containsKey(file.name)
 }

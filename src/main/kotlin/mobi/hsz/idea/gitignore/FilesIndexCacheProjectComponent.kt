@@ -33,12 +33,6 @@ class FilesIndexCacheProjectComponent(project: Project) : ProjectComponent, Bulk
     private val messageBus = ApplicationManager.getApplication().messageBus.connect(this)
 
     companion object {
-        /**
-         * Returns [FilesIndexCacheProjectComponent] service instance.
-         *
-         * @param project current project
-         * @return [instance][FilesIndexCacheProjectComponent]
-         */
         fun getInstance(project: Project): FilesIndexCacheProjectComponent =
             project.getComponent(FilesIndexCacheProjectComponent::class.java)
     }
@@ -47,7 +41,6 @@ class FilesIndexCacheProjectComponent(project: Project) : ProjectComponent, Bulk
         messageBus.subscribe(VirtualFileManager.VFS_CHANGES, this)
     }
 
-    /** Unregisters [.virtualFileListener] when project is closed.  */
     override fun projectClosed() {
         cacheMap.clear()
     }
@@ -85,11 +78,6 @@ class FilesIndexCacheProjectComponent(project: Project) : ProjectComponent, Bulk
         return ArrayList()
     }
 
-    /**
-     * Returns component's name.
-     *
-     * @return component's name
-     */
     override fun getComponentName() = "FilesIndexCacheProjectComponent"
 
     override fun dispose() {

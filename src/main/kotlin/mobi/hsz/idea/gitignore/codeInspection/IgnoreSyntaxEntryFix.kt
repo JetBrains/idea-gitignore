@@ -17,16 +17,6 @@ import mobi.hsz.idea.gitignore.psi.IgnoreSyntax
  */
 class IgnoreSyntaxEntryFix(syntax: IgnoreSyntax) : LocalQuickFixAndIntentionActionOnPsiElement(syntax) {
 
-    override fun getText(): String = IgnoreBundle.message("quick.fix.syntax.entry")
-
-    /**
-     * Handles QuickFix action invoked on [IgnoreSyntax].
-     *
-     * @param project      the [Project] containing the working file
-     * @param file         the [PsiFile] containing handled entry
-     * @param startElement the [IgnoreSyntax] that will be selected and replaced
-     * @param endElement   the [PsiElement] which is ignored in invoked action
-     */
     override fun invoke(project: Project, file: PsiFile, editor: Editor?, startElement: PsiElement, endElement: PsiElement) {
         if (startElement is IgnoreSyntax) {
             editor?.run {
@@ -38,17 +28,9 @@ class IgnoreSyntaxEntryFix(syntax: IgnoreSyntax) : LocalQuickFixAndIntentionActi
         }
     }
 
-    /**
-     * Run in read action because of completion invoking.
-     *
-     * @return `false`
-     */
     override fun startInWriteAction() = false
 
-    /**
-     * Gets QuickFix family name.
-     *
-     * @return QuickFix family name
-     */
+    override fun getText(): String = IgnoreBundle.message("quick.fix.syntax.entry")
+
     override fun getFamilyName(): String = IgnoreBundle.message("codeInspection.group")
 }

@@ -24,7 +24,6 @@ object Resources {
     /** List of fetched [Template] elements from resources.  */
     private var resourceTemplates: MutableList<Template>? = null// fetch templates from resources
 
-    // fetch user templates
     /**
      * Returns list of gitignore templates.
      *
@@ -72,7 +71,7 @@ object Resources {
      *
      * @return Resources directory
      */
-    fun getResource(path: String) = Resources::class.java.getResource(path)?.run { File(path) }
+    private fun getResource(path: String) = Resources::class.java.getResource(path)?.run { File(path) }
 
     /**
      * Reads resource file and returns its content as a String.
@@ -118,12 +117,6 @@ object Resources {
             USER, STARRED, ROOT, GLOBAL
         }
 
-        /**
-         * Builds a new instance of [Template]. [Container] will be set to [Container.ROOT] or [ ][Container.GLOBAL] depending on its location.
-         *
-         * @param file    template's file
-         * @param content template's content
-         */
         constructor(file: File, content: String?) {
             this.file = file
             name = file.name.replace(INSTANCE.filename, "")
@@ -131,12 +124,6 @@ object Resources {
             container = if (file.parent.endsWith("Global")) Container.GLOBAL else Container.ROOT
         }
 
-        /**
-         * Builds a new instance of [Template].
-         * [Container] will be set to [Container.USER].
-         *
-         * @param userTemplate [IgnoreSettings] user template object
-         */
         constructor(userTemplate: UserTemplate) {
             file = null
             name = userTemplate.name
@@ -144,19 +131,8 @@ object Resources {
             container = Container.USER
         }
 
-        /**
-         * Returns string representation of [Template].
-         *
-         * @return template's name
-         */
         override fun toString() = name
 
-        /**
-         * Compares given template to the current one.
-         *
-         * @param other template to compare
-         * @return templates comparison
-         */
         override fun compareTo(other: Template) = name.compareTo(other.name, ignoreCase = true)
     }
 }

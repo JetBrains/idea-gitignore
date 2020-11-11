@@ -11,13 +11,8 @@ import com.intellij.util.containers.addIfNotNull
  */
 abstract class ExecutionOutputParser<T> {
 
-    /** Outputs list.  */
     private val outputs = mutableListOf<T>()
-
-    /** Exit code value.  */
     private var exitCode = 0
-
-    /** Error occurred during the output parsing.  */
     private var errorsReported = false
 
     /**

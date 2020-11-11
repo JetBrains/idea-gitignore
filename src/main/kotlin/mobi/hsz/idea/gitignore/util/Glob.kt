@@ -20,10 +20,10 @@ import java.util.regex.PatternSyntaxException
 object Glob {
 
     /** Cache map that holds processed regex statements to the glob rules.  */
-    private val GLOBS_CACHE = ContainerUtil.newConcurrentMap<String, String>()
+    private val GLOBS_CACHE = concurrentMapOf<String, String>()
 
     /** Cache map that holds compiled regex.  */
-    private val PATTERNS_CACHE = ContainerUtil.newConcurrentMap<String, Pattern>()
+    private val PATTERNS_CACHE = concurrentMapOf<String, Pattern>()
 
     /**
      * Finds for [VirtualFile] list using glob rule in given root directory.
@@ -288,7 +288,6 @@ object Glob {
         return sb.toString()
     }
 
-    /** Clears [Glob.GLOBS_CACHE] cache.  */
     fun clearCache() {
         GLOBS_CACHE.clear()
         PATTERNS_CACHE.clear()

@@ -35,14 +35,6 @@ class IgnoreEntryOccurrence(private val url: String, items: List<Pair<String, Bo
         private set
 
     companion object {
-        /**
-         * Static helper to write given [IgnoreEntryOccurrence] to the output stream.
-         *
-         * @param out   output stream
-         * @param entry entry to write
-         * @throws IOException I/O exception
-         */
-        @JvmStatic
         @Synchronized
         @Throws(IOException::class)
         fun serialize(out: DataOutput, entry: IgnoreEntryOccurrence) {
@@ -56,13 +48,6 @@ class IgnoreEntryOccurrence(private val url: String, items: List<Pair<String, Bo
             }
         }
 
-        /**
-         * Static helper to read [IgnoreEntryOccurrence] from the input stream.
-         *
-         * @param input input stream
-         * @return read [IgnoreEntryOccurrence]
-         */
-        @JvmStatic
         @Synchronized
         @Throws(IOException::class)
         fun deserialize(input: DataInput): IgnoreEntryOccurrence {
@@ -79,21 +64,10 @@ class IgnoreEntryOccurrence(private val url: String, items: List<Pair<String, Bo
         }
     }
 
-    /**
-     * Calculates hashCode with [.url] and [.items] hashCodes.
-     *
-     * @return entry hashCode
-     */
     override fun hashCode() = HashCodeBuilder().append(url).apply {
         items.forEach { append(it.first).append(it.second) }
     }.toHashCode()
 
-    /**
-     * Checks if given object is equal to current [IgnoreEntryOccurrence] instance.
-     *
-     * @param other to check
-     * @return objects are equal.
-     */
     override fun equals(other: Any?) = when {
         other !is IgnoreEntryOccurrence -> false
         url != other.url || items.size != other.items.size -> false
