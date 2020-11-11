@@ -278,7 +278,8 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         fillTreeData(null, true)
 
         val renderer = object : TemplateTreeRenderer() {
-            override fun getFilter() = profileFilter?.filter
+            override val filter: String?
+                get() = profileFilter?.filter
         }
 
         tree = object : CheckboxTree(renderer, root) {
@@ -418,9 +419,9 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             node.isChecked = false
             root.add(node)
         }
-        val templatesList = Resources.getGitignoreTemplates()
+        val templatesList = Resources.gitignoreTemplates
         for (template in templatesList) {
-            if (filter != null && filter.length > 0 && !isTemplateAccepted(template, filter)) {
+            if (filter != null && filter.isNotEmpty() && !isTemplateAccepted(template, filter)) {
                 continue
             }
             val node = TemplateTreeNode(template)

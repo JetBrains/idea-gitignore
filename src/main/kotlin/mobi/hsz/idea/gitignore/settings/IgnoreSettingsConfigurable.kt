@@ -55,43 +55,43 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
      * @return true if the settings were modified, false otherwise.
      */
     override fun isModified() = settingsPanel!!.run {
-        !Comparing.equal(settings.missingGitignore, isMissingGitignore) ||
+        !Comparing.equal(settings.missingGitignore, missingGitignore) ||
             !Utils.equalLists(settings.userTemplates, userTemplates) ||
-            !Comparing.equal(settings.ignoredFileStatus, isIgnoredFileStatus) ||
-            !Comparing.equal(settings.outerIgnoreRules, isOuterIgnoreRules) ||
-            !Comparing.equal(settings.insertAtCursor, isInsertAtCursor) ||
-            !Comparing.equal(settings.addUnversionedFiles, isAddUnversionedFiles) ||
-            !Comparing.equal(settings.unignoreActions, isUnignoreActions) ||
-            !Comparing.equal(settings.notifyIgnoredEditing, isNotifyIgnoredEditing) ||
+            !Comparing.equal(settings.ignoredFileStatus, ignoredFileStatus) ||
+            !Comparing.equal(settings.outerIgnoreRules, outerIgnoreRules) ||
+            !Comparing.equal(settings.insertAtCursor, insertAtCursor) ||
+            !Comparing.equal(settings.addUnversionedFiles, addUnversionedFiles) ||
+            !Comparing.equal(settings.unignoreActions, unignoreActions) ||
+            !Comparing.equal(settings.notifyIgnoredEditing, notifyIgnoredEditing) ||
             !languagesSettings.equalSettings(settings.languagesSettings)
     }
 
     /** Store the settings from configurable to other components. */
     override fun apply() {
         settingsPanel!!.apply {
-            settings.missingGitignore = isMissingGitignore
-            settings.userTemplates = userTemplates
-            settings.ignoredFileStatus = isIgnoredFileStatus
-            settings.outerIgnoreRules = isOuterIgnoreRules
-            settings.insertAtCursor = isInsertAtCursor
-            settings.addUnversionedFiles = isAddUnversionedFiles
+            settings.missingGitignore = missingGitignore
+            settings.userTemplates = userTemplates.toMutableList()
+            settings.ignoredFileStatus = ignoredFileStatus
+            settings.outerIgnoreRules = outerIgnoreRules
+            settings.insertAtCursor = insertAtCursor
+            settings.addUnversionedFiles = addUnversionedFiles
             settings.languagesSettings = languagesSettings.settings
-            settings.unignoreActions = isUnignoreActions
-            settings.notifyIgnoredEditing = isNotifyIgnoredEditing
+            settings.unignoreActions = unignoreActions
+            settings.notifyIgnoredEditing = notifyIgnoredEditing
         }
     }
 
     /** Load settings from other components to configurable. */
     override fun reset() {
         settingsPanel!!.apply {
-            isMissingGitignore = settings.missingGitignore
+            missingGitignore = settings.missingGitignore
             userTemplates = settings.userTemplates
-            isIgnoredFileStatus = settings.ignoredFileStatus
-            isOuterIgnoreRules = settings.outerIgnoreRules
-            isInsertAtCursor = settings.insertAtCursor
-            isAddUnversionedFiles = settings.addUnversionedFiles
-            isUnignoreActions = settings.unignoreActions
-            isNotifyIgnoredEditing = settings.notifyIgnoredEditing
+            ignoredFileStatus = settings.ignoredFileStatus
+            outerIgnoreRules = settings.outerIgnoreRules
+            insertAtCursor = settings.insertAtCursor
+            addUnversionedFiles = settings.addUnversionedFiles
+            unignoreActions = settings.unignoreActions
+            notifyIgnoredEditing = settings.notifyIgnoredEditing
             languagesSettings.update(settings.languagesSettings.clone())
         }
     }
