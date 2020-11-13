@@ -425,10 +425,12 @@
         <component>
             <implementation-class>mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent</implementation-class>
         </component>
-        <component>
-            <implementation-class>mobi.hsz.idea.gitignore.IgnoreFileBasedIndexProjectHandler</implementation-class>
-        </component>
     </project-components>
+
+    <applicationListeners>
+        <listener class="mobi.hsz.idea.gitignore.listeners.IndexableSetRegistererListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
 
     <actions>
         <action id="Ignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileGroupAction">
