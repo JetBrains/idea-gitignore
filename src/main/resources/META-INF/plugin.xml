@@ -1,7 +1,6 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
     <name>.ignore</name>
-    <version>3.2.3</version>
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.vcs</depends>
