@@ -1,6 +1,11 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.util
 
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ProjectRootManager
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.search.FilenameIndex
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.containers.IntObjectCache
 import org.apache.commons.lang.builder.HashCodeBuilder
 import java.util.ArrayList
@@ -96,6 +101,33 @@ class MatcherUtil {
                 inSquare = ch != ']' && (ch == '[' || inSquare)
             }
             return parts.toTypedArray()
+        }
+
+        /**
+         * Finds [VirtualFile] instances for the specific [Pattern] and caches them.
+         *
+         * @param project current project
+         * @param pattern to handle
+         * @return matched files list
+         */
+        fun getFilesForPattern(project: Project, pattern: Pattern): Collection<VirtualFile> {
+            val parts = getParts(pattern).ifEmpty { return emptyList() }
+            val projectFileIndex = ProjectRootManager.getInstance(project).fileIndex
+            val scope = GlobalSearchScope.projectScope(project)
+            val files = mutableSetOf<VirtualFile>()
+
+            projectFileIndex.iterateContent {
+                if (matchAnyPart(parts, it.name)) {
+                    FilenameIndex.getVirtualFilesByName(project, it.name, scope).forEach { file ->
+                        if (file.isValid && matchAllParts(parts, file.path)) {
+                            files.add(file)
+                        }
+                    }
+                }
+                true
+            }
+
+            return files
         }
     }
 }

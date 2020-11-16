@@ -9,7 +9,6 @@ import com.intellij.testFramework.UsefulTestCase
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.containers.ContainerUtil
 import junit.framework.TestCase
-import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import java.io.IOException
 
@@ -77,7 +76,6 @@ class ResolvingTest : BasePlatformTestCase() {
         myFixture.apply {
             configureByText(IgnoreFileType.INSTANCE, beforeText)
 
-            FilesIndexCacheProjectComponent.getInstance(project).projectClosed()
             val reference = getReferenceAtCaretPosition() as PsiPolyVariantReference?
             TestCase.assertNotNull(reference)
 
