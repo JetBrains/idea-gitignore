@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.StyleLintLanguage
 
 /**
  * Describes StyleLint file type.
  */
-class StyleLintFileType : IgnoreFileType() {
+class StyleLintFileType : IgnoreFileType(StyleLintLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = StyleLintFileType()

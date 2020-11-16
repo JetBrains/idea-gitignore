@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.BazaarLanguage
 
 /**
  * Describes Bazaar file type.
  */
-class BazaarFileType : IgnoreFileType() {
+class BazaarFileType : IgnoreFileType(BazaarLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = BazaarFileType()

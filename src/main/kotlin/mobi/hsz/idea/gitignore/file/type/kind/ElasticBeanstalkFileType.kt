@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.ElasticBeanstalkLanguage
 
 /**
  * Describes ElasticBeanstalk file type.
  */
-class ElasticBeanstalkFileType : IgnoreFileType() {
+class ElasticBeanstalkFileType : IgnoreFileType(ElasticBeanstalkLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = ElasticBeanstalkFileType()

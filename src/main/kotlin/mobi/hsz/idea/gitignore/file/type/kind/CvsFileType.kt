@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.CvsLanguage
 
 /**
  * Describes Cvs file type.
  */
-class CvsFileType : IgnoreFileType() {
+class CvsFileType : IgnoreFileType(CvsLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = CvsFileType()

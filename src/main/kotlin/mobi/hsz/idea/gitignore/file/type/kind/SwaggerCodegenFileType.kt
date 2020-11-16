@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.SwaggerCodegenLanguage
 
 /**
  * Describes Swagger Codegen file type.
  */
-class SwaggerCodegenFileType : IgnoreFileType() {
+class SwaggerCodegenFileType : IgnoreFileType(SwaggerCodegenLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = SwaggerCodegenFileType()

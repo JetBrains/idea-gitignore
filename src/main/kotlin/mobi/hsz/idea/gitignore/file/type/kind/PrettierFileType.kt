@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.PrettierLanguage
 
 /**
  * Describes Prettier file type.
  */
-class PrettierFileType : IgnoreFileType() {
+class PrettierFileType : IgnoreFileType(PrettierLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = PrettierFileType()

@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.TFLanguage
 
 /**
  * Describes TeamFoundation file type.
  */
-class TFFileType : IgnoreFileType() {
+class TFFileType : IgnoreFileType(TFLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = TFFileType()

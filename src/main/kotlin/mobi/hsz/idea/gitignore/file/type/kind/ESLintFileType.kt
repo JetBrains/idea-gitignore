@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.ESLintLanguage
 
 /**
  * Describes ESLint file type.
  */
-class ESLintFileType : IgnoreFileType() {
+class ESLintFileType : IgnoreFileType(ESLintLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = ESLintFileType()
