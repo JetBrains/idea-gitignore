@@ -45,7 +45,7 @@ dependencies {
 val generateLexer = task<GenerateLexer>("generateLexer") {
     source = "src/main/grammars/Ignore.flex"
     targetDir = "src/main/gen/mobi/hsz/idea/gitignore/lexer/"
-    targetClass = "_IgnoreLexer"
+    targetClass = "IgnoreLexer"
     purgeOldFiles = true
 }
 
@@ -97,16 +97,11 @@ detekt {
 }
 
 tasks {
-    // Set the compatibility versions to 1.8
-    withType<JavaCompile> {
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
-
-        dependsOn(generateLexer, generateParser, generateTemplatesList)
-    }
     listOf("compileKotlin", "compileTestKotlin").forEach {
         getByName<KotlinCompile>(it) {
             kotlinOptions.jvmTarget = "1.8"
+
+            dependsOn(generateLexer, generateParser, generateTemplatesList)
         }
     }
 
@@ -118,6 +113,10 @@ tasks {
         main {
             java.srcDirs("src/main/gen")
         }
+    }
+
+    clean {
+        delete("src/main/gen")
     }
 
     patchPluginXml {
