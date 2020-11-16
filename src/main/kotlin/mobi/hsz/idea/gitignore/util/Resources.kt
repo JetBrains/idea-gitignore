@@ -40,16 +40,16 @@ object Resources {
                 try {
                     val list = getResourceContent(GITIGNORE_TEMPLATES_PATH)
                     if (list != null) {
-                        val br = BufferedReader(StringReader(list))
-                        var line: String
-                        while (br.readLine().also { line = it } != null) {
-                            line = "/$line"
-                            val file = getResource(line)
-                            if (file != null) {
-                                val content = getResourceContent(line)
-                                val template = Template(file, content)
-                                template.isStarred = starredTemplates.contains(template.name)
-                                resourceTemplates?.add(template)
+                        BufferedReader(StringReader(list)).useLines {
+                            it.map {
+                                val line = "/$it"
+                                val file = getResource(line)
+                                if (file != null) {
+                                    val content = getResourceContent(line)
+                                    val template = Template(file, content)
+                                    template.isStarred = starredTemplates.contains(template.name)
+                                    resourceTemplates?.add(template)
+                                }
                             }
                         }
                     }
