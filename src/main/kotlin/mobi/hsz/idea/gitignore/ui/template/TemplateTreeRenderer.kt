@@ -31,8 +31,11 @@ abstract class TemplateTreeRenderer : CheckboxTree.CheckboxTreeCellRenderer() {
         val node = value
         val background = if (selected) UIUtil.getTreeSelectionBackground(true) else UIUtil.getTreeBackground()
         UIUtil.changeBackGround(this, background)
-        val foreground =
-            if (selected) UIUtil.getTreeSelectionForeground(true) else if (node.template == null) PlatformColors.BLUE else UIUtil.getTreeForeground()
+        val foreground = when {
+            selected -> UIUtil.getTreeSelectionForeground(true)
+            node.template == null -> PlatformColors.BLUE
+            else -> UIUtil.getTreeForeground()
+        }
         val style = SimpleTextAttributes.STYLE_PLAIN
         var text = ""
         var hint = ""

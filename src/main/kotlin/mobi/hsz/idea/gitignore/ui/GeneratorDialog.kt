@@ -495,8 +495,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         (tree!!.model as DefaultTreeModel).reload()
     }
 
-    private inner class TemplatesFilterComponent
-        : FilterComponent(TEMPLATES_FILTER_HISTORY, 10) {
+    private inner class TemplatesFilterComponent : FilterComponent(TEMPLATES_FILTER_HISTORY, 10) {
         override fun filter() {
             filterTree(filter)
         }

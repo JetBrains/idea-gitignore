@@ -35,15 +35,20 @@ class InterruptibleScheduledFuture(private val task: Runnable, private val delay
         if (leading) {
             task.run()
         }
-        future = JobScheduler.getScheduler().scheduleWithFixedDelay({
-            task.run()
-            if (++attempt >= maxAttempts || trailingTask) {
-                trailing = false
-                if (future != null) {
-                    future!!.cancel(false)
+        future = JobScheduler.getScheduler().scheduleWithFixedDelay(
+            {
+                task.run()
+                if (++attempt >= maxAttempts || trailingTask) {
+                    trailing = false
+                    if (future != null) {
+                        future!!.cancel(false)
+                    }
                 }
-            }
-        }, delay.toLong(), delay.toLong(), TimeUnit.MILLISECONDS)
+            },
+            delay.toLong(),
+            delay.toLong(),
+            TimeUnit.MILLISECONDS
+        )
     }
 
     /** Function that cancels current [.future].  */

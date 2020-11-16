@@ -41,9 +41,11 @@ import javax.swing.event.ChangeListener
 /**
  * Wrapper that creates bottom editor component for displaying outer ignore rules.
  */
-class OuterIgnoreWrapper(project: Project, language: IgnoreLanguage, private val outerFiles: List<VirtualFile>) : MouseAdapter(),
-    ChangeListener, Disposable {
-    
+class OuterIgnoreWrapper(project: Project, language: IgnoreLanguage, private val outerFiles: List<VirtualFile>) :
+    MouseAdapter(),
+    ChangeListener,
+    Disposable {
+
     /** Main wrapper panel. */
     private val panel = JPanel(BorderLayout())
 
