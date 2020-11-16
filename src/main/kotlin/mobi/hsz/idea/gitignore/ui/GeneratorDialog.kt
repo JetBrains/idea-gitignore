@@ -96,7 +96,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     private var previewDocument: Document? = null
 
     /** CheckboxTree selection listener. */
-    private val treeSelectionListener = TreeSelectionListener { e: TreeSelectionEvent? ->
+    private val treeSelectionListener = TreeSelectionListener { _: TreeSelectionEvent? ->
         tree?.selectionPath?.let { updateDescriptionPanel(it) }
     }
 

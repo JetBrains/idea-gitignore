@@ -149,12 +149,12 @@ class OuterIgnoreWrapper(project: Project, language: IgnoreLanguage, private val
         northPanel.add(label)
         tabbedPanel = TabbedPaneWrapper(project)
         messageBus = project.messageBus.connect()
-        messageBus!!.subscribe(UISettingsListener.TOPIC, UISettingsListener { uiSettings: UISettings? -> updateTabbedPanelPolicy() })
+        messageBus!!.subscribe(UISettingsListener.TOPIC, UISettingsListener { updateTabbedPanelPolicy() })
         updateTabbedPanelPolicy()
         linkLabel = LinkLabel(
             outerFiles[0].path,
             null
-        ) { aSource: LinkLabel<*>?, aLinkData: Any? -> openFile(project, outerFiles[tabbedPanel.selectedIndex]) }
+        ) { _: LinkLabel<*>?, _: Any? -> openFile(project, outerFiles[tabbedPanel.selectedIndex]) }
         val userHomeDir = VfsUtil.getUserHomeDir()
         for (outerFile in outerFiles) {
             val document = FileDocumentManager.getInstance().getDocument(outerFile)

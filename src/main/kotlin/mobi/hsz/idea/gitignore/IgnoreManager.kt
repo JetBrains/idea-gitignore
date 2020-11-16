@@ -53,7 +53,6 @@ import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture
 import mobi.hsz.idea.gitignore.util.Utils
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec.getIgnoredFiles
 import java.util.HashSet
-import java.util.concurrent.ConcurrentMap
 
 /**
  * [IgnoreManager] handles ignore files indexing and status caching.
@@ -182,6 +181,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 }
             }
             IgnoreSettings.KEY.HIDE_IGNORED_FILES -> ProjectView.getInstance(project).refresh()
+            else -> {}
         }
     }
 
@@ -400,20 +400,20 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
          * @param silent propagate [IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED] event
          */
         fun run(silent: Boolean) {
-            val result = ContainerUtil.newConcurrentMap<VirtualFile, VcsRoot>()
+            val result = concurrentMapOf<VirtualFile, VcsRoot>()
             for (vcsRoot in vcsRoots) {
                 if (!Utils.isGitPluginEnabled || vcsRoot.vcs !is GitVcs) {
                     continue
                 }
                 val root = vcsRoot.path
                 for (path in getIgnoredFiles(vcsRoot)) {
-                    val file = root.findFileByRelativePath(path!!)
+                    val file = root.findFileByRelativePath(path)
                     if (file != null) {
                         result[file] = vcsRoot
                     }
                 }
             }
-            if (!silent && !result.isEmpty()) {
+            if (!silent && result.isNotEmpty()) {
                 project.messageBus.syncPublisher(TrackedIgnoredListener.TRACKED_IGNORED).handleFiles(result)
             }
             confirmedIgnoredFiles.clear()
@@ -432,7 +432,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     /** Listener bounded with [TrackedIgnoredListener.TRACKED_IGNORED] topic to inform about new entries. */
     interface TrackedIgnoredListener {
 
-        fun handleFiles(files: ConcurrentMap<VirtualFile, VcsRoot>)
+        fun handleFiles(files: MutableMap<VirtualFile, VcsRoot>)
 
         companion object {
             /** Topic for detected tracked and indexed files. */
