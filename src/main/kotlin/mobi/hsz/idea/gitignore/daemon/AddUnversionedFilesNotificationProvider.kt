@@ -46,7 +46,6 @@ class AddUnversionedFilesNotificationProvider : EditorNotifications.Provider<Edi
     override fun createNotificationPanel(file: VirtualFile, fileEditor: FileEditor, project: Project) = when {
         !settings.addUnversionedFiles -> null
         Properties.isAddUnversionedFiles(project) -> null
-        Properties.isAddUnversionedFiles(project) -> null
         handledMap[file] != null -> null
         IgnoreBundle.obtainLanguage(file).run { this == null || !isVCS || this !is GitLanguage } -> null
         else -> {
