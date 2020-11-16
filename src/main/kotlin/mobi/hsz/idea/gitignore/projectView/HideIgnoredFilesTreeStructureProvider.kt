@@ -34,16 +34,17 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
     override fun modify(parent: AbstractTreeNode<*>, children: Collection<AbstractTreeNode<*>?>, settings: ViewSettings?) =
         when {
             !ignoreSettings.hideIgnoredFiles || children.isEmpty() -> children
-            else -> ContainerUtil.filter(children) { node: AbstractTreeNode<*>? ->
-                if (node is BasePsiNode<*>) {
-                    val file = node.virtualFile
-                    return@filter file != null && (
-                        !changeListManager.isIgnoredFile(file) &&
-                            !manager.isFileIgnored(file) || manager.isFileTracked(file)
-                        )
+            else ->
+                ContainerUtil.filter(children) { node: AbstractTreeNode<*>? ->
+                    if (node is BasePsiNode<*>) {
+                        val file = node.virtualFile
+                        return@filter file != null && (
+                            !changeListManager.isIgnoredFile(file) &&
+                                !manager.isFileIgnored(file) || manager.isFileTracked(file)
+                            )
+                    }
+                    true
                 }
-                true
-            }
         }
 
     override fun getData(collection: Collection<AbstractTreeNode<*>?>, s: String): Any? = null

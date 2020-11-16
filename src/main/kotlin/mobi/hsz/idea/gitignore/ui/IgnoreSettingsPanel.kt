@@ -32,6 +32,7 @@ import com.intellij.ui.ToolbarDecorator
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI
+import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreBundle.message
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings.Companion.createTemplatesElement
@@ -112,16 +113,19 @@ class IgnoreSettingsPanel : Disposable {
         languagesTable!!.rowHeight = 22
         languagesTable!!.columnModel.getColumn(2).cellRenderer = object : BooleanTableCellRenderer() {
             override fun getTableCellRendererComponent(
-                table: JTable, value: Any, isSel: Boolean, hasFocus: Boolean,
-                row: Int, column: Int
+                table: JTable,
+                value: Any,
+                isSel: Boolean,
+                hasFocus: Boolean,
+                row: Int,
+                column: Int
             ): Component {
                 val editable = table.isCellEditable(row, column)
                 val newValue = if (editable) value else null
                 return super.getTableCellRendererComponent(table, newValue, isSel, hasFocus, row, column)
             }
         }
-        languagesTable!!.preferredScrollableViewportSize =
-            Dimension(-1, languagesTable!!.rowHeight *  /* IgnoreBundle.LANGUAGES.size() */28 / 2)
+        languagesTable!!.preferredScrollableViewportSize = Dimension(-1, languagesTable!!.rowHeight * IgnoreBundle.LANGUAGES.size / 2)
         languagesTable!!.isStriped = true
         languagesTable!!.setShowGrid(false)
         languagesTable!!.border = JBUI.Borders.empty()
@@ -196,88 +200,92 @@ class IgnoreSettingsPanel : Disposable {
             super.customizeDecorator(decorator)
             val group = DefaultActionGroup()
             group.addSeparator()
-            group.add(object : AnAction(
-                message("action.importTemplates"),
-                message("action.importTemplates.description"),
-                AllIcons.Actions.Install
-            ) {
-                override fun actionPerformed(event: AnActionEvent) {
-                    val descriptor: FileChooserDescriptor = object : FileChooserDescriptor(true, false, true, false, true, false) {
-                        override fun isFileVisible(file: VirtualFile, showHiddenFiles: Boolean): Boolean {
-                            return super.isFileVisible(file, showHiddenFiles) &&
-                                (file.isDirectory || FILE_EXTENSION == file.extension || file.fileType === FileTypes.ARCHIVE)
-                        }
-
-                        override fun isFileSelectable(file: VirtualFile) = file.fileType === XmlFileType.INSTANCE
-                    }
-                    descriptor.description = message("action.importTemplates.wrapper.description")
-                    descriptor.title = message("action.importTemplates.wrapper")
-                    descriptor.putUserData(
-                        LangDataKeys.MODULE_CONTEXT,
-                        LangDataKeys.MODULE.getData(event.dataContext)
-                    )
-                    val file = FileChooser.chooseFile(descriptor, templatesListPanel, null, null)
-                    if (file != null) {
-                        try {
-                            val element = JDOMUtil.load(file.inputStream)
-                            val templates = loadTemplates(element)
-                            for (template in templates) {
-                                myListModel.addElement(template)
+            group.add(
+                object : AnAction(
+                    message("action.importTemplates"),
+                    message("action.importTemplates.description"),
+                    AllIcons.Actions.Install
+                ) {
+                    override fun actionPerformed(event: AnActionEvent) {
+                        val descriptor: FileChooserDescriptor = object : FileChooserDescriptor(true, false, true, false, true, false) {
+                            override fun isFileVisible(file: VirtualFile, showHiddenFiles: Boolean): Boolean {
+                                return super.isFileVisible(file, showHiddenFiles) &&
+                                    (file.isDirectory || FILE_EXTENSION == file.extension || file.fileType === FileTypes.ARCHIVE)
                             }
-                            Messages.showInfoMessage(
-                                templatesListPanel,
-                                message("action.importTemplates.success", templates.size),
-                                message("action.exportTemplates.success.title")
-                            )
-                            return
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        } catch (e: JDOMException) {
-                            e.printStackTrace()
-                        }
-                    }
-                    Messages.showErrorDialog(templatesListPanel!!, message("action.importTemplates.error"))
-                }
-            })
-            group.add(object : AnAction(
-                message("action.exportTemplates"),
-                message("action.exportTemplates.description"),
-                AllIcons.ToolbarDecorator.Export
-            ) {
-                override fun actionPerformed(event: AnActionEvent) {
-                    val wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
-                        FileSaverDescriptor(
-                            message("action.exportTemplates.wrapper"),
-                            "",
-                            FILE_EXTENSION
-                        ),
-                        templatesListPanel!!
-                    ).save(null as VirtualFile?, null)
-                    if (wrapper != null) {
-                        val items = currentItems
-                        val document = org.jdom.Document(
-                            createTemplatesElement(items)
-                        )
-                        try {
-                            JDOMUtil.writeDocument(document, wrapper.file, Constants.NEWLINE)
-                            Messages.showInfoMessage(
-                                templatesListPanel,
-                                message("action.exportTemplates.success", items.size),
-                                message("action.exportTemplates.success.title")
-                            )
-                        } catch (e: IOException) {
-                            Messages.showErrorDialog(
-                                templatesListPanel!!,
-                                message("action.exportTemplates.error")
-                            )
-                        }
-                    }
-                }
 
-                override fun update(e: AnActionEvent) {
-                    e.presentation.isEnabled = currentItems.size > 0
+                            override fun isFileSelectable(file: VirtualFile) = file.fileType === XmlFileType.INSTANCE
+                        }
+                        descriptor.description = message("action.importTemplates.wrapper.description")
+                        descriptor.title = message("action.importTemplates.wrapper")
+                        descriptor.putUserData(
+                            LangDataKeys.MODULE_CONTEXT,
+                            LangDataKeys.MODULE.getData(event.dataContext)
+                        )
+                        val file = FileChooser.chooseFile(descriptor, templatesListPanel, null, null)
+                        if (file != null) {
+                            try {
+                                val element = JDOMUtil.load(file.inputStream)
+                                val templates = loadTemplates(element)
+                                for (template in templates) {
+                                    myListModel.addElement(template)
+                                }
+                                Messages.showInfoMessage(
+                                    templatesListPanel,
+                                    message("action.importTemplates.success", templates.size),
+                                    message("action.exportTemplates.success.title")
+                                )
+                                return
+                            } catch (e: IOException) {
+                                e.printStackTrace()
+                            } catch (e: JDOMException) {
+                                e.printStackTrace()
+                            }
+                        }
+                        Messages.showErrorDialog(templatesListPanel!!, message("action.importTemplates.error"))
+                    }
                 }
-            })
+            )
+            group.add(
+                object : AnAction(
+                    message("action.exportTemplates"),
+                    message("action.exportTemplates.description"),
+                    AllIcons.ToolbarDecorator.Export
+                ) {
+                    override fun actionPerformed(event: AnActionEvent) {
+                        val wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
+                            FileSaverDescriptor(
+                                message("action.exportTemplates.wrapper"),
+                                "",
+                                FILE_EXTENSION
+                            ),
+                            templatesListPanel!!
+                        ).save(null as VirtualFile?, null)
+                        if (wrapper != null) {
+                            val items = currentItems
+                            val document = org.jdom.Document(
+                                createTemplatesElement(items)
+                            )
+                            try {
+                                JDOMUtil.writeDocument(document, wrapper.file, Constants.NEWLINE)
+                                Messages.showInfoMessage(
+                                    templatesListPanel,
+                                    message("action.exportTemplates.success", items.size),
+                                    message("action.exportTemplates.success.title")
+                                )
+                            } catch (e: IOException) {
+                                Messages.showErrorDialog(
+                                    templatesListPanel!!,
+                                    message("action.exportTemplates.error")
+                                )
+                            }
+                        }
+                    }
+
+                    override fun update(e: AnActionEvent) {
+                        e.presentation.isEnabled = currentItems.size > 0
+                    }
+                }
+            )
             decorator.setActionGroup(group)
         }
 
@@ -399,11 +407,13 @@ class IgnoreSettingsPanel : Disposable {
         /** Constructor that creates document editor, empty content label. */
         init {
             preview = createPreviewEditor(previewDocument, null, false)
-            preview.document.addDocumentListener(object : DocumentListener {
-                override fun documentChanged(event: DocumentEvent) {
-                    templatesListPanel!!.updateContent(event.document.text)
+            preview.document.addDocumentListener(
+                object : DocumentListener {
+                    override fun documentChanged(event: DocumentEvent) {
+                        templatesListPanel!!.updateContent(event.document.text)
+                    }
                 }
-            })
+            )
             isEnabled = false
         }
     }
@@ -419,7 +429,9 @@ class IgnoreSettingsPanel : Disposable {
         )
 
         private val columnClasses = arrayOf<Class<*>>(
-            String::class.java, Boolean::class.java, Boolean::class.java
+            String::class.java,
+            Boolean::class.java,
+            Boolean::class.java
         )
 
         override fun getRowCount() = settings.size

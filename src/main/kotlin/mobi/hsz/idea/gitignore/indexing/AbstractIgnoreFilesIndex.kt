@@ -11,8 +11,12 @@ import com.intellij.util.io.KeyDescriptor
 /**
  * Abstract class of [FileBasedIndexExtension] that contains base configuration for [IgnoreFilesIndex].
  */
-abstract class AbstractIgnoreFilesIndex<K, V> : FileBasedIndexExtension<K, V>(), KeyDescriptor<K>, DataIndexer<K, V, FileContent?>,
-    InputFilter, DumbAware {
+abstract class AbstractIgnoreFilesIndex<K, V> :
+    FileBasedIndexExtension<K, V>(),
+    KeyDescriptor<K>,
+    DataIndexer<K, V, FileContent?>,
+    InputFilter,
+    DumbAware {
 
     override fun getIndexer() = this
 

@@ -22,7 +22,7 @@ object Resources {
     private val GITIGNORE_TEMPLATES_PATH = "/templates.list"
 
     /** List of fetched [Template] elements from resources.  */
-    private var resourceTemplates: MutableList<Template>? = null// fetch templates from resources
+    private var resourceTemplates: MutableList<Template>? = null // fetch templates from resources
 
     /**
      * Returns list of gitignore templates.
