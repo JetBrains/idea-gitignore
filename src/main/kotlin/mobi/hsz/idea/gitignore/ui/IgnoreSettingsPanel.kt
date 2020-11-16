@@ -400,7 +400,6 @@ class IgnoreSettingsPanel : Disposable {
         init {
             preview = createPreviewEditor(previewDocument, null, false)
             preview.document.addDocumentListener(object : DocumentListener {
-                override fun beforeDocumentChange(event: DocumentEvent) {}
                 override fun documentChanged(event: DocumentEvent) {
                     templatesListPanel!!.updateContent(event.document.text)
                 }
