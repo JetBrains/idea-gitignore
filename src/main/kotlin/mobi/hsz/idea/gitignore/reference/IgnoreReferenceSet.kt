@@ -15,12 +15,12 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import com.intellij.util.containers.ContainerUtil
 import com.jetbrains.rd.util.concurrentMapOf
-import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.util.Constants
 import mobi.hsz.idea.gitignore.util.Glob
+import mobi.hsz.idea.gitignore.util.MatcherUtil
 import mobi.hsz.idea.gitignore.util.Utils
 import java.util.ArrayList
 
@@ -29,7 +29,6 @@ import java.util.ArrayList
  */
 class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
 
-    private val filesIndexCache = FilesIndexCacheProjectComponent.getInstance(element.project)
     private val manager = IgnoreManager.getInstance(element.project)
 
     override fun createFileReference(range: TextRange, index: Int, text: String) = IgnoreReference(this, range, index, text)
@@ -121,55 +120,53 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
             if (contextVirtualFile != null) {
                 val entry = fileReferenceSet.element as IgnoreEntry
                 val current = canonicalText
-                val pattern = Glob.createPattern(current, entry.syntax)
-                if (pattern != null) {
-                    val parent = element.containingFile.parent
-                    val root = if (isOuterFile) contextVirtualFile else parent?.virtualFile
-                    val psiManager = element.manager
+                val pattern = Glob.createPattern(current, entry.syntax) ?: return
+                val parent = element.containingFile.parent
+                val root = if (isOuterFile) contextVirtualFile else parent?.virtualFile
+                val psiManager = element.manager
 
-                    ContainerUtil.createLockFreeCopyOnWriteList<VirtualFile>().run {
-                        addAll(filesIndexCache.getFilesForPattern(context.project, pattern))
-                        if (isEmpty()) {
-                            addAll(context.virtualFile.children)
-                        } else if (current.endsWith(Constants.STAR) && current != entry.text) {
-                            addAll(ContainerUtil.filter(context.virtualFile.children) { obj: VirtualFile -> obj.isDirectory })
-                        } else if (current.endsWith(Constants.DOUBLESTAR)) {
-                            val key = entry.text
-                            if (!cacheMap.containsKey(key)) {
-                                val children = mutableListOf<VirtualFile>()
-                                val visitor: VirtualFileVisitor<*> = object : VirtualFileVisitor<Any?>() {
-                                    override fun visitFile(file: VirtualFile): Boolean {
-                                        if (file.isDirectory) {
-                                            children.add(file)
-                                            return true
-                                        }
-                                        return false
+                ContainerUtil.createLockFreeCopyOnWriteList<VirtualFile>().run {
+                    addAll(MatcherUtil.getFilesForPattern(context.project, pattern))
+                    if (isEmpty()) {
+                        addAll(context.virtualFile.children)
+                    } else if (current.endsWith(Constants.STAR) && current != entry.text) {
+                        addAll(ContainerUtil.filter(context.virtualFile.children) { obj: VirtualFile -> obj.isDirectory })
+                    } else if (current.endsWith(Constants.DOUBLESTAR)) {
+                        val key = entry.text
+                        if (!cacheMap.containsKey(key)) {
+                            val children = mutableListOf<VirtualFile>()
+                            val visitor: VirtualFileVisitor<*> = object : VirtualFileVisitor<Any?>() {
+                                override fun visitFile(file: VirtualFile): Boolean {
+                                    if (file.isDirectory) {
+                                        children.add(file)
+                                        return true
                                     }
+                                    return false
                                 }
-                                forEach { file ->
-                                    ProgressManager.checkCanceled()
-                                    if (!file.isDirectory) {
-                                        return@forEach
-                                    }
-                                    VfsUtil.visitChildrenRecursively(file, visitor)
-                                    children.remove(file)
-                                }
-                                cacheMap[key] = children
                             }
-                            clear()
-                            addAll(cacheMap[key]!!)
+                            forEach { file ->
+                                ProgressManager.checkCanceled()
+                                if (!file.isDirectory) {
+                                    return@forEach
+                                }
+                                VfsUtil.visitChildrenRecursively(file, visitor)
+                                children.remove(file)
+                            }
+                            cacheMap[key] = children
                         }
+                        clear()
+                        addAll(cacheMap[key]!!)
+                    }
 
-                        forEach { file ->
-                            ProgressManager.checkCanceled()
-                            if (Utils.isVcsDirectory(file)) {
-                                return@forEach
-                            }
-                            val name = if (root != null) Utils.getRelativePath(root, file) else file.name
-                            if (manager.matcher.match(pattern, name)) {
-                                val psiFileSystemItem = getPsiFileSystemItem(psiManager, file) ?: return@forEach
-                                result.add(PsiElementResolveResult(psiFileSystemItem))
-                            }
+                    forEach { file ->
+                        ProgressManager.checkCanceled()
+                        if (Utils.isVcsDirectory(file)) {
+                            return@forEach
+                        }
+                        val name = if (root != null) Utils.getRelativePath(root, file) else file.name
+                        if (manager.matcher.match(pattern, name)) {
+                            val psiFileSystemItem = getPsiFileSystemItem(psiManager, file) ?: return@forEach
+                            result.add(PsiElementResolveResult(psiFileSystemItem))
                         }
                     }
                 }

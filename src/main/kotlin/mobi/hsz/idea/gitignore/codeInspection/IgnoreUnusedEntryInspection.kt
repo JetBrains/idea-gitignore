@@ -8,13 +8,13 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner
-import mobi.hsz.idea.gitignore.FilesIndexCacheProjectComponent
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor
 import mobi.hsz.idea.gitignore.util.Glob
+import mobi.hsz.idea.gitignore.util.MatcherUtil
 import mobi.hsz.idea.gitignore.util.Utils
 
 /**
@@ -31,7 +31,6 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
      */
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         val project = holder.project
-        val cache = FilesIndexCacheProjectComponent.getInstance(project)
         val manager = IgnoreManager.getInstance(project)
 
         return object : IgnoreVisitor() {
@@ -73,7 +72,7 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
             private fun isEntryExcluded(entry: IgnoreEntry, project: Project): Boolean {
                 val pattern = Glob.createPattern(entry) ?: return false
                 val moduleRoot = Utils.getModuleRootForFile(entry.containingFile.virtualFile, project) ?: return false
-                val files = cache.getFilesForPattern(project, pattern)
+                val files = MatcherUtil.getFilesForPattern(project, pattern)
 
                 Utils.getExcludedRoots(project).forEach { root ->
                     files.forEach files@{ file ->
