@@ -4,7 +4,7 @@ package mobi.hsz.idea.gitignore.lang.kind
 import com.intellij.util.containers.ContainerUtil
 import mobi.hsz.idea.gitignore.file.type.kind.FossilFileType
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
-import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher
+import mobi.hsz.idea.gitignore.outer.OuterFileFetcher
 import mobi.hsz.idea.gitignore.util.Icons
 import mobi.hsz.idea.gitignore.util.Utils
 
