@@ -29,7 +29,7 @@
             implementation="mobi.hsz.idea.gitignore.codeInsight.IgnoreHighlightRangeExtension"/>
 
         <completion.contributor
-                language="IgnoreLang"
+                language="Ignore"
                 implementationClass="mobi.hsz.idea.gitignore.codeInsight.SyntaxCompletionContributor"/>
 
         <editorNotificationProvider
@@ -108,11 +108,11 @@
 
 
         <!-- Common -->
-        <lang.parserDefinition language="IgnoreLang"
+        <lang.parserDefinition language="Ignore"
                                implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
-        <psi.referenceContributor language="IgnoreLang"
+        <psi.referenceContributor language="Ignore"
                                   implementation="mobi.hsz.idea.gitignore.reference.IgnoreReferenceContributor"/>
-        <lang.syntaxHighlighterFactory language="IgnoreLang"
+        <lang.syntaxHighlighterFactory language="Ignore"
                                        implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Common -->
 
