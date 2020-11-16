@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.vcs
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
@@ -18,7 +19,7 @@ import mobi.hsz.idea.gitignore.IgnoreManager
  */
 class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware {
 
-    private val ignoreManager = IgnoreManager.getInstance(project)
+    private val manager = project.service<IgnoreManager>()
 
     companion object {
         /** Ignored status.  */
@@ -36,7 +37,7 @@ class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware
      * @return [.IGNORED] status or `null`
      */
     override fun getFileStatus(virtualFile: VirtualFile) =
-        if (ignoreManager.isFileIgnored(virtualFile) && !ignoreManager.isFileTracked(virtualFile)   ) IGNORED else null
+        if (manager.isFileIgnored(virtualFile) && !manager.isFileTracked(virtualFile)   ) IGNORED else null
 
     override fun refreshFileStatusFromDocument(virtualFile: VirtualFile, doc: Document) = Unit
 

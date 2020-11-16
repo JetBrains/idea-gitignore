@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.daemon
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
@@ -21,7 +22,7 @@ class IgnoredEditingNotificationProvider(project: Project) : EditorNotifications
 
     private val notifications = EditorNotifications.getInstance(project)
     private val settings = IgnoreSettings.getInstance()
-    private val manager = IgnoreManager.getInstance(project)
+    private val manager = project.service<IgnoreManager>()
     private val changeListManager = ChangeListManager.getInstance(project)
 
     companion object {

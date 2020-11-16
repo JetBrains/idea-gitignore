@@ -9,6 +9,7 @@ import com.intellij.util.containers.ContainerUtil
 import com.jetbrains.rd.util.concurrentMapOf
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
+import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.util.Utils.getRelativePath
 import mobi.hsz.idea.gitignore.util.Utils.isVcsDirectory
 import java.util.regex.Pattern
@@ -32,8 +33,8 @@ object Glob {
      * @param entry ignore entry
      * @return search result
      */
-    fun findOne(root: VirtualFile, entry: IgnoreEntry, matcher: MatcherUtil) =
-        find(root, ContainerUtil.newArrayList(entry), matcher, false)[entry]?.first()
+    fun findOne(root: VirtualFile, entry: IgnoreEntry, matcher: IgnoreMatcher) =
+        find(root, ContainerUtil.newArrayList(entry), matcher, false)[entry]?.firstOrNull()
 
     /**
      * Finds for [VirtualFile] list using glob rule in given root directory.
@@ -43,7 +44,7 @@ object Glob {
      * @param includeNested attach children to the search result
      * @return search result
      */
-    fun find(root: VirtualFile, entries: List<IgnoreEntry>, matcher: MatcherUtil, includeNested: Boolean) =
+    fun find(root: VirtualFile, entries: List<IgnoreEntry>, matcher: IgnoreMatcher, includeNested: Boolean) =
         concurrentMapOf<IgnoreEntry, MutableList<VirtualFile>>().apply {
             val map = concurrentMapOf<IgnoreEntry, Pattern>()
 
@@ -94,7 +95,7 @@ object Glob {
      * @param includeNested attach children to the search result
      * @return search result
      */
-    fun findAsPaths(root: VirtualFile, entries: List<IgnoreEntry>, matcher: MatcherUtil, includeNested: Boolean) =
+    fun findAsPaths(root: VirtualFile, entries: List<IgnoreEntry>, matcher: IgnoreMatcher, includeNested: Boolean) =
         find(root, entries, matcher, includeNested).mapValues { (_, value) ->
             value
                 .asSequence()
@@ -206,20 +207,24 @@ object Glob {
                 }
             }
             if (ch == '*') {
-                if (escape) {
-                    sb.append("\\*")
-                    star = false
-                    escape = star
-                } else if (star) {
-                    val prev = if (sb.isNotEmpty()) sb[sb.length - 1] else '\u0000'
-                    if (prev == '\u0000' || prev == '^' || prev == '/') {
-                        doubleStar = true
-                    } else {
-                        sb.append("[^/]*?")
+                when {
+                    escape -> {
+                        sb.append("\\*")
+                        star = false
+                        escape = star
                     }
-                    star = false
-                } else {
-                    star = true
+                    star -> {
+                        val prev = if (sb.isNotEmpty()) sb[sb.length - 1] else '\u0000'
+                        if (prev == '\u0000' || prev == '^' || prev == '/') {
+                            doubleStar = true
+                        } else {
+                            sb.append("[^/]*?")
+                        }
+                        star = false
+                    }
+                    else -> {
+                        star = true
+                    }
                 }
                 continue
             } else if (star) {

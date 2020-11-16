@@ -3,12 +3,13 @@ package mobi.hsz.idea.gitignore.daemon
 
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
 import com.intellij.util.PlatformIcons
-import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryDirectory
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryFile
+import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.util.Glob
 import mobi.hsz.idea.gitignore.util.Utils
 
@@ -40,7 +41,7 @@ class IgnoreDirectoryMarkerProvider : LineMarkerProvider {
                 val project = element.getProject()
                 Utils.getModuleForFile(parent, project) ?: return null
 
-                val matcher = IgnoreManager.getInstance(project).matcher
+                val matcher = project.service<IgnoreMatcher>()
                 val file = Glob.findOne(parent, element, matcher)
                 cache[key] = file != null && file.isDirectory.also { isDirectory = it }
             }

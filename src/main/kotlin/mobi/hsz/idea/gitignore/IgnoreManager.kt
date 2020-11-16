@@ -3,9 +3,10 @@ package mobi.hsz.idea.gitignore
 
 import com.intellij.ProjectTopics
 import com.intellij.ide.projectView.ProjectView
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
-import com.intellij.openapi.components.ProjectComponent
+import com.intellij.openapi.components.service
 import com.intellij.openapi.fileTypes.ExactFileNameMatcher
 import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.progress.ProgressManager
@@ -29,6 +30,7 @@ import com.intellij.util.Time
 import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.messages.MessageBusConnection
 import com.intellij.util.messages.Topic
+import com.jetbrains.rd.util.concurrentMapOf
 import git4idea.GitVcs
 import mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
@@ -41,25 +43,24 @@ import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor.Companio
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex.Companion.getEntries
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
+import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.util.CachedConcurrentMap
 import mobi.hsz.idea.gitignore.util.Debounced
 import mobi.hsz.idea.gitignore.util.ExpiringMap
 import mobi.hsz.idea.gitignore.util.Glob
 import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture
-import mobi.hsz.idea.gitignore.util.MatcherUtil
 import mobi.hsz.idea.gitignore.util.Utils
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec.getIgnoredFiles
-import org.jetbrains.annotations.NonNls
 import java.util.HashSet
 import java.util.concurrent.ConcurrentMap
 
 /**
  * [IgnoreManager] handles ignore files indexing and status caching.
  */
-class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent {
+class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
-    val matcher = MatcherUtil()
+    private val matcher = project.service<IgnoreMatcher>()
     private val virtualFileManager = VirtualFileManager.getInstance()
     private val settings = IgnoreSettings.getInstance()
     private val projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project)
@@ -303,14 +304,14 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
             confirmedIgnoredFiles.containsKey(file)
     }
 
-    override fun projectOpened() {
+    fun projectOpened() {
         invalidateDisposedProjects()
         if (isEnabled && !working) {
             enable()
         }
     }
 
-    override fun projectClosed() {
+    fun projectClosed() {
         invalidateDisposedProjects()
         disable()
     }
@@ -363,7 +364,7 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         working = false
     }
 
-    override fun disposeComponent() {
+    override fun dispose() {
         disable()
     }
 
@@ -463,17 +464,12 @@ class IgnoreManager(private val project: Project) : DumbAware, ProjectComponent 
         }
     }
 
-    @NonNls
-    override fun getComponentName() = "IgnoreManager"
-
     companion object {
         /** List of all available [IgnoreFileType]. */
         private val FILE_TYPES = ContainerUtil.map(IgnoreBundle.LANGUAGES, IgnoreLanguage::fileType)
 
         /** List of filenames that require to be associated with specific [IgnoreFileType]. */
-        val FILE_TYPES_ASSOCIATION_QUEUE: MutableMap<String, IgnoreFileType> = ContainerUtil.newConcurrentMap()
-
-        fun getInstance(project: Project): IgnoreManager = project.getComponent(IgnoreManager::class.java)
+        val FILE_TYPES_ASSOCIATION_QUEUE = concurrentMapOf<String, IgnoreFileType>()
 
         /**
          * Associates given file with proper [IgnoreFileType].

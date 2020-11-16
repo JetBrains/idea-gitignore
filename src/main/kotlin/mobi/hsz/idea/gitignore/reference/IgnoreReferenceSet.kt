@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.reference
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.text.StringUtil
@@ -15,9 +16,9 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import com.intellij.util.containers.ContainerUtil
 import com.jetbrains.rd.util.concurrentMapOf
-import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
+import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.util.Constants
 import mobi.hsz.idea.gitignore.util.Glob
 import mobi.hsz.idea.gitignore.util.MatcherUtil
@@ -29,7 +30,7 @@ import java.util.ArrayList
  */
 class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
 
-    private val manager = IgnoreManager.getInstance(element.project)
+    private val matcher = element.project.service<IgnoreMatcher>()
 
     override fun createFileReference(range: TextRange, index: Int, text: String) = IgnoreReference(this, range, index, text)
 
@@ -164,7 +165,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
                             return@forEach
                         }
                         val name = if (root != null) Utils.getRelativePath(root, file) else file.name
-                        if (manager.matcher.match(pattern, name)) {
+                        if (matcher.match(pattern, name)) {
                             val psiFileSystemItem = getPsiFileSystemItem(psiManager, file) ?: return@forEach
                             result.add(PsiElementResolveResult(psiFileSystemItem))
                         }

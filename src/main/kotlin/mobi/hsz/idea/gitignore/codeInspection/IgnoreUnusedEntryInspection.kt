@@ -3,16 +3,17 @@ package mobi.hsz.idea.gitignore.codeInspection
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.openapi.components.service
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner
 import mobi.hsz.idea.gitignore.IgnoreBundle
-import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor
+import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.util.Glob
 import mobi.hsz.idea.gitignore.util.MatcherUtil
 import mobi.hsz.idea.gitignore.util.Utils
@@ -30,8 +31,7 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
      * @return not-null visitor for this inspection
      */
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        val project = holder.project
-        val manager = IgnoreManager.getInstance(project)
+        val matcher = holder.project.service<IgnoreMatcher>()
 
         return object : IgnoreVisitor() {
             override fun visitEntry(entry: IgnoreEntry) {
@@ -39,7 +39,7 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
                 var resolved = true
                 var previous = Int.MAX_VALUE
 
-                for (reference in references) {
+                references.forEach { reference ->
                     ProgressManager.checkCanceled()
                     if (reference is FileReferenceOwner) {
                         val fileReference = reference as PsiPolyVariantReference
@@ -48,7 +48,7 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
                         previous = result.size
                     }
                     if (!resolved) {
-                        break
+                        return@forEach
                     }
                 }
                 if (!resolved && !isEntryExcluded(entry, holder.project)) {
@@ -81,7 +81,7 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
                             return@files
                         }
                         val path = Utils.getRelativePath(moduleRoot, root)
-                        if (manager.matcher.match(pattern, path)) {
+                        if (matcher.match(pattern, path)) {
                             return false
                         }
                     }

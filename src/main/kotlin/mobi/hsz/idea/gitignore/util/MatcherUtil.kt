@@ -6,8 +6,6 @@ import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.util.containers.IntObjectCache
-import org.apache.commons.lang.builder.HashCodeBuilder
 import java.util.ArrayList
 import java.util.regex.Pattern
 
@@ -15,38 +13,6 @@ import java.util.regex.Pattern
  * Util class to speed up and limit regex operation on the files paths.
  */
 class MatcherUtil {
-
-    private val cache = IntObjectCache<Boolean>()
-
-    /**
-     * Extracts alphanumeric parts from the regex pattern and checks if any of them is contained in the tested path.
-     * Looking for the parts speed ups the matching and prevents from running whole regex on the string.
-     *
-     * @param pattern to explode
-     * @param path    to check
-     * @return path matches the pattern
-     */
-    fun match(pattern: Pattern?, path: String?): Boolean {
-        if (pattern == null || path == null) {
-            return false
-        }
-        synchronized(cache) {
-            val hashCode = HashCodeBuilder().append(pattern).append(path).toHashCode()
-            if (!cache.containsKey(hashCode)) {
-                val parts = getParts(pattern)
-                var result = false
-                if (parts.isEmpty() || matchAllParts(parts, path)) {
-                    try {
-                        result = pattern.matcher(path).find()
-                    } catch (ignored: StringIndexOutOfBoundsException) {
-                    }
-                }
-                cache.put(hashCode, result)
-                return result
-            }
-            return cache[hashCode]
-        }
-    }
 
     companion object {
         /**

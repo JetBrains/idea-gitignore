@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.listeners
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
 import com.intellij.openapi.roots.ContentIterator
@@ -16,19 +17,22 @@ import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor
 /**
  * Project listener that registers [IndexableFileSet] that counts into indexing files located outside of the project.
  */
-class IndexableSetRegistererListener : IndexableFileSet, ProjectManagerListener {
+class IgnoreProjectManagerListener : IndexableFileSet, ProjectManagerListener {
 
     private lateinit var project: Project
-    private val fileBasedIndex: FileBasedIndex = FileBasedIndex.getInstance()
+    private val fileBasedIndex = FileBasedIndex.getInstance()
 
     override fun projectOpened(project: Project) {
         fileBasedIndex.registerIndexableSet(this, project)
         project.messageBus.syncPublisher(IgnoreManager.RefreshStatusesListener.REFRESH_STATUSES).refresh()
+        project.service<IgnoreManager>().projectOpened()
+
         this.project = project
     }
 
     override fun projectClosing(project: Project) {
         fileBasedIndex.removeIndexableSet(this)
+        project.service<IgnoreManager>().projectClosed()
     }
 
     override fun isInSet(file: VirtualFile) =
