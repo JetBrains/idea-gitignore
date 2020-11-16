@@ -4,13 +4,14 @@ package mobi.hsz.idea.gitignore.file.type.kind
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage
 import mobi.hsz.idea.gitignore.util.Utils
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec
 
 /**
  * Describes Git exclude file type.
  */
-class GitExcludeFileType : IgnoreFileType() {
+class GitExcludeFileType : IgnoreFileType(GitExcludeLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = GitExcludeFileType()

@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.FloobitsLanguage
 
 /**
  * Describes Floobits file type.
  */
-class FloobitsFileType : IgnoreFileType() {
+class FloobitsFileType : IgnoreFileType(FloobitsLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = FloobitsFileType()

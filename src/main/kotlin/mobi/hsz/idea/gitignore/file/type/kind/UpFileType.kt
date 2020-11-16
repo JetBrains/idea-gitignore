@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.UpLanguage
 
 /**
  * Describes Up file type.
  */
-class UpFileType : IgnoreFileType() {
+class UpFileType : IgnoreFileType(UpLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = UpFileType()

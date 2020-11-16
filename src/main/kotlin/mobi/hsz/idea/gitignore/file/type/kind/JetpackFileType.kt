@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.JetpackLanguage
 
 /**
  * Describes Jetpack file type.
  */
-class JetpackFileType : IgnoreFileType() {
+class JetpackFileType : IgnoreFileType(JetpackLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = JetpackFileType()

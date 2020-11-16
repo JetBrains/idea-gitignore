@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.GoogleCloudLanguage
 
 /**
  * Describes Google Cloud file type.
  */
-class GoogleCloudFileType : IgnoreFileType() {
+class GoogleCloudFileType : IgnoreFileType(GoogleCloudLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = GoogleCloudFileType()

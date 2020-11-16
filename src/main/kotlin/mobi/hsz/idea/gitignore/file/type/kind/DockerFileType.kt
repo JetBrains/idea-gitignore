@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.DockerLanguage
 
 /**
  * Describes Docker file type.
  */
-class DockerFileType : IgnoreFileType() {
+class DockerFileType : IgnoreFileType(DockerLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = DockerFileType()

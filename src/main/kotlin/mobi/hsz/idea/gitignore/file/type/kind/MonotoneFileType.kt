@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.MonotoneLanguage
 
 /**
  * Describes Monotone file type.
  */
-class MonotoneFileType : IgnoreFileType() {
+class MonotoneFileType : IgnoreFileType(MonotoneLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = MonotoneFileType()

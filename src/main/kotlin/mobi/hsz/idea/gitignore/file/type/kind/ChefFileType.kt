@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.ChefLanguage
 
 /**
  * Describes Chef file type.
  */
-class ChefFileType : IgnoreFileType() {
+class ChefFileType : IgnoreFileType(ChefLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = ChefFileType()

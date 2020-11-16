@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.CloudFoundryLanguage
 
 /**
  * Describes CloudFoundry file type.
  */
-class CloudFoundryFileType : IgnoreFileType() {
+class CloudFoundryFileType : IgnoreFileType(CloudFoundryLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = CloudFoundryFileType()

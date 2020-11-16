@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.NuxtJSLanguage
 
 /**
  * Describes NuxtJS file type.
  */
-class NuxtJSFileType : IgnoreFileType() {
+class NuxtJSFileType : IgnoreFileType(NuxtJSLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = NuxtJSFileType()

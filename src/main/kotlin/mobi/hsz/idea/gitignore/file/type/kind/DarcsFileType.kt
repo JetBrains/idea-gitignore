@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.DarcsLanguage
 
 /**
  * Describes Darcs file type.
  */
-class DarcsFileType : IgnoreFileType() {
+class DarcsFileType : IgnoreFileType(DarcsLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = DarcsFileType()

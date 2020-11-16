@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
 
 /**
  * Describes Git file type.
  */
-class GitFileType : IgnoreFileType() {
+class GitFileType : IgnoreFileType(GitLanguage.INSTANCE) {
 
     companion object {
         val INSTANCE = GitFileType()
