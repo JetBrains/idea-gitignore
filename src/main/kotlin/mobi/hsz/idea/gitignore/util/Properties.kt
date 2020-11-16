@@ -66,7 +66,7 @@ object Properties {
      * @return notification was dismissed
      */
     fun isDismissedIgnoredEditingNotification(project: Project, file: VirtualFile) =
-        properties(project).getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION).contains(file.canonicalPath)
+        properties(project).getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION)?.contains(file.canonicalPath) ?: false
 
     /**
      * Stores information about dismissed notification about editing ignored file.
