@@ -7,7 +7,7 @@ import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex.Companion.getFiles
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
-import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher
+import mobi.hsz.idea.gitignore.outer.OuterFileFetcher
 import mobi.hsz.idea.gitignore.util.Icons
 import mobi.hsz.idea.gitignore.util.Utils
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec

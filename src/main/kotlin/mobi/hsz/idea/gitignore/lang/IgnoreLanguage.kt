@@ -8,7 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.FileViewProvider
 import mobi.hsz.idea.gitignore.IgnoreBundle.Syntax
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
-import mobi.hsz.idea.gitignore.outer.OuterIgnoreLoaderComponent.OuterFileFetcher
+import mobi.hsz.idea.gitignore.outer.OuterFileFetcher
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.util.ExpiringMap
