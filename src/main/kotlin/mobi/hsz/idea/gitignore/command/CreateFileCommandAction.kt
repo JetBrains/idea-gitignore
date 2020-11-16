@@ -18,5 +18,5 @@ class CreateFileCommandAction(project: Project, val directory: PsiDirectory, val
      *
      * @return created file
      */
-    override fun compute() = IgnoreTemplatesFactory(fileType).createFromTemplate(directory)!!
+    override fun compute() = IgnoreTemplatesFactory(fileType).createFromTemplate(directory)
 }

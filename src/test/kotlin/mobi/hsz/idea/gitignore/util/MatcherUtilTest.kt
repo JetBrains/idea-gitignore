@@ -2,8 +2,10 @@
 
 package mobi.hsz.idea.gitignore.util
 
+import com.intellij.openapi.components.service
 import junit.framework.TestCase
 import mobi.hsz.idea.gitignore.Common
+import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import org.junit.Test
 import java.util.regex.Pattern
 
@@ -12,14 +14,14 @@ class MatcherUtilTest : Common<MatcherUtil?>() {
     @Test
     fun testMatch() {
         val pattern = Pattern.compile("foo")
-        val util = MatcherUtil()
+        val matcher = project.service<IgnoreMatcher>()
 
-        TestCase.assertFalse(util.match(null, null))
-        TestCase.assertFalse(util.match(null, "foo"))
-        TestCase.assertFalse(util.match(pattern, null))
-        TestCase.assertFalse(util.match(pattern, "fo"))
-        TestCase.assertTrue(util.match(pattern, "foo"))
-        TestCase.assertTrue(util.match(pattern, "xfooy"))
+        TestCase.assertFalse(matcher.match(null, null))
+        TestCase.assertFalse(matcher.match(null, "foo"))
+        TestCase.assertFalse(matcher.match(pattern, null))
+        TestCase.assertFalse(matcher.match(pattern, "fo"))
+        TestCase.assertTrue(matcher.match(pattern, "foo"))
+        TestCase.assertTrue(matcher.match(pattern, "xfooy"))
     }
 
     @Test

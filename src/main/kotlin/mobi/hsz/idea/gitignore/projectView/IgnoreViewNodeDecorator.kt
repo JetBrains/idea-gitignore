@@ -4,6 +4,7 @@ package mobi.hsz.idea.gitignore.projectView
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.ide.projectView.ProjectViewNode
 import com.intellij.ide.projectView.ProjectViewNodeDecorator
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.packageDependencies.ui.PackageDependenciesNode
@@ -21,7 +22,7 @@ import mobi.hsz.idea.gitignore.util.Utils
  */
 class IgnoreViewNodeDecorator(project: Project) : ProjectViewNodeDecorator {
 
-    private val manager = IgnoreManager.getInstance(project)
+    private val manager = project.service<IgnoreManager>()
     private val ignoreSettings = IgnoreSettings.getInstance()
 
     companion object {

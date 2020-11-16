@@ -7,6 +7,7 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
@@ -20,12 +21,11 @@ import com.intellij.psi.PsiFile
 import com.intellij.util.containers.ContainerUtil
 import com.jetbrains.rd.util.concurrentMapOf
 import mobi.hsz.idea.gitignore.IgnoreBundle
-import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
+import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.util.Constants
 import mobi.hsz.idea.gitignore.util.Glob
-import mobi.hsz.idea.gitignore.util.MatcherUtil
 import mobi.hsz.idea.gitignore.util.Utils
 
 /**
@@ -69,7 +69,7 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
         val map = mutableMapOf<IgnoreEntry, Set<String>>()
 
         val entries = file.findChildrenByClass(IgnoreEntry::class.java)
-        val matcher = IgnoreManager.getInstance(file.getProject()).matcher
+        val matcher = file.project.service<IgnoreMatcher>()
         val matchedMap = getPathsSet(contextDirectory, entries, matcher)
 
         entries.forEach entries@{ entry ->
@@ -131,7 +131,7 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
      * @param entries          to check
      * @return paths list
      */
-    private fun getPathsSet(contextDirectory: VirtualFile, entries: Array<IgnoreEntry>, matcher: MatcherUtil) =
+    private fun getPathsSet(contextDirectory: VirtualFile, entries: Array<IgnoreEntry>, matcher: IgnoreMatcher) =
         mutableMapOf<IgnoreEntry, Set<String>>().apply {
             val notCached = mutableListOf<IgnoreEntry>()
 

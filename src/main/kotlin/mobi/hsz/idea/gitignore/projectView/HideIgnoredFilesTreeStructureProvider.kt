@@ -5,6 +5,7 @@ import com.intellij.ide.projectView.TreeStructureProvider
 import com.intellij.ide.projectView.ViewSettings
 import com.intellij.ide.projectView.impl.nodes.BasePsiNode
 import com.intellij.ide.util.treeView.AbstractTreeNode
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.util.containers.ContainerUtil
@@ -18,7 +19,7 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructureProvider {
 
     private val ignoreSettings = IgnoreSettings.getInstance()
-    private val ignoreManager = IgnoreManager.getInstance(project)
+    private val manager = project.service<IgnoreManager>()
     private val changeListManager = ChangeListManager.getInstance(project)
 
     /**
@@ -38,7 +39,7 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
                     val file = node.virtualFile
                     return@filter file != null && (
                         !changeListManager.isIgnoredFile(file) &&
-                            !ignoreManager.isFileIgnored(file) || ignoreManager.isFileTracked(file)
+                            !manager.isFileIgnored(file) || manager.isFileTracked(file)
                         )
                 }
                 true

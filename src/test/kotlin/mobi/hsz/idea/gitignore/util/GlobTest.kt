@@ -2,11 +2,13 @@
 
 package mobi.hsz.idea.gitignore.util
 
+import com.intellij.openapi.components.service
 import com.intellij.testFramework.UsefulTestCase
 import junit.framework.TestCase
 import mobi.hsz.idea.gitignore.Common
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
+import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import org.junit.Assert
 import org.junit.Test
 import java.lang.reflect.InvocationTargetException
@@ -41,7 +43,8 @@ class GlobTest : Common<Glob>() {
         val dir = fixtureRootFile.findChild("dir")
         TestCase.assertNotNull(dir)
 
-        var result = Glob.find(fixtureRootFile, fixtureChildrenEntries, MatcherUtil(), false)
+        val matcher = project.service<IgnoreMatcher>()
+        var result = Glob.find(fixtureRootFile, fixtureChildrenEntries, matcher, false)
 
         // foo.txt
         result[fixtureChildrenEntries[0]]!!.let {
@@ -89,7 +92,7 @@ class GlobTest : Common<Glob>() {
         }
 
         // dir includeNested
-        result = Glob.find(fixtureRootFile, fixtureChildrenEntries, MatcherUtil(), true)
+        result = Glob.find(fixtureRootFile, fixtureChildrenEntries, matcher, true)
         result[fixtureChildrenEntries[4]]!!.let {
             TestCase.assertNotNull(result)
             UsefulTestCase.assertNotEmpty(it)
@@ -116,7 +119,9 @@ class GlobTest : Common<Glob>() {
         }
         val dir = fixtureRootFile.findChild("dir")
         TestCase.assertNotNull(dir)
-        val result = Glob.findAsPaths(fixtureRootFile, fixtureChildrenEntries, MatcherUtil(), false)
+
+        val matcher = project.service<IgnoreMatcher>()
+        val result = Glob.findAsPaths(fixtureRootFile, fixtureChildrenEntries, matcher, false)
 
         // foo.txt
         result[fixtureChildrenEntries[0]]!!.let {

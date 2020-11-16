@@ -16,9 +16,6 @@
                 file="colorSchemes/IgnoreDarcula.xml"
                 scheme="Darcula"/>
 
-        <vcsConfigurableProvider
-                implementation="mobi.hsz.idea.gitignore.settings.IgnoreSettingsConfigurable"/>
-
         <applicationService
                 serviceImplementation="mobi.hsz.idea.gitignore.settings.IgnoreSettings"/>
 
@@ -94,6 +91,12 @@
                 key="codeInspection.incorrectEntry"
                 level="ERROR"/>
 
+        <projectService
+            serviceImplementation="mobi.hsz.idea.gitignore.IgnoreManager"/>
+
+        <projectService
+            serviceImplementation="mobi.hsz.idea.gitignore.services.IgnoreMatcher"/>
+
         <severitiesProvider
                 implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
@@ -106,6 +109,8 @@
         <vcs.fileStatusProvider
                 implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
 
+        <vcsConfigurableProvider
+            implementation="mobi.hsz.idea.gitignore.settings.IgnoreSettingsConfigurable"/>
 
         <!-- Common -->
         <lang.parserDefinition language="Ignore"
@@ -415,14 +420,8 @@
         <!-- END Up -->
     </extensions>
 
-    <project-components>
-        <component>
-            <implementation-class>mobi.hsz.idea.gitignore.IgnoreManager</implementation-class>
-        </component>
-    </project-components>
-
     <applicationListeners>
-        <listener class="mobi.hsz.idea.gitignore.listeners.IndexableSetRegistererListener"
+        <listener class="mobi.hsz.idea.gitignore.listeners.IgnoreProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 
