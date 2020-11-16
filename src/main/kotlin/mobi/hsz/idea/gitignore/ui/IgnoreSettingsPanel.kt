@@ -2,6 +2,7 @@
 package mobi.hsz.idea.gitignore.ui
 
 import com.intellij.icons.AllIcons
+import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -18,7 +19,6 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.fileChooser.FileChooserFactory
 import com.intellij.openapi.fileChooser.FileSaverDescriptor
 import com.intellij.openapi.fileTypes.FileTypes
-import com.intellij.openapi.fileTypes.StdFileTypes
 import com.intellij.openapi.ui.InputValidatorEx
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.ui.Splitter
@@ -208,9 +208,7 @@ class IgnoreSettingsPanel : Disposable {
                                 (file.isDirectory || FILE_EXTENSION == file.extension || file.fileType === FileTypes.ARCHIVE)
                         }
 
-                        override fun isFileSelectable(file: VirtualFile): Boolean {
-                            return file.fileType === StdFileTypes.XML
-                        }
+                        override fun isFileSelectable(file: VirtualFile) = file.fileType === XmlFileType.INSTANCE
                     }
                     descriptor.description = message("action.importTemplates.wrapper.description")
                     descriptor.title = message("action.importTemplates.wrapper")
