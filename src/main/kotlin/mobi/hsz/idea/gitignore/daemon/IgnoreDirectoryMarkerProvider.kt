@@ -7,6 +7,7 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
 import com.intellij.util.PlatformIcons
+import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryDirectory
 import mobi.hsz.idea.gitignore.psi.IgnoreEntryFile
 import mobi.hsz.idea.gitignore.services.IgnoreMatcher
@@ -47,15 +48,17 @@ class IgnoreDirectoryMarkerProvider : LineMarkerProvider {
             }
         }
 
-        return if (isDirectory) {
-            LineMarkerInfo(
+        return when {
+            isDirectory -> LineMarkerInfo(
                 element.getFirstChild(),
                 element.getTextRange(),
                 PlatformIcons.FOLDER_ICON,
                 null,
                 null,
-                GutterIconRenderer.Alignment.CENTER
+                GutterIconRenderer.Alignment.CENTER,
+                IgnoreBundle.messagePointer("daemon.lineMarker.directory")
             )
-        } else null
+            else -> null
+        }
     }
 }
