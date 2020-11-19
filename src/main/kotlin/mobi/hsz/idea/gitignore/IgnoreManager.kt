@@ -21,11 +21,11 @@ import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vcs.VcsListener
 import com.intellij.openapi.vcs.VcsRoot
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.vfs.VirtualFileCopyEvent
-import com.intellij.openapi.vfs.VirtualFileEvent
 import com.intellij.openapi.vfs.VirtualFileListener
 import com.intellij.openapi.vfs.VirtualFileManager
-import com.intellij.openapi.vfs.VirtualFileMoveEvent
+import com.intellij.openapi.vfs.newvfs.BulkFileListener
+import com.intellij.openapi.vfs.newvfs.events.VFileEvent
+import com.intellij.openapi.vfs.newvfs.events.VFilePropertyChangeEvent
 import com.intellij.util.Time
 import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.messages.MessageBusConnection
@@ -52,7 +52,6 @@ import mobi.hsz.idea.gitignore.util.Glob
 import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture
 import mobi.hsz.idea.gitignore.util.Utils
 import mobi.hsz.idea.gitignore.util.exec.ExternalExec.getIgnoredFiles
-import java.util.HashSet
 
 /**
  * [IgnoreManager] handles ignore files indexing and status caching.
@@ -60,7 +59,6 @@ import java.util.HashSet
 class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     private val matcher = project.service<IgnoreMatcher>()
-    private val virtualFileManager = VirtualFileManager.getInstance()
     private val settings = IgnoreSettings.getInstance()
     private val projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project)
     private val refreshTrackedIgnoredRunnable = RefreshTrackedIgnoredRunnable()
@@ -73,9 +71,9 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     }
 
     private val commonRunnableListeners = CommonRunnableListeners(debouncedStatusesChanged)
-    private var messageBus: MessageBusConnection? = null
+    private var messageBus = project.messageBus.connect(this)
     private val confirmedIgnoredFiles = ContainerUtil.createConcurrentWeakMap<VirtualFile, VcsRoot>()
-    private val notConfirmedIgnoredFiles = HashSet<VirtualFile>()
+    private val notConfirmedIgnoredFiles = mutableSetOf<VirtualFile>()
     private val cachedIgnoreFilesIndex =
         CachedConcurrentMap.create<IgnoreFileType, List<IgnoreEntryOccurrence>> { key -> getEntries(project, key) }
 
@@ -121,37 +119,19 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         get() = settings.ignoredFileStatus
 
     /** [VirtualFileListener] instance to check if file's content was changed. */
-    private val virtualFileListener: VirtualFileListener = object : VirtualFileListener {
-        override fun contentsChanged(event: VirtualFileEvent) {
-            handleEvent(event)
+    private val bulkFileListener = object : BulkFileListener {
+        override fun before(events: MutableList<out VFileEvent>) {
+            events.forEach {
+                handleEvent(it)
+                if (it !is VFilePropertyChangeEvent) {
+                    it.file?.let(notConfirmedIgnoredFiles::add)
+                    debouncedRefreshTrackedIgnores.run(true)
+                }
+            }
         }
 
-        override fun fileCreated(event: VirtualFileEvent) {
-            handleEvent(event)
-            notConfirmedIgnoredFiles.add(event.file)
-            debouncedRefreshTrackedIgnores.run(true)
-        }
-
-        override fun fileDeleted(event: VirtualFileEvent) {
-            handleEvent(event)
-            notConfirmedIgnoredFiles.add(event.file)
-            debouncedRefreshTrackedIgnores.run(true)
-        }
-
-        override fun fileMoved(event: VirtualFileMoveEvent) {
-            handleEvent(event)
-            notConfirmedIgnoredFiles.add(event.file)
-            debouncedRefreshTrackedIgnores.run(true)
-        }
-
-        override fun fileCopied(event: VirtualFileCopyEvent) {
-            handleEvent(event)
-            notConfirmedIgnoredFiles.add(event.file)
-            debouncedRefreshTrackedIgnores.run(true)
-        }
-
-        private fun handleEvent(event: VirtualFileEvent) {
-            val fileType = event.file.fileType
+        private fun handleEvent(event: VFileEvent) {
+            val fileType = event.file?.fileType
             if (fileType is IgnoreFileType) {
                 cachedIgnoreFilesIndex.remove(fileType)
                 cachedOuterFiles.remove(fileType)
@@ -181,7 +161,8 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 }
             }
             IgnoreSettings.KEY.HIDE_IGNORED_FILES -> ProjectView.getInstance(project).refresh()
-            else -> {}
+            else -> {
+            }
         }
     }
 
@@ -322,14 +303,17 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
             return
         }
         refreshTrackedIgnoredFeature.run()
-        virtualFileManager.addVirtualFileListener(virtualFileListener)
         settings.addListener(settingsListener)
-        messageBus = project.messageBus.connect()
-        messageBus!!.subscribe(
+
+        messageBus.subscribe(
+            VirtualFileManager.VFS_CHANGES,
+            bulkFileListener
+        )
+        messageBus.subscribe(
             RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH,
             RefreshTrackedIgnoredListener { debouncedRefreshTrackedIgnores.run(true) }
         )
-        messageBus!!.subscribe(
+        messageBus.subscribe(
             ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED,
             VcsListener {
                 invalidateCache(project)
@@ -337,7 +321,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 vcsRoots.addAll(projectLevelVcsManager.allVcsRoots)
             }
         )
-        messageBus!!.subscribe(
+        messageBus.subscribe(
             DumbService.DUMB_MODE,
             object : DumbModeListener {
                 override fun enteredDumbMode() = Unit
@@ -346,21 +330,16 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 }
             }
         )
-        messageBus!!.subscribe(ProjectTopics.PROJECT_ROOTS, commonRunnableListeners)
-        messageBus!!.subscribe(RefreshStatusesListener.REFRESH_STATUSES, commonRunnableListeners)
-        messageBus!!.subscribe(ProjectTopics.MODULES, commonRunnableListeners)
+        messageBus.subscribe(ProjectTopics.PROJECT_ROOTS, commonRunnableListeners)
+        messageBus.subscribe(RefreshStatusesListener.REFRESH_STATUSES, commonRunnableListeners)
+        messageBus.subscribe(ProjectTopics.MODULES, commonRunnableListeners)
         working = true
     }
 
     /** Disable manager. */
     private fun disable() {
         invalidateCache(project)
-        virtualFileManager.removeVirtualFileListener(virtualFileListener)
         settings.removeListener(settingsListener)
-        if (messageBus != null) {
-            messageBus!!.disconnect()
-            messageBus = null
-        }
         working = false
     }
 
