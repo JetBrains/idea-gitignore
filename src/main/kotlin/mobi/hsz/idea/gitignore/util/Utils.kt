@@ -1,8 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.util
 
-import com.intellij.ide.plugins.IdeaPluginDescriptorImpl
-import com.intellij.ide.plugins.PluginManager
+import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
@@ -284,10 +283,7 @@ object Utils {
      * @param id plugin id
      * @return plugin is enabled
      */
-    private fun isPluginEnabled(id: String): Boolean {
-        val p = PluginManager.getPlugin(PluginId.getId(id))
-        return p is IdeaPluginDescriptorImpl && p.isEnabled()
-    }
+    private fun isPluginEnabled(id: String) = PluginManagerCore.getPlugin(PluginId.getId(id))?.isEnabled ?: false
 
     /**
      * Checks if Git plugin is enabled.
