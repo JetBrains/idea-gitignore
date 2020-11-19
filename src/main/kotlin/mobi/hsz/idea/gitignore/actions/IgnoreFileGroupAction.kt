@@ -20,9 +20,9 @@ import org.jetbrains.annotations.PropertyKey
  * [ActionGroup] expands single action into a more child options to allow user specify
  * the IgnoreFile that will be used for file's path storage.
  */
-open class IgnoreFileGroupAction @JvmOverloads constructor(
-    @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) textKey: String? = "action.addToIgnore.group",
-    @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) descriptionKey: String? = "action.addToIgnore.group.description",
+open class IgnoreFileGroupAction constructor(
+    @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) textKey: String = "action.addToIgnore.group",
+    @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) descriptionKey: String = "action.addToIgnore.group.description",
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) textSingleKey: String = "action.addToIgnore.group.noPopup"
 ) : ActionGroup() {
     /** List of suitable Gitignore [VirtualFile]s that can be presented in an IgnoreFile action. */

@@ -106,7 +106,16 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
      * @param params the optional parameters for the specific resource
      * @return the [String] value or `null` if no resource found for the key
      */
-    fun message(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String?, vararg params: Any?) = message(BUNDLE, key!!, *params)
+    fun message(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String, vararg params: Any?) = message(BUNDLE, key, *params)
+
+    /**
+     * Loads a [String] from the [.BUNDLE] [ResourceBundle].
+     *
+     * @param key    the key of the resource
+     * @param params the optional parameters for the specific resource
+     * @return the [String] value or `null` if no resource found for the key
+     */
+    fun messagePointer(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String, vararg params: Any?) = getLazyMessage(key, *params)
 
     /**
      * Returns [IgnoreLanguage] matching to the given [VirtualFile].
