@@ -21,12 +21,14 @@ import javax.swing.Icon
  * Gitignore [Language] definition.
  */
 open class IgnoreLanguage protected constructor(
-    name: String = "Ignore",
-    val extension: String = "ignore",
+    name: String,
+    val extension: String,
     val vcsDirectory: String? = null,
     val icon: Icon? = Icons.IGNORE,
     private val outerFileFetchers: Array<OuterFileFetcher> = emptyArray()
 ) : Language(name), InjectableLanguage {
+
+    constructor() : this("Ignore", "ignore")
 
     private val languagesSettings
         get() = IgnoreSettings.getInstance().languagesSettings
