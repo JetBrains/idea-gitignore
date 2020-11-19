@@ -3,6 +3,7 @@ package mobi.hsz.idea.gitignore.file.type
 
 import com.intellij.openapi.fileTypes.LanguageFileType
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
+import org.jetbrains.annotations.NonNls
 
 /**
  * Describes Ignore file type.
@@ -14,7 +15,8 @@ open class IgnoreFileType protected constructor(val ignoreLanguage: IgnoreLangua
         val INSTANCE = IgnoreFileType()
     }
 
-    override fun getName() = ignoreLanguage.id + " file"
+    @NonNls
+    override fun getName() = ignoreLanguage.id + " File"
 
     val languageName
         get() = ignoreLanguage.id

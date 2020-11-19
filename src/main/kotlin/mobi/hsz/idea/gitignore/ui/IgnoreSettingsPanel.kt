@@ -461,10 +461,7 @@ class IgnoreSettingsPanel : Disposable {
             throw IllegalArgumentException()
         }
 
-        private fun getBoolean(
-            key: IgnoreLanguagesSettings.KEY,
-            data: TreeMap<IgnoreLanguagesSettings.KEY, Any>?
-        ): Boolean {
+        private fun getBoolean(key: IgnoreLanguagesSettings.KEY, data: TreeMap<IgnoreLanguagesSettings.KEY, Any>?): Boolean {
             val objectByKey = data!![key] ?: return false
             return java.lang.Boolean.valueOf(objectByKey.toString())
         }
