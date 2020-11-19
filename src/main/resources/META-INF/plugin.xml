@@ -88,6 +88,14 @@
             key="codeInspection.incorrectEntry"
             level="ERROR"/>
 
+        <notificationGroup
+            bundle="messages.IgnoreBundle"
+            displayType="BALLOON"
+            id=".ignore"
+            key="notification.group"
+            toolWindowId="Project"
+            />
+
         <projectService
             serviceImplementation="mobi.hsz.idea.gitignore.IgnoreManager"/>
 

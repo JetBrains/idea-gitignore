@@ -32,6 +32,7 @@ class IgnoreProjectManagerListener : IndexableFileSet, ProjectManagerListener {
 
     override fun projectClosing(project: Project) {
         fileBasedIndex.removeIndexableSet(this)
+        // TODO: fix that!
         project.service<IgnoreManager>().projectClosed()
     }
 
