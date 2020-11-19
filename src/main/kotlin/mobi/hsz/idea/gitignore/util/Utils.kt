@@ -193,7 +193,7 @@ object Utils {
      * @return file type
      */
     fun getFileType(virtualFile: VirtualFile?) = virtualFile?.run {
-        fileType.takeIf { it is IgnoreFileType } as IgnoreFileType
+        fileType.takeIf { it is IgnoreFileType } as? IgnoreFileType
     }
 
     /**
