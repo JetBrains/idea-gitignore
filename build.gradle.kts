@@ -159,4 +159,9 @@ tasks {
         // https://jetbrains.org/intellij/sdk/docs/tutorials/build_system/deployment.html#specifying-a-release-channel
         channels(pluginVersion.split('-').getOrElse(1) { "default" }.split('.').first())
     }
+
+    // TODO: Temporary fix for https://youtrack.jetbrains.com/issue/KT-42837
+    buildSearchableOptions {
+        enabled = false
+    }
 }
