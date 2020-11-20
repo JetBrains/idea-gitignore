@@ -107,11 +107,13 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
 
     @Synchronized
     @Throws(IOException::class)
-    override fun read(input: DataInput) = IgnoreBundle.LANGUAGES
-        .asSequence()
-        .map { it.fileType }
-        .firstOrNull { it.languageName == input.readUTF() }
-        ?.let { IgnoreFileTypeKey(it) }
+    override fun read(input: DataInput): IgnoreFileTypeKey? = input.readUTF().run {
+        IgnoreBundle.LANGUAGES
+            .asSequence()
+            .map { it.fileType }
+            .firstOrNull { it.languageName == this }
+            .let { IgnoreFileTypeKey(it ?: IgnoreFileType.INSTANCE) }
+    }
 
     override fun getValueExternalizer() = DATA_EXTERNALIZER
 
