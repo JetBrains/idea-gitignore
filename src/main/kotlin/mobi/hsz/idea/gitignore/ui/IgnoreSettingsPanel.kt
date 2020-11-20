@@ -35,8 +35,6 @@ import com.intellij.util.ui.JBUI
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreBundle.message
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
-import mobi.hsz.idea.gitignore.settings.IgnoreSettings.Companion.createTemplatesElement
-import mobi.hsz.idea.gitignore.settings.IgnoreSettings.Companion.loadTemplates
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings.UserTemplate
 import mobi.hsz.idea.gitignore.util.Constants
@@ -225,7 +223,7 @@ class IgnoreSettingsPanel : Disposable {
                         if (file != null) {
                             try {
                                 val element = JDOMUtil.load(file.inputStream)
-                                val templates = loadTemplates(element)
+                                val templates = IgnoreSettings.loadTemplates(element)
                                 for (template in templates) {
                                     myListModel.addElement(template)
                                 }
@@ -263,7 +261,7 @@ class IgnoreSettingsPanel : Disposable {
                         if (wrapper != null) {
                             val items = currentItems
                             val document = org.jdom.Document(
-                                createTemplatesElement(items)
+                                IgnoreSettings.createTemplatesElement(items)
                             )
                             try {
                                 JDOMUtil.writeDocument(document, wrapper.file, Constants.NEWLINE)

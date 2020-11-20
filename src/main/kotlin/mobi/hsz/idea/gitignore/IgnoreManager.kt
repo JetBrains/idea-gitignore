@@ -35,13 +35,10 @@ import git4idea.GitVcs
 import mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType
-import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType.Companion.getWorkingDirectory
-import mobi.hsz.idea.gitignore.file.type.kind.GitFileType.Companion.INSTANCE
-import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor.Companion.getAdditionalFiles
-import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor.Companion.invalidateCache
-import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor.Companion.invalidateDisposedProjects
+import mobi.hsz.idea.gitignore.file.type.kind.GitFileType
+import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence
-import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex.Companion.getEntries
+import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
@@ -75,7 +72,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val confirmedIgnoredFiles = ContainerUtil.createConcurrentWeakMap<VirtualFile, VcsRoot>()
     private val notConfirmedIgnoredFiles = mutableSetOf<VirtualFile>()
     private val cachedIgnoreFilesIndex =
-        CachedConcurrentMap.create<IgnoreFileType, List<IgnoreEntryOccurrence>> { key -> getEntries(project, key) }
+        CachedConcurrentMap.create<IgnoreFileType, List<IgnoreEntryOccurrence>> { key -> IgnoreFilesIndex.getEntries(project, key) }
 
     private val cachedOuterFiles =
         CachedConcurrentMap.create<IgnoreFileType, Collection<VirtualFile>> { key -> key.ignoreLanguage.getOuterFiles(project) }
@@ -136,7 +133,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 cachedIgnoreFilesIndex.remove(fileType)
                 cachedOuterFiles.remove(fileType)
                 if (fileType is GitExcludeFileType) {
-                    cachedOuterFiles.remove(INSTANCE)
+                    cachedOuterFiles.remove(GitFileType.INSTANCE)
                 }
                 expiringStatusCache.clear()
                 debouncedStatusesChanged.run()
@@ -202,7 +199,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 relativePath = if (entryFile == null) {
                     continue
                 } else if (fileType is GitExcludeFileType) {
-                    val workingDirectory = getWorkingDirectory(
+                    val workingDirectory = GitExcludeFileType.getWorkingDirectory(
                         project,
                         entryFile
                     )
@@ -217,7 +214,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                             continue
                         }
                     }
-                    if (getAdditionalFiles(project).contains(entryFile)) {
+                    if (ExternalIndexableSetContributor.getAdditionalFiles(project).contains(entryFile)) {
                         val projectDir = Utils.guessProjectDir(project)
                         Utils.getRelativePath(projectDir!!, file)
                     } else {
@@ -286,14 +283,14 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     }
 
     fun projectOpened() {
-        invalidateDisposedProjects()
+        ExternalIndexableSetContributor.invalidateDisposedProjects()
         if (isEnabled && !working) {
             enable()
         }
     }
 
     fun projectClosed() {
-        invalidateDisposedProjects()
+        ExternalIndexableSetContributor.invalidateDisposedProjects()
         disable()
     }
 
@@ -316,7 +313,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         messageBus.subscribe(
             ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED,
             VcsListener {
-                invalidateCache(project)
+                ExternalIndexableSetContributor.invalidateCache(project)
                 vcsRoots.clear()
                 vcsRoots.addAll(projectLevelVcsManager.allVcsRoots)
             }
@@ -338,7 +335,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     /** Disable manager. */
     private fun disable() {
-        invalidateCache(project)
+        ExternalIndexableSetContributor.invalidateCache(project)
         settings.removeListener(settingsListener)
         working = false
     }

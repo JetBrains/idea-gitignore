@@ -13,8 +13,6 @@ import com.intellij.util.io.DataExternalizer
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
-import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence.Companion.deserialize
-import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence.Companion.serialize
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor
@@ -36,12 +34,10 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
         private val DATA_EXTERNALIZER = object : DataExternalizer<IgnoreEntryOccurrence> {
 
             @Throws(IOException::class)
-            override fun save(out: DataOutput, entry: IgnoreEntryOccurrence) {
-                serialize(out, entry)
-            }
+            override fun save(out: DataOutput, entry: IgnoreEntryOccurrence) = IgnoreEntryOccurrence.serialize(out, entry)
 
             @Throws(IOException::class)
-            override fun read(input: DataInput) = deserialize(input)
+            override fun read(input: DataInput) = IgnoreEntryOccurrence.deserialize(input)
         }
 
         /**
