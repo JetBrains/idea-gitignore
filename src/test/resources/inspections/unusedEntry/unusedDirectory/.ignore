@@ -2,6 +2,6 @@ subdir/
 subdir
 subdir/*
 emptydir/*
-<UNUSED ENTRY descr="'foo' entry is never used">foo</UNUSED ENTRY>
-<UNUSED ENTRY descr="'foo/' entry is never used">foo/</UNUSED ENTRY>
-<UNUSED ENTRY descr="'foo/*' entry is never used">foo/*</UNUSED ENTRY>
+<weak_warning descr="'foo' entry is never used">foo</weak_warning>
+<weak_warning descr="'foo/' entry is never used">foo/</weak_warning>
+<weak_warning descr="'foo/*' entry is never used">foo/*</weak_warning>
