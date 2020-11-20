@@ -1,7 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.util
 
-import mobi.hsz.idea.gitignore.lang.kind.GitLanguage.Companion.INSTANCE
+import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings.UserTemplate
 import org.jetbrains.annotations.NonNls
@@ -119,7 +119,7 @@ object Resources {
 
         constructor(file: File, content: String?) {
             this.file = file
-            name = file.name.replace(INSTANCE.filename, "")
+            name = file.name.replace(GitLanguage.INSTANCE.filename, "")
             this.content = content
             container = if (file.parent.endsWith("Global")) Container.GLOBAL else Container.ROOT
         }

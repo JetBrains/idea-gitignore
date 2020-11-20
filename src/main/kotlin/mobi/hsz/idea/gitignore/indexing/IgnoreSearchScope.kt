@@ -7,7 +7,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.SearchScope
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
-import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor.Companion.getAdditionalFiles
 
 /**
  * Provides extended [GlobalSearchScope] with additional ignore files (i.e. outer gitignore files).
@@ -37,7 +36,7 @@ class IgnoreSearchScope private constructor(project: Project) : GlobalSearchScop
          */
         operator fun get(project: Project): GlobalSearchScope {
             val scope = IgnoreSearchScope(project)
-            val files = getAdditionalFiles(project)
+            val files = ExternalIndexableSetContributor.getAdditionalFiles(project)
             return scope.uniteWith(filesScope(project, files))
         }
     }

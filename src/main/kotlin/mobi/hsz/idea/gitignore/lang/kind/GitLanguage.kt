@@ -5,7 +5,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType
 import mobi.hsz.idea.gitignore.file.type.kind.GitFileType
-import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex.Companion.getFiles
+import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import mobi.hsz.idea.gitignore.outer.OuterFileFetcher
 import mobi.hsz.idea.gitignore.util.Icons
@@ -48,7 +48,7 @@ class GitLanguage private constructor() : IgnoreLanguage(
         fetched = true
 
         super.getOuterFiles(project, false).toMutableList().addAll(
-            getFiles(project, GitExcludeFileType.INSTANCE).filter { Utils.isInProject(it, project) }
+            IgnoreFilesIndex.getFiles(project, GitExcludeFileType.INSTANCE).filter { Utils.isInProject(it, project) }
         )
         return outerFiles.getOrElse(key, HashSet())
     }
