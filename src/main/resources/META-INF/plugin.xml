@@ -65,7 +65,7 @@
             groupKey="codeInspection.group"
             implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
             key="codeInspection.unusedEntry"
-            level="UNUSED ENTRY"/>
+            level="WEAK WARNING"/>
         <localInspection
             bundle="messages.IgnoreBundle"
             enabledByDefault="true"
@@ -101,9 +101,6 @@
 
         <projectService
             serviceImplementation="mobi.hsz.idea.gitignore.services.IgnoreMatcher"/>
-
-        <severitiesProvider
-            implementation="mobi.hsz.idea.gitignore.codeInsight.UnusedEntrySeveritiesProvider"/>
 
         <treeStructureProvider
             implementation="mobi.hsz.idea.gitignore.projectView.HideIgnoredFilesTreeStructureProvider"/>
