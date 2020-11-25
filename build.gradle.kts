@@ -164,4 +164,9 @@ tasks {
     buildSearchableOptions {
         enabled = false
     }
+
+    runIde {
+        jvmArgs = listOf("-Xmx1024m", "-XX:+UnlockDiagnosticVMOptions")
+        systemProperty("ide.plugins.snapshot.on.unload.fail", "true")
+    }
 }
