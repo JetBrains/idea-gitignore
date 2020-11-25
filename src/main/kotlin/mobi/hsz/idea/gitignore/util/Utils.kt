@@ -106,7 +106,7 @@ object Utils {
      * @param project current project
      * @param file    file to open
      */
-    fun openFile(project: Project, file: VirtualFile) {
+    private fun openFile(project: Project, file: VirtualFile) {
         FileEditorManager.getInstance(project).openFile(file, true)
     }
 
@@ -322,7 +322,7 @@ object Utils {
      * @param project to check
      * @return project's dir or null if project is default
      */
-    fun guessProjectDir(project: Project?): VirtualFile? {
+    private fun guessProjectDir(project: Project?): VirtualFile? {
         return if (project == null) {
             null
         } else try {

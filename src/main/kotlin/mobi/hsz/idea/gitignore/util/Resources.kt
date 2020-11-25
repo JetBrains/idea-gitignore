@@ -40,8 +40,8 @@ object Resources {
                 try {
                     val list = getResourceContent(GITIGNORE_TEMPLATES_PATH)
                     if (list != null) {
-                        BufferedReader(StringReader(list)).useLines {
-                            it.map {
+                        BufferedReader(StringReader(list)).useLines { lines ->
+                            lines.map {
                                 val line = "/$it"
                                 val file = getResource(line)
                                 if (file != null) {
