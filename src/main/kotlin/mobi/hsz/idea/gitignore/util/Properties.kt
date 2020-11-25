@@ -16,10 +16,6 @@ object Properties {
     @NonNls
     private val IGNORE_MISSING_GITIGNORE = "ignore_missing_gitignore"
 
-    /** Add unversioned files property key.  */
-    @NonNls
-    private val ADD_UNVERSIONED_FILES = "add_unversioned_files"
-
     /** Dismissed ignored editing notification key.  */
     @NonNls
     private val DISMISSED_IGNORED_EDITING_NOTIFICATION = "add_unversioned_files"
@@ -39,23 +35,6 @@ object Properties {
      */
     fun setIgnoreMissingGitignore(project: Project) {
         properties(project).setValue(IGNORE_MISSING_GITIGNORE, true)
-    }
-
-    /**
-     * Checks value of [.ADD_UNVERSIONED_FILES] key in [PropertiesComponent].
-     *
-     * @param project current project
-     * @return [.ADD_UNVERSIONED_FILES] value
-     */
-    fun isAddUnversionedFiles(project: Project) = properties(project).getBoolean(ADD_UNVERSIONED_FILES, false)
-
-    /**
-     * Sets value of [.ADD_UNVERSIONED_FILES] key in [PropertiesComponent] to `true`.
-     *
-     * @param project current project
-     */
-    fun setAddUnversionedFiles(project: Project) {
-        properties(project).setValue(ADD_UNVERSIONED_FILES, true)
     }
 
     /**

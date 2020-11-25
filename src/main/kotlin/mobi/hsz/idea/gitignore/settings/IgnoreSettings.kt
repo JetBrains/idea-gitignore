@@ -25,8 +25,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
-        INSERT_AT_CURSOR("insertAtCursor"), ADD_UNVERSIONED_FILES("addUnversionedFiles"),
-        STARRED_TEMPLATES("starredTemplates"), UNIGNORE_ACTIONS("unignoreActions"),
+        INSERT_AT_CURSOR("insertAtCursor"), STARRED_TEMPLATES("starredTemplates"), UNIGNORE_ACTIONS("unignoreActions"),
         HIDE_IGNORED_FILES("hideIgnoredFiles"), NOTIFY_IGNORED_EDITING("notifyIgnoredEditing");
 
         override fun toString() = key
@@ -50,13 +49,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     var insertAtCursor = false
         set(value) {
             notifyOnChange(KEY.INSERT_AT_CURSOR, insertAtCursor, value)
-            field = value
-        }
-
-    /** Suggest to add unversioned files to the .gitignore file. */
-    var addUnversionedFiles = true
-        set(value) {
-            notifyOnChange(KEY.ADD_UNVERSIONED_FILES, addUnversionedFiles, value)
             field = value
         }
 

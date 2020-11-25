@@ -35,7 +35,6 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
             !Utils.equalLists(settings.userTemplates, userTemplates) ||
             !Comparing.equal(settings.ignoredFileStatus, ignoredFileStatus) ||
             !Comparing.equal(settings.insertAtCursor, insertAtCursor) ||
-            !Comparing.equal(settings.addUnversionedFiles, addUnversionedFiles) ||
             !Comparing.equal(settings.unignoreActions, unignoreActions) ||
             !Comparing.equal(settings.notifyIgnoredEditing, notifyIgnoredEditing) ||
             !languagesSettings.equalSettings(settings.languagesSettings)
@@ -47,7 +46,6 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
             settings.userTemplates = userTemplates.toMutableList()
             settings.ignoredFileStatus = ignoredFileStatus
             settings.insertAtCursor = insertAtCursor
-            settings.addUnversionedFiles = addUnversionedFiles
             settings.languagesSettings = languagesSettings.settings
             settings.unignoreActions = unignoreActions
             settings.notifyIgnoredEditing = notifyIgnoredEditing
@@ -60,7 +58,6 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
             userTemplates = settings.userTemplates
             ignoredFileStatus = settings.ignoredFileStatus
             insertAtCursor = settings.insertAtCursor
-            addUnversionedFiles = settings.addUnversionedFiles
             unignoreActions = settings.unignoreActions
             notifyIgnoredEditing = settings.notifyIgnoredEditing
             languagesSettings.update(settings.languagesSettings.clone())
