@@ -259,7 +259,7 @@ class IgnoreSettingsPanel : Disposable {
                     }
 
                     override fun update(e: AnActionEvent) {
-                        e.presentation.isEnabled = currentItems.size > 0
+                        e.presentation.isEnabled = currentItems.isNotEmpty()
                     }
                 }
             )

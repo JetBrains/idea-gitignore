@@ -303,7 +303,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
                 AllIcons.Actions.Unselectall
             ) {
                 override fun update(e: AnActionEvent) {
-                    e.presentation.isEnabled = !checked.isEmpty()
+                    e.presentation.isEnabled = checked.isNotEmpty()
                 }
 
                 override fun actionPerformed(e: AnActionEvent) {
@@ -446,7 +446,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             }
         }
         val ranges = getFilterRanges(filter, StringUtil.notNullize(template.content))
-        return nameAccepted || ranges.size > 0
+        return nameAccepted || ranges.isNotEmpty()
     }
 
     /**
@@ -507,12 +507,12 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             return arrayOf(
                 object : DialogWrapperAction(message("global.generate.without.duplicates")) {
                     override fun doAction(e: ActionEvent) {
-                        performAppendAction(true, false)
+                        performAppendAction(ignoreDuplicates = true, ignoreComments = false)
                     }
                 },
                 object : DialogWrapperAction(message("global.generate.without.comments")) {
                     override fun doAction(e: ActionEvent) {
-                        performAppendAction(false, true)
+                        performAppendAction(ignoreDuplicates = false, ignoreComments = true)
                     }
                 }
             )
