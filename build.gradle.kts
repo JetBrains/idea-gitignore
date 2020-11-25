@@ -12,7 +12,7 @@ plugins {
     id("org.jetbrains.changelog") version "0.6.2"
     id("io.gitlab.arturbosch.detekt") version "1.14.2"
     id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
-    id("org.jetbrains.grammarkit") version "2020.2.1"
+    id("org.jetbrains.grammarkit") version "2020.3.1"
 }
 
 // Import variables from gradle.properties file

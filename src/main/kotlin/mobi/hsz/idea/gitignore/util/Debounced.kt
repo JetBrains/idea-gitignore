@@ -2,6 +2,7 @@
 package mobi.hsz.idea.gitignore.util
 
 import com.intellij.concurrency.JobScheduler
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.DumbAwareRunnable
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -9,7 +10,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Debounced runnable class that allows to run command just once in case it was triggered to often.
  */
-abstract class Debounced<T>(private val delay: Int) : DumbAwareRunnable {
+abstract class Debounced<T>(private val delay: Int) : DumbAwareRunnable, Disposable {
 
     /** Timer that depends on the given [.delay] value. */
     private var timer: ScheduledFuture<*>? = null
@@ -31,4 +32,8 @@ abstract class Debounced<T>(private val delay: Int) : DumbAwareRunnable {
 
     /** Task to run in debounce way. */
     protected abstract fun task(argument: T?)
+
+    override fun dispose() {
+        timer?.cancel(true)
+    }
 }

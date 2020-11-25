@@ -15,6 +15,7 @@ import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.DumbService.DumbModeListener
 import com.intellij.openapi.project.NoAccessDuringPsiEvents
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vcs.FileStatusManager
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
@@ -65,6 +66,8 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
             expiringStatusCache.clear()
             FileStatusManager.getInstance(project).fileStatusesChanged()
         }
+    }.also {
+        Disposer.register(this, it)
     }
 
     private val commonRunnableListeners = CommonRunnableListeners(debouncedStatusesChanged)
@@ -101,6 +104,8 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     private val refreshTrackedIgnoredFeature = InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5).apply {
         setTrailing(true)
+    }.also {
+        Disposer.register(this, it)
     }
 
     private var working = false

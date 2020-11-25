@@ -2,6 +2,7 @@
 package mobi.hsz.idea.gitignore.util
 
 import com.intellij.concurrency.JobScheduler
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.DumbAwareRunnable
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -10,7 +11,8 @@ import java.util.concurrent.TimeUnit
  * Wrapper for [JobScheduler] that runs a scheduled operation [.maxAttempts] times every [.delay]
  * milliseconds. It is possible to manually break scheduled task with calling [.cancel].
  */
-class InterruptibleScheduledFuture(private val task: Runnable, private val delay: Int, private val maxAttempts: Int) : DumbAwareRunnable {
+class InterruptibleScheduledFuture(private val task: Runnable, private val delay: Int, private val maxAttempts: Int) :
+    DumbAwareRunnable, Disposable {
 
     /** Invocations counter.  */
     private var attempt = 0
@@ -79,4 +81,6 @@ class InterruptibleScheduledFuture(private val task: Runnable, private val delay
     fun setTrailing(trailing: Boolean) {
         this.trailing = trailing
     }
+
+    override fun dispose() = cancel()
 }
