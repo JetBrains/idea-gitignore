@@ -173,9 +173,6 @@ class IgnoreSettingsPanel : Disposable {
     /** Extension for the CRUD list panel. */
     open inner class TemplatesListPanel : AddEditDeleteListPanel<UserTemplate>(null, ArrayList()) {
 
-        /** Import/export file's extension. */
-        private val FILE_EXTENSION = "xml"
-
         override fun customizeDecorator(decorator: ToolbarDecorator) {
             super.customizeDecorator(decorator)
             val group = DefaultActionGroup()
@@ -190,7 +187,7 @@ class IgnoreSettingsPanel : Disposable {
                         val descriptor: FileChooserDescriptor = object : FileChooserDescriptor(true, false, true, false, true, false) {
                             override fun isFileVisible(file: VirtualFile, showHiddenFiles: Boolean): Boolean {
                                 return super.isFileVisible(file, showHiddenFiles) &&
-                                    (file.isDirectory || FILE_EXTENSION == file.extension || file.fileType === FileTypes.ARCHIVE)
+                                    (file.isDirectory || file.extension == "xml" || file.fileType === FileTypes.ARCHIVE)
                             }
 
                             override fun isFileSelectable(file: VirtualFile) = file.fileType === XmlFileType.INSTANCE
@@ -236,7 +233,7 @@ class IgnoreSettingsPanel : Disposable {
                             FileSaverDescriptor(
                                 message("action.exportTemplates.wrapper"),
                                 "",
-                                FILE_EXTENSION
+                                "xml"
                             ),
                             templatesListPanel!!
                         ).save(null as VirtualFile?, null)
