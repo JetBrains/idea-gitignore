@@ -2,7 +2,6 @@
 package mobi.hsz.idea.gitignore.util.exec
 
 import com.intellij.execution.process.BaseOSProcessHandler
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vcs.VcsRoot
@@ -13,7 +12,6 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
 import mobi.hsz.idea.gitignore.util.Utils
 import mobi.hsz.idea.gitignore.util.exec.parser.ExecutionOutputParser
-import mobi.hsz.idea.gitignore.util.exec.parser.GitUnignoredFilesOutputParser
 import mobi.hsz.idea.gitignore.util.exec.parser.SimpleOutputParser
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.jps.service.SharedThreadPool
@@ -32,33 +30,9 @@ object ExternalExec {
     /** Checks if Git plugin is enabled.  */
     private val GIT_ENABLED = Utils.isGitPluginEnabled
 
-    /** Git command to list unversioned files.  */
-    @NonNls
-    private val GIT_UNIGNORED_FILES = "clean -dn"
-
     /** Git command to list ignored but tracked files.  */
     @NonNls
     private val GIT_IGNORED_FILES = "ls-files -i --exclude-standard"
-
-    /**
-     * Returns list of unignored files for the given directory.
-     *
-     * @param language to check
-     * @param project  current project
-     * @param file     current file
-     * @return unignored files list
-     */
-    fun getUnignoredFiles(language: IgnoreLanguage, project: Project, file: VirtualFile): List<String> {
-        if (!Utils.isInProject(file, project)) {
-            return emptyList()
-        }
-        return run(
-            language,
-            GIT_UNIGNORED_FILES,
-            file.parent,
-            GitUnignoredFilesOutputParser()
-        ) ?: emptyList()
-    }
 
     /**
      * Returns list of ignored files for the given repository.

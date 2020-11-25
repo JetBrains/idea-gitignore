@@ -73,9 +73,6 @@ class IgnoreSettingsPanel : Disposable {
     /** Defines if new content should be inserted at the cursor's position or at the document end. */
     private var insertAtCursorCheckBox: JCheckBox? = null
 
-    /** Suggest to add unversioned files to the .gitignore file. */
-    private var addUnversionedFilesCheckBox: JCheckBox? = null
-
     /** Splitter element. */
     private var templatesSplitter: Splitter? = null
 
@@ -156,12 +153,6 @@ class IgnoreSettingsPanel : Disposable {
         get() = insertAtCursorCheckBox!!.isSelected
         set(selected) {
             insertAtCursorCheckBox!!.isSelected = selected
-        }
-
-    var addUnversionedFiles
-        get() = addUnversionedFilesCheckBox!!.isSelected
-        set(selected) {
-            addUnversionedFilesCheckBox!!.isSelected = selected
         }
 
     var unignoreActions

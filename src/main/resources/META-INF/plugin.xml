@@ -30,8 +30,6 @@
             implementationClass="mobi.hsz.idea.gitignore.codeInsight.SyntaxCompletionContributor"/>
 
         <editorNotificationProvider
-            implementation="mobi.hsz.idea.gitignore.daemon.AddUnversionedFilesNotificationProvider"/>
-        <editorNotificationProvider
             implementation="mobi.hsz.idea.gitignore.daemon.IgnoredEditingNotificationProvider"/>
         <editorNotificationProvider
             implementation="mobi.hsz.idea.gitignore.daemon.MissingGitignoreNotificationProvider"/>
