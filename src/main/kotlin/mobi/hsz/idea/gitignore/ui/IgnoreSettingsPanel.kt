@@ -79,7 +79,7 @@ class IgnoreSettingsPanel : Disposable {
     /** File types scroll panel with table. */
     private var languagesPanel: JScrollPane? = null
 
-    /** [IgnoreLanguage] settings table. */
+    /** Settings table. */
     private var languagesTable: JBTable? = null
 
     /** Enable unignore files group. */

@@ -113,8 +113,9 @@ object Utils {
     /**
      * Returns all Ignore files in given [Project] that can match current passed file.
      *
-     * @param project current project
-     * @param file    current file
+     * @param project     current project
+     * @param fileType    current file type
+     * @param virtualFile current file
      * @return collection of suitable Ignore files
      */
     @Throws(ExternalFileException::class)
@@ -138,7 +139,7 @@ object Utils {
     }
 
     /**
-     * Checks if given directory is a [IgnoreLanguage.getVcsDirectory].
+     * Checks if given directory is VCS directory.
      *
      * @param directory to check
      * @return given file is VCS directory
@@ -330,7 +331,7 @@ object Utils {
     }
 
     /**
-     * Wraps [ProjectUtil.guessProjectDir] and returns null for the default project.
+     * Wraps ProjectUtil.guessProjectDir and returns null for the default project.
      *
      * @param project to check
      * @return project's dir or null if project is default

@@ -19,7 +19,7 @@ import mobi.hsz.idea.gitignore.util.Properties
 import mobi.hsz.idea.gitignore.util.Utils
 
 /**
- * Editor notification provider that checks if there is [GitLanguage.getFilename] in root directory and suggest to create one.
+ * Editor notification provider that checks if there is .gitignore file in root directory and suggest to create one.
  */
 class MissingGitignoreNotificationProvider(project: Project) : EditorNotifications.Provider<EditorNotificationPanel?>() {
 
