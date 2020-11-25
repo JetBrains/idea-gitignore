@@ -34,7 +34,6 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
         !Comparing.equal(settings.missingGitignore, missingGitignore) ||
             !Utils.equalLists(settings.userTemplates, userTemplates) ||
             !Comparing.equal(settings.ignoredFileStatus, ignoredFileStatus) ||
-            !Comparing.equal(settings.outerIgnoreRules, outerIgnoreRules) ||
             !Comparing.equal(settings.insertAtCursor, insertAtCursor) ||
             !Comparing.equal(settings.addUnversionedFiles, addUnversionedFiles) ||
             !Comparing.equal(settings.unignoreActions, unignoreActions) ||
@@ -47,7 +46,6 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
             settings.missingGitignore = missingGitignore
             settings.userTemplates = userTemplates.toMutableList()
             settings.ignoredFileStatus = ignoredFileStatus
-            settings.outerIgnoreRules = outerIgnoreRules
             settings.insertAtCursor = insertAtCursor
             settings.addUnversionedFiles = addUnversionedFiles
             settings.languagesSettings = languagesSettings.settings
@@ -61,7 +59,6 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
             missingGitignore = settings.missingGitignore
             userTemplates = settings.userTemplates
             ignoredFileStatus = settings.ignoredFileStatus
-            outerIgnoreRules = settings.outerIgnoreRules
             insertAtCursor = settings.insertAtCursor
             addUnversionedFiles = settings.addUnversionedFiles
             unignoreActions = settings.unignoreActions

@@ -45,8 +45,5 @@ class IgnoreFile(viewProvider: FileViewProvider, private val fileType: IgnoreFil
 
     override fun getFileType() = fileType
 
-    val isOuter
-        get() = fileType.ignoreLanguage.getOuterFiles(project).contains(originalFile.virtualFile)
-
     override fun toString() = fileType.name
 }

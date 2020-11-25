@@ -8,7 +8,6 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.project.DumbAware
-import com.intellij.psi.PsiManager
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
@@ -24,13 +23,7 @@ open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), Dum
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getRequiredData(CommonDataKeys.PROJECT)
         val view = e.getRequiredData(LangDataKeys.IDE_VIEW)
-        val fixedDirectory = fileType.ignoreLanguage.getFixedDirectory(project)
-
-        val directory = if (fixedDirectory != null) {
-            PsiManager.getInstance(project).findDirectory(fixedDirectory)
-        } else {
-            view.orChooseDirectory
-        } ?: return
+        val directory = view.orChooseDirectory ?: return
 
         val filename = fileType.ignoreLanguage.filename
         var file = directory.findFile(filename)
