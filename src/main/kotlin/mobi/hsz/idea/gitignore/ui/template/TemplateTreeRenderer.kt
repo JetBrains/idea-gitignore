@@ -28,21 +28,20 @@ abstract class TemplateTreeRenderer : CheckboxTree.CheckboxTreeCellRenderer() {
         if (value !is TemplateTreeNode) {
             return
         }
-        val node = value
         val background = if (selected) UIUtil.getTreeSelectionBackground(true) else UIUtil.getTreeBackground()
         UIUtil.changeBackGround(this, background)
         val foreground = when {
             selected -> UIUtil.getTreeSelectionForeground(true)
-            node.template == null -> PlatformColors.BLUE
+            value.template == null -> PlatformColors.BLUE
             else -> UIUtil.getTreeForeground()
         }
         val style = SimpleTextAttributes.STYLE_PLAIN
         var text = ""
         var hint = ""
-        if (node.template != null) { // template leaf
-            text = node.template.name
-        } else if (node.container != null) { // container group
-            hint = message("template.container." + node.container.toString().toLowerCase())
+        if (value.template != null) { // template leaf
+            text = value.template.name
+        } else if (value.container != null) { // container group
+            hint = message("template.container." + value.container.toString().toLowerCase())
             checkbox.isVisible = false
         }
         SearchUtil.appendFragments(filter, text, style, foreground, background, textRenderer)
