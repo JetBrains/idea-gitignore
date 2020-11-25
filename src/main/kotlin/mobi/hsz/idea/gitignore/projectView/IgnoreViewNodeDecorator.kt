@@ -15,7 +15,6 @@ import com.intellij.util.ui.UIUtil
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
-import mobi.hsz.idea.gitignore.util.Utils
 
 /**
  * [ProjectViewNodeDecorator] implementation to show on the Project Tree if ignored file is still tracked with Git.
@@ -32,17 +31,30 @@ class IgnoreViewNodeDecorator(project: Project) : ProjectViewNodeDecorator {
     override fun decorate(node: ProjectViewNode<*>, data: PresentationData) {
         val file = node.virtualFile ?: return
         if (manager.isFileTracked(file) && manager.isFileIgnored(file)) {
-            Utils.addColoredText(data, IgnoreBundle.message("projectView.tracked"), GRAYED_SMALL_ATTRIBUTES)
+            addColoredText(data, IgnoreBundle.message("projectView.tracked"))
         } else if (ignoreSettings.hideIgnoredFiles && file.isDirectory) {
             val count = ContainerUtil.filter(file.children) { child: VirtualFile? ->
                 manager.isFileIgnored(child!!) && !manager.isFileTracked(child)
             }.size
 
             if (count > 0) {
-                Utils.addColoredText(data, IgnoreBundle.message("projectView.containsHidden", count), GRAYED_SMALL_ATTRIBUTES)
+                addColoredText(data, IgnoreBundle.message("projectView.containsHidden", count))
             }
         }
     }
 
     override fun decorate(node: PackageDependenciesNode, cellRenderer: ColoredTreeCellRenderer) = Unit
+
+    /**
+     * Adds ColoredFragment to the node's presentation.
+     *
+     * @param data node's presentation data
+     * @param text text to add
+     */
+    private fun addColoredText(data: PresentationData, text: String) {
+        if (data.coloredText.isEmpty()) {
+            data.addText(data.presentableText, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+        }
+        data.addText(" $text", GRAYED_SMALL_ATTRIBUTES)
+    }
 }
