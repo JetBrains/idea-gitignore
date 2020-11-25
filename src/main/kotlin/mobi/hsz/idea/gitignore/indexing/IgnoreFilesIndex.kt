@@ -107,7 +107,7 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
 
     @Synchronized
     @Throws(IOException::class)
-    override fun read(input: DataInput): IgnoreFileTypeKey? = input.readUTF().run {
+    override fun read(input: DataInput): IgnoreFileTypeKey = input.readUTF().run {
         IgnoreBundle.LANGUAGES
             .asSequence()
             .map { it.fileType }
