@@ -301,6 +301,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     override fun dispose() {
         disable()
+        cachedIgnoreFilesIndex.clear()
     }
 
     /**

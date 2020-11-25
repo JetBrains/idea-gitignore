@@ -28,7 +28,6 @@ class GlobTest : Common<Glob>() {
 
     @Test
     fun testFind() {
-        Glob.clearCache()
         myFixture.apply {
             configureByText(
                 IgnoreFileType.INSTANCE,
@@ -105,7 +104,6 @@ class GlobTest : Common<Glob>() {
 
     @Test
     fun testFindAsPaths() {
-        Glob.clearCache()
         myFixture.apply {
             configureByText(
                 IgnoreFileType.INSTANCE,
@@ -150,8 +148,6 @@ class GlobTest : Common<Glob>() {
     @Test
     @Throws(Exception::class)
     fun testCreatePattern() {
-        Glob.clearCache()
-
         Glob.createPattern("file.txt", IgnoreBundle.Syntax.GLOB).let {
             TestCase.assertNotNull(it)
             TestCase.assertTrue(it!!.matcher("file.txt").matches())
