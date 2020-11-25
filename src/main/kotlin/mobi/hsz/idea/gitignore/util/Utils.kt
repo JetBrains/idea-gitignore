@@ -1,13 +1,11 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.util
 
-import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.colors.EditorColors
 import com.intellij.openapi.editor.ex.EditorEx
-import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
@@ -149,28 +147,4 @@ object Utils {
         colorsScheme.setColor(EditorColors.CARET_ROW_COLOR, null)
         return editor
     }
-
-    /**
-     * Checks if specified plugin is enabled.
-     *
-     * @param id plugin id
-     * @return plugin is enabled
-     */
-    private fun isPluginEnabled(id: String) = PluginManagerCore.getPlugin(PluginId.getId(id))?.isEnabled ?: false
-
-    /**
-     * Checks if Git plugin is enabled.
-     *
-     * @return Git plugin is enabled
-     */
-    val isGitPluginEnabled
-        get() = isPluginEnabled("Git4Idea")
-
-    /**
-     * Checks if Mercurial plugin is enabled.
-     *
-     * @return Mercurial plugin is enabled
-     */
-    val isMercurialPluginEnabled
-        get() = isPluginEnabled("hg4idea")
 }

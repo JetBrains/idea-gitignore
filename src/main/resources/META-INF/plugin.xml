@@ -4,8 +4,6 @@
     <vendor email="jakub@hsz.mobi" url="http://ignore.hsz.mobi">hsz</vendor>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.vcs</depends>
-    <depends optional="true">Git4Idea</depends>
-    <depends optional="true">hg4idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
