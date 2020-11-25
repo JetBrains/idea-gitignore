@@ -1,11 +1,12 @@
 package mobi.hsz.idea.gitignore.services
 
+import com.intellij.openapi.Disposable
 import com.intellij.util.containers.IntObjectCache
 import mobi.hsz.idea.gitignore.util.MatcherUtil
 import org.apache.commons.lang.builder.HashCodeBuilder
 import java.util.regex.Pattern
 
-class IgnoreMatcher {
+class IgnoreMatcher : Disposable {
 
     private val cache = IntObjectCache<Boolean>()
 
@@ -37,5 +38,9 @@ class IgnoreMatcher {
             }
             return cache[hashCode]
         }
+    }
+
+    override fun dispose() {
+        cache.removeAll()
     }
 }

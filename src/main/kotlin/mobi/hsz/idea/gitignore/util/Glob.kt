@@ -20,12 +20,6 @@ import java.util.regex.PatternSyntaxException
  */
 object Glob {
 
-    /** Cache map that holds processed regex statements to the glob rules.  */
-    private val GLOBS_CACHE = concurrentMapOf<String, String>()
-
-    /** Cache map that holds compiled regex.  */
-    private val PATTERNS_CACHE = concurrentMapOf<String, Pattern>()
-
     /**
      * Finds for [VirtualFile] list using glob rule in given root directory.
      *
@@ -143,10 +137,7 @@ object Glob {
      * @return [Pattern] instance or null if invalid
      */
     fun getPattern(regex: String) = try {
-        if (!PATTERNS_CACHE.containsKey(regex)) {
-            PATTERNS_CACHE[regex] = Pattern.compile(regex)
-        }
-        PATTERNS_CACHE[regex]
+        Pattern.compile(regex)
     } catch (e: PatternSyntaxException) {
         null
     }
@@ -159,11 +150,6 @@ object Glob {
      * @return regex [String]
      */
     fun createRegex(glob: String, acceptChildren: Boolean): String = glob.trim { it <= ' ' }.let {
-        val cached = GLOBS_CACHE[it]
-        if (cached != null) {
-            return cached
-        }
-
         val sb = StringBuilder("^")
         var escape = false
         var star = false
@@ -289,12 +275,6 @@ object Glob {
             }
         }
         sb.append('$')
-        GLOBS_CACHE[it] = sb.toString()
         return sb.toString()
-    }
-
-    fun clearCache() {
-        GLOBS_CACHE.clear()
-        PATTERNS_CACHE.clear()
     }
 }

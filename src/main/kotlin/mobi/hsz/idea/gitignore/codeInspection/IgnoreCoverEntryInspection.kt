@@ -176,7 +176,7 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
     }
 
     override fun dispose() {
-        messageBus.disconnect()
+        cacheMap.clear()
     }
 
     override fun before(events: MutableList<out VFileEvent>) {

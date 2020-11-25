@@ -767,7 +767,7 @@
         </group>
 
         <action id="CloseIgnoredEditors" class="mobi.hsz.idea.gitignore.actions.CloseIgnoredEditorsAction">
-            <add-to-group group-id="CloseEditorsGroup" anchor="before" relative-to-action="CloseAllUnpinnedEditors"/>
+            <add-to-group group-id="CloseEditorsGroup" anchor="after" relative-to-action="CloseAllReadonly"/>
         </action>
 
         <action id="HideIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HideIgnoredFilesAction">
