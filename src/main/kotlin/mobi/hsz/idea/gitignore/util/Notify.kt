@@ -8,14 +8,14 @@ import com.intellij.notification.Notifications
 import com.intellij.openapi.project.Project
 
 /**
- * Wrapper function for showing [Notification].
+ * Wrapper function for showing notification.
  */
 object Notify {
 
     private const val NOTIFICATION_GROUP_ID = ".ignore"
 
     /**
-     * Shows [Notification].
+     * Shows notification.
      *
      * @param project  current project
      * @param title    notification title

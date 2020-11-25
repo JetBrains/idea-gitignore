@@ -376,7 +376,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     }
 
     /**
-     * Fills templates tree with templates fetched with [Resources.getGitignoreTemplates].
+     * Fills templates tree with templates fetched with `Resources.getGitignoreTemplates`.
      *
      * @param filter       templates filter
      * @param forceInclude force include
@@ -501,7 +501,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         }
     }
 
-    /** [OkAction] instance with additional `Generate without duplicates` action. */
+    /** OkAction instance with additional `Generate without duplicates` action. */
     private inner class OptionOkAction : OkAction(), OptionAction {
         override fun getOptions(): Array<Action> {
             return arrayOf(
