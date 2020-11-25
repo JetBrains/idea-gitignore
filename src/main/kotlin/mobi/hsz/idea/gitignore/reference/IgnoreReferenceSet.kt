@@ -103,16 +103,8 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
             super.innerResolveInContext(text, context, result, caseSensitive)
             val containingFile = containingFile as? IgnoreFile ?: return
             val contextVirtualFile: VirtualFile?
-            val isOuterFile = isOuterFile(containingFile)
 
             when {
-                isOuterFile -> {
-                    contextVirtualFile = Utils.getModuleRootForFile(
-                        containingFile.virtualFile,
-                        containingFile.project
-                    )
-                    result.clear()
-                }
                 Utils.isInProject(containingFile.virtualFile, element.project) -> {
                     contextVirtualFile = context.virtualFile
                 }
@@ -122,8 +114,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
                 val entry = fileReferenceSet.element as IgnoreEntry
                 val current = canonicalText
                 val pattern = Glob.createPattern(current, entry.syntax) ?: return
-                val parent = element.containingFile.parent
-                val root = if (isOuterFile) contextVirtualFile else parent?.virtualFile
+                val root = element.containingFile.parent?.virtualFile
                 val psiManager = element.manager
 
                 ContainerUtil.createLockFreeCopyOnWriteList<VirtualFile>().run {
@@ -173,8 +164,6 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
                 }
             }
         }
-
-        private fun isOuterFile(file: IgnoreFile?) = file?.isOuter ?: false
 
         private fun getPsiFileSystemItem(manager: PsiManager, file: VirtualFile): PsiFileSystemItem? {
             if (!file.isValid) {

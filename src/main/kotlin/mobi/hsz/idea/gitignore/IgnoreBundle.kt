@@ -16,7 +16,6 @@ import mobi.hsz.idea.gitignore.lang.kind.ESLintLanguage
 import mobi.hsz.idea.gitignore.lang.kind.ElasticBeanstalkLanguage
 import mobi.hsz.idea.gitignore.lang.kind.FloobitsLanguage
 import mobi.hsz.idea.gitignore.lang.kind.FossilLanguage
-import mobi.hsz.idea.gitignore.lang.kind.GitExcludeLanguage
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
 import mobi.hsz.idea.gitignore.lang.kind.GoogleCloudLanguage
 import mobi.hsz.idea.gitignore.lang.kind.HelmLanguage
@@ -63,7 +62,6 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
             FloobitsLanguage.INSTANCE,
             FossilLanguage.INSTANCE,
             GitLanguage.INSTANCE,
-            GitExcludeLanguage.INSTANCE,
             GoogleCloudLanguage.INSTANCE,
             HelmLanguage.INSTANCE,
             JetpackLanguage.INSTANCE,
@@ -86,7 +84,6 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
     /**Highlighting for the mentioned languages already provided by IDEA core */
     private val IGNORE_LANGUAGES_HIGHLIGHTING_EXCLUDED = arrayOf(
         GitLanguage.INSTANCE,
-        GitExcludeLanguage.INSTANCE,
         MercurialLanguage.INSTANCE,
         PerforceLanguage.INSTANCE
     )

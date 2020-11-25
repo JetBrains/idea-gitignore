@@ -70,9 +70,6 @@ class IgnoreSettingsPanel : Disposable {
     /** Enable ignored file status coloring. */
     private var ignoredFileStatusCheckBox: JCheckBox? = null
 
-    /** Enable outer ignore rules. */
-    private var outerIgnoreRulesCheckBox: JCheckBox? = null
-
     /** Defines if new content should be inserted at the cursor's position or at the document end. */
     private var insertAtCursorCheckBox: JCheckBox? = null
 
@@ -153,12 +150,6 @@ class IgnoreSettingsPanel : Disposable {
         get() = templatesListPanel!!.list
         set(userTemplates) {
             templatesListPanel!!.resetForm(userTemplates)
-        }
-
-    var outerIgnoreRules
-        get() = outerIgnoreRulesCheckBox!!.isSelected
-        set(selected) {
-            outerIgnoreRulesCheckBox!!.isSelected = selected
         }
 
     var insertAtCursor

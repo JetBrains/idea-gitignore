@@ -38,8 +38,6 @@
 
         <fileBasedIndex
             implementation="mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex"/>
-        <indexedRootsProvider
-            implementation="mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor"/>
 
         <lang.elementManipulator
             forClass="mobi.hsz.idea.gitignore.psi.IgnoreEntry"
@@ -377,12 +375,6 @@
             language="GitIgnore"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Git -->
-
-        <!-- Git exclude -->
-        <lang.syntaxHighlighterFactory
-            language="GitExclude"
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
-        <!-- END Git exclude -->
 
         <!-- Google Cloud -->
         <fileType
@@ -750,16 +742,6 @@
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Up -->
     </extensions>
-
-    <applicationListeners>
-        <listener class="mobi.hsz.idea.gitignore.listeners.IgnoreProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
-
-    <projectListeners>
-        <listener class="mobi.hsz.idea.gitignore.listeners.OuterIgnoreFileEditorManagerListener"
-                  topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
-    </projectListeners>
 
     <actions>
         <action id="Ignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileGroupAction">

@@ -35,9 +35,6 @@ import com.jetbrains.rd.util.concurrentMapOf
 import git4idea.GitVcs
 import mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
-import mobi.hsz.idea.gitignore.file.type.kind.GitExcludeFileType
-import mobi.hsz.idea.gitignore.file.type.kind.GitFileType
-import mobi.hsz.idea.gitignore.indexing.ExternalIndexableSetContributor
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
@@ -76,9 +73,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val notConfirmedIgnoredFiles = mutableSetOf<VirtualFile>()
     private val cachedIgnoreFilesIndex =
         CachedConcurrentMap.create<IgnoreFileType, List<IgnoreEntryOccurrence>> { key -> IgnoreFilesIndex.getEntries(project, key) }
-
-    private val cachedOuterFiles =
-        CachedConcurrentMap.create<IgnoreFileType, Collection<VirtualFile>> { key -> key.ignoreLanguage.getOuterFiles(project) }
 
     private val expiringStatusCache = ExpiringMap<VirtualFile, Boolean>(Time.SECOND)
 
@@ -136,10 +130,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
             val fileType = event.file?.fileType
             if (fileType is IgnoreFileType) {
                 cachedIgnoreFilesIndex.remove(fileType)
-                cachedOuterFiles.remove(fileType)
-                if (fileType is GitExcludeFileType) {
-                    cachedOuterFiles.remove(GitFileType.INSTANCE)
-                }
                 expiringStatusCache.clear()
                 debouncedStatusesChanged.run()
                 debouncedRefreshTrackedIgnores.run()
@@ -151,20 +141,8 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val settingsListener = IgnoreSettings.Listener { key, value ->
         when (key) {
             IgnoreSettings.KEY.IGNORED_FILE_STATUS -> toggle((value as Boolean?)!!)
-            IgnoreSettings.KEY.OUTER_IGNORE_RULES, IgnoreSettings.KEY.LANGUAGES -> {
-                IgnoreBundle.ENABLED_LANGUAGES.clear()
-                if (isEnabled) {
-                    if (working) {
-                        debouncedStatusesChanged.run()
-                        debouncedRefreshTrackedIgnores.run()
-                    } else {
-                        enable()
-                    }
-                }
-            }
             IgnoreSettings.KEY.HIDE_IGNORED_FILES -> ProjectView.getInstance(project).refresh()
-            else -> {
-            }
+            else -> {}
         }
     }
 
@@ -203,28 +181,8 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 val entryFile = value.file
                 relativePath = if (entryFile == null) {
                     continue
-                } else if (fileType is GitExcludeFileType) {
-                    val workingDirectory = GitExcludeFileType.getWorkingDirectory(
-                        project,
-                        entryFile
-                    )
-                    if (workingDirectory == null || !Utils.isUnder(file, workingDirectory)) {
-                        continue
-                    }
-                    Utils.getRelativePath(workingDirectory, file)
                 } else {
-                    val vcsRoot = getVcsRootFor(file)
-                    if (vcsRoot != null && !Utils.isUnder(entryFile, vcsRoot)) {
-                        if (!cachedOuterFiles[fileType]!!.contains(entryFile)) {
-                            continue
-                        }
-                    }
-                    if (ExternalIndexableSetContributor.getAdditionalFiles(project).contains(entryFile)) {
-                        val projectDir = Utils.guessProjectDir(project)
-                        Utils.getRelativePath(projectDir!!, file)
-                    } else {
-                        Utils.getRelativePath(entryFile.parent, file)
-                    }
+                    Utils.getRelativePath(entryFile.parent, file)
                 }
                 if (relativePath == null) {
                     continue
@@ -288,14 +246,12 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     }
 
     fun projectOpened() {
-        ExternalIndexableSetContributor.invalidateDisposedProjects()
         if (isEnabled && !working) {
             enable()
         }
     }
 
     fun projectClosed() {
-        ExternalIndexableSetContributor.invalidateDisposedProjects()
         disable()
     }
 
@@ -318,7 +274,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         messageBus.subscribe(
             ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED,
             VcsListener {
-                ExternalIndexableSetContributor.invalidateCache(project)
                 vcsRoots.clear()
                 vcsRoots.addAll(projectLevelVcsManager.allVcsRoots)
             }
@@ -340,7 +295,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     /** Disable manager. */
     private fun disable() {
-        ExternalIndexableSetContributor.invalidateCache(project)
         settings.removeListener(settingsListener)
         working = false
     }

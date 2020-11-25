@@ -25,7 +25,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         ROOT("IgnoreSettings"), MISSING_GITIGNORE("missingGitignore"), USER_TEMPLATES("userTemplates"),
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
-        OUTER_IGNORE_RULES("outerIgnoreRules"), OUTER_IGNORE_WRAPPER_HEIGHT("outerIgnoreWrapperHeight"),
         INSERT_AT_CURSOR("insertAtCursor"), ADD_UNVERSIONED_FILES("addUnversionedFiles"),
         STARRED_TEMPLATES("starredTemplates"), UNIGNORE_ACTIONS("unignoreActions"),
         HIDE_IGNORED_FILES("hideIgnoredFiles"), NOTIFY_IGNORED_EDITING("notifyIgnoredEditing");
@@ -44,17 +43,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     var ignoredFileStatus = true
         set(value) {
             notifyOnChange(KEY.IGNORED_FILE_STATUS, ignoredFileStatus, value)
-            field = value
-        }
-
-    /** Height of the outer ignore file wrapper panel. */
-    @Suppress("MagicNumber")
-    private var outerIgnoreWrapperHeight = 100
-
-    /** Enable outer ignore rules. */
-    var outerIgnoreRules = true
-        set(value) {
-            notifyOnChange(KEY.OUTER_IGNORE_RULES, outerIgnoreRules, value)
             field = value
         }
 
@@ -178,8 +166,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     override fun getState() = Element(KEY.ROOT.toString()).apply {
         setAttribute(KEY.MISSING_GITIGNORE.toString(), missingGitignore.toString())
         setAttribute(KEY.IGNORED_FILE_STATUS.toString(), ignoredFileStatus.toString())
-        setAttribute(KEY.OUTER_IGNORE_RULES.toString(), outerIgnoreRules.toString())
-        setAttribute(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString(), outerIgnoreWrapperHeight.toString())
         setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, Constants.DOLLAR))
         setAttribute(KEY.UNIGNORE_ACTIONS.toString(), unignoreActions.toString())
         setAttribute(KEY.HIDE_IGNORED_FILES.toString(), hideIgnoredFiles.toString())
@@ -213,12 +199,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
             getAttributeValue(KEY.IGNORED_FILE_STATUS.toString())?.let {
                 ignoredFileStatus = it.toBoolean()
             }
-            getAttributeValue(KEY.OUTER_IGNORE_RULES.toString())?.let {
-                outerIgnoreRules = it.toBoolean()
-            }
-            getAttributeValue(KEY.OUTER_IGNORE_WRAPPER_HEIGHT.toString())?.let {
-                outerIgnoreWrapperHeight = it.toInt()
-            }
             getAttributeValue(KEY.STARRED_TEMPLATES.toString())?.let {
                 starredTemplates = (StringUtil.split(it, Constants.DOLLAR))
             }
@@ -250,13 +230,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
                 .filter { !it.isVCS || IgnoreBundle.isExcludedFromHighlighting(it) }
                 .forEach { languagesSettings[it]!![IgnoreLanguagesSettings.KEY.ENABLE] = false }
         }
-    }
-
-    fun getOuterIgnoreWrapperHeight() = outerIgnoreWrapperHeight
-
-    fun setOuterIgnoreWrapperHeight(outerIgnoreWrapperHeight: Int) {
-        notifyOnChange(KEY.OUTER_IGNORE_WRAPPER_HEIGHT, this.outerIgnoreWrapperHeight, outerIgnoreWrapperHeight)
-        this.outerIgnoreWrapperHeight = outerIgnoreWrapperHeight
     }
 
     override fun addListener(listener: Listener) {

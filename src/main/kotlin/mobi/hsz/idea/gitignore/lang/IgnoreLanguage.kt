@@ -3,18 +3,12 @@ package mobi.hsz.idea.gitignore.lang
 
 import com.intellij.lang.InjectableLanguage
 import com.intellij.lang.Language
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.FileViewProvider
 import mobi.hsz.idea.gitignore.IgnoreBundle.Syntax
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
-import mobi.hsz.idea.gitignore.outer.OuterFileFetcher
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
-import mobi.hsz.idea.gitignore.util.ExpiringMap
 import mobi.hsz.idea.gitignore.util.Icons
-import org.apache.commons.lang.builder.HashCodeBuilder
-import java.util.HashSet
 import javax.swing.Icon
 
 /**
@@ -24,16 +18,13 @@ open class IgnoreLanguage protected constructor(
     name: String,
     val extension: String,
     val vcsDirectory: String? = null,
-    val icon: Icon? = Icons.IGNORE,
-    private val outerFileFetchers: Array<OuterFileFetcher> = emptyArray()
+    val icon: Icon? = Icons.IGNORE
 ) : Language(name), InjectableLanguage {
 
     constructor() : this("Ignore", "ignore")
 
     private val languagesSettings
         get() = IgnoreSettings.getInstance().languagesSettings
-
-    protected val outerFiles = ExpiringMap<Int, Set<VirtualFile>>(5000)
 
     companion object {
         val INSTANCE = IgnoreLanguage()
@@ -56,38 +47,6 @@ open class IgnoreLanguage protected constructor(
 
     open val defaultSyntax
         get() = Syntax.GLOB
-
-    /**
-     * Defines if current [IgnoreLanguage] supports outer ignore files.
-     *
-     * @return supports outer ignore files
-     */
-    open val isOuterFileSupported
-        get() = false
-
-    /**
-     * Returns outer files for the current language.
-     *
-     * @param project current project
-     * @return outer files
-     */
-    fun getOuterFiles(project: Project) = getOuterFiles(project, false)
-
-    /**
-     * Returns outer files for the current language.
-     *
-     * @param project current project
-     * @return outer files
-     */
-    open fun getOuterFiles(project: Project, dumb: Boolean): Set<VirtualFile> {
-        val key = HashCodeBuilder().append(project).append(fileType).toHashCode()
-        if (outerFiles[key] == null) {
-            outerFiles[key] = outerFileFetchers.map {
-                it.fetch(project)
-            }.flatten().filterNotNull().toSet()
-        }
-        return outerFiles.getOrElse(key, HashSet())
-    }
 
     /**
      * Checks is language is enabled or with [IgnoreSettings].
@@ -116,12 +75,4 @@ open class IgnoreLanguage protected constructor(
      */
     open val isVCS
         get() = true
-
-    /**
-     * Returns fixed directory for the given [IgnoreLanguage].
-     *
-     * @param project current project
-     * @return fixed directory
-     */
-    open fun getFixedDirectory(project: Project): VirtualFile? = null
 }

@@ -13,8 +13,6 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
  */
 class IgnoreSearchScope private constructor(project: Project) : GlobalSearchScope(project) {
 
-    override fun compare(file1: VirtualFile, file2: VirtualFile) = 0
-
     override fun contains(file: VirtualFile) = file.fileType is IgnoreFileType
 
     override fun isSearchInLibraries() = true
@@ -34,10 +32,6 @@ class IgnoreSearchScope private constructor(project: Project) : GlobalSearchScop
          * @param project current project
          * @return extended instance of [GlobalSearchScope]
          */
-        operator fun get(project: Project): GlobalSearchScope {
-            val scope = IgnoreSearchScope(project)
-            val files = ExternalIndexableSetContributor.getAdditionalFiles(project)
-            return scope.uniteWith(filesScope(project, files))
-        }
+        operator fun get(project: Project) = IgnoreSearchScope(project)
     }
 }

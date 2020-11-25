@@ -7,15 +7,12 @@ import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vcs.VcsRoot
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.text.nullize
-import com.intellij.vcsUtil.VcsUtil
 import git4idea.config.GitExecutableManager
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
 import mobi.hsz.idea.gitignore.util.Utils
 import mobi.hsz.idea.gitignore.util.exec.parser.ExecutionOutputParser
-import mobi.hsz.idea.gitignore.util.exec.parser.GitExcludesOutputParser
 import mobi.hsz.idea.gitignore.util.exec.parser.GitUnignoredFilesOutputParser
 import mobi.hsz.idea.gitignore.util.exec.parser.SimpleOutputParser
 import org.jetbrains.annotations.NonNls
@@ -35,13 +32,6 @@ object ExternalExec {
     /** Checks if Git plugin is enabled.  */
     private val GIT_ENABLED = Utils.isGitPluginEnabled
 
-    /** Git command to get user's excludesfile path.  */
-    @NonNls
-    private val GIT_CONFIG_EXCLUDES_FILE = "config --global core.excludesfile"
-
-    /** Global gitignore file located in user dir.  */
-    val GIT_USER_IGNORE = Utils.resolveUserDir("~/.config/git/ignore")?.let { VcsUtil.getVirtualFile(it) }
-
     /** Git command to list unversioned files.  */
     @NonNls
     private val GIT_UNIGNORED_FILES = "clean -dn"
@@ -49,15 +39,6 @@ object ExternalExec {
     /** Git command to list ignored but tracked files.  */
     @NonNls
     private val GIT_IGNORED_FILES = "ls-files -i --exclude-standard"
-
-    /**
-     * Returns [VirtualFile] instance of the Git excludes file if available.
-     *
-     * @return Git excludes file
-     */
-    val gitExcludesFile: VirtualFile by lazy {
-        runForSingle(GitLanguage.INSTANCE, GIT_CONFIG_EXCLUDES_FILE, null, GitExcludesOutputParser())
-    }
 
     /**
      * Returns list of unignored files for the given directory.
@@ -103,19 +84,6 @@ object ExternalExec {
         true -> GitExecutableManager.getInstance().pathToGit.nullize()
         false -> null
     }
-
-    /**
-     * Runs [IgnoreLanguage] executable with the given command and current working directory.
-     *
-     * @param language  current language
-     * @param command   to call
-     * @param directory current working directory
-     * @param parser    [ExecutionOutputParser] implementation
-     * @param <T>       return type
-     * @return result of the call
-     */
-    private fun <T> runForSingle(language: IgnoreLanguage, command: String, directory: VirtualFile?, parser: ExecutionOutputParser<T>) =
-        ContainerUtil.getFirstItem(run(language, command, directory, parser))
 
     /**
      * Runs [IgnoreLanguage] executable with the given command and current working directory.
