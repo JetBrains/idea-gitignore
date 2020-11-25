@@ -5,11 +5,17 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.project.DumbAwareAction
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiManager
 import com.intellij.util.text.nullize
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.command.AppendFileCommandAction
+import mobi.hsz.idea.gitignore.command.CreateFileCommandAction
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.util.Notify
 import mobi.hsz.idea.gitignore.util.Utils
@@ -21,7 +27,7 @@ import org.jetbrains.annotations.PropertyKey
  */
 open class IgnoreFileAction(
     private val ignoreFile: VirtualFile? = null,
-    private val fileType: IgnoreFileType? = Utils.getFileType(ignoreFile),
+    private val fileType: IgnoreFileType? = getFileType(ignoreFile),
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) textKey: String = "action.addToIgnore",
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) descriptionKey: String = "action.addToIgnore.description"
 ) : DumbAwareAction(
@@ -29,6 +35,18 @@ open class IgnoreFileAction(
     IgnoreBundle.message(descriptionKey, fileType?.ignoreLanguage?.filename),
     fileType?.icon
 ) {
+
+    companion object {
+        /**
+         * Returns [IgnoreFileType] basing on the [VirtualFile] file.
+         *
+         * @param virtualFile current file
+         * @return file type
+         */
+        fun getFileType(virtualFile: VirtualFile?) = virtualFile?.run {
+            fileType.takeIf { it is IgnoreFileType } as? IgnoreFileType
+        }
+    }
 
     /**
      * Adds currently selected [VirtualFile] to the [.ignoreFile].
@@ -45,7 +63,7 @@ open class IgnoreFileAction(
         ignoreFile?.let {
             Utils.getPsiFile(project, it)
         } ?: fileType?.let {
-            Utils.getIgnoreFile(project, it, null, true)
+            getIgnoreFile(project, it, null, true)
         }?.let { ignore ->
             val paths = mutableSetOf<String>()
 
@@ -95,4 +113,33 @@ open class IgnoreFileAction(
             .run { StringUtil.escapeChar(this, ']') }
             .run { StringUtil.trimLeading(this, '/') }
             .nullize()?.run { "/$this" } ?: ""
+
+
+    /**
+     * Gets Ignore file for given [Project] and root [PsiDirectory].
+     * If file is missing - creates new one.
+     *
+     * @param project         current project
+     * @param fileType        current ignore file type
+     * @param createIfMissing create new file if missing
+     * @return Ignore file
+     */
+    private fun getIgnoreFile(project: Project, fileType: IgnoreFileType, psiDirectory: PsiDirectory?, createIfMissing: Boolean): PsiFile? {
+        val projectDir = project.guessProjectDir() ?: return null
+        val directory = psiDirectory ?: PsiManager.getInstance(project).findDirectory(projectDir)
+
+        val filename = fileType.ignoreLanguage.filename
+        var file = directory!!.findFile(filename)
+        val virtualFile = file?.virtualFile ?: directory.virtualFile.findChild(filename)
+
+        if (file == null && virtualFile == null && createIfMissing) {
+            try {
+                file = CreateFileCommandAction(project, directory, fileType).execute()
+            } catch (throwable: Throwable) {
+                throwable.printStackTrace()
+            }
+        }
+
+        return file
+    }
 }

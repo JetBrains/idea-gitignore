@@ -4,8 +4,11 @@ package mobi.hsz.idea.gitignore.codeInspection
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.components.service
+import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ModuleRootManager
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner
@@ -74,10 +77,10 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
                 val moduleRoot = Utils.getModuleRootForFile(entry.containingFile.virtualFile, project) ?: return false
                 val files = MatcherUtil.getFilesForPattern(project, pattern)
 
-                Utils.getExcludedRoots(project).forEach { root ->
+                getExcludedRoots(project).forEach { root ->
                     files.forEach files@{ file ->
                         ProgressManager.checkCanceled()
-                        if (!Utils.isUnder(file, root)) {
+                        if (!isUnder(file, root)) {
                             return@files
                         }
                         val path = Utils.getRelativePath(moduleRoot, root)
@@ -90,5 +93,44 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
                 return false
             }
         }
+    }
+
+    /**
+     * Searches for excluded roots in given [Project].
+     *
+     * @param project current project
+     * @return list of excluded roots
+     */
+    fun getExcludedRoots(project: Project) = mutableListOf<VirtualFile>().apply {
+        ModuleManager.getInstance(project).modules.forEach {
+            ModuleRootManager.getInstance(it).modifiableModel.run {
+                if (isDisposed) {
+                    return@forEach
+                }
+                addAll(excludeRoots)
+                dispose()
+            }
+        }
+    }
+
+    /**
+     * Checks if file is under given directory.
+     *
+     * @param file      file
+     * @param directory directory
+     * @return file is under directory
+     */
+    fun isUnder(file: VirtualFile, directory: VirtualFile): Boolean {
+        if (directory == file) {
+            return true
+        }
+        var parent = file.parent
+        while (parent != null) {
+            if (directory == parent) {
+                return true
+            }
+            parent = parent.parent
+        }
+        return false
     }
 }

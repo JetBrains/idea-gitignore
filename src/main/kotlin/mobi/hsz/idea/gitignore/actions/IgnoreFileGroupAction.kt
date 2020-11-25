@@ -5,8 +5,11 @@ import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.util.containers.addIfNotNull
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
@@ -64,7 +67,7 @@ open class IgnoreFileGroupAction constructor(
                     // skip already bundled languages for ignore action
                     .filterNot { this !is UnignoreFileGroupAction && (it is GitLanguage || it is MercurialLanguage) }
                     .map { it.fileType }
-                    .forEach { files[it] = Utils.getSuitableIgnoreFiles(project, it, file).reversed() }
+                    .forEach { files[it] = getSuitableIgnoreFiles(project, it, file).reversed() }
             } catch (e: ExternalFileException) {
                 presentation.isVisible = false
             }
@@ -123,4 +126,32 @@ open class IgnoreFileGroupAction constructor(
      * @return files amount
      */
     private fun countFiles() = files.values.sumBy { it.size }
+
+    /**
+     * Returns all Ignore files in given [Project] that can match current passed file.
+     *
+     * @param project     current project
+     * @param fileType    current file type
+     * @param virtualFile current file
+     * @return collection of suitable Ignore files
+     */
+    @Throws(ExternalFileException::class)
+    private fun getSuitableIgnoreFiles(project: Project, fileType: IgnoreFileType, virtualFile: VirtualFile): List<VirtualFile> {
+        var file = virtualFile
+        val baseDir = Utils.getModuleRootForFile(file, project)
+        val files = mutableListOf<VirtualFile>()
+
+        if (file.canonicalPath == null || baseDir == null || !VfsUtilCore.isAncestor(baseDir, file, true)) {
+            throw ExternalFileException()
+        }
+
+        if (baseDir != file) {
+            do {
+                file = file.parent
+                files.addIfNotNull(file.findChild(fileType.ignoreLanguage.filename))
+            } while (file != baseDir)
+        }
+
+        return files
+    }
 }
