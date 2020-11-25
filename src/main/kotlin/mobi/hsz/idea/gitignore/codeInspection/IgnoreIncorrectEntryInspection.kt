@@ -19,7 +19,7 @@ class IgnoreIncorrectEntryInspection : LocalInspectionTool() {
         override fun visitEntry(entry: IgnoreEntry) {
             var regex = entry.text
             if (IgnoreBundle.Syntax.GLOB == entry.syntax) {
-                regex = Glob.createRegex(regex!!, false)
+                regex = Glob.createRegex(regex, false)
             }
 
             try {

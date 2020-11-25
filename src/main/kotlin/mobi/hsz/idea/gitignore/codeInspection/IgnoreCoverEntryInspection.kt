@@ -5,21 +5,13 @@ import com.intellij.codeInspection.InspectionManager
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.openapi.Disposable
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.progress.ProgressManager
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.vfs.VirtualFileManager.VFS_CHANGES
-import com.intellij.openapi.vfs.newvfs.BulkFileListener
-import com.intellij.openapi.vfs.newvfs.events.VFileEvent
-import com.intellij.openapi.vfs.newvfs.events.VFilePropertyChangeEvent
 import com.intellij.psi.PsiFile
 import com.intellij.util.containers.ContainerUtil
-import com.jetbrains.rd.util.concurrentMapOf
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
@@ -31,21 +23,7 @@ import mobi.hsz.idea.gitignore.util.Utils
 /**
  * Inspection tool that checks if entries are covered by others.
  */
-class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disposable {
-
-    private val cacheMap = concurrentMapOf<String, Set<String>>()
-    private val messageBus = ApplicationManager.getApplication().messageBus.connect(this)
-
-    init {
-        messageBus.subscribe(VFS_CHANGES, this)
-    }
-
-    /**
-     * Clears the paths cache.
-     *
-     * @param project current project
-     */
-    override fun cleanup(project: Project) = cacheMap.clear()
+class IgnoreCoverEntryInspection : LocalInspectionTool() {
 
     /**
      * Reports problems at file level. Checks if entries are covered by other entries.
@@ -133,20 +111,9 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
      */
     private fun getPathsSet(contextDirectory: VirtualFile, entries: Array<IgnoreEntry>, matcher: IgnoreMatcher) =
         mutableMapOf<IgnoreEntry, Set<String>>().apply {
-            val notCached = mutableListOf<IgnoreEntry>()
-
-            entries.forEach { entry ->
-                ProgressManager.checkCanceled()
-                val key = contextDirectory.path + Constants.DOLLAR + entry.text
-                cacheMap[key]?.let {
-                    this[entry] = it
-                } ?: notCached.add(entry)
-            }
-
-            val found = Glob.findAsPaths(contextDirectory, notCached, matcher, true)
+            val found = Glob.findAsPaths(contextDirectory, listOf(*entries), matcher, true)
             found.forEach { (key, value) ->
                 ProgressManager.checkCanceled()
-                cacheMap[contextDirectory.path + Constants.DOLLAR + key.text] = value
                 this[key] = value
             }
         }
@@ -172,18 +139,6 @@ class IgnoreCoverEntryInspection : LocalInspectionTool(), BulkFileListener, Disp
                 "codeInspection.coverEntry.message",
                 "<a href=\"" + virtualFile.url + Constants.HASH + coveringEntry.textRange.startOffset + "\">" + coveringEntry.text + "</a>"
             )
-        }
-    }
-
-    override fun dispose() {
-        cacheMap.clear()
-    }
-
-    override fun before(events: MutableList<out VFileEvent>) {
-        events.forEach {
-            if (it !is VFilePropertyChangeEvent || it.propertyName == "name") {
-                cacheMap.clear()
-            }
         }
     }
 }

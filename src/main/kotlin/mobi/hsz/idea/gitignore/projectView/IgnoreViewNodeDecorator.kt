@@ -6,7 +6,6 @@ import com.intellij.ide.projectView.ProjectViewNode
 import com.intellij.ide.projectView.ProjectViewNodeDecorator
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.packageDependencies.ui.PackageDependenciesNode
 import com.intellij.ui.ColoredTreeCellRenderer
 import com.intellij.ui.SimpleTextAttributes
@@ -30,12 +29,8 @@ class IgnoreViewNodeDecorator(project: Project) : ProjectViewNodeDecorator {
 
     override fun decorate(node: ProjectViewNode<*>, data: PresentationData) {
         val file = node.virtualFile ?: return
-        if (manager.isFileTracked(file) && manager.isFileIgnored(file)) {
-            addColoredText(data, IgnoreBundle.message("projectView.tracked"))
-        } else if (ignoreSettings.hideIgnoredFiles && file.isDirectory) {
-            val count = ContainerUtil.filter(file.children) { child: VirtualFile? ->
-                manager.isFileIgnored(child!!) && !manager.isFileTracked(child)
-            }.size
+        if (ignoreSettings.hideIgnoredFiles && file.isDirectory) {
+            val count = ContainerUtil.filter(file.children) { manager.isFileIgnored(it) }.size
 
             if (count > 0) {
                 addColoredText(data, IgnoreBundle.message("projectView.containsHidden", count))

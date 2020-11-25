@@ -26,14 +26,11 @@ import com.intellij.openapi.vfs.VirtualFileListener
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.openapi.vfs.newvfs.BulkFileListener
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
-import com.intellij.openapi.vfs.newvfs.events.VFilePropertyChangeEvent
 import com.intellij.util.Time
 import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.messages.MessageBusConnection
 import com.intellij.util.messages.Topic
 import com.jetbrains.rd.util.concurrentMapOf
-import git4idea.GitVcs
-import mobi.hsz.idea.gitignore.IgnoreManager.RefreshTrackedIgnoredListener
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence
 import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex
@@ -44,9 +41,7 @@ import mobi.hsz.idea.gitignore.util.CachedConcurrentMap
 import mobi.hsz.idea.gitignore.util.Debounced
 import mobi.hsz.idea.gitignore.util.ExpiringMap
 import mobi.hsz.idea.gitignore.util.Glob
-import mobi.hsz.idea.gitignore.util.InterruptibleScheduledFuture
 import mobi.hsz.idea.gitignore.util.Utils
-import mobi.hsz.idea.gitignore.util.exec.ExternalExec.getIgnoredFiles
 
 /**
  * [IgnoreManager] handles ignore files indexing and status caching.
@@ -56,7 +51,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val matcher = project.service<IgnoreMatcher>()
     private val settings = IgnoreSettings.getInstance()
     private val projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project)
-    private val refreshTrackedIgnoredRunnable = RefreshTrackedIgnoredRunnable()
 
     private val debouncedStatusesChanged = object : Debounced<Any?>(1000) {
         override fun task(argument: Any?) {
@@ -69,22 +63,10 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     private val commonRunnableListeners = CommonRunnableListeners(debouncedStatusesChanged)
     private var messageBus = project.messageBus.connect(this)
-    private val confirmedIgnoredFiles = ContainerUtil.createConcurrentWeakMap<VirtualFile, VcsRoot>()
-    private val notConfirmedIgnoredFiles = mutableSetOf<VirtualFile>()
     private val cachedIgnoreFilesIndex =
         CachedConcurrentMap.create<IgnoreFileType, List<IgnoreEntryOccurrence>> { key -> IgnoreFilesIndex.getEntries(project, key) }
 
     private val expiringStatusCache = ExpiringMap<VirtualFile, Boolean>(Time.SECOND)
-
-    private val debouncedRefreshTrackedIgnores = object : Debounced<Boolean>(1000) {
-        override fun task(argument: Boolean?) {
-            if (argument == true) {
-                refreshTrackedIgnoredRunnable.refresh()
-            } else {
-                refreshTrackedIgnoredRunnable.run()
-            }
-        }
-    }
 
     private val debouncedExitDumbMode = object : Debounced<Boolean?>(3000) {
         override fun task(argument: Boolean?) {
@@ -96,14 +78,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         }
     }
 
-    private val refreshTrackedIgnoredFeature = InterruptibleScheduledFuture(debouncedRefreshTrackedIgnores, 10000, 5).apply {
-        setTrailing(true)
-    }.also {
-        Disposer.register(this, it)
-    }
-
     private var working = false
-
     private val vcsRoots = mutableListOf<VcsRoot>()
 
     /**
@@ -119,10 +94,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         override fun before(events: MutableList<out VFileEvent>) {
             events.forEach {
                 handleEvent(it)
-                if (it !is VFilePropertyChangeEvent) {
-                    it.file?.let(notConfirmedIgnoredFiles::add)
-                    debouncedRefreshTrackedIgnores.run(true)
-                }
             }
         }
 
@@ -132,7 +103,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 cachedIgnoreFilesIndex.remove(fileType)
                 expiringStatusCache.clear()
                 debouncedStatusesChanged.run()
-                debouncedRefreshTrackedIgnores.run()
             }
         }
     }
@@ -142,7 +112,8 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         when (key) {
             IgnoreSettings.KEY.IGNORED_FILE_STATUS -> toggle((value as Boolean?)!!)
             IgnoreSettings.KEY.HIDE_IGNORED_FILES -> ProjectView.getInstance(project).refresh()
-            else -> {}
+            else -> {
+            }
         }
     }
 
@@ -215,21 +186,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 return expiringStatusCache.set(file, isFileIgnored(directory))
             }
         }
-        if (ignored) {
-            refreshTrackedIgnoredFeature.cancel()
-        }
         return expiringStatusCache.set(file, ignored)
-    }
-
-    /**
-     * Checks if file is ignored and tracked.
-     *
-     * @param file current file
-     * @return file is ignored and tracked
-     */
-    fun isFileTracked(file: VirtualFile): Boolean {
-        return !notConfirmedIgnoredFiles.contains(file) && !confirmedIgnoredFiles.isEmpty() &&
-            confirmedIgnoredFiles.containsKey(file)
     }
 
     /** Enable manager. */
@@ -237,16 +194,11 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         if (working) {
             return
         }
-        refreshTrackedIgnoredFeature.run()
         settings.addListener(settingsListener)
 
         messageBus.subscribe(
             VirtualFileManager.VFS_CHANGES,
             bulkFileListener
-        )
-        messageBus.subscribe(
-            RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH,
-            RefreshTrackedIgnoredListener { debouncedRefreshTrackedIgnores.run(true) }
         )
         messageBus.subscribe(
             ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED,
@@ -291,79 +243,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
             enable()
         } else {
             disable()
-        }
-    }
-
-    /** [Runnable] implementation to rebuild [.confirmedIgnoredFiles]. */
-    internal inner class RefreshTrackedIgnoredRunnable : Runnable, RefreshTrackedIgnoredListener {
-
-        /** Default [Runnable] run method that invokes rebuilding with bus event propagating. */
-        override fun run() {
-            run(false)
-        }
-
-        /** Rebuilds [.confirmedIgnoredFiles] map in silent mode. */
-        override fun refresh() {
-            this.run(true)
-        }
-
-        /**
-         * Rebuilds [.confirmedIgnoredFiles] map.
-         *
-         * @param silent propagate [IgnoreManager.TrackedIgnoredListener.TRACKED_IGNORED] event
-         */
-        fun run(silent: Boolean) {
-            val result = concurrentMapOf<VirtualFile, VcsRoot>()
-            for (vcsRoot in vcsRoots) {
-                if (!Utils.isGitPluginEnabled || vcsRoot.vcs !is GitVcs) {
-                    continue
-                }
-                val root = vcsRoot.path
-                for (path in getIgnoredFiles(vcsRoot)) {
-                    val file = root.findFileByRelativePath(path)
-                    if (file != null) {
-                        result[file] = vcsRoot
-                    }
-                }
-            }
-            if (!silent && result.isNotEmpty()) {
-                project.messageBus.syncPublisher(TrackedIgnoredListener.TRACKED_IGNORED).handleFiles(result)
-            }
-            confirmedIgnoredFiles.clear()
-            confirmedIgnoredFiles.putAll(result)
-            notConfirmedIgnoredFiles.clear()
-            debouncedStatusesChanged.run()
-            // TODO:
-//            for (pane in AbstractProjectViewPane.EP_NAME.extensionList) {
-//                if (pane.treeBuilder != null) {
-//                    pane.treeBuilder.queueUpdate()
-//                }
-//            }
-        }
-    }
-
-    /** Listener bounded with [TrackedIgnoredListener.TRACKED_IGNORED] topic to inform about new entries. */
-    interface TrackedIgnoredListener {
-
-        fun handleFiles(files: MutableMap<VirtualFile, VcsRoot>)
-
-        companion object {
-            /** Topic for detected tracked and indexed files. */
-            val TRACKED_IGNORED = Topic.create("New tracked and indexed files detected", TrackedIgnoredListener::class.java)
-        }
-    }
-
-    /**
-     * Listener bounded with [RefreshTrackedIgnoredListener.TRACKED_IGNORED_REFRESH] topic to trigger tracked and
-     * ignored files list.
-     */
-    fun interface RefreshTrackedIgnoredListener {
-
-        fun refresh()
-
-        companion object {
-            /** Topic for refresh tracked and indexed files. */
-            val TRACKED_IGNORED_REFRESH = Topic.create("New tracked and indexed files detected", RefreshTrackedIgnoredListener::class.java)
         }
     }
 
