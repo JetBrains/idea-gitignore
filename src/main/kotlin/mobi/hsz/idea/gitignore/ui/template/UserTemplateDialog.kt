@@ -37,7 +37,7 @@ class UserTemplateDialog(private val project: Project, private val content: Stri
         init()
     }
 
-    override fun createCenterPanel(): JComponent? {
+    override fun createCenterPanel(): JComponent {
         val centerPanel = JPanel(BorderLayout())
         centerPanel.preferredSize = Dimension(600, 300)
         previewDocument = EditorFactory.getInstance().createDocument(content)
