@@ -31,6 +31,4 @@ class ExpiringMap<K, V>(private val time: Int) {
     fun clear() {
         map.clear()
     }
-
-    fun getOrElse(key: K, defaultValue: V) = get(key) ?: defaultValue
 }

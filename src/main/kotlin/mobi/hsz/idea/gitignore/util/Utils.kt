@@ -303,20 +303,6 @@ object Utils {
         get() = isPluginEnabled("hg4idea")
 
     /**
-     * Resolves user directory with the `user.home` property.
-     *
-     * @param path path with leading ~
-     * @return resolved path
-     */
-    fun resolveUserDir(path: String?): String? {
-        if (StringUtil.startsWithChar(path, '~')) {
-            assert(path != null)
-            return System.getProperty("user.home") + path!!.substring(1)
-        }
-        return path
-    }
-
-    /**
      * Adds ColoredFragment to the node's presentation.
      *
      * @param data       node's presentation data

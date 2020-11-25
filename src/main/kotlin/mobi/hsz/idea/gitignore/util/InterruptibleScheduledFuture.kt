@@ -65,15 +65,6 @@ class InterruptibleScheduledFuture(private val task: Runnable, private val delay
     }
 
     /**
-     * Specify invoking on the leading edge of the timeout.
-     *
-     * @param leading edge
-     */
-    fun setLeading(leading: Boolean) {
-        this.leading = leading
-    }
-
-    /**
      * Specify invoking on the trailing edge of the timeout.
      *
      * @param trailing edge

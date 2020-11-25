@@ -3,12 +3,12 @@ package mobi.hsz.idea.gitignore.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.util.text.StringUtil
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.ui.template.UserTemplateDialog
-import mobi.hsz.idea.gitignore.util.CommonDataKeys
 import mobi.hsz.idea.gitignore.util.Icons
 
 /**

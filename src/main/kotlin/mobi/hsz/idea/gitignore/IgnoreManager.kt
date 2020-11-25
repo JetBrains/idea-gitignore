@@ -222,19 +222,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     }
 
     /**
-     * Finds [VirtualFile] directory of [VcsRoot] that contains passed file.
-     *
-     * @param file to check
-     * @return VCS Root for given file
-     */
-    private fun getVcsRootFor(file: VirtualFile): VirtualFile? {
-        val vcsRoot = ContainerUtil.find(
-            ContainerUtil.reverse(vcsRoots)
-        ) { root: VcsRoot -> Utils.isUnder(file, root.path) }
-        return vcsRoot?.path
-    }
-
-    /**
      * Checks if file is ignored and tracked.
      *
      * @param file current file
@@ -243,16 +230,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     fun isFileTracked(file: VirtualFile): Boolean {
         return !notConfirmedIgnoredFiles.contains(file) && !confirmedIgnoredFiles.isEmpty() &&
             confirmedIgnoredFiles.containsKey(file)
-    }
-
-    fun projectOpened() {
-        if (isEnabled && !working) {
-            enable()
-        }
-    }
-
-    fun projectClosed() {
-        disable()
     }
 
     /** Enable manager. */
