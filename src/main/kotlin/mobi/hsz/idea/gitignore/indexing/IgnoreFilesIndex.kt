@@ -57,16 +57,6 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
             }
             return ContainerUtil.emptyList()
         }
-
-        /**
-         * Returns collection of indexed [VirtualFile] for given [Project] and [IgnoreFileTypeKey].
-         *
-         * @param project  current project
-         * @param fileType filetype
-         * @return [VirtualFile] collection
-         */
-        fun getFiles(project: Project, fileType: IgnoreFileType): List<VirtualFile> =
-            getEntries(project, fileType).mapNotNull(IgnoreEntryOccurrence::file)
     }
 
     override fun getName(): ID<IgnoreFileTypeKey, IgnoreEntryOccurrence> = KEY
