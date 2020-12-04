@@ -27,6 +27,7 @@ class IgnoreDirectoryMarkerProvider : LineMarkerProvider {
      * @param element current element
      * @return `null` if entry is not a directory
      */
+    @Suppress("ReturnCount")
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
         if (element !is IgnoreEntryFile) {
             return null

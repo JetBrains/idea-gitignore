@@ -56,6 +56,7 @@ import javax.swing.table.AbstractTableModel
 /**
  * UI form for [IgnoreSettings] edition.
  */
+@Suppress("MagicNumber")
 class IgnoreSettingsPanel : Disposable {
 
     /** The parent panel for the form. */
@@ -430,12 +431,12 @@ class IgnoreSettingsPanel : Disposable {
         override fun getValueAt(row: Int, column: Int): Any {
             val language = ArrayList(settings.keys)[row] ?: return false
             val data = settings[language]
-            when (column) {
-                0 -> return language.id
-                1 -> return getBoolean(IgnoreLanguagesSettings.KEY.NEW_FILE, data)
-                2 -> return getBoolean(IgnoreLanguagesSettings.KEY.ENABLE, data)
+            return when (column) {
+                0 -> language.id
+                1 -> getBoolean(IgnoreLanguagesSettings.KEY.NEW_FILE, data)
+                2 -> getBoolean(IgnoreLanguagesSettings.KEY.ENABLE, data)
+                else -> throw IllegalArgumentException()
             }
-            throw IllegalArgumentException()
         }
 
         private fun getBoolean(key: IgnoreLanguagesSettings.KEY, data: TreeMap<IgnoreLanguagesSettings.KEY, Any>?): Boolean {

@@ -93,6 +93,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
         FileReference(fileReferenceSet, range, index, text) {
         private val cacheMap = concurrentMapOf<String, Collection<VirtualFile>>()
 
+        @Suppress("ReturnCount")
         override fun innerResolveInContext(
             text: String,
             context: PsiFileSystemItem,

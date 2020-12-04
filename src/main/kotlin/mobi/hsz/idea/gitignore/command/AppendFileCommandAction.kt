@@ -32,92 +32,93 @@ class AppendFileCommandAction(
      * @return previously provided file
      */
     override fun compute(): PsiFile {
-        if (content.isNotEmpty()) {
-            val manager = PsiDocumentManager.getInstance(project)
-            manager.getDocument(file)?.let { document ->
-                val insertAtCursor = IgnoreSettings.getInstance().insertAtCursor
-                var offset = document.textLength
+        if (content.isEmpty()) {
+            return file
+        }
+        val manager = PsiDocumentManager.getInstance(project)
+        manager.getDocument(file)?.let { document ->
+            val insertAtCursor = IgnoreSettings.getInstance().insertAtCursor
+            var offset = document.textLength
 
-                file.acceptChildren(
-                    object : IgnoreVisitor() {
-                        override fun visitEntry(entry: IgnoreEntry) {
-                            val moduleDir = Utils.getModuleRootForFile(file.virtualFile, project)
-                            if (content.contains(entry.text) && moduleDir != null) {
-                                Notify.show(
-                                    project,
-                                    IgnoreBundle.message("action.appendFile.entryExists", entry.text),
-                                    IgnoreBundle.message(
-                                        "action.appendFile.entryExists.in",
-                                        Utils.getRelativePath(moduleDir, file.virtualFile)
-                                    ),
-                                    NotificationType.WARNING
-                                )
-                                content.remove(entry.text)
-                            }
-                        }
-                    }
-                )
-
-                if (insertAtCursor) {
-                    val editors = EditorFactory.getInstance().getEditors(document)
-                    if (editors.isNotEmpty()) {
-                        val position = editors[0].selectionModel.selectionStartPosition
-                        if (position != null) {
-                            offset = document.getLineStartOffset(position.line)
+            file.acceptChildren(
+                object : IgnoreVisitor() {
+                    override fun visitEntry(entry: IgnoreEntry) {
+                        val moduleDir = Utils.getModuleRootForFile(file.virtualFile, project)
+                        if (content.contains(entry.text) && moduleDir != null) {
+                            Notify.show(
+                                project,
+                                IgnoreBundle.message("action.appendFile.entryExists", entry.text),
+                                IgnoreBundle.message(
+                                    "action.appendFile.entryExists.in",
+                                    Utils.getRelativePath(moduleDir, file.virtualFile)
+                                ),
+                                NotificationType.WARNING
+                            )
+                            content.remove(entry.text)
                         }
                     }
                 }
+            )
 
-                content.forEach { it ->
-                    var entry = it
-
-                    if (ignoreDuplicates) {
-                        val currentLines = document.text.split(Constants.NEWLINE).filter {
-                            it.isNotEmpty() && !it.startsWith(Constants.HASH)
-                        }.toMutableList()
-                        val entryLines = it.split(Constants.NEWLINE).toMutableList()
-                        val iterator = entryLines.iterator()
-
-                        while (iterator.hasNext()) {
-                            val line = iterator.next().trim { it <= ' ' }
-                            if (line.isEmpty() || line.startsWith(Constants.HASH)) {
-                                continue
-                            }
-                            if (currentLines.contains(line)) {
-                                iterator.remove()
-                            } else {
-                                currentLines.add(line)
-                            }
-                        }
-                        entry = StringUtil.join(entryLines, Constants.NEWLINE)
+            if (insertAtCursor) {
+                val editors = EditorFactory.getInstance().getEditors(document)
+                if (editors.isNotEmpty()) {
+                    val position = editors[0].selectionModel.selectionStartPosition
+                    if (position != null) {
+                        offset = document.getLineStartOffset(position.line)
                     }
-                    if (ignoreComments) {
-                        val entryLines = it.split(Constants.NEWLINE).toMutableList()
-                        val iterator = entryLines.iterator()
-                        while (iterator.hasNext()) {
-                            val line = iterator.next().trim { it <= ' ' }
-                            if (line.isEmpty() || line.startsWith(Constants.HASH)) {
-                                iterator.remove()
-                            }
-                        }
-                        entry = StringUtil.join(entryLines, Constants.NEWLINE)
-                    }
-
-                    entry = StringUtil.replace(entry, "\r", "")
-                    if (!StringUtil.isEmpty(entry)) {
-                        entry += Constants.NEWLINE
-                    }
-
-                    if (!insertAtCursor && !document.text.endsWith(Constants.NEWLINE) && !StringUtil.isEmpty(entry)) {
-                        entry = Constants.NEWLINE + entry
-                    }
-
-                    document.insertString(offset, entry)
-                    offset += entry.length
                 }
-
-                manager.commitDocument(document)
             }
+
+            content.forEach { it ->
+                var entry = it
+
+                if (ignoreDuplicates) {
+                    val currentLines = document.text.split(Constants.NEWLINE).filter {
+                        it.isNotEmpty() && !it.startsWith(Constants.HASH)
+                    }.toMutableList()
+                    val entryLines = it.split(Constants.NEWLINE).toMutableList()
+                    val iterator = entryLines.iterator()
+
+                    while (iterator.hasNext()) {
+                        val line = iterator.next().trim { it <= ' ' }
+                        if (line.isEmpty() || line.startsWith(Constants.HASH)) {
+                            continue
+                        }
+                        if (currentLines.contains(line)) {
+                            iterator.remove()
+                        } else {
+                            currentLines.add(line)
+                        }
+                    }
+                    entry = StringUtil.join(entryLines, Constants.NEWLINE)
+                }
+                if (ignoreComments) {
+                    val entryLines = it.split(Constants.NEWLINE).toMutableList()
+                    val iterator = entryLines.iterator()
+                    while (iterator.hasNext()) {
+                        val line = iterator.next().trim { it <= ' ' }
+                        if (line.isEmpty() || line.startsWith(Constants.HASH)) {
+                            iterator.remove()
+                        }
+                    }
+                    entry = StringUtil.join(entryLines, Constants.NEWLINE)
+                }
+
+                entry = StringUtil.replace(entry, "\r", "")
+                if (!StringUtil.isEmpty(entry)) {
+                    entry += Constants.NEWLINE
+                }
+
+                if (!insertAtCursor && !document.text.endsWith(Constants.NEWLINE) && !StringUtil.isEmpty(entry)) {
+                    entry = Constants.NEWLINE + entry
+                }
+
+                document.insertString(offset, entry)
+                offset += entry.length
+            }
+
+            manager.commitDocument(document)
         }
         return file
     }

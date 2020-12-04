@@ -49,16 +49,14 @@ object Glob {
             }
 
             val visitor = object : VirtualFileVisitor<Map<IgnoreEntry, Pattern?>>(NO_FOLLOW_SYMLINKS) {
+                @Suppress("ReturnCount")
                 override fun visitFile(file: VirtualFile): Boolean {
                     if (root == file) {
                         return true
                     }
                     val current = mutableMapOf<IgnoreEntry, Pattern?>()
-                    if (currentValue.isEmpty()) {
-                        return false
-                    }
                     val path = getRelativePath(root, file)
-                    if (path == null || isVcsDirectory(file)) {
+                    if (currentValue.isEmpty() || path == null || isVcsDirectory(file)) {
                         return false
                     }
 
@@ -148,6 +146,7 @@ object Glob {
      * @param acceptChildren Matches directory children
      * @return regex [String]
      */
+    @Suppress("ComplexMethod", "LongMethod", "NestedBlockDepth")
     fun createRegex(glob: String, acceptChildren: Boolean): String = glob.trim { it <= ' ' }.let {
         val sb = StringBuilder("^")
         var escape = false
@@ -178,15 +177,15 @@ object Glob {
         }
 
         val chars = it.substring(beginIndex).toCharArray()
-        for (ch in chars) {
+        chars.forEach { ch ->
             if (bracket && ch != ']') {
                 sb.append(ch)
-                continue
+                return@forEach
             } else if (doubleStar) {
                 doubleStar = false
                 if (ch == '/') {
                     sb.append("(?:[^/]*/)*?")
-                    continue
+                    return@forEach
                 } else {
                     sb.append("[^/]*?")
                 }
@@ -211,7 +210,7 @@ object Glob {
                         star = true
                     }
                 }
-                continue
+                return@forEach
             } else if (star) {
                 sb.append("[^/]*?")
                 star = false
