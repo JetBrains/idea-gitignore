@@ -23,6 +23,7 @@ import javax.swing.JPanel
 /**
  * User template dialog that allows user to add custom templates.
  */
+@Suppress("MagicNumber")
 class UserTemplateDialog(private val project: Project, private val content: String) : DialogWrapper(project, false) {
 
     private val settings = IgnoreSettings.getInstance()

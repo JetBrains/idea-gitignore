@@ -60,6 +60,7 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
 
     override fun getName(): ID<IgnoreFileTypeKey, IgnoreEntryOccurrence> = KEY
 
+    @Suppress("ReturnCount")
     override fun map(inputData: FileContent): Map<IgnoreFileTypeKey, IgnoreEntryOccurrence> {
         val inputDataPsi = try {
             inputData.psiFile

@@ -45,6 +45,7 @@ import mobi.hsz.idea.gitignore.util.Utils
 /**
  * [IgnoreManager] handles ignore files indexing and status caching.
  */
+@Suppress("MagicNumber")
 class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     private val matcher = project.service<IgnoreMatcher>()
@@ -122,10 +123,10 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
      * @param file current file
      * @return file is ignored
      */
+    @Suppress("ComplexCondition", "ComplexMethod", "NestedBlockDepth", "ReturnCount")
     fun isFileIgnored(file: VirtualFile): Boolean {
-        val cached = expiringStatusCache[file]
-        if (cached != null) {
-            return cached
+        expiringStatusCache[file]?.let {
+            return it
         }
         if (ApplicationManager.getApplication().isDisposed || project.isDisposed ||
             DumbService.isDumb(project) || !isEnabled || !Utils.isInProject(file, project) ||
@@ -143,18 +144,17 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
             }
             val values = cachedIgnoreFilesIndex[fileType] ?: emptyList()
             valuesCount += values.size
+
+            @Suppress("LoopWithTooManyJumpStatements")
             for (value in values) {
                 ProgressManager.checkCanceled()
-                var relativePath: String?
                 val entryFile = value.file
-                relativePath = if (entryFile == null) {
+                var relativePath = if (entryFile == null) {
                     continue
                 } else {
                     Utils.getRelativePath(entryFile.parent, file)
-                }
-                if (relativePath == null) {
-                    continue
-                }
+                } ?: continue
+
                 relativePath = StringUtil.trimEnd(StringUtil.trimStart(relativePath, "/"), "/")
                 if (StringUtil.isEmpty(relativePath)) {
                     continue
@@ -162,19 +162,18 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 if (file.isDirectory) {
                     relativePath += "/"
                 }
-                for (item in value.items) {
-                    val pattern = Glob.getPattern(item.first!!)
+                value.items.forEach {
+                    val pattern = Glob.getPattern(it.first!!)
                     if (matcher.match(pattern, relativePath)) {
-                        ignored = !item.second!!
+                        ignored = !it.second
                         matched = true
                     }
                 }
             }
         }
         if (valuesCount > 0 && !ignored && !matched) {
-            val directory = file.parent
-            if (directory != null) {
-                for (vcsRoot in vcsRoots) {
+            file.parent.let { directory ->
+                vcsRoots.forEach { vcsRoot ->
                     ProgressManager.checkCanceled()
                     if (directory == vcsRoot.path) {
                         return expiringStatusCache.set(file, false)

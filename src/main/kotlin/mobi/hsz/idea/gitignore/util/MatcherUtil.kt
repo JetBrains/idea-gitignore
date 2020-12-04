@@ -12,7 +12,7 @@ import java.util.regex.Pattern
 /**
  * Util class to speed up and limit regex operation on the files paths.
  */
-class MatcherUtil {
+class MatcherUtil private constructor() {
 
     companion object {
         /**
@@ -22,6 +22,7 @@ class MatcherUtil {
          * @param path  to check
          * @return path contains all parts
          */
+        @Suppress("ReturnCount")
         fun matchAllParts(parts: Array<String?>?, path: String?): Boolean {
             var index = -1
             parts?.forEach {

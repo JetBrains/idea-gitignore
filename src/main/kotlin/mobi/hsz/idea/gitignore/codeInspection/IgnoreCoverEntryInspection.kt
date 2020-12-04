@@ -32,6 +32,7 @@ class IgnoreCoverEntryInspection : LocalInspectionTool() {
      * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action otherwise
      * @return `null` if no problems found or not applicable at file level
      */
+    @Suppress("ComplexMethod", "NestedBlockDepth", "ReturnCount")
     override fun checkFile(file: PsiFile, manager: InspectionManager, isOnTheFly: Boolean): Array<ProblemDescriptor>? {
         val virtualFile = file.virtualFile
         if (file !is IgnoreFile || !Utils.isInProject(virtualFile, file.getProject())) {

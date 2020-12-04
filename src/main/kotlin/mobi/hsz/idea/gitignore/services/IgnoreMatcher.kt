@@ -34,7 +34,6 @@ class IgnoreMatcher : Disposable {
                     }
                 }
                 cache.put(hashCode, result)
-                return result
             }
             return cache[hashCode]
         }

@@ -15,7 +15,7 @@ import java.io.Serializable
  * Entry containing information about the [VirtualFile] instance of the ignore file mapped with the collection
  * of ignore entries for better performance. Class is used for indexing.
  */
-class IgnoreEntryOccurrence(private val url: String, private val items: List<Pair<String, Boolean>>) : Serializable {
+class IgnoreEntryOccurrence(private val url: String, val items: List<Pair<String, Boolean>>) : Serializable {
 
     /**
      * Returns current [VirtualFile].

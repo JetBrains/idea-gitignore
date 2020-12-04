@@ -72,6 +72,7 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
              * @param project current project
              * @return entry is excluded in current project
              */
+            @Suppress("ReturnCount")
             private fun isEntryExcluded(entry: IgnoreEntry, project: Project): Boolean {
                 val pattern = Glob.createPattern(entry) ?: return false
                 val moduleRoot = Utils.getModuleRootForFile(entry.containingFile.virtualFile, project) ?: return false
@@ -101,17 +102,12 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
      * @param project current project
      * @return list of excluded roots
      */
-    fun getExcludedRoots(project: Project) = mutableListOf<VirtualFile>().apply {
-        ModuleManager.getInstance(project).modules.forEach {
-            ModuleRootManager.getInstance(it).modifiableModel.run {
-                if (isDisposed) {
-                    return@forEach
-                }
-                addAll(excludeRoots)
-                dispose()
-            }
-        }
-    }
+    fun getExcludedRoots(project: Project) =
+        ModuleManager.getInstance(project).modules.map {
+            ModuleRootManager.getInstance(it).modifiableModel
+        }.filter { !it.isDisposed }.map {
+            it.excludeRoots.toList()
+        }.flatten()
 
     /**
      * Checks if file is under given directory.
@@ -120,6 +116,7 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
      * @param directory directory
      * @return file is under directory
      */
+    @Suppress("ReturnCount")
     fun isUnder(file: VirtualFile, directory: VirtualFile): Boolean {
         if (directory == file) {
             return true
