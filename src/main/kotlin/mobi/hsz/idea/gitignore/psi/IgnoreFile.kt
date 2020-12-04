@@ -6,6 +6,7 @@ import com.intellij.lang.LanguageParserDefinitions
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.impl.source.PsiFileImpl
+import mobi.hsz.idea.gitignore.IgnoreException
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 
@@ -34,7 +35,7 @@ class IgnoreFile(viewProvider: FileViewProvider, private val fileType: IgnoreFil
     init {
         LanguageParserDefinitions.INSTANCE.forLanguage(language).apply {
             init(fileNodeType, fileNodeType)
-        } ?: throw RuntimeException("PsiFileBase: language.getParserDefinition() returned null for: $language")
+        } ?: throw IgnoreException("PsiFileBase: language.getParserDefinition() returned null for: $language")
     }
 
     override fun accept(visitor: PsiElementVisitor) {
