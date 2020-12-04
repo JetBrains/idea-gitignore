@@ -114,7 +114,6 @@ open class IgnoreFileAction(
             .run { StringUtil.trimLeading(this, '/') }
             .nullize()?.run { "/$this" } ?: ""
 
-
     /**
      * Gets Ignore file for given [Project] and root [PsiDirectory].
      * If file is missing - creates new one.
