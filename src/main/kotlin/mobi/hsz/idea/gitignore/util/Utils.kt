@@ -16,7 +16,6 @@ import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
-import com.intellij.util.containers.ContainerUtil
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreBundle.obtainLanguage
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
@@ -47,8 +46,8 @@ object Utils {
      * @return [PsiFile] instance
      */
     fun getPsiFile(project: Project, virtualFile: VirtualFile) =
-        PsiManager.getInstance(project).findFile(virtualFile) ?: run {
-            PsiManager.getInstance(project).findViewProvider(virtualFile)?.let {
+        PsiManager.getInstance(project).run {
+            findFile(virtualFile) ?: findViewProvider(virtualFile)?.let {
                 obtainLanguage(virtualFile)?.createFile(it)
             }
         }
@@ -100,9 +99,8 @@ object Utils {
      * @param project project
      * @return module containing passed file or null
      */
-    fun getModuleForFile(file: VirtualFile, project: Project): Module? = ContainerUtil.find(
-        ModuleManager.getInstance(project).modules
-    ) { module: Module -> module.moduleContentScope.contains(file) }
+    fun getModuleForFile(file: VirtualFile, project: Project): Module? =
+        ModuleManager.getInstance(project).modules.find { it.moduleContentScope.contains(file) }
 
     fun getModuleRootForFile(file: VirtualFile, project: Project) = getModuleForFile(file, project)?.let { module ->
         ModuleRootManager.getInstance(module).contentRoots.first()?.takeIf { it.isDirectory }
@@ -125,26 +123,25 @@ object Utils {
      * @param project  current project
      * @return editor
      */
-    fun createPreviewEditor(document: Document, project: Project?, isViewer: Boolean): Editor {
-        val editor = EditorFactory.getInstance().createEditor(
+    fun createPreviewEditor(document: Document, project: Project?, isViewer: Boolean): Editor =
+        (EditorFactory.getInstance().createEditor(
             document,
             project,
             IgnoreFileType.INSTANCE,
             isViewer
-        ) as EditorEx
-        editor.setCaretEnabled(!isViewer)
-        val settings = editor.settings
-        settings.isLineNumbersShown = false
-        settings.additionalColumnsCount = 1
-        settings.additionalLinesCount = 0
-        settings.isRightMarginShown = false
-        settings.isFoldingOutlineShown = false
-        settings.isLineMarkerAreaShown = false
-        settings.isIndentGuidesShown = false
-        settings.isVirtualSpace = false
-        settings.isWheelFontChangeEnabled = false
-        val colorsScheme = editor.colorsScheme
-        colorsScheme.setColor(EditorColors.CARET_ROW_COLOR, null)
-        return editor
-    }
+        ) as EditorEx).apply {
+            setCaretEnabled(!isViewer)
+            settings.apply {
+                isLineNumbersShown = false
+                additionalColumnsCount = 1
+                additionalLinesCount = 0
+                isRightMarginShown = false
+                isFoldingOutlineShown = false
+                isLineMarkerAreaShown = false
+                isIndentGuidesShown = false
+                isVirtualSpace = false
+                isWheelFontChangeEnabled = false
+            }
+            colorsScheme.setColor(EditorColors.CARET_ROW_COLOR, null)
+        }
 }

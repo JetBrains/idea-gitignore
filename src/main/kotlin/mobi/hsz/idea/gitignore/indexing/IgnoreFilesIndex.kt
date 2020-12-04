@@ -5,7 +5,6 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.indexing.FileBasedIndex
 import com.intellij.util.indexing.FileContent
 import com.intellij.util.indexing.ID
@@ -55,7 +54,7 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
                 }
             } catch (ignored: RuntimeException) {
             }
-            return ContainerUtil.emptyList()
+            return emptyList()
         }
     }
 

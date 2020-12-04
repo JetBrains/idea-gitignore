@@ -11,7 +11,6 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
-import com.intellij.util.containers.ContainerUtil
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
@@ -57,14 +56,14 @@ class IgnoreCoverEntryInspection : LocalInspectionTool() {
 
             if (!entry.isNegated) {
                 ignored.addAll(matched)
-                intersection = ContainerUtil.intersection(unignored, matched)
+                intersection = unignored.intersect(matched)
 
                 if (unignored.removeAll(intersection)) {
                     return@entries
                 }
             } else {
                 unignored.addAll(matched)
-                intersection = ContainerUtil.intersection(ignored, matched)
+                intersection = ignored.intersect(matched)
 
                 if (ignored.removeAll(intersection)) {
                     return@entries

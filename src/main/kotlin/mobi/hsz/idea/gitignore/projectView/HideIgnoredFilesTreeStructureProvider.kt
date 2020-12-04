@@ -8,7 +8,6 @@ import com.intellij.ide.util.treeView.AbstractTreeNode
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.changes.ChangeListManager
-import com.intellij.util.containers.ContainerUtil
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 
@@ -35,9 +34,9 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
         when {
             !ignoreSettings.hideIgnoredFiles || children.isEmpty() -> children
             else ->
-                ContainerUtil.filter(children) { node: AbstractTreeNode<*>? ->
-                    if (node is BasePsiNode<*>) {
-                        val file = node.virtualFile
+                children.filter {
+                    if (it is BasePsiNode<*>) {
+                        val file = it.virtualFile
                         return@filter file != null && !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file)
                     }
                     true

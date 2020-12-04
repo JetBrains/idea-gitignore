@@ -5,7 +5,6 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileVisitor
-import com.intellij.util.containers.ContainerUtil
 import com.jetbrains.rd.util.concurrentMapOf
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
@@ -28,7 +27,7 @@ object Glob {
      * @return search result
      */
     fun findOne(root: VirtualFile, entry: IgnoreEntry, matcher: IgnoreMatcher) =
-        find(root, ContainerUtil.newArrayList(entry), matcher, false)[entry]?.firstOrNull()
+        find(root, listOf(entry), matcher, false)[entry]?.firstOrNull()
 
     /**
      * Finds for [VirtualFile] list using glob rule in given root directory.

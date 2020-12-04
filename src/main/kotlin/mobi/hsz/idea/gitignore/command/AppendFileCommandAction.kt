@@ -7,7 +7,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
-import com.intellij.util.containers.ContainerUtil
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor
@@ -24,7 +23,7 @@ class AppendFileCommandAction(
     private val file: PsiFile,
     private val content: MutableSet<String>,
     private val ignoreDuplicates: Boolean = false,
-    private val ignoreComments: Boolean = false
+    private val ignoreComments: Boolean = false,
 ) : CommandAction<PsiFile?>(project) {
 
     /**
@@ -73,11 +72,12 @@ class AppendFileCommandAction(
                     var entry = it
 
                     if (ignoreDuplicates) {
-                        val currentLines = ContainerUtil.filter(
-                            document.text.split(Constants.NEWLINE).toTypedArray()
-                        ) { s: String -> s.isNotEmpty() && !s.startsWith(Constants.HASH) }
+                        val currentLines = document.text.split(Constants.NEWLINE).filter {
+                            it.isNotEmpty() && !it.startsWith(Constants.HASH)
+                        }.toMutableList()
                         val entryLines = it.split(Constants.NEWLINE).toMutableList()
                         val iterator = entryLines.iterator()
+
                         while (iterator.hasNext()) {
                             val line = iterator.next().trim { it <= ' ' }
                             if (line.isEmpty() || line.startsWith(Constants.HASH)) {

@@ -4,4 +4,4 @@ package mobi.hsz.idea.gitignore
 /**
  * Ignore [Exception] definition.
  */
-open class IgnoreException(message: String?) : RuntimeException(message)
+open class IgnoreException(message: String? = null) : RuntimeException(message)
