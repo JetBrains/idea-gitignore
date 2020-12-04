@@ -2,9 +2,9 @@
 package mobi.hsz.idea.gitignore.util
 
 import com.intellij.ide.util.PropertiesComponent
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.util.containers.ContainerUtil
 import org.jetbrains.annotations.NonNls
 
 /**
@@ -26,16 +26,16 @@ object Properties {
      * @param project current project
      * @return [.IGNORE_MISSING_GITIGNORE] value
      */
-    fun isIgnoreMissingGitignore(project: Project) = properties(project).getBoolean(IGNORE_MISSING_GITIGNORE, false)
+    fun isIgnoreMissingGitignore(project: Project) = project.service<PropertiesComponent>()
+        .getBoolean(IGNORE_MISSING_GITIGNORE, false)
 
     /**
      * Sets value of [.IGNORE_MISSING_GITIGNORE] key in [PropertiesComponent] to `true`.
      *
      * @param project current project
      */
-    fun setIgnoreMissingGitignore(project: Project) {
-        properties(project).setValue(IGNORE_MISSING_GITIGNORE, true)
-    }
+    fun setIgnoreMissingGitignore(project: Project) = project.service<PropertiesComponent>()
+        .setValue(IGNORE_MISSING_GITIGNORE, true)
 
     /**
      * Checks if user already dismissed notification about editing ignored file.
@@ -44,8 +44,8 @@ object Properties {
      * @param file    current file
      * @return notification was dismissed
      */
-    fun isDismissedIgnoredEditingNotification(project: Project, file: VirtualFile) =
-        properties(project).getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION)?.contains(file.canonicalPath) ?: false
+    fun isDismissedIgnoredEditingNotification(project: Project, file: VirtualFile) = project.service<PropertiesComponent>()
+        .getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION)?.contains(file.canonicalPath) ?: false
 
     /**
      * Stores information about dismissed notification about editing ignored file.
@@ -53,19 +53,10 @@ object Properties {
      * @param project current project
      * @param file    current file
      */
-    fun setDismissedIgnoredEditingNotification(project: Project, file: VirtualFile) {
-        val props = properties(project)
-        val values = props.getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION)
-        val set = ContainerUtil.newHashSet(*values ?: arrayOfNulls(0))
-        set.add(file.canonicalPath)
-        props.setValues(DISMISSED_IGNORED_EDITING_NOTIFICATION, set.toTypedArray())
+    fun setDismissedIgnoredEditingNotification(project: Project, file: VirtualFile) = project.service<PropertiesComponent>().let {
+        it.getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION).toHashSet().apply {
+            add(file.canonicalPath)
+            it.setValues(DISMISSED_IGNORED_EDITING_NOTIFICATION, toTypedArray())
+        }
     }
-
-    /**
-     * Shorthand for [PropertiesComponent.getInstance] method.
-     *
-     * @param project current project
-     * @return component instance
-     */
-    private fun properties(project: Project) = PropertiesComponent.getInstance(project)
 }

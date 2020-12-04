@@ -11,7 +11,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
  * Command action that creates new file in given directory.
  */
 class CreateFileCommandAction(project: Project, val directory: PsiDirectory, val fileType: IgnoreFileType) :
-    CommandAction<PsiFile?>(project) {
+    CommandAction<PsiFile>(project) {
 
     /**
      * Creates a new file using [IgnoreTemplatesFactory.createFromTemplate] to fill it with content.
