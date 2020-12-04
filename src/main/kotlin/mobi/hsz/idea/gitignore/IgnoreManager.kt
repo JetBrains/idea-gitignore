@@ -27,7 +27,6 @@ import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.openapi.vfs.newvfs.BulkFileListener
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.util.Time
-import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.messages.MessageBusConnection
 import com.intellij.util.messages.Topic
 import com.jetbrains.rd.util.concurrentMapOf
@@ -142,9 +141,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
             if (!IgnoreBundle.ENABLED_LANGUAGES[fileType]!!) {
                 continue
             }
-            val values: Collection<IgnoreEntryOccurrence> = ContainerUtil.notNullize(
-                cachedIgnoreFilesIndex[fileType]
-            )
+            val values = cachedIgnoreFilesIndex[fileType] ?: emptyList()
             valuesCount += values.size
             for (value in values) {
                 ProgressManager.checkCanceled()
@@ -258,7 +255,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     companion object {
         /** List of all available [IgnoreFileType]. */
-        private val FILE_TYPES = ContainerUtil.map(IgnoreBundle.LANGUAGES, IgnoreLanguage::fileType)
+        private val FILE_TYPES = IgnoreBundle.LANGUAGES.map(IgnoreLanguage::fileType)
 
         /** List of filenames that require to be associated with specific [IgnoreFileType]. */
         val FILE_TYPES_ASSOCIATION_QUEUE = concurrentMapOf<String, IgnoreFileType>()

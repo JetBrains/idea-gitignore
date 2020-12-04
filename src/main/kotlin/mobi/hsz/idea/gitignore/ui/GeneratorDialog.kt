@@ -29,7 +29,6 @@ import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.FilterComponent
 import com.intellij.ui.JBSplitter
 import com.intellij.ui.ScrollPaneFactory
-import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
@@ -186,7 +185,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
                 AppendFileCommandAction(
                     project,
                     file!!,
-                    ContainerUtil.newHashSet(content.toString()),
+                    hashSetOf(content.toString()),
                     ignoreDuplicates,
                     ignoreComments
                 ).execute()

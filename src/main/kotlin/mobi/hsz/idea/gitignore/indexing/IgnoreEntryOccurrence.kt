@@ -4,7 +4,6 @@ package mobi.hsz.idea.gitignore.indexing
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
-import com.intellij.util.containers.ContainerUtil
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.builder.HashCodeBuilder
 import java.io.DataInput
@@ -16,9 +15,7 @@ import java.io.Serializable
  * Entry containing information about the [VirtualFile] instance of the ignore file mapped with the collection
  * of ignore entries for better performance. Class is used for indexing.
  */
-class IgnoreEntryOccurrence(private val url: String, items: List<Pair<String, Boolean>>) : Serializable {
-
-    val items = ContainerUtil.immutableList(items)
+class IgnoreEntryOccurrence(private val url: String, private val items: List<Pair<String, Boolean>>) : Serializable {
 
     /**
      * Returns current [VirtualFile].

@@ -97,7 +97,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
             text: String,
             context: PsiFileSystemItem,
             result: MutableCollection<ResolveResult>,
-            caseSensitive: Boolean
+            caseSensitive: Boolean,
         ) {
             ProgressManager.checkCanceled()
             super.innerResolveInContext(text, context, result, caseSensitive)
@@ -117,12 +117,12 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
                 val root = element.containingFile.parent?.virtualFile
                 val psiManager = element.manager
 
-                ContainerUtil.createLockFreeCopyOnWriteList<VirtualFile>().run {
+                ContainerUtil.createConcurrentList<VirtualFile>().run {
                     addAll(MatcherUtil.getFilesForPattern(context.project, pattern))
                     if (isEmpty()) {
                         addAll(context.virtualFile.children)
                     } else if (current.endsWith(Constants.STAR) && current != entry.text) {
-                        addAll(ContainerUtil.filter(context.virtualFile.children) { obj: VirtualFile -> obj.isDirectory })
+                        addAll(context.virtualFile.children.filter { it.isDirectory })
                     } else if (current.endsWith(Constants.DOUBLESTAR)) {
                         val key = entry.text
                         if (!cacheMap.containsKey(key)) {
