@@ -31,6 +31,7 @@ class AppendFileCommandAction(
      *
      * @return previously provided file
      */
+    @Suppress("ComplexMethod", "LongMethod", "NestedBlockDepth")
     override fun compute(): PsiFile {
         if (content.isEmpty()) {
             return file
@@ -61,10 +62,8 @@ class AppendFileCommandAction(
             )
 
             if (insertAtCursor) {
-                val editors = EditorFactory.getInstance().getEditors(document)
-                if (editors.isNotEmpty()) {
-                    val position = editors[0].selectionModel.selectionStartPosition
-                    if (position != null) {
+                EditorFactory.getInstance().getEditors(document).firstOrNull()?.let { editor ->
+                    editor.selectionModel.selectionStartPosition?.let { position ->
                         offset = document.getLineStartOffset(position.line)
                     }
                 }

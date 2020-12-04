@@ -56,6 +56,7 @@ open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), Dum
         }
     }
 
+    @Suppress("ComplexCondition")
     override fun update(e: AnActionEvent) {
         val project = e.getData(CommonDataKeys.PROJECT)
         val view = e.getData(LangDataKeys.IDE_VIEW)
