@@ -111,7 +111,7 @@ class IgnoreCoverEntryInspection : LocalInspectionTool() {
      */
     private fun getPathsSet(contextDirectory: VirtualFile, entries: Array<IgnoreEntry>, matcher: IgnoreMatcher) =
         mutableMapOf<IgnoreEntry, Set<String>>().apply {
-            val found = Glob.findAsPaths(contextDirectory, listOf(*entries), matcher, true)
+            val found = Glob.findAsPaths(contextDirectory, entries.toList(), matcher, true)
             found.forEach { (key, value) ->
                 ProgressManager.checkCanceled()
                 this[key] = value
