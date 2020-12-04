@@ -56,6 +56,7 @@ open class IgnoreFileAction(
      *
      * @param e action event
      */
+    @Suppress("NestedBlockDepth")
     override fun actionPerformed(e: AnActionEvent) {
         val files = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
         val project = e.getRequiredData(CommonDataKeys.PROJECT)
