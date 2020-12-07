@@ -124,13 +124,14 @@ object Utils {
      * @return editor
      */
     fun createPreviewEditor(document: Document, project: Project?, isViewer: Boolean): Editor =
-        (EditorFactory.getInstance().createEditor(
+        EditorFactory.getInstance().createEditor(
             document,
             project,
             IgnoreFileType.INSTANCE,
             isViewer
-        ) as EditorEx).apply {
-            setCaretEnabled(!isViewer)
+        ).apply {
+            (this as EditorEx).setCaretEnabled(!isViewer)
+
             settings.apply {
                 isLineNumbersShown = false
                 additionalColumnsCount = 1
