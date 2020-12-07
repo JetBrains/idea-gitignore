@@ -80,13 +80,13 @@ class ResolvingTest : BasePlatformTestCase() {
             TestCase.assertNotNull(reference)
 
             val rootFile = file.containingDirectory.virtualFile
-            val resolveResults = reference!!.multiResolve(true)
+            val resolveResults = reference?.multiResolve(true)
             val actualResolve = ContainerUtil.map(resolveResults) {
                 it?.element.let { element ->
                     TestCase.assertNotNull(element)
                     UsefulTestCase.assertInstanceOf(element, PsiFileSystemItem::class.java)
                     val fileSystemItem = element as PsiFileSystemItem?
-                    VfsUtilCore.getRelativePath(fileSystemItem!!.virtualFile, rootFile, '/')!!
+                    fileSystemItem?.let { file -> VfsUtilCore.getRelativePath(file.virtualFile, rootFile, '/') }
                 }
             }
 

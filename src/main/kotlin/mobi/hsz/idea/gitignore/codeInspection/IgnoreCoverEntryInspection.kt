@@ -52,7 +52,7 @@ class IgnoreCoverEntryInspection : LocalInspectionTool() {
 
         entries.forEach entries@{ entry ->
             ProgressManager.checkCanceled()
-            val matched = matchedMap[entry]!!
+            val matched = matchedMap[entry] ?: return@entries
             val intersection: Collection<String>
 
             if (!entry.isNegated) {
@@ -73,7 +73,7 @@ class IgnoreCoverEntryInspection : LocalInspectionTool() {
 
             map.keys.forEach recent@{ recent ->
                 ProgressManager.checkCanceled()
-                val recentValues = map[recent]!!
+                val recentValues = map[recent] ?: return@recent
                 if (recentValues.isEmpty() || matched.isEmpty()) {
                     return@recent
                 }

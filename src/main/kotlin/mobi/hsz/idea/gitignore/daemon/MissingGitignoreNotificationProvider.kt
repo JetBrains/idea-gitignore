@@ -72,7 +72,7 @@ class MissingGitignoreNotificationProvider(project: Project) : EditorNotificatio
                 val directory = PsiManager.getInstance(project).findDirectory(moduleRoot)
                 if (directory != null) {
                     try {
-                        val file = CreateFileCommandAction(project, directory, fileType).execute()!!
+                        val file = CreateFileCommandAction(project, directory, fileType).execute()
                         FileEditorManager.getInstance(project).openFile(file.virtualFile, true)
                         GeneratorDialog(project, file).show()
                     } catch (throwable: Throwable) {

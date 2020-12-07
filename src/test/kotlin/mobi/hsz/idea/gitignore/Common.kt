@@ -11,6 +11,7 @@ import mobi.hsz.idea.gitignore.util.Constants
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Modifier
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class Common<T> : BasePlatformTestCase() {
 
     @Throws(

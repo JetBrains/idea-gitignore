@@ -64,7 +64,7 @@ import javax.swing.tree.TreePath
 /**
  * [GeneratorDialog] responsible for displaying list of all available templates and adding selected ones to the specified file.
  */
-@Suppress("MagicNumber", "TooManyFunctions")
+@Suppress("MagicNumber", "TooManyFunctions", "UnsafeCallOnNullableType")
 class GeneratorDialog(private val project: Project, var file: PsiFile? = null, var action: CreateFileCommandAction? = null) :
     DialogWrapper(project, false) {
 

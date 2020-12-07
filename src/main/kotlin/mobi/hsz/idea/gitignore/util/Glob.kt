@@ -64,7 +64,7 @@ object Glob {
                         var matches = false
                         if (value == null || matcher.match(value, path)) {
                             matches = true
-                            get(key)!!.add(file)
+                            get(key)?.add(file)
                         }
                         current[key] = value.takeIf { !includeNested || !matches }
                     }

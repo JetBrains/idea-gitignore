@@ -20,7 +20,7 @@ class IgnoreEntryManipulator : AbstractElementManipulator<IgnoreEntry>() {
             return entry
         }
         val language = entry.language as IgnoreLanguage
-        val fileType = (language.associatedFileType as IgnoreFileType?)!!
+        val fileType = (language.associatedFileType as IgnoreFileType)
         val file = PsiFileFactory.getInstance(entry.project)
             .createFileFromText(language.filename, fileType, range.replace(entry.text, newContent))
 

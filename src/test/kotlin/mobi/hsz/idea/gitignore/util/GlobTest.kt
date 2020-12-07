@@ -13,6 +13,7 @@ import org.junit.Assert
 import org.junit.Test
 import java.lang.reflect.InvocationTargetException
 
+@Suppress("UnsafeCallOnNullableType")
 class GlobTest : Common<Glob>() {
 
     @Test
@@ -147,6 +148,7 @@ class GlobTest : Common<Glob>() {
 
     @Test
     @Throws(Exception::class)
+    @Suppress("LongMethod")
     fun testCreatePattern() {
         Glob.createPattern("file.txt", IgnoreBundle.Syntax.GLOB).let {
             TestCase.assertNotNull(it)

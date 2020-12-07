@@ -9,7 +9,7 @@ import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 /**
  * Definition of [ASTWrapperPsiElement].
  */
-open class IgnoreElementImpl(node: ASTNode?) : ASTWrapperPsiElement(node!!) {
+open class IgnoreElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
 
     override fun getReferences(): Array<PsiReference> = ReferenceProvidersRegistry.getReferencesFromProviders(this)
 }
