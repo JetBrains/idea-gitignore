@@ -111,7 +111,7 @@ class IgnoreSettingsPanel : Disposable {
                 isSel: Boolean,
                 hasFocus: Boolean,
                 row: Int,
-                column: Int
+                column: Int,
             ): Component {
                 val editable = table.isCellEditable(row, column)
                 val newValue = if (editable) value else null
@@ -423,8 +423,8 @@ class IgnoreSettingsPanel : Disposable {
         override fun isCellEditable(row: Int, column: Int): Boolean {
             val language = ArrayList(settings.keys)[row]
             return if (language != null && column == 2) {
-            @Suppress("ForbiddenComment")
-            // TODO: if (language != null && column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) {
+                @Suppress("ForbiddenComment")
+                // TODO: if (language != null && column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) {
                 false
             } else column != 0
         }
