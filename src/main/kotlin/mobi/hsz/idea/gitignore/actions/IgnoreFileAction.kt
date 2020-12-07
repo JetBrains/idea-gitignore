@@ -124,12 +124,13 @@ open class IgnoreFileAction(
      * @param createIfMissing create new file if missing
      * @return Ignore file
      */
+    @Suppress("ReturnCount")
     private fun getIgnoreFile(project: Project, fileType: IgnoreFileType, psiDirectory: PsiDirectory?, createIfMissing: Boolean): PsiFile? {
         val projectDir = project.guessProjectDir() ?: return null
-        val directory = psiDirectory ?: PsiManager.getInstance(project).findDirectory(projectDir)
+        val directory = psiDirectory ?: PsiManager.getInstance(project).findDirectory(projectDir) ?: return null
 
         val filename = fileType.ignoreLanguage.filename
-        var file = directory!!.findFile(filename)
+        var file = directory.findFile(filename)
         val virtualFile = file?.virtualFile ?: directory.virtualFile.findChild(filename)
 
         if (file == null && virtualFile == null && createIfMissing) {

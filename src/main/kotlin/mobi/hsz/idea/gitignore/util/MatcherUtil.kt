@@ -25,8 +25,8 @@ class MatcherUtil private constructor() {
         @Suppress("ReturnCount")
         fun matchAllParts(parts: Array<String?>?, path: String?): Boolean {
             var index = -1
-            parts?.forEach {
-                index = path?.indexOf(it!!, index) ?: -1
+            parts?.filterNotNull()?.forEach {
+                index = path?.indexOf(it, index) ?: -1
                 if (index == -1) {
                     return false
                 }
@@ -41,7 +41,7 @@ class MatcherUtil private constructor() {
          * @param path  to check
          * @return path contains any of the parts
          */
-        fun matchAnyPart(parts: Array<String?>?, path: String?) = parts?.any { path?.contains(it!!) ?: false } ?: false
+        fun matchAnyPart(parts: Array<String?>?, path: String?) = parts?.filterNotNull()?.any { path?.contains(it) ?: false } ?: false
 
         /**
          * Extracts alphanumeric parts from  [Pattern].

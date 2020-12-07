@@ -40,7 +40,7 @@ class IgnoreColorSettingsPage : ColorSettingsPage {
          * @see .SAMPLE_GITIGNORE_PATH
          * @see .SAMPLE_GITIGNORE
          */
-        private fun loadSampleGitignore() = Resources.getResourceContent(SAMPLE_GITIGNORE_PATH)!!
+        private fun loadSampleGitignore() = Resources.getResourceContent(SAMPLE_GITIGNORE_PATH) ?: ""
     }
 
     override fun getIcon(): Icon? = null

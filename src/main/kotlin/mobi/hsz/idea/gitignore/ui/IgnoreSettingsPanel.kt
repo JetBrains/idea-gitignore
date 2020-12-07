@@ -56,7 +56,7 @@ import javax.swing.table.AbstractTableModel
 /**
  * UI form for [IgnoreSettings] edition.
  */
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "UnsafeCallOnNullableType")
 class IgnoreSettingsPanel : Disposable {
 
     /** The parent panel for the form. */

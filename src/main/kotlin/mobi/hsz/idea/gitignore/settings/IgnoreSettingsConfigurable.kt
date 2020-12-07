@@ -13,6 +13,7 @@ import javax.swing.JComponent
 /**
  * Configuration interface for [IgnoreSettings].
  */
+@Suppress("UnsafeCallOnNullableType")
 class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvider {
 
     private val settings = IgnoreSettings.getInstance()

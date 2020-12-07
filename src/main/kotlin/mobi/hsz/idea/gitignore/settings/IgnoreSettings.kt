@@ -220,7 +220,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
             userTemplates.addAll(loadTemplates(this))
             IgnoreBundle.LANGUAGES
                 .filter { !it.isVCS || IgnoreBundle.isExcludedFromHighlighting(it) }
-                .forEach { languagesSettings[it]!![IgnoreLanguagesSettings.KEY.ENABLE] = false }
+                .forEach { languagesSettings[it]?.apply { this[IgnoreLanguagesSettings.KEY.ENABLE] = false } }
         }
     }
 

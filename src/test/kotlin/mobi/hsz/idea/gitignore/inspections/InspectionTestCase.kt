@@ -7,6 +7,7 @@ import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import java.io.File
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class InspectionTestCase : BasePlatformTestCase() {
 
     companion object {

@@ -71,7 +71,7 @@ object Utils {
     fun isVcsDirectory(directory: VirtualFile) = when {
         !directory.isDirectory -> false
         else -> IgnoreBundle.VCS_LANGUAGES.find {
-            directory.name == it.vcsDirectory && IgnoreBundle.ENABLED_LANGUAGES[it.fileType]!!
+            directory.name == it.vcsDirectory && IgnoreBundle.ENABLED_LANGUAGES[it.fileType] ?: false
         } != null
     }
 

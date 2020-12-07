@@ -55,6 +55,6 @@ class CompletionTest : Common<Any?>() {
     private fun doTestVariants(beforeText: String, vararg variants: String) {
         myFixture.configureByText(IgnoreFileType.INSTANCE, beforeText)
         myFixture.completeBasic()
-        UsefulTestCase.assertContainsElements(myFixture.lookupElementStrings!!.toList(), *variants)
+        UsefulTestCase.assertContainsElements(myFixture.lookupElementStrings?.toList() ?: emptyList(), *variants)
     }
 }

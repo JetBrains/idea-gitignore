@@ -29,7 +29,7 @@ open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), Dum
         var file = directory.findFile(filename)
         val virtualFile = file?.virtualFile ?: directory.virtualFile.findChild(filename)
         val dialog =
-            if (file == null && virtualFile == null) {
+            if (file == null || virtualFile == null) {
                 GeneratorDialog(project, action = CreateFileCommandAction(project, directory, fileType))
             } else {
                 Notifications.Bus.notify(
@@ -37,14 +37,12 @@ open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), Dum
                         fileType.languageName,
                         IgnoreBundle.message("action.newFile.exists", fileType.languageName),
                         @Suppress("DialogTitleCapitalization")
-                        IgnoreBundle.message("action.newFile.exists.in", virtualFile!!.path),
+                        IgnoreBundle.message("action.newFile.exists.in", virtualFile.path),
                         NotificationType.INFORMATION
                     ),
                     project
                 )
-                if (file == null) {
-                    file = Utils.getPsiFile(project, virtualFile)
-                }
+                file = Utils.getPsiFile(project, virtualFile)
                 GeneratorDialog(project, file)
             }.apply {
                 show()

@@ -110,10 +110,9 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     /** [IgnoreSettings] listener to watch changes in the plugin's settings. */
     private val settingsListener = IgnoreSettings.Listener { key, value ->
         when (key) {
-            IgnoreSettings.KEY.IGNORED_FILE_STATUS -> toggle((value as Boolean?)!!)
+            IgnoreSettings.KEY.IGNORED_FILE_STATUS -> toggle(value as Boolean)
             IgnoreSettings.KEY.HIDE_IGNORED_FILES -> ProjectView.getInstance(project).refresh()
-            else -> {
-            }
+            else -> {}
         }
     }
 
@@ -139,7 +138,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         var valuesCount = 0
         for (fileType in FILE_TYPES) {
             ProgressManager.checkCanceled()
-            if (!IgnoreBundle.ENABLED_LANGUAGES[fileType]!!) {
+            if (IgnoreBundle.ENABLED_LANGUAGES[fileType] != true) {
                 continue
             }
             val values = cachedIgnoreFilesIndex[fileType] ?: emptyList()

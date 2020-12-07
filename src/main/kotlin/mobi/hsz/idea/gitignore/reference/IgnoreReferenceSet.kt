@@ -125,30 +125,28 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
                     } else if (current.endsWith(Constants.STAR) && current != entry.text) {
                         addAll(context.virtualFile.children.filter { it.isDirectory })
                     } else if (current.endsWith(Constants.DOUBLESTAR)) {
-                        val key = entry.text
-                        if (!cacheMap.containsKey(key)) {
+
+                        val children = cacheMap.getOrPut(entry.text) {
                             val children = mutableListOf<VirtualFile>()
-                            val visitor: VirtualFileVisitor<*> = object : VirtualFileVisitor<Any?>() {
-                                override fun visitFile(file: VirtualFile): Boolean {
-                                    if (file.isDirectory) {
-                                        children.add(file)
-                                        return true
+                            val visitor = object : VirtualFileVisitor<Any>() {
+                                override fun visitFile(file: VirtualFile) =
+                                    file.isDirectory.also {
+                                        if (it) {
+                                            children.add(file)
+                                        }
                                     }
-                                    return false
-                                }
                             }
-                            forEach { file ->
+
+                            filter(VirtualFile::isDirectory).forEach {
                                 ProgressManager.checkCanceled()
-                                if (!file.isDirectory) {
-                                    return@forEach
-                                }
-                                VfsUtil.visitChildrenRecursively(file, visitor)
-                                children.remove(file)
+                                VfsUtil.visitChildrenRecursively(it, visitor)
+                                children.remove(it)
                             }
-                            cacheMap[key] = children
+
+                            children
                         }
                         clear()
-                        addAll(cacheMap[key]!!)
+                        addAll(children)
                     }
 
                     forEach { file ->

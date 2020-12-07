@@ -37,7 +37,7 @@ class IgnoreDirectoryMarkerProvider : LineMarkerProvider {
         if (!isDirectory) {
             val key = element.getText()
             if (cache.containsKey(key)) {
-                isDirectory = cache[key]!!
+                isDirectory = cache[key] ?: false
             } else {
                 val parent = element.getContainingFile().virtualFile.parent ?: return null
                 val project = element.getProject()
