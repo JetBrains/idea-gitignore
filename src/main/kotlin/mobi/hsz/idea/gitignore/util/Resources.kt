@@ -5,11 +5,9 @@ import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings.UserTemplate
 import org.jetbrains.annotations.NonNls
-import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.io.StringReader
 import java.util.Scanner
 
 /**
@@ -22,7 +20,7 @@ object Resources {
     private val GITIGNORE_TEMPLATES_PATH = "/templates.list"
 
     /** List of fetched [Template] elements from resources.  */
-    private var resourceTemplates: MutableList<Template>? = null // fetch templates from resources
+    private var resourceTemplates = mutableListOf<Template>()
 
     /**
      * Returns list of gitignore templates.
@@ -31,39 +29,35 @@ object Resources {
      */
     val gitignoreTemplates: List<Template>
         get() {
-            val settings = IgnoreSettings.getInstance()
-            val starredTemplates: List<String> = settings.starredTemplates
-            if (resourceTemplates == null) {
-                resourceTemplates = mutableListOf()
+            if (resourceTemplates.isNotEmpty()) {
+                return resourceTemplates
+            }
 
-                // fetch templates from resources
-                try {
-                    val list = getResourceContent(GITIGNORE_TEMPLATES_PATH)
-                    if (list != null) {
-                        BufferedReader(StringReader(list)).useLines { lines ->
-                            lines.map {
-                                val line = "/$it"
-                                val file = getResource(line)
-                                if (file != null) {
-                                    val content = getResourceContent(line)
-                                    val template = Template(file, content)
-                                    template.isStarred = starredTemplates.contains(template.name)
-                                    resourceTemplates?.add(template)
-                                }
-                            }
+            val settings = IgnoreSettings.getInstance()
+            val starredTemplates = settings.starredTemplates
+
+            // fetch templates from resources
+            try {
+                getResourceContent(GITIGNORE_TEMPLATES_PATH)?.run {
+                    lines().map {
+                        val line = "/$it"
+                        getResource(line)?.let { file ->
+                            val content = getResourceContent(line)
+                            val template = Template(file, content)
+                            template.isStarred = starredTemplates.contains(template.name)
+                            resourceTemplates.add(template)
                         }
                     }
-                } catch (e: IOException) {
-                    e.printStackTrace()
                 }
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-            val templates = mutableListOf<Template>()
 
-            // fetch user templates
-            for (userTemplate in settings.userTemplates) {
-                templates.add(Template(userTemplate))
-            }
-            return templates
+            resourceTemplates.addAll(settings.userTemplates.map {
+                Template(it)
+            })
+
+            return resourceTemplates
         }
 
     /**
