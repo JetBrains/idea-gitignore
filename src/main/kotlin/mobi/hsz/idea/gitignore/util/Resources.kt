@@ -19,9 +19,6 @@ object Resources {
     @NonNls
     private val GITIGNORE_TEMPLATES_PATH = "/templates.list"
 
-    /** List of fetched [Template] elements from resources.  */
-    private var resourceTemplates = mutableListOf<Template>()
-
     /**
      * Returns list of gitignore templates.
      *
@@ -29,10 +26,7 @@ object Resources {
      */
     val gitignoreTemplates: List<Template>
         get() {
-            if (resourceTemplates.isNotEmpty()) {
-                return resourceTemplates
-            }
-
+            val resourceTemplates = mutableListOf<Template>()
             val settings = IgnoreSettings.getInstance()
             val starredTemplates = settings.starredTemplates
 
@@ -53,11 +47,7 @@ object Resources {
                 e.printStackTrace()
             }
 
-            resourceTemplates.addAll(settings.userTemplates.map {
-                Template(it)
-            })
-
-            return resourceTemplates
+            return resourceTemplates + settings.userTemplates.map { Template(it) }
         }
 
     /**

@@ -285,7 +285,7 @@ class IgnoreSettingsPanel : Disposable {
                         message("settings.userTemplates.dialogError").takeUnless { checkInput(inputString) }
                 }
             )?.let {
-                initialValue.name = name
+                initialValue.name = it
             }
 
             return initialValue.takeUnless { initialValue.isEmpty }
