@@ -323,9 +323,7 @@ class IgnoreSettingsPanel : Disposable {
          * @param content new content
          */
         fun updateContent(content: String?) {
-            currentItem?.let {
-                it.content = content!!
-            }
+            currentItem?.content = content ?: ""
         }
 
         private val currentItem: UserTemplate?
