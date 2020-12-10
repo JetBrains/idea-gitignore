@@ -3,6 +3,16 @@ Change Log
 
 ## [Unreleased]
 
+- migrate code to #Kotlin
+- reduce code by 60% – 644KB to 262KB
+- fix ALL compatibility issues with 2020.3
+- introduce detekt for better code quality
+- code cleanup (drop Git/Mercurial dead already features)
+- plugin is now dynamic (install/uninstall without IDE restarting)
+- introduce better CI – based on the IntelliJ Platform Plugin Template
+- upgrade all Grammar-Kit, Gradle tooling
+- focus on always supporting the latest release (only): currently 2020.3
+  
 ## [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (2019-11-28)
 
 [Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.2...v3.2.3)
