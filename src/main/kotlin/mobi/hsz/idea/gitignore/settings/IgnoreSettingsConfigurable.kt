@@ -4,11 +4,11 @@ package mobi.hsz.idea.gitignore.settings
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Comparing
+import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vcs.VcsConfigurableProvider
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.ui.IgnoreSettingsPanel
 import mobi.hsz.idea.gitignore.util.Utils
-import javax.swing.JComponent
 
 /**
  * Configuration interface for [IgnoreSettings].
@@ -17,21 +17,15 @@ import javax.swing.JComponent
 class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvider {
 
     private val settings = IgnoreSettings.getInstance()
-    private var settingsPanel: IgnoreSettingsPanel? = null
+    private var settingsPanel = IgnoreSettingsPanel()
 
     override fun getDisplayName(): String = IgnoreBundle.message("settings.displayName")
 
     override fun getHelpTopic(): String = displayName
 
-    override fun createComponent(): JComponent? {
-        if (settingsPanel == null) {
-            settingsPanel = IgnoreSettingsPanel()
-        }
-        reset()
-        return settingsPanel!!.panel
-    }
+    override fun createComponent() = settingsPanel.panel
 
-    override fun isModified() = settingsPanel!!.run {
+    override fun isModified() = settingsPanel.run {
         !Comparing.equal(settings.missingGitignore, missingGitignore) ||
             !Utils.equalLists(settings.userTemplates, userTemplates) ||
             !Comparing.equal(settings.ignoredFileStatus, ignoredFileStatus) ||
@@ -42,7 +36,7 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
     }
 
     override fun apply() {
-        settingsPanel!!.apply {
+        settingsPanel.apply {
             settings.missingGitignore = missingGitignore
             settings.userTemplates = userTemplates.toMutableList()
             settings.ignoredFileStatus = ignoredFileStatus
@@ -54,7 +48,7 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
     }
 
     override fun reset() {
-        settingsPanel!!.apply {
+        settingsPanel.apply {
             missingGitignore = settings.missingGitignore
             userTemplates = settings.userTemplates
             ignoredFileStatus = settings.ignoredFileStatus
@@ -66,8 +60,7 @@ class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvid
     }
 
     override fun disposeUIResources() {
-        settingsPanel!!.dispose()
-        settingsPanel = null
+        Disposer.dispose(settingsPanel)
     }
 
     override fun getConfigurable(project: Project) = this
