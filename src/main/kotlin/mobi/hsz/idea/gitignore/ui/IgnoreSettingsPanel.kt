@@ -26,6 +26,7 @@ import com.intellij.openapi.util.JDOMUtil
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.AddEditDeleteListPanel
+import com.intellij.ui.BooleanTableCellEditor
 import com.intellij.ui.BooleanTableCellRenderer
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.ToolbarDecorator
@@ -39,6 +40,7 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings.IgnoreLanguagesSettings
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings.UserTemplate
 import mobi.hsz.idea.gitignore.util.Constants
 import mobi.hsz.idea.gitignore.util.Utils.createPreviewEditor
+import org.jdom.Document
 import org.jdom.JDOMException
 import java.awt.BorderLayout
 import java.awt.Component
@@ -56,214 +58,226 @@ import javax.swing.table.AbstractTableModel
 /**
  * UI form for [IgnoreSettings] edition.
  */
-@Suppress("MagicNumber", "UnsafeCallOnNullableType")
+@Suppress("MagicNumber")
 class IgnoreSettingsPanel : Disposable {
 
     /** The parent panel for the form. */
     var panel: JPanel? = null
 
     /** Form element for IgnoreSettings#missingGitignore. */
-    private var missingGitignoreCheckBox: JCheckBox? = null
+    private lateinit var missingGitignoreCheckBox: JCheckBox
 
     /** Templates list panel. */
-    private var templatesListPanel: TemplatesListPanel? = null
+    private lateinit var templatesListPanel: TemplatesListPanel
 
     /** Enable ignored file status coloring. */
-    private var ignoredFileStatusCheckBox: JCheckBox? = null
+    private lateinit var ignoredFileStatusCheckBox: JCheckBox
 
     /** Defines if new content should be inserted at the cursor's position or at the document end. */
-    private var insertAtCursorCheckBox: JCheckBox? = null
+    private lateinit var insertAtCursorCheckBox: JCheckBox
 
     /** Splitter element. */
-    private var templatesSplitter: Splitter? = null
+    private lateinit var templatesSplitter: Splitter
 
     /** File types scroll panel with table. */
-    private var languagesPanel: JScrollPane? = null
+    private lateinit var languagesPanel: JScrollPane
 
     /** Settings table. */
-    private var languagesTable: JBTable? = null
+    private lateinit var languagesTable: JBTable
 
     /** Enable unignore files group. */
-    private var unignoreFiles: JCheckBox? = null
+    private lateinit var unignoreFiles: JCheckBox
 
     /** Inform about editing ignored file. */
-    private var notifyIgnoredEditingCheckBox: JCheckBox? = null
+    private lateinit var notifyIgnoredEditingCheckBox: JCheckBox
 
     /** Editor panel element. */
-    private var editorPanel: EditorPanel? = null
+    private lateinit var editorPanel: EditorPanel
+
+    companion object {
+        const val NAME_COLUMN = 0
+        const val NEW_FILE_COLUMN = 1
+        const val ENABLE_COLUMN = 2
+    }
 
     private fun createUIComponents() {
         templatesListPanel = TemplatesListPanel()
-        editorPanel = EditorPanel()
-        editorPanel!!.preferredSize = Dimension(Int.MAX_VALUE, 200)
-        templatesSplitter = Splitter(false, 0.3f)
-        templatesSplitter!!.firstComponent = templatesListPanel
-        templatesSplitter!!.secondComponent = editorPanel
-        languagesTable = JBTable()
-        languagesTable!!.model = LanguagesTableModel()
-        languagesTable!!.selectionModel.selectionMode = ListSelectionModel.SINGLE_SELECTION
-        languagesTable!!.columnSelectionAllowed = false
-        languagesTable!!.rowHeight = 22
-        languagesTable!!.columnModel.getColumn(2).cellRenderer = object : BooleanTableCellRenderer() {
-            override fun getTableCellRendererComponent(
-                table: JTable,
-                value: Any,
-                isSel: Boolean,
-                hasFocus: Boolean,
-                row: Int,
-                column: Int,
-            ): Component {
-                val editable = table.isCellEditable(row, column)
-                val newValue = if (editable) value else null
-                return super.getTableCellRendererComponent(table, newValue, isSel, hasFocus, row, column)
-            }
+        editorPanel = EditorPanel().apply {
+            preferredSize = Dimension(Int.MAX_VALUE, 200)
         }
-        languagesTable!!.preferredScrollableViewportSize = Dimension(-1, languagesTable!!.rowHeight * IgnoreBundle.LANGUAGES.size / 2)
-        languagesTable!!.isStriped = true
-        languagesTable!!.setShowGrid(false)
-        languagesTable!!.border = JBUI.Borders.empty()
-        languagesTable!!.dragEnabled = false
+        templatesSplitter = Splitter(false, 0.3f).apply {
+            firstComponent = templatesListPanel
+            secondComponent = editorPanel
+        }
+        languagesTable = JBTable().apply {
+            model = LanguagesTableModel()
+            selectionModel.selectionMode = ListSelectionModel.SINGLE_SELECTION
+            columnSelectionAllowed = false
+            rowHeight = 22
+            columnModel.getColumn(NEW_FILE_COLUMN).apply {
+                cellEditor = BooleanTableCellEditor()
+                cellRenderer = BooleanTableCellRenderer()
+            }
+            columnModel.getColumn(ENABLE_COLUMN).apply {
+                cellEditor = BooleanTableCellEditor()
+                cellRenderer = object : BooleanTableCellRenderer() {
+                    override fun getTableCellRendererComponent(
+                        table: JTable,
+                        value: Any,
+                        isSel: Boolean,
+                        hasFocus: Boolean,
+                        row: Int,
+                        column: Int,
+                    ): Component {
+                        val editable = table.isCellEditable(row, column)
+                        val newValue = if (editable) value else null
+                        return super.getTableCellRendererComponent(table, newValue, isSel, hasFocus, row, column)
+                    }
+                }
+            }
+            preferredScrollableViewportSize = Dimension(-1, rowHeight * IgnoreBundle.LANGUAGES.size / 2)
+            isStriped = true
+            border = JBUI.Borders.empty()
+            dragEnabled = false
+            setShowGrid(false)
+        }
         languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable)
     }
 
     override fun dispose() {
-        if (!editorPanel!!.preview.isDisposed) {
-            EditorFactory.getInstance().releaseEditor(editorPanel!!.preview)
+        if (!editorPanel.preview.isDisposed) {
+            EditorFactory.getInstance().releaseEditor(editorPanel.preview)
         }
     }
 
     var missingGitignore
-        get() = missingGitignoreCheckBox!!.isSelected
+        get() = missingGitignoreCheckBox.isSelected
         set(selected) {
-            missingGitignoreCheckBox!!.isSelected = selected
+            missingGitignoreCheckBox.isSelected = selected
         }
 
     var ignoredFileStatus
-        get() = ignoredFileStatusCheckBox!!.isSelected
+        get() = ignoredFileStatusCheckBox.isSelected
         set(selected) {
-            ignoredFileStatusCheckBox!!.isSelected = selected
+            ignoredFileStatusCheckBox.isSelected = selected
         }
 
     var userTemplates: List<UserTemplate>
-        get() = templatesListPanel!!.list
+        get() = templatesListPanel.list
         set(userTemplates) {
-            templatesListPanel!!.resetForm(userTemplates)
+            templatesListPanel.resetForm(userTemplates)
         }
 
     var insertAtCursor
-        get() = insertAtCursorCheckBox!!.isSelected
+        get() = insertAtCursorCheckBox.isSelected
         set(selected) {
-            insertAtCursorCheckBox!!.isSelected = selected
+            insertAtCursorCheckBox.isSelected = selected
         }
 
     var unignoreActions
-        get() = unignoreFiles!!.isSelected
+        get() = unignoreFiles.isSelected
         set(selected) {
-            unignoreFiles!!.isSelected = selected
+            unignoreFiles.isSelected = selected
         }
 
     var notifyIgnoredEditing
-        get() = notifyIgnoredEditingCheckBox!!.isSelected
+        get() = notifyIgnoredEditingCheckBox.isSelected
         set(selected) {
-            notifyIgnoredEditingCheckBox!!.isSelected = selected
+            notifyIgnoredEditingCheckBox.isSelected = selected
         }
 
     val languagesSettings: LanguagesTableModel
-        get() = languagesTable!!.model as LanguagesTableModel
+        get() = languagesTable.model as LanguagesTableModel
 
     /** Extension for the CRUD list panel. */
     open inner class TemplatesListPanel : AddEditDeleteListPanel<UserTemplate>(null, ArrayList()) {
 
         override fun customizeDecorator(decorator: ToolbarDecorator) {
             super.customizeDecorator(decorator)
-            val group = DefaultActionGroup()
-            group.addSeparator()
-            group.add(
-                object : AnAction(
-                    message("action.importTemplates"),
-                    message("action.importTemplates.description"),
-                    AllIcons.Actions.Install
-                ) {
-                    override fun actionPerformed(event: AnActionEvent) {
-                        val descriptor: FileChooserDescriptor = object : FileChooserDescriptor(true, false, true, false, true, false) {
-                            override fun isFileVisible(file: VirtualFile, showHiddenFiles: Boolean): Boolean {
-                                return super.isFileVisible(file, showHiddenFiles) &&
-                                    (file.isDirectory || file.extension == "xml" || file.fileType === FileTypes.ARCHIVE)
+            val group = DefaultActionGroup().apply {
+                addSeparator()
+                add(
+                    object : AnAction(
+                        message("action.importTemplates"),
+                        message("action.importTemplates.description"),
+                        AllIcons.Actions.Install
+                    ) {
+                        override fun actionPerformed(event: AnActionEvent) {
+                            val descriptor: FileChooserDescriptor = object : FileChooserDescriptor(true, false, true, false, true, false) {
+                                override fun isFileVisible(file: VirtualFile, showHiddenFiles: Boolean) =
+                                    super.isFileVisible(file, showHiddenFiles) &&
+                                        (file.isDirectory || file.extension == "xml" || file.fileType === FileTypes.ARCHIVE)
+
+                                override fun isFileSelectable(file: VirtualFile) = file.fileType === XmlFileType.INSTANCE
+                            }.apply {
+                                description = message("action.importTemplates.wrapper.description")
+                                title = message("action.importTemplates.wrapper")
+                                putUserData(
+                                    LangDataKeys.MODULE_CONTEXT,
+                                    LangDataKeys.MODULE.getData(event.dataContext)
+                                )
                             }
 
-                            override fun isFileSelectable(file: VirtualFile) = file.fileType === XmlFileType.INSTANCE
-                        }
-                        descriptor.description = message("action.importTemplates.wrapper.description")
-                        descriptor.title = message("action.importTemplates.wrapper")
-                        descriptor.putUserData(
-                            LangDataKeys.MODULE_CONTEXT,
-                            LangDataKeys.MODULE.getData(event.dataContext)
-                        )
-                        val file = FileChooser.chooseFile(descriptor, templatesListPanel, null, null)
-                        if (file != null) {
-                            try {
-                                val element = JDOMUtil.load(file.inputStream)
-                                val templates = IgnoreSettings.loadTemplates(element)
-                                for (template in templates) {
-                                    myListModel.addElement(template)
+                            FileChooser.chooseFile(descriptor, templatesListPanel, null, null)?.let { file ->
+                                try {
+                                    val element = JDOMUtil.load(file.inputStream)
+                                    val templates = IgnoreSettings.loadTemplates(element)
+                                    templates.forEach { myListModel.addElement(it) }
+                                    Messages.showInfoMessage(
+                                        templatesListPanel,
+                                        message("action.importTemplates.success", templates.size),
+                                        message("action.exportTemplates.success.title")
+                                    )
+                                    return
+                                } catch (e: IOException) {
+                                    e.printStackTrace()
+                                } catch (e: JDOMException) {
+                                    e.printStackTrace()
                                 }
-                                Messages.showInfoMessage(
-                                    templatesListPanel,
-                                    message("action.importTemplates.success", templates.size),
-                                    message("action.exportTemplates.success.title")
-                                )
-                                return
-                            } catch (e: IOException) {
-                                e.printStackTrace()
-                            } catch (e: JDOMException) {
-                                e.printStackTrace()
                             }
-                        }
-                        Messages.showErrorDialog(templatesListPanel!!, message("action.importTemplates.error"))
-                    }
-                }
-            )
-            group.add(
-                object : AnAction(
-                    message("action.exportTemplates"),
-                    message("action.exportTemplates.description"),
-                    AllIcons.ToolbarDecorator.Export
-                ) {
-                    override fun actionPerformed(event: AnActionEvent) {
-                        val wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
-                            FileSaverDescriptor(
-                                message("action.exportTemplates.wrapper"),
-                                "",
-                                "xml"
-                            ),
-                            templatesListPanel!!
-                        ).save(null as VirtualFile?, null)
-                        if (wrapper != null) {
-                            val items = currentItems
-                            val document = org.jdom.Document(
-                                IgnoreSettings.createTemplatesElement(items)
-                            )
-                            try {
-                                JDOMUtil.writeDocument(document, wrapper.file, Constants.NEWLINE)
-                                Messages.showInfoMessage(
-                                    templatesListPanel,
-                                    message("action.exportTemplates.success", items.size),
-                                    message("action.exportTemplates.success.title")
-                                )
-                            } catch (e: IOException) {
-                                Messages.showErrorDialog(
-                                    templatesListPanel!!,
-                                    message("action.exportTemplates.error")
-                                )
-                            }
+                            Messages.showErrorDialog(templatesListPanel, message("action.importTemplates.error"))
                         }
                     }
+                )
+                add(
+                    object : AnAction(
+                        message("action.exportTemplates"),
+                        message("action.exportTemplates.description"),
+                        AllIcons.ToolbarDecorator.Export
+                    ) {
+                        override fun actionPerformed(event: AnActionEvent) {
+                            FileChooserFactory.getInstance().createSaveFileDialog(
+                                FileSaverDescriptor(
+                                    message("action.exportTemplates.wrapper"),
+                                    "",
+                                    "xml"
+                                ),
+                                templatesListPanel
+                            ).save(null as VirtualFile?, null)?.let { wrapper ->
+                                val items = currentItems
+                                val document = Document(IgnoreSettings.createTemplatesElement(items))
+                                try {
+                                    JDOMUtil.writeDocument(document, wrapper.file, Constants.NEWLINE)
+                                    Messages.showInfoMessage(
+                                        templatesListPanel,
+                                        message("action.exportTemplates.success", items.size),
+                                        message("action.exportTemplates.success.title")
+                                    )
+                                } catch (e: IOException) {
+                                    Messages.showErrorDialog(
+                                        templatesListPanel,
+                                        message("action.exportTemplates.error")
+                                    )
+                                }
+                            }
+                        }
 
-                    override fun update(e: AnActionEvent) {
-                        e.presentation.isEnabled = currentItems.isNotEmpty()
+                        override fun update(e: AnActionEvent) {
+                            e.presentation.isEnabled = currentItems.isNotEmpty()
+                        }
                     }
-                }
-            )
+                )
+            }
             decorator.setActionGroup(group)
         }
 
@@ -301,7 +315,7 @@ class IgnoreSettingsPanel : Disposable {
         override fun editSelectedItem(item: UserTemplate) = showEditDialog(item)
 
         val list
-            get() = (0 until myListModel.size()).map { myListModel.getElementAt(it)!! }
+            get() = myListModel.elements().toList()
 
         /**
          * Updates editor component with given content.
@@ -334,9 +348,9 @@ class IgnoreSettingsPanel : Disposable {
         init {
             myList.addListSelectionListener {
                 val enabled = myListModel.size() > 0
-                editorPanel!!.isEnabled = enabled
+                editorPanel.isEnabled = enabled
                 if (enabled) {
-                    editorPanel!!.setContent(currentItem?.content ?: "")
+                    editorPanel.setContent(currentItem?.content ?: "")
                 }
             }
         }
@@ -384,14 +398,15 @@ class IgnoreSettingsPanel : Disposable {
 
         /** Constructor that creates document editor, empty content label. */
         init {
-            preview = createPreviewEditor(previewDocument, null, false)
-            preview.document.addDocumentListener(
-                object : DocumentListener {
-                    override fun documentChanged(event: DocumentEvent) {
-                        templatesListPanel!!.updateContent(event.document.text)
+            preview = createPreviewEditor(previewDocument, null, false).apply {
+                document.addDocumentListener(
+                    object : DocumentListener {
+                        override fun documentChanged(event: DocumentEvent) {
+                            templatesListPanel.updateContent(event.document.text)
+                        }
                     }
-                }
-            )
+                )
+            }
             isEnabled = false
         }
     }
@@ -406,7 +421,7 @@ class IgnoreSettingsPanel : Disposable {
             message("settings.languagesSettings.table.enable")
         )
 
-        private val columnClasses = arrayOf<Class<*>>(
+        private val columnClasses = arrayOf(
             String::class.java,
             Boolean::class.java,
             Boolean::class.java
@@ -420,41 +435,33 @@ class IgnoreSettingsPanel : Disposable {
 
         override fun getColumnClass(columnIndex: Int) = columnClasses[columnIndex]
 
-        override fun isCellEditable(row: Int, column: Int): Boolean {
-            val language = ArrayList(settings.keys)[row]
-            return if (language != null && column == 2) {
-                @Suppress("ForbiddenComment")
-                // TODO: if (language != null && column == 2 && IgnoreBundle.isExcludedFromHighlighting(language)) {
-                false
-            } else column != 0
-        }
+        override fun isCellEditable(row: Int, column: Int) =
+            column > 0 || (column == 2 && settings.keys.toList()[row]?.let(IgnoreBundle::isExcludedFromHighlighting) ?: false)
 
         override fun getValueAt(row: Int, column: Int): Any {
-            val language = ArrayList(settings.keys)[row] ?: return false
+            val language = settings.keys.toList()[row] ?: return false
             val data = settings[language]
             return when (column) {
-                0 -> language.id
-                1 -> getBoolean(IgnoreLanguagesSettings.KEY.NEW_FILE, data)
-                2 -> getBoolean(IgnoreLanguagesSettings.KEY.ENABLE, data)
+                NAME_COLUMN -> language.id
+                NEW_FILE_COLUMN -> getBoolean(IgnoreLanguagesSettings.KEY.NEW_FILE, data)
+                ENABLE_COLUMN -> getBoolean(IgnoreLanguagesSettings.KEY.ENABLE, data)
                 else -> throw IllegalArgumentException()
             }
         }
 
-        private fun getBoolean(key: IgnoreLanguagesSettings.KEY, data: TreeMap<IgnoreLanguagesSettings.KEY, Any>?): Boolean {
-            val objectByKey = data!![key] ?: return false
-            return java.lang.Boolean.valueOf(objectByKey.toString())
-        }
+        private fun getBoolean(key: IgnoreLanguagesSettings.KEY, data: TreeMap<IgnoreLanguagesSettings.KEY, Any>?) =
+            data?.get(key).toString().toBoolean()
 
         override fun setValueAt(value: Any, row: Int, column: Int) {
-            val language = ArrayList(settings.keys)[row]!!
+            val language = settings.keys.toList()[row]
             val data = settings[language]
             when (column) {
-                1 -> {
-                    data!![IgnoreLanguagesSettings.KEY.NEW_FILE] = value
+                NEW_FILE_COLUMN -> {
+                    data?.set(IgnoreLanguagesSettings.KEY.NEW_FILE, value)
                     return
                 }
-                2 -> {
-                    data!![IgnoreLanguagesSettings.KEY.ENABLE] = value
+                ENABLE_COLUMN -> {
+                    data?.set(IgnoreLanguagesSettings.KEY.ENABLE, value)
                     return
                 }
             }
