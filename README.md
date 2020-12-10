@@ -1,4 +1,4 @@
-.ignore 3.2.3
+.ignore 4.0.0
 =============
 
 [![official JetBrains project](https://jb.gg/badges/official.svg)][jb:confluence-on-gh]
@@ -41,7 +41,7 @@ Introduction
 - `.ebignore` (ElasticBeanstalk)
 - `.gcloudignore` (Google Cloud)
 
-files in your project. It supports following JetBrains IDEs:
+files in your project. It supports following IDEs:
 
 - Android Studio
 - AppCode
@@ -77,9 +77,9 @@ Features
 Supported IDEs
 --------------
 
-Since `v3.0.0`, .ignore plugin updates will be delivered to the IDE in version of `181+` - so latest build from 2018 and further.
+Since `v4.0.0`, .ignore plugin updates will be delivered only to the latest stable IDE version.
 
-But hey, no worries! It means .ignore for all IDE version from before - `139-173` - will be freezed at `v3.0.0`.
+But hey, no worries! It means .ignore for all IDE version from before - `139-193` - will be frozen at `v3.x.x`.
 
 
 Installation
