@@ -1,0 +1,9 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Git -->
+        <lang.syntaxHighlighterFactory
+            language="GitIgnore"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Git -->
+    </extensions>
+</idea-plugin>

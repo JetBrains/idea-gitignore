@@ -1,0 +1,9 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Mercurial -->
+        <lang.syntaxHighlighterFactory
+            language="HgIgnore"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Mercurial -->
+    </extensions>
+</idea-plugin>

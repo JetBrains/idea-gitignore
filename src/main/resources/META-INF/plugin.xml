@@ -4,6 +4,8 @@
     <vendor>JetBrains</vendor>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.vcs</depends>
+    <depends optional="true" config-file="plugin-with-Git4Idea.xml">Git4Idea</depends>
+    <depends optional="true" config-file="plugin-with-hg4idea.xml">hg4idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
@@ -366,12 +368,6 @@
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Fossil -->
 
-        <!-- Git -->
-        <lang.syntaxHighlighterFactory
-            language="GitIgnore"
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
-        <!-- END Git -->
-
         <!-- Google Cloud -->
         <fileType
             name="Google Cloud File"
@@ -467,12 +463,6 @@
             language="Kubernetes Helm"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Kubernetes Helm -->
-
-        <!-- Mercurial -->
-        <lang.syntaxHighlighterFactory
-            language="HgIgnore"
-            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
-        <!-- END Mercurial -->
 
         <!-- Monotone -->
         <fileType
