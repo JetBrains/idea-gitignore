@@ -1,7 +1,7 @@
 Change Log
 ----------
 
-## [v4.0.1](https://github.com/JetBrains/idea-gitignore/tree/v4.0.1) (2020-12-14)
+## [Unreleased]
 
 - Use a built-in Git/Mercurial ignored files check to hide them from the Project view
 - Fetch `github/gitignore` submodule when releasing to the Marketplace
