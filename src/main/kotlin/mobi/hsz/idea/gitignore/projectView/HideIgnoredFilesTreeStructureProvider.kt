@@ -8,6 +8,7 @@ import com.intellij.ide.util.treeView.AbstractTreeNode
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.changes.ChangeListManager
+import com.intellij.openapi.vcs.changes.VcsIgnoreManager
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 
@@ -19,7 +20,8 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
 
     private val ignoreSettings = IgnoreSettings.getInstance()
     private val manager = project.service<IgnoreManager>()
-    private val changeListManager = ChangeListManager.getInstance(project)
+    private val vcsIgnoreManager = project.service<VcsIgnoreManager>()
+    private val changeListManager = project.service<ChangeListManager>()
 
     /**
      * If [IgnoreSettings.hideIgnoredFiles] is set to `true`, checks if specific
@@ -32,15 +34,18 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
      */
     override fun modify(parent: AbstractTreeNode<*>, children: Collection<AbstractTreeNode<*>?>, settings: ViewSettings?) =
         when {
-            !ignoreSettings.hideIgnoredFiles || children.isEmpty() -> children
-            else ->
-                children.filter {
-                    if (it is BasePsiNode<*>) {
-                        val file = it.virtualFile
-                        return@filter file != null && !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file)
-                    }
-                    true
+            !ignoreSettings.hideIgnoredFiles -> children
+            else -> children.filter {
+                if (it !is BasePsiNode<*>) {
+                    return@filter true
                 }
+                val file = it.virtualFile
+
+                return@filter file != null
+                    && !vcsIgnoreManager.isPotentiallyIgnoredFile(file)
+                    && !changeListManager.isIgnoredFile(file)
+                    && !manager.isFileIgnored(file)
+            }
         }
 
     override fun getData(collection: Collection<AbstractTreeNode<*>?>, s: String): Any? = null

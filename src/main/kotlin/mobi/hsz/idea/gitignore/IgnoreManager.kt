@@ -116,6 +116,10 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         }
     }
 
+    init {
+        toggle(isEnabled)
+    }
+
     /**
      * Checks if file is ignored.
      *

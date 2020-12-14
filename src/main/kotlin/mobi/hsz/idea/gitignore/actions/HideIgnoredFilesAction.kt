@@ -16,7 +16,7 @@ class HideIgnoredFilesAction : AnAction(IgnoreBundle.message("action.hideIgnored
 
     override fun actionPerformed(e: AnActionEvent) {
         settings.hideIgnoredFiles = !settings.hideIgnoredFiles
-        this.templatePresentation.apply {
+        templatePresentation.apply {
             text = when {
                 settings.hideIgnoredFiles -> IgnoreBundle.message("action.showIgnoredVisibility")
                 else -> IgnoreBundle.message("action.hideIgnoredVisibility")
