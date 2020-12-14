@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.4.20"
+    id("org.jetbrains.kotlin.jvm") version "1.4.21"
     id("org.jetbrains.intellij") version "0.6.5"
     id("org.jetbrains.changelog") version "0.6.2"
     id("io.gitlab.arturbosch.detekt") version "1.14.2"
@@ -96,12 +96,10 @@ detekt {
 }
 
 tasks {
-    listOf("compileKotlin", "compileTestKotlin").forEach {
-        getByName<KotlinCompile>(it) {
-            kotlinOptions.jvmTarget = "11"
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "11"
 
-            dependsOn(generateLexer, generateParser, generateTemplatesList)
-        }
+        dependsOn(generateLexer, generateParser, generateTemplatesList)
     }
 
     withType<Detekt> {
