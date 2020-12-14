@@ -1,17 +1,28 @@
 Change Log
 ----------
 
-## [Unreleased]
+## [v4.0.1](https://github.com/JetBrains/idea-gitignore/tree/v4.0.1) (2020-12-14)
 
-- migrate code to #Kotlin
-- reduce code by 60% – 644KB to 262KB
-- fix ALL compatibility issues with 2020.3
-- introduce detekt for better code quality
-- code cleanup (drop Git/Mercurial dead already features)
-- plugin is now dynamic (install/uninstall without IDE restarting)
-- introduce better CI – based on the IntelliJ Platform Plugin Template
-- upgrade all Grammar-Kit, Gradle tooling
-- focus on always supporting the latest release (only): currently 2020.3
+- Use a built-in Git/Mercurial ignored files check to hide them from the Project view
+- Fetch `github/gitignore` submodule when releasing to the Marketplace
+- GitHub Actions build workflow and Gradle configuration upgrade to align the IntelliJ Platform Project Template
+- Gradle Wrapper upgrade to 6.7.1
+
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v4.0.0...v4.0.1)
+  
+## [v4.0.0](https://github.com/JetBrains/idea-gitignore/tree/v4.0.0) (2020-12-11)
+
+- Migrate code to Kotlin
+- Reduce code by 60% – 644KB to 262KB
+- Fix all compatibility issues with 2020.3
+- Introduce `detekt` for better code quality
+- Code cleanup (drop Git/Mercurial dead already features)
+- Plugin is now dynamic (install/uninstall without IDE restarting)
+- Introduce better CI – based on the IntelliJ Platform Plugin Template
+- Upgrade all Grammar-Kit, Gradle tooling
+- Focus on always supporting the latest release (only): currently 2020.3
+
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v3.2.3...v4.0.0)
   
 ## [v3.2.3](https://github.com/JetBrains/idea-gitignore/tree/v3.2.3) (2019-11-28)
 
