@@ -24,6 +24,7 @@ jobs:
       - name: Fetch Sources
         uses: actions/checkout@v2
         with:
+          submodules: true
           ref: ${{ github.event.release.tag_name }}
 
       # Publish the plugin to the Marketplace
@@ -49,6 +50,7 @@ jobs:
       - name: Fetch Sources
         uses: actions/checkout@v2
         with:
+          submodules: true
           ref: ${{ github.event.release.tag_name }}
 
       # Commit patched Changelog
