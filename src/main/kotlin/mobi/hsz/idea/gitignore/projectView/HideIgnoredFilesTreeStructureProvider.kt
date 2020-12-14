@@ -41,10 +41,10 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
                 }
                 val file = it.virtualFile
 
-                return@filter file != null
-                    && !vcsIgnoreManager.isPotentiallyIgnoredFile(file)
-                    && !changeListManager.isIgnoredFile(file)
-                    && !manager.isFileIgnored(file)
+                return@filter file != null &&
+                    !vcsIgnoreManager.isPotentiallyIgnoredFile(file) &&
+                    !changeListManager.isIgnoredFile(file) &&
+                    !manager.isFileIgnored(file)
             }
         }
 
