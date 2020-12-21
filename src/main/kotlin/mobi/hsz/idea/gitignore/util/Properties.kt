@@ -53,10 +53,10 @@ object Properties {
      * @param project current project
      * @param file    current file
      */
-    fun setDismissedIgnoredEditingNotification(project: Project, file: VirtualFile) = project.service<PropertiesComponent>().let {
-        it.getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION).toHashSet().apply {
-            add(file.canonicalPath)
-            it.setValues(DISMISSED_IGNORED_EDITING_NOTIFICATION, toTypedArray())
+    fun setDismissedIgnoredEditingNotification(project: Project, file: VirtualFile) {
+        project.service<PropertiesComponent>().run {
+            val values = getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION) ?: emptyArray()
+            setValues(DISMISSED_IGNORED_EDITING_NOTIFICATION, values + file.canonicalPath)
         }
     }
 }
