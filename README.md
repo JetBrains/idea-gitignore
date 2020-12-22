@@ -1,4 +1,4 @@
-.ignore 4.0.1
+.ignore 4.0.2
 =============
 
 [![official JetBrains project](https://jb.gg/badges/official.svg)][jb:confluence-on-gh]

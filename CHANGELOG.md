@@ -3,7 +3,11 @@ Change Log
 
 ## [Unreleased]
 
+## [v4.0.2](https://github.com/JetBrains/idea-gitignore/tree/v4.0.2) (2020-12-22)
+
 - Fixed NPE in Properties.setDismissedIgnoredEditingNotification
+
+[Full Changelog](https://github.com/JetBrains/idea-gitignore/compare/v4.0.1...v4.0.2)
 
 ## [v4.0.1](https://github.com/JetBrains/idea-gitignore/tree/v4.0.1) (2020-12-14)
 
