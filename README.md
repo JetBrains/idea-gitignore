@@ -14,7 +14,7 @@ Introduction
 <!-- Plugin description -->
 
 **.ignore** is a plugin for:
- 
+
 - `.gitignore` (Git)
 - `.hgignore` (Mercurial)
 - `.npmignore` (NPM)
@@ -41,7 +41,7 @@ Introduction
 - `.ebignore` (ElasticBeanstalk)
 - `.gcloudignore` (Google Cloud)
 
-files in your project. It supports following IDEs:
+files in your project. It supports the following IDEs:
 
 - Android Studio
 - AppCode
@@ -60,15 +60,15 @@ Features
 - Files syntax highlight
 - Gitignore templates filtering and selecting in rules generator by name and content
 - User custom templates
-- Show ignored files by specified Gitignore file (right click on `.gitignore` file)
-- Create file in currently selected directory
+- Show ignored files by specified Gitignore file (right-click on `.gitignore` file)
+- Create a file in the currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
-- Add selected file/directory to Gitignore rules from popup menu
-- Suggesting `.gitignore` file creation for new project
-- Entries inspection (duplicated, covered, unused, incorrect syntax, relative entries) with fix actions
+- Add selected file/directory to Gitignore rules from the popup menu
+- Suggesting `.gitignore` file creation for a new project
+- Entries inspection (duplicated, covered, unused, incorrect syntax, relative entries) with quick-fix actions
 - Comments and brackets support
 - Navigation to entries in Project view
-- Renaming entries from ignore file
+- Renaming entries from a dot-ignore file
 - Close opened ignored files action
 - Custom user templates with import/export features
 
@@ -79,17 +79,17 @@ Supported IDEs
 
 Since `v4.0.0`, .ignore plugin updates will be delivered only to the latest stable IDE version.
 
-But hey, no worries! It means .ignore for all IDE version from before - `139-193` - will be frozen at `v3.x.x`.
+No worries! It means .ignore for all IDE version from before - `139-193` - will be frozen at `v3.x.x`.
 
 
 Installation
 ------------
 
 - Using IDE built-in plugin system:
-  - <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Browse repositories...</kbd> > <kbd>Search for ".ignore"</kbd> > <kbd>Install Plugin</kbd>
+    - <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Browse repositories...</kbd> > <kbd>Search for ".ignore"</kbd> > <kbd>Install Plugin</kbd>
 - Manually:
-  - Download the [latest release][latest-release] and install it manually using <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Install plugin from disk...</kbd>
-  
+    - Download the [latest release][latest-release] and install it manually using <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Install plugin from disk...</kbd>
+
 Restart IDE.
 
 
@@ -110,11 +110,11 @@ Usage
 
    Code inspections covers few cases:
 
-   - duplicated entries (checks if entry is defined more than once)
-   - covered entries - entry is covered by more general one
-   - unused entries
-   - incorrect syntax (regexp rules)
-   - relative entries
+    - duplicated entries (checks if entry is defined more than once)
+    - covered entries - entry is covered by more general one
+    - unused entries
+    - incorrect syntax (regexp rules)
+    - relative entries
 
    ![Code inspections](http://gitignore.hsz.mobi/usage-3.gif)
 
