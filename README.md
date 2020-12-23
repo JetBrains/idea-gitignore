@@ -58,12 +58,12 @@ Features
 --------
 
 - Files syntax highlight
-- Gitignore templates filtering and selecting in rules generator by name and content
+- Templates filtering and selecting in rules generator by name and content
 - User custom templates
 - Show ignored files by specified Gitignore file (right-click on `.gitignore` file)
 - Create a file in the currently selected directory
 - Generate Gitignore rules basing on [GitHub's templates collection][github-gitignore]
-- Add selected file/directory to Gitignore rules from the popup menu
+- Add a selected file/directory to Gitignore rules from the popup menu
 - Suggesting `.gitignore` file creation for a new project
 - Entries inspection (duplicated, covered, unused, incorrect syntax, relative entries) with quick-fix actions
 - Comments and brackets support
@@ -96,7 +96,7 @@ Restart IDE.
 Usage
 -----
 
-1. Generate new file and templates usage
+1. Generate a new file and templates usage
 
    To generate new ignore file, just click on <kbd>File</kbd> > <kbd>New</kbd> or use <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut and select `.ignore file` element.
 
