@@ -4,6 +4,8 @@ Change Log
 ## [Unreleased]
 
 - GeneratorDialog: fixed broken search + minor tweaks
+- Add project icons
+- Add `log_file` in the predefined run configuration
 
 ## [v4.0.2](https://github.com/JetBrains/idea-gitignore/tree/v4.0.2) (2020-12-22)
 
