@@ -3,6 +3,8 @@ Change Log
 
 ## [Unreleased]
 
+- GeneratorDialog: fixed broken search + minor tweaks
+
 ## [v4.0.2](https://github.com/JetBrains/idea-gitignore/tree/v4.0.2) (2020-12-22)
 
 - Fixed NPE in Properties.setDismissedIgnoredEditingNotification

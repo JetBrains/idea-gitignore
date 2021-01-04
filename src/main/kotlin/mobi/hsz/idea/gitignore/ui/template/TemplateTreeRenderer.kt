@@ -28,27 +28,39 @@ abstract class TemplateTreeRenderer : CheckboxTree.CheckboxTreeCellRenderer() {
         if (value !is TemplateTreeNode) {
             return
         }
-        val background = if (selected) UIUtil.getTreeSelectionBackground(true) else UIUtil.getTreeBackground()
-        UIUtil.changeBackGround(this, background)
         val foreground = when {
             selected -> UIUtil.getTreeSelectionForeground(true)
             value.template == null -> PlatformColors.BLUE
             else -> UIUtil.getTreeForeground()
         }
-        val style = SimpleTextAttributes.STYLE_PLAIN
-        var text = ""
-        var hint = ""
-        if (value.template != null) { // template leaf
-            text = value.template.name
-        } else if (value.container != null) { // container group
-            hint = message("template.container." + value.container.toString().toLowerCase())
-            checkbox.isVisible = false
+        val background = when {
+            selected -> UIUtil.getTreeSelectionBackground(true)
+            else -> UIUtil.getTreeBackground()
         }
-        SearchUtil.appendFragments(filter, text, style, foreground, background, textRenderer)
-        textRenderer.append(
-            hint,
-            if (selected) SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, foreground) else SimpleTextAttributes.GRAYED_ATTRIBUTES
-        )
+
         setForeground(foreground)
+        UIUtil.changeBackGround(this, background)
+
+        value.template?.let {
+            SearchUtil.appendFragments(filter,
+                it.name,
+                SimpleTextAttributes.STYLE_PLAIN,
+                foreground,
+                background,
+                textRenderer
+            )
+        } ?: run {
+            value.container?.let {
+                checkbox.isVisible = true
+                textRenderer.append(
+                    message("template.container." + it.toString().toLowerCase()),
+                    when {
+                        selected -> SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, foreground)
+                        else -> SimpleTextAttributes.GRAYED_ATTRIBUTES
+                    }
+                )
+            }
+        }
+
     }
 }
