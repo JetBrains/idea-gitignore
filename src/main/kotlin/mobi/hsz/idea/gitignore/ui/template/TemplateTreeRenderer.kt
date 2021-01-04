@@ -42,7 +42,8 @@ abstract class TemplateTreeRenderer : CheckboxTree.CheckboxTreeCellRenderer() {
         UIUtil.changeBackGround(this, background)
 
         value.template?.let {
-            SearchUtil.appendFragments(filter,
+            SearchUtil.appendFragments(
+                filter,
                 it.name,
                 SimpleTextAttributes.STYLE_PLAIN,
                 foreground,
@@ -61,6 +62,5 @@ abstract class TemplateTreeRenderer : CheckboxTree.CheckboxTreeCellRenderer() {
                 )
             }
         }
-
     }
 }
