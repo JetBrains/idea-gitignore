@@ -4,6 +4,7 @@ Change Log
 ## [Unreleased]
 
 - GeneratorDialog: fixed broken search + minor tweaks
+- GeneratorDialog: fixed broken stars mechanism
 - Add project icons
 - Add `log_file` in the predefined run configuration
 

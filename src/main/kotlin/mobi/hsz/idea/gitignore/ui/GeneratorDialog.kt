@@ -74,11 +74,11 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     /** Cache set to store checked templates for the current action. */
     private val checked: MutableSet<Resources.Template?> = HashSet()
 
-    /** Set of the starred templates. */
-    private val starred: MutableSet<String> = HashSet()
-
     /** Settings instance. */
     private val settings = IgnoreSettings.getInstance()
+
+    /** Set of the starred templates. */
+    private val starred = settings.starredTemplates.toMutableSet()
 
     /** Templates tree root node. */
     private val root = TemplateTreeNode()
@@ -311,15 +311,14 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
 
                     override fun actionPerformed(e: AnActionEvent) {
                         currentNode?.template?.let {
-                            val isStarred = !it.isStarred
-                            it.isStarred = isStarred
-                            refreshTree()
-                            if (isStarred) {
+                            it.isStarred = !it.isStarred
+                            if (it.isStarred) {
                                 starred.add(it.name)
                             } else {
                                 starred.remove(it.name)
                             }
-                            settings.starredTemplates = ArrayList(starred)
+                            settings.starredTemplates = starred.toList()
+                            refreshTree()
                         }
                     }
 

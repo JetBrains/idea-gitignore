@@ -74,11 +74,10 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         }
 
     /** Starred templates. */
-    var starredTemplates = mutableListOf<String>()
+    var starredTemplates = listOf<String>()
         set(value) {
             notifyOnChange(KEY.STARRED_TEMPLATES, starredTemplates, value)
-            starredTemplates.clear()
-            starredTemplates.addAll(value)
+            field = value
         }
 
     /** Settings related to the [IgnoreLanguage]. */
