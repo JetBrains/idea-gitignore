@@ -52,7 +52,6 @@ import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.ActionEvent
-import java.util.ArrayList
 import java.util.HashSet
 import javax.swing.Action
 import javax.swing.JComponent
