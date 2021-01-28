@@ -93,8 +93,8 @@ Installation
 Restart IDE.
 
 
-EAP
----
+Early Access Preview
+--------------------
 If you are working with IDEs in EAP version, like IntelliJ 2021.1 EAP, there is `eap` channel introduced to provide the `.ignore` plugin updates supporting such versions.
 
 To enable EAP updates of the `.ignore` plugin, add the `https://plugins.jetbrains.com/plugins/eap/7495` URL in the IDE settings:
