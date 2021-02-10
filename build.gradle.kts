@@ -80,6 +80,7 @@ intellij {
 
 changelog {
     headerParserRegex = "\\[?v\\d(\\.\\d+)+\\]?.*".toRegex()
+    version = pluginVersion
 }
 
 // Configure detekt plugin.
