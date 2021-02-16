@@ -9,7 +9,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.4.30"
     id("org.jetbrains.intellij") version "0.6.5"
-    id("org.jetbrains.changelog") version "1.1.1"
+    id("org.jetbrains.changelog") version "1.1.2"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     id("org.jetbrains.grammarkit") version "2020.3.2"
