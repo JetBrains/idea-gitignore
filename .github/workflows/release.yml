@@ -53,6 +53,10 @@ jobs:
           submodules: true
           ref: ${{ github.event.release.tag_name }}
 
+      # Update Unreleased section with the current version
+      - name: Patch Changelog
+        run: ./gradlew patchChangelog
+
       # Commit patched Changelog
       - name: Commit files
         run: |
