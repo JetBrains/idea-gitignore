@@ -100,6 +100,7 @@ class IgnoreSettingsPanel : Disposable {
         const val ENABLE_COLUMN = 2
     }
 
+    @Suppress("UnusedPrivateMember")
     private fun createUIComponents() {
         templatesListPanel = TemplatesListPanel()
         editorPanel = EditorPanel().apply {
@@ -376,7 +377,7 @@ class IgnoreSettingsPanel : Disposable {
                 add(preview.component)
             } else {
                 add(label)
-                remove(preview.component)
+                remove(preview!!.component)
             }
             revalidate()
             repaint()
@@ -443,7 +444,7 @@ class IgnoreSettingsPanel : Disposable {
                 NAME_COLUMN -> language.id
                 NEW_FILE_COLUMN -> getBoolean(IgnoreLanguagesSettings.KEY.NEW_FILE, data)
                 ENABLE_COLUMN -> getBoolean(IgnoreLanguagesSettings.KEY.ENABLE, data)
-                else -> throw IllegalArgumentException()
+                else -> throw IllegalArgumentException("Unknown column name: $column")
             }
         }
 
@@ -463,7 +464,7 @@ class IgnoreSettingsPanel : Disposable {
                     return
                 }
             }
-            throw IllegalArgumentException()
+            throw IllegalArgumentException("Unknown column name: $column")
         }
 
         fun update(settings: IgnoreLanguagesSettings) {

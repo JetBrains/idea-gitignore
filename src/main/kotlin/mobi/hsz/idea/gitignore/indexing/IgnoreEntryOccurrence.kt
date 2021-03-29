@@ -15,6 +15,7 @@ import java.io.Serializable
  * Entry containing information about the [VirtualFile] instance of the ignore file mapped with the collection
  * of ignore entries for better performance. Class is used for indexing.
  */
+@Suppress("SerialVersionUIDInSerializableClass")
 class IgnoreEntryOccurrence(private val url: String, val items: List<Pair<String, Boolean>>) : Serializable {
 
     /**

@@ -12,5 +12,9 @@ style:
         maxLineLength: 140
 
 exceptions:
+    PrintStackTrace:
+        active: false
+    SwallowedException:
+        active: false
     TooGenericExceptionCaught:
         active: false
