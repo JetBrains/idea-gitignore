@@ -21,6 +21,7 @@ import com.intellij.openapi.vcs.FileStatusManager
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vcs.VcsListener
 import com.intellij.openapi.vcs.VcsRoot
+import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileListener
 import com.intellij.openapi.vfs.VirtualFileManager
@@ -51,6 +52,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val matcher = project.service<IgnoreMatcher>()
     private val settings = IgnoreSettings.getInstance()
     private val projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project)
+    private val changeListManager = project.service<ChangeListManager>()
 
     private val debouncedStatusesChanged = object : Debounced<Any?>(1000) {
         override fun task(argument: Any?) {
@@ -137,7 +139,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         ) {
             return false
         }
-        var ignored = false
+        var ignored = changeListManager.isIgnoredFile(file)
         var matched = false
         var valuesCount = 0
         for (fileType in FILE_TYPES) {

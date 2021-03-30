@@ -20,8 +20,6 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
 
     private val ignoreSettings = IgnoreSettings.getInstance()
     private val manager = project.service<IgnoreManager>()
-    private val vcsIgnoreManager = project.service<VcsIgnoreManager>()
-    private val changeListManager = project.service<ChangeListManager>()
 
     /**
      * If [IgnoreSettings.hideIgnoredFiles] is set to `true`, checks if specific
@@ -41,10 +39,7 @@ class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructurePro
                 }
                 val file = it.virtualFile
 
-                return@filter file != null &&
-                    !vcsIgnoreManager.isPotentiallyIgnoredFile(file) &&
-                    !changeListManager.isIgnoredFile(file) &&
-                    !manager.isFileIgnored(file)
+                return@filter file != null && !manager.isFileIgnored(file)
             }
         }
 
