@@ -2,7 +2,6 @@
 package mobi.hsz.idea.gitignore.settings
 
 import com.intellij.openapi.components.PersistentStateComponent
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.openapi.util.text.StringUtil
@@ -12,7 +11,6 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import mobi.hsz.idea.gitignore.util.Constants
 import mobi.hsz.idea.gitignore.util.Listenable
 import org.jdom.Element
-import java.util.LinkedHashMap
 import java.util.TreeMap
 
 /**
