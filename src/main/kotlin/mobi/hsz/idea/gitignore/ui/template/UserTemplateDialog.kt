@@ -2,6 +2,7 @@
 package mobi.hsz.idea.gitignore.ui.template
 
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
@@ -26,7 +27,7 @@ import javax.swing.JPanel
 @Suppress("MagicNumber", "UnsafeCallOnNullableType")
 class UserTemplateDialog(private val project: Project, private val content: String) : DialogWrapper(project, false) {
 
-    private val settings = IgnoreSettings.getInstance()
+    private val settings = service<IgnoreSettings>()
     private var preview: Editor? = null
     private var previewDocument: Document? = null
     private var name: JBTextField? = null

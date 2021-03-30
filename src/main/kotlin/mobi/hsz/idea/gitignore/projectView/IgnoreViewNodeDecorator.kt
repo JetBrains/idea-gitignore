@@ -20,7 +20,7 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 class IgnoreViewNodeDecorator(project: Project) : ProjectViewNodeDecorator {
 
     private val manager = project.service<IgnoreManager>()
-    private val ignoreSettings = IgnoreSettings.getInstance()
+    private val ignoreSettings = service<IgnoreSettings>()
 
     companion object {
         private val GRAYED_SMALL_ATTRIBUTES = SimpleTextAttributes(SimpleTextAttributes.STYLE_SMALLER, UIUtil.getInactiveTextColor())

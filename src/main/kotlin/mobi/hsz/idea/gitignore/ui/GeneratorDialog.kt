@@ -12,6 +12,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
@@ -74,7 +75,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     private val checked: MutableSet<Resources.Template?> = HashSet()
 
     /** Settings instance. */
-    private val settings = IgnoreSettings.getInstance()
+    private val settings = service<IgnoreSettings>()
 
     /** Set of the starred templates. */
     private val starred = settings.starredTemplates.toMutableSet()

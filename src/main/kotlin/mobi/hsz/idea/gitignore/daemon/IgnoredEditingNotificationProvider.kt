@@ -21,7 +21,7 @@ import mobi.hsz.idea.gitignore.util.Properties
 class IgnoredEditingNotificationProvider(project: Project) : EditorNotifications.Provider<EditorNotificationPanel?>() {
 
     private val notifications = EditorNotifications.getInstance(project)
-    private val settings = IgnoreSettings.getInstance()
+    private val settings = service<IgnoreSettings>()
     private val manager = project.service<IgnoreManager>()
     private val changeListManager = ChangeListManager.getInstance(project)
 

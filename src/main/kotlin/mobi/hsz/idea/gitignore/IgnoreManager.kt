@@ -50,7 +50,7 @@ import mobi.hsz.idea.gitignore.util.Utils
 class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     private val matcher = project.service<IgnoreMatcher>()
-    private val settings = IgnoreSettings.getInstance()
+    private val settings = service<IgnoreSettings>()
     private val projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project)
     private val changeListManager = project.service<ChangeListManager>()
 

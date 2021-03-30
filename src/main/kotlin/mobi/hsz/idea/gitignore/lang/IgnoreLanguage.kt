@@ -3,6 +3,7 @@ package mobi.hsz.idea.gitignore.lang
 
 import com.intellij.lang.InjectableLanguage
 import com.intellij.lang.Language
+import com.intellij.openapi.components.service
 import com.intellij.psi.FileViewProvider
 import mobi.hsz.idea.gitignore.IgnoreBundle.Syntax
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
@@ -24,7 +25,7 @@ open class IgnoreLanguage protected constructor(
     constructor() : this("Ignore", "ignore")
 
     private val languagesSettings
-        get() = IgnoreSettings.getInstance().languagesSettings
+        get() = service<IgnoreSettings>().languagesSettings
 
     companion object {
         val INSTANCE = IgnoreLanguage()

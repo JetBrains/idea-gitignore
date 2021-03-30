@@ -2,6 +2,7 @@
 package mobi.hsz.idea.gitignore.command
 
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
@@ -26,6 +27,8 @@ class AppendFileCommandAction(
     private val ignoreComments: Boolean = false,
 ) : CommandAction<PsiFile?>(project) {
 
+    private val settings = service<IgnoreSettings>()
+
     /**
      * Adds [.content] to the given [.file]. Checks if file contains content and sends a notification.
      *
@@ -38,7 +41,6 @@ class AppendFileCommandAction(
         }
         val manager = PsiDocumentManager.getInstance(project)
         manager.getDocument(file)?.let { document ->
-            val insertAtCursor = IgnoreSettings.getInstance().insertAtCursor
             var offset = document.textLength
 
             file.acceptChildren(
@@ -61,7 +63,7 @@ class AppendFileCommandAction(
                 }
             )
 
-            if (insertAtCursor) {
+            if (settings.insertAtCursor) {
                 EditorFactory.getInstance().getEditors(document).firstOrNull()?.let { editor ->
                     editor.selectionModel.selectionStartPosition?.let { position ->
                         offset = document.getLineStartOffset(position.line)
@@ -109,7 +111,7 @@ class AppendFileCommandAction(
                     entry += Constants.NEWLINE
                 }
 
-                if (!insertAtCursor && !document.text.endsWith(Constants.NEWLINE) && !StringUtil.isEmpty(entry)) {
+                if (!settings.insertAtCursor && !document.text.endsWith(Constants.NEWLINE) && entry.isNotEmpty()) {
                     entry = Constants.NEWLINE + entry
                 }
 

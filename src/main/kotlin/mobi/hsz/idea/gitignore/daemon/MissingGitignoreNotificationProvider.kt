@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.daemon
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
@@ -24,7 +25,7 @@ import mobi.hsz.idea.gitignore.util.Utils
 class MissingGitignoreNotificationProvider(project: Project) : EditorNotifications.Provider<EditorNotificationPanel?>() {
 
     private val notifications = EditorNotifications.getInstance(project)
-    private val settings = IgnoreSettings.getInstance()
+    private val settings = service<IgnoreSettings>()
 
     companion object {
         private val KEY = Key.create<EditorNotificationPanel?>("MissingGitignoreNotificationProvider")

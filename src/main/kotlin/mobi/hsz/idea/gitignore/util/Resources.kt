@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.util
 
+import com.intellij.openapi.components.service
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings.UserTemplate
@@ -27,7 +28,7 @@ object Resources {
     val gitignoreTemplates: List<Template>
         get() {
             val resourceTemplates = mutableListOf<Template>()
-            val settings = IgnoreSettings.getInstance()
+            val settings = service<IgnoreSettings>()
             val starredTemplates = settings.starredTemplates
 
             // fetch templates from resources

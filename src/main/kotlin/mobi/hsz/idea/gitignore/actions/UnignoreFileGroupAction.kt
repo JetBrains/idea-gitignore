@@ -2,6 +2,7 @@
 package mobi.hsz.idea.gitignore.actions
 
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.components.service
 import com.intellij.openapi.vfs.VirtualFile
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 
@@ -15,6 +16,8 @@ class UnignoreFileGroupAction : IgnoreFileGroupAction(
     "action.addToUnignore.group.description",
     "action.addToUnignore.group.noPopup"
 ) {
+
+    private val settings = service<IgnoreSettings>()
 
     /**
      * Creates new [UnignoreFileAction] action instance.
@@ -32,7 +35,7 @@ class UnignoreFileGroupAction : IgnoreFileGroupAction(
      * @param e action event
      */
     override fun update(e: AnActionEvent) {
-        val status = IgnoreSettings.getInstance().unignoreActions
+        val status = settings.unignoreActions
         e.presentation.isVisible = status
         if (status) {
             super.update(e)

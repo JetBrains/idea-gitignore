@@ -3,6 +3,7 @@ package mobi.hsz.idea.gitignore.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.components.service
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.util.Icons
@@ -13,7 +14,7 @@ import mobi.hsz.idea.gitignore.util.Icons
 class HideIgnoredFilesAction : AnAction(getPresentationText(), "", Icons.IGNORE) {
 
     companion object {
-        val settings = IgnoreSettings.getInstance()
+        val settings = service<IgnoreSettings>()
 
         fun getPresentationText() = when {
             settings.hideIgnoredFiles -> IgnoreBundle.message("action.showIgnoredVisibility")

@@ -18,7 +18,7 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings
  */
 class HideIgnoredFilesTreeStructureProvider(project: Project) : TreeStructureProvider {
 
-    private val ignoreSettings = IgnoreSettings.getInstance()
+    private val ignoreSettings = service<IgnoreSettings>()
     private val manager = project.service<IgnoreManager>()
 
     /**

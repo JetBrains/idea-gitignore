@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.settings
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Comparing
@@ -16,7 +17,7 @@ import mobi.hsz.idea.gitignore.util.Utils
 @Suppress("UnsafeCallOnNullableType")
 class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvider {
 
-    private val settings = IgnoreSettings.getInstance()
+    private val settings = service<IgnoreSettings>()
     private var settingsPanel = IgnoreSettingsPanel()
 
     override fun getDisplayName(): String = IgnoreBundle.message("settings.displayName")

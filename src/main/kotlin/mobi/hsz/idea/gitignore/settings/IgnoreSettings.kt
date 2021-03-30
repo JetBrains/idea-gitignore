@@ -118,7 +118,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     private val listeners = ContainerUtil.createConcurrentList<Listener>()
 
     companion object {
-        fun getInstance(): IgnoreSettings = ServiceManager.getService(IgnoreSettings::class.java)
 
         /**
          * Creates [Element] with a list of the [UserTemplate] items.
