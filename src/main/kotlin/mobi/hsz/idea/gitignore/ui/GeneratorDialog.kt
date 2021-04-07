@@ -20,7 +20,6 @@ import com.intellij.openapi.editor.markup.HighlighterTargetArea
 import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
-import com.intellij.openapi.ui.OptionAction
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.util.text.StringUtil
@@ -52,9 +51,9 @@ import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import java.awt.event.ActionEvent
-import java.util.HashSet
-import javax.swing.Action
+import javax.swing.Box
+import javax.swing.BoxLayout
+import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JPanel
 import javax.swing.JScrollPane
@@ -98,6 +97,12 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     /** Preview editor with syntax highlight. */
     private val preview = createPreviewEditor(previewDocument, project, true)
 
+    /** Checkbox to generate without duplicates. */
+    private var withoutDuplicates: JCheckBox? = null
+
+    /** Checkbox to generate without comments. */
+    private var withoutComments: JCheckBox? = null
+
     /** CheckboxTree selection listener. */
     private val treeSelectionListener = TreeSelectionListener { _: TreeSelectionEvent? ->
         tree.selectionPath?.let { updateDescriptionPanel(it) }
@@ -137,17 +142,12 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
 
     override fun doOKAction() {
         if (isOKActionEnabled) {
-            performAppendAction(ignoreDuplicates = false, ignoreComments = false)
+            performAppendAction()
         }
     }
 
-    /**
-     * Performs [AppendFileCommandAction] action.
-     *
-     * @param ignoreDuplicates ignores duplicated rules
-     * @param ignoreComments   ignores comments and empty lines
-     */
-    private fun performAppendAction(ignoreDuplicates: Boolean, ignoreComments: Boolean) {
+    /** Performs [AppendFileCommandAction] action. */
+    private fun performAppendAction() {
         val content = StringBuilder()
 
         val iterator: Iterator<Resources.Template?> = checked.iterator()
@@ -172,19 +172,14 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
                     project,
                     file!!,
                     hashSetOf(content.toString()),
-                    ignoreDuplicates,
-                    ignoreComments
+                    withoutDuplicates?.isSelected ?: false,
+                    withoutComments?.isSelected ?: false
                 ).execute()
             }
         } catch (throwable: Throwable) {
             throwable.printStackTrace()
         }
         super.doOKAction()
-    }
-
-    override fun createDefaultActions() {
-        super.createDefaultActions()
-        myOKAction = OptionOkAction()
     }
 
     override fun createCenterPanel() = JPanel(BorderLayout()).apply {
@@ -223,6 +218,21 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             },
             BorderLayout.CENTER
         )
+    }
+
+    override fun createSouthPanel(): JComponent {
+        val southPanel = super.createSouthPanel()
+
+        val checkboxPanel = JPanel()
+        checkboxPanel.layout = BoxLayout(checkboxPanel, BoxLayout.X_AXIS)
+
+        checkboxPanel.add(JCheckBox(message("global.generate.without.duplicates")))
+        checkboxPanel.add(Box.createRigidArea(Dimension(10, 0)))
+        checkboxPanel.add(JCheckBox(message("global.generate.without.comments")))
+
+        southPanel.add(checkboxPanel, BorderLayout.WEST)
+
+        return southPanel
     }
 
     /**
@@ -464,24 +474,6 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     inner class TemplatesFilterComponent : FilterComponent(TEMPLATES_FILTER_HISTORY, 10) {
         override fun filter() {
             filterTree(filter)
-        }
-    }
-
-    /** OkAction instance with additional `Generate without duplicates` action. */
-    private inner class OptionOkAction : OkAction(), OptionAction {
-        override fun getOptions(): Array<Action> {
-            return arrayOf(
-                object : DialogWrapperAction(message("global.generate.without.duplicates")) {
-                    override fun doAction(e: ActionEvent) {
-                        performAppendAction(ignoreDuplicates = true, ignoreComments = false)
-                    }
-                },
-                object : DialogWrapperAction(message("global.generate.without.comments")) {
-                    override fun doAction(e: ActionEvent) {
-                        performAppendAction(ignoreDuplicates = false, ignoreComments = true)
-                    }
-                }
-            )
         }
     }
 }
