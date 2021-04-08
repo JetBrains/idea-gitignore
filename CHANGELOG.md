@@ -2,6 +2,7 @@ Change Log
 ----------
 
 ## [Unreleased]
+## [4.0.4]
 
 - Fixed incorrect behaviour of "Hide ignored files"
 - Compatibility with 2021.1
