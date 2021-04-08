@@ -3,6 +3,11 @@ Change Log
 
 ## [Unreleased]
 
+- Fixed incorrect behaviour of "Hide ignored files"
+- Compatibility with 2021.1
+
+## [v4.0.3](https://github.com/JetBrains/idea-gitignore/tree/v4.0.3) (2021-01-12)
+
 - GeneratorDialog: fixed broken search + minor tweaks
 - GeneratorDialog: fixed broken stars mechanism
 - Add project icons
