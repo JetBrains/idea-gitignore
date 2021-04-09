@@ -5,14 +5,13 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreVisitor
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
-import mobi.hsz.idea.gitignore.util.Constants
+import mobi.hsz.idea.gitignore.util.ContentGenerator
 import mobi.hsz.idea.gitignore.util.Notify
 import mobi.hsz.idea.gitignore.util.Utils
 
@@ -71,54 +70,8 @@ class AppendFileCommandAction(
                 }
             }
 
-            content.forEach { it ->
-                var entry = it
-
-                if (ignoreDuplicates) {
-                    val currentLines = document.text.split(Constants.NEWLINE).filter {
-                        it.isNotEmpty() && !it.startsWith(Constants.HASH)
-                    }.toMutableList()
-                    val entryLines = it.split(Constants.NEWLINE).toMutableList()
-                    val iterator = entryLines.iterator()
-
-                    while (iterator.hasNext()) {
-                        val line = iterator.next().trim { it <= ' ' }
-                        if (line.isEmpty() || line.startsWith(Constants.HASH)) {
-                            continue
-                        }
-                        if (currentLines.contains(line)) {
-                            iterator.remove()
-                        } else {
-                            currentLines.add(line)
-                        }
-                    }
-                    entry = StringUtil.join(entryLines, Constants.NEWLINE)
-                }
-                if (ignoreComments) {
-                    val entryLines = it.split(Constants.NEWLINE).toMutableList()
-                    val iterator = entryLines.iterator()
-                    while (iterator.hasNext()) {
-                        val line = iterator.next().trim { it <= ' ' }
-                        if (line.isEmpty() || line.startsWith(Constants.HASH)) {
-                            iterator.remove()
-                        }
-                    }
-                    entry = StringUtil.join(entryLines, Constants.NEWLINE)
-                }
-
-                entry = StringUtil.replace(entry, "\r", "")
-                if (!StringUtil.isEmpty(entry)) {
-                    entry += Constants.NEWLINE
-                }
-
-                if (!settings.insertAtCursor && !document.text.endsWith(Constants.NEWLINE) && entry.isNotEmpty()) {
-                    entry = Constants.NEWLINE + entry
-                }
-
-                document.insertString(offset, entry)
-                offset += entry.length
-            }
-
+            val generatedContent = ContentGenerator.generate(document.text, content, ignoreDuplicates, ignoreComments)
+            document.insertString(offset, generatedContent)
             manager.commitDocument(document)
         }
         return file

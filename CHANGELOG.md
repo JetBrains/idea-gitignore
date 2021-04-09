@@ -3,7 +3,8 @@ Changelog
 
 ## [Unreleased]
 
-- In Generate dialog, replace Ok button dropdown with checkboxes
+- Generate Dialog - allow copying generated content to clipboard
+- Generate Dialog - replace Ok button dropdown with checkboxes
 - .deployignore (DeployHQ) support
 - .eleventyignore (11ty) support
 - .tokeignore (Tokei) support

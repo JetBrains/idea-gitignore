@@ -18,6 +18,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.markup.HighlighterTargetArea
 import com.intellij.openapi.editor.markup.TextAttributes
+import com.intellij.openapi.ide.CopyPasteManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.util.IconLoader
@@ -40,6 +41,7 @@ import mobi.hsz.idea.gitignore.ui.template.TemplateTreeComparator
 import mobi.hsz.idea.gitignore.ui.template.TemplateTreeNode
 import mobi.hsz.idea.gitignore.ui.template.TemplateTreeRenderer
 import mobi.hsz.idea.gitignore.util.Constants
+import mobi.hsz.idea.gitignore.util.ContentGenerator
 import mobi.hsz.idea.gitignore.util.Resources
 import mobi.hsz.idea.gitignore.util.Resources.Template.Container
 import mobi.hsz.idea.gitignore.util.Resources.Template.Container.STARRED
@@ -51,6 +53,7 @@ import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
+import java.awt.datatransfer.StringSelection
 import javax.swing.Box
 import javax.swing.BoxLayout
 import javax.swing.JCheckBox
@@ -90,6 +93,9 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
 
     /** Checkbox to generate without comments. */
     private lateinit var withoutComments: JCheckBox
+
+    /** Checkbox to generate content and copy into clipboard. */
+    private lateinit var useClipboard: JCheckBox
 
     /** Tree expander responsible for expanding and collapsing tree structure. */
     private var treeExpander: DefaultTreeExpander? = null
@@ -149,8 +155,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     /** Performs [AppendFileCommandAction] action. */
     private fun performAppendAction() {
         val content = StringBuilder()
-
-        val iterator: Iterator<Resources.Template?> = checked.iterator()
+        val iterator = checked.iterator()
         while (iterator.hasNext()) {
             iterator.next()?.let {
                 content
@@ -163,27 +168,43 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
                 }
             }
         }
-        try {
-            if (file == null && action != null) {
-                file = action!!.execute()
+
+        if (useClipboard.isSelected) {
+            val generatedContent = ContentGenerator.generate(
+                "",
+                hashSetOf(content.toString()),
+                withoutDuplicates.isSelected,
+                withoutComments.isSelected,
+            )
+            CopyPasteManager.getInstance().setContents(StringSelection(generatedContent))
+        } else {
+            try {
+                if (file == null) {
+                    action?.apply {
+                        file = execute()
+                    }
+                }
+                file?.let {
+                    if (content.isNotEmpty()) {
+                        AppendFileCommandAction(
+                            project,
+                            it,
+                            hashSetOf(content.toString()),
+                            withoutDuplicates.isSelected,
+                            withoutComments.isSelected,
+                        ).execute()
+                    }
+                }
+            } catch (throwable: Throwable) {
+                throwable.printStackTrace()
             }
-            if (file != null && content.isNotEmpty()) {
-                AppendFileCommandAction(
-                    project,
-                    file!!,
-                    hashSetOf(content.toString()),
-                    withoutDuplicates.isSelected,
-                    withoutComments.isSelected
-                ).execute()
-            }
-        } catch (throwable: Throwable) {
-            throwable.printStackTrace()
         }
+
         super.doOKAction()
     }
 
     override fun createCenterPanel() = JPanel(BorderLayout()).apply {
-        preferredSize = Dimension(800, 500)
+        preferredSize = Dimension(850, 500)
 
         // splitter panel - contains tree panel and preview component
         add(
@@ -227,10 +248,13 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             layout = BoxLayout(this, BoxLayout.X_AXIS)
             withoutDuplicates = JCheckBox(message("global.generate.without.duplicates"))
             withoutComments = JCheckBox(message("global.generate.without.comments"))
+            useClipboard = JCheckBox(message("global.generate.use.clipboard"))
 
             add(withoutDuplicates)
             add(Box.createRigidArea(Dimension(10, 0)))
             add(withoutComments)
+            add(Box.createRigidArea(Dimension(10, 0)))
+            add(useClipboard)
         }
 
         southPanel.add(checkboxPanel, BorderLayout.WEST)
