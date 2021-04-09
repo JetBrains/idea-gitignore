@@ -2,7 +2,10 @@ Change Log
 ----------
 
 ## [Unreleased]
-## [4.0.4]
+
+- .vercelignore (Vercel) support
+
+## [v4.0.4](https://github.com/JetBrains/idea-gitignore/tree/v4.0.4) (2021-04-08)
 
 - Fixed incorrect behaviour of "Hide ignored files"
 - Compatibility with 2021.1

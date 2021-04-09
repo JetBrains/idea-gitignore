@@ -728,6 +728,30 @@
             language="Up"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Up -->
+
+        <!-- Vercel -->
+        <fileType
+            name="Vercel File"
+            language="Vercel"
+            extensions="vercelignore"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.VercelFileType"/>
+        <lang.parserDefinition
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Vercel -->
     </extensions>
 
     <actions>
