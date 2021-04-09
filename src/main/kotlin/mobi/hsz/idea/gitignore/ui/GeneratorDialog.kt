@@ -85,6 +85,12 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     /** Templates tree with checkbox feature. */
     private lateinit var tree: CheckboxTree
 
+    /** Checkbox to generate without duplicates. */
+    private lateinit var withoutDuplicates: JCheckBox
+
+    /** Checkbox to generate without comments. */
+    private lateinit var withoutComments: JCheckBox
+
     /** Tree expander responsible for expanding and collapsing tree structure. */
     private var treeExpander: DefaultTreeExpander? = null
 
@@ -96,12 +102,6 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
 
     /** Preview editor with syntax highlight. */
     private val preview = createPreviewEditor(previewDocument, project, true)
-
-    /** Checkbox to generate without duplicates. */
-    private var withoutDuplicates: JCheckBox? = null
-
-    /** Checkbox to generate without comments. */
-    private var withoutComments: JCheckBox? = null
 
     /** CheckboxTree selection listener. */
     private val treeSelectionListener = TreeSelectionListener { _: TreeSelectionEvent? ->
@@ -172,8 +172,8 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
                     project,
                     file!!,
                     hashSetOf(content.toString()),
-                    withoutDuplicates?.isSelected ?: false,
-                    withoutComments?.isSelected ?: false
+                    withoutDuplicates.isSelected,
+                    withoutComments.isSelected
                 ).execute()
             }
         } catch (throwable: Throwable) {
@@ -223,12 +223,15 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     override fun createSouthPanel(): JComponent {
         val southPanel = super.createSouthPanel()
 
-        val checkboxPanel = JPanel()
-        checkboxPanel.layout = BoxLayout(checkboxPanel, BoxLayout.X_AXIS)
+        val checkboxPanel = JPanel().apply {
+            layout = BoxLayout(this, BoxLayout.X_AXIS)
+            withoutDuplicates = JCheckBox(message("global.generate.without.duplicates"))
+            withoutComments = JCheckBox(message("global.generate.without.comments"))
 
-        checkboxPanel.add(JCheckBox(message("global.generate.without.duplicates")))
-        checkboxPanel.add(Box.createRigidArea(Dimension(10, 0)))
-        checkboxPanel.add(JCheckBox(message("global.generate.without.comments")))
+            add(withoutDuplicates)
+            add(Box.createRigidArea(Dimension(10, 0)))
+            add(withoutComments)
+        }
 
         southPanel.add(checkboxPanel, BorderLayout.WEST)
 
@@ -472,6 +475,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     }
 
     inner class TemplatesFilterComponent : FilterComponent(TEMPLATES_FILTER_HISTORY, 10) {
+
         override fun filter() {
             filterTree(filter)
         }
