@@ -3,6 +3,7 @@ Change Log
 
 ## [Unreleased]
 
+- .yarnignore (Yarn) support
 - .vercelignore (Vercel) support
 
 ## [v4.0.4](https://github.com/JetBrains/idea-gitignore/tree/v4.0.4) (2021-04-08)

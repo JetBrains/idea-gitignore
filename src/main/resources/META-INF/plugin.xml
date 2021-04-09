@@ -752,6 +752,30 @@
             language="Vercel"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Vercel -->
+
+        <!-- Yarn -->
+        <fileType
+            name="Yarn File"
+            language="Yarn"
+            extensions="yarnignore"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.YarnFileType"/>
+        <lang.parserDefinition
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Yarn -->
     </extensions>
 
     <actions>

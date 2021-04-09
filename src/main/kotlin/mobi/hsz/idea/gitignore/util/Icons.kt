@@ -94,4 +94,7 @@ object Icons {
 
     /** Vercel icon. */
     val VERCEL = IconLoader.getIcon("/icons/icon_vercel.png", Icons::class.java)
+
+    /** Vercel icon. */
+    val YARN = IconLoader.getIcon("/icons/icon_yarn.png", Icons::class.java)
 }
