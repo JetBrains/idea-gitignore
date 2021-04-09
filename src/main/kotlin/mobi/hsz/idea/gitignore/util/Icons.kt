@@ -26,6 +26,9 @@ object Icons {
     /** Darcs icon. */
     val DARCS = IconLoader.getIcon("/icons/icon_darcs.png", Icons::class.java)
 
+    /** DeployHQ icon. */
+    val DEPLOYHQ = IconLoader.getIcon("/icons/icon_deployhq.png", Icons::class.java)
+
     /** Dockerignore icon. */
     val DOCKER = IconLoader.getIcon("/icons/icon_docker.png", Icons::class.java)
 

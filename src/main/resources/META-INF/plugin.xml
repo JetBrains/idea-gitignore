@@ -225,6 +225,31 @@
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Cvs -->
 
+        <!-- DeployHQ -->
+        <fileType
+            name="DeployHQ File"
+            language="DeployHQ"
+            extensions="deployignore"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.DeployHQFileType"/>
+        <lang.parserDefinition
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END DeployHQ -->
+
+
         <!-- Darcs -->
         <fileType
             name="Darcs File"

@@ -3,6 +3,7 @@ Change Log
 
 ## [Unreleased]
 
+- .deployignore (DeployHQ) support
 - .tokeignore (Tokei) support
 - .yarnignore (Yarn) support
 - .vercelignore (Vercel) support
