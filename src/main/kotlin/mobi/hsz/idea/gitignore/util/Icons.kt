@@ -89,6 +89,9 @@ object Icons {
     /** TeamFoundation icon. */
     val TF = IconLoader.getIcon("/icons/icon_tf.png", Icons::class.java)
 
+    /** Tokei icon. */
+    val TOKEI = IconLoader.getIcon("/icons/icon_tokei.png", Icons::class.java)
+
     /** Up icon. */
     val UP = IconLoader.getIcon("/icons/icon_up.png", Icons::class.java)
 

@@ -3,6 +3,7 @@ Change Log
 
 ## [Unreleased]
 
+- .tokeignore (Tokei) support
 - .yarnignore (Yarn) support
 - .vercelignore (Vercel) support
 
