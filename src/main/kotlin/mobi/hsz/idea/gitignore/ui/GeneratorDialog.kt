@@ -179,21 +179,14 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             CopyPasteManager.getInstance().setContents(StringSelection(generatedContent))
         } else {
             try {
-                if (file == null) {
-                    action?.apply {
-                        file = execute()
-                    }
-                }
-                file?.let {
-                    if (content.isNotEmpty()) {
-                        AppendFileCommandAction(
-                            project,
-                            it,
-                            hashSetOf(content.toString()),
-                            withoutDuplicates.isSelected,
-                            withoutComments.isSelected,
-                        ).execute()
-                    }
+                (file ?: action?.execute())?.takeIf { content.isNotEmpty() }?.let {
+                    AppendFileCommandAction(
+                        project,
+                        it,
+                        hashSetOf(content.toString()),
+                        withoutDuplicates.isSelected,
+                        withoutComments.isSelected,
+                    ).execute()
                 }
             } catch (throwable: Throwable) {
                 throwable.printStackTrace()
