@@ -9,7 +9,6 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
 import com.intellij.util.IncorrectOperationException
 import mobi.hsz.idea.gitignore.IgnoreBundle
-import mobi.hsz.idea.gitignore.IgnoreBundle.message
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.util.Constants
 
@@ -17,10 +16,6 @@ import mobi.hsz.idea.gitignore.util.Constants
  * Templates factory that generates Gitignore file and its content.
  */
 class IgnoreTemplatesFactory(private val fileType: IgnoreFileType) : FileTemplateGroupDescriptorFactory {
-
-    companion object {
-        private val TEMPLATE_NOTE = message("file.templateNote")
-    }
 
     override fun getFileTemplatesDescriptor() = FileTemplateGroupDescriptor(
         fileType.ignoreLanguage.id,
@@ -43,14 +38,13 @@ class IgnoreTemplatesFactory(private val fileType: IgnoreFileType) : FileTemplat
         }
 
         val language = fileType.ignoreLanguage
-        var content = StringUtil.join(TEMPLATE_NOTE, Constants.NEWLINE)
-        if (language.isSyntaxSupported && IgnoreBundle.Syntax.GLOB != language.defaultSyntax) {
-            content = StringUtil.join(
-                content,
+        val content = when {
+            language.isSyntaxSupported && IgnoreBundle.Syntax.GLOB != language.defaultSyntax -> StringUtil.join(
                 IgnoreBundle.Syntax.GLOB.presentation,
                 Constants.NEWLINE,
                 Constants.NEWLINE
             )
+            else -> ""
         }
         val file = PsiFileFactory.getInstance(directory.project).createFileFromText(filename, fileType, content)
         return directory.add(file) as PsiFile
