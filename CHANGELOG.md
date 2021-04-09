@@ -4,6 +4,7 @@ Change Log
 ## [Unreleased]
 
 - .deployignore (DeployHQ) support
+- .eleventyignore (11ty) support
 - .tokeignore (Tokei) support
 - .yarnignore (Yarn) support
 - .vercelignore (Vercel) support

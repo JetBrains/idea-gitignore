@@ -32,6 +32,9 @@ object Icons {
     /** Dockerignore icon. */
     val DOCKER = IconLoader.getIcon("/icons/icon_docker.png", Icons::class.java)
 
+    /** Eleventy icon. */
+    val ELEVENTY = IconLoader.getIcon("/icons/icon_eleventy.png", Icons::class.java)
+
     /** ESLint icon. */
     val ESLINT = IconLoader.getIcon("/icons/icon_eslint.png", Icons::class.java)
 

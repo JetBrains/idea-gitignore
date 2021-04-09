@@ -249,7 +249,6 @@
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END DeployHQ -->
 
-
         <!-- Darcs -->
         <fileType
             name="Darcs File"
@@ -321,6 +320,30 @@
             language="ElasticBeanstalk"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END ElasticBeanstalk -->
+
+        <!-- Eleventy -->
+        <fileType
+            name="Eleventy File"
+            language="Eleventy"
+            extensions="eleventyignore"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.EleventyFileType"/>
+        <lang.parserDefinition
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Eleventy -->
 
         <!-- ESLint -->
         <fileType
