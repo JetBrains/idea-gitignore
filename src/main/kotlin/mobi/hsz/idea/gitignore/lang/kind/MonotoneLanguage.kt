@@ -1,4 +1,4 @@
-// Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+// Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.lang.kind
 
 import mobi.hsz.idea.gitignore.IgnoreBundle
@@ -20,4 +20,7 @@ class MonotoneLanguage private constructor() : IgnoreLanguage("Monotone", "mtn-i
 
     override val defaultSyntax
         get() = IgnoreBundle.Syntax.REGEXP
+
+    override val isVCS
+        get() = true
 }

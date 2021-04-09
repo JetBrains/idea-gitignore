@@ -1,5 +1,6 @@
 <idea-plugin>
     <id>mobi.hsz.idea.gitignore</id>
+    <!--suppress PluginXmlCapitalization -->
     <name>.ignore</name>
     <vendor>JetBrains</vendor>
     <depends>com.intellij.modules.lang</depends>
@@ -224,6 +225,30 @@
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Cvs -->
 
+        <!-- DeployHQ -->
+        <fileType
+            name="DeployHQ File"
+            language="DeployHQ"
+            extensions="deployignore"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.DeployHQFileType"/>
+        <lang.parserDefinition
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="DeployHQ"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END DeployHQ -->
+
         <!-- Darcs -->
         <fileType
             name="Darcs File"
@@ -295,6 +320,30 @@
             language="ElasticBeanstalk"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END ElasticBeanstalk -->
+
+        <!-- Eleventy -->
+        <fileType
+            name="Eleventy File"
+            language="Eleventy"
+            extensions="eleventyignore"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.EleventyFileType"/>
+        <lang.parserDefinition
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="Eleventy"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Eleventy -->
 
         <!-- ESLint -->
         <fileType
@@ -727,6 +776,54 @@
             language="Up"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Up -->
+
+        <!-- Vercel -->
+        <fileType
+            name="Vercel File"
+            language="Vercel"
+            extensions="vercelignore"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.VercelFileType"/>
+        <lang.parserDefinition
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="Vercel"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Vercel -->
+
+        <!-- Yarn -->
+        <fileType
+            name="Yarn File"
+            language="Yarn"
+            extensions="yarnignore"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.YarnFileType"/>
+        <lang.parserDefinition
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="Yarn"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Yarn -->
     </extensions>
 
     <actions>

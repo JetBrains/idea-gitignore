@@ -1,7 +1,20 @@
-Change Log
+Changelog
 ----------
 
 ## [Unreleased]
+
+- .deployignore (DeployHQ) support
+- .eleventyignore (11ty) support
+- .tokeignore (Tokei) support
+- .yarnignore (Yarn) support
+- .vercelignore (Vercel) support
+
+## [v4.0.4](https://github.com/JetBrains/idea-gitignore/tree/v4.0.4) (2021-04-08)
+
+- Fixed incorrect behaviour of "Hide ignored files"
+- Compatibility with 2021.1
+
+## [v4.0.3](https://github.com/JetBrains/idea-gitignore/tree/v4.0.3) (2021-01-12)
 
 - GeneratorDialog: fixed broken search + minor tweaks
 - GeneratorDialog: fixed broken stars mechanism

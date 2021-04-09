@@ -1,8 +1,7 @@
-// Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+// Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.vcs
 
 import com.intellij.openapi.components.service
-import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.FileStatus
@@ -10,7 +9,6 @@ import com.intellij.openapi.vcs.FileStatusFactory
 import com.intellij.openapi.vcs.impl.FileStatusProvider
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.JBColor
-import com.intellij.util.ThreeState
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreManager
 
@@ -39,17 +37,5 @@ class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware
     override fun getFileStatus(virtualFile: VirtualFile) = when {
         manager.isFileIgnored(virtualFile) -> IGNORED
         else -> null
-    }
-
-    override fun refreshFileStatusFromDocument(virtualFile: VirtualFile, doc: Document) = Unit
-
-    /**
-     * Does nothing.
-     *
-     * @param virtualFile file
-     * @return nothing
-     */
-    override fun getNotChangedDirectoryParentingStatus(virtualFile: VirtualFile): ThreeState {
-        throw UnsupportedOperationException("Shouldn't be called")
     }
 }
