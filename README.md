@@ -46,6 +46,7 @@ files in your project. It supports the following IDEs:
 - Android Studio
 - AppCode
 - CLion
+- GoLand
 - IntelliJ IDEA
 - PhpStorm
 - PyCharm
