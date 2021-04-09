@@ -20,4 +20,7 @@ class DarcsLanguage private constructor() : IgnoreLanguage("Darcs", "boringignor
 
     override val defaultSyntax
         get() = IgnoreBundle.Syntax.REGEXP
+
+    override val isVCS
+        get() = true
 }

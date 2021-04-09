@@ -75,5 +75,5 @@ open class IgnoreLanguage protected constructor(
      * @return is VCS
      */
     open val isVCS
-        get() = true
+        get() = false
 }

@@ -16,7 +16,4 @@ class DeployHQLanguage private constructor() : IgnoreLanguage("DeployHQ", "deplo
 
     override val fileType
         get() = DeployHQFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

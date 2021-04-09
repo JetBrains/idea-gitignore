@@ -16,7 +16,4 @@ class PrettierLanguage private constructor() : IgnoreLanguage("Prettier", "prett
 
     override val fileType
         get() = PrettierFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

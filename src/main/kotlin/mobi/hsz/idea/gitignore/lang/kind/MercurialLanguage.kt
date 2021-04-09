@@ -21,6 +21,9 @@ class MercurialLanguage private constructor() : IgnoreLanguage("Mercurial", "hgi
     override val isSyntaxSupported
         get() = true
 
+    override val isVCS
+        get() = true
+
     override val defaultSyntax
         get() = IgnoreBundle.Syntax.REGEXP
 }

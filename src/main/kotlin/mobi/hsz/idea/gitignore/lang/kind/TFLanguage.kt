@@ -16,4 +16,7 @@ class TFLanguage private constructor() : IgnoreLanguage("Team Foundation", "tfig
 
     override val fileType
         get() = TFFileType.INSTANCE
+
+    override val isVCS
+        get() = true
 }

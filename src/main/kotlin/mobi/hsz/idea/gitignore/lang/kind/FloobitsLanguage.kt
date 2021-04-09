@@ -16,7 +16,4 @@ class FloobitsLanguage private constructor() : IgnoreLanguage("Floobits", "flooi
 
     override val fileType
         get() = FloobitsFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

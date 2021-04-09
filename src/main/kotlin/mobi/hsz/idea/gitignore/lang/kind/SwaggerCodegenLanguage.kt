@@ -17,7 +17,4 @@ class SwaggerCodegenLanguage private constructor() :
 
     override val fileType
         get() = SwaggerCodegenFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

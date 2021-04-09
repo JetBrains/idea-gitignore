@@ -16,7 +16,4 @@ class TokeiLanguage private constructor() : IgnoreLanguage("Tokei", "tokeignore"
 
     override val fileType
         get() = TokeiFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

@@ -16,4 +16,7 @@ class BazaarLanguage private constructor() : IgnoreLanguage("Bazaar", "bzrignore
 
     override val fileType
         get() = BazaarFileType.INSTANCE
+
+    override val isVCS
+        get() = true
 }

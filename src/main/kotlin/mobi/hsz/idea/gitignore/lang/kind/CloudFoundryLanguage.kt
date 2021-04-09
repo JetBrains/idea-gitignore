@@ -16,7 +16,4 @@ class CloudFoundryLanguage private constructor() : IgnoreLanguage("CloudFoundry"
 
     override val fileType
         get() = CloudFoundryFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

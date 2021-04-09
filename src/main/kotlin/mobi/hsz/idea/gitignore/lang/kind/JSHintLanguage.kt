@@ -16,7 +16,4 @@ class JSHintLanguage private constructor() : IgnoreLanguage("JSHint", "jshintign
 
     override val fileType
         get() = JSHintFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

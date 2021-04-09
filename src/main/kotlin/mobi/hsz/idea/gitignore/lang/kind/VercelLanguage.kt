@@ -16,7 +16,4 @@ class VercelLanguage private constructor() : IgnoreLanguage("Vercel", "vercelign
 
     override val fileType
         get() = VercelFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

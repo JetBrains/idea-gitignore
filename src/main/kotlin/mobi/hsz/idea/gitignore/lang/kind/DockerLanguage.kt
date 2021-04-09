@@ -16,7 +16,4 @@ class DockerLanguage private constructor() : IgnoreLanguage("Docker", "dockerign
 
     override val fileType
         get() = DockerFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

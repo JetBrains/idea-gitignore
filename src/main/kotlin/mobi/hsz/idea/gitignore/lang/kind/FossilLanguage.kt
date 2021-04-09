@@ -20,4 +20,7 @@ private constructor() : IgnoreLanguage("Fossil", "ignore-glob", ".fossil-setting
 
     override val filename
         get() = extension
+
+    override val isVCS
+        get() = true
 }

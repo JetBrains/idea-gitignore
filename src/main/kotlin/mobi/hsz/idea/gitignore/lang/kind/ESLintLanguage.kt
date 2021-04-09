@@ -16,7 +16,4 @@ class ESLintLanguage private constructor() : IgnoreLanguage("ESLint", "eslintign
 
     override val fileType
         get() = ESLintFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

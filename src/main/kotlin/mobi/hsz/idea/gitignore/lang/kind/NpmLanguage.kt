@@ -16,7 +16,4 @@ class NpmLanguage private constructor() : IgnoreLanguage("Npm", "npmignore", nul
 
     override val fileType
         get() = NpmFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

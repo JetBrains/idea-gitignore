@@ -16,7 +16,4 @@ class NodemonLanguage private constructor() : IgnoreLanguage("Nodemon", "nodemon
 
     override val fileType
         get() = NodemonFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

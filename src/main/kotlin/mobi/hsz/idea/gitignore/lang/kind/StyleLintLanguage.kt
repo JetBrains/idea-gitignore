@@ -16,7 +16,4 @@ class StyleLintLanguage private constructor() : IgnoreLanguage("StyleLint", "sty
 
     override val fileType
         get() = StyleLintFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

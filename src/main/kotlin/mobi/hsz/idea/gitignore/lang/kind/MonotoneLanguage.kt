@@ -20,4 +20,7 @@ class MonotoneLanguage private constructor() : IgnoreLanguage("Monotone", "mtn-i
 
     override val defaultSyntax
         get() = IgnoreBundle.Syntax.REGEXP
+
+    override val isVCS
+        get() = true
 }

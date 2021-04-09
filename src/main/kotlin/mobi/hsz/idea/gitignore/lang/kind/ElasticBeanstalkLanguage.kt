@@ -16,7 +16,4 @@ class ElasticBeanstalkLanguage private constructor() : IgnoreLanguage("ElasticBe
 
     override val fileType
         get() = ElasticBeanstalkFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

@@ -16,4 +16,7 @@ class GitLanguage private constructor() : IgnoreLanguage("Git", "gitignore", ".g
 
     override val fileType
         get() = GitFileType.INSTANCE
+
+    override val isVCS
+        get() = true
 }

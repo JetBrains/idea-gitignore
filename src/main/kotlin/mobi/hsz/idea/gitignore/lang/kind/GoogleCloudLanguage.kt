@@ -16,7 +16,4 @@ class GoogleCloudLanguage private constructor() : IgnoreLanguage("Google Cloud",
 
     override val fileType
         get() = GoogleCloudFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

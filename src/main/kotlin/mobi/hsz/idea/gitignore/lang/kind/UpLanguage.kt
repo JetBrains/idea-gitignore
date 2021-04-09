@@ -16,7 +16,4 @@ class UpLanguage private constructor() : IgnoreLanguage("Up", "upignore", null, 
 
     override val fileType
         get() = UpFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

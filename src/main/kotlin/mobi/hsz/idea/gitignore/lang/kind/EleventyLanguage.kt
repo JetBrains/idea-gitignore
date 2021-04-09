@@ -16,7 +16,4 @@ class EleventyLanguage private constructor() : IgnoreLanguage("Eleventy", "eleve
 
     override val fileType
         get() = EleventyFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

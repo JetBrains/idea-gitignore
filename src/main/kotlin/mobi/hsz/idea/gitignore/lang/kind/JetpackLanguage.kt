@@ -16,7 +16,4 @@ class JetpackLanguage private constructor() : IgnoreLanguage("Jetpack", "jpmigno
 
     override val fileType
         get() = JetpackFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

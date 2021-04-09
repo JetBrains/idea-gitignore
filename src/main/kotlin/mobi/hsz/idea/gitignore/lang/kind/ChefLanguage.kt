@@ -16,7 +16,4 @@ class ChefLanguage private constructor() : IgnoreLanguage("Chef", "chefignore", 
 
     override val fileType
         get() = ChefFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

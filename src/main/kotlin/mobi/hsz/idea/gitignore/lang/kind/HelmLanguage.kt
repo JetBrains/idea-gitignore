@@ -16,7 +16,4 @@ class HelmLanguage private constructor() : IgnoreLanguage("Kubernetes Helm", "he
 
     override val fileType
         get() = HelmFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

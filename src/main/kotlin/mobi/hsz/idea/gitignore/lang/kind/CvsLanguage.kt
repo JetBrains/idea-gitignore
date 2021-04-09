@@ -16,4 +16,7 @@ class CvsLanguage private constructor() : IgnoreLanguage("Cvs", "cvsignore", nul
 
     override val fileType
         get() = CvsFileType.INSTANCE
+
+    override val isVCS
+        get() = true
 }

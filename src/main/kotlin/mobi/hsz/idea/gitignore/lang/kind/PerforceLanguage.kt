@@ -16,4 +16,7 @@ class PerforceLanguage private constructor() : IgnoreLanguage("Perforce", "p4ign
 
     override val fileType
         get() = PerforceFileType.INSTANCE
+
+    override val isVCS
+        get() = true
 }

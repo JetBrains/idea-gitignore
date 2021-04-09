@@ -16,7 +16,4 @@ class YarnLanguage private constructor() : IgnoreLanguage("Yarn", "yarnignore", 
 
     override val fileType
         get() = YarnFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }

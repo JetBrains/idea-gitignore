@@ -16,7 +16,4 @@ class NuxtJSLanguage private constructor() : IgnoreLanguage("NuxtJS", "nuxtignor
 
     override val fileType
         get() = NuxtJSFileType.INSTANCE
-
-    override val isVCS
-        get() = false
 }
