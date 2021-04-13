@@ -2,6 +2,7 @@ Changelog
 ----------
 
 ## [Unreleased]
+## [4.1.0]
 
 - Generate Dialog - allow copying generated content to clipboard
 - Generate Dialog - replace Ok button dropdown with checkboxes
