@@ -14,7 +14,7 @@ plugins {
     id("org.jetbrains.changelog") version "1.1.2"
     id("io.gitlab.arturbosch.detekt") version "1.16.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
-    id("org.jetbrains.grammarkit") version "2020.3.2"
+    id("org.jetbrains.grammarkit") version "2021.1.2"
 }
 
 group = properties("pluginGroup")
