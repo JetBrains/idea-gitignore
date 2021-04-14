@@ -2,7 +2,7 @@ Changelog
 ----------
 
 ## [Unreleased]
-## [v4.1.0](https://github.com/JetBrains/idea-gitignore/tree/v4.1.0) (2021-04-08)
+## [v4.1.0](https://github.com/JetBrains/idea-gitignore/tree/v4.1.0) (2021-04-13)
 
 - Generate Dialog - allow copying generated content to clipboard
 - Generate Dialog - replace Ok button dropdown with checkboxes

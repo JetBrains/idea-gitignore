@@ -1,5 +1,6 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.closure
+import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.grammarkit.tasks.GenerateLexer
 import org.jetbrains.grammarkit.tasks.GenerateParser
@@ -67,6 +68,9 @@ intellij {
 
 changelog {
     headerParserRegex = "\\[?v\\d(\\.\\d+)+\\]?.*".toRegex()
+    header = closure {
+        "[v$version] (https://github.com/JetBrains/idea-gitignore/tree/v$version) (${date()})"
+    }
     version = properties("pluginVersion")
     groups = emptyList()
 }
