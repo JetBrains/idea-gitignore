@@ -21,6 +21,7 @@ import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.openapi.ide.CopyPasteManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
+import com.intellij.openapi.ui.OptionAction
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.util.text.StringUtil
@@ -54,6 +55,8 @@ import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.datatransfer.StringSelection
+import java.awt.event.ActionEvent
+import javax.swing.Action
 import javax.swing.Box
 import javax.swing.BoxLayout
 import javax.swing.JCheckBox
@@ -93,9 +96,6 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
 
     /** Checkbox to generate without comments. */
     private lateinit var withoutComments: JCheckBox
-
-    /** Checkbox to generate content and copy into clipboard. */
-    private lateinit var useClipboard: JCheckBox
 
     /** Tree expander responsible for expanding and collapsing tree structure. */
     private var treeExpander: DefaultTreeExpander? = null
@@ -148,12 +148,16 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
 
     override fun doOKAction() {
         if (isOKActionEnabled) {
-            performAppendAction()
+            performAppendAction(useClipboard = false)
         }
     }
 
-    /** Performs [AppendFileCommandAction] action. */
-    private fun performAppendAction() {
+    /**
+     * Performs [AppendFileCommandAction] action.
+     *
+     * @param useClipboard copies to clipboard instead of creating file
+     */
+    private fun performAppendAction(useClipboard: Boolean) {
         val content = StringBuilder()
         val iterator = checked.iterator()
         while (iterator.hasNext()) {
@@ -169,7 +173,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             }
         }
 
-        if (useClipboard.isSelected) {
+        if (useClipboard) {
             val generatedContent = ContentGenerator.generate(
                 "",
                 hashSetOf(content.toString()),
@@ -196,8 +200,13 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         super.doOKAction()
     }
 
+    override fun createDefaultActions() {
+        super.createDefaultActions()
+        myOKAction = OptionOkAction()
+    }
+
     override fun createCenterPanel() = JPanel(BorderLayout()).apply {
-        preferredSize = Dimension(850, 500)
+        preferredSize = Dimension(800, 500)
 
         // splitter panel - contains tree panel and preview component
         add(
@@ -241,13 +250,10 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             layout = BoxLayout(this, BoxLayout.X_AXIS)
             withoutDuplicates = JCheckBox(message("global.generate.without.duplicates"))
             withoutComments = JCheckBox(message("global.generate.without.comments"))
-            useClipboard = JCheckBox(message("global.generate.use.clipboard"))
 
             add(withoutDuplicates)
             add(Box.createRigidArea(Dimension(10, 0)))
             add(withoutComments)
-            add(Box.createRigidArea(Dimension(10, 0)))
-            add(useClipboard)
         }
 
         southPanel.add(checkboxPanel, BorderLayout.WEST)
@@ -495,6 +501,19 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
 
         override fun filter() {
             filterTree(filter)
+        }
+    }
+
+    /** OkAction instance with additional `Copy to Clipboard` action. */
+    private inner class OptionOkAction : OkAction(), OptionAction {
+        override fun getOptions(): Array<Action> {
+            return arrayOf(
+                object : DialogWrapperAction(message("global.generate.use.clipboard")) {
+                    override fun doAction(e: ActionEvent) {
+                        performAppendAction(useClipboard = true)
+                    }
+                }
+            )
         }
     }
 }
