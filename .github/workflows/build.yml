@@ -25,7 +25,7 @@ jobs:
 
       # Check out current repository
       - name: Fetch Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
         with:
           submodules: true
 
@@ -49,7 +49,7 @@ jobs:
 
       # Check out current repository
       - name: Fetch Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
         with:
           submodules: true
 
@@ -97,7 +97,7 @@ jobs:
 
       # Check out current repository
       - name: Fetch Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
         with:
           submodules: true
 
@@ -162,7 +162,7 @@ jobs:
 
       # Check out current repository
       - name: Fetch Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
         with:
           submodules: true
 
@@ -213,7 +213,7 @@ jobs:
 
       # Check out current repository
       - name: Fetch Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
         with:
           submodules: true
 
