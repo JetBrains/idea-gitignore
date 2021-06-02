@@ -2,6 +2,10 @@ Changelog
 ----------
 
 ## [Unreleased]
+
+- Fixed deprecated API usages
+- Support for IntelliJ-based IDEs in 2021.2 version
+
 ## [v4.1.0](https://github.com/JetBrains/idea-gitignore/tree/v4.1.0) (2021-04-13)
 
 - Generate Dialog - allow copying generated content to clipboard
