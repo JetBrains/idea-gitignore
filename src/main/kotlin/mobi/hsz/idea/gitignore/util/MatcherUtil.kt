@@ -6,7 +6,6 @@ import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
-import java.util.ArrayList
 import java.util.regex.Pattern
 
 /**
@@ -85,7 +84,7 @@ class MatcherUtil private constructor() {
 
             projectFileIndex.iterateContent {
                 if (matchAnyPart(parts, it.name)) {
-                    FilenameIndex.getVirtualFilesByName(project, it.name, scope).forEach { file ->
+                    FilenameIndex.getVirtualFilesByName(it.name, scope).forEach { file ->
                         if (file.isValid && matchAllParts(parts, file.path)) {
                             files.add(file)
                         }
