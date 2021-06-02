@@ -2,6 +2,7 @@ Changelog
 ----------
 
 ## [Unreleased]
+## [v4.1.1] (https://github.com/JetBrains/idea-gitignore/tree/v4.1.1) (2021-06-02)
 
 - Fixed deprecated API usages
 - Support for IntelliJ-based IDEs in 2021.2 version
