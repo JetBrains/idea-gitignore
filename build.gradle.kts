@@ -1,5 +1,3 @@
-import io.gitlab.arturbosch.detekt.Detekt
-import org.jetbrains.changelog.closure
 import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.grammarkit.tasks.GenerateLexer
@@ -10,11 +8,9 @@ fun properties(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.5.20"
-    id("org.jetbrains.intellij") version "1.0"
-    id("org.jetbrains.changelog") version "1.1.2"
-    id("io.gitlab.arturbosch.detekt") version "1.17.1"
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("org.jetbrains.kotlin.jvm") version "1.5.21"
+    id("org.jetbrains.intellij") version "1.1.4"
+    id("org.jetbrains.changelog") version "1.2.1"
     id("org.jetbrains.grammarkit") version "2021.1.3"
 }
 
@@ -24,9 +20,6 @@ version = properties("pluginVersion")
 // Configure project's dependencies
 repositories {
     mavenCentral()
-}
-dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
 }
 
 val generateLexer = task<GenerateLexer>("generateLexer") {
@@ -66,36 +59,28 @@ intellij {
 }
 
 changelog {
-    headerParserRegex = "\\[?v\\d(\\.\\d+)+\\]?.*".toRegex()
-    header = closure {
+    headerParserRegex.set("\\[?v\\d(\\.\\d+)+\\]?.*".toRegex())
+    header.set(provider {
         "[v$version] (https://github.com/JetBrains/idea-gitignore/tree/v$version) (${date()})"
-    }
-    version = properties("pluginVersion")
-    groups = emptyList()
-}
-
-// Configure detekt plugin.
-// Read more: https://detekt.github.io/detekt/kotlindsl.html
-detekt {
-    config = files("./detekt-config.yml")
-    buildUponDefaultConfig = true
-
-    reports {
-        html.enabled = false
-        xml.enabled = false
-        txt.enabled = false
-    }
+    })
+    version.set(properties("pluginVersion"))
+    groups.set(emptyList())
 }
 
 tasks {
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
-
-        dependsOn(generateLexer, generateParser, generateTemplatesList)
+    // Set the JVM compatibility versions
+    properties("javaVersion").let {
+        withType<JavaCompile> {
+            sourceCompatibility = it
+            targetCompatibility = it
+        }
+        withType<KotlinCompile> {
+            kotlinOptions.jvmTarget = it
+        }
     }
 
-    withType<Detekt> {
-        jvmTarget = "11"
+    wrapper {
+        gradleVersion = properties("gradleVersion")
     }
 
     sourceSets {
@@ -132,6 +117,13 @@ tasks {
 
     runPluginVerifier {
         ideVersions.set(properties("pluginVerifierIdeVersions").split(',').map(String::trim).filter(String::isNotEmpty))
+    }
+
+    runIdeForUiTests {
+        systemProperty("robot-server.port", "8082")
+        systemProperty("ide.mac.message.dialogs.as.sheets", "false")
+        systemProperty("jb.privacy.policy.text", "<!--999.999-->")
+        systemProperty("jb.consents.confirmation.enabled", "false")
     }
 
     publishPlugin {
