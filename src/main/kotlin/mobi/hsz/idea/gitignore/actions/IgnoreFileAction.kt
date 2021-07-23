@@ -29,7 +29,7 @@ open class IgnoreFileAction(
     private val ignoreFile: VirtualFile? = null,
     private val fileType: IgnoreFileType? = getFileType(ignoreFile),
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) textKey: String = "action.addToIgnore",
-    @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) descriptionKey: String = "action.addToIgnore.description"
+    @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) descriptionKey: String = "action.addToIgnore.description",
 ) : DumbAwareAction(
     IgnoreBundle.message(textKey, fileType?.ignoreLanguage?.filename),
     IgnoreBundle.message(descriptionKey, fileType?.ignoreLanguage?.filename),
@@ -61,11 +61,11 @@ open class IgnoreFileAction(
         val files = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
         val project = e.getRequiredData(CommonDataKeys.PROJECT)
 
-        ignoreFile?.let {
+        (ignoreFile?.let {
             Utils.getPsiFile(project, it)
         } ?: fileType?.let {
             getIgnoreFile(project, it, null, true)
-        }?.let { ignore ->
+        })?.let { ignore ->
             val paths = mutableSetOf<String>()
 
             files.forEach { file ->
