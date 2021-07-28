@@ -4,8 +4,8 @@ Changelog
 ## [Unreleased]
 
 - Removed "Hide ignored files" feature in favor of [Foldable ProjectView](https://github.com/hsz/intellij-foldable-projectview) plugin
-- Slow operations are prohibited on EDT
-- Can't add entry to ignore file via context menu
+- Fixed: Slow operations are prohibited on EDT
+- Fixed: Can't add entry to ignore file via context menu
 
 ## [v4.1.1] (https://github.com/JetBrains/idea-gitignore/tree/v4.1.1) (2021-06-02)
 
