@@ -91,7 +91,7 @@
             id=".ignore"
             key="notification.group"
             toolWindowId="Project"
-            />
+        />
 
         <projectService
             serviceImplementation="mobi.hsz.idea.gitignore.IgnoreManager"/>
@@ -853,4 +853,14 @@
             <add-to-group group-id="ProjectViewPopupMenu"/>
         </action>
     </actions>
+
+    <applicationListeners>
+        <listener
+            class="mobi.hsz.idea.gitignore.foldableProjectView.StartupListener"
+            topic="com.intellij.ide.AppLifecycleListener"/>
+        <listener
+            class="mobi.hsz.idea.gitignore.foldableProjectView.StartupListener"
+            topic="com.intellij.openapi.project.ProjectManagerListener"
+            activeInHeadlessMode="false"/>
+    </applicationListeners>
 </idea-plugin>

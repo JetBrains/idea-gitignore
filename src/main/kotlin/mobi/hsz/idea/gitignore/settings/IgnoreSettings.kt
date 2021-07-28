@@ -24,7 +24,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
         INSERT_AT_CURSOR("insertAtCursor"), STARRED_TEMPLATES("starredTemplates"), UNIGNORE_ACTIONS("unignoreActions"),
-        NOTIFY_IGNORED_EDITING("notifyIgnoredEditing");
+        NOTIFY_IGNORED_EDITING("notifyIgnoredEditing"), FOLDABLE_PROJECT_VIEW_ADVERTISE_SHOWN("foldableProjectViewAdvertiseShown");
 
         override fun toString() = key
     }
@@ -61,6 +61,13 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     var notifyIgnoredEditing = true
         set(value) {
             notifyOnChange(KEY.NOTIFY_IGNORED_EDITING, notifyIgnoredEditing, value)
+            field = value
+        }
+
+    /** Shows Foldable ProjectView plugin advertisement. */
+    var foldableProjectViewAdvertiseShown = false
+        set(value) {
+            notifyOnChange(KEY.FOLDABLE_PROJECT_VIEW_ADVERTISE_SHOWN, foldableProjectViewAdvertiseShown, value)
             field = value
         }
 
@@ -150,6 +157,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, Constants.DOLLAR))
         setAttribute(KEY.UNIGNORE_ACTIONS.toString(), unignoreActions.toString())
         setAttribute(KEY.NOTIFY_IGNORED_EDITING.toString(), notifyIgnoredEditing.toString())
+        setAttribute(KEY.FOLDABLE_PROJECT_VIEW_ADVERTISE_SHOWN.toString(), foldableProjectViewAdvertiseShown.toString())
 
         addContent(
             Element(KEY.LANGUAGES.toString()).apply {
@@ -184,6 +192,9 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
             }
             getAttributeValue(KEY.NOTIFY_IGNORED_EDITING.toString())?.let {
                 notifyIgnoredEditing = it.toBoolean()
+            }
+            getAttributeValue(KEY.FOLDABLE_PROJECT_VIEW_ADVERTISE_SHOWN.toString())?.let {
+                foldableProjectViewAdvertiseShown = it.toBoolean()
             }
 
             getChild(KEY.LANGUAGES.toString()).children.forEach {

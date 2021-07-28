@@ -22,7 +22,7 @@ object Notify {
      * @param content  notification text
      * @param type     notification type
      */
-    fun show(project: Project, title: String, content: String? = null, type: NotificationType, block: (Notification.() -> Unit)? = null) {
+    fun show(project: Project?, title: String, content: String? = null, type: NotificationType, block: (Notification.() -> Unit)? = null) {
         val notification = NotificationGroupManager.getInstance()
             .getNotificationGroup(NOTIFICATION_GROUP_ID).run {
                 when (content) {
