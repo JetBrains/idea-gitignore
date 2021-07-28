@@ -2,7 +2,6 @@
 package mobi.hsz.idea.gitignore
 
 import com.intellij.ProjectTopics
-import com.intellij.ide.projectView.ProjectView
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
@@ -21,7 +20,6 @@ import com.intellij.openapi.vcs.FileStatusManager
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vcs.VcsListener
 import com.intellij.openapi.vcs.VcsRoot
-import com.intellij.openapi.vcs.changes.ChangeListListener
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileListener
@@ -115,7 +113,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val settingsListener = IgnoreSettings.Listener { key, value ->
         when (key) {
             IgnoreSettings.KEY.IGNORED_FILE_STATUS -> toggle(value as Boolean)
-            IgnoreSettings.KEY.HIDE_IGNORED_FILES -> ProjectView.getInstance(project).refresh()
             else -> {}
         }
     }
@@ -217,16 +214,6 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 override fun enteredDumbMode() = Unit
                 override fun exitDumbMode() {
                     debouncedExitDumbMode.run()
-                }
-            }
-        )
-        messageBus.subscribe(
-            ChangeListListener.TOPIC,
-            object : ChangeListListener {
-                override fun changeListUpdateDone() {
-                    if (settings.hideIgnoredFiles) {
-                        ProjectView.getInstance(project).refresh()
-                    }
                 }
             }
         )

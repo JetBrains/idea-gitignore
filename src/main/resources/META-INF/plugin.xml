@@ -99,12 +99,6 @@
         <projectService
             serviceImplementation="mobi.hsz.idea.gitignore.services.IgnoreMatcher"/>
 
-        <treeStructureProvider
-            implementation="mobi.hsz.idea.gitignore.projectView.HideIgnoredFilesTreeStructureProvider"/>
-
-        <projectViewNodeDecorator
-            implementation="mobi.hsz.idea.gitignore.projectView.IgnoreViewNodeDecorator"/>
-
         <vcs.fileStatusProvider
             implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
 

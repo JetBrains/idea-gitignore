@@ -24,7 +24,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         USER_TEMPLATES_TEMPLATE("template"), USER_TEMPLATES_NAME("name"), LANGUAGES("languages"),
         LANGUAGES_LANGUAGE("language"), LANGUAGES_ID("id"), IGNORED_FILE_STATUS("ignoredFileStatus"),
         INSERT_AT_CURSOR("insertAtCursor"), STARRED_TEMPLATES("starredTemplates"), UNIGNORE_ACTIONS("unignoreActions"),
-        HIDE_IGNORED_FILES("hideIgnoredFiles"), NOTIFY_IGNORED_EDITING("notifyIgnoredEditing");
+        NOTIFY_IGNORED_EDITING("notifyIgnoredEditing");
 
         override fun toString() = key
     }
@@ -54,13 +54,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
     var unignoreActions = true
         set(value) {
             notifyOnChange(KEY.UNIGNORE_ACTIONS, unignoreActions, value)
-            field = value
-        }
-
-    /** Hide ignored files or folder in the project tree view. */
-    var hideIgnoredFiles = false
-        set(value) {
-            notifyOnChange(KEY.HIDE_IGNORED_FILES, hideIgnoredFiles, value)
             field = value
         }
 
@@ -156,7 +149,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         setAttribute(KEY.IGNORED_FILE_STATUS.toString(), ignoredFileStatus.toString())
         setAttribute(KEY.STARRED_TEMPLATES.toString(), StringUtil.join(starredTemplates, Constants.DOLLAR))
         setAttribute(KEY.UNIGNORE_ACTIONS.toString(), unignoreActions.toString())
-        setAttribute(KEY.HIDE_IGNORED_FILES.toString(), hideIgnoredFiles.toString())
         setAttribute(KEY.NOTIFY_IGNORED_EDITING.toString(), notifyIgnoredEditing.toString())
 
         addContent(
@@ -189,9 +181,6 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
             }
             getAttributeValue(KEY.STARRED_TEMPLATES.toString())?.let {
                 starredTemplates = (StringUtil.split(it, Constants.DOLLAR))
-            }
-            getAttributeValue(KEY.HIDE_IGNORED_FILES.toString())?.let {
-                hideIgnoredFiles = it.toBoolean()
             }
             getAttributeValue(KEY.NOTIFY_IGNORED_EDITING.toString())?.let {
                 notifyIgnoredEditing = it.toBoolean()

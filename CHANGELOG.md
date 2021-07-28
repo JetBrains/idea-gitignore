@@ -3,6 +3,7 @@ Changelog
 
 ## [Unreleased]
 
+- Removed "Hide ignored files" feature in favor of [Foldable ProjectView](https://github.com/hsz/intellij-foldable-projectview) plugin
 - Slow operations are prohibited on EDT
 - Can't add entry to ignore file via context menu
 
