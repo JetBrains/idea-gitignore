@@ -2,6 +2,9 @@ Changelog
 ----------
 
 ## [Unreleased]
+
+- Slow operations are prohibited on EDT
+
 ## [v4.1.1] (https://github.com/JetBrains/idea-gitignore/tree/v4.1.1) (2021-06-02)
 
 - Fixed deprecated API usages

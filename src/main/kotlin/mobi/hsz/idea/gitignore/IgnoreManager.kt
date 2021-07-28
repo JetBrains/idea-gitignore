@@ -31,6 +31,7 @@ import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.util.Time
 import com.intellij.util.messages.MessageBusConnection
 import com.intellij.util.messages.Topic
+import com.intellij.util.ui.EDT
 import com.jetbrains.rd.util.concurrentMapOf
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence
@@ -136,7 +137,8 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         }
         if (ApplicationManager.getApplication().isDisposed || project.isDisposed ||
             DumbService.isDumb(project) || !isEnabled || !Utils.isInProject(file, project) ||
-            NoAccessDuringPsiEvents.isInsideEventProcessing()
+            NoAccessDuringPsiEvents.isInsideEventProcessing() ||
+            EDT.isCurrentThreadEdt()
         ) {
             return false
         }
