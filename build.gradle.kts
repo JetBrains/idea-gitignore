@@ -61,7 +61,7 @@ intellij {
 changelog {
     headerParserRegex.set("\\[?v\\d(\\.\\d+)+\\]?.*".toRegex())
     header.set(provider {
-        "[v$version] (https://github.com/JetBrains/idea-gitignore/tree/v$version) (${date()})"
+        "[v${version.get()}] (https://github.com/JetBrains/idea-gitignore/tree/v${version.get()}) (${date()})"
     })
     version.set(properties("pluginVersion"))
     groups.set(emptyList())

@@ -2,7 +2,8 @@ Changelog
 ----------
 
 ## [Unreleased]
-## [vextension 'changelog' property 'version'] (https://github.com/JetBrains/idea-gitignore/tree/vextension 'changelog' property 'version') (2021-07-28)
+
+## [v4.2.0] (https://github.com/JetBrains/idea-gitignore/tree/v4.2.0) (2021-07-28)
 
 - Removed "Hide ignored files" feature in favor of [Foldable ProjectView](https://github.com/hsz/intellij-foldable-projectview) plugin
 - Fixed: Slow operations are prohibited on EDT
