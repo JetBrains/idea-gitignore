@@ -76,6 +76,7 @@ tasks {
         }
         withType<KotlinCompile> {
             kotlinOptions.jvmTarget = it
+            dependsOn(generateLexer, generateParser, generateTemplatesList)
         }
     }
 
