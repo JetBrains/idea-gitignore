@@ -46,7 +46,6 @@ import java.awt.BorderLayout
 import java.awt.Component
 import java.awt.Dimension
 import java.io.IOException
-import java.util.ArrayList
 import java.util.TreeMap
 import javax.swing.JCheckBox
 import javax.swing.JPanel
@@ -146,8 +145,8 @@ class IgnoreSettingsPanel : Disposable {
     }
 
     override fun dispose() {
-        if (!editorPanel.preview.isDisposed) {
-            EditorFactory.getInstance().releaseEditor(editorPanel.preview)
+        editorPanel.preview?.let {
+            EditorFactory.getInstance().releaseEditor(it)
         }
     }
 
@@ -358,7 +357,7 @@ class IgnoreSettingsPanel : Disposable {
     /** Editor panel class that displays document editor or label if no template is selected. */
     private inner class EditorPanel : JPanel(BorderLayout()) {
         /** Preview editor. */
-        val preview: Editor
+        var preview: Editor? = null
 
         /** `No templates is selected` label. */
         private val label = JBLabel(message("settings.userTemplates.noTemplateSelected"), JBLabel.CENTER)
@@ -374,10 +373,30 @@ class IgnoreSettingsPanel : Disposable {
         override fun setEnabled(enabled: Boolean) {
             if (enabled) {
                 remove(label)
-                add(preview.component)
+
+                if (preview == null) {
+                    preview = createPreviewEditor(previewDocument, null, false).apply {
+                        document.addDocumentListener(
+                            object : DocumentListener {
+                                override fun documentChanged(event: DocumentEvent) {
+                                    templatesListPanel.updateContent(event.document.text)
+                                }
+                            }
+                        )
+                    }
+                }
+
+                preview?.let {
+                    add(it.component)
+                }
             } else {
                 add(label)
-                remove(preview!!.component)
+
+                preview?.let {
+                    remove(it.component)
+                    EditorFactory.getInstance().releaseEditor(it)
+                }
+                preview = null
             }
             revalidate()
             repaint()
@@ -397,15 +416,6 @@ class IgnoreSettingsPanel : Disposable {
 
         /** Constructor that creates document editor, empty content label. */
         init {
-            preview = createPreviewEditor(previewDocument, null, false).apply {
-                document.addDocumentListener(
-                    object : DocumentListener {
-                        override fun documentChanged(event: DocumentEvent) {
-                            templatesListPanel.updateContent(event.document.text)
-                        }
-                    }
-                )
-            }
             isEnabled = false
         }
     }
