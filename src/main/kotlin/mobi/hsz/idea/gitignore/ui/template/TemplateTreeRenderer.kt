@@ -54,7 +54,7 @@ abstract class TemplateTreeRenderer : CheckboxTree.CheckboxTreeCellRenderer() {
             value.container?.let {
                 checkbox.isVisible = true
                 textRenderer.append(
-                    message("template.container." + it.toString().toLowerCase()),
+                    message("template.container." + it.toString().lowercase()),
                     when {
                         selected -> SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, foreground)
                         else -> SimpleTextAttributes.GRAYED_ATTRIBUTES

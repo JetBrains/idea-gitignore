@@ -18,7 +18,7 @@ import mobi.hsz.idea.gitignore.util.Utils
 class IgnoreSettingsConfigurable : SearchableConfigurable, VcsConfigurableProvider {
 
     private val settings = service<IgnoreSettings>()
-    private var settingsPanel = IgnoreSettingsPanel()
+    private val settingsPanel by lazy { IgnoreSettingsPanel() }
 
     override fun getDisplayName(): String = IgnoreBundle.message("settings.displayName")
 

@@ -77,7 +77,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     DialogWrapper(project, false) {
 
     /** Cache set to store checked templates for the current action. */
-    private val checked: MutableSet<Resources.Template?> = HashSet()
+    private val checked = hashMapOf<String, String>()
 
     /** Settings instance. */
     private val settings = service<IgnoreSettings>()
@@ -161,11 +161,11 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
         val content = StringBuilder()
         val iterator = checked.iterator()
         while (iterator.hasNext()) {
-            iterator.next()?.let {
+            iterator.next().let {
                 content
-                    .append(message("file.templateSection", it.name))
+                    .append(message("file.templateSection", it.key))
                     .append(Constants.NEWLINE)
-                    .append(it.content)
+                    .append(it.value)
 
                 if (iterator.hasNext()) {
                     content.append(Constants.NEWLINE)
@@ -282,11 +282,11 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
 
             override fun onNodeStateChanged(node: CheckedTreeNode) {
                 super.onNodeStateChanged(node)
-                val template = (node as TemplateTreeNode).template
+                val template = (node as TemplateTreeNode).template ?: return
                 if (node.isChecked()) {
-                    checked.add(template)
+                    checked[template.name] = template.content ?: ""
                 } else {
-                    checked.remove(template)
+                    checked.remove(template.name)
                 }
             }
         }.apply {
@@ -411,7 +411,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             if (isTemplateAccepted(it, filter)) {
                 getGroupNode(root, it.container).add(
                     TemplateTreeNode(it).apply {
-                        isChecked = checked.contains(it)
+                        isChecked = checked.contains(it.name)
                     }
                 )
             }
