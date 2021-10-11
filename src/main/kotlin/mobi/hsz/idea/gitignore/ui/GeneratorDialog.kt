@@ -369,7 +369,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
             )
         }
 
-        return ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions, true).apply {
+        return ActionManager.getInstance().createActionToolbar(ActionPlaces.CONTEXT_TOOLBAR, actions, true).apply {
             setTargetComponent(target)
         }
     }
