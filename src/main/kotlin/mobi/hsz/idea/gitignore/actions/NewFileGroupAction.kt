@@ -4,6 +4,7 @@ package mobi.hsz.idea.gitignore.actions
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.DumbAware
 import mobi.hsz.idea.gitignore.IgnoreBundle
+import mobi.hsz.idea.gitignore.IgnoreBundle.LANGUAGES
 import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
 import mobi.hsz.idea.gitignore.util.Icons
 
@@ -20,7 +21,7 @@ class NewFileGroupAction : DefaultActionGroup(), DumbAware {
             icon = Icons.IGNORE
         }
 
-        (listOf(GitLanguage.INSTANCE) + IgnoreBundle.LANGUAGES).toSet().forEach {
+        LANGUAGES.run { filterIsInstance<GitLanguage>() + this }.toSet().forEach {
             add(
                 object : NewFileAction(it.fileType) {
                     init {
