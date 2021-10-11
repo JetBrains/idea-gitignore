@@ -21,7 +21,7 @@ class NewFileGroupAction : DefaultActionGroup(), DumbAware {
             icon = Icons.IGNORE
         }
 
-        LANGUAGES.run { filterIsInstance<GitLanguage>() + this }.toSet().forEach {
+        LANGUAGES.run { filterIsInstance<GitLanguage>().toSet().let { it + (this - it) } }.forEach {
             add(
                 object : NewFileAction(it.fileType) {
                     init {
