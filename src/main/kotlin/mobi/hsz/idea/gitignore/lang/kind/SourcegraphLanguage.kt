@@ -16,4 +16,7 @@ class SourcegraphLanguage private constructor() : IgnoreLanguage("Sourcegraph", 
 
     override val fileType
         get() = SourcegraphFileType.INSTANCE
+
+    override val filename: String
+        get() = extension
 }

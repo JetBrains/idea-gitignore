@@ -38,10 +38,6 @@
         <fileBasedIndex
             implementation="mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex"/>
 
-        <!--suppress PluginXmlValidity -->
-        <fileTypeOverrider
-            implementation="mobi.hsz.idea.gitignore.file.type.IgnoreFileTypeOverrider"/>
-
         <lang.elementManipulator
             forClass="mobi.hsz.idea.gitignore.psi.IgnoreEntry"
             implementationClass="mobi.hsz.idea.gitignore.psi.IgnoreEntryManipulator"/>
@@ -683,6 +679,7 @@
         <fileType
             name="Sourcegraph File"
             language="Sourcegraph"
+            extensions="ignore"
             fieldName="INSTANCE"
             implementationClass="mobi.hsz.idea.gitignore.file.type.kind.SourcegraphFileType"/>
         <lang.parserDefinition
