@@ -2,6 +2,7 @@ Changelog
 ----------
 
 ## [Unreleased]
+- `.ignore` (Sourcegraph) support
 
 ## [v4.2.0] (https://github.com/JetBrains/idea-gitignore/tree/v4.2.0) (2021-07-28)
 

@@ -38,6 +38,10 @@
         <fileBasedIndex
             implementation="mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex"/>
 
+        <!--suppress PluginXmlValidity -->
+        <fileTypeOverrider
+            implementation="mobi.hsz.idea.gitignore.file.type.IgnoreFileTypeOverrider"/>
+
         <lang.elementManipulator
             forClass="mobi.hsz.idea.gitignore.psi.IgnoreEntry"
             implementationClass="mobi.hsz.idea.gitignore.psi.IgnoreEntryManipulator"/>
@@ -674,6 +678,29 @@
             language="Stylint"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Stylint -->
+
+        <!-- Sourcegraph -->
+        <fileType
+            name="Sourcegraph File"
+            language="Sourcegraph"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.SourcegraphFileType"/>
+        <lang.parserDefinition
+            language="Sourcegraph"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="Sourcegraph"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="Sourcegraph"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="Sourcegraph"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="Sourcegraph"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END Sourcegraph -->
 
         <!-- StyleLint -->
         <fileType

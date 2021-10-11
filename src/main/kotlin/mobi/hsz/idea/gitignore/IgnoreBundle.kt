@@ -28,6 +28,7 @@ import mobi.hsz.idea.gitignore.lang.kind.NpmLanguage
 import mobi.hsz.idea.gitignore.lang.kind.NuxtJSLanguage
 import mobi.hsz.idea.gitignore.lang.kind.PerforceLanguage
 import mobi.hsz.idea.gitignore.lang.kind.PrettierLanguage
+import mobi.hsz.idea.gitignore.lang.kind.SourcegraphLanguage
 import mobi.hsz.idea.gitignore.lang.kind.StyleLintLanguage
 import mobi.hsz.idea.gitignore.lang.kind.StylintLanguage
 import mobi.hsz.idea.gitignore.lang.kind.SwaggerCodegenLanguage
@@ -36,7 +37,6 @@ import mobi.hsz.idea.gitignore.lang.kind.UpLanguage
 import mobi.hsz.idea.gitignore.util.CachedConcurrentMap
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
-import java.util.ArrayList
 import java.util.ResourceBundle
 
 /**
@@ -73,6 +73,7 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
             NuxtJSLanguage.INSTANCE,
             PerforceLanguage.INSTANCE,
             PrettierLanguage.INSTANCE,
+            SourcegraphLanguage.INSTANCE,
             StyleLintLanguage.INSTANCE,
             StylintLanguage.INSTANCE,
             SwaggerCodegenLanguage.INSTANCE,

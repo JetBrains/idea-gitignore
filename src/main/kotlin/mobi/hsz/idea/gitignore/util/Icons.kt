@@ -83,6 +83,9 @@ object Icons {
     /** Prettier icon. */
     val PRETTIER = IconLoader.getIcon("/icons/icon_prettier.png", Icons::class.java)
 
+    /** Sourcegraph icon. */
+    val SOURCEGRAPH = IconLoader.getIcon("/icons/icon_sourcegraph.png", Icons::class.java)
+
     /** StyleLint icon. */
     val STYLELINT = IconLoader.getIcon("/icons/icon_stylelint.png", Icons::class.java)
 

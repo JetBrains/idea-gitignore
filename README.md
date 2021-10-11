@@ -39,6 +39,7 @@ Introduction
 - `.nuxtignore` (NuxtJS)
 - `.p4ignore` (Perforce)
 - `.prettierignore` (Prettier)
+- `.ignore` (Sourcegraph)
 - `.stylelintignore` (StyleLint)
 - `.stylintignore` (Stylint)
 - `.swagger-codegen-ignore` (SwaggerCodegen)
