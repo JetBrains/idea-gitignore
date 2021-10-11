@@ -3,6 +3,8 @@ Changelog
 
 ## [Unreleased]
 - `.ignore` (Sourcegraph) support
+- Fixed `GeneratorDialog` – When the filter condition changes, the selected items aren't remembered
+- Fixed `Cannot create class mobi.hsz.idea.gitignore.settings.IgnoreSettingsConfigurable`
 
 ## [v4.2.0] (https://github.com/JetBrains/idea-gitignore/tree/v4.2.0) (2021-07-28)
 
