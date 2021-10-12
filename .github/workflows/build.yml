@@ -64,6 +64,9 @@ jobs:
           echo "::set-output name=version::$VERSION"
           echo "::set-output name=name::$NAME"
           echo "::set-output name=changelog::$CHANGELOG"
+          CHANGELOG="${CHANGELOG//'%'/'%25'}"
+          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
+          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
           echo "::set-output name=pluginVerifierHomeDir::~/.pluginVerifier"
 
   # Prepare a draft release for GitHub Releases page for the manual verification
@@ -95,12 +98,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cat << "EOF" > changelog.txt
+          cat << 'EOF' > changelog.txt
           ${{ needs.build.outputs.changelog }}
           EOF
-          
-          echo "-------"
-          cat changelog.txt
           
           gh release create v${{ needs.build.outputs.version }} \
             --draft \
