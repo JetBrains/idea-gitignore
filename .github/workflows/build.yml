@@ -95,10 +95,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cat <<< "${{ needs.build.outputs.changelog }}" > changelog.txt
-          cat changelog.txt
+          cat << "EOF" > changelog.txt
+          ${{ needs.build.outputs.changelog }}
+          EOF
+          
           echo "-------"
-          echo "${{ needs.build.outputs.changelog }}"
+          cat changelog.txt
+          
           gh release create v${{ needs.build.outputs.version }} \
             --draft \
             --title "v${{ needs.build.outputs.version }}" \
