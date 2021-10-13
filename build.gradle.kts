@@ -10,7 +10,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.5.31"
     id("org.jetbrains.intellij") version "1.2.0"
-    id("org.jetbrains.changelog") version "1.3.0"
+    id("org.jetbrains.changelog") version "1.3.1"
     id("org.jetbrains.grammarkit") version "2021.1.3"
     id("org.jetbrains.qodana") version "0.1.13"
 }
@@ -58,7 +58,7 @@ intellij {
 }
 
 changelog {
-    headerParserRegex.set("\\[?v\\d(\\.\\d+)+\\]?.*".toRegex())
+    headerParserRegex.set("\\[?v(\\d(?:\\.\\d+)+)\\]?.*".toRegex())
     header.set(provider {
         "[v${version.get()}] (https://github.com/JetBrains/idea-gitignore/tree/v${version.get()}) (${date()})"
     })
@@ -124,7 +124,11 @@ tasks {
         )
 
         // Get the latest available change notes from the changelog file
-        changeNotes.set(provider { changelog.getLatest().toHTML() })
+        changeNotes.set(provider {
+            changelog.run {
+                getOrNull(properties("pluginVersion")) ?: getLatest()
+            }.toHTML()
+        })
     }
 
     runIdeForUiTests {
