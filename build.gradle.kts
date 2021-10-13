@@ -12,6 +12,7 @@ plugins {
     id("org.jetbrains.intellij") version "1.2.0"
     id("org.jetbrains.changelog") version "1.3.0"
     id("org.jetbrains.grammarkit") version "2021.1.3"
+    id("org.jetbrains.qodana") version "0.1.13"
 }
 
 group = properties("pluginGroup")
@@ -51,8 +52,6 @@ intellij {
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
-    downloadSources.set(properties("platformDownloadSources").toBoolean())
-    updateSinceUntilBuild.set(true)
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
@@ -65,6 +64,14 @@ changelog {
     })
     version.set(properties("pluginVersion"))
     groups.set(emptyList())
+}
+
+// Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
+qodana {
+    cachePath.set(projectDir.resolve(".qodana").canonicalPath)
+    reportPath.set(projectDir.resolve("build/reports/inspections").canonicalPath)
+    saveReport.set(true)
+    showReport.set(System.getenv("QODANA_SHOW_REPORT").toBoolean())
 }
 
 tasks {
@@ -105,7 +112,7 @@ tasks {
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
         pluginDescription.set(
-            File(projectDir, "README.md").readText().lines().run {
+            projectDir.resolve("README.md").readText().lines().run {
                 val start = "<!-- Plugin description -->"
                 val end = "<!-- Plugin description end -->"
 
@@ -118,10 +125,6 @@ tasks {
 
         // Get the latest available change notes from the changelog file
         changeNotes.set(provider { changelog.getLatest().toHTML() })
-    }
-
-    runPluginVerifier {
-        ideVersions.set(properties("pluginVerifierIdeVersions").split(',').map(String::trim).filter(String::isNotEmpty))
     }
 
     runIdeForUiTests {
