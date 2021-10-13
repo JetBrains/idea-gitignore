@@ -23,7 +23,7 @@ class SyntaxCompletionContributor : CompletionContributor() {
         private val SYNTAX_ELEMENTS = mutableListOf<LookupElementBuilder>()
 
         init {
-            IgnoreBundle.Syntax.values().mapTo(SYNTAX_ELEMENTS) { LookupElementBuilder.create(it.toString().toLowerCase()) }
+            IgnoreBundle.Syntax.values().mapTo(SYNTAX_ELEMENTS) { LookupElementBuilder.create(it.toString().lowercase()) }
         }
     }
 

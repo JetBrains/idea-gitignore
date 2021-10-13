@@ -37,6 +37,7 @@ import mobi.hsz.idea.gitignore.lang.kind.UpLanguage
 import mobi.hsz.idea.gitignore.util.CachedConcurrentMap
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
+import java.util.Locale
 import java.util.ResourceBundle
 
 /**
@@ -129,7 +130,7 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
     enum class Syntax {
         GLOB, REGEXP;
 
-        override fun toString() = super.toString().toLowerCase()
+        override fun toString() = super.toString().lowercase()
 
         /**
          * Returns [mobi.hsz.idea.gitignore.psi.IgnoreTypes.SYNTAX] element presentation.
@@ -147,7 +148,7 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
                 null -> null
                 else ->
                     try {
-                        valueOf(name.toUpperCase())
+                        valueOf(name.uppercase())
                     } catch (iae: IllegalArgumentException) {
                         null
                     }

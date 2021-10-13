@@ -81,7 +81,7 @@ object Utils {
      * @param filter input string
      * @return list of words without special characters
      */
-    fun getWords(filter: String) = filter.toLowerCase().split("\\W+").filter(String::isNotEmpty)
+    fun getWords(filter: String) = filter.lowercase().split("\\W+").filter(String::isNotEmpty)
 
     /**
      * Checks if lists are equal.

@@ -125,7 +125,7 @@ open class IgnoreFileGroupAction constructor(
      *
      * @return files amount
      */
-    private fun countFiles() = files.values.sumBy { it.size }
+    private fun countFiles() = files.values.sumOf { it.size }
 
     /**
      * Returns all Ignore files in given [Project] that can match current passed file.

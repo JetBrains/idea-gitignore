@@ -270,6 +270,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         override fun clone(): IgnoreLanguagesSettings {
             val copy = super.clone() as IgnoreLanguagesSettings
             for ((key, value) in copy) {
+                @Suppress("UNCHECKED_CAST")
                 copy[key] = value.clone() as TreeMap<KEY, Any>
             }
             return copy
