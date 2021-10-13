@@ -71,48 +71,6 @@ jobs:
 
           ./gradlew listProductsReleases # prepare list of IDEs for Plugin Verifier
 
-      # Run tests
-      - name: Run Tests
-        run: ./gradlew test
-
-      # Collect Tests Result of failed tests
-      - name: Collect Tests Result
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: tests-result
-          path: ${{ github.workspace }}/build/reports/tests
-
-      # Cache Plugin Verifier IDEs
-      - name: Setup Plugin Verifier IDEs Cache
-        uses: actions/cache@v2.1.6
-        with:
-          path: ${{ steps.properties.outputs.pluginVerifierHomeDir }}/ides
-          key: plugin-verifier-${{ hashFiles('build/listProductsReleases.txt') }}
-
-      # Run Verify Plugin task and IntelliJ Plugin Verifier tool
-      - name: Run Plugin Verification tasks
-        run: ./gradlew runPluginVerifier -Pplugin.verifier.home.dir=${{ steps.properties.outputs.pluginVerifierHomeDir }}
-
-      # Collect Plugin Verifier Result
-      - name: Collect Plugin Verifier Result
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: pluginVerifier-result
-          path: ${{ github.workspace }}/build/reports/pluginVerifier
-
-      # Run Qodana inspections
-      - name: Qodana - Code Inspection
-        uses: JetBrains/qodana-action@v2.1-eap
-
-      # Collect Qodana Result
-      - name: Collect Qodana Result
-        uses: actions/upload-artifact@v2
-        with:
-          name: qodana-result
-          path: ${{ github.workspace }}/qodana
-
       # Prepare plugin archive content for creating artifact
       - name: Prepare Plugin Artifact
         id: artifact
