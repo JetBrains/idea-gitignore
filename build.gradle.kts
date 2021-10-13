@@ -94,6 +94,10 @@ tasks {
         delete("src/main/gen")
     }
 
+    buildPlugin {
+        archiveBaseName.set("ignore")
+    }
+
     patchPluginXml {
         version.set(properties("pluginVersion"))
         sinceBuild.set(properties("pluginSinceBuild"))

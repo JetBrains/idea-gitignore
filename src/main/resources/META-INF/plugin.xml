@@ -679,7 +679,6 @@
         <fileType
             name="Sourcegraph File"
             language="Sourcegraph"
-            extensions="ignore"
             fieldName="INSTANCE"
             implementationClass="mobi.hsz.idea.gitignore.file.type.kind.SourcegraphFileType"/>
         <lang.parserDefinition
