@@ -71,17 +71,6 @@ jobs:
 
           ./gradlew listProductsReleases # prepare list of IDEs for Plugin Verifier
 
-      # Prepare plugin archive content for creating artifact
-      - name: Prepare Plugin Artifact
-        id: artifact
-        shell: bash
-        run: |
-          cd ${{ github.workspace }}/build/distributions
-          FILENAME=`ls *.zip`
-          unzip "$FILENAME" -d content
-
-          echo "::set-output name=filename::$FILENAME"
-
       # Store already-built plugin as an artifact for downloading
       - name: Upload artifact
         uses: actions/upload-artifact@v2.2.4
