@@ -16,7 +16,7 @@ jobs:
 
       # Check out current repository
       - name: Fetch Sources
-        uses: actions/checkout@v2.3.5
+        uses: actions/checkout@v2.4.0
         with:
           submodules: true
           ref: ${{ github.event.release.tag_name }}
@@ -29,13 +29,29 @@ jobs:
           java-version: 11
           cache: gradle
 
-      # Update Unreleased section with the current release note
-      - name: Patch Changelog
+      # Set environment variables
+      - name: Export Properties
+        id: properties
+        shell: bash
         run: |
-          ./gradlew patchChangelog --release-note="$(cat << 'EOM'
+          CHANGELOG="$(cat << 'EOM' | sed -e 's/^[[:space:]]*$//g' -e '/./,$!d'
           ${{ github.event.release.body }}
           EOM
           )"
+          
+          CHANGELOG="${CHANGELOG//'%'/'%25'}"
+          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
+          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+
+          echo "::set-output name=changelog::$CHANGELOG"
+
+      # Update Unreleased section with the current release note
+      - name: Patch Changelog
+        if: ${{ steps.properties.outputs.changelog != '' }}
+        env:
+          CHANGELOG: ${{ steps.properties.outputs.changelog }}
+        run: |
+          ./gradlew patchChangelog --release-note="$CHANGELOG"
 
       # Publish the plugin to the Marketplace
       - name: Publish Plugin
@@ -51,6 +67,7 @@ jobs:
 
       # Create pull request
       - name: Create Pull Request
+        if: ${{ steps.properties.outputs.changelog != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
