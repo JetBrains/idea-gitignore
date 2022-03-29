@@ -21,21 +21,22 @@ class IgnoreMatcher : Disposable {
     fun match(pattern: Pattern?, path: String?): Boolean {
         if (pattern == null || path == null) {
             return false
-        }
-        synchronized(cache) {
-            val hashCode = HashCodeBuilder().append(pattern).append(path).toHashCode()
-            if (!cache.containsKey(hashCode)) {
-                val parts = MatcherUtil.getParts(pattern)
-                var result = false
-                if (parts.isEmpty() || MatcherUtil.matchAllParts(parts, path)) {
-                    try {
-                        result = pattern.matcher(path).find()
-                    } catch (ignored: StringIndexOutOfBoundsException) {
+        } else {
+            synchronized(cache) {
+                val hashCode = HashCodeBuilder().append(pattern).append(path).toHashCode()
+                if (!cache.containsKey(hashCode)) {
+                    val parts = MatcherUtil.getParts(pattern)
+                    var result = false
+                    if (parts.isEmpty() || MatcherUtil.matchAllParts(parts, path)) {
+                        try {
+                            result = pattern.matcher(path).find()
+                        } catch (ignored: StringIndexOutOfBoundsException) {
+                        }
                     }
+                    cache.put(hashCode, result)
                 }
-                cache.put(hashCode, result)
+                return cache[hashCode]
             }
-            return cache[hashCode]
         }
     }
 

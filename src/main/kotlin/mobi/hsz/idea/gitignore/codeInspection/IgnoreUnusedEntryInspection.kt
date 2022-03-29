@@ -86,7 +86,7 @@ class IgnoreUnusedEntryInspection : LocalInspectionTool() {
                         }
                         val path = Utils.getRelativePath(moduleRoot, root)
                         if (matcher.match(pattern, path)) {
-                            return false
+                            return true
                         }
                     }
                 }

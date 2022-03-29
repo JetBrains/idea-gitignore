@@ -13,13 +13,14 @@ class ExpiringMap<K, V>(private val time: Int) {
 
     operator fun get(key: K): V? {
         val current = System.currentTimeMillis()
-        map[key]?.let {
+        return map[key]?.let {
             if (it.getSecond() + time > current) {
-                return it.getFirst()
+                it.getFirst()
+            } else {
+                map.remove(key)
+                null
             }
-            map.remove(key)
         }
-        return null
     }
 
     operator fun set(key: K, value: V): V {
