@@ -31,6 +31,7 @@ import com.intellij.ui.BooleanTableCellRenderer
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.ToolbarDecorator
 import com.intellij.ui.components.JBLabel
+import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI
 import mobi.hsz.idea.gitignore.IgnoreBundle
@@ -49,7 +50,6 @@ import java.io.IOException
 import java.util.TreeMap
 import javax.swing.JCheckBox
 import javax.swing.JPanel
-import javax.swing.JScrollPane
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
 import javax.swing.table.AbstractTableModel
@@ -79,7 +79,7 @@ class IgnoreSettingsPanel : Disposable {
     private lateinit var templatesSplitter: Splitter
 
     /** File types scroll panel with table. */
-    private lateinit var languagesPanel: JScrollPane
+    private lateinit var languagesPanel: JBScrollPane
 
     /** Settings table. */
     private lateinit var languagesTable: JBTable
@@ -141,7 +141,7 @@ class IgnoreSettingsPanel : Disposable {
             dragEnabled = false
             setShowGrid(false)
         }
-        languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable)
+        languagesPanel = ScrollPaneFactory.createScrollPane(languagesTable) as JBScrollPane
     }
 
     override fun dispose() {
