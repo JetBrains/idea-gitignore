@@ -59,7 +59,7 @@ open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), Dum
         val project = e.getData(CommonDataKeys.PROJECT)
         val view = e.getData(LangDataKeys.IDE_VIEW)
         val directory = view?.directories
-        if (directory == null || directory.isEmpty() || project == null || !fileType.ignoreLanguage.isNewAllowed) {
+        if (directory.isNullOrEmpty() || project == null || !fileType.ignoreLanguage.isNewAllowed) {
             e.presentation.isVisible = false
         }
     }

@@ -59,14 +59,14 @@ class IgnoreCoverEntryInspection : LocalInspectionTool() {
                 ignored.addAll(matched)
                 intersection = unignored.intersect(matched)
 
-                if (unignored.removeAll(intersection)) {
+                if (unignored.removeAll(intersection.toSet())) {
                     return@entries
                 }
             } else {
                 unignored.addAll(matched)
                 intersection = ignored.intersect(matched)
 
-                if (ignored.removeAll(intersection)) {
+                if (ignored.removeAll(intersection.toSet())) {
                     return@entries
                 }
             }

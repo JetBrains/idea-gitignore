@@ -37,7 +37,6 @@ import mobi.hsz.idea.gitignore.lang.kind.UpLanguage
 import mobi.hsz.idea.gitignore.util.CachedConcurrentMap
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
-import java.util.Locale
 import java.util.ResourceBundle
 
 /**
