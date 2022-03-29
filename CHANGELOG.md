@@ -2,6 +2,8 @@ Changelog
 ----------
 
 ## [Unreleased]
+- IDEA-284447 Titled Borders aren't being themed correctly
+- Support for IntelliJ-based IDEs in 2022.1 version
 
 ## [v4.3.0] (https://github.com/JetBrains/idea-gitignore/tree/v4.3.0) (2021-10-13)
 - Fixed `GeneratorDialog` – When the filter condition changes, the selected items aren't remembered
