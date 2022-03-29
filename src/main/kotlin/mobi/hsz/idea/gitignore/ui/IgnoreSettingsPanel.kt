@@ -208,7 +208,7 @@ class IgnoreSettingsPanel : Disposable {
                                     super.isFileVisible(file, showHiddenFiles) &&
                                         (file.isDirectory || file.extension == "xml" || file.fileType === FileTypes.ARCHIVE)
 
-                                override fun isFileSelectable(file: VirtualFile) = file.fileType === XmlFileType.INSTANCE
+                                override fun isFileSelectable(file: VirtualFile?) = file?.fileType === XmlFileType.INSTANCE
                             }.apply {
                                 description = message("action.importTemplates.wrapper.description")
                                 title = message("action.importTemplates.wrapper")

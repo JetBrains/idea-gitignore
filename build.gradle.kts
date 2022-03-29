@@ -1,7 +1,5 @@
 import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.grammarkit.tasks.GenerateLexer
-import org.jetbrains.grammarkit.tasks.GenerateParser
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun properties(key: String) = project.findProperty(key).toString()
@@ -9,9 +7,9 @@ fun properties(key: String) = project.findProperty(key).toString()
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
-    id("org.jetbrains.intellij") version "1.4.0"
+    id("org.jetbrains.intellij") version "1.5.1"
     id("org.jetbrains.changelog") version "1.3.1"
-    id("org.jetbrains.grammarkit") version "2021.2.1"
+    id("org.jetbrains.grammarkit") version "2021.2.2"
     id("org.jetbrains.qodana") version "0.1.13"
 }
 
@@ -23,19 +21,11 @@ repositories {
     mavenCentral()
 }
 
-val generateLexer = task<GenerateLexer>("generateLexer") {
-    source = "src/main/grammars/Ignore.flex"
-    targetDir = "src/main/gen/mobi/hsz/idea/gitignore/lexer/"
-    targetClass = "IgnoreLexer"
-    purgeOldFiles = true
-}
-
-val generateParser = task<GenerateParser>("generateParser") {
-    source = "src/main/grammars/Ignore.bnf"
-    targetRoot = "src/main/gen"
-    pathToParser = "/mobi/hsz/idea/gitignore/IgnoreParser.java"
-    pathToPsiRoot = "/mobi/hsz/idea/gitignore/psi"
-    purgeOldFiles = true
+// Set the JVM language level used to compile sources and generate files - Java 11 is required since 2020.3
+kotlin {
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+    }
 }
 
 val generateTemplatesList = task("generateTemplatesList") {
@@ -57,6 +47,7 @@ intellij {
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
 }
 
+// Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
     headerParserRegex.set("\\[?v(\\d(?:\\.\\d+)+)\\]?.*".toRegex())
     header.set(provider {
@@ -71,20 +62,13 @@ qodana {
     cachePath.set(projectDir.resolve(".qodana").canonicalPath)
     reportPath.set(projectDir.resolve("build/reports/inspections").canonicalPath)
     saveReport.set(true)
-    showReport.set(System.getenv("QODANA_SHOW_REPORT").toBoolean())
+    showReport.set(System.getenv("QODANA_SHOW_REPORT")?.toBoolean() ?: false)
 }
 
 tasks {
     // Set the JVM compatibility versions
-    properties("javaVersion").let {
-        withType<JavaCompile> {
-            sourceCompatibility = it
-            targetCompatibility = it
-        }
-        withType<KotlinCompile> {
-            kotlinOptions.jvmTarget = it
-            dependsOn(generateLexer, generateParser, generateTemplatesList)
-        }
+    withType<KotlinCompile> {
+        dependsOn("generateLexer", "generateParser", generateTemplatesList)
     }
 
     wrapper {
@@ -99,6 +83,21 @@ tasks {
 
     clean {
         delete("src/main/gen")
+    }
+
+    generateLexer {
+        source.set("src/main/grammars/Ignore.flex")
+        targetDir.set("src/main/gen/mobi/hsz/idea/gitignore/lexer/")
+        targetClass.set("IgnoreLexer")
+        purgeOldFiles.set(true)
+    }
+
+    generateParser {
+        source.set("src/main/grammars/Ignore.bnf")
+        targetRoot.set("src/main/gen")
+        pathToParser.set("/mobi/hsz/idea/gitignore/IgnoreParser.java")
+        pathToPsiRoot.set("/mobi/hsz/idea/gitignore/psi")
+        purgeOldFiles.set(true)
     }
 
     buildPlugin {
@@ -150,5 +149,11 @@ tasks {
     runIde {
         jvmArgs = listOf("-Xmx1024m", "-XX:+UnlockDiagnosticVMOptions")
         systemProperty("ide.plugins.snapshot.on.unload.fail", "true")
+    }
+
+    val test by getting(Test::class) {
+        isScanForTestClasses = false
+        // Only run tests from classes that end with "Test"
+        include("**/*Test.class")
     }
 }
