@@ -13,7 +13,6 @@ import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.util.Icons
-import mobi.hsz.idea.gitignore.util.Properties
 
 /**
  * Editor notification provider that informs about the attempt of the ignored file modification.
@@ -39,18 +38,10 @@ class IgnoredEditingNotificationProvider(project: Project) : EditorNotifications
      * @return created notification panel
      */
     override fun createNotificationPanel(file: VirtualFile, fileEditor: FileEditor, project: Project) = when {
-        !settings.notifyIgnoredEditing || Properties.isDismissedIgnoredEditingNotification(project, file)
-            || !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file) -> null
+        !settings.notifyIgnoredEditing || !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file) -> null
         else -> EditorNotificationPanel().apply {
             text = IgnoreBundle.message("daemon.ignoredEditing")
-            createActionLabel(IgnoreBundle.message("daemon.ok")) {
-                Properties.setDismissedIgnoredEditingNotification(project, file)
-                notifications.updateAllNotifications()
-            }
-            try { // ignore if older SDK does not support panel icon
-                icon(Icons.IGNORE)
-            } catch (ignored: NoSuchMethodError) {
-            }
+            icon(Icons.IGNORE)
         }
     }
 }

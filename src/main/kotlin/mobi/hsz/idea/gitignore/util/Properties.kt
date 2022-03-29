@@ -4,7 +4,6 @@ package mobi.hsz.idea.gitignore.util
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.annotations.NonNls
 
 /**
@@ -15,10 +14,6 @@ object Properties {
     /** Ignore missing gitignore property key.  */
     @NonNls
     private val IGNORE_MISSING_GITIGNORE = "ignore_missing_gitignore"
-
-    /** Dismissed ignored editing notification key.  */
-    @NonNls
-    private val DISMISSED_IGNORED_EDITING_NOTIFICATION = "add_unversioned_files"
 
     /**
      * Checks value of [.IGNORE_MISSING_GITIGNORE] key in [PropertiesComponent].
@@ -36,27 +31,4 @@ object Properties {
      */
     fun setIgnoreMissingGitignore(project: Project) = project.service<PropertiesComponent>()
         .setValue(IGNORE_MISSING_GITIGNORE, true)
-
-    /**
-     * Checks if user already dismissed notification about editing ignored file.
-     *
-     * @param project current project
-     * @param file    current file
-     * @return notification was dismissed
-     */
-    fun isDismissedIgnoredEditingNotification(project: Project, file: VirtualFile) = project.service<PropertiesComponent>()
-        .getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION)?.contains(file.canonicalPath) ?: false
-
-    /**
-     * Stores information about dismissed notification about editing ignored file.
-     *
-     * @param project current project
-     * @param file    current file
-     */
-    fun setDismissedIgnoredEditingNotification(project: Project, file: VirtualFile) {
-        project.service<PropertiesComponent>().run {
-            val values = getValues(DISMISSED_IGNORED_EDITING_NOTIFICATION) ?: emptyArray()
-            setValues(DISMISSED_IGNORED_EDITING_NOTIFICATION, values + file.canonicalPath)
-        }
-    }
 }
