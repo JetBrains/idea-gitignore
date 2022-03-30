@@ -9,6 +9,7 @@ import com.intellij.openapi.util.Key
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.ui.EditorNotificationPanel
+import com.intellij.ui.EditorNotificationProvider
 import com.intellij.ui.EditorNotifications
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction
@@ -18,20 +19,16 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog
 import mobi.hsz.idea.gitignore.util.Properties
 import mobi.hsz.idea.gitignore.util.Utils
+import java.util.function.Function
+import javax.swing.JComponent
 
 /**
  * Editor notification provider that checks if there is .gitignore file in root directory and suggest to create one.
  */
-class MissingGitignoreNotificationProvider(project: Project) : EditorNotifications.Provider<EditorNotificationPanel?>() {
+class MissingGitignoreNotificationProvider(project: Project) : EditorNotificationProvider {
 
     private val notifications = EditorNotifications.getInstance(project)
     private val settings = service<IgnoreSettings>()
-
-    companion object {
-        private val KEY = Key.create<EditorNotificationPanel?>("MissingGitignoreNotificationProvider")
-    }
-
-    override fun getKey() = KEY
 
     /**
      * Creates notification panel for given file and checks if is allowed to show the notification.
@@ -40,7 +37,7 @@ class MissingGitignoreNotificationProvider(project: Project) : EditorNotificatio
      * @param fileEditor current file editor
      * @return created notification panel
      */
-    override fun createNotificationPanel(file: VirtualFile, fileEditor: FileEditor, project: Project): EditorNotificationPanel? = when {
+    private fun createNotificationPanel(file: VirtualFile, project: Project): EditorNotificationPanel? = when {
         !settings.missingGitignore -> null
         Properties.isIgnoreMissingGitignore(project) -> null
         else -> {
@@ -91,4 +88,7 @@ class MissingGitignoreNotificationProvider(project: Project) : EditorNotificatio
             }
         }
     }
+
+    override fun collectNotificationData(project: Project, file: VirtualFile): Function<in FileEditor, out JComponent?> =
+        Function { createNotificationPanel(file, project) }
 }
