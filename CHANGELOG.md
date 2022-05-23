@@ -2,6 +2,7 @@ Changelog
 ----------
 
 ## [Unreleased]
+- Support for IntelliJ-based IDEs in 2022.2 version
 
 ## [v4.4.0] (https://github.com/JetBrains/idea-gitignore/tree/v4.4.0) (2022-03-30)
 - IDEA-284447 Titled Borders aren't being themed correctly
