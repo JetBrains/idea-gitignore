@@ -2,6 +2,8 @@ Changelog
 ----------
 
 ## [Unreleased]
+
+## [v4.4.1] (https://github.com/JetBrains/idea-gitignore/tree/v4.4.1) (2022-05-24)
 - Support for IntelliJ-based IDEs in 2022.2 version
 
 ## [v4.4.0] (https://github.com/JetBrains/idea-gitignore/tree/v4.4.0) (2022-03-30)
