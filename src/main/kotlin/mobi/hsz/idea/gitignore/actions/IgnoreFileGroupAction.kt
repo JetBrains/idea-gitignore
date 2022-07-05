@@ -73,7 +73,7 @@ open class IgnoreFileGroupAction constructor(
             }
         }
 
-        isPopup = countFiles() > 1
+        presentation.isPopupGroup = countFiles() > 1
     }
 
     /**

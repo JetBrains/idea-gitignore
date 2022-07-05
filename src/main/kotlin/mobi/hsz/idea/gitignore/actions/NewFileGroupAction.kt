@@ -14,11 +14,11 @@ import mobi.hsz.idea.gitignore.util.Icons
 class NewFileGroupAction : DefaultActionGroup(), DumbAware {
 
     init {
-        isPopup = true
         templatePresentation.apply {
             @Suppress("DialogTitleCapitalization")
             text = IgnoreBundle.message("action.newFile.group")
             icon = Icons.IGNORE
+            isPopupGroup = true
         }
 
         LANGUAGES.run { filterIsInstance<GitLanguage>().toSet().let { it + (this - it) } }.forEach {
