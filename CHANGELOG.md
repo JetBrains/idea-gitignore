@@ -2,6 +2,8 @@ Changelog
 ----------
 
 ## [Unreleased]
+
+## [v4.4.2] (https://github.com/JetBrains/idea-gitignore/tree/v4.4.2) (2022-07-05)
 - Maintenance release
 
 ## [v4.4.1] (https://github.com/JetBrains/idea-gitignore/tree/v4.4.1) (2022-05-24)
