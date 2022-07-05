@@ -7,7 +7,6 @@ import com.intellij.psi.PsiFileSystemItem
 import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.testFramework.UsefulTestCase
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.intellij.util.containers.ContainerUtil
 import junit.framework.TestCase
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import java.io.IOException
@@ -80,8 +79,8 @@ class ResolvingTest : BasePlatformTestCase() {
             TestCase.assertNotNull(reference)
 
             val rootFile = file.containingDirectory.virtualFile
-            val resolveResults = reference?.multiResolve(true)
-            val actualResolve = ContainerUtil.map(resolveResults) {
+            val resolveResults = reference?.multiResolve(true) ?: emptyArray()
+            val actualResolve = resolveResults.map {
                 it?.element.let { element ->
                     TestCase.assertNotNull(element)
                     UsefulTestCase.assertInstanceOf(element, PsiFileSystemItem::class.java)
