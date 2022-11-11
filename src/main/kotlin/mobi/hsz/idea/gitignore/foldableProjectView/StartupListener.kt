@@ -17,8 +17,8 @@ class StartupListener : AppLifecycleListener, StartupActivity {
     override fun runActivity(project: Project) = advertise(project)
 
     private fun advertise(project: Project? = null) {
-        if (!settings.foldableProjectViewAdvertiseShown) {
-            settings.foldableProjectViewAdvertiseShown = true
+        if (!settings.foldableProjectViewAdvertisePresented) {
+            settings.foldableProjectViewAdvertisePresented = true
         } else {
             return
         }
