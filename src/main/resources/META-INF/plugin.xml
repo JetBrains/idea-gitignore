@@ -93,6 +93,9 @@
             toolWindowId="Project"
         />
 
+        <backgroundPostStartupActivity
+            implementation="mobi.hsz.idea.gitignore.foldableProjectView.StartupListener"/>
+
         <projectService
             serviceImplementation="mobi.hsz.idea.gitignore.IgnoreManager"/>
 
