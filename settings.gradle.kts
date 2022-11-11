@@ -6,5 +6,3 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-
-includeBuild("/Users/hsz/Projects/JetBrains/gradle-intellij-plugin")
