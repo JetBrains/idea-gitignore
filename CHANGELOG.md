@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [4.4.3] - 2022-11-13
 - Maintenance release
 
 ## [4.4.2] - 2022-07-05
@@ -515,7 +517,8 @@
 - `.gitignore` file support
 - Basic syntax highlighting
 
-[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.2...HEAD
+[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.3...HEAD
+[4.4.3]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.2...v4.4.3
 [4.4.2]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.1...v4.4.2
 [4.4.1]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.0...v4.4.1
 [4.4.0]: https://github.com/JetBrains/idea-gitignore/compare/v4.3.0...v4.4.0
