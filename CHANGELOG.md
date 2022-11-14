@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+- Fixed .ignore crashes IDE during project opening [\#793](https://github.com/hsz/idea-gitignore/issues/793)
+- Remove the `untilBuild` boundary 
 
 ## [4.4.3] - 2022-11-13
 - Maintenance release
