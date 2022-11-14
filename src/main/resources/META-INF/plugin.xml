@@ -884,9 +884,5 @@
         <listener
             class="mobi.hsz.idea.gitignore.foldableProjectView.StartupListener"
             topic="com.intellij.ide.AppLifecycleListener"/>
-        <listener
-            class="mobi.hsz.idea.gitignore.foldableProjectView.StartupListener"
-            topic="com.intellij.openapi.project.ProjectManagerListener"
-            activeInHeadlessMode="false"/>
     </applicationListeners>
 </idea-plugin>
