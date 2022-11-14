@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [4.4.4] - 2022-11-14
 - Fixed .ignore crashes IDE during project opening [\#793](https://github.com/hsz/idea-gitignore/issues/793)
 - Remove the `untilBuild` boundary
 - Update `github/gitignore` submodule
@@ -520,7 +522,8 @@
 - `.gitignore` file support
 - Basic syntax highlighting
 
-[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.3...HEAD
+[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.4...HEAD
+[4.4.4]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.3...v4.4.4
 [4.4.3]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.2...v4.4.3
 [4.4.2]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.1...v4.4.2
 [4.4.1]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.0...v4.4.1
