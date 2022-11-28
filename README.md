@@ -6,7 +6,7 @@
 
 [![Version](http://phpstorm.espend.de/badge/20485/version)][plugin-website]
 [![Downloads](http://phpstorm.espend.de/badge/20485/downloads)][plugin-website]
-[![Downloads last month](http://phpstorm.espend.de/badge/20485/last-month)][plugin-website]
+[![Downloads last month](http://phpstorm.espend.de/badge/7495/last-month)][plugin-website] <!-- New ID does not work here for some reason -->
 
 Introduction
 ------------
@@ -102,6 +102,7 @@ Installation
 Restart IDE.
 
 
+<!-- This is outdated now
 Early Access Preview
 --------------------
 If you are working with IDEs in EAP version, like IntelliJ 2021.1 EAP, there is `eap` channel introduced to provide the `.ignore` plugin updates supporting such versions.
@@ -111,6 +112,8 @@ To enable EAP updates of the `.ignore` plugin, add the `https://plugins.jetbrain
 <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Manage Plugin Repositories...</kbd>
 
 ![EAP Channel](./.github/readme/eap.png)
+-->
+
 
 Usage
 -----
