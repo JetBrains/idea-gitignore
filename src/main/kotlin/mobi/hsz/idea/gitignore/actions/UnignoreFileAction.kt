@@ -7,8 +7,12 @@ import com.intellij.openapi.vfs.VirtualFile
  * Action that adds currently selected [VirtualFile] to the specified Ignore [VirtualFile] as unignored.
  * Action is added to the IDE context menus not directly but with [UnignoreFileGroupAction] action.
  */
-class UnignoreFileAction(virtualFile: VirtualFile?) :
-    IgnoreFileAction(virtualFile, getFileType(virtualFile), "action.addToUnignore", "action.addToUnignore.description") {
+class UnignoreFileAction(virtualFile: VirtualFile?) : IgnoreFileAction(
+    virtualFile,
+    getFileType(virtualFile),
+    "action.addToUnignore",
+    "action.addToUnignore.description",
+) {
 
     /**
      * Gets the file's path relative to the specified root directory.

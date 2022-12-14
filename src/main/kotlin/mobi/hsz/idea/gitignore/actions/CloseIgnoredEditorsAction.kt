@@ -2,6 +2,7 @@
 package mobi.hsz.idea.gitignore.actions
 
 import com.intellij.ide.actions.CloseEditorsActionBase
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.fileEditor.impl.EditorComposite
 import com.intellij.openapi.fileEditor.impl.EditorWindow
@@ -29,9 +30,10 @@ class CloseIgnoredEditorsAction : CloseEditorsActionBase() {
     override fun isActionEnabled(project: Project, event: AnActionEvent) =
         super.isActionEnabled(project, event) && ProjectLevelVcsManager.getInstance(project).allActiveVcss.isNotEmpty()
 
-    override fun getPresentationText(inSplitter: Boolean) =
-        when {
-            inSplitter -> IgnoreBundle.message("action.closeIgnored.editors.in.tab.group")
-            else -> IgnoreBundle.message("action.closeIgnored.editors")
-        }
+    override fun getPresentationText(inSplitter: Boolean) = when {
+        inSplitter -> IgnoreBundle.message("action.closeIgnored.editors.in.tab.group")
+        else -> IgnoreBundle.message("action.closeIgnored.editors")
+    }
+
+    override fun getActionUpdateThread() = ActionUpdateThread.BGT
 }

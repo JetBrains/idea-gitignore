@@ -1,10 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.actions
 
-import com.intellij.openapi.actionSystem.ActionGroup
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VfsUtilCore
@@ -23,11 +20,12 @@ import org.jetbrains.annotations.PropertyKey
  * [ActionGroup] expands single action into a more child options to allow user specify
  * the IgnoreFile that will be used for file's path storage.
  */
-open class IgnoreFileGroupAction constructor(
+open class IgnoreFileGroupAction(
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) textKey: String = "action.addToIgnore.group",
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) descriptionKey: String = "action.addToIgnore.group.description",
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME) textSingleKey: String = "action.addToIgnore.group.noPopup"
 ) : ActionGroup() {
+
     /** List of suitable Gitignore [VirtualFile]s that can be presented in an IgnoreFile action. */
     private val files = mutableMapOf<IgnoreFileType, List<VirtualFile>>()
 
@@ -82,7 +80,7 @@ open class IgnoreFileGroupAction constructor(
      * @param e action event
      * @return actions list
      */
-    override fun getChildren(e: AnActionEvent?): Array<AnAction> = when {
+    override fun getChildren(e: AnActionEvent?) = when {
         countFiles() == 0 || baseDir == null -> emptyArray()
         else -> mutableListOf<AnAction>().apply {
             val project = getEventProject(e)
@@ -154,4 +152,6 @@ open class IgnoreFileGroupAction constructor(
 
         return files
     }
+
+    override fun getActionUpdateThread() = ActionUpdateThread.BGT
 }

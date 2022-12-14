@@ -1,6 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -17,7 +18,7 @@ import mobi.hsz.idea.gitignore.util.Icons
 class CreateUserTemplateAction : AnAction(
     IgnoreBundle.message("action.createUserTemplate"),
     IgnoreBundle.message("action.createUserTemplate.description"),
-    Icons.IGNORE
+    Icons.IGNORE,
 ) {
 
     override fun actionPerformed(e: AnActionEvent) {
@@ -46,4 +47,6 @@ class CreateUserTemplateAction : AnAction(
         }
         templatePresentation.icon = file.fileType.icon
     }
+
+    override fun getActionUpdateThread() = ActionUpdateThread.BGT
 }

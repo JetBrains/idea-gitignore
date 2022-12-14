@@ -2,6 +2,7 @@
 package mobi.hsz.idea.gitignore.actions
 
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.project.DumbAwareAction
@@ -143,4 +144,6 @@ open class IgnoreFileAction(
 
         return file
     }
+
+    override fun getActionUpdateThread() = ActionUpdateThread.BGT
 }
