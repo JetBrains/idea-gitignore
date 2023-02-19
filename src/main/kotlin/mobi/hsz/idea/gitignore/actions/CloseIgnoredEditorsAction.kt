@@ -4,6 +4,7 @@ package mobi.hsz.idea.gitignore.actions
 import com.intellij.ide.actions.CloseEditorsActionBase
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx
 import com.intellij.openapi.fileEditor.impl.EditorComposite
 import com.intellij.openapi.fileEditor.impl.EditorWindow
 import com.intellij.openapi.project.Project
@@ -18,7 +19,7 @@ import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider
  */
 class CloseIgnoredEditorsAction : CloseEditorsActionBase() {
 
-    override fun isFileToClose(editor: EditorComposite, window: EditorWindow): Boolean {
+    override fun isFileToClose(editor: EditorComposite, window: EditorWindow, fileEditorManager: FileEditorManagerEx): Boolean {
         val project = window.manager.project
         val fileStatusManager = FileStatusManager.getInstance(project) ?: return false
         val changeListManager = ChangeListManager.getInstance(project)
@@ -34,6 +35,5 @@ class CloseIgnoredEditorsAction : CloseEditorsActionBase() {
         inSplitter -> IgnoreBundle.message("action.closeIgnored.editors.in.tab.group")
         else -> IgnoreBundle.message("action.closeIgnored.editors")
     }
-
     override fun getActionUpdateThread() = ActionUpdateThread.BGT
 }

@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- 2023.1 support
 - .terraformignore (Terraform) support
 
 ## [4.4.4] - 2022-11-14

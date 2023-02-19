@@ -23,7 +23,6 @@ import mobi.hsz.idea.gitignore.util.Constants
 import mobi.hsz.idea.gitignore.util.Glob
 import mobi.hsz.idea.gitignore.util.MatcherUtil
 import mobi.hsz.idea.gitignore.util.Utils
-import java.util.ArrayList
 
 /**
  * [FileReferenceSet] definition class.
@@ -97,7 +96,7 @@ class IgnoreReferenceSet(element: IgnoreEntry) : FileReferenceSet(element) {
         override fun innerResolveInContext(
             text: String,
             context: PsiFileSystemItem,
-            result: MutableCollection<ResolveResult>,
+            result: MutableCollection<in ResolveResult>,
             caseSensitive: Boolean,
         ) {
             ProgressManager.checkCanceled()
