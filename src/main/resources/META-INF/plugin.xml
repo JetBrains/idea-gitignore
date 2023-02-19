@@ -606,6 +606,30 @@
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END NuxtJS -->
 
+        <!-- OpenAPI Generator -->
+        <fileType
+            name="OpenAPI Generator File"
+            language="OpenAPI Generator"
+            extensions="openapi-generator-ignore"
+            fieldName="INSTANCE"
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.OpenAPIGeneratorFileType"/>
+        <lang.parserDefinition
+            language="OpenAPI Generator"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
+        <codeInsight.lineMarkerProvider
+            language="OpenAPI Generator"
+            implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
+        <lang.braceMatcher
+            language="OpenAPI Generator"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
+        <lang.commenter
+            language="OpenAPI Generator"
+            implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
+        <lang.syntaxHighlighterFactory
+            language="OpenAPI Generator"
+            implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
+        <!-- END OpenAPI Generator -->
+
         <!-- Perforce -->
         <fileType
             name="Perforce File"

@@ -46,6 +46,7 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
             NodemonLanguage.INSTANCE,
             NpmLanguage.INSTANCE,
             NuxtJSLanguage.INSTANCE,
+            OpenAPIGeneratorLanguage.INSTANCE,
             PerforceLanguage.INSTANCE,
             PrettierLanguage.INSTANCE,
             SourcegraphLanguage.INSTANCE,

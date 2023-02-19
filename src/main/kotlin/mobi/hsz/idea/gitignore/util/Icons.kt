@@ -77,6 +77,9 @@ object Icons {
     /** NuxtJS icon. */
     val NUXTJS = IconLoader.getIcon("/icons/icon_nuxtjs.png", Icons::class.java)
 
+    /** OpenAPI Generator icon. */
+    val OPENAPI_GENERATOR = IconLoader.getIcon("/icons/icon_openapi_generator.png", Icons::class.java)
+
     /** Perforce icon. */
     val PERFORCE = IconLoader.getIcon("/icons/icon_perforce.png", Icons::class.java)
 

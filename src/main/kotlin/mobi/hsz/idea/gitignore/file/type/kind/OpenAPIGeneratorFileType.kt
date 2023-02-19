@@ -2,14 +2,14 @@
 package mobi.hsz.idea.gitignore.file.type.kind
 
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
-import mobi.hsz.idea.gitignore.lang.kind.TerraformLanguage
+import mobi.hsz.idea.gitignore.lang.kind.OpenAPIGeneratorLanguage
 
 /**
- * Describes Terraform file type.
+ * Describes OpenAPI Generator file type.
  */
-class TerraformFileType : IgnoreFileType(TerraformLanguage.INSTANCE) {
+class OpenAPIGeneratorFileType : IgnoreFileType(OpenAPIGeneratorLanguage.INSTANCE) {
 
     companion object {
-        val INSTANCE = TerraformFileType()
+        val INSTANCE = OpenAPIGeneratorFileType()
     }
 }

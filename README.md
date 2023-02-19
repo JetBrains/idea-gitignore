@@ -37,6 +37,7 @@ Introduction
 - `.nodemonignore` (Nodemon)
 - `.npmignore` (Npm)
 - `.nuxtignore` (NuxtJS)
+- `.openapi-generator-ignore` (OpenAPI Generator)
 - `.p4ignore` (Perforce)
 - `.prettierignore` (Prettier)
 - `.ignore` (Sourcegraph)
