@@ -4,10 +4,12 @@ package mobi.hsz.idea.gitignore.actions
 import com.intellij.ide.actions.CloseEditorsActionBase
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx
 import com.intellij.openapi.fileEditor.impl.EditorComposite
 import com.intellij.openapi.fileEditor.impl.EditorWindow
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Computable
 import com.intellij.openapi.vcs.FileStatusManager
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vcs.changes.ChangeListManager
@@ -29,11 +31,14 @@ class CloseIgnoredEditorsAction : CloseEditorsActionBase() {
     }
 
     override fun isActionEnabled(project: Project, event: AnActionEvent) =
-        super.isActionEnabled(project, event) && ProjectLevelVcsManager.getInstance(project).allActiveVcss.isNotEmpty()
+        super.isActionEnabled(project, event) && ApplicationManager.getApplication().runReadAction(Computable {
+            ProjectLevelVcsManager.getInstance(project).allActiveVcss.isNotEmpty()
+        })
 
     override fun getPresentationText(inSplitter: Boolean) = when {
         inSplitter -> IgnoreBundle.message("action.closeIgnored.editors.in.tab.group")
         else -> IgnoreBundle.message("action.closeIgnored.editors")
     }
-    override fun getActionUpdateThread() = ActionUpdateThread.BGT
+
+    override fun getActionUpdateThread() = ActionUpdateThread.EDT
 }
