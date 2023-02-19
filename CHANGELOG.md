@@ -3,6 +3,7 @@
 ## [Unreleased]
 - 2023.1 support
 - Add [toptal](https://github.com/toptal/gitignore) templates to the list
+- Add "Add Template..." and "Create User Template" actions to the context menu of `.gitignore` files
 - `.terraformignore` (Terraform) support
 - `.openapi-generator-ignore` (OpenAPI Generator) support
 

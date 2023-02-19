@@ -5,9 +5,12 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.psi.PsiFile
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog
+import mobi.hsz.idea.gitignore.util.Icons
+import com.intellij.openapi.vcs.changes.ignore.psi.IgnoreFile as NativeIgnoreFile
 
 /**
  * Action that initiates adding new template to the selected .gitignore file.
@@ -20,18 +23,25 @@ class AddTemplateAction : AnAction(
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getData(CommonDataKeys.PROJECT) ?: return
-        val file = e.getData(CommonDataKeys.PSI_FILE) as IgnoreFile
+        val file = e.getData(CommonDataKeys.PSI_FILE) as PsiFile
 
         GeneratorDialog(project, file).show()
     }
 
     override fun update(e: AnActionEvent) {
-        val file = e.getData(CommonDataKeys.PSI_FILE)
-        if (file !is IgnoreFile) {
-            e.presentation.isVisible = false
-            return
+        when (val file = e.getData(CommonDataKeys.PSI_FILE)) {
+            is IgnoreFile -> {
+                e.presentation.icon = file.fileType.icon
+            }
+
+            is NativeIgnoreFile -> {
+                e.presentation.icon = Icons.GIT
+            }
+
+            else -> {
+                e.presentation.isVisible = false
+            }
         }
-        templatePresentation.icon = file.fileType.icon
     }
 
     override fun getActionUpdateThread() = ActionUpdateThread.BGT
