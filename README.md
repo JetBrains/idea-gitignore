@@ -4,8 +4,8 @@
 [![official JetBrains project](https://jb.gg/badges/official.svg)][jb:confluence-on-gh]
 [![Build](https://github.com/JetBrains/idea-gitignore/workflows/Build/badge.svg)][gh:build]
 
-[![Version](http://phpstorm.espend.de/badge/20485/version)][plugin-website]
-[![Downloads](http://phpstorm.espend.de/badge/20485/downloads)][plugin-website]
+[![Version](http://phpstorm.espend.de/badge/7495/version)][plugin-website]
+[![Downloads](http://phpstorm.espend.de/badge/7495/downloads)][plugin-website]
 [![Downloads last month](http://phpstorm.espend.de/badge/7495/last-month)][plugin-website] <!-- New ID does not work here for some reason -->
 
 Introduction
@@ -107,7 +107,7 @@ Early Access Preview
 --------------------
 If you are working with IDEs in EAP version, like IntelliJ 2021.1 EAP, there is `eap` channel introduced to provide the `.ignore` plugin updates supporting such versions.
 
-To enable EAP updates of the `.ignore` plugin, add the `https://plugins.jetbrains.com/plugins/eap/20485` URL in the IDE settings:
+To enable EAP updates of the `.ignore` plugin, add the `https://plugins.jetbrains.com/plugins/eap/7495` URL in the IDE settings:
 
 <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Manage Plugin Repositories...</kbd>
 
@@ -142,7 +142,7 @@ Usage
 
 
 [github-gitignore]:    https://github.com/github/gitignore
-[plugin-website]:      https://plugins.jetbrains.com/plugin/20485
+[plugin-website]:      https://plugins.jetbrains.com/plugin/7495
 [latest-release]:      https://github.com/JetBrains/idea-gitignore/releases/latest
 
 [jb:confluence-on-gh]: https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub
