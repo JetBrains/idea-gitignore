@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.util.Scanner
+import java.util.*
 
 /**
  * [Resources] util class that contains methods that work on plugin resources.
@@ -99,14 +99,18 @@ object Resources {
          * subdirectory) or is user defined and fetched from [IgnoreSettings].
          */
         enum class Container {
-            USER, STARRED, ROOT, GLOBAL
+            USER, STARRED, ROOT, GLOBAL, TOPTAL
         }
 
         constructor(file: File, content: String?) {
             this.file = file
             name = file.name.replace(GitLanguage.INSTANCE.filename, "")
             this.content = content
-            container = if (file.parent.endsWith("Global")) Container.GLOBAL else Container.ROOT
+            container = when {
+                file.parent.endsWith("Global") -> Container.GLOBAL
+                file.parent.endsWith("toptal/templates") -> Container.TOPTAL
+                else -> Container.ROOT
+            }
         }
 
         constructor(userTemplate: UserTemplate) {

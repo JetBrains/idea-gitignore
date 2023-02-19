@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 - 2023.1 support
+- Add [toptal](https://github.com/toptal/gitignore) templates to the list
 - .terraformignore (Terraform) support
 
 ## [4.4.4] - 2022-11-14

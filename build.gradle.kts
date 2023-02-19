@@ -28,7 +28,7 @@ kotlin {
 
 val generateTemplatesList = task("generateTemplatesList") {
     val path = "src/main/resources"
-    val content = files("$path/gitignore")
+    val content = files("$path/gitignore", "$path/toptal")
         .asFileTree.matching { include("**/*.gitignore") }
         .files.joinToString("\n") { relativePath(it.path).substring(path.length + 1) }
     file("$path/templates.list").writeText(content)
