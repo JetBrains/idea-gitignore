@@ -6,38 +6,11 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
-import mobi.hsz.idea.gitignore.lang.kind.BazaarLanguage
-import mobi.hsz.idea.gitignore.lang.kind.ChefLanguage
-import mobi.hsz.idea.gitignore.lang.kind.CloudFoundryLanguage
-import mobi.hsz.idea.gitignore.lang.kind.CvsLanguage
-import mobi.hsz.idea.gitignore.lang.kind.DarcsLanguage
-import mobi.hsz.idea.gitignore.lang.kind.DockerLanguage
-import mobi.hsz.idea.gitignore.lang.kind.ESLintLanguage
-import mobi.hsz.idea.gitignore.lang.kind.ElasticBeanstalkLanguage
-import mobi.hsz.idea.gitignore.lang.kind.FloobitsLanguage
-import mobi.hsz.idea.gitignore.lang.kind.FossilLanguage
-import mobi.hsz.idea.gitignore.lang.kind.GitLanguage
-import mobi.hsz.idea.gitignore.lang.kind.GoogleCloudLanguage
-import mobi.hsz.idea.gitignore.lang.kind.HelmLanguage
-import mobi.hsz.idea.gitignore.lang.kind.JSHintLanguage
-import mobi.hsz.idea.gitignore.lang.kind.JetpackLanguage
-import mobi.hsz.idea.gitignore.lang.kind.MercurialLanguage
-import mobi.hsz.idea.gitignore.lang.kind.MonotoneLanguage
-import mobi.hsz.idea.gitignore.lang.kind.NodemonLanguage
-import mobi.hsz.idea.gitignore.lang.kind.NpmLanguage
-import mobi.hsz.idea.gitignore.lang.kind.NuxtJSLanguage
-import mobi.hsz.idea.gitignore.lang.kind.PerforceLanguage
-import mobi.hsz.idea.gitignore.lang.kind.PrettierLanguage
-import mobi.hsz.idea.gitignore.lang.kind.SourcegraphLanguage
-import mobi.hsz.idea.gitignore.lang.kind.StyleLintLanguage
-import mobi.hsz.idea.gitignore.lang.kind.StylintLanguage
-import mobi.hsz.idea.gitignore.lang.kind.SwaggerCodegenLanguage
-import mobi.hsz.idea.gitignore.lang.kind.TFLanguage
-import mobi.hsz.idea.gitignore.lang.kind.UpLanguage
+import mobi.hsz.idea.gitignore.lang.kind.*
 import mobi.hsz.idea.gitignore.util.CachedConcurrentMap
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
-import java.util.ResourceBundle
+import java.util.*
 
 /**
  * [ResourceBundle]/localization utils for the .ignore support plugin.
@@ -52,12 +25,14 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
     val LANGUAGES = IgnoreLanguages(
         listOf(
             BazaarLanguage.INSTANCE,
-            CloudFoundryLanguage.INSTANCE,
             ChefLanguage.INSTANCE,
+            CloudFoundryLanguage.INSTANCE,
             CvsLanguage.INSTANCE,
             DarcsLanguage.INSTANCE,
+            DeployHQLanguage.INSTANCE,
             DockerLanguage.INSTANCE,
             ElasticBeanstalkLanguage.INSTANCE,
+            EleventyLanguage.INSTANCE,
             ESLintLanguage.INSTANCE,
             FloobitsLanguage.INSTANCE,
             FossilLanguage.INSTANCE,
@@ -77,8 +52,12 @@ object IgnoreBundle : AbstractBundle("messages.IgnoreBundle") {
             StyleLintLanguage.INSTANCE,
             StylintLanguage.INSTANCE,
             SwaggerCodegenLanguage.INSTANCE,
+            TerraformLanguage.INSTANCE,
             TFLanguage.INSTANCE,
-            UpLanguage.INSTANCE
+            TokeiLanguage.INSTANCE,
+            UpLanguage.INSTANCE,
+            VercelLanguage.INSTANCE,
+            YarnLanguage.INSTANCE,
         )
     )
 

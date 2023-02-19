@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- .terraformignore (Terraform) support
 
 ## [4.4.4] - 2022-11-14
 - Fixed .ignore crashes IDE during project opening [\#793](https://github.com/hsz/idea-gitignore/issues/793)

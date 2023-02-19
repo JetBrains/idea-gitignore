@@ -773,29 +773,29 @@
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
         <!-- END Team Foundation -->
 
-        <!-- Up -->
+        <!-- Terraform -->
         <fileType
-            name="Up File"
-            language="Up"
-            extensions="upignore"
+            name="Terraform File"
+            extensions="terraformignore"
+            language="Terraform"
             fieldName="INSTANCE"
-            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.UpFileType"/>
+            implementationClass="mobi.hsz.idea.gitignore.file.type.kind.TerraformFileType"/>
         <lang.parserDefinition
-            language="Up"
+            language="Terraform"
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreParserDefinition"/>
         <codeInsight.lineMarkerProvider
-            language="Up"
+            language="Terraform"
             implementationClass="mobi.hsz.idea.gitignore.daemon.IgnoreDirectoryMarkerProvider"/>
         <lang.braceMatcher
-            language="Up"
+            language="Terraform"
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreBraceMatcher"/>
         <lang.commenter
-            language="Up"
+            language="Terraform"
             implementationClass="mobi.hsz.idea.gitignore.lang.IgnoreCommenter"/>
         <lang.syntaxHighlighterFactory
-            language="Up"
+            language="Terraform"
             implementationClass="mobi.hsz.idea.gitignore.highlighter.IgnoreHighlighterFactory"/>
-        <!-- END Up -->
+        <!-- END Terraform -->
 
         <!-- Vercel -->
         <fileType

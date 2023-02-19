@@ -6,7 +6,7 @@
 
 [![Version](http://phpstorm.espend.de/badge/7495/version)][plugin-website]
 [![Downloads](http://phpstorm.espend.de/badge/7495/downloads)][plugin-website]
-[![Downloads last month](http://phpstorm.espend.de/badge/7495/last-month)][plugin-website] <!-- New ID does not work here for some reason -->
+[![Downloads last month](http://phpstorm.espend.de/badge/7495/last-month)][plugin-website]
 
 Introduction
 ------------
@@ -43,6 +43,7 @@ Introduction
 - `.stylelintignore` (StyleLint)
 - `.stylintignore` (Stylint)
 - `.swagger-codegen-ignore` (SwaggerCodegen)
+- `.terraformignore` (Terraform)
 - `.tfignore` (TF)
 - `.tokeignore` (Tokei)
 - `.upignore` (Up)
