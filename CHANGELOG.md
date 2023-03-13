@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [4.5.0] - 2023-03-13
 - 2023.1 support
 - Add [toptal](https://github.com/toptal/gitignore) templates to the list
 - Add "Add Template..." and "Create User Template" actions to the context menu of `.gitignore` files
@@ -527,7 +529,8 @@
 - `.gitignore` file support
 - Basic syntax highlighting
 
-[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.4...HEAD
+[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.0...HEAD
+[4.5.0]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.4...v4.5.0
 [4.4.4]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.3...v4.4.4
 [4.4.3]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.2...v4.4.3
 [4.4.2]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.1...v4.4.2
