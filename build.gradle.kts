@@ -88,14 +88,14 @@ tasks {
     }
 
     generateLexer {
-        source.set("src/main/grammars/Ignore.flex")
+        sourceFile.set(file("src/main/grammars/Ignore.flex"))
         targetDir.set("src/main/gen/mobi/hsz/idea/gitignore/lexer/")
         targetClass.set("IgnoreLexer")
         purgeOldFiles.set(true)
     }
 
     generateParser {
-        source.set("src/main/grammars/Ignore.bnf")
+        sourceFile.set(file("src/main/grammars/Ignore.bnf"))
         targetRoot.set("src/main/gen")
         pathToParser.set("/mobi/hsz/idea/gitignore/IgnoreParser.java")
         pathToPsiRoot.set("/mobi/hsz/idea/gitignore/psi")
