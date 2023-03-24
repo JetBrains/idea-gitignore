@@ -149,3 +149,4 @@ Usage
 
 [jb:confluence-on-gh]: https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub
 [gh:build]:            https://github.com/JetBrains/idea-gitignore/actions?query=workflow%3ABuild
+
