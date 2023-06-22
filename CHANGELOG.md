@@ -1,7 +1,8 @@
 # Changelog
 
 ## [Unreleased]
-- Fixed `Slow operations are prohibited on EDT` #831
+- Fixed `Slow operations are prohibited on EDT` [\#831](https://github.com/hsz/idea-gitignore/issues/831)
+- Fixed `ActionGroup should be registered using <group> tag` [\#829](https://github.com/hsz/idea-gitignore/issues/829)
 
 ## [4.5.0] - 2023-03-13
 - 2023.1 support

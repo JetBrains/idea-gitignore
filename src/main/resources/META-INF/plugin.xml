@@ -871,9 +871,9 @@
     </extensions>
 
     <actions>
-        <action id="Ignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileGroupAction">
+        <group id="Ignore.New" class="mobi.hsz.idea.gitignore.actions.NewFileGroupAction">
             <add-to-group group-id="NewGroup" anchor="last"/>
-        </action>
+        </group>
         <group id="Ignore.IgnoreGroup" class="mobi.hsz.idea.gitignore.actions.IgnoreFileGroupAction">
             <add-to-group group-id="EditorPopupMenu"/>
             <add-to-group group-id="ProjectViewPopupMenu"/>
