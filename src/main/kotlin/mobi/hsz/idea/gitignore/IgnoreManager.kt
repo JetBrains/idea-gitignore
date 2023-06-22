@@ -37,11 +37,7 @@ import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
-import mobi.hsz.idea.gitignore.util.CachedConcurrentMap
-import mobi.hsz.idea.gitignore.util.Debounced
-import mobi.hsz.idea.gitignore.util.ExpiringMap
-import mobi.hsz.idea.gitignore.util.Glob
-import mobi.hsz.idea.gitignore.util.Utils
+import mobi.hsz.idea.gitignore.util.*
 
 /**
  * [IgnoreManager] handles ignore files indexing and status caching.
@@ -57,7 +53,9 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val debouncedStatusesChanged = object : Debounced<Any?>(1000) {
         override fun task(argument: Any?) {
             expiringStatusCache.clear()
-            FileStatusManager.getInstance(project).fileStatusesChanged()
+            if (!project.isDisposed) {
+                FileStatusManager.getInstance(project).fileStatusesChanged()
+            }
         }
     }.also {
         Disposer.register(this, it)
