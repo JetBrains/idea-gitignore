@@ -3,8 +3,8 @@ package mobi.hsz.idea.gitignore.daemon
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditor
+import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Key
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.EditorNotificationPanel
@@ -34,14 +34,18 @@ class IgnoredEditingNotificationProvider(project: Project) : EditorNotificationP
      * @param fileEditor current file editor
      * @return created notification panel
      */
-    private fun createNotificationPanel(file: VirtualFile) = when {
-        !settings.notifyIgnoredEditing || !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file) -> null
-        else -> EditorNotificationPanel().apply {
-            text = IgnoreBundle.message("daemon.ignoredEditing")
-            icon(Icons.IGNORE)
-        }
+    private fun createNotificationPanel() = EditorNotificationPanel().apply {
+        text = IgnoreBundle.message("daemon.ignoredEditing")
+        icon(Icons.IGNORE)
     }
 
-    override fun collectNotificationData(project: Project, file: VirtualFile): Function<in FileEditor, out JComponent?> =
-        Function { createNotificationPanel(file) }
+    override fun collectNotificationData(project: Project, file: VirtualFile): Function<in FileEditor, out JComponent?>? {
+        if (DumbService.isDumb(project)) {
+            return null
+        }
+        if (!settings.notifyIgnoredEditing || !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file)) {
+            return null
+        }
+        return Function { createNotificationPanel() }
+    }
 }
