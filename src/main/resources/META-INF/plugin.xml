@@ -60,13 +60,6 @@
             bundle="messages.IgnoreBundle"
             enabledByDefault="true"
             groupKey="codeInspection.group"
-            implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreUnusedEntryInspection"
-            key="codeInspection.unusedEntry"
-            level="WEAK WARNING"/>
-        <localInspection
-            bundle="messages.IgnoreBundle"
-            enabledByDefault="true"
-            groupKey="codeInspection.group"
             implementationClass="mobi.hsz.idea.gitignore.codeInspection.IgnoreRelativeEntryInspection"
             key="codeInspection.relativeEntry"
             level="ERROR"/>

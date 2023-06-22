@@ -4,6 +4,7 @@
 - Fixed `Slow operations are prohibited on EDT` [\#831](https://github.com/hsz/idea-gitignore/issues/831)
 - Fixed `ActionGroup should be registered using <group> tag` [\#829](https://github.com/hsz/idea-gitignore/issues/829)
 - Fixed `AlreadyDisposedException` when accessing `FileStatusManager` in `IgnoreManager`
+- Removed the unused entry inspection feature as it caused performance issues and false positives. [\#805(https://github.com/hsz/idea-gitignore/issues/805)
 
 ## [4.5.0] - 2023-03-13
 - 2023.1 support

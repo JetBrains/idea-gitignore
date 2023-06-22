@@ -4,8 +4,6 @@ package mobi.hsz.idea.gitignore.util
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.search.FilenameIndex
-import com.intellij.psi.search.GlobalSearchScope
 import java.util.regex.Pattern
 
 /**
@@ -79,16 +77,11 @@ class MatcherUtil private constructor() {
         fun getFilesForPattern(project: Project, pattern: Pattern): Collection<VirtualFile> {
             val parts = getParts(pattern).ifEmpty { return emptyList() }
             val projectFileIndex = ProjectRootManager.getInstance(project).fileIndex
-            val scope = GlobalSearchScope.projectScope(project)
             val files = mutableSetOf<VirtualFile>()
 
-            projectFileIndex.iterateContent {
-                if (matchAnyPart(parts, it.name)) {
-                    FilenameIndex.getVirtualFilesByName(it.name, scope).forEach { file ->
-                        if (file.isValid && matchAllParts(parts, file.path)) {
-                            files.add(file)
-                        }
-                    }
+            projectFileIndex.iterateContent { file ->
+                if (file.isValid && matchAnyPart(parts, file.name) && matchAllParts(parts, file.path)) {
+                    files.add(file)
                 }
                 true
             }

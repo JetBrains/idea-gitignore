@@ -12,8 +12,7 @@ import mobi.hsz.idea.gitignore.psi.IgnoreEntry
 import mobi.hsz.idea.gitignore.psi.IgnoreTypes
 
 /**
- * QuickFix action that removes specified entry handled by code inspections like [IgnoreCoverEntryInspection],
- * [IgnoreDuplicateEntryInspection], [IgnoreUnusedEntryInspection].
+ * QuickFix action that removes specified entry handled by code inspections like [IgnoreCoverEntryInspection], [IgnoreDuplicateEntryInspection].
  */
 class IgnoreRemoveEntryFix(entry: IgnoreEntry) : LocalQuickFixAndIntentionActionOnPsiElement(entry) {
 
