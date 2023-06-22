@@ -4,9 +4,10 @@ package mobi.hsz.idea.gitignore.daemon
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Key
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.vfs.findDirectory
 import com.intellij.psi.PsiManager
 import com.intellij.ui.EditorNotificationPanel
 import com.intellij.ui.EditorNotificationProvider
@@ -31,64 +32,53 @@ class MissingGitignoreNotificationProvider(project: Project) : EditorNotificatio
     private val settings = service<IgnoreSettings>()
 
     /**
-     * Creates notification panel for given file and checks if is allowed to show the notification.
-     *
-     * @param file       current file
-     * @param fileEditor current file editor
-     * @return created notification panel
-     */
-    private fun createNotificationPanel(file: VirtualFile, project: Project): EditorNotificationPanel? = when {
-        !settings.missingGitignore -> null
-        Properties.isIgnoreMissingGitignore(project) -> null
-        else -> {
-            val vcsDirectory = GitLanguage.INSTANCE.vcsDirectory
-            val moduleRoot = Utils.getModuleRootForFile(file, project)
-            val gitignoreFile = moduleRoot?.findChild(GitLanguage.INSTANCE.filename)
-
-            when {
-                vcsDirectory == null -> null
-                moduleRoot == null -> null
-                gitignoreFile != null -> null
-                moduleRoot.findChild(vcsDirectory)?.isDirectory ?: true -> null
-                else -> createPanel(project, moduleRoot)
-            }
-        }
-    }
-
-    /**
-     * Creates notification panel.
+     * Creates a notification panel for given file and checks if is allowed to show the notification.
      *
      * @param project    current project
      * @param moduleRoot module root
      * @return notification panel
      */
-    private fun createPanel(project: Project, moduleRoot: VirtualFile): EditorNotificationPanel {
+    private fun createNotificationPanel(project: Project, moduleRoot: VirtualFile) = EditorNotificationPanel().apply {
         val fileType = GitFileType.INSTANCE
-        return EditorNotificationPanel().apply {
-            text = IgnoreBundle.message("daemon.missingGitignore")
-            createActionLabel(IgnoreBundle.message("daemon.missingGitignore.create")) {
-                val directory = PsiManager.getInstance(project).findDirectory(moduleRoot)
-                if (directory != null) {
-                    try {
-                        val file = CreateFileCommandAction(project, directory, fileType).execute()
-                        FileEditorManager.getInstance(project).openFile(file.virtualFile, true)
-                        GeneratorDialog(project, file).show()
-                    } catch (throwable: Throwable) {
-                        throwable.printStackTrace()
-                    }
+
+        text = IgnoreBundle.message("daemon.missingGitignore")
+        createActionLabel(IgnoreBundle.message("daemon.missingGitignore.create")) {
+            val directory = PsiManager.getInstance(project).findDirectory(moduleRoot)
+            if (directory != null) {
+                try {
+                    val file = CreateFileCommandAction(project, directory, fileType).execute()
+                    FileEditorManager.getInstance(project).openFile(file.virtualFile, true)
+                    GeneratorDialog(project, file).show()
+                } catch (throwable: Throwable) {
+                    throwable.printStackTrace()
                 }
             }
-            createActionLabel(IgnoreBundle.message("daemon.cancel")) {
-                Properties.setIgnoreMissingGitignore(project)
-                notifications.updateAllNotifications()
-            }
-            try { // ignore if older SDK does not support panel icon
-                fileType.icon?.let { icon(it) }
-            } catch (ignored: NoSuchMethodError) {
-            }
+        }
+        createActionLabel(IgnoreBundle.message("daemon.cancel")) {
+            Properties.setIgnoreMissingGitignore(project)
+            notifications.updateAllNotifications()
+        }
+        try { // ignore if older SDK does not support panel icon
+            fileType.icon?.let { icon(it) }
+        } catch (ignored: NoSuchMethodError) {
         }
     }
 
-    override fun collectNotificationData(project: Project, file: VirtualFile): Function<in FileEditor, out JComponent?> =
-        Function { createNotificationPanel(file, project) }
+    override fun collectNotificationData(project: Project, file: VirtualFile): Function<in FileEditor, out JComponent?>? {
+        if (DumbService.isDumb(project)) {
+            return null
+        }
+        if (!settings.missingGitignore || Properties.isIgnoreMissingGitignore(project)) {
+            return null
+        }
+
+        val vcsDirectory = GitLanguage.INSTANCE.vcsDirectory ?: return null
+        val moduleRoot = Utils.getModuleRootForFile(file, project) ?: return null
+        moduleRoot.findDirectory(vcsDirectory) ?: return null
+
+        if (moduleRoot.findChild(GitLanguage.INSTANCE.filename) != null) {
+            return null
+        }
+        return Function { createNotificationPanel(project, moduleRoot) }
+    }
 }

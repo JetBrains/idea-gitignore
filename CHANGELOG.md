@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- Fixed `Slow operations are prohibited on EDT` #831
 
 ## [4.5.0] - 2023-03-13
 - 2023.1 support
