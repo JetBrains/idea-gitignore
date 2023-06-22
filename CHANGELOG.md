@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [4.5.1] - 2023-06-22
 - Fixed `Slow operations are prohibited on EDT` [\#831](https://github.com/hsz/idea-gitignore/issues/831)
 - Fixed `ActionGroup should be registered using <group> tag` [\#829](https://github.com/hsz/idea-gitignore/issues/829)
 - Fixed `AlreadyDisposedException` when accessing `FileStatusManager` in `IgnoreManager`
@@ -533,7 +535,8 @@
 - `.gitignore` file support
 - Basic syntax highlighting
 
-[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.0...HEAD
+[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.1...HEAD
+[4.5.1]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.4...v4.5.0
 [4.4.4]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.3...v4.4.4
 [4.4.3]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.2...v4.4.3
