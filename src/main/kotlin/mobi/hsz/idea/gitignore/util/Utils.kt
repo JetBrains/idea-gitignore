@@ -9,7 +9,9 @@ import com.intellij.openapi.editor.ex.EditorEx
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
+import com.intellij.openapi.module.ModuleType
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VfsUtilCore
@@ -102,8 +104,15 @@ object Utils {
     fun getModuleForFile(file: VirtualFile, project: Project): Module? =
         ModuleManager.getInstance(project).modules.find { it.moduleContentScope.contains(file) }
 
-    fun getModuleRootForFile(file: VirtualFile, project: Project) = getModuleForFile(file, project)?.let { module ->
-        ModuleRootManager.getInstance(module).contentRoots.first()?.takeIf { it.isDirectory }
+    fun getModuleRootForFile(file: VirtualFile, project: Project): VirtualFile? {
+        val module = getModuleForFile(file, project)
+        return when {
+            module == null || ModuleType.isInternal(module) -> project.guessProjectDir()
+            else -> {
+                val roots = ModuleRootManager.getInstance(module).contentRoots
+                roots.first { it.isDirectory }
+            }
+        }
     }
 
     /**
