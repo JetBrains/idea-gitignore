@@ -25,11 +25,7 @@ import com.intellij.openapi.ui.Splitter
 import com.intellij.openapi.util.JDOMUtil
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.ui.AddEditDeleteListPanel
-import com.intellij.ui.BooleanTableCellEditor
-import com.intellij.ui.BooleanTableCellRenderer
-import com.intellij.ui.ScrollPaneFactory
-import com.intellij.ui.ToolbarDecorator
+import com.intellij.ui.*
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
@@ -47,7 +43,7 @@ import java.awt.BorderLayout
 import java.awt.Component
 import java.awt.Dimension
 import java.io.IOException
-import java.util.TreeMap
+import java.util.*
 import javax.swing.JCheckBox
 import javax.swing.JPanel
 import javax.swing.JTable
@@ -394,7 +390,12 @@ class IgnoreSettingsPanel : Disposable {
 
                 preview?.let {
                     remove(it.component)
-                    EditorFactory.getInstance().releaseEditor(it)
+
+                    with (EditorFactory.getInstance()) {
+                        if (allEditors.contains(it)) {
+                            releaseEditor(it)
+                        }
+                    }
                 }
                 preview = null
             }

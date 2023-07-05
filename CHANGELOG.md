@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fixed `com.intellij.openapi.util.TraceableDisposable$DisposalException: Double release of editor`
+
 ## [4.5.1] - 2023-06-22
 - Fixed `Slow operations are prohibited on EDT` [\#831](https://github.com/hsz/idea-gitignore/issues/831)
 - Fixed `ActionGroup should be registered using <group> tag` [\#829](https://github.com/hsz/idea-gitignore/issues/829)
