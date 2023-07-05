@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Fixed `com.intellij.openapi.util.TraceableDisposable$DisposalException: Double release of editor`
+- Improve module root detection in Rider
 
 ## [4.5.1] - 2023-06-22
 - Fixed `Slow operations are prohibited on EDT` [\#831](https://github.com/hsz/idea-gitignore/issues/831)
