@@ -4,12 +4,7 @@ package mobi.hsz.idea.gitignore.ui
 import com.intellij.icons.AllIcons
 import com.intellij.ide.CommonActionsManager
 import com.intellij.ide.DefaultTreeExpander
-import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.actionSystem.ActionPlaces
-import com.intellij.openapi.actionSystem.ActionToolbar
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.components.service
@@ -26,11 +21,7 @@ import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiFile
-import com.intellij.ui.CheckboxTree
-import com.intellij.ui.CheckedTreeNode
-import com.intellij.ui.FilterComponent
-import com.intellij.ui.JBSplitter
-import com.intellij.ui.ScrollPaneFactory
+import com.intellij.ui.*
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
@@ -56,14 +47,7 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.datatransfer.StringSelection
 import java.awt.event.ActionEvent
-import javax.swing.Action
-import javax.swing.Box
-import javax.swing.BoxLayout
-import javax.swing.JCheckBox
-import javax.swing.JComponent
-import javax.swing.JPanel
-import javax.swing.JScrollPane
-import javax.swing.ScrollPaneConstants
+import javax.swing.*
 import javax.swing.event.TreeSelectionEvent
 import javax.swing.event.TreeSelectionListener
 import javax.swing.tree.DefaultTreeModel
@@ -326,6 +310,8 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
                         checked.clear()
                         filterTree(profileFilter.textEditor.text)
                     }
+
+                    override fun getActionUpdateThread() = ActionUpdateThread.EDT
                 }
             )
             add(
@@ -348,9 +334,13 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
                     override fun actionPerformed(e: AnActionEvent) {
                         currentNode?.template?.let {
                             it.isStarred = !it.isStarred
+
+                            val name = it.file?.path ?: it.name
                             if (it.isStarred) {
-                                starred.add(it.name)
+                                starred.add(name)
                             } else {
+                                starred.remove(name)
+                                // backward compatibility for a starredTemplates list composed of regular names instead of paths
                                 starred.remove(it.name)
                             }
                             settings.starredTemplates = starred.toList()
@@ -365,6 +355,8 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
                      */
                     private val currentNode
                         get() = tree.selectionPath?.lastPathComponent as TemplateTreeNode?
+
+                    override fun getActionUpdateThread() = ActionUpdateThread.EDT
                 }
             )
         }

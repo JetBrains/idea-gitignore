@@ -4,12 +4,13 @@
 
 - Fixed `com.intellij.openapi.util.TraceableDisposable$DisposalException: Double release of editor`
 - Improve module root detection in Rider
+- Fixed issue when starring the template, marks both `gitignore` and `toptal` entries [\#844](https://github.com/hsz/idea-gitignore/issues/844)
 
 ## [4.5.1] - 2023-06-22
 - Fixed `Slow operations are prohibited on EDT` [\#831](https://github.com/hsz/idea-gitignore/issues/831)
 - Fixed `ActionGroup should be registered using <group> tag` [\#829](https://github.com/hsz/idea-gitignore/issues/829)
 - Fixed `AlreadyDisposedException` when accessing `FileStatusManager` in `IgnoreManager`
-- Removed the unused entry inspection feature as it caused performance issues and false positives. [\#805(https://github.com/hsz/idea-gitignore/issues/805)
+- Removed the unused entry inspection feature as it caused performance issues and false positives. [\#805](https://github.com/hsz/idea-gitignore/issues/805)
 
 ## [4.5.0] - 2023-03-13
 - 2023.1 support

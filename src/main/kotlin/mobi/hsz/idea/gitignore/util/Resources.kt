@@ -39,7 +39,10 @@ object Resources {
                         getResource(line)?.let { file ->
                             val content = getResourceContent(line)
                             val template = Template(file, content)
-                            template.isStarred = starredTemplates.contains(template.name)
+                            val name = template.file?.path ?: template.name
+                            template.isStarred = starredTemplates.contains(name)
+                                // backward compatibility for a starredTemplates list composed of regular names instead of paths
+                                || starredTemplates.contains(template.name)
                             resourceTemplates.add(template)
                         }
                     }
