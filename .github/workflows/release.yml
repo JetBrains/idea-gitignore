@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  # Prepare and publish the plugin to the Marketplace repository
+  # Prepare and publish the plugin to JetBrains Marketplace repository
   release:
     name: Publish Plugin
     runs-on: ubuntu-latest
@@ -25,16 +25,18 @@ jobs:
           submodules: true
           ref: ${{ github.event.release.tag_name }}
 
-      # Setup Java
+      # Set up Java environment for the next steps
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-            distribution: zulu
-            java-version: 17
+          distribution: zulu
+          java-version: 17
 
       # Setup Gradle
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+        with:
+          gradle-home-cache-cleanup: true
 
       # Set environment variables
       - name: Export Properties
@@ -58,7 +60,7 @@ jobs:
         run: |
           ./gradlew patchChangelog --release-note="$CHANGELOG"
 
-      # Publish the plugin to the Marketplace
+      # Publish the plugin to JetBrains Marketplace
       - name: Publish Plugin
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
@@ -73,7 +75,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ github.event.release.tag_name }} ./build/distributions/*
 
-      # Create pull request
+      # Create a pull request
       - name: Create Pull Request
         if: ${{ steps.properties.outputs.changelog != '' }}
         env:
