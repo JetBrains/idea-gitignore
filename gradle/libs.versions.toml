@@ -1,6 +1,6 @@
 [versions]
 # plugins
-dokka = "1.8.20"
+dokka = "1.9.0"
 kotlin = "1.9.10"
 changelog = "2.2.0"
 gradleIntelliJPlugin = "1.16.0"
