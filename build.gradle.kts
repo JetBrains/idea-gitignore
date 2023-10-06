@@ -69,7 +69,6 @@ koverReport {
     }
 }
 
-
 tasks {
     // Set the JVM compatibility versions
     withType<KotlinCompile> {
