@@ -3,7 +3,7 @@ package mobi.hsz.idea.gitignore.services
 import com.intellij.openapi.Disposable
 import com.intellij.util.containers.IntObjectCache
 import mobi.hsz.idea.gitignore.util.MatcherUtil
-import org.apache.commons.lang.builder.HashCodeBuilder
+import java.util.*
 import java.util.regex.Pattern
 
 class IgnoreMatcher : Disposable {
@@ -23,7 +23,7 @@ class IgnoreMatcher : Disposable {
             return false
         } else {
             synchronized(cache) {
-                val hashCode = HashCodeBuilder().append(pattern).append(path).toHashCode()
+                val hashCode = Objects.hash(pattern, path)
                 if (!cache.containsKey(hashCode)) {
                     val parts = MatcherUtil.getParts(pattern)
                     var result = false
