@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.containers.addIfNotNull
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
@@ -27,7 +28,7 @@ open class IgnoreFileGroupAction(
 ) : ActionGroup() {
 
     /** List of suitable Gitignore [VirtualFile]s that can be presented in an IgnoreFile action. */
-    private val files = mutableMapOf<IgnoreFileType, List<VirtualFile>>()
+    private val files = ContainerUtil.createConcurrentWeakMap<String, List<VirtualFile>>()
 
     @PropertyKey(resourceBundle = IgnoreBundle.BUNDLE_NAME)
     private val presentationTextSingleKey: String
@@ -65,7 +66,7 @@ open class IgnoreFileGroupAction(
                     // skip already bundled languages for ignore action
                     .filterNot { this !is UnignoreFileGroupAction && (it is GitLanguage || it is MercurialLanguage) }
                     .map { it.fileType }
-                    .forEach { files[it] = getSuitableIgnoreFiles(project, it, file).reversed() }
+                    .forEach { files[it.languageName] = getSuitableIgnoreFiles(project, it, file).reversed() }
             } catch (e: ExternalFileException) {
                 presentation.isVisible = false
             }
@@ -100,7 +101,7 @@ open class IgnoreFileGroupAction(
                             }
 
                             templatePresentation.apply {
-                                icon = key.icon
+                                icon = IgnoreBundle.LANGUAGES[key]?.icon
                                 text = name
                             }
                         }

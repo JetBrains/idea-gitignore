@@ -63,8 +63,9 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     private val commonRunnableListeners = CommonRunnableListeners(debouncedStatusesChanged)
     private var messageBus = project.messageBus.connect(this)
-    private val cachedIgnoreFilesIndex =
-        CachedConcurrentMap.create<IgnoreFileType, List<IgnoreEntryOccurrence>> { key -> IgnoreFilesIndex.getEntries(project, key) }
+    private val cachedIgnoreFilesIndex = CachedConcurrentMap.create<IgnoreFileType, List<IgnoreEntryOccurrence>> {
+        IgnoreFilesIndex.getEntries(project, it)
+    }
 
     private val expiringStatusCache = ExpiringMap<VirtualFile, Boolean>(Time.SECOND)
 
@@ -98,11 +99,13 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         }
 
         private fun handleEvent(event: VFileEvent) {
-            val fileType = event.file?.fileType
-            if (fileType is IgnoreFileType) {
-                cachedIgnoreFilesIndex.remove(fileType)
-                expiringStatusCache.clear()
-                debouncedStatusesChanged.run()
+            ApplicationManager.getApplication().runReadAction {
+                val fileType = event.file?.fileType
+                if (fileType is IgnoreFileType) {
+                    cachedIgnoreFilesIndex.remove(fileType)
+                    expiringStatusCache.clear()
+                    debouncedStatusesChanged.run()
+                }
             }
         }
     }

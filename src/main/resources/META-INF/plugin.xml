@@ -17,8 +17,8 @@
             file="colorSchemes/IgnoreDarcula.xml"
             scheme="Darcula"/>
 
-        <applicationService
-            serviceImplementation="mobi.hsz.idea.gitignore.settings.IgnoreSettings"/>
+            <applicationService
+                serviceImplementation="mobi.hsz.idea.gitignore.settings.IgnoreSettings"/>
 
         <colorSettingsPage
             implementation="mobi.hsz.idea.gitignore.highlighter.IgnoreColorSettingsPage"/>

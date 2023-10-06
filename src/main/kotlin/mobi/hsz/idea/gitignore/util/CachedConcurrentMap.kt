@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentMap
  */
 class CachedConcurrentMap<K, V> private constructor(private val fetcher: DataFetcher<K, V>) {
 
-    private val map: ConcurrentMap<K, V> = ContainerUtil.createConcurrentWeakMap()
+    private val map: ConcurrentMap<K & Any, V & Any> = ContainerUtil.createConcurrentWeakMap()
 
     companion object {
         fun <K, V> create(fetcher: DataFetcher<K, V>) = CachedConcurrentMap(fetcher)
