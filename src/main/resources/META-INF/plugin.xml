@@ -89,12 +89,6 @@
         <backgroundPostStartupActivity
             implementation="mobi.hsz.idea.gitignore.foldableProjectView.StartupListener"/>
 
-        <projectService
-            serviceImplementation="mobi.hsz.idea.gitignore.IgnoreManager"/>
-
-        <projectService
-            serviceImplementation="mobi.hsz.idea.gitignore.services.IgnoreMatcher"/>
-
         <vcs.fileStatusProvider
             implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
 

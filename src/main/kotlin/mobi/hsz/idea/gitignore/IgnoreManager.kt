@@ -5,6 +5,7 @@ import com.intellij.ProjectTopics
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileTypes.ExactFileNameMatcher
 import com.intellij.openapi.fileTypes.FileTypeManager
@@ -43,6 +44,7 @@ import mobi.hsz.idea.gitignore.util.*
  * [IgnoreManager] handles ignore files indexing and status caching.
  */
 @Suppress("MagicNumber")
+@Service(Service.Level.PROJECT)
 class IgnoreManager(private val project: Project) : DumbAware, Disposable {
 
     private val matcher = project.service<IgnoreMatcher>()

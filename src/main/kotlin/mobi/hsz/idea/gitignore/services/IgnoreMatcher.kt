@@ -1,11 +1,13 @@
 package mobi.hsz.idea.gitignore.services
 
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.components.Service
 import com.intellij.util.containers.IntObjectCache
 import mobi.hsz.idea.gitignore.util.MatcherUtil
 import java.util.*
 import java.util.regex.Pattern
 
+@Service(Service.Level.PROJECT)
 class IgnoreMatcher : Disposable {
 
     private val cache = IntObjectCache<Boolean>()
