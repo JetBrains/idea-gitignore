@@ -4,7 +4,6 @@ package mobi.hsz.idea.gitignore.indexing
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
-import org.apache.commons.lang.builder.HashCodeBuilder
 import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
@@ -61,9 +60,14 @@ class IgnoreEntryOccurrence(private val url: String, val items: List<Pair<String
         }
     }
 
-    override fun hashCode() = HashCodeBuilder().append(url).apply {
-        items.forEach { append(it.first).append(it.second) }
-    }.toHashCode()
+    override fun hashCode(): Int {
+        var result = url.hashCode()
+        for (item in items) {
+            result = 31 * result + (item.first?.hashCode() ?: 0)
+            result = 31 * result + (item.second?.hashCode() ?: 0)
+        }
+        return result
+    }
 
     override fun equals(other: Any?) = when {
         other !is IgnoreEntryOccurrence -> false
