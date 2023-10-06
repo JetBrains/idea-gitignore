@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [4.5.2] - 2023-10-06
+
 - Fixed `com.intellij.openapi.util.TraceableDisposable$DisposalException: Double release of editor`
 - Improve module root detection in Rider
 - Fixed issue when starring the template, marks both `gitignore` and `toptal` entries [\#844](https://github.com/hsz/idea-gitignore/issues/844)
@@ -10,12 +12,14 @@
 - Fixed "Expected directory instead of file" if `.git` is a file (worktrees case) [\#842](https://github.com/hsz/idea-gitignore/issues/842)
 
 ## [4.5.1] - 2023-06-22
+
 - Fixed `Slow operations are prohibited on EDT` [\#831](https://github.com/hsz/idea-gitignore/issues/831)
 - Fixed `ActionGroup should be registered using <group> tag` [\#829](https://github.com/hsz/idea-gitignore/issues/829)
 - Fixed `AlreadyDisposedException` when accessing `FileStatusManager` in `IgnoreManager`
 - Removed the unused entry inspection feature as it caused performance issues and false positives. [\#805](https://github.com/hsz/idea-gitignore/issues/805)
 
 ## [4.5.0] - 2023-03-13
+
 - 2023.1 support
 - Add [toptal](https://github.com/toptal/gitignore) templates to the list
 - Add "Add Template..." and "Create User Template" actions to the context menu of `.gitignore` files
@@ -23,41 +27,50 @@
 - `.openapi-generator-ignore` (OpenAPI Generator) support
 
 ## [4.4.4] - 2022-11-14
+
 - Fixed .ignore crashes IDE during project opening [\#793](https://github.com/hsz/idea-gitignore/issues/793)
 - Remove the `untilBuild` boundary
 - Update `github/gitignore` submodule
 
 ## [4.4.3] - 2022-11-13
+
 - Maintenance release
 
 ## [4.4.2] - 2022-07-05
+
 - Maintenance release
 
 ## [4.4.1] - 2022-05-24
+
 - Support for IntelliJ-based IDEs in 2022.2.0 version
 
 ## [4.4.0] - 2022-03-30
+
 - IDEA-284447 Titled Borders aren't being themed correctly
 - Support for IntelliJ-based IDEs in 2022.1.0 version
 - Fixed `ExpiringMap#get` flow
 - Remove `OK` action from the `IgnoredEditingNotificationProvider`
 
 ## [4.3.0] - 2021-10-13
+
 - Fixed `GeneratorDialog` – When the filter condition changes, the selected items aren't remembered
 - Fixed `Cannot create class mobi.hsz.idea.gitignore.settings.IgnoreSettingsConfigurable`
 - `.ignore` (Sourcegraph) support
 - Promote `.gitignore` in the `New > .ignore File` group
 
 ## [4.2.0] - 2021-07-28
+
 - Removed "Hide ignored files" feature in favor of [Foldable ProjectView](https://github.com/hsz/intellij-foldable-projectview) plugin
 - Fixed: Slow operations are prohibited on EDT
 - Fixed: Can't add entry to ignore file via context menu
 
 ## [4.1.1] - 2021-06-02
+
 - Fixed deprecated API usages
 - Support for IntelliJ-based IDEs in 2021.2.0 version
 
 ## [4.1.0] - 2021-04-13
+
 - Generate Dialog - allow copying generated content to clipboard
 - Generate Dialog - replace Ok button dropdown with checkboxes
 - .deployignore (DeployHQ) support
@@ -67,25 +80,30 @@
 - .vercelignore (Vercel) support
 
 ## [4.0.4] - 2021-04-08
+
 - Fixed incorrect behaviour of "Hide ignored files"
 - Compatibility with 2021.1
 
 ## [4.0.3] - 2021-01-12
+
 - GeneratorDialog: fixed broken search + minor tweaks
 - GeneratorDialog: fixed broken stars mechanism
 - Add project icons
 - Add `log_file` in the predefined run configuration
 
 ## [4.0.2] - 2020-12-22
+
 - Fixed NPE in Properties.setDismissedIgnoredEditingNotification
 
 ## [4.0.1] - 2020-12-14
+
 - Use a built-in Git/Mercurial ignored files check to hide them from the Project view
 - Fetch `github/gitignore` submodule when releasing to the Marketplace
 - GitHub Actions build workflow and Gradle configuration upgrade to align the IntelliJ Platform Project Template
 - Gradle Wrapper upgrade to 6.7.1
 
 ## [4.0.0] - 2020-12-11
+
 - Migrate code to Kotlin
 - Reduce code by 60% – 644KB to 262KB
 - Fix all compatibility issues with 2020.3
@@ -97,20 +115,24 @@
 - Focus on always supporting the latest release (only): currently 2020.3
 
 ## [3.2.3] - 2019-11-28
+
 - Compatibility with 2019.3
 - Incorrect parsing of {} symbols [\#585](https://github.com/hsz/idea-gitignore/issues/585)
 - Fixed deprecated warnings
 
 ## [3.2.2] - 2019-09-02
+
 - Fix dependency on Mercurial Integration [\#592](https://github.com/hsz/idea-gitignore/issues/592)
 - Fix index compatibility issue [\#593](https://github.com/hsz/idea-gitignore/issues/593)
 
 ## [3.2.0] - 2019-08-01
+
 - Ignored status highlighting for .gitignore and .hgingore
 - Completion in .gitignore and .hgignore
 - Add to ignore actions
 
 ## [3.1.2] - 2019-05-14
+
 - .gcloudignore (Google Cloud) support [\#577](https://github.com/hsz/idea-gitignore/issues/577)
 - .nuxtignore (Nuxt.js) support [\#576](https://github.com/hsz/idea-gitignore/issues/576)
 - Fixed deprecation warnings [\#567](https://github.com/hsz/idea-gitignore/issues/567)
@@ -128,6 +150,7 @@
 - All files are marked as ignored [\#581](https://github.com/hsz/idea-gitignore/issues/581)
 
 ## [3.0.0] - 2018-07-24
+
 - Separated builds for different IDE versions (139-181+)
 - Abandoned support for <139
 - Integration with IntelliJ Plugin Verifier
@@ -136,18 +159,21 @@
 - Unable to save settings [\#552](https://github.com/hsz/idea-gitignore/issues/552)
 
 ## [2.6.2] - 2018-05-22
+
 - Entries using wildcard never considered as used [\#543](https://github.com/hsz/idea-gitignore/issues/543)
 - IndexId ClassNotFoundException [\#534](https://github.com/hsz/idea-gitignore/issues/534)
 - "Already disposed: Project" in UntrackFilesDialog [\#539](https://github.com/hsz/idea-gitignore/issues/539)
 - Drop project cache from ExternalIndexableSetContributor - thanks to @denofevil [\#545](https://github.com/hsz/idea-gitignore/pull/545)
 
 ## [2.6.1] - 2018-04-13
+
 - Multirow tabs for outer rules panel [\#501](https://github.com/hsz/idea-gitignore/issues/501)
 - The following plugins are incompatible with the current IDE build [\#530](https://github.com/hsz/idea-gitignore/issues/530)
 - NullPointerException on File indexing (IgnoreFilesIndex), infinite loop of failing re-indexes - thanks to @nicity ! [\#527](https://github.com/hsz/idea-gitignore/issues/527)
 - Have you considered Open Collective? [opencollective.com/ignore](https://opencollective.com/ignore) [\#497](https://github.com/hsz/idea-gitignore/issues/497)
 
 ## [2.5.0] - 2018-03-24
+
 - `.ebignore` (ElasticBeanstalk) support [\#520](https://github.com/hsz/idea-gitignore/issues/520)
 - The plugin slows down the IDE a lot [\#525](https://github.com/hsz/idea-gitignore/issues/525)
 - MatcherUtil.cache takes too much memory [\#521](https://github.com/hsz/idea-gitignore/issues/521)
@@ -156,17 +182,20 @@
 - AssertionError in VirtualFilePointerContainerImpl [\#503](https://github.com/hsz/idea-gitignore/issues/503)
 
 ## [2.4.0] - 2018-01-11
+
 - Better access to Notifications settings in "Appearance & Behaviour > Notifications" [\#506](https://github.com/hsz/idea-gitignore/issues/506)
 - "Add to ignore file" action in "Version Control > Unversioned Files" view [\#509](https://github.com/hsz/idea-gitignore/issues/509)
 - Opening multiple projects in a new window makes IDEA plug-in unresponsive [\#510](https://github.com/hsz/idea-gitignore/issues/510)
 
 ## [2.3.2] - 2017-11-17
+
 - IDE Fatal Error: Accessing 'IgnoreFilesIndex' during processing 'FilenameIndex' [\#480](https://github.com/hsz/idea-gitignore/issues/480)
 - ConcurrentModificationException in IgnoreSettings.notifyOnChange [\#480](https://github.com/hsz/idea-gitignore/issues/480)
 - Missing/Wrong Key IGNORE.UNUSED_ENTRY in colour scheme [\#494](https://github.com/hsz/idea-gitignore/issues/494)
 - It's prohibited to access index during event dispatching [\#493](https://github.com/hsz/idea-gitignore/issues/493)
 
 ## [2.3.0] - 2017-11-02
+
 - Performance optimizations [\#490](https://github.com/hsz/idea-gitignore/issues/490)
 - Hang related to IgnoreCoverEntryInspection [\#489](https://github.com/hsz/idea-gitignore/issues/489)
 - Proper handling of outer files (global gitignore, .git/info/exclude) [\#476](https://github.com/hsz/idea-gitignore/issues/476) [\#453](https://github.com/hsz/idea-gitignore/issues/453)
@@ -176,18 +205,21 @@
 - NPE in MatcherUtil.match [\#485](https://github.com/hsz/idea-gitignore/issues/485)
 
 ## [2.2.2] - 2017-10-11
+
 - Exclude .ignore langages from the "New Scratch" action [\#448](https://github.com/hsz/idea-gitignore/issues/448)
 - Better discovery of ignored & tracked files [\#455](https://github.com/hsz/idea-gitignore/issues/455)
 - Mark UP and Prettier as not a VCS languages [\#483](https://github.com/hsz/idea-gitignore/issues/483)
 - 'directory' for Utils.isUnder must not be null in IgnoreManager [\#482](https://github.com/hsz/idea-gitignore/issues/482) [\#477](https://github.com/hsz/idea-gitignore/issues/477)
 
 ## [2.2.1] - 2017-09-14
+
 - Accessing 'IgnoreFilesIndex' during processing [\#473](https://github.com/hsz/idea-gitignore/issues/473)
 - Write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/471)
 - Error on opening .gitignore file [\#470](https://github.com/hsz/idea-gitignore/issues/470)
 - File colouring not working [\#462](https://github.com/hsz/idea-gitignore/issues/462)
 
 ## [2.2.0] - 2017-09-06
+
 - **Migration to the native IDE indexing**
 - EAP repository channel
 - Prettier (.prettierignore) support [\#466](https://github.com/hsz/idea-gitignore/issues/466)
@@ -199,6 +231,7 @@
 - FileTypeManager.associate run in write-unsafe context [\#471](https://github.com/hsz/idea-gitignore/issues/471)
 
 ## [2.1.1] - 2017-08-23
+
 - **Migration to the native IDE indexing**
 - EAP repository channel
 - Up (.upignore) support [\#445](https://github.com/hsz/idea-gitignore/issues/445)
@@ -212,6 +245,7 @@
 - "Outer" ignore rules include extraneous files [\#401](https://github.com/hsz/idea-gitignore/issues/401)
 
 ## [2.0.4] - 2017-07-31
+
 - **Migration to the native IDE indexing**
 - Git submodules `info/exclude` files support [\#287](https://github.com/hsz/idea-gitignore/issues/287)
 - Swagger Codegen (.swagger-codegen-ignore) support (thanks to @jimschubert)
@@ -232,12 +266,14 @@
 - Argument for @NotNull parameter 'fragment' must not be null [\#345](https://github.com/hsz/idea-gitignore/issues/345)
 
 ## [1.7.6] - 2017-02-23
+
 - Preventing or Notification for editing ignored files [\#319](https://github.com/hsz/idea-gitignore/issues/319)
 - Present untrack git commands to the user in UntrackFilesDialog before execution
 - *NullPointerException on PhpStorm startup* [\#315](https://github.com/hsz/idea-gitignore/issues/315)
 - NoSuchMethodError: ContainerUtil.createConcurrentList() [\#320](https://github.com/hsz/idea-gitignore/issues/320)
 
 ## [1.7.5] - 2017-02-14
+
 - *Hide ignored files and directories in the project tree view*
 - *Indicate that parent contains extra elements if children are hidden*
 - Dialog box that allows to untrack ignored files (performs git rm --cached command)
@@ -258,6 +294,7 @@
 - Setting "Enable ignoring" does not really work [\#298](https://github.com/hsz/idea-gitignore/issues/238)
 
 ## [1.6.0] - 2016-11-23
+
 - Unignore Files [\#250](https://github.com/hsz/idea-gitignore/issues/250)
 - Default icon for .ignore files [\#258](https://github.com/hsz/idea-gitignore/issues/258)
 - StyleLint (.stylelintignore) support [\#241](https://github.com/hsz/idea-gitignore/issues/241)
@@ -270,6 +307,7 @@
 - CacheMap.getParentStatus must not return null [\#242](https://github.com/hsz/idea-gitignore/issues/242)
 
 ## [1.5.0] - 2016-06-13
+
 - Create user templates with existing ignore entries
 - Favorite templates feature [\#236](https://github.com/hsz/idea-gitignore/issues/236)
 - Generate without comments and empty lines [\#229](https://github.com/hsz/idea-gitignore/issues/229)
@@ -277,6 +315,7 @@
 - Refactoring of the external executable process [\#233](https://github.com/hsz/idea-gitignore/issues/233)
 
 ## [1.4.1] - 2016-05-24
+
 - Add Unversioned Files to .gitignore (Git) [\#124](https://github.com/hsz/idea-gitignore/issues/124)
 - Add to 'exclude' (Git) [\#133](https://github.com/hsz/idea-gitignore/issues/133)
 - Exclude file preview (Git) [\#132](https://github.com/hsz/idea-gitignore/issues/132)
@@ -293,6 +332,7 @@
 - Double star pattern /\*\* doesn't gray out files in subdirectories [\#165](https://github.com/hsz/idea-gitignore/issues/165)
 
 ## [1.3.3] - 2016-04-04
+
 - Import / Export templates [\#194](https://github.com/hsz/idea-gitignore/issues/194)
 - Generate rules without duplicates [\#164](https://github.com/hsz/idea-gitignore/issues/164)
 - Global gitignore section resize [\#187](https://github.com/hsz/idea-gitignore/issues/187)
@@ -311,6 +351,7 @@
 - IgnoreParserUtil exception [\#211](https://github.com/hsz/idea-gitignore/issues/211)
 
 ## [1.2.0] - 2015-08-13
+
 - Prevent ignore file creation when dialog generator is canceled [\#156](https://github.com/hsz/idea-gitignore/issues/156)
 - Add leading slash to the entry when invoking `Add to ignore file` action [\#141](https://github.com/hsz/idea-gitignore/issues/141)
 - Floobits (.flooignore) support [\#152](https://github.com/hsz/idea-gitignore/issues/152)
@@ -331,6 +372,7 @@
 - Performance fixes
 
 ## [1.1.4] - 2015-06-02
+
 - NoSuchMethodError ContainerUtil.isEmpty(Ljava/util/List;) [\#140](https://github.com/hsz/idea-gitignore/issues/140)
 - CacheMap.getParentStatus must not return null [\#138](https://github.com/hsz/idea-gitignore/issues/138)
 - Utils.isUnder - directory must not be null [\#137](https://github.com/hsz/idea-gitignore/issues/137)
@@ -340,6 +382,7 @@
 - Access is allowed from event dispatch thread only [\#122](https://github.com/hsz/idea-gitignore/issues/122)
 
 ## [1.1.2] - 2015-05-11
+
 - Disable recursive .ignore check [\#114](https://github.com/hsz/idea-gitignore/issues/114)
 - Move plugin settings from Other Settings to Version Control section [\#106](https://github.com/hsz/idea-gitignore/issues/106)
 - Nested repositories handling regression [\#105](https://github.com/hsz/idea-gitignore/issues/105)
@@ -355,11 +398,13 @@
 - Lags\(several seconds\) while editing .ignore [\#95](https://github.com/hsz/idea-gitignore/issues/95)
 
 ## [1.1.1] - 2015-04-13
+
 - Expensive and often read-lock blocks common IDE actions [\#94](https://github.com/hsz/idea-gitignore/issues/94)
 - Disable non-VCS languages ignoring by default
 - EmptyFileManager class cast exception fix
 
 ## [1.1.0] - 2015-04-12
+
 - Handling outside ignore rules (.gitignore global file)
 - Languages settings (configurable list in `New file`, marking as ignored in Project tree)
 - `.jshintignore` support (JSHint)
@@ -376,9 +421,11 @@
 - Update README.md [\#90](https://github.com/hsz/idea-gitignore/pull/90) ([mathben](https://github.com/mathben))
 
 ## [1.0.2] - 2015-03-04
+
 - CLion VerifyError hotfix ([\#89](https://github.com/hsz/idea-gitignore/issues/89))
 
 ## [1.0.1] - 2015-03-03
+
 - `.mtn-ignore` support (Monotone version control)
 - Add "file ignored color" [\#79](https://github.com/hsz/idea-gitignore/issues/79)
 - ConcurrentModificationException fix ([\#84](https://github.com/hsz/idea-gitignore/issues/84))
@@ -390,6 +437,7 @@
 - Monotone version control support [\#83](https://github.com/hsz/idea-gitignore/issues/83)
 
 ## [1.0.0] - 2015-03-01
+
 - **Ignored files coloring** in the Project View (customizable style)
 - **Regex support** (used with Mercurial and Darcs)
 - **Syntax switching** support for Mercurial (with suggestion)
@@ -402,6 +450,7 @@
 - Feature request: chefignore support [\#75](https://github.com/hsz/idea-gitignore/issues/75)
 
 ## [0.9.0] - 2015-02-19
+
 - `.chefignore` support (Chef automation tool)
 - `.cvsignore` support (CVS version control)
 - `.bzrignore` support (Bazaar version control)
@@ -410,6 +459,7 @@
 - Move "Ignore files support" settings to VCS section [\#70](https://github.com/hsz/idea-gitignore/issues/70)
 
 ## [0.8.1] - 2015-02-04
+
 - Plugin renamed to `.ignore`
 - Inspections are back again
 - Use official Git icon/logo [\#65](https://github.com/hsz/idea-gitignore/issues/65)
@@ -420,6 +470,7 @@
 - .npmignore support [\#57](https://github.com/hsz/idea-gitignore/issues/57)
 
 ## [0.8.0] - 2014-12-22
+
 - Relative entry inspection with quick fix
 - IDE \(PhpStorm\) does not recognize path started by dot in gitignore file [\#66](https://github.com/hsz/idea-gitignore/issues/66)
 - Add template... on External Libraries [\#68](https://github.com/hsz/idea-gitignore/issues/68)
@@ -430,17 +481,20 @@
 - .hgignore .npmignore .docker support [\#69](https://github.com/hsz/idea-gitignore/pull/69) ([hsz](https://github.com/hsz))
 
 ## [0.7.0] - 2014-11-17
+
 - User templates - you can create your own templates in <kbd>Settings > Gitignore > User templates</kbd>
 - Receiving JDOM exception after update to 0.6.1 [\#61](https://github.com/hsz/idea-gitignore/issues/61)
 - Fixed donation URL
 - Set donationShown variable to an empty string to avoid JDOM error. [\#62](https://github.com/hsz/idea-gitignore/pull/62) ([danpfe](https://github.com/danpfe))
 
 ## [0.6.1] - 2014-11-13
+
 - Global settings section
 - Make suggestion to add .gitignore file optional [\#18](https://github.com/hsz/idea-gitignore/issues/18)
 - Fixed donation notification ([\#59](https://github.com/hsz/idea-gitignore/issues/59))
 
 ## [0.6.0] - 2014-11-12
+
 - Reimplemented templates generator (tree structure, checkboxes allow to add many templates at once)
 - Find template by its content
 - "Add template..." option in context menu
@@ -452,6 +506,7 @@
 - Add more than one template [\#54](https://github.com/hsz/idea-gitignore/issues/54)
 
 ## [0.5.4] - 2014-08-15
+
 - Better entries completion and references
 - Unused entry inspection style changed to grayed ([\#47](https://github.com/hsz/idea-gitignore/issues/47))
 - Fixed AddTemplateAction NPE ([\#48](https://github.com/hsz/idea-gitignore/issues/48))
@@ -460,6 +515,7 @@
 - Inspection warning messages clarification
 
 ## [0.5.3] - 2014-08-11
+
 - Added "Add template..." action to the "Generate" context menu under <kbd>Alt</kbd> + <kbd>Insert</kbd> shortcut
 - update failed for AnAction with ID=Gitignore.IgnoreGroup [\#43](https://github.com/hsz/idea-gitignore/issues/43)
 - NPE in mobi.hsz.idea.gitignore.util.Utils.getSuitableGitignoreFiles\(Utils.java:81\) [\#42](https://github.com/hsz/idea-gitignore/issues/42)
@@ -468,10 +524,12 @@
 - Travis integration [\#44](https://github.com/hsz/idea-gitignore/pull/44) ([hsz](https://github.com/hsz))
 
 ## [0.5.2] - 2014-07-28
+
 - Fixed "Show ignored files" action ([\#38](https://github.com/hsz/idea-gitignore/issues/38))
 - Fixed few errors ([\#35](https://github.com/hsz/idea-gitignore/issues/35), [\#36](https://github.com/hsz/idea-gitignore/issues/36), [\#37](https://github.com/hsz/idea-gitignore/issues/37))
 
 ## [0.5.1] - 2014-07-27
+
 - NoSuchMethod Error  [\#33](https://github.com/hsz/idea-gitignore/issues/33)
 - NPE in Utils ([\#30](https://github.com/hsz/idea-gitignore/issues/30), [\#32](https://github.com/hsz/idea-gitignore/issues/32), [\#34](https://github.com/hsz/idea-gitignore/issues/34))
 - Files/directories marked as never used [\#26](https://github.com/hsz/idea-gitignore/issues/26)
@@ -480,6 +538,7 @@
 - Resolving fix [\#28](https://github.com/hsz/idea-gitignore/pull/28) ([zolotov](https://github.com/zolotov))
 
 ## [0.5.0] - 2014-07-25
+
 - Comments support with <kbd>Ctrl</kbd> + <kbd>/</kbd> shortcut
 - Brackets support
 - Duplicate entry inspection
@@ -504,6 +563,7 @@
 - Glob parser, Cover entry inspection [\#19](https://github.com/hsz/idea-gitignore/pull/19) ([hsz](https://github.com/hsz))
 
 ## [0.4.0] - 2014-07-08
+
 - Fixed NoSuchMethodError if older SDK does not support notification panel's icon [\#14](https://github.com/hsz/idea-gitignore/issues/14)
 - Fixed problem with template's wrong line separator [\#13](https://github.com/hsz/idea-gitignore/issues/13)
 - Fixed problem with negation (AssertionError) ([\#10](https://github.com/hsz/idea-gitignore/issues/10))
@@ -513,6 +573,7 @@
 - Rewritten BNF and JFlex rule
 
 ## [0.3.3] - 2014-07-03
+
 - Fixed problem with negation (AssertionError) [\#10](https://github.com/hsz/idea-gitignore/issues/10)
 - Fixed problem with Java 1.6.0 and JList - NoSuchMethodError [\#7](https://github.com/hsz/idea-gitignore/issues/7)
 - New file entry moved to the end of list
@@ -521,28 +582,35 @@
 - Files/directories completion in editor [\#6](https://github.com/hsz/idea-gitignore/pull/6) ([hsz](https://github.com/hsz))
 
 ## [0.3.1] - 2014-06-26
+
 - Fixed problem with Java 1.6.0 ([\#2](https://github.com/hsz/idea-gitignore/issues/2), [\#4](https://github.com/hsz/idea-gitignore/issues/4))
 - NullPointerException after creating .gitignore file [\#5](https://github.com/hsz/idea-gitignore/issues/5)
 
 ## [0.3.0] - 2014-06-25
+
 - Content generator based on [GitHub's templates collection](https://github.com/github/gitignore)
 
 ## [0.2.2] - 2014-06-24
+
 - Custom color schemes for *Default* and *Darcula* themes
 
 ## [0.2.1]
+
 - Syntax highlight fix
 - Color Settings Page sample (<kbd>Settings</kbd> > <kbd>Editor</kbd> > <kbd>Color & Fonts</kbd> > <kbd>Gitignore</kbd>)
 
 ## [0.2.0]
+
 - Syntax highlight (comment, section, header, file, directory, negation)
 
 ## [0.1.0]
+
 - Initial version
 - `.gitignore` file support
 - Basic syntax highlighting
 
-[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.1...HEAD
+[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.2...HEAD
+[4.5.2]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.1...v4.5.2
 [4.5.1]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.4...v4.5.0
 [4.4.4]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.3...v4.4.4
