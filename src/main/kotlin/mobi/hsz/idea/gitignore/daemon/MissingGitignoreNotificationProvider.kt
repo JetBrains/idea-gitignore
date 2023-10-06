@@ -7,7 +7,6 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.vfs.findDirectory
 import com.intellij.psi.PsiManager
 import com.intellij.ui.EditorNotificationPanel
 import com.intellij.ui.EditorNotificationProvider
@@ -74,7 +73,7 @@ class MissingGitignoreNotificationProvider(project: Project) : EditorNotificatio
 
         val vcsDirectory = GitLanguage.INSTANCE.vcsDirectory ?: return null
         val moduleRoot = Utils.getModuleRootForFile(file, project) ?: return null
-        moduleRoot.findDirectory(vcsDirectory) ?: return null
+        moduleRoot.findChild(vcsDirectory) ?: return null
 
         if (moduleRoot.findChild(GitLanguage.INSTANCE.filename) != null) {
             return null

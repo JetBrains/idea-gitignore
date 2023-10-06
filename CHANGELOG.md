@@ -6,6 +6,8 @@
 - Improve module root detection in Rider
 - Fixed issue when starring the template, marks both `gitignore` and `toptal` entries [\#844](https://github.com/hsz/idea-gitignore/issues/844)
 - Fixed ConcurrentModificationException in UnignoreFileGroupAction#GetChildren [\#860](https://github.com/hsz/idea-gitignore/issues/860)
+- Fixed UI freeze caused by `BulkFileListener.handleEvent`
+- Fixed "Expected directory instead of file" if `.git` is a file (worktrees case) [\#842](https://github.com/hsz/idea-gitignore/issues/842)
 
 ## [4.5.1] - 2023-06-22
 - Fixed `Slow operations are prohibited on EDT` [\#831](https://github.com/hsz/idea-gitignore/issues/831)
