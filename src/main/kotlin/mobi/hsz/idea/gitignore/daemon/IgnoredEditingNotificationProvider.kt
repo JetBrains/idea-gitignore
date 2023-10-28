@@ -43,6 +43,9 @@ class IgnoredEditingNotificationProvider(project: Project) : EditorNotificationP
         if (DumbService.isDumb(project)) {
             return null
         }
+        if (!file.isWritable()) {
+            return null
+        }
         if (!settings.notifyIgnoredEditing || !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file)) {
             return null
         }
