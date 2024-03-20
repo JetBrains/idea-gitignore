@@ -21,6 +21,7 @@ Introduction
 - `.cvsignore` (Cvs)
 - `.boringignore` (Darcs)
 - `.deployignore` (DeployHQ)
+- `.distignore` (WP-CLI)
 - `.dockerignore` (Docker)
 - `.ebignore` (ElasticBeanstalk)
 - `.eleventyignore` (Eleventy)
