@@ -1,12 +1,12 @@
 [versions]
 # plugins
 dokka = "1.9.10"
-kotlin = "1.9.10"
+kotlin = "1.9.22"
 changelog = "2.2.0"
-gradleIntelliJPlugin = "1.16.0"
+gradleIntelliJPlugin = "1.16.1"
 qodana = "0.1.13"
-grammarkit = "2022.3.1"
-kover = "0.7.3"
+grammarkit = "2022.3.2.1"
+kover = "0.7.5"
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
