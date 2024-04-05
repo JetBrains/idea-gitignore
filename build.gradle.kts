@@ -52,14 +52,6 @@ changelog {
     repositoryUrl = properties("pluginRepositoryUrl")
 }
 
-// Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
-qodana {
-    cachePath = provider { file(".qodana").canonicalPath }
-    reportPath = provider { file("build/reports/inspections").canonicalPath }
-    saveReport = true
-    showReport = environment("QODANA_SHOW_REPORT").map { it.toBoolean() }.getOrElse(false)
-}
-
 // Configure Gradle Kover Plugin - read more: https://github.com/Kotlin/kotlinx-kover#configuration
 koverReport {
     defaults {
@@ -91,14 +83,13 @@ tasks {
 
     generateLexer {
         sourceFile = file("src/main/grammars/Ignore.flex")
-        targetDir = "src/main/gen/mobi/hsz/idea/gitignore/lexer/"
-        targetClass = "IgnoreLexer"
+        targetOutputDir = file("src/main/gen/mobi/hsz/idea/gitignore/lexer/")
         purgeOldFiles = true
     }
 
     generateParser {
         sourceFile = file("src/main/grammars/Ignore.bnf")
-        targetRoot = "src/main/gen"
+        targetRootOutputDir = file("src/main/gen")
         pathToParser = "/mobi/hsz/idea/gitignore/IgnoreParser.java"
         pathToPsiRoot = "/mobi/hsz/idea/gitignore/psi"
         purgeOldFiles = true
