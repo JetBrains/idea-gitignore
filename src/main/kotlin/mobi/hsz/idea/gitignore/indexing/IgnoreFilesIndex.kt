@@ -19,44 +19,13 @@ import mobi.hsz.idea.gitignore.util.Glob
 import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
-import java.util.Collections
+import java.util.*
 
 /**
  * Implementation of [AbstractIgnoreFilesIndex] that allows to index all ignore files content using native
  * IDE mechanisms and increase indexing performance.
  */
 class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntryOccurrence>() {
-
-    companion object {
-        val KEY = ID.create<IgnoreFileTypeKey, IgnoreEntryOccurrence>("IgnoreFilesIndex")
-        private const val VERSION = 5
-        private val DATA_EXTERNALIZER = object : DataExternalizer<IgnoreEntryOccurrence> {
-
-            @Throws(IOException::class)
-            override fun save(out: DataOutput, entry: IgnoreEntryOccurrence) = IgnoreEntryOccurrence.serialize(out, entry)
-
-            @Throws(IOException::class)
-            override fun read(input: DataInput) = IgnoreEntryOccurrence.deserialize(input)
-        }
-
-        /**
-         * Returns collection of indexed [IgnoreEntryOccurrence] for given [Project] and [IgnoreFileType].
-         *
-         * @param project  current project
-         * @param fileType filetype
-         * @return [IgnoreEntryOccurrence] collection
-         */
-        fun getEntries(project: Project, fileType: IgnoreFileType): List<IgnoreEntryOccurrence> {
-            try {
-                if (ApplicationManager.getApplication().isReadAccessAllowed) {
-                    val scope = IgnoreSearchScope[project]
-                    return FileBasedIndex.getInstance().getValues(KEY, IgnoreFileTypeKey(fileType), scope)
-                }
-            } catch (ignored: RuntimeException) {
-            }
-            return emptyList()
-        }
-    }
 
     override fun getName(): ID<IgnoreFileTypeKey, IgnoreEntryOccurrence> = KEY
 
@@ -74,18 +43,15 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
         }
 
         val items = mutableListOf<Pair<String, Boolean>>()
-        inputDataPsi.acceptChildren(
-            object : IgnoreVisitor() {
-                override fun visitEntry(entry: IgnoreEntry) {
-                    val regex = Glob.getRegex(entry.value, entry.syntax, false)
-                    items.add(Pair.create(regex, entry.isNegated))
-                }
+        inputDataPsi.acceptChildren(object : IgnoreVisitor() {
+            override fun visitEntry(entry: IgnoreEntry) {
+                val regex = Glob.getRegex(entry.value, entry.syntax, false)
+                items.add(Pair.create(regex, entry.isNegated))
             }
-        )
+        })
 
         return Collections.singletonMap(
-            IgnoreFileTypeKey((inputData.fileType as IgnoreFileType)),
-            IgnoreEntryOccurrence(inputData.file.url, items)
+            IgnoreFileTypeKey((inputData.fileType as IgnoreFileType)), IgnoreEntryOccurrence(inputData.file.url, items)
         )
     }
 
@@ -98,17 +64,42 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
     @Synchronized
     @Throws(IOException::class)
     override fun read(input: DataInput): IgnoreFileTypeKey = input.readUTF().run {
-        IgnoreBundle.LANGUAGES
-            .asSequence()
-            .map { it.fileType }
-            .firstOrNull { it.languageName == this }
-            .let { IgnoreFileTypeKey(it ?: IgnoreFileType.INSTANCE) }
+        IgnoreBundle.LANGUAGES.asSequence().map { it.fileType }.firstOrNull { it.languageName == this }.let { IgnoreFileTypeKey(it ?: IgnoreFileType.INSTANCE) }
     }
 
     override fun getValueExternalizer() = DATA_EXTERNALIZER
 
     override fun getVersion() = VERSION
 
-    override fun acceptInput(file: VirtualFile) =
-        file.fileType is IgnoreFileType || IgnoreManager.FILE_TYPES_ASSOCIATION_QUEUE.containsKey(file.name)
+    override fun acceptInput(file: VirtualFile) = file.fileType is IgnoreFileType || IgnoreManager.FILE_TYPES_ASSOCIATION_QUEUE.containsKey(file.name)
+}
+
+val KEY = ID.create<IgnoreFileTypeKey, IgnoreEntryOccurrence>("IgnoreFilesIndex")
+private val DATA_EXTERNALIZER = object : DataExternalizer<IgnoreEntryOccurrence> {
+
+    @Throws(IOException::class)
+    override fun save(out: DataOutput, entry: IgnoreEntryOccurrence) = IgnoreEntryOccurrence.serialize(out, entry)
+
+    @Throws(IOException::class)
+    override fun read(input: DataInput) = IgnoreEntryOccurrence.deserialize(input)
+}
+
+private const val VERSION = 5
+
+/**
+ * Returns collection of indexed [IgnoreEntryOccurrence] for given [Project] and [IgnoreFileType].
+ *
+ * @param project  current project
+ * @param fileType filetype
+ * @return [IgnoreEntryOccurrence] collection
+ */
+fun getEntries(project: Project, fileType: IgnoreFileType): List<IgnoreEntryOccurrence> {
+    try {
+        if (ApplicationManager.getApplication().isReadAccessAllowed) {
+            val scope = IgnoreSearchScope[project]
+            return FileBasedIndex.getInstance().getValues(KEY, IgnoreFileTypeKey(fileType), scope)
+        }
+    } catch (ignored: RuntimeException) {
+    }
+    return emptyList()
 }

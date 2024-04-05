@@ -3,10 +3,10 @@ package mobi.hsz.idea.gitignore.vcs
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
+import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Computable
-import com.intellij.openapi.vcs.FileStatus
 import com.intellij.openapi.vcs.FileStatusFactory
 import com.intellij.openapi.vcs.impl.FileStatusProvider
 import com.intellij.openapi.vfs.VirtualFile
@@ -20,15 +20,6 @@ import mobi.hsz.idea.gitignore.IgnoreManager
 class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware {
 
     private val manager = project.service<IgnoreManager>()
-
-    companion object {
-        /** Ignored status.  */
-        val IGNORED: FileStatus = FileStatusFactory.getInstance().createFileStatus(
-            "IGNORE.PROJECT_VIEW.IGNORED",
-            IgnoreBundle.message("projectView.ignored"),
-            JBColor.GRAY
-        )
-    }
 
     /**
      * Returns the [.IGNORED] status if file is ignored or `null`.
@@ -44,3 +35,11 @@ class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware
             }
         })
 }
+
+/** Ignored status.  */
+val IGNORED = FileStatusFactory.getInstance().createFileStatus(
+    "IGNORE.PROJECT_VIEW.IGNORED",
+    { IgnoreBundle.message("projectView.ignored") },
+    JBColor.GRAY,
+    PluginId.getId("mobi.hsz.idea.gitignore"),
+)

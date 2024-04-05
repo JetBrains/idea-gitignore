@@ -14,6 +14,7 @@ import com.intellij.openapi.vcs.FileStatusManager
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import mobi.hsz.idea.gitignore.IgnoreBundle
+import mobi.hsz.idea.gitignore.vcs.IGNORED
 import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider
 
 /**
@@ -26,7 +27,7 @@ class CloseIgnoredEditorsAction : CloseEditorsActionBase() {
         val fileStatusManager = FileStatusManager.getInstance(project) ?: return false
         val changeListManager = ChangeListManager.getInstance(project)
         return editor.file.run {
-            fileStatusManager.getStatus(this) == IgnoreFileStatusProvider.IGNORED || changeListManager.isIgnoredFile(this)
+            fileStatusManager.getStatus(this) == IGNORED || changeListManager.isIgnoredFile(this)
         }
     }
 

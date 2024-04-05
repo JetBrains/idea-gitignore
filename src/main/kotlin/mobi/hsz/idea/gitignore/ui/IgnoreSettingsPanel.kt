@@ -4,10 +4,7 @@ package mobi.hsz.idea.gitignore.ui
 import com.intellij.icons.AllIcons
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DefaultActionGroup
-import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.editor.Editor
@@ -253,7 +250,7 @@ class IgnoreSettingsPanel : Disposable {
                                 val items = currentItems
                                 val document = Document(IgnoreSettings.createTemplatesElement(items))
                                 try {
-                                    JDOMUtil.writeDocument(document, wrapper.file, Constants.NEWLINE)
+                                    JDOMUtil.writeDocument(document, wrapper.file.outputStream(), Constants.NEWLINE)
                                     Messages.showInfoMessage(
                                         templatesListPanel,
                                         message("action.exportTemplates.success", items.size),
@@ -271,7 +268,9 @@ class IgnoreSettingsPanel : Disposable {
                         override fun update(e: AnActionEvent) {
                             e.presentation.isEnabled = currentItems.isNotEmpty()
                         }
-                    }
+
+                        override fun getActionUpdateThread() = ActionUpdateThread.BGT
+                    },
                 )
             }
             decorator.setActionGroup(group)

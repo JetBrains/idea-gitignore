@@ -1,7 +1,6 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package mobi.hsz.idea.gitignore
 
-import com.intellij.ProjectTopics
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
@@ -10,11 +9,9 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.fileTypes.ExactFileNameMatcher
 import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.progress.ProgressManager
-import com.intellij.openapi.project.DumbAware
-import com.intellij.openapi.project.DumbService
+import com.intellij.openapi.project.*
 import com.intellij.openapi.project.DumbService.DumbModeListener
-import com.intellij.openapi.project.NoAccessDuringPsiEvents
-import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ModuleRootListener
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vcs.FileStatusManager
@@ -34,7 +31,7 @@ import com.intellij.util.ui.EDT
 import com.jetbrains.rd.util.concurrentMapOf
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 import mobi.hsz.idea.gitignore.indexing.IgnoreEntryOccurrence
-import mobi.hsz.idea.gitignore.indexing.IgnoreFilesIndex
+import mobi.hsz.idea.gitignore.indexing.getEntries
 import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
@@ -66,7 +63,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val commonRunnableListeners = CommonRunnableListeners(debouncedStatusesChanged)
     private var messageBus = project.messageBus.connect(this)
     private val cachedIgnoreFilesIndex = CachedConcurrentMap.create<IgnoreFileType, List<IgnoreEntryOccurrence>> {
-        IgnoreFilesIndex.getEntries(project, it)
+        getEntries(project, it)
     }
 
     private val expiringStatusCache = ExpiringMap<VirtualFile, Boolean>(Time.SECOND)
@@ -220,9 +217,9 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                 }
             }
         )
-        messageBus.subscribe(ProjectTopics.PROJECT_ROOTS, commonRunnableListeners)
+        messageBus.subscribe(ModuleRootListener.TOPIC, commonRunnableListeners)
         messageBus.subscribe(RefreshStatusesListener.REFRESH_STATUSES, commonRunnableListeners)
-        messageBus.subscribe(ProjectTopics.MODULES, commonRunnableListeners)
+        messageBus.subscribe(ModuleListener.TOPIC, commonRunnableListeners)
         working = true
     }
 
@@ -284,7 +281,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
                             FILE_TYPES_ASSOCIATION_QUEUE.remove(fileName)
                         }
                     },
-                    ModalityState.NON_MODAL
+                    ModalityState.nonModal(),
                 )
             } else if (!FILE_TYPES_ASSOCIATION_QUEUE.containsKey(fileName)) {
                 FILE_TYPES_ASSOCIATION_QUEUE[fileName] = fileType
