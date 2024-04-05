@@ -3,17 +3,14 @@
 package mobi.hsz.idea.gitignore.actions
 
 import mobi.hsz.idea.gitignore.Common
-import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
 
-class AddTemplateActionTest : Common<AddTemplateAction>() {
+internal class AddTemplateActionTest : Common<AddTemplateAction>() {
 
     fun testAddTemplateActionInvocation() {
         val action = AddTemplateAction()
 
         myFixture.testAction(action).apply {
-            assertEquals(IgnoreBundle.message("action.addTemplate"), text)
-            assertEquals(IgnoreBundle.message("action.addTemplate.description"), description)
             assertFalse("Action is not visible if there is no Ignore file context", isEnabledAndVisible)
             myFixture.configureByText(IgnoreFileType.INSTANCE, "foo")
         }

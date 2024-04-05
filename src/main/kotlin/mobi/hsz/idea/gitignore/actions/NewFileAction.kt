@@ -4,8 +4,11 @@ package mobi.hsz.idea.gitignore.actions
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
-import com.intellij.openapi.actionSystem.*
-import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.actionSystem.ActionUpdateThread
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.project.DumbAwareAction
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.command.CreateFileCommandAction
 import mobi.hsz.idea.gitignore.file.type.IgnoreFileType
@@ -15,7 +18,7 @@ import mobi.hsz.idea.gitignore.util.Utils
 /**
  * Creates new file or returns existing one.
  */
-open class NewFileAction(private val fileType: IgnoreFileType) : AnAction(), DumbAware {
+open class NewFileAction(private val fileType: IgnoreFileType) : DumbAwareAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getRequiredData(CommonDataKeys.PROJECT)

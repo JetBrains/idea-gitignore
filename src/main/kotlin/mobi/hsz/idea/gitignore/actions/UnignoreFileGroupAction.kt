@@ -11,7 +11,7 @@ import mobi.hsz.idea.gitignore.settings.IgnoreSettings
  * ActionGroup expands single action into a more child options to allow user specify
  * the IgnoreFile that will be used for file's path storage.
  */
-class UnignoreFileGroupAction : IgnoreFileGroupAction(
+internal class UnignoreFileGroupAction : IgnoreFileGroupAction(
     "action.addToUnignore.group",
     "action.addToUnignore.group.description",
     "action.addToUnignore.group.noPopup"

@@ -7,7 +7,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.util.text.StringUtil
-import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.ui.template.UserTemplateDialog
 import mobi.hsz.idea.gitignore.util.Icons
@@ -16,11 +15,7 @@ import com.intellij.openapi.vcs.changes.ignore.psi.IgnoreFile as NativeIgnoreFil
 /**
  * Action that creates new user template with predefined content - i.e. from currently opened file.
  */
-class CreateUserTemplateAction : AnAction(
-    IgnoreBundle.message("action.createUserTemplate"),
-    IgnoreBundle.message("action.createUserTemplate.description"),
-    Icons.IGNORE,
-) {
+internal class CreateUserTemplateAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getData(CommonDataKeys.PROJECT) ?: return

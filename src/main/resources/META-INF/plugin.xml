@@ -7,6 +7,7 @@
     <depends>com.intellij.modules.vcs</depends>
     <depends optional="true" config-file="plugin-with-Git4Idea.xml">Git4Idea</depends>
     <depends optional="true" config-file="plugin-with-hg4idea.xml">hg4idea</depends>
+    <resource-bundle>messages.IgnoreBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
 
@@ -17,8 +18,8 @@
             file="colorSchemes/IgnoreDarcula.xml"
             scheme="Darcula"/>
 
-            <applicationService
-                serviceImplementation="mobi.hsz.idea.gitignore.settings.IgnoreSettings"/>
+        <applicationService
+            serviceImplementation="mobi.hsz.idea.gitignore.settings.IgnoreSettings"/>
 
         <colorSettingsPage
             implementation="mobi.hsz.idea.gitignore.highlighter.IgnoreColorSettingsPage"/>
@@ -875,7 +876,7 @@
         </group>
         <group id="Ignore.TemplateGroup">
             <action id="Ignore.AddTemplate" class="mobi.hsz.idea.gitignore.actions.AddTemplateAction"/>
-            <action id="IgnoreCreateUserTemplate" class="mobi.hsz.idea.gitignore.actions.CreateUserTemplateAction"/>
+            <action id="Ignore.CreateUserTemplate" class="mobi.hsz.idea.gitignore.actions.CreateUserTemplateAction" icon="/icons/icon.png"/>
             <add-to-group group-id="EditorPopupMenu"/>
             <add-to-group group-id="ProjectViewPopupMenu"/>
             <add-to-group group-id="EditorTabPopupMenu"/>
@@ -886,7 +887,7 @@
             <add-to-group group-id="CloseEditorsGroup" anchor="after" relative-to-action="CloseAllReadonly"/>
         </action>
 
-        <action id="HideIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HideIgnoredFilesAction">
+        <action id="Ignore.HideIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HideIgnoredFilesAction" icon="/icons/icon.png">
             <add-to-group group-id="ProjectViewPopupMenu"/>
         </action>
     </actions>

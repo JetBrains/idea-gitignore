@@ -6,7 +6,6 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiFile
-import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreFile
 import mobi.hsz.idea.gitignore.ui.GeneratorDialog
 import mobi.hsz.idea.gitignore.util.Icons
@@ -15,11 +14,7 @@ import com.intellij.openapi.vcs.changes.ignore.psi.IgnoreFile as NativeIgnoreFil
 /**
  * Action that initiates adding new template to the selected .gitignore file.
  */
-class AddTemplateAction : AnAction(
-    IgnoreBundle.message("action.addTemplate"),
-    IgnoreBundle.message("action.addTemplate.description"),
-    null,
-) {
+internal class AddTemplateAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getData(CommonDataKeys.PROJECT) ?: return
