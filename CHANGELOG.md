@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Add support for WP-CLI `.distignore` files
+- Stop banner from displaying if file is not editable by user
+- Fixed deprecated methods usage
+
 ## [4.5.2] - 2023-10-06
 
 - Fixed `com.intellij.openapi.util.TraceableDisposable$DisposalException: Double release of editor`
