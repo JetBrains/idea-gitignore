@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [4.5.3] - 2024-04-05
+
 - Add support for WP-CLI `.distignore` files
 - Stop banner from displaying if file is not editable by user
 - Fixed deprecated methods usage
@@ -613,7 +615,8 @@
 - `.gitignore` file support
 - Basic syntax highlighting
 
-[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.2...HEAD
+[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.3...HEAD
+[4.5.3]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.2...v4.5.3
 [4.5.2]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.1...v4.5.2
 [4.5.1]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/JetBrains/idea-gitignore/compare/v4.4.4...v4.5.0
