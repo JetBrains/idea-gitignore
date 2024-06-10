@@ -6,7 +6,7 @@ changelog = "2.2.0"
 gradleIntelliJPlugin = "1.17.3"
 qodana = "2023.3.2"
 grammarkit = "2022.3.2.2"
-kover = "0.7.6"
+kover = "0.8.1"
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
