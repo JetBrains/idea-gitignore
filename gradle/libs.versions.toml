@@ -2,7 +2,7 @@
 # plugins
 dokka = "1.9.20"
 kotlin = "1.9.23"
-changelog = "2.2.0"
+changelog = "2.2.1"
 gradleIntelliJPlugin = "1.17.3"
 qodana = "2023.3.2"
 grammarkit = "2022.3.2.2"
