@@ -22,7 +22,6 @@ import javax.swing.JComponent
  */
 class IgnoredEditingNotificationProvider(project: Project) : EditorNotificationProvider {
 
-    private val notifications = EditorNotifications.getInstance(project)
     private val settings = service<IgnoreSettings>()
     private val manager = project.service<IgnoreManager>()
     private val changeListManager = ChangeListManager.getInstance(project)
