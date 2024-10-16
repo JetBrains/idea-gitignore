@@ -3,6 +3,10 @@
 ## [Unreleased]
 
 - Fixed UI freeze issue [\#908](https://github.com/hsz/idea-gitignore/issues/908)
+- Fixed: Internal method `com.intellij.openapi.fileEditor.impl.EditorWindow.getManager()` invocation
+- Fixed: `IgnoreBundle.messageOrDefault` usage
+- Fixed: Deprecated method `com.intellij.openapi.actionSystem.AnActionEvent.getRequiredData(DataKey)` invocation
+- Fixed: Deprecated method `com.intellij.openapi.fileChooser.FileChooserDescriptor.isFileVisible(VirtualFile, boolean)` is overridden
 
 ## [4.5.3] - 2024-04-05
 
