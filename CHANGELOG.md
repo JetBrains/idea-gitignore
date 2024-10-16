@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fixed UI freeze issue [\#908](https://github.com/hsz/idea-gitignore/issues/908)
+
 ## [4.5.3] - 2024-04-05
 
 - Add support for WP-CLI `.distignore` files

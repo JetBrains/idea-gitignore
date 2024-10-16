@@ -19,10 +19,9 @@ import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vcs.VcsListener
 import com.intellij.openapi.vcs.VcsRoot
 import com.intellij.openapi.vcs.changes.ChangeListManager
+import com.intellij.openapi.vfs.AsyncFileListener
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.vfs.VirtualFileListener
 import com.intellij.openapi.vfs.VirtualFileManager
-import com.intellij.openapi.vfs.newvfs.BulkFileListener
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.util.Time
 import com.intellij.util.messages.MessageBusConnection
@@ -48,6 +47,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val settings = service<IgnoreSettings>()
     private val projectLevelVcsManager = ProjectLevelVcsManager.getInstance(project)
     private val changeListManager = project.service<ChangeListManager>()
+    private val virtualFileManager = VirtualFileManager.getInstance()
 
     private val debouncedStatusesChanged = object : Debounced<Any?>(1000) {
         override fun task(argument: Any?) {
@@ -89,24 +89,32 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val isEnabled
         get() = settings.ignoredFileStatus
 
-    /** [VirtualFileListener] instance to check if file's content was changed. */
-    private val bulkFileListener = object : BulkFileListener {
-        override fun before(events: MutableList<out VFileEvent>) {
-            events.forEach {
-                handleEvent(it)
+    /** [AsyncFileListener] instance to check if file's content was changed. */
+    private val asyncFileListener = object : AsyncFileListener, Disposable {
+        override fun prepareChange(events: List<VFileEvent>): AsyncFileListener.ChangeApplier? {
+            if (events.isEmpty()) {
+                return null
+            }
+
+            return object : AsyncFileListener.ChangeApplier {
+                override fun afterVfsChange() {
+                    events.forEach {
+                        handleEvent(it)
+                    }
+                }
             }
         }
 
         private fun handleEvent(event: VFileEvent) {
-            ApplicationManager.getApplication().runReadAction {
-                val fileType = event.file?.fileType
-                if (fileType is IgnoreFileType) {
-                    cachedIgnoreFilesIndex.remove(fileType)
-                    expiringStatusCache.clear()
-                    debouncedStatusesChanged.run()
-                }
+            val fileType = event.file?.fileType
+            if (fileType is IgnoreFileType) {
+                cachedIgnoreFilesIndex.remove(fileType)
+                expiringStatusCache.clear()
+                debouncedStatusesChanged.run()
             }
         }
+
+        override fun dispose() {}
     }
 
     /** [IgnoreSettings] listener to watch changes in the plugin's settings. */
@@ -196,11 +204,8 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
             return
         }
         settings.addListener(settingsListener)
+        virtualFileManager.addAsyncFileListener(asyncFileListener, asyncFileListener)
 
-        messageBus.subscribe(
-            VirtualFileManager.VFS_CHANGES,
-            bulkFileListener
-        )
         messageBus.subscribe(
             ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED,
             VcsListener {
@@ -226,6 +231,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     /** Disable manager. */
     private fun disable() {
         settings.removeListener(settingsListener)
+        Disposer.dispose(asyncFileListener)
         working = false
     }
 
