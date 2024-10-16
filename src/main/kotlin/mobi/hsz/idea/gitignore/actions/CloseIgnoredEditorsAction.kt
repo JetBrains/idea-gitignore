@@ -15,15 +15,14 @@ import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.vcs.IGNORED
-import mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider
 
 /**
- * Action that closes all opened files that are marked as [IgnoreFileStatusProvider.IGNORED].
+ * Action that closes all opened files that are marked as ignored.
  */
 class CloseIgnoredEditorsAction : CloseEditorsActionBase() {
 
     override fun isFileToClose(editor: EditorComposite, window: EditorWindow, fileEditorManager: FileEditorManagerEx): Boolean {
-        val project = window.manager.project
+        val project = fileEditorManager.project
         val fileStatusManager = FileStatusManager.getInstance(project) ?: return false
         val changeListManager = ChangeListManager.getInstance(project)
         return editor.file.run {
