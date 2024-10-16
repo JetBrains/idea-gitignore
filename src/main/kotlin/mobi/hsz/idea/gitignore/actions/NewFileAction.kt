@@ -21,8 +21,8 @@ import mobi.hsz.idea.gitignore.util.Utils
 open class NewFileAction(private val fileType: IgnoreFileType) : DumbAwareAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
-        val project = e.getRequiredData(CommonDataKeys.PROJECT)
-        val view = e.getRequiredData(LangDataKeys.IDE_VIEW)
+        val project = e.getData(CommonDataKeys.PROJECT) ?: return
+        val view = e.getData(LangDataKeys.IDE_VIEW) ?: return
         val directory = view.orChooseDirectory ?: return
 
         val filename = fileType.ignoreLanguage.filename
