@@ -196,20 +196,18 @@ class IgnoreSettingsPanel : Disposable {
                         AllIcons.Actions.Install
                     ) {
                         override fun actionPerformed(event: AnActionEvent) {
-                            val descriptor: FileChooserDescriptor = object : FileChooserDescriptor(true, false, true, false, true, false) {
-                                override fun isFileVisible(file: VirtualFile, showHiddenFiles: Boolean) =
-                                    super.isFileVisible(file, showHiddenFiles) &&
-                                        (file.isDirectory || file.extension == "xml" || file.fileType === FileTypes.ARCHIVE)
-
-                                override fun isFileSelectable(file: VirtualFile?) = file?.fileType === XmlFileType.INSTANCE
-                            }.apply {
-                                description = message("action.importTemplates.wrapper.description")
-                                title = message("action.importTemplates.wrapper")
-                                putUserData(
-                                    LangDataKeys.MODULE_CONTEXT,
-                                    LangDataKeys.MODULE.getData(event.dataContext)
-                                )
-                            }
+                            val descriptor = FileChooserDescriptor(true, false, true, false, true, false)
+                                .withFileFilter {
+                                    it.isDirectory || it.fileType === FileTypes.ARCHIVE || it.fileType === XmlFileType.INSTANCE
+                                }
+                                .apply {
+                                    description = message("action.importTemplates.wrapper.description")
+                                    title = message("action.importTemplates.wrapper")
+                                    putUserData(
+                                        LangDataKeys.MODULE_CONTEXT,
+                                        LangDataKeys.MODULE.getData(event.dataContext)
+                                    )
+                                }
 
                             FileChooser.chooseFile(descriptor, templatesListPanel, null, null)?.let { file ->
                                 try {
@@ -390,7 +388,7 @@ class IgnoreSettingsPanel : Disposable {
                 preview?.let {
                     remove(it.component)
 
-                    with (EditorFactory.getInstance()) {
+                    with(EditorFactory.getInstance()) {
                         if (allEditors.contains(it)) {
                             releaseEditor(it)
                         }
@@ -469,6 +467,7 @@ class IgnoreSettingsPanel : Disposable {
                     data?.set(IgnoreLanguagesSettings.KEY.NEW_FILE, value)
                     return
                 }
+
                 ENABLE_COLUMN -> {
                     data?.set(IgnoreLanguagesSettings.KEY.ENABLE, value)
                     return
