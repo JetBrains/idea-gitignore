@@ -5,7 +5,7 @@ junit = "4.13.2"
 # plugins
 dokka = "1.9.20"
 changelog = "2.2.1"
-intelliJPlatform = "2.1.0"
+intelliJPlatform = "2.2.0"
 grammarkit = "2022.3.2.2"
 kotlin = "1.9.25"
 kover = "0.8.3"
