@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Fixed: Freeze because of blocking readAction [\#933](https://github.com/hsz/idea-gitignore/issues/933)
+
+## [4.5.4] - 2024-10-16
+
 - Fixed UI freeze issue [\#908](https://github.com/hsz/idea-gitignore/issues/908)
 - Fixed: Internal method `com.intellij.openapi.fileEditor.impl.EditorWindow.getManager()` invocation
 - Fixed: `IgnoreBundle.messageOrDefault` usage
