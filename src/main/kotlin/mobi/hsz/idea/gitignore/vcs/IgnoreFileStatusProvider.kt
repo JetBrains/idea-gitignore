@@ -2,11 +2,12 @@
 package mobi.hsz.idea.gitignore.vcs
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Computable
+import com.intellij.openapi.vcs.FileStatus
 import com.intellij.openapi.vcs.FileStatusFactory
 import com.intellij.openapi.vcs.impl.FileStatusProvider
 import com.intellij.openapi.vfs.VirtualFile
@@ -27,13 +28,12 @@ class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware
      * @param virtualFile file to check
      * @return [.IGNORED] status or `null`
      */
-    override fun getFileStatus(virtualFile: VirtualFile) =
-        ApplicationManager.getApplication().runReadAction(Computable {
-            when {
-                manager.isFileIgnored(virtualFile) -> IGNORED
-                else -> null
-            }
-        })
+    override fun getFileStatus(virtualFile: VirtualFile): FileStatus? = ReadAction.nonBlocking<FileStatus> {
+        when {
+            manager.isFileIgnored(virtualFile) -> IGNORED
+            else -> null
+        }
+    }.expireWhen { ApplicationManager.getApplication().isDisposed }.coalesceBy(virtualFile).executeSynchronously()
 }
 
 /** Ignored status.  */
