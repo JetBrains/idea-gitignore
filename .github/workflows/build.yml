@@ -42,10 +42,6 @@ jobs:
         with:
             submodules: true
 
-      # Validate wrapper
-      - name: Gradle Wrapper Validation
-        uses: gradle/actions/wrapper-validation@v3
-
       # Set up Java environment for the next steps
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -133,7 +129,7 @@ jobs:
 
       # Upload the Kover report to CodeCov
       - name: Upload Code Coverage Report
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: ${{ github.workspace }}/build/reports/kover/report.xml
 
@@ -256,7 +252,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${{ needs.build.outputs.version }}" \
+          gh release create "v${{ needs.build.outputs.version }}" \
             --draft \
             --title "v${{ needs.build.outputs.version }}" \
             --notes "$(cat << 'EOM'
