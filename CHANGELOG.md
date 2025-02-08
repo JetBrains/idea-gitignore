@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [4.5.6] - 2025-02-08
+
 - Fixed: Freeze because of blocking readAction [\#933](https://github.com/hsz/idea-gitignore/issues/933)
 
 ## [4.5.4] - 2024-10-16
@@ -625,7 +627,9 @@
 - `.gitignore` file support
 - Basic syntax highlighting
 
-[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.3...HEAD
+[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.6...HEAD
+[4.5.6]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.4...v4.5.6
+[4.5.4]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.3...v4.5.4
 [4.5.3]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.2...v4.5.3
 [4.5.2]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.1...v4.5.2
 [4.5.1]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.0...v4.5.1
@@ -692,4 +696,4 @@
 [0.2.2]: https://github.com/JetBrains/idea-gitignore/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/JetBrains/idea-gitignore/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/JetBrains/idea-gitignore/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/JetBrains/idea-gitignore/commits
+[0.1.0]: https://github.com/JetBrains/idea-gitignore/commits/v0.1.0
