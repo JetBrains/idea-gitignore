@@ -33,7 +33,7 @@ class IgnoreFileStatusProvider(project: Project) : FileStatusProvider, DumbAware
             manager.isFileIgnored(virtualFile) -> IGNORED
             else -> null
         }
-    }.expireWhen { ApplicationManager.getApplication().isDisposed }.coalesceBy(virtualFile).executeSynchronously()
+    }.expireWhen { ApplicationManager.getApplication().isDisposed }.executeSynchronously()
 }
 
 /** Ignored status.  */
