@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Removed code related to the Foldable Project View plugin
+- Fixed: Prettier icon visual inconsistency
 
 ## [4.5.6] - 2025-02-08
 
