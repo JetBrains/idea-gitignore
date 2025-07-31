@@ -87,9 +87,6 @@
             toolWindowId="Project"
         />
 
-        <backgroundPostStartupActivity
-            implementation="mobi.hsz.idea.gitignore.foldableProjectView.StartupListener"/>
-
         <vcs.fileStatusProvider
             implementation="mobi.hsz.idea.gitignore.vcs.IgnoreFileStatusProvider"/>
 
@@ -910,15 +907,5 @@
         <action id="CloseIgnoredEditors" class="mobi.hsz.idea.gitignore.actions.CloseIgnoredEditorsAction">
             <add-to-group group-id="CloseEditorsGroup" anchor="after" relative-to-action="CloseAllReadonly"/>
         </action>
-
-        <action id="Ignore.HideIgnoredFiles" class="mobi.hsz.idea.gitignore.actions.HideIgnoredFilesAction" icon="/icons/icon.png">
-            <add-to-group group-id="ProjectViewPopupMenu"/>
-        </action>
     </actions>
-
-    <applicationListeners>
-        <listener
-            class="mobi.hsz.idea.gitignore.foldableProjectView.StartupListener"
-            topic="com.intellij.ide.AppLifecycleListener"/>
-    </applicationListeners>
 </idea-plugin>

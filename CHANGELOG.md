@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Removed code related to the Foldable Project View plugin
+
 ## [4.5.6] - 2025-02-08
 
 - Fixed: Freeze because of blocking readAction [\#933](https://github.com/hsz/idea-gitignore/issues/933)
