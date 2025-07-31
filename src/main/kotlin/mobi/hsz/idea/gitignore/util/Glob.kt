@@ -12,7 +12,6 @@ import mobi.hsz.idea.gitignore.services.IgnoreMatcher
 import mobi.hsz.idea.gitignore.util.Utils.getRelativePath
 import mobi.hsz.idea.gitignore.util.Utils.isVcsDirectory
 import java.util.regex.Pattern
-import java.util.regex.PatternSyntaxException
 
 /**
  * Glob util class that prepares glob statements or searches for content using glob rules.
@@ -133,11 +132,9 @@ object Glob {
      * @param regex regex to convert
      * @return [Pattern] instance or null if invalid
      */
-    fun getPattern(regex: String) = try {
+    fun getPattern(regex: String) = runCatching {
         Pattern.compile(regex)
-    } catch (e: PatternSyntaxException) {
-        null
-    }
+    }.getOrNull()
 
     /**
      * Creates regex [String] using glob rule.
@@ -195,7 +192,7 @@ object Glob {
                     escape -> {
                         sb.append("\\*")
                         star = false
-                        escape = star
+                        escape = false
                     }
                     star -> {
                         val prev = if (sb.isNotEmpty()) sb[sb.length - 1] else '\u0000'

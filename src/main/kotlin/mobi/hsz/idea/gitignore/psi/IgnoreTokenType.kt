@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NonNls
 /**
  * Token type definition.
  */
-class IgnoreTokenType(@NonNls val myDebugName: String) : IElementType(myDebugName, IgnoreLanguage.INSTANCE) {
+class IgnoreTokenType(@field:NonNls val myDebugName: String) : IElementType(myDebugName, IgnoreLanguage.INSTANCE) {
 
     override fun toString() = IgnoreBundle.messageOrDefault("tokenType.$myDebugName", "IgnoreTokenType." + super.toString()).orEmpty()
 }

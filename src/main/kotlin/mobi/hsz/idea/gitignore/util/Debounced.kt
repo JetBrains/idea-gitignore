@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 /**
- * Debounced runnable class that allows to run command just once in case it was triggered to often.
+ * Debounced runnable class that allows to run command just once in case it was triggered too often.
  */
 abstract class Debounced<T>(private val delay: Int) : DumbAwareRunnable, Disposable {
 
@@ -17,21 +17,16 @@ abstract class Debounced<T>(private val delay: Int) : DumbAwareRunnable, Disposa
 
     /** Wrapper run() method to invoke [.timer] properly. */
     override fun run() {
-        run(null)
-    }
-
-    /** Wrapper run() method to invoke [.timer] properly. */
-    fun run(argument: T?) {
         timer?.cancel(false)
         timer = JobScheduler.getScheduler().schedule(
-            DumbAwareRunnable { task(argument) },
+            DumbAwareRunnable { task() },
             delay.toLong(),
             TimeUnit.MILLISECONDS
         )
     }
 
-    /** Task to run in debounce way. */
-    protected abstract fun task(argument: T?)
+    /** Task to run in debounced way. */
+    protected abstract fun task()
 
     override fun dispose() {
         timer?.cancel(true)

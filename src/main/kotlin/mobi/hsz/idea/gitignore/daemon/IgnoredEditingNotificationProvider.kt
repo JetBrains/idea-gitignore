@@ -9,7 +9,6 @@ import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.EditorNotificationPanel
 import com.intellij.ui.EditorNotificationProvider
-import com.intellij.ui.EditorNotifications
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.IgnoreManager
 import mobi.hsz.idea.gitignore.settings.IgnoreSettings
@@ -27,10 +26,8 @@ class IgnoredEditingNotificationProvider(project: Project) : EditorNotificationP
     private val changeListManager = ChangeListManager.getInstance(project)
 
     /**
-     * Creates notification panel for given file and checks if is allowed to show the notification.
+     * Creates a notification panel for a given file and checks if is allowed to show the notification.
      *
-     * @param file       current file
-     * @param fileEditor current file editor
      * @return created notification panel
      */
     private fun createNotificationPanel() = EditorNotificationPanel().apply {
@@ -42,7 +39,7 @@ class IgnoredEditingNotificationProvider(project: Project) : EditorNotificationP
         if (DumbService.isDumb(project)) {
             return null
         }
-        if (!file.isWritable()) {
+        if (!file.isWritable) {
             return null
         }
         if (!settings.notifyIgnoredEditing || !changeListManager.isIgnoredFile(file) && !manager.isFileIgnored(file)) {

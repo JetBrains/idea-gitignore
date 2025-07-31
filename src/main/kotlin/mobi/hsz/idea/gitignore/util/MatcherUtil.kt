@@ -7,15 +7,15 @@ import com.intellij.openapi.vfs.VirtualFile
 import java.util.regex.Pattern
 
 /**
- * Util class to speed up and limit regex operation on the files paths.
+ * Util class to speed up and limit regex operation on the file paths.
  */
 class MatcherUtil private constructor() {
 
     companion object {
         /**
-         * Checks if given path contains all of the path parts.
+         * Checks if a given path contains all the path parts.
          *
-         * @param parts that should be contained in path
+         * @param parts that should be contained in a path
          * @param path  to check
          * @return path contains all parts
          */
@@ -32,9 +32,9 @@ class MatcherUtil private constructor() {
         }
 
         /**
-         * Checks if given path contains any of the path parts.
+         * Checks if a given path contains any of the path parts.
          *
-         * @param parts that should be contained in path
+         * @param parts that should be contained in a path
          * @param path  to check
          * @return path contains any of the parts
          */

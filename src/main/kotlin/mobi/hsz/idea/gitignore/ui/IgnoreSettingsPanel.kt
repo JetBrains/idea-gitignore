@@ -80,7 +80,7 @@ class IgnoreSettingsPanel : Disposable {
     /** Enable unignore files group. */
     private lateinit var unignoreFiles: JCheckBox
 
-    /** Inform about editing ignored file. */
+    /** Inform about editing an ignored file. */
     private lateinit var notifyIgnoredEditingCheckBox: JCheckBox
 
     /** Editor panel element. */
@@ -247,14 +247,14 @@ class IgnoreSettingsPanel : Disposable {
                             ).save(null as VirtualFile?, null)?.let { wrapper ->
                                 val items = currentItems
                                 val document = Document(IgnoreSettings.createTemplatesElement(items))
-                                try {
+                                runCatching {
                                     JDOMUtil.writeDocument(document, wrapper.file.outputStream(), Constants.NEWLINE)
                                     Messages.showInfoMessage(
                                         templatesListPanel,
                                         message("action.exportTemplates.success", items.size),
                                         message("action.exportTemplates.success.title")
                                     )
-                                } catch (e: IOException) {
+                                }.onFailure {
                                     Messages.showErrorDialog(
                                         templatesListPanel,
                                         message("action.exportTemplates.error")
@@ -271,7 +271,7 @@ class IgnoreSettingsPanel : Disposable {
                     },
                 )
             }
-            decorator.setActionGroup(group)
+            decorator.addExtraAction(group)
         }
 
         override fun findItemToAdd() = showEditDialog(UserTemplate())
@@ -347,7 +347,7 @@ class IgnoreSettingsPanel : Disposable {
         }
     }
 
-    /** Editor panel class that displays document editor or label if no template is selected. */
+    /** Editor panel class that displays a document editor or label if no template is selected. */
     private inner class EditorPanel : JPanel(BorderLayout()) {
         /** Preview editor. */
         var preview: Editor? = null
@@ -361,7 +361,7 @@ class IgnoreSettingsPanel : Disposable {
         /**
          * Shows or hides label and editor.
          *
-         * @param enabled if true shows editor, else shows label
+         * @param enabled if true shows the editor, else shows the label
          */
         override fun setEnabled(enabled: Boolean) {
             if (enabled) {
@@ -412,13 +412,13 @@ class IgnoreSettingsPanel : Disposable {
             }
         }
 
-        /** Constructor that creates document editor, empty content label. */
+        /** Constructor that creates a document editor, empty content label. */
         init {
             isEnabled = false
         }
     }
 
-    /** Languages table helper class. */
+    /** Language table helper class. */
     class LanguagesTableModel : AbstractTableModel() {
         val settings = IgnoreLanguagesSettings()
 
@@ -442,6 +442,7 @@ class IgnoreSettingsPanel : Disposable {
 
         override fun getColumnClass(columnIndex: Int) = columnClasses[columnIndex]
 
+        @Suppress("KotlinConstantConditions")
         override fun isCellEditable(row: Int, column: Int) =
             column > 0 || (column == 2 && settings.keys.toList()[row]?.let(IgnoreBundle::isExcludedFromHighlighting) ?: false)
 

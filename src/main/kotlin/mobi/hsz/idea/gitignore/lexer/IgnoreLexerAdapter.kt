@@ -7,4 +7,4 @@ import com.intellij.openapi.vfs.VirtualFile
 /**
  * Definition of [com.intellij.lexer.FlexAdapter].
  */
-class IgnoreLexerAdapter constructor(virtualFile: VirtualFile? = null) : FlexAdapter(IgnoreLexer(virtualFile))
+class IgnoreLexerAdapter(virtualFile: VirtualFile? = null) : FlexAdapter(IgnoreLexer(virtualFile))

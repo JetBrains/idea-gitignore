@@ -6,7 +6,7 @@ import mobi.hsz.idea.gitignore.lang.IgnoreLanguage
 import org.jetbrains.annotations.NonNls
 
 /**
- * Describes Ignore file type.
+ * Describes an Ignore file type.
  */
 open class IgnoreFileType protected constructor(val ignoreLanguage: IgnoreLanguage = IgnoreLanguage.INSTANCE) :
     LanguageFileType(ignoreLanguage) {
@@ -35,8 +35,6 @@ open class IgnoreFileType protected constructor(val ignoreLanguage: IgnoreLangua
 
         other as IgnoreFileType
 
-        if (ignoreLanguage != other.ignoreLanguage) return false
-
-        return true
+        return ignoreLanguage == other.ignoreLanguage
     }
 }

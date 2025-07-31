@@ -51,7 +51,7 @@ open class IgnoreFileAction(
 
     /**
      * Adds currently selected [VirtualFile] to the [.ignoreFile].
-     * If [.ignoreFile] is null, default project's Gitignore file will be used.
+     * If [.ignoreFile] is null, the default project's Gitignore file will be used.
      * Files that cannot be covered with Gitignore file produces error notification.
      * When action is performed, Gitignore file is opened with additional content added using [AppendFileCommandAction].
      *
@@ -59,13 +59,13 @@ open class IgnoreFileAction(
      */
     @Suppress("NestedBlockDepth")
     override fun actionPerformed(e: AnActionEvent) {
-        val files = e.getRequiredData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
-        val project = e.getRequiredData(CommonDataKeys.PROJECT)
+        val files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY) ?: return
+        val project = e.getData(CommonDataKeys.PROJECT) ?: return
 
         (ignoreFile?.let {
             Utils.getPsiFile(project, it)
         } ?: fileType?.let {
-            getIgnoreFile(project, it, null, true)
+            getIgnoreFile(project, it)
         })?.let { ignore ->
             val paths = mutableSetOf<String>()
 
@@ -122,19 +122,18 @@ open class IgnoreFileAction(
      *
      * @param project         current project
      * @param fileType        current ignore file type
-     * @param createIfMissing create new file if missing
      * @return Ignore file
      */
     @Suppress("ReturnCount")
-    private fun getIgnoreFile(project: Project, fileType: IgnoreFileType, psiDirectory: PsiDirectory?, createIfMissing: Boolean): PsiFile? {
+    private fun getIgnoreFile(project: Project, fileType: IgnoreFileType): PsiFile? {
         val projectDir = project.guessProjectDir() ?: return null
-        val directory = psiDirectory ?: PsiManager.getInstance(project).findDirectory(projectDir) ?: return null
+        val directory = PsiManager.getInstance(project).findDirectory(projectDir) ?: return null
 
         val filename = fileType.ignoreLanguage.filename
         var file = directory.findFile(filename)
         val virtualFile = file?.virtualFile ?: directory.virtualFile.findChild(filename)
 
-        if (file == null && virtualFile == null && createIfMissing) {
+        if (file == null && virtualFile == null) {
             try {
                 file = CreateFileCommandAction(project, directory, fileType).execute()
             } catch (throwable: Throwable) {

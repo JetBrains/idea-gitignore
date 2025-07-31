@@ -392,7 +392,7 @@ class GeneratorDialog(private val project: Project, var file: PsiFile? = null, v
     private fun fillTreeData(filter: String?, forceInclude: Boolean) {
         root.removeAllChildren()
         root.isChecked = false
-        Container.values().forEach {
+        Container.entries.forEach {
             root.add(
                 TemplateTreeNode(it).apply {
                     isChecked = false

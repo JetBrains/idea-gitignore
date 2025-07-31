@@ -50,7 +50,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val virtualFileManager = VirtualFileManager.getInstance()
 
     private val debouncedStatusesChanged = object : Debounced<Any?>(1000) {
-        override fun task(argument: Any?) {
+        override fun task() {
             expiringStatusCache.clear()
             if (!project.isDisposed) {
                 FileStatusManager.getInstance(project).fileStatusesChanged()
@@ -69,7 +69,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
     private val expiringStatusCache = ExpiringMap<VirtualFile, Boolean>(Time.SECOND)
 
     private val debouncedExitDumbMode = object : Debounced<Boolean?>(3000) {
-        override fun task(argument: Boolean?) {
+        override fun task() {
             cachedIgnoreFilesIndex.clear()
             for ((key, value) in FILE_TYPES_ASSOCIATION_QUEUE) {
                 associateFileType(key, value)
@@ -114,7 +114,7 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
             }
         }
 
-        override fun dispose() {}
+        override fun dispose() = Unit
     }
 
     /** [IgnoreSettings] listener to watch changes in the plugin's settings. */

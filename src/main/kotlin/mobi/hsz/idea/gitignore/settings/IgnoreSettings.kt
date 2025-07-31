@@ -29,7 +29,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
         override fun toString() = key
     }
 
-    /** Notify about missing Gitignore file in the project. */
+    /** Notify about a missing Gitignore file in the project. */
     var missingGitignore = true
         set(value) {
             notifyOnChange(KEY.MISSING_GITIGNORE, missingGitignore, value)
@@ -57,17 +57,10 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
             field = value
         }
 
-    /** Shows notification about editing ignored file. */
+    /** Shows notification about editing an ignored file. */
     var notifyIgnoredEditing = true
         set(value) {
             notifyOnChange(KEY.NOTIFY_IGNORED_EDITING, notifyIgnoredEditing, value)
-            field = value
-        }
-
-    /** Shows Foldable ProjectView plugin advertisement. */
-    var foldableProjectViewAdvertisePresented = false
-        set(value) {
-            notifyOnChange(KEY.FOLDABLE_PROJECT_VIEW_ADVERTISE_PRESENTED, foldableProjectViewAdvertisePresented, value)
             field = value
         }
 
@@ -199,7 +192,7 @@ class IgnoreSettings : PersistentStateComponent<Element?>, Listenable<IgnoreSett
 
             getChild(KEY.LANGUAGES.toString()).children.forEach {
                 val data = TreeMap<IgnoreLanguagesSettings.KEY, Any>()
-                for (key in IgnoreLanguagesSettings.KEY.values()) {
+                for (key in IgnoreLanguagesSettings.KEY.entries) {
                     data[key] = it.getAttributeValue(key.name)
                 }
 

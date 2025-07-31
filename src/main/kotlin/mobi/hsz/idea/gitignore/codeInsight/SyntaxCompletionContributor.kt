@@ -13,21 +13,15 @@ import com.intellij.util.ProcessingContext
 import mobi.hsz.idea.gitignore.IgnoreBundle
 import mobi.hsz.idea.gitignore.psi.IgnoreSyntax
 
+private val SYNTAX_ELEMENTS = mutableListOf<LookupElementBuilder>()
+
 /**
  * Class provides completion feature for [mobi.hsz.idea.gitignore.psi.IgnoreTypes.SYNTAX] element.
  */
 class SyntaxCompletionContributor : CompletionContributor() {
-
-    companion object {
-        /** Allowed values for the completion. */
-        private val SYNTAX_ELEMENTS = mutableListOf<LookupElementBuilder>()
-
-        init {
-            IgnoreBundle.Syntax.values().mapTo(SYNTAX_ELEMENTS) { LookupElementBuilder.create(it.toString().lowercase()) }
-        }
-    }
-
     init {
+        IgnoreBundle.Syntax.entries.mapTo(SYNTAX_ELEMENTS) { LookupElementBuilder.create(it.toString().lowercase()) }
+
         extend(
             CompletionType.BASIC,
             StandardPatterns.instanceOf(PsiElement::class.java),

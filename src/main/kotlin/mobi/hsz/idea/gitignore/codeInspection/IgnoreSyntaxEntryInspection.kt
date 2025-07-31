@@ -16,7 +16,7 @@ class IgnoreSyntaxEntryInspection : LocalInspectionTool() {
     /**
      * Checks if syntax entry has correct value.
      *
-     * @param holder     where visitor will register problems found.
+     * @param holder     where a visitor will register problems found.
      * @param isOnTheFly true if inspection was run in non-batch mode
      * @return not-null visitor for this inspection
      */
@@ -26,7 +26,7 @@ class IgnoreSyntaxEntryInspection : LocalInspectionTool() {
                 return
             }
 
-            IgnoreBundle.Syntax.values().forEach {
+            IgnoreBundle.Syntax.entries.forEach {
                 if (it.toString() == syntax.value.text) {
                     return
                 }
