@@ -3,12 +3,12 @@
 junit = "4.13.2"
 
 # plugins
-changelog = "2.2.1"
-intelliJPlatform = "2.2.1"
+changelog = "2.3.0"
+intelliJPlatform = "2.7.0"
 grammarkit = "2022.3.2.2"
-kotlin = "1.9.25"
-kover = "0.9.0"
-qodana = "2024.3.2"
+kotlin = "2.2.0"
+kover = "0.9.1"
+qodana = "2025.1.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
