@@ -106,12 +106,12 @@ class IgnoreManager(private val project: Project) : DumbAware, Disposable {
         }
 
         private fun handleEvent(event: VFileEvent) {
-            val fileType = event.file?.fileType
-            if (fileType is IgnoreFileType) {
-                cachedIgnoreFilesIndex.remove(fileType)
-                expiringStatusCache.clear()
-                debouncedStatusesChanged.run()
-            }
+            val fileType = event.file?.extension?.let {
+                FILE_TYPES_ASSOCIATION_QUEUE[it]
+            } ?: return
+            cachedIgnoreFilesIndex.remove(fileType)
+            expiringStatusCache.clear()
+            debouncedStatusesChanged.run()
         }
 
         override fun dispose() = Unit
