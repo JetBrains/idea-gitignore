@@ -102,7 +102,7 @@ object Resources {
          * subdirectory) or is user defined and fetched from [IgnoreSettings].
          */
         enum class Container {
-            USER, STARRED, ROOT, GLOBAL, TOPTAL
+            USER, STARRED, ROOT, GLOBAL
         }
 
         constructor(file: File, content: String?) {
@@ -111,7 +111,6 @@ object Resources {
             this.content = content
             container = when {
                 file.parent.endsWith("Global") -> Container.GLOBAL
-                file.parent.endsWith("toptal/templates") -> Container.TOPTAL
                 else -> Container.ROOT
             }
         }

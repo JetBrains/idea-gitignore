@@ -113,7 +113,7 @@ intellijPlatform {
 
 val generateTemplatesList by tasks.registering {
     val path = "src/main/resources"
-    val content = files("$path/gitignore", "$path/toptal")
+    val content = files("$path/gitignore")
         .asFileTree.matching { include("**/*.gitignore") }
         .files.joinToString("\n") { relativePath(it.path).substring(path.length + 1) }
     file("$path/templates.list").writeText(content)

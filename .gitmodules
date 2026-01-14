@@ -1,6 +1,3 @@
 [submodule "src/main/resources/gitignore"]
 	path = src/main/resources/gitignore
 	url = https://github.com/github/gitignore.git
-[submodule "src/main/resources/toptal"]
-	path = src/main/resources/toptal
-	url = https://github.com/toptal/gitignore.git
