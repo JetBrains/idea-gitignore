@@ -12,13 +12,13 @@ import mobi.hsz.idea.gitignore.util.Icons
 import com.intellij.openapi.vcs.changes.ignore.psi.IgnoreFile as NativeIgnoreFile
 
 /**
- * Action that initiates adding new template to the selected .gitignore file.
+ * Action that initiates adding a new template to the selected .gitignore file.
  */
 internal class AddTemplateAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getData(CommonDataKeys.PROJECT) ?: return
-        val file = e.getData(CommonDataKeys.PSI_FILE) as PsiFile
+        val file = e.getData(CommonDataKeys.PSI_FILE) as? PsiFile ?: return
 
         GeneratorDialog(project, file).show()
     }
