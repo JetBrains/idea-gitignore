@@ -31,9 +31,9 @@ class IgnoreFilesIndex : AbstractIgnoreFilesIndex<IgnoreFileTypeKey, IgnoreEntry
 
     @Suppress("ReturnCount")
     override fun map(inputData: FileContent): Map<IgnoreFileTypeKey, IgnoreEntryOccurrence> {
-        val inputDataPsi = try {
+        val inputDataPsi = runCatching {
             inputData.psiFile
-        } catch (e: Exception) {
+        }.getOrElse {
             // if there is some stale indices (e.g. for mobi.hsz.idea.gitignore.lang.kind.GitLanguage)
             // inputData.getPsiFile() could throw exception that should be avoided
             return emptyMap()
@@ -93,13 +93,12 @@ private const val VERSION = 6
  * @param fileType filetype
  * @return [IgnoreEntryOccurrence] collection
  */
-fun getEntries(project: Project, fileType: IgnoreFileType): List<IgnoreEntryOccurrence> {
-    try {
+fun getEntries(project: Project, fileType: IgnoreFileType): List<IgnoreEntryOccurrence> =
+    runCatching {
         if (ApplicationManager.getApplication().isReadAccessAllowed) {
             val scope = IgnoreSearchScope[project]
-            return FileBasedIndex.getInstance().getValues(KEY, IgnoreFileTypeKey(fileType), scope)
+            FileBasedIndex.getInstance().getValues(KEY, IgnoreFileTypeKey(fileType), scope)
+        } else {
+            emptyList()
         }
-    } catch (ignored: RuntimeException) {
-    }
-    return emptyList()
-}
+    }.getOrElse { emptyList() }
