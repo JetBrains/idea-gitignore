@@ -84,7 +84,7 @@ private val DATA_EXTERNALIZER = object : DataExternalizer<IgnoreEntryOccurrence>
     override fun read(input: DataInput) = IgnoreEntryOccurrence.deserialize(input)
 }
 
-private const val VERSION = 5
+private const val VERSION = 6
 
 /**
  * Returns collection of indexed [IgnoreEntryOccurrence] for given [Project] and [IgnoreFileType].

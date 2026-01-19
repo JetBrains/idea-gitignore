@@ -4,6 +4,7 @@ package mobi.hsz.idea.gitignore.indexing
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.util.io.IOUtil
 import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
@@ -35,10 +36,10 @@ class IgnoreEntryOccurrence(private val url: String, val items: List<Pair<String
         @Throws(IOException::class)
         fun serialize(out: DataOutput, entry: IgnoreEntryOccurrence) {
             out.run {
-                writeUTF(entry.url)
+                IOUtil.writeUTF(this, entry.url)
                 writeInt(entry.items.size)
                 entry.items.forEach {
-                    writeUTF(it.first)
+                    IOUtil.writeUTF(this, it.first)
                     writeBoolean(it.second)
                 }
             }
@@ -47,13 +48,13 @@ class IgnoreEntryOccurrence(private val url: String, val items: List<Pair<String
         @Synchronized
         @Throws(IOException::class)
         fun deserialize(input: DataInput): IgnoreEntryOccurrence {
-            val url = input.readUTF()
+            val url = IOUtil.readUTF(input)
             val items = mutableListOf<Pair<String, Boolean>>()
 
             if (url.isNotEmpty()) {
                 val size = input.readInt()
                 repeat((0 until size).count()) {
-                    items.add(Pair.create(input.readUTF(), input.readBoolean()))
+                    items.add(Pair.create(IOUtil.readUTF(input), input.readBoolean()))
                 }
             }
             return IgnoreEntryOccurrence(url, items)

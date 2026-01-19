@@ -5,6 +5,7 @@
 - Removed code related to the Foldable Project View plugin
 - Fixed: Prettier icon visual inconsistency
 - Refactored `handleEvent` to use file extension mapping for improved file type association handling and avoid reading FS. [\#944](https://github.com/hsz/idea-gitignore/issues/944)
+- Fixed: `UTFDataFormatException` during indexing in large projects by replacing `writeUTF`/`readUTF` with `IOUtil` methods that can handle large data [\#943](https://github.com/hsz/idea-gitignore/issues/943)
 
 ## [4.5.6] - 2025-02-08
 
