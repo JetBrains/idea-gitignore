@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [4.5.7] - 2026-01-19
+
 - Removed code related to the Foldable Project View plugin
 - Fixed: Prettier icon visual inconsistency
 - Refactored `handleEvent` to use file extension mapping for improved file type association handling and avoid reading FS. [\#944](https://github.com/hsz/idea-gitignore/issues/944)
@@ -632,7 +634,8 @@
 - `.gitignore` file support
 - Basic syntax highlighting
 
-[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.6...HEAD
+[Unreleased]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.7...HEAD
+[4.5.7]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.6...v4.5.7
 [4.5.6]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.4...v4.5.6
 [4.5.4]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.3...v4.5.4
 [4.5.3]: https://github.com/JetBrains/idea-gitignore/compare/v4.5.2...v4.5.3
